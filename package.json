@@ -1,6 +1,6 @@
 {
   "name": "prisma-scripts",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "scripts for managing orm",
   "keywords": [
     "prisma-scripts",
@@ -26,7 +26,7 @@
     "scripts"
   ],
   "bin": {
-    "generate": "lib/generate.js",
+    "generate-prisma": "lib/generate.js",
     "wait-for-postgres": "lib/waitForPostgres.js"
   },
   "repository": {
