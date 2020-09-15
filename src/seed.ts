@@ -21,11 +21,13 @@ export default async function seed(entities: Entities, spinner = ora()) {
           spinner.info(`already seeded '${key}'`);
           return [key, null];
         }
-        const result = await Promise.all(
+        let result = await Promise.all<any[]>(
           entity.map(async (entity: Entity) => {
-            return prisma[key].create(entity);
+            return prisma[key].create({ data: entity });
           })
         );
+        if (result.length === 1) result = result[0];
+        spinner.stop();
         console.log(result);
         spinner.succeed(`seeded '${key}'`);
         return [key, result];
@@ -39,10 +41,10 @@ export default async function seed(entities: Entities, spinner = ora()) {
   }, {});
 }
 
-export type Result = [string, any[] | null];
+export type Result = [string, Entity[] | Entity | null];
 
 export interface MappedResult {
-  [key: string]: any[] | null;
+  [key: string]: Entity[] | Entity | null;
 }
 
 export interface Entities {
