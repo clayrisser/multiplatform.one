@@ -7,7 +7,11 @@ const { argv } = process;
 dotenv.config({ path: path.resolve(process.cwd(), argv[2] || '.', '.env') });
 const prisma = new PrismaClient();
 
-export default async function seed(entities: Entities, spinner = ora()) {
+export default async function seed(
+  entities: Entities,
+  hide: string[] = [],
+  spinner = ora()
+) {
   const result = await Promise.all<Result>(
     Object.entries(entities).map(
       async ([key, entity]: [string, Entity | Entity[]]) => {
@@ -24,7 +28,8 @@ export default async function seed(entities: Entities, spinner = ora()) {
         let result = await Promise.all<any[]>(
           entity.map(async (entity: Entity) => {
             try {
-              return prisma[key].create({ data: entity });
+              const result = await prisma[key].create({ data: entity });
+              return hideResults(key, result, hide);
             } catch (err) {
               spinner.fail(err);
               process.exit(1);
@@ -44,6 +49,23 @@ export default async function seed(entities: Entities, spinner = ora()) {
     mappedResult[key] = value;
     return mappedResult;
   }, {});
+}
+
+export function hideResults(model: string, result: Entity, hide: string[]) {
+  hide = hide.filter((path: string) => {
+    const hideArr = path.split('.');
+    if (hideArr.length > 1 && hideArr[0] === model) {
+      return hideArr.slice(1).join('.');
+    }
+    return path;
+  });
+  return {
+    ...result,
+    ...hide.reduce((hiddenResult: Entity, key: string) => {
+      hiddenResult[key] = '***';
+      return hiddenResult;
+    }, {})
+  };
 }
 
 export type Result = [string, Entity[] | Entity | null];
