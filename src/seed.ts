@@ -23,7 +23,12 @@ export default async function seed(entities: Entities, spinner = ora()) {
         }
         let result = await Promise.all<any[]>(
           entity.map(async (entity: Entity) => {
-            return prisma[key].create({ data: entity });
+            try {
+              return prisma[key].create({ data: entity });
+            } catch (err) {
+              spinner.fail(err);
+              process.exit(1);
+            }
           })
         );
         if (result.length === 1) result = result[0];
