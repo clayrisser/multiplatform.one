@@ -10,7 +10,11 @@ const spinner = ora();
 
 (async () => {
   spinner.start('waiting for postgres');
-  await waitForPostgres();
+  try {
+    await waitForPostgres();
+  } catch (err) {
+    return spinner.fail(err.message);
+  }
   spinner.succeed('postgres ready');
 })();
 
