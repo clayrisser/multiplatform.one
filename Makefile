@@ -139,7 +139,7 @@ test-watch: ~lint
 start: ~format
 	@$(MAKE) -s +start
 +start:
-	@$(BABEL_NODE) --extensions '.ts,.tsx' src $(ARGS)
+	@$(BABEL_NODE) --extensions '.ts,.tsx' src/dotenv $(ARGS)
 
 .PHONY: clean
 clean:

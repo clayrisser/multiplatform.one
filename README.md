@@ -6,38 +6,31 @@
 
 Please ★ this repo if you found it useful ★ ★ ★
 
-
 ## Installation
 
 ```sh
 npm install --save prisma-scripts
 ```
 
-
 ## Dependencies
 
-* [NodeJS](https://nodejs.org)
-
+- [NodeJS](https://nodejs.org)
 
 ## Usage
 
 [Contribute](https://github.com/codejamninja/prisma-scripts/blob/master/CONTRIBUTING.md) usage docs
 
-
 ## Support
 
 Submit an [issue](https://github.com/codejamninja/prisma-scripts/issues/new)
-
 
 ## Screenshots
 
 [Contribute](https://github.com/codejamninja/prisma-scripts/blob/master/CONTRIBUTING.md) a screenshot
 
-
 ## Contributing
 
 Review the [guidelines for contributing](https://github.com/codejamninja/prisma-scripts/blob/master/CONTRIBUTING.md)
-
 
 ## License
 
@@ -45,16 +38,13 @@ Review the [guidelines for contributing](https://github.com/codejamninja/prisma-
 
 [Jam Risser](https://codejam.ninja) © 2020
 
-
 ## Changelog
 
 Review the [changelog](https://github.com/codejamninja/prisma-scripts/blob/master/CHANGELOG.md)
 
-
 ## Credits
 
-* [Jam Risser](https://codejam.ninja) - Author
-
+- [Jam Risser](https://codejam.ninja) - Author
 
 ## Support on Liberapay
 
