@@ -6,9 +6,8 @@ import path from 'path';
 const { argv, env } = process;
 const prismaPath = path.resolve(process.cwd(), argv[2] || '');
 dotenv.config({ path: path.resolve(prismaPath, '.env') });
-const spinner = ora();
 
-(async () => {
+export default async function main(spinner = ora()) {
   spinner.start('waiting for postgres');
   try {
     await waitForPostgres();
@@ -16,9 +15,9 @@ const spinner = ora();
     return spinner.fail(err.message);
   }
   spinner.succeed('postgres ready');
-})();
+}
 
-async function waitForPostgres(interval = 1000) {
+export async function waitForPostgres(interval = 1000) {
   if (!env.POSTGRES_URL) throw new Error('$POSTGRES_URL not set');
   for (;;) {
     try {
@@ -38,3 +37,5 @@ async function waitForPostgres(interval = 1000) {
     await new Promise((r) => setTimeout(r, interval));
   }
 }
+
+if (typeof require !== 'undefined' && require.main === module) main();

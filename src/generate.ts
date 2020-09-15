@@ -9,7 +9,7 @@ dotenv.config({ path: path.resolve(process.cwd(), argv[2] || '.', '.env') });
 const { env } = process;
 const prismaPath = process.cwd();
 
-(async () => {
+export default async function generate() {
   const postgresUrl = env.POSTGRES_URL
     ? env.POSTGRES_URL
     : `postgresql://${env.POSTGRES_USERNAME || 'postgres'}:${
@@ -31,4 +31,6 @@ POSTGRES_URL=${postgresUrl}
 `
   );
   await execa('node', [prisma, 'generate'], { stdio: 'inherit' });
-})();
+}
+
+if (typeof require !== 'undefined' && require.main === module) generate();
