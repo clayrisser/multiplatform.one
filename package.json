@@ -22,8 +22,7 @@
     "url": "https://codejam.ninja"
   },
   "files": [
-    "lib",
-    "scripts"
+    "lib"
   ],
   "bin": {
     "generate-prisma": "lib/generate.js",
