@@ -69,7 +69,7 @@ export function hideResults(model: string, result: Entity, hide: string[]) {
   return {
     ...result,
     ...hide.reduce((hiddenResult: Entity, key: string) => {
-      hiddenResult[key] = '***';
+      if (typeof result[key] !== 'undefined') hiddenResult[key] = '***';
       return hiddenResult;
     }, {})
   };
