@@ -4,7 +4,7 @@ import ora from 'ora';
 import path from 'path';
 
 const { argv, env } = process;
-const prismaPath = path.resolve(process.cwd(), argv[2] || 'prisma');
+const prismaPath = path.resolve(process.cwd(), argv[2] || '');
 dotenv.config({ path: path.resolve(prismaPath, '.env') });
 const spinner = ora();
 
