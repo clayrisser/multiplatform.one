@@ -1,6 +1,6 @@
 {
   "name": "prisma-scripts",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "scripts for managing orm",
   "keywords": [
     "prisma-scripts",
@@ -22,12 +22,13 @@
     "url": "https://codejam.ninja"
   },
   "files": [
+    "bin",
     "lib"
   ],
   "main": "lib/index.js",
   "bin": {
-    "generate-prisma": "lib/generate.js",
-    "wait-for-postgres": "lib/waitForPostgres.js"
+    "generate-prisma": "bin/generate.js",
+    "wait-for-postgres": "bin/waitForPostgres.js"
   },
   "repository": {
     "type": "git",

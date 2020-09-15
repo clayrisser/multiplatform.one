@@ -37,5 +37,3 @@ export async function waitForPostgres(interval = 1000) {
     await new Promise((r) => setTimeout(r, interval));
   }
 }
-
-if (typeof require !== 'undefined' && require.main === module) main();

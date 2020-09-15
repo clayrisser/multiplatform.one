@@ -32,5 +32,3 @@ POSTGRES_URL=${postgresUrl}
   );
   await execa('node', [prisma, 'generate'], { stdio: 'inherit' });
 }
-
-if (typeof require !== 'undefined' && require.main === module) generate();
