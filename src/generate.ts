@@ -4,9 +4,10 @@ import fs from 'fs-extra';
 import path from 'path';
 import pkgDir from 'pkg-dir';
 
-dotenv.config();
-const { env, argv } = process;
-const prismaPath = path.resolve(process.cwd(), argv[2] || 'prisma');
+const { argv } = process;
+dotenv.config({ path: path.resolve(process.cwd(), argv[2] || '.', '.env') });
+const { env } = process;
+const prismaPath = process.cwd();
 
 (async () => {
   const postgresUrl = env.POSTGRES_URL
