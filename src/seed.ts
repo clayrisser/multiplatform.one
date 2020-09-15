@@ -52,13 +52,20 @@ export default async function seed(
 }
 
 export function hideResults(model: string, result: Entity, hide: string[]) {
-  hide = hide.filter((path: string) => {
-    const hideArr = path.split('.');
-    if (hideArr.length > 1 && hideArr[0] === model) {
-      return hideArr.slice(1).join('.');
-    }
-    return path;
-  });
+  hide = hide
+    .filter((path: string) => {
+      const hideArr = path.split('.');
+      return (
+        hideArr.length === 1 || (hideArr.length > 1 && hideArr[0] === model)
+      );
+    })
+    .map((path: string) => {
+      const hideArr = path.split('.');
+      if (hideArr.length > 1 && hideArr[0] === model) {
+        return hideArr.slice(1).join('.');
+      }
+      return path;
+    });
   return {
     ...result,
     ...hide.reduce((hiddenResult: Entity, key: string) => {
