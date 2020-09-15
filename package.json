@@ -1,6 +1,6 @@
 {
   "name": "prisma-scripts",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "scripts for managing orm",
   "keywords": [
     "prisma-scripts",
