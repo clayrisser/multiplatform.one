@@ -44,7 +44,7 @@ export default async function seed(
       }
     )
   );
-  await prisma.$disconnect();
+  await prisma.disconnect();
   return result.reduce((mappedResult: MappedResult, [key, value]: Result) => {
     mappedResult[key] = value;
     return mappedResult;
