@@ -1,17 +1,31 @@
 import dotenv from 'dotenv';
+import fs from 'fs-extra';
 import ora from 'ora';
 import path from 'path';
-import { PrismaClient } from '@prisma/client';
 
 const { argv } = process;
 dotenv.config({ path: path.resolve(process.cwd(), argv[2] || '.', '.env') });
-const prisma = new PrismaClient();
+const PRISMA_CLIENT_REGEX = /provider\s*=\s*"prisma-client-js"\n\s*output\s*=\s*"(.+)"/g;
 
 export default async function seed(
   entities: Entities,
   hide: string[] = [],
   spinner = ora()
 ) {
+  const prismaSchema = (
+    await fs.readFile(path.resolve(process.cwd(), 'schema.prisma'))
+  ).toString();
+  const prismaOutput = [
+    ...prismaSchema.matchAll(PRISMA_CLIENT_REGEX)
+  ]?.[0]?.[1];
+  const outputPath = prismaOutput
+    ? path.resolve(prismaOutput, 'index.js')
+    : null;
+  const { PrismaClient } = require(outputPath &&
+    (await fs.pathExists(outputPath))
+    ? outputPath
+    : '@prisma/client');
+  const prisma = new PrismaClient();
   const result = await Promise.all<Result>(
     Object.entries(entities).map(
       async ([key, entity]: [string, Entity | Entity[]]) => {
