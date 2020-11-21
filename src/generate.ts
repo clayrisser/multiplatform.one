@@ -27,7 +27,7 @@ export default async function generate() {
     `# ------------------------------------------------------
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
-POSTGRES_URL=${postgresUrl}
+GENERATED_POSTGRES_URL=${postgresUrl}
 `
   );
   await execa('node', [prisma, 'generate'], { stdio: 'inherit' });
