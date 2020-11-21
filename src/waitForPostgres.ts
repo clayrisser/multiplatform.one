@@ -18,12 +18,13 @@ export default async function main(spinner = ora()) {
 }
 
 export async function waitForPostgres(interval = 1000) {
-  if (!env.POSTGRES_URL) throw new Error('$POSTGRES_URL not set');
+  if (!env.GENERATED_POSTGRES_URL)
+    throw new Error('$GENERATED_POSTGRES_URL not set');
   for (;;) {
     try {
       if (
         (
-          await execa('psql', [env.POSTGRES_URL, '-c', '\\l'], {
+          await execa('psql', [env.GENERATED_POSTGRES_URL, '-c', '\\l'], {
             stdio: 'pipe'
           })
         ).exitCode === 0
