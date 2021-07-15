@@ -1,7 +1,8 @@
 {
   "name": "prisma-scripts",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "scripts for managing orm",
+  "sideEffects": false,
   "keywords": [
     "prisma-scripts",
     "prisma",
@@ -15,7 +16,7 @@
     "url": "https://github.com/codejamninja/prisma-scripts/issues",
     "email": "jam@codejam.ninja"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": {
     "name": "Jam Risser",
     "email": "jam@codejam.ninja",
@@ -23,9 +24,11 @@
   },
   "files": [
     "bin",
+    "es",
     "lib"
   ],
   "main": "lib/index.js",
+  "module": "es/index.js",
   "bin": {
     "generate-prisma": "bin/generate.js",
     "wait-for-postgres": "bin/waitForPostgres.js"
@@ -52,55 +55,72 @@
     "test:watch": "make -s test-watch"
   },
   "dependencies": {
-    "@babel/runtime": "^7.11.2",
-    "@prisma/client": "2.7.1",
-    "core-js": "^3.6.5",
-    "dotenv": "^8.2.0",
-    "execa": "^4.0.3",
-    "fs-extra": "^9.0.1",
-    "ora": "^5.1.0",
-    "pkg-dir": "^4.2.0"
+    "@babel/runtime": "^7.14.6",
+    "core-js": "^3.15.2",
+    "dotenv": "^10.0.0",
+    "execa": "^5.1.1",
+    "fs-extra": "^10.0.0",
+    "ora": "^5.4.1",
+    "pkg-dir": "^5.0.0"
+  },
+  "peerDependencies": {
+    "prisma": "^2.27.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.11.6",
-    "@babel/core": "^7.11.6",
-    "@babel/node": "^7.10.5",
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/plugin-proposal-decorators": "^7.10.5",
-    "@babel/plugin-proposal-optional-chaining": "^7.11.0",
-    "@babel/plugin-transform-runtime": "^7.11.5",
-    "@babel/preset-env": "^7.11.5",
-    "@babel/preset-typescript": "^7.10.4",
-    "@types/fs-extra": "^9.0.1",
-    "@types/jest": "^26.0.14",
-    "@typescript-eslint/eslint-plugin": "^4.1.1",
-    "@typescript-eslint/parser": "^4.1.1",
-    "cspell": "^4.1.0",
-    "eslint": "^7.9.0",
-    "eslint-config-airbnb-typescript": "^10.0.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.22.0",
-    "jest": "^26.4.2",
+    "@babel/cli": "^7.14.5",
+    "@babel/core": "^7.14.6",
+    "@babel/node": "^7.14.7",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-proposal-decorators": "^7.14.5",
+    "@babel/plugin-proposal-optional-chaining": "^7.14.5",
+    "@babel/plugin-proposal-private-methods": "^7.14.5",
+    "@babel/plugin-transform-runtime": "^7.14.5",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-typescript": "^7.14.5",
+    "@types/fs-extra": "^9.0.12",
+    "@types/jest": "^26.0.24",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
+    "babel-plugin-macros": "^3.1.0",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "babel-plugin-transform-typescript-metadata": "^0.3.2",
+    "cspell": "^5.6.6",
+    "eslint": "^7.30.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-spellcheck": "^0.0.19",
+    "jest": "^27.0.6",
     "jest-sonar-reporter": "^2.0.0",
-    "lockfile-lint": "^4.3.7",
-    "majestic": "^1.7.0",
-    "makefiles": "^0.1.1",
-    "prettier": "^2.1.2",
-    "typescript": "^4.0.2"
+    "lockfile-lint": "^4.6.2",
+    "majestic": "^1.8.1",
+    "prettier": "^2.3.2",
+    "prisma": "^2.27.0",
+    "typescript": "^4.3.5"
   },
   "engines": {
     "node": ">=6.0.0"
   },
   "eslintIgnore": [
-    "lib"
+    "lib",
+    "es"
   ],
   "jest": {
-    "testRegex": "tests(/|/.*/)[^_/]*[jt]sx?$",
-    "verbose": true
+    "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
+    "testEnvironment": "node",
+    "verbose": true,
+    "testPathIgnorePatterns": [
+      "<rootDir>/es/",
+      "<rootDir>/lib/"
+    ]
   },
   "jestSonar": {
     "reportPath": "node_modules/.tmp/reports",
     "reportFile": "test-report.xml",
     "indent": 4
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "none"
   }
 }

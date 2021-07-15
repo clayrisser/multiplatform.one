@@ -1,13 +1,40 @@
+/**
+ * File: /src/seed.ts
+ * Project: prisma-scripts
+ * File Created: 14-07-2021 18:34:35
+ * Author: Clay Risser <email@clayrisser.com>
+ * -----
+ * Last Modified: 14-07-2021 19:00:20
+ * Modified By: Clay Risser <email@clayrisser.com>
+ * -----
+ * Silicon Hills LLC (c) Copyright 2021
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import dotenv from 'dotenv';
 import fs from 'fs-extra';
 import ora from 'ora';
 import path from 'path';
 
+const logger = console;
+
 const { argv } = process;
 dotenv.config({ path: path.resolve(process.cwd(), argv[2] || '.', '.env') });
-const PRISMA_CLIENT_REGEX = /provider\s*=\s*"prisma-client-js"\n\s*output\s*=\s*"(.+)"/g;
+const PRISMA_CLIENT_REGEX =
+  /provider\s*=\s*"prisma-client-js"\n\s*output\s*=\s*"(.+)"/g;
 
-export default async function seed(
+export default async function seedDb(
   entities: Entities,
   hide: string[] = [],
   spinner = ora()
@@ -21,10 +48,11 @@ export default async function seed(
   const outputPath = prismaOutput
     ? path.resolve(prismaOutput, 'index.js')
     : null;
+  // eslint-disable-next-line global-require,import/no-dynamic-require
   const { PrismaClient } = require(outputPath &&
     (await fs.pathExists(outputPath))
     ? outputPath
-    : '@prisma/client');
+    : 'prisma');
   const prisma = new PrismaClient();
   const result = await Promise.all<Result>(
     Object.entries(entities).map(
@@ -47,12 +75,13 @@ export default async function seed(
             } catch (err) {
               spinner.fail(err);
               process.exit(1);
+              return null;
             }
           })
         );
-        if (result.length === 1) result = result[0];
+        if (result.length === 1) [result] = result;
         spinner.stop();
-        console.log(result);
+        logger.log(result);
         spinner.succeed(`seeded '${key}'`);
         return [key, result];
       }
