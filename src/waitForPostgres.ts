@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 18:34:35
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 14-07-2021 19:00:59
+ * Last Modified: 14-07-2021 20:05:26
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -32,19 +32,19 @@ const prismaPath = path.resolve(process.cwd(), argv[2] || '');
 dotenv.config({ path: path.resolve(prismaPath, '.env') });
 
 export default async function main(spinner = ora()) {
-  spinner.start('waiting for postgres');
   try {
-    await waitForPostgres();
+    await waitForPostgres(spinner);
   } catch (err) {
     return spinner.fail(err.message);
   }
-  spinner.succeed('postgres ready');
   return null;
 }
 
-export async function waitForPostgres(interval = 1000) {
-  if (!env.GENERATED_POSTGRES_URL)
+export async function waitForPostgres(spinner = ora(), interval = 1000) {
+  if (!env.GENERATED_POSTGRES_URL) {
     throw new Error('$GENERATED_POSTGRES_URL not set');
+  }
+  spinner.start('waiting for postgres');
   for (;;) {
     try {
       if (
@@ -59,7 +59,10 @@ export async function waitForPostgres(interval = 1000) {
     } catch (err) {
       const execaErr: ExecaError = err;
       if (typeof execaErr.exitCode !== 'number') throw err;
+      spinner.warn(execaErr.stdout || execaErr.message || execaErr.toString());
+      spinner.start('waiting for postgres');
     }
     await new Promise((r) => setTimeout(r, interval, null));
   }
+  spinner.succeed('postgres ready');
 }
