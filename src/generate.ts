@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 18:34:35
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 14-07-2021 18:43:03
+ * Last Modified: 14-07-2021 19:06:47
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -42,8 +42,8 @@ export default async function generate() {
         env.POSTGRES_DATABASE || 'postgres'
       }?sslmode=${env.POSTGRES_SSLMODE || 'prefer'}`;
   const prisma = path.resolve(
-    (await pkgDir(require.resolve('@prisma/cli'))) ||
-      path.resolve(process.cwd(), 'node_modules/@prisma/cli'),
+    (await pkgDir(require.resolve('prisma'))) ||
+      path.resolve(process.cwd(), 'node_modules/prisma'),
     'build/index.js'
   );
   await fs.writeFile(
