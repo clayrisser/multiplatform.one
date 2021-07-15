@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 18:34:35
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 14-07-2021 18:42:49
+ * Last Modified: 14-07-2021 19:03:38
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -24,9 +24,9 @@
 
 import generate from './generate';
 import mainWaitForPostgres from './waitForPostgres';
-import seedPrisma from './seed';
+import seedDb from './seed';
 
-export { generate, mainWaitForPostgres, seedPrisma };
+export { generate, mainWaitForPostgres, seedDb };
 
 export * from './seed';
 export * from './waitForPostgres';
