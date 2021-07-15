@@ -1,7 +1,7 @@
 {
   "name": "prisma-scripts",
-  "version": "0.3.3",
-  "description": "scripts for managing orm",
+  "version": "0.3.4",
+  "description": "scripts for managing prisma orm",
   "sideEffects": false,
   "keywords": [
     "prisma-scripts",
@@ -11,9 +11,9 @@
     "database",
     "db"
   ],
-  "homepage": "https://github.com/codejamninja/prisma-scripts",
+  "homepage": "https://github.com/silicon-hills/prisma-scripts",
   "bugs": {
-    "url": "https://github.com/codejamninja/prisma-scripts/issues",
+    "url": "https://github.com/silicon-hills/prisma-scripts/issues",
     "email": "jam@codejam.ninja"
   },
   "license": "Apache-2.0",
@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/codejamninja/prisma-scripts"
+    "url": "https://github.com/silicon-hills/prisma-scripts"
   },
   "scripts": {
     "build": "make -s build",
