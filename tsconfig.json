@@ -21,5 +21,12 @@
       "~tests/*": ["tests/*"]
     }
   },
-  "include": ["src", "tests", ".eslintrc.js", "webpack.config.js"]
+  "include": [
+    ".eslintrc.js",
+    "src",
+    "tests",
+    "typegraphql.d.ts",
+    "typegraphql.js",
+    "webpack.config.js"
+  ]
 }

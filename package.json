@@ -1,6 +1,6 @@
 {
   "name": "nestjs-keycloak",
-  "version": "2.0.0-rc.9",
+  "version": "2.0.0-rc.10",
   "description": "nestjs module for keycloak",
   "sideEffects": false,
   "keywords": [
@@ -18,9 +18,11 @@
     "url": "https://siliconhills.dev"
   },
   "files": [
-    "es",
     "dist",
-    "lib"
+    "es",
+    "lib",
+    "typegraphql.d.ts",
+    "typegraphql.js"
   ],
   "module": "es/index.js",
   "main": "lib/index.js",
