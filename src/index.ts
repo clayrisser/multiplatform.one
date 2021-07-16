@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 23:01:27
+ * Last Modified: 16-07-2021 00:47:35
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -136,5 +136,6 @@ export default class KeycloakModule implements NestModule {
 
 export { KeycloakMiddleware, KeycloakProvider };
 
+export * from './decorators';
 export * from './guards';
 export * from './keycloak.provider';
