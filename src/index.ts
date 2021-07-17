@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 00:55:54
+ * Last Modified: 17-07-2021 01:55:05
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,7 +22,6 @@
  * limitations under the License.
  */
 
-import { AxiosRequestConfig } from 'axios';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { DiscoveryModule, DiscoveryService, Reflector } from '@nestjs/core';
 import {
@@ -32,7 +31,6 @@ import {
   MiddlewareConsumer,
   Module,
   NestModule,
-  OnModuleInit,
   RequestMethod
 } from '@nestjs/common';
 import KeycloakMiddleware from './keycloak.middleware';
@@ -53,7 +51,7 @@ import {
 
 @Global()
 @Module({})
-export default class KeycloakModule implements NestModule, OnModuleInit {
+export default class KeycloakModule implements NestModule {
   private readonly logger = new Logger(KeycloakModule.name);
 
   private static imports = [HttpModule, DiscoveryModule];
@@ -150,18 +148,6 @@ export default class KeycloakModule implements NestModule, OnModuleInit {
       },
       inject: [KEYCLOAK_OPTIONS, HttpService, DiscoveryService, Reflector]
     };
-  }
-
-  onModuleInit() {
-    this.httpService.axiosRef.interceptors.request.use(
-      (config: AxiosRequestConfig) => {
-        this.logger.verbose(config);
-        return config;
-      },
-      (error: any) => {
-        return error;
-      }
-    );
   }
 }
 
