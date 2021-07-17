@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 16-07-2021 19:56:37
+ * Last Modified: 16-07-2021 20:18:55
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -24,6 +24,7 @@
 
 import {
   DynamicModule,
+  Global,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -47,6 +48,7 @@ import {
   KEYCLOAK_REGISTER
 } from './types';
 
+@Global()
 @Module({})
 export default class KeycloakModule implements NestModule {
   private static imports = [HttpModule, DiscoveryModule];
@@ -60,6 +62,7 @@ export default class KeycloakModule implements NestModule {
   public static register(options: KeycloakOptions): DynamicModule {
     return {
       module: KeycloakModule,
+      global: true,
       imports: KeycloakModule.imports,
       providers: [
         AuthCheckerProvider,
@@ -89,6 +92,7 @@ export default class KeycloakModule implements NestModule {
   ): DynamicModule {
     return {
       module: KeycloakModule,
+      global: true,
       imports: [...KeycloakModule.imports, ...(asyncOptions.imports || [])],
       providers: [
         AuthCheckerProvider,
