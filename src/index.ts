@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 16-07-2021 20:18:55
+ * Last Modified: 16-07-2021 20:33:37
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -100,14 +100,16 @@ export default class KeycloakModule implements NestModule {
         KeycloakModule.createOptionsProvider(asyncOptions),
         KeycloakProvider,
         KeycloakService,
-        ResourceGuardProvider
+        ResourceGuardProvider,
+        WrapContextProvider
       ],
       exports: [
         AuthCheckerProvider,
         KEYCLOAK_OPTIONS,
         KeycloakProvider,
         KeycloakService,
-        ResourceGuardProvider
+        ResourceGuardProvider,
+        WrapContextProvider
       ]
     };
   }
