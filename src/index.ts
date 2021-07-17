@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 16-07-2021 20:33:37
+ * Last Modified: 17-07-2021 00:48:06
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -51,7 +51,7 @@ import {
 @Global()
 @Module({})
 export default class KeycloakModule implements NestModule {
-  private static imports = [HttpModule, DiscoveryModule];
+  private static imports = [DiscoveryModule];
 
   configure(consumer: MiddlewareConsumer) {
     consumer
