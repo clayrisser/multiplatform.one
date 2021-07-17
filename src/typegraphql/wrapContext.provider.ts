@@ -4,7 +4,7 @@
  * File Created: 16-07-2021 19:45:17
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 16-07-2021 20:37:35
+ * Last Modified: 16-07-2021 20:56:12
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -45,8 +45,8 @@ const WrapContextProvider: FactoryProvider<GraphqlCtx> = {
     keycloak: Keycloak,
     httpService: HttpService
   ) => {
-    return (context: HashMap & GrantedRequest) => {
-      const graphqlContext: GraphqlCtx = context as any;
+    return (context: HashMap & { req: GrantedRequest }) => {
+      const graphqlContext: GraphqlCtx = context;
       graphqlContext.kauth = new KeycloakContext(
         { req: context.req },
         keycloak
