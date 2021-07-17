@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 16-07-2021 18:57:40
+ * Last Modified: 16-07-2021 19:56:37
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -35,7 +35,11 @@ import KeycloakMiddleware from './keycloak.middleware';
 import KeycloakProvider from './keycloak.provider';
 import KeycloakService from './keycloak.service';
 import Register from './register';
-import { AuthCheckerProvider, ResourceGuardProvider } from './typegraphql';
+import {
+  AuthCheckerProvider,
+  ResourceGuardProvider,
+  WrapContextProvider
+} from './typegraphql';
 import {
   KeycloakOptions,
   KeycloakAsyncOptions,
@@ -62,6 +66,7 @@ export default class KeycloakModule implements NestModule {
         KeycloakProvider,
         KeycloakService,
         ResourceGuardProvider,
+        WrapContextProvider,
         {
           provide: KEYCLOAK_OPTIONS,
           useValue: options
@@ -73,7 +78,8 @@ export default class KeycloakModule implements NestModule {
         KEYCLOAK_OPTIONS,
         KeycloakProvider,
         KeycloakService,
-        ResourceGuardProvider
+        ResourceGuardProvider,
+        WrapContextProvider
       ]
     };
   }

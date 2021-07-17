@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 16-07-2021 18:58:27
+ * Last Modified: 16-07-2021 20:03:11
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -23,6 +23,8 @@
  */
 
 import { ModuleMetadata } from '@nestjs/common/interfaces';
+import { KeycloakContext } from 'keycloak-connect-graphql';
+import KeycloakService from './keycloak.service';
 
 type Grant = import('keycloak-connect').Grant;
 type Request = import('express').Request;
@@ -84,6 +86,8 @@ export interface TypeGraphqlMeta {
 }
 
 export interface GraphqlCtx extends HashMap {
-  req?: Request;
+  kauth?: KeycloakContext;
+  keycloakService?: KeycloakService;
+  req?: KeycloakRequest<Request>;
   typegraphqlMeta?: TypeGraphqlMeta;
 }

@@ -1,6 +1,6 @@
 {
   "name": "nestjs-keycloak",
-  "version": "2.0.0-rc.12",
+  "version": "2.0.0-rc.13",
   "description": "nestjs module for keycloak",
   "sideEffects": false,
   "keywords": [
@@ -61,6 +61,7 @@
     "graphql": "^15.5.1",
     "keycloak-admin": "^1.14.18",
     "keycloak-connect": "^14.0.0",
+    "keycloak-connect-graphql": "^0.7.0",
     "lodash.difference": "^4.5.0",
     "qs": "^6.10.1",
     "rxjs": "^7.2.0",

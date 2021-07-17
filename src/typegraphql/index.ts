@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:24
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 23:00:06
+ * Last Modified: 16-07-2021 19:55:51
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -24,9 +24,11 @@
 
 import AuthCheckerProvider from './authChecker.provider';
 import ResourceGuardProvider from './resourceGuard.provider';
+import WrapContextProvider from './wrapContext.provider';
 
-export { AuthCheckerProvider, ResourceGuardProvider };
+export { AuthCheckerProvider, ResourceGuardProvider, WrapContextProvider };
 
+export * from './wrapContext.provider';
 export * from './authChecker.provider';
 export * from './decorators';
 export * from './resourceGuard.provider';
