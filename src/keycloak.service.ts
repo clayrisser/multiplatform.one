@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 16-07-2021 19:10:03
+ * Last Modified: 17-07-2021 01:58:16
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -206,10 +206,9 @@ export default class KeycloakService {
     try {
       const res = (await this.httpService
         .post(
-          `/auth/realms/${this.options.realm}/protocol/openid-connect/token`,
+          `${this.options.baseUrl}/auth/realms/${this.options.realm}/protocol/openid-connect/token`,
           data,
           {
-            baseURL: this.options.baseUrl,
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
           }
         )
