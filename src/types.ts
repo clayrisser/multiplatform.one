@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 16-07-2021 20:03:11
+ * Last Modified: 17-07-2021 02:29:55
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -50,10 +50,10 @@ export interface KeycloakAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
   useFactory?: (...args: any[]) => Promise<KeycloakOptions> | KeycloakOptions;
 }
 
-export interface UserInfo {
-  emailVerified: boolean;
-  preferredUsername: string;
-  sub: string;
+export class UserInfo {
+  emailVerified!: boolean;
+  preferredUsername!: string;
+  sub!: string;
   [key: string]: any;
 }
 

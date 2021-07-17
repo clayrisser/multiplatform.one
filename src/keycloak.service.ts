@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 01:58:16
+ * Last Modified: 17-07-2021 02:30:54
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -363,7 +363,7 @@ export default class KeycloakService {
   }
 }
 
-export interface GrantTokensOptions {
+export class GrantTokensOptions {
   password?: string;
   refreshToken?: string;
   scope?: string | string[];
@@ -382,10 +382,10 @@ export interface TokenResponseData {
   token_type?: string;
 }
 
-export interface RefreshTokenGrant {
+export class RefreshTokenGrant {
   accessToken?: Token;
   expiresIn?: number;
-  message: string;
+  message!: string;
   refreshExpiresIn?: number;
   refreshToken?: Token;
   scope?: string;
