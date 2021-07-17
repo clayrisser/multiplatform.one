@@ -4,7 +4,7 @@
  * File Created: 16-07-2021 19:45:17
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 16-07-2021 20:04:31
+ * Last Modified: 16-07-2021 20:37:35
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -58,6 +58,7 @@ const WrapContextProvider: FactoryProvider<GraphqlCtx> = {
         httpService,
         graphqlContext
       );
+      return graphqlContext;
     };
   }
 };
