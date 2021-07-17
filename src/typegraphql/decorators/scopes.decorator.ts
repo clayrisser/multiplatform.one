@@ -1,10 +1,10 @@
 /**
- * File: /src/typegraphql/decorators/scopes.decorator.ts
+ * File: /src/util.ts
  * Project: nestjs-keycloak
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 22:44:29
+ * Last Modified: 16-07-2021 19:00:00
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -23,11 +23,11 @@
  */
 
 import { createMethodDecorator, NextFn, ResolverData } from 'type-graphql';
-import { GraphqlContext } from '../../types';
+import { GraphqlCtx } from '../../types';
 
 export function Scopes(...scopes: string[]) {
   return createMethodDecorator(
-    ({ context }: ResolverData<GraphqlContext>, next: NextFn) => {
+    ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
       if (!context.typegraphqlMeta) context.typegraphqlMeta = {};
       context.typegraphqlMeta.scopes = scopes;
       return next();

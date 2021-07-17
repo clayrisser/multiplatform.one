@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 17:43:04
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 22:40:13
+ * Last Modified: 16-07-2021 18:59:59
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -24,7 +24,7 @@
 
 import { ExecutionContext } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { KeycloakRequest, GraphqlContext } from './types';
+import { KeycloakRequest, GraphqlCtx } from './types';
 
 let nestjsGraphql: any;
 try {
@@ -38,17 +38,17 @@ export function getReq(
   reqOrExecutionContext:
     | KeycloakRequest<Request>
     | ExecutionContext
-    | GraphqlContext,
+    | GraphqlCtx,
   allowEmpty = false
 ): KeycloakRequest<Request> {
   const req = reqOrExecutionContext as KeycloakRequest<Request>;
   const context = reqOrExecutionContext as ExecutionContext;
-  const graphqlContext = reqOrExecutionContext as GraphqlContext;
+  const GraphqlCtx = reqOrExecutionContext as GraphqlCtx;
   if (
     typeof context.switchToHttp === 'function' &&
     typeof context.getType === 'function' &&
     typeof req.headers === 'undefined' &&
-    typeof graphqlContext.req === 'undefined'
+    typeof GraphqlCtx.req === 'undefined'
   ) {
     if (
       (context.getType() as string) === ContextType.Graphql &&
@@ -61,24 +61,24 @@ export function getReq(
     }
     return context.switchToHttp().getRequest();
   }
-  if (typeof graphqlContext.req !== 'undefined') {
-    return graphqlContext.req;
+  if (typeof GraphqlCtx.req !== 'undefined') {
+    return GraphqlCtx.req;
   }
   return req;
 }
 
 export function getRes(
-  resOrExecutionContext: Response | ExecutionContext | GraphqlContext,
+  resOrExecutionContext: Response | ExecutionContext | GraphqlCtx,
   allowEmpty = false
 ): Response {
   const res = resOrExecutionContext as Response;
   const context = resOrExecutionContext as ExecutionContext;
-  const graphqlContext = resOrExecutionContext as GraphqlContext;
+  const GraphqlCtx = resOrExecutionContext as GraphqlCtx;
   if (
     typeof context.switchToHttp === 'function' &&
     typeof context.getType === 'function' &&
     typeof res.send !== 'function' &&
-    typeof graphqlContext.res === 'undefined'
+    typeof GraphqlCtx.res === 'undefined'
   ) {
     if (
       (context.getType() as string) === ContextType.Graphql &&
@@ -91,8 +91,8 @@ export function getRes(
     }
     return context.switchToHttp().getResponse();
   }
-  if (typeof graphqlContext.res !== 'undefined') {
-    return graphqlContext.res;
+  if (typeof GraphqlCtx.res !== 'undefined') {
+    return GraphqlCtx.res;
   }
   return res;
 }

@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 22:25:28
+ * Last Modified: 16-07-2021 19:15:39
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -56,7 +56,7 @@ export class AuthGuard implements CanActivate {
       context
     );
     const roles = this.getRoles(context);
-    if (!roles.length) return true;
+    if (roles === null) return true;
     const username = (await keycloakService.getUserInfo())?.preferredUsername;
     if (!username) return false;
     const resource = this.getResource(context);
@@ -73,18 +73,17 @@ export class AuthGuard implements CanActivate {
     return false;
   }
 
-  private getRoles(context: ExecutionContext): (string | string[])[] {
-    const handlerRoles =
-      this.reflector.get<(string | string[])[]>(
-        AUTHORIZED,
-        context.getHandler()
-      ) || [];
-    const classRoles =
-      this.reflector.get<(string | string[])[]>(
-        AUTHORIZED,
-        context.getClass()
-      ) || [];
-    return [...new Set([...handlerRoles, ...classRoles])];
+  private getRoles(context: ExecutionContext): (string | string[])[] | null {
+    const handlerRoles = this.reflector.get<(string | string[])[]>(
+      AUTHORIZED,
+      context.getHandler()
+    );
+    const classRoles = this.reflector.get<(string | string[])[]>(
+      AUTHORIZED,
+      context.getClass()
+    );
+    if (!classRoles === null && !handlerRoles === null) return null;
+    return [...new Set([...(handlerRoles || []), ...(classRoles || [])])];
   }
 
   private getResource(context: ExecutionContext) {

@@ -1,6 +1,6 @@
 {
   "name": "nestjs-keycloak",
-  "version": "2.0.0-rc.11",
+  "version": "2.0.0-rc.12",
   "description": "nestjs module for keycloak",
   "sideEffects": false,
   "keywords": [
@@ -54,13 +54,16 @@
     "@nestjs/core": "^8.0.3",
     "@prisma/client": "^2.27.0",
     "axios": "^0.21.1",
+    "class-validator": "^0.13.1",
     "core-js": "^3.15.2",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
+    "graphql": "^15.5.1",
     "keycloak-admin": "^1.14.18",
     "keycloak-connect": "^14.0.0",
     "lodash.difference": "^4.5.0",
     "qs": "^6.10.1",
+    "rxjs": "^7.2.0",
     "type-graphql": "^1.1.1"
   },
   "peerDependencies": {

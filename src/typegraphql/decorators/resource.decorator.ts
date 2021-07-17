@@ -1,10 +1,10 @@
 /**
- * File: /src/typegraphql/decorators/resource.decorator.ts
+ * File: /src/util.ts
  * Project: nestjs-keycloak
  * File Created: 15-07-2021 22:17:00
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 22:43:20
+ * Last Modified: 16-07-2021 19:00:00
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -23,11 +23,11 @@
  */
 
 import { createMethodDecorator, NextFn, ResolverData } from 'type-graphql';
-import { GraphqlContext } from '../../types';
+import { GraphqlCtx } from '../../types';
 
 export function Resource(resource: string) {
   return createMethodDecorator(
-    ({ context }: ResolverData<GraphqlContext>, next: NextFn) => {
+    ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
       if (!context.typegraphqlMeta) context.typegraphqlMeta = {};
       context.typegraphqlMeta.resource = resource;
       return next();
