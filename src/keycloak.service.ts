@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 23:02:24
+ * Last Modified: 16-07-2021 19:10:03
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -31,7 +31,7 @@ import { Injectable, Inject, Scope, ExecutionContext } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request, NextFunction } from 'express';
 import {
-  GraphqlContext,
+  GraphqlCtx,
   KEYCLOAK_OPTIONS,
   KeycloakOptions,
   KeycloakRequest,
@@ -50,7 +50,7 @@ export default class KeycloakService {
     reqOrExecutionContext:
       | KeycloakRequest<Request>
       | ExecutionContext
-      | GraphqlContext
+      | GraphqlCtx
   ) {
     this.req = getReq(reqOrExecutionContext);
   }
@@ -274,12 +274,14 @@ export default class KeycloakService {
     this._initialized = true;
   }
 
-  async isAuthorizedByRoles(roles: (string | string[])[]): Promise<boolean> {
+  async isAuthorizedByRoles(
+    roles: (string | string[])[] = []
+  ): Promise<boolean> {
     await this.init();
     const accessToken = await this.getAccessToken();
     if (!(await this.isAuthenticated())) return false;
     const rolesArr = Array.isArray(roles) ? roles : [roles];
-    if (!rolesArr.length) return true;
+    if (!rolesArr.length) return false;
     return rolesArr.some((role: string | string[]) =>
       Array.isArray(role)
         ? role.every((innerRole: string) => accessToken?.hasRole(innerRole))

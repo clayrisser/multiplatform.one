@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 22:47:28
+ * Last Modified: 16-07-2021 19:10:49
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -26,7 +26,7 @@ import { AuthChecker, ResolverData } from 'type-graphql';
 import { Keycloak } from 'keycloak-connect';
 import { Logger, FactoryProvider } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { KeycloakOptions, KEYCLOAK_OPTIONS, GraphqlContext } from '../types';
+import { KeycloakOptions, KEYCLOAK_OPTIONS, GraphqlCtx } from '../types';
 import { KEYCLOAK } from '../keycloak.provider';
 import KeycloakService from '../keycloak.service';
 
@@ -42,8 +42,8 @@ const AuthCheckerProvider: FactoryProvider<AuthChecker> = {
     httpService: HttpService
   ) => {
     return async (
-      { context }: ResolverData<GraphqlContext>,
-      roles: (string | string[])[]
+      { context }: ResolverData<GraphqlCtx>,
+      roles: (string | string[])[] = []
     ) => {
       const keycloakService = new KeycloakService(
         options,

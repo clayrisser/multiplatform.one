@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 21:43:07
+ * Last Modified: 16-07-2021 19:06:30
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -177,7 +177,7 @@ export default class Register {
     const scopesRes = await this.getScopes();
     const createdScopes: Array<Scope> = [
       ...this._createdScopes,
-      ...scopesRes.data
+      ...(scopesRes?.data || [])
     ];
     const scopesToCreate = difference(
       scopes,
@@ -185,7 +185,8 @@ export default class Register {
     );
     await Promise.all(
       scopesToCreate.map(async (scopeName: string) => {
-        const scope: Scope | {} = (await this.createScope(scopeName)).data;
+        const scope: Scope | {} =
+          (await this.createScope(scopeName))?.data || {};
         if ('id' in scope) createdScopes.push(scope);
       })
     );
@@ -234,7 +235,7 @@ export default class Register {
           }
         )
         .toPromise()
-    ).data.access_token;
+    )?.data?.access_token;
     return this._accessToken;
   }
 
@@ -249,13 +250,13 @@ export default class Register {
         }
       )
       .toPromise();
-    return resourcesRes.data;
+    return resourcesRes?.data || [];
   }
 
   async createResource(
     resourceName: string,
     scopes: Scope[] = []
-  ): Promise<AxiosResponse<any>> {
+  ): Promise<AxiosResponse<any> | undefined> {
     return this.httpService
       .post(
         `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/resource`,
@@ -288,7 +289,7 @@ export default class Register {
         }
       )
       .toPromise();
-    return (await resource).data;
+    return (await resource)?.data;
   }
 
   async updateResource(resource: Resource, scopes: Array<Scope>) {

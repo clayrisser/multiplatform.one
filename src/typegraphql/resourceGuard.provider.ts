@@ -1,10 +1,10 @@
 /**
- * File: /src/typegraphql/resourceGuard.provider.ts
+ * File: /src/util.ts
  * Project: nestjs-keycloak
  * File Created: 15-07-2021 21:45:29
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 22:59:42
+ * Last Modified: 16-07-2021 19:00:00
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -33,12 +33,12 @@ import {
 import { MiddlewareFn, NextFn, ResolverData } from 'type-graphql';
 import KeycloakService from '../keycloak.service';
 import { KEYCLOAK } from '../keycloak.provider';
-import { KeycloakOptions, KEYCLOAK_OPTIONS, GraphqlContext } from '../types';
+import { KeycloakOptions, KEYCLOAK_OPTIONS, GraphqlCtx } from '../types';
 
 const logger = new Logger('ResourceGuard');
 export const RESOURCE_GUARD = 'RESOURCE_GUARD';
 
-const ResourceGuardProvider: FactoryProvider<MiddlewareFn<GraphqlContext>> = {
+const ResourceGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
   provide: RESOURCE_GUARD,
   inject: [KEYCLOAK_OPTIONS, KEYCLOAK, HttpService],
   useFactory: (
@@ -46,7 +46,7 @@ const ResourceGuardProvider: FactoryProvider<MiddlewareFn<GraphqlContext>> = {
     keycloak: Keycloak,
     httpService: HttpService
   ) => {
-    return async ({ context }: ResolverData<GraphqlContext>, next: NextFn) => {
+    return async ({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
       if (!(await canActivate(options, keycloak, httpService, context))) {
         throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
       }
@@ -59,7 +59,7 @@ async function canActivate(
   options: KeycloakOptions,
   keycloak: Keycloak,
   httpService: HttpService,
-  context: GraphqlContext
+  context: GraphqlCtx
 ): Promise<boolean> {
   const keycloakService = new KeycloakService(
     options,

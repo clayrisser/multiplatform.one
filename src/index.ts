@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 16-07-2021 01:45:14
+ * Last Modified: 16-07-2021 18:57:40
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -140,3 +140,4 @@ export * from './decorators';
 export * from './guards';
 export * from './keycloak.provider';
 export * from './keycloak.service';
+export * from './types';
