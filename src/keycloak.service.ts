@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 09:14:17
+ * Last Modified: 18-07-2021 09:20:21
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -136,6 +136,12 @@ export default class KeycloakService {
     const accessToken = await this.getAccessToken();
     if (!accessToken) return null;
     return accessToken.content.realm_access.roles || [];
+  }
+
+  async getScopes(): Promise<string[] | null> {
+    const accessToken = await this.getAccessToken();
+    if (!accessToken) return null;
+    return (accessToken.content?.scope || '').split(' ');
   }
 
   async getAccessToken(): Promise<Token | null> {
