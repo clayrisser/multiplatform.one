@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 03:09:14
+ * Last Modified: 18-07-2021 05:51:37
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -42,8 +42,10 @@ import { getReq } from './util';
 
 @Injectable({ scope: Scope.REQUEST })
 export default class KeycloakService {
+  private options: KeycloakOptions;
+
   constructor(
-    @Inject(KEYCLOAK_OPTIONS) private readonly options: KeycloakOptions,
+    @Inject(KEYCLOAK_OPTIONS) options: KeycloakOptions,
     @Inject(KEYCLOAK) private readonly keycloak: Keycloak,
     private readonly httpService: HttpService,
     @Inject(REQUEST)
@@ -52,6 +54,10 @@ export default class KeycloakService {
       | ExecutionContext
       | GraphqlCtx
   ) {
+    this.options = {
+      enforceClient: false,
+      ...options
+    };
     this.req = getReq(reqOrExecutionContext);
   }
 
@@ -299,8 +305,15 @@ export default class KeycloakService {
     options: GrantTokensOptions
   ): Promise<RefreshTokenGrant | null> {
     const tokens = await this.grantTokens(options);
-    this.sessionSetTokens(tokens.accessToken, tokens.refreshToken);
-    if (tokens.accessToken) this._accessToken = tokens.accessToken;
+    const { accessToken, refreshToken } = tokens;
+    if (
+      this.options.enforceClient &&
+      accessToken?.clientId !== this.options.clientId
+    ) {
+      return null;
+    }
+    this.sessionSetTokens(accessToken, refreshToken);
+    if (accessToken) this._accessToken = accessToken;
     await this.init(true);
     return tokens;
   }
