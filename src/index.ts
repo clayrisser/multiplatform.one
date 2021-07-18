@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 01:55:05
+ * Last Modified: 17-07-2021 19:38:00
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -38,11 +38,6 @@ import KeycloakProvider from './keycloak.provider';
 import KeycloakService from './keycloak.service';
 import Register from './register';
 import {
-  AuthCheckerProvider,
-  ResourceGuardProvider,
-  WrapContextProvider
-} from './typegraphql';
-import {
   KeycloakOptions,
   KeycloakAsyncOptions,
   KEYCLOAK_OPTIONS,
@@ -56,8 +51,6 @@ export default class KeycloakModule implements NestModule {
 
   private static imports = [HttpModule, DiscoveryModule];
 
-  constructor(private readonly httpService: HttpService) {}
-
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(KeycloakMiddleware)
@@ -70,25 +63,15 @@ export default class KeycloakModule implements NestModule {
       global: true,
       imports: KeycloakModule.imports,
       providers: [
-        AuthCheckerProvider,
         KeycloakProvider,
         KeycloakService,
-        ResourceGuardProvider,
-        WrapContextProvider,
         {
           provide: KEYCLOAK_OPTIONS,
           useValue: options
         },
         KeycloakModule.createKeycloakRegisterProvider()
       ],
-      exports: [
-        AuthCheckerProvider,
-        KEYCLOAK_OPTIONS,
-        KeycloakProvider,
-        KeycloakService,
-        ResourceGuardProvider,
-        WrapContextProvider
-      ]
+      exports: [KEYCLOAK_OPTIONS, KeycloakProvider, KeycloakService]
     };
   }
 
@@ -100,22 +83,12 @@ export default class KeycloakModule implements NestModule {
       global: true,
       imports: [...KeycloakModule.imports, ...(asyncOptions.imports || [])],
       providers: [
-        AuthCheckerProvider,
         KeycloakModule.createKeycloakRegisterProvider(),
         KeycloakModule.createOptionsProvider(asyncOptions),
         KeycloakProvider,
-        KeycloakService,
-        ResourceGuardProvider,
-        WrapContextProvider
+        KeycloakService
       ],
-      exports: [
-        AuthCheckerProvider,
-        KEYCLOAK_OPTIONS,
-        KeycloakProvider,
-        KeycloakService,
-        ResourceGuardProvider,
-        WrapContextProvider
-      ]
+      exports: [KEYCLOAK_OPTIONS, KeycloakProvider, KeycloakService]
     };
   }
 

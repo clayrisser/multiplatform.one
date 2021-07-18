@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 02:29:55
+ * Last Modified: 17-07-2021 19:23:31
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -23,11 +23,10 @@
  */
 
 import { ModuleMetadata } from '@nestjs/common/interfaces';
-import { KeycloakContext } from 'keycloak-connect-graphql';
-import KeycloakService from './keycloak.service';
 
 type Grant = import('keycloak-connect').Grant;
 type Request = import('express').Request;
+type Response = import('express').Response;
 
 export interface HashMap<T = any> {
   [key: string]: T;
@@ -76,18 +75,11 @@ export interface Kauth {
   userInfo?: UserInfo;
 }
 
-export const KEYCLOAK_OPTIONS = 'KEYCLOAK_OPTIONS';
-export const KEYCLOAK_REGISTER = 'KEYCLOAK_REGISTER';
-
-export interface TypeGraphqlMeta {
-  resource?: string;
-  scopes?: string[];
+export interface GraphqlCtx {
+  req?: KeycloakRequest<Request>;
+  res?: Response;
   [key: string]: any;
 }
 
-export interface GraphqlCtx extends HashMap {
-  kauth?: KeycloakContext;
-  keycloakService?: KeycloakService;
-  req?: KeycloakRequest<Request>;
-  typegraphqlMeta?: TypeGraphqlMeta;
-}
+export const KEYCLOAK_OPTIONS = 'KEYCLOAK_OPTIONS';
+export const KEYCLOAK_REGISTER = 'KEYCLOAK_REGISTER';
