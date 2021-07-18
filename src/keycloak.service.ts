@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 05:51:37
+ * Last Modified: 18-07-2021 07:42:29
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -314,6 +314,7 @@ export default class KeycloakService {
     }
     this.sessionSetTokens(accessToken, refreshToken);
     if (accessToken) this._accessToken = accessToken;
+    if (refreshToken) this._refreshToken = refreshToken;
     await this.init(true);
     return tokens;
   }
@@ -354,13 +355,43 @@ export default class KeycloakService {
     const accessToken = await this.getAccessToken();
     if (!this.req.kauth) this.req.kauth = {};
     if (!accessToken) return;
-    const grant = await this.keycloak.grantManager.createGrant({
-      // access_token is actually a string but due to a bug in keycloak-connect
-      // we pretend it is a Token
-      // @ts-ignore
-      access_token: accessToken.token
-    });
+    const grant = await this.createGrant(
+      accessToken,
+      this.refreshToken || undefined
+    );
     if (grant) this.req.kauth.grant = grant;
+  }
+
+  private async createGrant(
+    accessToken?: Token,
+    refreshToken?: Token
+  ): Promise<Grant | null> {
+    if (!accessToken) {
+      const token = await this.getAccessToken();
+      if (!token) return null;
+      accessToken = token;
+    }
+    if (!refreshToken) {
+      const token = this.refreshToken;
+      if (token) refreshToken = token;
+    }
+    return this.keycloak.grantManager.createGrant({
+      // access_token is actually a string even though keycloak-connect
+      // thinks it is a Token
+      // @ts-ignore
+      access_token: accessToken.token,
+      // refresh_token is actually a string even though keycloak-connect
+      // thinks it is a Token
+      ...(refreshToken ? { refresh_token: refreshToken.token } : {}),
+      // refresh_token is actually a number even though keycloak-connect
+      // thinks it is a string
+      ...(accessToken.content?.exp
+        ? { expires_in: accessToken.content.exp }
+        : {}),
+      ...(accessToken.content?.typ
+        ? { token_type: accessToken.content.typ }
+        : {})
+    });
   }
 
   async enforce(permissions: string[]) {
