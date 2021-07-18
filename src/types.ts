@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 06:05:00
+ * Last Modified: 18-07-2021 06:12:43
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -149,7 +149,7 @@ export class TokenContent {
   typ!: string;
 }
 
-export class Token {
+export class TokenProperties {
   @ApiProperty()
   clientId!: string;
 
@@ -167,6 +167,23 @@ export class Token {
 
   @ApiProperty()
   signature!: Buffer;
+}
+
+export class GrantProperties {
+  @ApiProperty()
+  access_token?: TokenProperties;
+
+  @ApiProperty()
+  refresh_token?: TokenProperties;
+
+  @ApiProperty()
+  id_token?: TokenProperties;
+
+  @ApiProperty()
+  expires_in?: string;
+
+  @ApiProperty()
+  token_type?: string;
 }
 
 export const KEYCLOAK_OPTIONS = 'KEYCLOAK_OPTIONS';
