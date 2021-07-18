@@ -1,6 +1,6 @@
 {
   "name": "nestjs-keycloak",
-  "version": "2.0.0-rc.39",
+  "version": "2.0.0-rc.40",
   "description": "nestjs module for authenticating keycloak",
   "sideEffects": false,
   "keywords": [
@@ -49,6 +49,7 @@
     "@nestjs/axios": "^0.0.1",
     "@nestjs/common": "^8.0.3",
     "@nestjs/core": "^8.0.3",
+    "@nestjs/swagger": "^5.0.4",
     "@prisma/client": "^2.27.0",
     "axios": "^0.21.1",
     "class-validator": "^0.13.1",
@@ -63,7 +64,7 @@
   },
   "peerDependencies": {
     "@nestjs/graphql": "^8.0.2",
-    "nestjs-keycloak-typegraphql": "^2.0.0-rc.3"
+    "nestjs-keycloak-typegraphql": "^2.0.0-rc.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",
@@ -97,7 +98,7 @@
     "jest-sonar-reporter": "^2.0.0",
     "lockfile-lint": "^4.6.2",
     "majestic": "^1.8.1",
-    "nestjs-keycloak-typegraphql": "^2.0.0-rc.4",
+    "nestjs-keycloak-typegraphql": "^2.0.0-rc.5",
     "prettier": "^2.3.2",
     "typescript": "^4.3.5"
   },
