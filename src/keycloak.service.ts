@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 09:20:21
+ * Last Modified: 18-07-2021 10:04:43
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -317,12 +317,13 @@ export default class KeycloakService {
     const accessToken = await this.getAccessToken();
     if (!(await this.isAuthenticated())) return false;
     const rolesArr = Array.isArray(roles) ? roles : [roles];
-    if (!rolesArr.length) return false;
-    return rolesArr.some((role: string | string[]) =>
-      Array.isArray(role)
+    if (!roles.length) return true;
+    return rolesArr.some((role: string | string[]) => {
+      const result = Array.isArray(role)
         ? role.every((innerRole: string) => accessToken?.hasRole(innerRole))
-        : accessToken?.hasRole(role)
-    );
+        : accessToken?.hasRole(role);
+      return result;
+    });
   }
 
   async isAuthenticated(): Promise<boolean> {
