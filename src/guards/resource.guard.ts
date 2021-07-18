@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:39:50
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 22:25:44
+ * Last Modified: 18-07-2021 02:15:21
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -65,17 +65,13 @@ export class ResourceGuard implements CanActivate {
     );
     const resource = this.getResource(context);
     if (!resource) return true;
+    const scopes = this.getScopes(context);
+    if (!scopes.length) return true;
     const username = (await keycloakService.getUserInfo())?.preferredUsername;
     if (!username) return false;
-    const scopes = this.getScopes(context);
-    if (!scopes.length) {
-      this.logger.verbose(`resource '${resource}' granted to '${username}'`);
-      return true;
-    }
     this.logger.verbose(
       `protecting resource '${resource}' with scopes [ ${scopes.join(', ')} ]`
     );
-    if (!scopes.length) return true;
     const permissions = scopes.map((scope) => `${resource}:${scope}`);
     if (await keycloakService.enforce(permissions)) {
       this.logger.verbose(`resource '${resource}' granted to '${username}'`);

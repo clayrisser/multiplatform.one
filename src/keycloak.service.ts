@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 02:30:54
+ * Last Modified: 18-07-2021 03:09:14
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -138,8 +138,8 @@ export default class KeycloakService {
     return this._accessToken;
   }
 
-  async getUserInfo(): Promise<UserInfo> {
-    if (this._userInfo) return this._userInfo;
+  async getUserInfo(force = false): Promise<UserInfo | null> {
+    if (this._userInfo && !force) return this._userInfo;
     if (this.req.kauth?.userInfo) {
       this._userInfo = this.req.kauth.userInfo;
       return this._userInfo;
@@ -160,6 +160,7 @@ export default class KeycloakService {
           [key: string]: any;
         }
       >(accessToken));
+    if (!userInfo) return null;
     const result = {
       ...{
         emailVerified: userInfo?.email_verified,
@@ -266,10 +267,10 @@ export default class KeycloakService {
     }
   }
 
-  async init() {
-    if (this._initialized) return;
+  async init(force = false) {
+    if (this._initialized && !force) return;
     await this.setGrant();
-    await this.setUserInfo();
+    await this.setUserInfo(force);
     this._initialized = true;
   }
 
@@ -300,7 +301,7 @@ export default class KeycloakService {
     const tokens = await this.grantTokens(options);
     this.sessionSetTokens(tokens.accessToken, tokens.refreshToken);
     if (tokens.accessToken) this._accessToken = tokens.accessToken;
-    await this.init();
+    await this.init(true);
     return tokens;
   }
 
@@ -324,8 +325,8 @@ export default class KeycloakService {
     });
   }
 
-  private async setUserInfo() {
-    const userInfo = await this.getUserInfo();
+  private async setUserInfo(force = false) {
+    const userInfo = await this.getUserInfo(force);
     if (!this.req.kauth) this.req.kauth = {};
     if (userInfo) {
       this.req.kauth.userInfo = userInfo;
@@ -343,7 +344,8 @@ export default class KeycloakService {
     const grant = await this.keycloak.grantManager.createGrant({
       // access_token is actually a string but due to a bug in keycloak-connect
       // we pretend it is a Token
-      access_token: accessToken
+      // @ts-ignore
+      access_token: accessToken.token
     });
     if (grant) this.req.kauth.grant = grant;
   }
