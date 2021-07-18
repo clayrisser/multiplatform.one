@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 03:19:29
+ * Last Modified: 18-07-2021 06:05:00
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -39,7 +39,8 @@ export interface KeycloakOptions {
   adminUsername?: string;
   baseUrl: string;
   clientId: string;
-  clientSecret?: string;
+  clientSecret: string;
+  enforceClient?: boolean;
   realm: string;
   register?: boolean;
   strict?: boolean;
@@ -86,6 +87,86 @@ export interface GraphqlCtx {
   req?: KeycloakRequest<Request>;
   res?: Response;
   [key: string]: any;
+}
+
+export class TokenContentRealmAccess {
+  @ApiProperty()
+  roles!: string[];
+}
+
+export class TokenHeader {
+  @ApiProperty()
+  alg!: string;
+
+  @ApiProperty()
+  kid!: string;
+
+  @ApiProperty()
+  typ!: string;
+}
+
+export class TokenContent {
+  @ApiProperty()
+  'allowed-origins': string[];
+
+  @ApiProperty()
+  acr!: string;
+
+  @ApiProperty()
+  azp!: string;
+
+  @ApiProperty()
+  email_verified!: boolean;
+
+  @ApiProperty()
+  exp!: number;
+
+  @ApiProperty()
+  iat!: number;
+
+  @ApiProperty()
+  iss!: string;
+
+  @ApiProperty()
+  jti!: string;
+
+  @ApiProperty()
+  preferred_username!: string;
+
+  @ApiProperty()
+  realm_access!: TokenContentRealmAccess;
+
+  @ApiProperty()
+  scope!: string;
+
+  @ApiProperty()
+  session_state!: string;
+
+  @ApiProperty()
+  sub!: string;
+
+  @ApiProperty()
+  typ!: string;
+}
+
+export class Token {
+  @ApiProperty()
+  clientId!: string;
+
+  @ApiProperty()
+  signed!: string;
+
+  @ApiProperty()
+  token!: string;
+
+  @ApiProperty()
+  content!: TokenContent;
+
+  @ApiProperty()
+  header!: TokenHeader;
+
+  @ApiProperty()
+  signature!: Buffer;
 }
 
 export const KEYCLOAK_OPTIONS = 'KEYCLOAK_OPTIONS';
