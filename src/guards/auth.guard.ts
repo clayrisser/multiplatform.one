@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 10:03:32
+ * Last Modified: 18-07-2021 10:15:58
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -62,7 +62,7 @@ export class AuthGuard implements CanActivate {
     const resource = this.getResource(context);
     this.logger.verbose(
       `resource${
-        resource ? `'${resource}' ` : ''
+        resource ? ` '${resource}' ` : ''
       } for '${username}' requires roles [ ${roles.join(' | ')} ]`
     );
     if (await keycloakService.isAuthorizedByRoles(roles)) {
