@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 06:12:43
+ * Last Modified: 18-07-2021 09:06:15
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -40,7 +40,7 @@ export interface KeycloakOptions {
   baseUrl: string;
   clientId: string;
   clientSecret: string;
-  enforceClient?: boolean;
+  enforceIssuedByClient?: boolean;
   realm: string;
   register?: boolean;
   strict?: boolean;
