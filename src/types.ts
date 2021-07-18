@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 19:23:31
+ * Last Modified: 18-07-2021 03:19:29
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,6 +22,7 @@
  * limitations under the License.
  */
 
+import { ApiProperty } from '@nestjs/swagger';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
 
 type Grant = import('keycloak-connect').Grant;
@@ -50,9 +51,15 @@ export interface KeycloakAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
 }
 
 export class UserInfo {
+  @ApiProperty()
   emailVerified!: boolean;
+
+  @ApiProperty()
   preferredUsername!: string;
+
+  @ApiProperty()
   sub!: string;
+
   [key: string]: any;
 }
 
