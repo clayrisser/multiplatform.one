@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 07:42:29
+ * Last Modified: 18-07-2021 09:14:17
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -27,9 +27,15 @@ import qs from 'qs';
 import { AxiosResponse } from 'axios';
 import { Grant, Keycloak } from 'keycloak-connect';
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Inject, Scope, ExecutionContext } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request, NextFunction } from 'express';
+import {
+  Injectable,
+  Inject,
+  Scope,
+  ExecutionContext,
+  Logger
+} from '@nestjs/common';
 import {
   GraphqlCtx,
   KEYCLOAK_OPTIONS,
@@ -44,6 +50,8 @@ import { getReq } from './util';
 export default class KeycloakService {
   private options: KeycloakOptions;
 
+  private logger = new Logger(KeycloakService.name);
+
   constructor(
     @Inject(KEYCLOAK_OPTIONS) options: KeycloakOptions,
     @Inject(KEYCLOAK) private readonly keycloak: Keycloak,
@@ -55,15 +63,13 @@ export default class KeycloakService {
       | GraphqlCtx
   ) {
     this.options = {
-      enforceClient: false,
+      enforceIssuedByClient: false,
       ...options
     };
     this.req = getReq(reqOrExecutionContext);
   }
 
   req: KeycloakRequest<Request>;
-
-  private logger = console;
 
   private _bearerToken: Token | null = null;
 
@@ -106,8 +112,30 @@ export default class KeycloakService {
     return this._refreshToken;
   }
 
-  get grant(): Grant | null {
+  // this is used privately to prevent a circular dependency
+  // because this.init() depends on it getting the grant
+  // please use this.getGrant() instead
+  private get grant(): Grant | null {
     return this.req.kauth?.grant || null;
+  }
+
+  async init(force = false) {
+    if (this._initialized && !force) return;
+    await this.setGrant();
+    await this.setUserInfo(force);
+    this._initialized = true;
+  }
+
+  async getGrant(): Promise<Grant | null> {
+    if (this.grant) return this.grant;
+    await this.init();
+    return this.grant;
+  }
+
+  async getRoles(): Promise<string[] | null> {
+    const accessToken = await this.getAccessToken();
+    if (!accessToken) return null;
+    return accessToken.content.realm_access.roles || [];
   }
 
   async getAccessToken(): Promise<Token | null> {
@@ -121,7 +149,13 @@ export default class KeycloakService {
     if (!accessToken && this.req.session?.kauth?.accessToken) {
       accessToken = new Token(this.req.session?.kauth?.accessToken, clientId);
     }
-    if ((!accessToken || accessToken.isExpired()) && this.refreshToken) {
+    if (
+      (!accessToken ||
+        !this.issuedByClient(accessToken) ||
+        accessToken.isExpired()) &&
+      this.refreshToken &&
+      this.issuedByClient(this.refreshToken)
+    ) {
       try {
         const tokens = await this.grantTokens({
           refreshToken: this.refreshToken.token
@@ -260,24 +294,14 @@ export default class KeycloakService {
     }
   }
 
-  private sessionSetTokens(accessToken?: Token, refreshToken?: Token) {
-    if (this.req.session) {
-      if (!this.req.session.kauth) this.req.session.kauth = {};
-      if (refreshToken) {
-        this.req.session.kauth.refreshToken = refreshToken.token;
-      }
-      if (accessToken) {
-        this.req.session.kauth.accessToken = accessToken.token;
-        this.req.session.token = accessToken.token;
-      }
-    }
+  async getUserId(): Promise<string | null> {
+    const userInfo = await this.getUserInfo();
+    return userInfo?.sub || null;
   }
 
-  async init(force = false) {
-    if (this._initialized && !force) return;
-    await this.setGrant();
-    await this.setUserInfo(force);
-    this._initialized = true;
+  async getUsername(): Promise<string | null> {
+    const userInfo = await this.getUserInfo();
+    return userInfo?.preferredUsername || null;
   }
 
   async isAuthorizedByRoles(
@@ -306,10 +330,7 @@ export default class KeycloakService {
   ): Promise<RefreshTokenGrant | null> {
     const tokens = await this.grantTokens(options);
     const { accessToken, refreshToken } = tokens;
-    if (
-      this.options.enforceClient &&
-      accessToken?.clientId !== this.options.clientId
-    ) {
+    if (accessToken && !this.issuedByClient(accessToken)) {
       return null;
     }
     this.sessionSetTokens(accessToken, refreshToken);
@@ -337,6 +358,39 @@ export default class KeycloakService {
       });
       return null;
     });
+  }
+
+  async enforce(permissions: string[]) {
+    await this.init();
+    return new Promise<boolean>((resolve) => {
+      return this.keycloak.enforcer(permissions)(
+        this.req,
+        {},
+        (req: KeycloakRequest<Request>, _res: {}, _next: NextFunction) => {
+          if (req.resourceDenied) return resolve(false);
+          return resolve(true);
+        }
+      );
+    });
+  }
+
+  private issuedByClient(token: Token, clientId?: string) {
+    if (!this.options.enforceIssuedByClient) return true;
+    if (!clientId) clientId = this.options.clientId;
+    return token.clientId !== clientId;
+  }
+
+  private sessionSetTokens(accessToken?: Token, refreshToken?: Token) {
+    if (this.req.session) {
+      if (!this.req.session.kauth) this.req.session.kauth = {};
+      if (refreshToken) {
+        this.req.session.kauth.refreshToken = refreshToken.token;
+      }
+      if (accessToken) {
+        this.req.session.kauth.accessToken = accessToken.token;
+        this.req.session.token = accessToken.token;
+      }
+    }
   }
 
   private async setUserInfo(force = false) {
@@ -391,20 +445,6 @@ export default class KeycloakService {
       ...(accessToken.content?.typ
         ? { token_type: accessToken.content.typ }
         : {})
-    });
-  }
-
-  async enforce(permissions: string[]) {
-    await this.init();
-    return new Promise<boolean>((resolve) => {
-      return this.keycloak.enforcer(permissions)(
-        this.req,
-        {},
-        (req: KeycloakRequest<Request>, _res: {}, _next: NextFunction) => {
-          if (req.resourceDenied) return resolve(false);
-          return resolve(true);
-        }
-      );
     });
   }
 }
