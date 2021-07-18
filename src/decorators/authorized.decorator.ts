@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 16-07-2021 19:14:14
+ * Last Modified: 18-07-2021 00:39:26
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -26,5 +26,6 @@ import { SetMetadata } from '@nestjs/common';
 
 export const AUTHORIZED = 'authorized';
 
-export const Authorized = (...roles: (string | string[])[]) =>
-  SetMetadata(AUTHORIZED, roles || []);
+export const Authorized = (...roles: (string | string[])[]) => {
+  return SetMetadata(AUTHORIZED, roles || []);
+};

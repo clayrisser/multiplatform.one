@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 16-07-2021 19:15:39
+ * Last Modified: 18-07-2021 00:42:45
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -56,7 +56,7 @@ export class AuthGuard implements CanActivate {
       context
     );
     const roles = this.getRoles(context);
-    if (roles === null) return true;
+    if (typeof roles === 'undefined') return true;
     const username = (await keycloakService.getUserInfo())?.preferredUsername;
     if (!username) return false;
     const resource = this.getResource(context);
@@ -73,7 +73,7 @@ export class AuthGuard implements CanActivate {
     return false;
   }
 
-  private getRoles(context: ExecutionContext): (string | string[])[] | null {
+  private getRoles(context: ExecutionContext): (string | string[])[] | void {
     const handlerRoles = this.reflector.get<(string | string[])[]>(
       AUTHORIZED,
       context.getHandler()
@@ -82,7 +82,12 @@ export class AuthGuard implements CanActivate {
       AUTHORIZED,
       context.getClass()
     );
-    if (!classRoles === null && !handlerRoles === null) return null;
+    if (
+      (typeof classRoles === 'undefined' || classRoles === null) &&
+      (typeof handlerRoles === 'undefined' || handlerRoles === null)
+    ) {
+      return undefined;
+    }
     return [...new Set([...(handlerRoles || []), ...(classRoles || [])])];
   }
 
