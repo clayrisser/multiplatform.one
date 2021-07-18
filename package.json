@@ -1,7 +1,7 @@
 {
   "name": "nestjs-keycloak",
-  "version": "2.0.0-rc.23",
-  "description": "nestjs module for keycloak",
+  "version": "2.0.0-rc.24",
+  "description": "nestjs module for authenticating keycloak",
   "sideEffects": false,
   "keywords": [
     "nestjs-keycloak"
@@ -13,16 +13,13 @@
   },
   "license": "Apache-2.0",
   "author": {
-    "name": "SiliconHills LLC",
+    "name": "Silicon Hills LLC",
     "email": "support@siliconhills.dev",
     "url": "https://siliconhills.dev"
   },
   "files": [
-    "dist",
     "es",
-    "lib",
-    "typegraphql.d.ts",
-    "typegraphql.js"
+    "lib"
   ],
   "module": "es/index.js",
   "main": "lib/index.js",
@@ -58,17 +55,15 @@
     "core-js": "^3.15.2",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
-    "graphql": "^15.5.1",
     "keycloak-admin": "^1.14.18",
     "keycloak-connect": "^14.0.0",
-    "keycloak-connect-graphql": "^0.7.0",
     "lodash.difference": "^4.5.0",
     "qs": "^6.10.1",
-    "rxjs": "^7.2.0",
-    "type-graphql": "^1.1.1"
+    "rxjs": "^7.2.0"
   },
   "peerDependencies": {
-    "@nestjs/graphql": "^8.0.2"
+    "@nestjs/graphql": "^8.0.2",
+    "nestjs-keycloak-typegraphql": "^2.0.0-rc.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",
@@ -102,16 +97,14 @@
     "jest-sonar-reporter": "^2.0.0",
     "lockfile-lint": "^4.6.2",
     "majestic": "^1.8.1",
+    "nestjs-keycloak-typegraphql": "^2.0.0-rc.2",
     "prettier": "^2.3.2",
-    "typescript": "^4.3.5",
-    "webpack": "^5.44.0",
-    "webpack-cli": "^4.7.2"
+    "typescript": "^4.3.5"
   },
   "engines": {
     "node": ">=6.0.0"
   },
   "eslintIgnore": [
-    "dist",
     "es",
     "lib"
   ],
@@ -120,7 +113,6 @@
     "testEnvironment": "node",
     "verbose": true,
     "testPathIgnorePatterns": [
-      "<rootDir>/dist/",
       "<rootDir>/es/",
       "<rootDir>/lib/"
     ],

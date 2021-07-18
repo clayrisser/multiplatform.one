@@ -3,7 +3,7 @@
 # File Created: 14-07-2021 11:43:59
 # Author: Clay Risser <email@clayrisser.com>
 # -----
-# Last Modified: 15-07-2021 19:32:55
+# Last Modified: 17-07-2021 19:54:20
 # Modified By: Clay Risser <email@clayrisser.com>
 # -----
 # Silicon Hills LLC (c) Copyright 2021
@@ -35,7 +35,6 @@ MAJESTIC ?= node_modules/.bin/majestic
 PRETTIER ?= node_modules/.bin/prettier
 TMP_DIR ?= node_modules/.tmp
 TSC ?= node_modules/.bin/tsc
-WEBPACK ?= node_modules/.bin/webpack
 COLLECT_COVERAGE_FROM := ["src/**/*.{js,jsx,ts,tsx}"]
 
 .PHONY: all
@@ -97,7 +96,6 @@ lib/index.js:
 	@$(MAKE) -s _build
 	@rm -rf $(ACTION)/build $(NOFAIL)
 $(ACTION)/build:
-#	@$(WEBPACK)
 	@$(BABEL) --env-name umd src -d lib --extensions '.js,.jsx,.ts,.tsx' --source-maps
 	@$(BABEL) --env-name esm src -d es --extensions '.js,.jsx,.ts,.tsx' --source-maps
 	@$(TSC) -p tsconfig.app.json -d --emitDeclarationOnly
@@ -190,5 +188,4 @@ CACHE_ENVS += \
 	MAJESTIC \
 	PRETTIER \
 	TMP_DIR \
-	TSC \
-	WEBPACK
+	TSC
