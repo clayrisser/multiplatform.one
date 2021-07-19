@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 04:01:35
+ * Last Modified: 19-07-2021 04:46:20
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -212,23 +212,20 @@ export default class KeycloakRegisterService {
           (resource: ResourceRepresentation) => resource.name === resourceName
         );
         const scopes = this.resources[resourceName];
-        const scopesToAttach = await this.createScopes(scopes);
+        const existingScopes = await this.getScopes(
+          // resource.id is resource._id
+          // @ts-ignore
+          resource?.id || resource?._id,
+          scopes
+        );
+        const createdScopes = await this.createScopes(scopes, existingScopes);
         if (resource) {
-          // TODO: what if the scope exists on another resource but was just added to a new resource???
-          const existingScopes = (resource.scopes || []).reduce(
-            (existingScopes: string[], scope: ScopeRepresentation) => {
-              if (scope.name) existingScopes.push(scope.name);
-              return existingScopes;
-            },
-            []
-          );
-          const scopesToCreate = difference(scopes, existingScopes);
-          if (scopesToCreate.length) {
-            const scopesToAttach = await this.createScopes(scopesToCreate);
-            this.updateResource(resource, scopesToAttach);
-          }
+          this.updateResource(resource, [...existingScopes, ...createdScopes]);
         } else {
-          await this.createResource(resourceName, scopesToAttach);
+          await this.createResource(resourceName, [
+            ...existingScopes,
+            ...createdScopes
+          ]);
         }
       })
     );
@@ -248,18 +245,21 @@ export default class KeycloakRegisterService {
     return idFromClientId;
   }
 
-  private async createScopes(scopes: string[]): Promise<ScopeRepresentation[]> {
-    const createdScopes = await this.getScopes();
+  private async createScopes(
+    scopes: string[],
+    existingScopes: ScopeRepresentation[] = []
+  ): Promise<ScopeRepresentation[]> {
     const scopesToCreate = difference(
       scopes,
-      createdScopes.reduce(
-        (createdScopes: string[], scope: ScopeRepresentation) => {
-          if (scope.name) createdScopes.push(scope.name);
-          return createdScopes;
+      existingScopes.reduce(
+        (scopeNames: string[], scope: ScopeRepresentation) => {
+          if (scope.name) scopeNames.push(scope.name);
+          return scopeNames;
         },
         []
       )
     );
+    const createdScopes: ScopeRepresentation[] = [];
     await Promise.all(
       scopesToCreate.map(async (scopeName: string) => {
         const scope = await this.createScope(scopeName);
@@ -322,10 +322,33 @@ export default class KeycloakRegisterService {
     );
   }
 
-  private async getScopes(): Promise<ScopeRepresentation[]> {
-    return this.kcAdminClient.clients.listAllScopes({
-      id: await this.getIdFromClientId(this.options.clientId)
-    });
+  private async getScopes(
+    resourceId?: string,
+    scopeNames?: string[]
+  ): Promise<ScopeRepresentation[]> {
+    let scopes: ScopeRepresentation[] = [];
+    if (resourceId) {
+      scopes = await this.kcAdminClient.clients.listScopesByResource({
+        id: await this.getIdFromClientId(this.options.clientId),
+        // resourceName is actually the resource id
+        resourceName: resourceId
+      });
+    } else {
+      scopes = await this.kcAdminClient.clients.listAllScopes({
+        id: await this.getIdFromClientId(this.options.clientId)
+      });
+    }
+    if (scopeNames) {
+      const scopeNamesSet = new Set(scopeNames);
+      return scopes.reduce(
+        (scopes: ScopeRepresentation[], scope: ScopeRepresentation) => {
+          if (scope.name && scopeNamesSet.has(scope.name)) scopes.push(scope);
+          return scopes;
+        },
+        []
+      );
+    }
+    return scopes;
   }
 
   private async createScope(scope: string) {
