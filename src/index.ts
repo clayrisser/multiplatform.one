@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 01:19:23
+ * Last Modified: 19-07-2021 03:14:48
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -75,7 +75,12 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
           useValue: options
         }
       ],
-      exports: [KEYCLOAK_OPTIONS, KeycloakProvider, KeycloakService]
+      exports: [
+        KEYCLOAK_OPTIONS,
+        KeycloakProvider,
+        KeycloakRegisterService,
+        KeycloakService
+      ]
     };
   }
 
@@ -92,7 +97,12 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
         KeycloakRegisterService,
         KeycloakService
       ],
-      exports: [KEYCLOAK_OPTIONS, KeycloakProvider, KeycloakService]
+      exports: [
+        KEYCLOAK_OPTIONS,
+        KeycloakProvider,
+        KeycloakRegisterService,
+        KeycloakService
+      ]
     };
   }
 
@@ -108,7 +118,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
   }
 
   async onModuleInit() {
-    await this.keycloakRegisterService.setup();
+    await this.keycloakRegisterService.register();
   }
 }
 

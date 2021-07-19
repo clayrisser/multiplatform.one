@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 02:13:33
+ * Last Modified: 19-07-2021 04:01:35
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -31,7 +31,6 @@ import { DiscoveryService, Reflector } from '@nestjs/core';
 import { HttpService } from '@nestjs/axios';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
 import { Logger, Inject } from '@nestjs/common';
-import { lastValueFrom } from 'rxjs';
 import { AUTHORIZED } from './decorators/authorized.decorator';
 import { RESOURCE } from './decorators/resource.decorator';
 import { SCOPES } from './decorators/scopes.decorator';
@@ -41,6 +40,9 @@ import {
   RegisterOptions,
   KEYCLOAK_OPTIONS
 } from './types';
+
+// makes registration idempotent
+let registeredKeycloak = false;
 
 export default class KeycloakRegisterService {
   private logger = new Logger(KeycloakRegisterService.name);
@@ -150,13 +152,14 @@ export default class KeycloakRegisterService {
     );
   }
 
-  async setup() {
-    if (!this.options.register) return;
+  async register(force = false) {
+    if (!force && (!this.options.register || registeredKeycloak)) return;
     this.logger.log('registering keycloak');
     await this.initKcAdminClient();
     await this.enableAuthorization();
     await this.createRoles();
     await this.createScopedResources();
+    registeredKeycloak = true;
   }
 
   private async initKcAdminClient() {
@@ -180,33 +183,6 @@ export default class KeycloakRegisterService {
         serviceAccountsEnabled: true
       }
     );
-  }
-
-  private async getIdFromClientId(clientId: string) {
-    if (this._idsFromClientIds[clientId]) {
-      return this._idsFromClientIds[clientId];
-    }
-    const idFromClientId =
-      (
-        (
-          await lastValueFrom(
-            this.httpService.get(
-              `${this.realmUrl}/clients?clientId=${clientId}`,
-              {
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${this.accessToken}`
-                }
-              }
-            )
-          )
-        ).data as { id: string }[]
-      )?.[0].id || null;
-    if (!idFromClientId) {
-      throw new Error(`could not find id from clientId '${clientId}'`);
-    }
-    this._idsFromClientIds[clientId] = idFromClientId;
-    return idFromClientId;
   }
 
   private async createRoles() {
@@ -237,14 +213,9 @@ export default class KeycloakRegisterService {
         );
         const scopes = this.resources[resourceName];
         const scopesToAttach = await this.createScopes(scopes);
-        if (
-          new Set(
-            resources.map((resource: ResourceRepresentation) => resource.name)
-          ).has(resourceName)
-        ) {
+        if (resource) {
           // TODO: what if the scope exists on another resource but was just added to a new resource???
-          const resourceById = await this.getResourceById(resource?.id || '');
-          const existingScopes = (resourceById.scopes || []).reduce(
+          const existingScopes = (resource.scopes || []).reduce(
             (existingScopes: string[], scope: ScopeRepresentation) => {
               if (scope.name) existingScopes.push(scope.name);
               return existingScopes;
@@ -254,13 +225,27 @@ export default class KeycloakRegisterService {
           const scopesToCreate = difference(scopes, existingScopes);
           if (scopesToCreate.length) {
             const scopesToAttach = await this.createScopes(scopesToCreate);
-            this.updateResource(resourceById, scopesToAttach);
+            this.updateResource(resource, scopesToAttach);
           }
         } else {
           await this.createResource(resourceName, scopesToAttach);
         }
       })
     );
+  }
+
+  private async getIdFromClientId(clientId: string) {
+    if (this._idsFromClientIds[clientId]) {
+      return this._idsFromClientIds[clientId];
+    }
+    const idFromClientId = (
+      await this.kcAdminClient.clients.find({ clientId })
+    )?.[0].id;
+    if (!idFromClientId) {
+      throw new Error(`could not find id from clientId '${clientId}'`);
+    }
+    this._idsFromClientIds[clientId] = idFromClientId;
+    return idFromClientId;
   }
 
   private async createScopes(scopes: string[]): Promise<ScopeRepresentation[]> {
@@ -290,31 +275,15 @@ export default class KeycloakRegisterService {
     });
   }
 
-  private async getClientUrl(): Promise<string> {
-    return `${this.realmUrl}/clients/${await this.getIdFromClientId(
-      this.options.clientId
-    )}`;
-  }
-
   private async getResources(): Promise<ResourceRepresentation[]> {
-    return (
-      (
-        await lastValueFrom(
-          this.httpService.get<ResourceRepresentation[]>(
-            `${await this.getClientUrl()}/authz/resource-server/resource`,
-            {
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${this.accessToken}`
-              }
-            }
-          )
-        )
-      ).data || []
-    );
+    // cannot have property 'name' to list all resource
+    // @ts-ignore
+    return this.kcAdminClient.clients.listResources({
+      id: await this.getIdFromClientId(this.options.clientId)
+    });
   }
 
-  async createResource(
+  private async createResource(
     resourceName: string,
     scopes: ScopeRepresentation[] = []
   ): Promise<ResourceRepresentation> {
@@ -331,30 +300,16 @@ export default class KeycloakRegisterService {
     );
   }
 
-  async getResourceById(resourceId: string): Promise<ResourceRepresentation> {
-    return (
-      await lastValueFrom(
-        this.httpService.get(
-          `${this.realmUrl}/clients/${this.options.clientId}/authz/resource-server/resource/${resourceId}`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${this.accessToken}`
-            }
-          }
-        )
-      )
-    ).data;
-  }
-
-  async updateResource(
+  private async updateResource(
     resource: ResourceRepresentation,
     scopes: ScopeRepresentation[]
   ) {
     return this.kcAdminClient.clients.updateResource(
       {
         id: await this.getIdFromClientId(this.options.clientId),
-        resourceId: resource.id || ''
+        // resource.id is resource._id
+        // @ts-ignore
+        resourceId: resource.id || resource._id || ''
       },
       {
         attributes: {},
@@ -367,37 +322,21 @@ export default class KeycloakRegisterService {
     );
   }
 
-  async getScopes(): Promise<ScopeRepresentation[]> {
-    return (
-      await lastValueFrom(
-        this.httpService.get<ScopeRepresentation[]>(
-          `${await this.getClientUrl()}/authz/resource-server/scope`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${this.accessToken}`
-            }
-          }
-        )
-      )
-    ).data;
+  private async getScopes(): Promise<ScopeRepresentation[]> {
+    return this.kcAdminClient.clients.listAllScopes({
+      id: await this.getIdFromClientId(this.options.clientId)
+    });
   }
 
-  async createScope(scope: string) {
-    return (
-      await lastValueFrom(
-        this.httpService.post<ScopeRepresentation>(
-          `${await this.getClientUrl()}/authz/resource-server/scope`,
-          { name: scope },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${this.accessToken}`
-            }
-          }
-        )
-      )
-    ).data;
+  private async createScope(scope: string) {
+    return this.kcAdminClient.clients.createAuthorizationScope(
+      {
+        id: await this.getIdFromClientId(this.options.clientId)
+      },
+      {
+        name: scope
+      }
+    );
   }
 }
 
