@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 23:35:55
+ * Last Modified: 19-07-2021 00:37:02
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -230,4 +230,3 @@ export class RefreshTokenGrant {
 }
 
 export const KEYCLOAK_OPTIONS = 'KEYCLOAK_OPTIONS';
-export const KEYCLOAK_REGISTER = 'KEYCLOAK_REGISTER';

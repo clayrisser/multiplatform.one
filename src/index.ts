@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 17-07-2021 19:38:00
+ * Last Modified: 19-07-2021 00:36:55
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -31,6 +31,7 @@ import {
   MiddlewareConsumer,
   Module,
   NestModule,
+  OnModuleInit,
   RequestMethod
 } from '@nestjs/common';
 import KeycloakMiddleware from './keycloak.middleware';
@@ -40,16 +41,22 @@ import Register from './register';
 import {
   KeycloakOptions,
   KeycloakAsyncOptions,
-  KEYCLOAK_OPTIONS,
-  KEYCLOAK_REGISTER
+  KEYCLOAK_OPTIONS
 } from './types';
 
 @Global()
 @Module({})
-export default class KeycloakModule implements NestModule {
+export default class KeycloakModule implements OnModuleInit, NestModule {
   private readonly logger = new Logger(KeycloakModule.name);
 
   private static imports = [HttpModule, DiscoveryModule];
+
+  constructor(
+    private readonly options: KeycloakOptions,
+    private readonly httpService: HttpService,
+    private readonly discoveryService: DiscoveryService,
+    private readonly reflector: Reflector
+  ) {}
 
   configure(consumer: MiddlewareConsumer) {
     consumer
@@ -68,8 +75,7 @@ export default class KeycloakModule implements NestModule {
         {
           provide: KEYCLOAK_OPTIONS,
           useValue: options
-        },
-        KeycloakModule.createKeycloakRegisterProvider()
+        }
       ],
       exports: [KEYCLOAK_OPTIONS, KeycloakProvider, KeycloakService]
     };
@@ -83,7 +89,6 @@ export default class KeycloakModule implements NestModule {
       global: true,
       imports: [...KeycloakModule.imports, ...(asyncOptions.imports || [])],
       providers: [
-        KeycloakModule.createKeycloakRegisterProvider(),
         KeycloakModule.createOptionsProvider(asyncOptions),
         KeycloakProvider,
         KeycloakService
@@ -103,24 +108,13 @@ export default class KeycloakModule implements NestModule {
     };
   }
 
-  private static createKeycloakRegisterProvider() {
-    return {
-      provide: KEYCLOAK_REGISTER,
-      async useFactory(
-        options: KeycloakOptions,
-        httpService: HttpService,
-        discoveryService: DiscoveryService,
-        reflector: Reflector
-      ) {
-        await new Register(
-          options,
-          httpService,
-          discoveryService,
-          reflector
-        ).setup();
-      },
-      inject: [KEYCLOAK_OPTIONS, HttpService, DiscoveryService, Reflector]
-    };
+  async onModuleInit() {
+    await new Register(
+      this.options,
+      this.httpService,
+      this.discoveryService,
+      this.reflector
+    ).setup();
   }
 }
 
