@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 06:22:31
+ * Last Modified: 19-07-2021 07:25:51
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -31,7 +31,6 @@ import { DiscoveryService, Reflector } from '@nestjs/core';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
 import { Logger, Inject } from '@nestjs/common';
 import { AUTHORIZED } from './decorators/authorized.decorator';
-import { KEYCLOAK_ADMIN } from './keycloakAdmin.provider';
 import { RESOURCE } from './decorators/resource.decorator';
 import { SCOPES } from './decorators/scopes.decorator';
 import {
@@ -49,11 +48,12 @@ export default class KeycloakRegisterService {
 
   private registerOptions: RegisterOptions;
 
+  private keycloakAdmin = new KcAdminClient();
+
   constructor(
     @Inject(KEYCLOAK_OPTIONS) private readonly options: KeycloakOptions,
     private readonly discoveryService: DiscoveryService,
-    private readonly reflector: Reflector,
-    @Inject(KEYCLOAK_ADMIN) private readonly keycloakAdmin?: KcAdminClient
+    private readonly reflector: Reflector
   ) {
     this.registerOptions = {
       roles: [],
@@ -150,11 +150,25 @@ export default class KeycloakRegisterService {
   async register(force = false) {
     if (!force && !this.canRegister) return;
     this.logger.log('registering keycloak');
+    await this.initializeKeycloakAdmin();
     await this.enableAuthorization();
     await this.createRealmRoles();
     await this.createApplicationRoles();
     await this.createScopedResources();
     registeredKeycloak = true;
+  }
+
+  private async initializeKeycloakAdmin() {
+    await this.keycloakAdmin.auth({
+      clientId: this.options.adminClientId || 'admin-cli',
+      grantType: 'password',
+      password: this.options.adminPassword,
+      username: this.options.adminUsername
+    });
+    this.keycloakAdmin.setConfig({
+      realmName: this.options.realm
+    });
+    return this.keycloakAdmin;
   }
 
   private async enableAuthorization() {

@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 06:24:27
+ * Last Modified: 19-07-2021 07:20:00
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -34,8 +34,8 @@ import {
   Logger
 } from '@nestjs/common';
 import KeycloakService from '../keycloak.service';
+import { CREATE_KEYCLOAK_ADMIN } from '../createKeycloakAdmin.provider';
 import { KEYCLOAK } from '../keycloak.provider';
-import { KEYCLOAK_ADMIN } from '../keycloakAdmin.provider';
 import { KEYCLOAK_OPTIONS, KeycloakOptions } from '../types';
 import { RESOURCE, AUTHORIZED } from '../decorators';
 
@@ -48,7 +48,8 @@ export class AuthGuard implements CanActivate {
     @Inject(KEYCLOAK) private readonly keycloak: Keycloak,
     private readonly httpService: HttpService,
     private readonly reflector: Reflector,
-    @Inject(KEYCLOAK_ADMIN) private readonly keycloakAdmin?: KcAdminClient
+    @Inject(CREATE_KEYCLOAK_ADMIN)
+    private readonly createKeycloakAdmin?: () => Promise<KcAdminClient | void>
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -57,7 +58,7 @@ export class AuthGuard implements CanActivate {
       this.keycloak,
       this.httpService,
       context,
-      this.keycloakAdmin
+      this.createKeycloakAdmin
     );
     const roles = this.getRoles(context);
     if (typeof roles === 'undefined') return true;

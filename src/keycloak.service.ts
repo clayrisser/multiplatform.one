@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 06:28:13
+ * Last Modified: 19-07-2021 07:19:10
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -49,7 +49,7 @@ import {
   UserInfo
 } from './types';
 import { KEYCLOAK } from './keycloak.provider';
-import { KEYCLOAK_ADMIN } from './keycloakAdmin.provider';
+import { CREATE_KEYCLOAK_ADMIN } from './createKeycloakAdmin.provider';
 import { getReq } from './util';
 
 @Injectable({ scope: Scope.REQUEST })
@@ -67,7 +67,8 @@ export default class KeycloakService {
       | KeycloakRequest<Request>
       | ExecutionContext
       | GraphqlCtx,
-    @Inject(KEYCLOAK_ADMIN) private readonly keycloakAdmin?: KcAdminClient
+    @Inject(CREATE_KEYCLOAK_ADMIN)
+    private readonly createKeycloakAdmin?: () => Promise<KcAdminClient | void>
   ) {
     this.options = {
       enforceIssuedByClient: false,
@@ -340,10 +341,12 @@ export default class KeycloakService {
   }
 
   async getUser(): Promise<UserRepresentation | null> {
-    if (!this.keycloakAdmin) return null;
+    if (!this.createKeycloakAdmin) return null;
     const userId = await this.getUserId();
     if (!userId) return null;
-    return this.keycloakAdmin.users.findOne({ id: userId });
+    const keycloakAdmin = await this.createKeycloakAdmin();
+    if (!keycloakAdmin) return null;
+    return keycloakAdmin.users.findOne({ id: userId });
   }
 
   async isAuthenticated(): Promise<boolean> {

@@ -1,6 +1,6 @@
 {
   "name": "nestjs-keycloak",
-  "version": "2.0.0-rc.84",
+  "version": "2.0.0-rc.88",
   "description": "nestjs module for authenticating keycloak",
   "sideEffects": false,
   "keywords": [

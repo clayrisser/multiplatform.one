@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 06:12:25
+ * Last Modified: 19-07-2021 07:21:42
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -34,7 +34,7 @@ import {
   OnModuleInit,
   RequestMethod
 } from '@nestjs/common';
-import KeycloakAdminProvider from './keycloakAdmin.provider';
+import CreateKeycloakAdminProvider from './createKeycloakAdmin.provider';
 import KeycloakMiddleware from './keycloak.middleware';
 import KeycloakProvider from './keycloak.provider';
 import KeycloakRegisterService from './keycloakRegister.service';
@@ -68,7 +68,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
       global: true,
       imports: KeycloakModule.imports,
       providers: [
-        KeycloakAdminProvider,
+        CreateKeycloakAdminProvider,
         KeycloakProvider,
         KeycloakRegisterService,
         KeycloakService,
@@ -79,7 +79,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
       ],
       exports: [
         KEYCLOAK_OPTIONS,
-        KeycloakAdminProvider,
+        CreateKeycloakAdminProvider,
         KeycloakProvider,
         KeycloakRegisterService,
         KeycloakService
@@ -95,7 +95,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
       global: true,
       imports: [...KeycloakModule.imports, ...(asyncOptions.imports || [])],
       providers: [
-        KeycloakAdminProvider,
+        CreateKeycloakAdminProvider,
         KeycloakModule.createOptionsProvider(asyncOptions),
         KeycloakProvider,
         KeycloakRegisterService,
@@ -103,7 +103,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
       ],
       exports: [
         KEYCLOAK_OPTIONS,
-        KeycloakAdminProvider,
+        CreateKeycloakAdminProvider,
         KeycloakProvider,
         KeycloakRegisterService,
         KeycloakService
@@ -128,7 +128,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
 }
 
 export {
-  KeycloakAdminProvider,
+  CreateKeycloakAdminProvider,
   KeycloakMiddleware,
   KeycloakProvider,
   KeycloakRegisterService,
@@ -139,5 +139,5 @@ export * from './decorators';
 export * from './guards';
 export * from './keycloak.provider';
 export * from './keycloak.service';
-export * from './keycloakAdmin.provider';
+export * from './createKeycloakAdmin.provider';
 export * from './types';
