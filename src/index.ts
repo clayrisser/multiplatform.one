@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 00:36:55
+ * Last Modified: 19-07-2021 00:41:38
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -27,6 +27,7 @@ import { DiscoveryModule, DiscoveryService, Reflector } from '@nestjs/core';
 import {
   DynamicModule,
   Global,
+  Inject,
   Logger,
   MiddlewareConsumer,
   Module,
@@ -52,7 +53,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
   private static imports = [HttpModule, DiscoveryModule];
 
   constructor(
-    private readonly options: KeycloakOptions,
+    @Inject(KEYCLOAK_OPTIONS) private readonly options: KeycloakOptions,
     private readonly httpService: HttpService,
     private readonly discoveryService: DiscoveryService,
     private readonly reflector: Reflector
