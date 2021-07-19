@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 07:25:51
+ * Last Modified: 19-07-2021 17:10:17
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -74,17 +74,20 @@ export default class KeycloakRegisterService {
 
   private _idsFromClientIds: HashMap<string> = {};
 
-  private _controllers: any[] | undefined;
+  private _providers: any[] | undefined;
 
-  private get controllers(): InstanceWrapper[] {
-    if (this._controllers) return this._controllers;
-    this._controllers = this.discoveryService.getControllers();
-    return this._controllers;
+  private get providers(): InstanceWrapper[] {
+    if (this._providers) return this._providers;
+    this._providers = [
+      ...this.discoveryService.getProviders(),
+      ...this.discoveryService.getControllers()
+    ];
+    return this._providers;
   }
 
   private get roles() {
     return [
-      ...this.controllers.reduce(
+      ...this.providers.reduce(
         (roles: Set<string>, controller: InstanceWrapper) => {
           const methods = getMethods(controller.instance);
           const values = this.reflector.getAllAndMerge(AUTHORIZED, [
@@ -111,7 +114,7 @@ export default class KeycloakRegisterService {
 
   private get resources(): HashMap<string[]> {
     return Object.entries(
-      this.controllers.reduce(
+      this.providers.reduce(
         (resources: HashMap<Set<string>>, controller: InstanceWrapper) => {
           const methods = getMethods(controller.instance);
           const resourceName = this.reflector.get(
