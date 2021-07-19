@@ -1,10 +1,10 @@
 /**
- * File: /src/register.ts
+ * File: /src/keycloakRegister.service.ts
  * Project: nestjs-keycloak
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 00:06:15
+ * Last Modified: 19-07-2021 01:14:45
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -30,22 +30,27 @@ import { AxiosResponse } from 'axios';
 import { DiscoveryService, Reflector } from '@nestjs/core';
 import { HttpService } from '@nestjs/axios';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
-import { Logger } from '@nestjs/common';
+import { Logger, Inject } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
 import { AUTHORIZED } from './decorators/authorized.decorator';
-import { HashMap, KeycloakOptions, RegisterOptions } from './types';
 import { RESOURCE } from './decorators/resource.decorator';
 import { SCOPES } from './decorators/scopes.decorator';
+import {
+  HashMap,
+  KeycloakOptions,
+  RegisterOptions,
+  KEYCLOAK_OPTIONS
+} from './types';
 
 const kcAdminClient = new KcAdminClient();
 
-export default class Register {
-  private logger = new Logger(Register.name);
+export default class KeycloakRegisterService {
+  private logger = new Logger(KeycloakRegisterService.name);
 
   private registerOptions: RegisterOptions;
 
   constructor(
-    private readonly options: KeycloakOptions,
+    @Inject(KEYCLOAK_OPTIONS) private readonly options: KeycloakOptions,
     private readonly httpService: HttpService,
     private readonly discoveryService: DiscoveryService,
     private readonly reflector: Reflector
@@ -157,13 +162,24 @@ export default class Register {
     kcAdminClient.setConfig({
       realmName: this.options.realm
     });
-    await kcAdminClient.clients.update(
-      { id: this.adminClientId },
-      {
-        authorizationServicesEnabled: true,
-        clientId: this.options.clientId,
-        serviceAccountsEnabled: true
-      }
+  }
+
+  async enableAuthorization() {
+    await lastValueFrom(
+      this.httpService.put(
+        `${this.realmUrl}/clients/${this.options.clientId}`,
+        {
+          authorizationServicesEnabled: true,
+          clientId: this.options.clientId,
+          serviceAccountsEnabled: true
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${await this.getAccessToken()}`
+          }
+        }
+      )
     );
   }
 

@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 00:41:38
+ * Last Modified: 19-07-2021 00:50:54
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,12 +22,11 @@
  * limitations under the License.
  */
 
-import { HttpModule, HttpService } from '@nestjs/axios';
-import { DiscoveryModule, DiscoveryService, Reflector } from '@nestjs/core';
+import { HttpModule } from '@nestjs/axios';
+import { DiscoveryModule } from '@nestjs/core';
 import {
   DynamicModule,
   Global,
-  Inject,
   Logger,
   MiddlewareConsumer,
   Module,
@@ -37,8 +36,8 @@ import {
 } from '@nestjs/common';
 import KeycloakMiddleware from './keycloak.middleware';
 import KeycloakProvider from './keycloak.provider';
+import KeycloakRegisterService from './keycloakRegister.service';
 import KeycloakService from './keycloak.service';
-import Register from './register';
 import {
   KeycloakOptions,
   KeycloakAsyncOptions,
@@ -53,10 +52,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
   private static imports = [HttpModule, DiscoveryModule];
 
   constructor(
-    @Inject(KEYCLOAK_OPTIONS) private readonly options: KeycloakOptions,
-    private readonly httpService: HttpService,
-    private readonly discoveryService: DiscoveryService,
-    private readonly reflector: Reflector
+    private readonly keycloakRegisterService: KeycloakRegisterService
   ) {}
 
   configure(consumer: MiddlewareConsumer) {
@@ -110,16 +106,16 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
   }
 
   async onModuleInit() {
-    await new Register(
-      this.options,
-      this.httpService,
-      this.discoveryService,
-      this.reflector
-    ).setup();
+    await this.keycloakRegisterService.setup();
   }
 }
 
-export { KeycloakMiddleware, KeycloakProvider, KeycloakService };
+export {
+  KeycloakMiddleware,
+  KeycloakProvider,
+  KeycloakRegisterService,
+  KeycloakService
+};
 
 export * from './decorators';
 export * from './guards';
