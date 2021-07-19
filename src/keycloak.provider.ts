@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 19:20:11
+ * Last Modified: 19-07-2021 06:44:51
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -24,15 +24,16 @@
 
 import KeycloakConnect, { Keycloak } from 'keycloak-connect';
 import session from 'express-session';
-import { FactoryProvider } from '@nestjs/common';
+import { FactoryProvider, Scope } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { KeycloakOptions, KeycloakRequest, KEYCLOAK_OPTIONS } from './types';
 
 export const KEYCLOAK = 'KEYCLOAK';
 
 const KeycloakProvider: FactoryProvider<Keycloak> = {
-  provide: KEYCLOAK,
   inject: [KEYCLOAK_OPTIONS],
+  provide: KEYCLOAK,
+  scope: Scope.REQUEST,
   useFactory: (options: KeycloakOptions) => {
     const { baseUrl, clientSecret, clientId, realm } = options;
     const keycloak: Keycloak & { accessDenied: any } = new KeycloakConnect(

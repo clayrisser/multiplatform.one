@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 05:14:00
+ * Last Modified: 19-07-2021 06:24:27
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,6 +22,7 @@
  * limitations under the License.
  */
 
+import KcAdminClient from 'keycloak-admin';
 import { HttpService } from '@nestjs/axios';
 import { Keycloak } from 'keycloak-connect';
 import { Reflector } from '@nestjs/core';
@@ -34,6 +35,7 @@ import {
 } from '@nestjs/common';
 import KeycloakService from '../keycloak.service';
 import { KEYCLOAK } from '../keycloak.provider';
+import { KEYCLOAK_ADMIN } from '../keycloakAdmin.provider';
 import { KEYCLOAK_OPTIONS, KeycloakOptions } from '../types';
 import { RESOURCE, AUTHORIZED } from '../decorators';
 
@@ -45,7 +47,8 @@ export class AuthGuard implements CanActivate {
     @Inject(KEYCLOAK_OPTIONS) private options: KeycloakOptions,
     @Inject(KEYCLOAK) private readonly keycloak: Keycloak,
     private readonly httpService: HttpService,
-    private readonly reflector: Reflector
+    private readonly reflector: Reflector,
+    @Inject(KEYCLOAK_ADMIN) private readonly keycloakAdmin?: KcAdminClient
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -53,7 +56,8 @@ export class AuthGuard implements CanActivate {
       this.options,
       this.keycloak,
       this.httpService,
-      context
+      context,
+      this.keycloakAdmin
     );
     const roles = this.getRoles(context);
     if (typeof roles === 'undefined') return true;

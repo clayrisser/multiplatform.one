@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 05:48:11
+ * Last Modified: 19-07-2021 06:28:13
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,7 +22,9 @@
  * limitations under the License.
  */
 
+import KcAdminClient from 'keycloak-admin';
 import Token from 'keycloak-connect/middleware/auth-utils/token';
+import UserRepresentation from 'keycloak-admin/lib/defs/userRepresentation';
 import qs from 'qs';
 import { AxiosResponse } from 'axios';
 import { Grant, Keycloak } from 'keycloak-connect';
@@ -47,6 +49,7 @@ import {
   UserInfo
 } from './types';
 import { KEYCLOAK } from './keycloak.provider';
+import { KEYCLOAK_ADMIN } from './keycloakAdmin.provider';
 import { getReq } from './util';
 
 @Injectable({ scope: Scope.REQUEST })
@@ -63,7 +66,8 @@ export default class KeycloakService {
     reqOrExecutionContext:
       | KeycloakRequest<Request>
       | ExecutionContext
-      | GraphqlCtx
+      | GraphqlCtx,
+    @Inject(KEYCLOAK_ADMIN) private readonly keycloakAdmin?: KcAdminClient
   ) {
     this.options = {
       enforceIssuedByClient: false,
@@ -333,6 +337,13 @@ export default class KeycloakService {
         : accessToken?.hasRole(role);
       return result;
     });
+  }
+
+  async getUser(): Promise<UserRepresentation | null> {
+    if (!this.keycloakAdmin) return null;
+    const userId = await this.getUserId();
+    if (!userId) return null;
+    return this.keycloakAdmin.users.findOne({ id: userId });
   }
 
   async isAuthenticated(): Promise<boolean> {
