@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 04:46:20
+ * Last Modified: 19-07-2021 05:26:15
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -110,10 +110,6 @@ export default class KeycloakRegisterService {
       .map((role: string) => role.replace(/^realm:/g, ''));
   }
 
-  private get accessToken() {
-    return this.kcAdminClient.accessToken;
-  }
-
   private get resources(): HashMap<string[]> {
     return Object.entries(
       this.controllers.reduce(
@@ -157,7 +153,8 @@ export default class KeycloakRegisterService {
     this.logger.log('registering keycloak');
     await this.initKcAdminClient();
     await this.enableAuthorization();
-    await this.createRoles();
+    await this.createRealmRoles();
+    await this.createApplicationRoles();
     await this.createScopedResources();
     registeredKeycloak = true;
   }
@@ -185,21 +182,38 @@ export default class KeycloakRegisterService {
     );
   }
 
-  private async createRoles() {
-    const keycloakRoles = (await this.getRoles()).reduce(
-      (roles: string[], { name }: RoleRepresentation) => {
-        if (name) roles.push(name);
-        return roles;
-      },
-      []
-    );
-    const rolesToCreate = difference(this.applicationRoles, keycloakRoles);
+  private async createApplicationRoles() {
+    const applicationRoles = (
+      await this.kcAdminClient.clients.listRoles({
+        id: await this.getIdFromClientId(this.options.clientId)
+      })
+    ).reduce((roles: string[], { name }: RoleRepresentation) => {
+      if (name) roles.push(name);
+      return roles;
+    }, []);
+    const rolesToCreate = difference(this.applicationRoles, applicationRoles);
     await Promise.all(
       rolesToCreate.map(async (role: string) =>
         this.kcAdminClient.clients.createRole({
           id: await this.getIdFromClientId(this.options.clientId),
           name: role
         })
+      )
+    );
+  }
+
+  private async createRealmRoles() {
+    const realmRoles = (await this.kcAdminClient.roles.find()).reduce(
+      (roles: string[], { name }: RoleRepresentation) => {
+        if (name) roles.push(name);
+        return roles;
+      },
+      []
+    );
+    const rolesToCreate = difference(this.realmRoles, realmRoles);
+    await Promise.all(
+      rolesToCreate.map(async (role: string) =>
+        this.kcAdminClient.roles.create({ name: role })
       )
     );
   }
@@ -267,12 +281,6 @@ export default class KeycloakRegisterService {
       })
     );
     return createdScopes;
-  }
-
-  private async getRoles(): Promise<RoleRepresentation[]> {
-    return this.kcAdminClient.clients.listRoles({
-      id: await this.getIdFromClientId(this.options.clientId)
-    });
   }
 
   private async getResources(): Promise<ResourceRepresentation[]> {

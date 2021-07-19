@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 06:01:56
+ * Last Modified: 19-07-2021 05:46:34
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -23,41 +23,55 @@
  */
 
 declare module 'keycloak-connect/middleware/auth-utils/token' {
-  interface TokenContentRealmAccess {
-    roles: string[];
-    [key: string]: any;
-  }
+  namespace Token {
+    interface TokenContentRealmAccess {
+      roles: string[];
+      [key: string]: any;
+    }
 
-  interface TokenHeader {
-    alg: string;
-    kid: string;
-    typ: string;
-    [key: string]: any;
-  }
+    interface HashMap<T = any> {
+      [key: string]: T;
+    }
 
-  interface TokenContent {
-    'allowed-origins': string[];
-    acr: string;
-    azp: string;
-    email_verified: boolean;
-    exp: number;
-    iat: number;
-    iss: string;
-    jti: string;
-    preferred_username: string;
-    realm_access: TokenContentRealmAccess;
-    scope: string;
-    session_state: string;
-    sub: string;
-    typ: string;
-    [key: string]: any;
+    interface TokenHeader {
+      alg: string;
+      kid: string;
+      typ: string;
+      [key: string]: any;
+    }
+
+    interface ResourceAccessItem {
+      roles?: string[];
+      [key: string]: any;
+    }
+
+    type ResourceAccess = HashMap<ResourceAccessItem>;
+
+    interface TokenContent {
+      'allowed-origins'?: string[];
+      acr?: string;
+      azp?: string;
+      email_verified?: boolean;
+      exp?: number;
+      iat?: number;
+      iss?: string;
+      jti?: string;
+      preferred_username?: string;
+      realm_access?: TokenContentRealmAccess;
+      resource_access?: ResourceAccess;
+      scope?: string;
+      session_state?: string;
+      sub?: string;
+      typ?: string;
+      [key: string]: any;
+    }
   }
 
   class Token {
     constructor(accessToken: string, clientId: string);
     clientId: string;
-    content: TokenContent;
-    header: TokenHeader;
+    content: Token.TokenContent;
+    header: Token.TokenHeader;
     signature: Buffer;
     signed: string;
     token: string;
@@ -66,5 +80,6 @@ declare module 'keycloak-connect/middleware/auth-utils/token' {
     hasApplicationRole(appName: string, roleName: string): boolean;
     hasRealmRole(roleName: string): boolean;
   }
+
   export = Token;
 }

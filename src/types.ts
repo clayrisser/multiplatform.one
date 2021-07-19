@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 00:37:02
+ * Last Modified: 19-07-2021 05:49:33
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,9 +22,11 @@
  * limitations under the License.
  */
 
-import Token from 'keycloak-connect/middleware/auth-utils/token';
 import { ApiProperty } from '@nestjs/swagger';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
+import Token, {
+  ResourceAccess
+} from 'keycloak-connect/middleware/auth-utils/token';
 
 type Grant = import('keycloak-connect').Grant;
 type Request = import('express').Request;
@@ -97,62 +99,65 @@ export interface GraphqlCtx {
 
 export class TokenContentRealmAccess {
   @ApiProperty()
-  roles!: string[];
+  roles?: string[];
 }
 
 export class TokenHeader {
   @ApiProperty()
-  alg!: string;
+  alg?: string;
 
   @ApiProperty()
-  kid!: string;
+  kid?: string;
 
   @ApiProperty()
-  typ!: string;
+  typ?: string;
 }
 
 export class TokenContent {
   @ApiProperty()
-  'allowed-origins': string[];
+  'allowed-origins'?: string[];
 
   @ApiProperty()
-  acr!: string;
+  acr?: string;
 
   @ApiProperty()
-  azp!: string;
+  azp?: string;
 
   @ApiProperty()
-  email_verified!: boolean;
+  email_verified?: boolean;
 
   @ApiProperty()
-  exp!: number;
+  exp?: number;
 
   @ApiProperty()
-  iat!: number;
+  iat?: number;
 
   @ApiProperty()
-  iss!: string;
+  iss?: string;
 
   @ApiProperty()
-  jti!: string;
+  jti?: string;
 
   @ApiProperty()
-  preferred_username!: string;
+  preferred_username?: string;
 
   @ApiProperty()
-  realm_access!: TokenContentRealmAccess;
+  realm_access?: TokenContentRealmAccess;
 
   @ApiProperty()
-  scope!: string;
+  resource_access?: ResourceAccess;
 
   @ApiProperty()
-  session_state!: string;
+  scope?: string;
 
   @ApiProperty()
-  sub!: string;
+  session_state?: string;
 
   @ApiProperty()
-  typ!: string;
+  sub?: string;
+
+  @ApiProperty()
+  typ?: string;
 }
 
 export class TokenProperties {

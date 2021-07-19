@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 23:25:49
+ * Last Modified: 19-07-2021 05:48:11
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -136,9 +136,15 @@ export default class KeycloakService {
   }
 
   async getRoles(): Promise<string[] | null> {
+    const { clientId } = this.options;
     const accessToken = await this.getAccessToken();
     if (!accessToken) return null;
-    return accessToken.content.realm_access.roles || [];
+    return [
+      ...(accessToken.content?.realm_access?.roles || []).map(
+        (role: string) => `realm:${role}`
+      ),
+      ...(accessToken.content?.resource_access?.[clientId]?.roles || [])
+    ];
   }
 
   async getScopes(): Promise<string[] | null> {
@@ -381,8 +387,8 @@ export default class KeycloakService {
       return this.keycloak.enforcer(permissions)(
         this.req,
         {},
-        (req: KeycloakRequest<Request>, _res: {}, _next: NextFunction) => {
-          if (req.resourceDenied) return resolve(false);
+        (_: Request, _res: {}, _next: NextFunction) => {
+          if (this.req.resourceDenied) return resolve(false);
           return resolve(true);
         }
       );
