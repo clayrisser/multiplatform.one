@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 16-07-2021 19:06:30
+ * Last Modified: 19-07-2021 00:06:15
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -30,31 +30,43 @@ import { AxiosResponse } from 'axios';
 import { DiscoveryService, Reflector } from '@nestjs/core';
 import { HttpService } from '@nestjs/axios';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
+import { Logger } from '@nestjs/common';
+import { lastValueFrom } from 'rxjs';
 import { AUTHORIZED } from './decorators/authorized.decorator';
-import { HashMap, KeycloakOptions } from './types';
+import { HashMap, KeycloakOptions, RegisterOptions } from './types';
 import { RESOURCE } from './decorators/resource.decorator';
 import { SCOPES } from './decorators/scopes.decorator';
 
-const logger = console;
 const kcAdminClient = new KcAdminClient();
 
 export default class Register {
+  private logger = new Logger(Register.name);
+
+  private registerOptions: RegisterOptions;
+
   constructor(
     private readonly options: KeycloakOptions,
     private readonly httpService: HttpService,
     private readonly discoveryService: DiscoveryService,
     private readonly reflector: Reflector
   ) {
+    this.registerOptions = {
+      roles: [],
+      ...(typeof this.options.register === 'boolean'
+        ? {}
+        : this.options.register || {})
+    };
     this.realmUrl = `${this.options.baseUrl}/auth/admin/realms/${this.options.realm}`;
+    this.adminClientId = this.options.adminClientId || 'admin-cli';
   }
 
   private _accessToken?: string;
 
-  private _createdScopes: Set<Scope> = new Set();
-
   private realmUrl: string;
 
   private _controllers: any[] | undefined;
+
+  private adminClientId: string;
 
   get controllers(): InstanceWrapper[] {
     if (this._controllers) return this._controllers;
@@ -74,8 +86,19 @@ export default class Register {
           return new Set([...roles, ...values.flat()]);
         },
         new Set()
-      )
+      ),
+      ...(this.registerOptions.roles || [])
     ];
+  }
+
+  get applicationRoles() {
+    return this.roles.filter((role: string) => !/^realm:/g.test(role));
+  }
+
+  get realmRoles() {
+    return this.roles
+      .filter((role: string) => /^realm:/g.test(role))
+      .map((role: string) => role.replace(/^realm:/g, ''));
   }
 
   get resources(): HashMap<string[]> {
@@ -107,102 +130,106 @@ export default class Register {
         resources: HashMap<string[]>,
         [resourceName, scopes]: [string, Set<string>]
       ) => {
-        resources[resourceName] = [...scopes];
+        resources[resourceName] = [
+          ...new Set([...(resources[resourceName] || []), ...scopes])
+        ];
         return resources;
       },
-      {}
+      this.registerOptions.resources || {}
     );
   }
 
   async setup() {
     if (!this.options.register) return;
-    logger.log('registering keycloak . . .');
-    const data: Data = {
-      roles: this.roles,
-      resources: this.resources
-    };
+    this.logger.log('registering keycloak');
+    await this.initKcAdminClient();
+    await this.createRoles();
+    await this.createScopedResources();
+  }
+
+  async initKcAdminClient() {
     await kcAdminClient.auth({
-      username: this.options.adminUsername,
-      password: this.options.adminPassword,
+      clientId: this.adminClientId,
       grantType: 'password',
-      clientId: 'admin-cli'
+      password: this.options.adminPassword,
+      username: this.options.adminUsername
     });
     kcAdminClient.setConfig({
       realmName: this.options.realm
     });
-    await this.enableAuthorization();
-    const getRolesRes = await this.getRoles();
-    const roleNames = getRolesRes.reduce(
-      (roleNames: string[], role: RoleRepresentation) => {
-        if (role.name) roleNames.push(role.name);
-        return roleNames;
+    await kcAdminClient.clients.update(
+      { id: this.adminClientId },
+      {
+        authorizationServicesEnabled: true,
+        clientId: this.options.clientId,
+        serviceAccountsEnabled: true
+      }
+    );
+  }
+
+  async createRoles() {
+    const keycloakRoles = (await this.getRoles()).reduce(
+      (roles: string[], { name }: RoleRepresentation) => {
+        if (name) roles.push(name);
+        return roles;
       },
       []
     );
-    const rolesToCreate = difference(data.roles, roleNames);
-    rolesToCreate.forEach((role: string) => {
-      this.createRoles(role);
-    });
+    const rolesToCreate = difference(this.applicationRoles, keycloakRoles);
+    await Promise.all(
+      rolesToCreate.map((role: string) =>
+        kcAdminClient.clients.createRole({
+          id: this.options.adminClientId,
+          name: role
+        })
+      )
+    );
+  }
+
+  async createScopedResources() {
     const resources = await this.getResources();
     await Promise.all(
-      Object.keys(data.resources).map(async (resourceName: string) => {
+      Object.keys(this.resources).map(async (resourceName: string) => {
         const resource = resources.find(
           (resource: Resource) => resource.name === resourceName
         );
-        const scopes: Array<string> = data.resources[resourceName];
+        const scopes = this.resources[resourceName];
         const scopesToAttach = await this.createScopes(scopes);
         if (
-          !new Set(resources.map((resource: Resource) => resource.name)).has(
+          new Set(resources.map((resource: Resource) => resource.name)).has(
             resourceName
           )
         ) {
-          await this.createResource(resourceName, scopesToAttach);
-        } else {
-          // What if the scope exists on another resource but was just added to a new resource???
+          // TODO: what if the scope exists on another resource but was just added to a new resource???
           const resourceById = await this.getResourceById(resource?._id || '');
           const existingScopes = resourceById.scopes.map((scope: Scope) => {
             return scope.name;
           });
           const scopesToCreate = difference(scopes, existingScopes);
-          if (scopesToCreate.length > 0) {
-            const createdScopes = await this.createScopes(scopesToCreate);
-            this.updateResource(resourceById, createdScopes);
+          if (scopesToCreate.length) {
+            const scopesToAttach = await this.createScopes(scopesToCreate);
+            this.updateResource(resourceById, scopesToAttach);
           }
+        } else {
+          await this.createResource(resourceName, scopesToAttach);
         }
       })
     );
   }
 
-  async createScopes(scopes: Array<string>): Promise<Scope[]> {
-    const scopesRes = await this.getScopes();
-    const createdScopes: Array<Scope> = [
-      ...this._createdScopes,
-      ...(scopesRes?.data || [])
-    ];
+  async createScopes(scopes: string[]): Promise<Scope[]> {
+    const createdScopes = await this.getScopes();
     const scopesToCreate = difference(
       scopes,
       createdScopes.map((scope: Scope) => scope.name)
     );
     await Promise.all(
       scopesToCreate.map(async (scopeName: string) => {
-        const scope: Scope | {} =
-          (await this.createScope(scopeName))?.data || {};
-        if ('id' in scope) createdScopes.push(scope);
+        const scope = await this.createScope(scopeName);
+        if (scope) createdScopes.push(scope);
       })
     );
-    this._createdScopes = new Set(createdScopes);
     return createdScopes;
-  }
-
-  async enableAuthorization() {
-    await kcAdminClient.clients.update(
-      { id: this.options.adminClientId || '' },
-      {
-        clientId: this.options.clientId,
-        authorizationServicesEnabled: true,
-        serviceAccountsEnabled: true
-      }
-    );
   }
 
   async getRoles(): Promise<RoleRepresentation[]> {
@@ -211,139 +238,143 @@ export default class Register {
     });
   }
 
-  async createRoles(role: string) {
-    return kcAdminClient.clients.createRole({
-      id: this.options.adminClientId,
-      name: role
-    });
-  }
-
   async getAccessToken() {
     if (this._accessToken) return this._accessToken;
     this._accessToken = (
-      await this.httpService
-        .post(
+      await lastValueFrom(
+        this.httpService.post(
           `${this.options.baseUrl}/auth/realms/master/protocol/openid-connect/token`,
           qs.stringify({
-            client_id: 'admin-cli',
+            client_id: this.adminClientId,
             grant_type: 'password',
-            username: 'admin',
-            password: 'pass'
+            password: this.options.adminPassword || '',
+            username: this.options.adminUsername || ''
           }),
           {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
           }
         )
-        .toPromise()
+      )
     )?.data?.access_token;
     return this._accessToken;
   }
 
   async getResources() {
-    const resourcesRes = await this.httpService
-      .get<[Resource]>(
-        `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/resource`,
-        {
-          headers: {
-            Authorization: `Bearer ${await this.getAccessToken()}`
-          }
-        }
-      )
-      .toPromise();
-    return resourcesRes?.data || [];
+    return (
+      (
+        await lastValueFrom(
+          this.httpService.get<Resource[]>(
+            `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/resource`,
+            {
+              headers: {
+                Authorization: `Bearer ${await this.getAccessToken()}`
+              }
+            }
+          )
+        )
+      ).data || []
+    );
   }
 
   async createResource(
     resourceName: string,
     scopes: Scope[] = []
   ): Promise<AxiosResponse<any> | undefined> {
-    return this.httpService
-      .post(
-        `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/resource`,
-        {
-          attributes: {},
-          displayName: resourceName,
-          name: resourceName,
-          ownerManagedAccess: '',
-          scopes,
-          uris: []
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${await this.getAccessToken()}`
+    return (
+      await lastValueFrom(
+        this.httpService.post(
+          `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/resource`,
+          {
+            attributes: {},
+            displayName: resourceName,
+            name: resourceName,
+            ownerManagedAccess: '',
+            scopes,
+            uris: []
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${await this.getAccessToken()}`
+            }
           }
-        }
+        )
       )
-      .toPromise();
+    ).data;
   }
 
   async getResourceById(resourceId: string) {
-    const resource = await this.httpService
-      .get(
-        `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/resource/${resourceId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${await this.getAccessToken()}`
+    return (
+      await lastValueFrom(
+        this.httpService.get(
+          `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/resource/${resourceId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${await this.getAccessToken()}`
+            }
           }
-        }
+        )
       )
-      .toPromise();
-    return (await resource)?.data;
+    ).data;
   }
 
   async updateResource(resource: Resource, scopes: Array<Scope>) {
-    return this.httpService
-      .put(
-        `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/resource/${resource?._id}`,
-        qs.stringify({
-          attributes: {},
-          displayName: resource?.name,
-          name: resource?.name,
-          owner: {
-            id: this.options.adminClientId,
-            name: this.options.realm
-          },
-          ownerManagedAccess: false,
-          scopes,
-          uris: [],
-          _id: resource?._id
-        }),
-        {
-          headers: {
-            Authorization: `Bearer ${await this.getAccessToken()}`
+    return (
+      await lastValueFrom(
+        this.httpService.put(
+          `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/resource/${resource?._id}`,
+          qs.stringify({
+            attributes: {},
+            displayName: resource?.name,
+            name: resource?.name,
+            owner: {
+              id: this.options.adminClientId,
+              name: this.options.realm
+            },
+            ownerManagedAccess: false,
+            scopes,
+            uris: [],
+            _id: resource?._id
+          }),
+          {
+            headers: {
+              Authorization: `Bearer ${await this.getAccessToken()}`
+            }
           }
-        }
+        )
       )
-      .toPromise();
+    ).data;
   }
 
   async getScopes() {
-    const scopes = await this.httpService
-      .get<Array<Scope>>(
-        `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/scope`,
-        {
-          headers: {
-            Authorization: `Bearer ${await this.getAccessToken()}`
+    return (
+      await lastValueFrom(
+        this.httpService.get<Scope[]>(
+          `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/scope`,
+          {
+            headers: {
+              Authorization: `Bearer ${await this.getAccessToken()}`
+            }
           }
-        }
+        )
       )
-      .toPromise();
-    return scopes;
+    ).data;
   }
 
   async createScope(scope: string) {
-    return this.httpService
-      .post<Scope>(
-        `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/scope`,
-        { name: scope },
-        {
-          headers: {
-            Authorization: `Bearer ${await this.getAccessToken()}`
+    return (
+      await lastValueFrom(
+        this.httpService.post<Scope>(
+          `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/scope`,
+          { name: scope },
+          {
+            headers: {
+              Authorization: `Bearer ${await this.getAccessToken()}`
+            }
           }
-        }
+        )
       )
-      .toPromise();
+    ).data;
   }
 }
 
@@ -370,6 +401,7 @@ export interface Role {
   id: string;
   name: string;
 }
+
 export interface Resource {
   name: string;
   owner: Resource;
@@ -388,7 +420,7 @@ export interface ResourceOwner {
 }
 
 export interface Data {
-  roles: Array<string>;
+  roles: string[];
   resources: DataResources;
 }
 
