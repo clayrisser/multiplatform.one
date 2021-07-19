@@ -1,6 +1,6 @@
 {
   "name": "nestjs-keycloak",
-  "version": "2.0.0-rc.88",
+  "version": "2.0.0-rc.89",
   "description": "nestjs module for authenticating keycloak",
   "sideEffects": false,
   "keywords": [
@@ -64,7 +64,7 @@
   },
   "optionalDependencies": {
     "@nestjs/graphql": "^8.0.2",
-    "nestjs-keycloak-typegraphql": "^2.0.0-rc.16"
+    "nestjs-keycloak-typegraphql": "^2.0.0-rc.17"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",

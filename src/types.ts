@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 05:49:33
+ * Last Modified: 19-07-2021 16:21:08
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -24,6 +24,7 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
+import { RequiredActionAlias } from 'keycloak-admin/lib/defs/requiredActionProviderRepresentation';
 import Token, {
   ResourceAccess
 } from 'keycloak-connect/middleware/auth-utils/token';
@@ -232,6 +233,146 @@ export class RefreshTokenGrant {
 
   @ApiProperty()
   tokenType?: string;
+}
+
+export class UserConsent {
+  @ApiProperty()
+  clientId?: string;
+
+  @ApiProperty()
+  createDate?: string;
+
+  @ApiProperty()
+  grantedClientScopes?: string[];
+
+  @ApiProperty()
+  lastUpdatedDate?: number;
+}
+
+export class Credential {
+  @ApiProperty()
+  algorithm?: string;
+
+  @ApiProperty()
+  config?: Record<string, any>;
+
+  @ApiProperty()
+  counter?: number;
+
+  @ApiProperty()
+  createdDate?: number;
+
+  @ApiProperty()
+  device?: string;
+
+  @ApiProperty()
+  digits?: number;
+
+  @ApiProperty()
+  hashIterations?: number;
+
+  @ApiProperty()
+  hashedSaltedValue?: string;
+
+  @ApiProperty()
+  period?: number;
+
+  @ApiProperty()
+  salt?: string;
+
+  @ApiProperty()
+  temporary?: boolean;
+
+  @ApiProperty()
+  type?: string;
+
+  @ApiProperty()
+  value?: string;
+}
+
+export class FederatedIdentityRepresentation {
+  @ApiProperty()
+  identityProvider?: string;
+
+  @ApiProperty()
+  userId?: string;
+
+  @ApiProperty()
+  userName?: string;
+}
+
+export class User {
+  @ApiProperty()
+  access?: Record<string, boolean>;
+
+  @ApiProperty()
+  attributes?: Record<string, any>;
+
+  @ApiProperty()
+  clientConsents?: UserConsent[];
+
+  @ApiProperty()
+  clientRoles?: Record<string, any>;
+
+  @ApiProperty()
+  createdTimestamp?: number;
+
+  @ApiProperty()
+  credentials?: Credential[];
+
+  @ApiProperty()
+  disableableCredentialTypes?: string[];
+
+  @ApiProperty()
+  email?: string;
+
+  @ApiProperty()
+  emailVerified?: boolean;
+
+  @ApiProperty()
+  enabled?: boolean;
+
+  @ApiProperty()
+  federatedIdentities?: FederatedIdentityRepresentation[];
+
+  @ApiProperty()
+  federationLink?: string;
+
+  @ApiProperty()
+  firstName?: string;
+
+  @ApiProperty()
+  groups?: string[];
+
+  @ApiProperty()
+  id?: string;
+
+  @ApiProperty()
+  lastName?: string;
+
+  @ApiProperty()
+  notBefore?: number;
+
+  @ApiProperty()
+  origin?: string;
+
+  @ApiProperty()
+  realmRoles?: string[];
+
+  @ApiProperty()
+  requiredActions?: RequiredActionAlias[];
+
+  @ApiProperty()
+  self?: string;
+
+  @ApiProperty()
+  serviceAccountClientId?: string;
+
+  @ApiProperty()
+  totp?: boolean;
+
+  @ApiProperty()
+  username?: string;
 }
 
 export const KEYCLOAK_OPTIONS = 'KEYCLOAK_OPTIONS';
