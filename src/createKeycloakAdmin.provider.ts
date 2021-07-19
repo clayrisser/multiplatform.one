@@ -4,7 +4,7 @@
  * File Created: 19-07-2021 06:06:32
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 06:45:44
+ * Last Modified: 19-07-2021 07:10:49
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -23,18 +23,19 @@
  */
 
 import KcAdminClient from 'keycloak-admin';
-import { FactoryProvider, Scope } from '@nestjs/common';
+import { FactoryProvider } from '@nestjs/common';
 import { KeycloakOptions, KEYCLOAK_OPTIONS } from './types';
 
-export const KEYCLOAK_ADMIN = 'KEYCLOAK_ADMIN';
+export const CREATE_KEYCLOAK_ADMIN = 'CREATE_KEYCLOAK_ADMIN';
 
-const KeycloakAdminProvider: FactoryProvider<Promise<KcAdminClient | void>> = {
-  provide: KEYCLOAK_ADMIN,
-  scope: Scope.REQUEST,
+const CreateKeycloakAdminProvider: FactoryProvider<
+  () => Promise<KcAdminClient | void>
+> = {
+  provide: CREATE_KEYCLOAK_ADMIN,
   inject: [KEYCLOAK_OPTIONS],
-  useFactory: async (options: KeycloakOptions) => {
+  useFactory: (options: KeycloakOptions) => async () => {
     if (!options.adminUsername || !options.adminPassword) return undefined;
-    const keycloakAdmin = new KcAdminClient() as KcAdminClient;
+    const keycloakAdmin = new KcAdminClient();
     await keycloakAdmin.auth({
       clientId: options.adminClientId || 'admin-cli',
       grantType: 'password',
@@ -48,4 +49,4 @@ const KeycloakAdminProvider: FactoryProvider<Promise<KcAdminClient | void>> = {
   }
 };
 
-export default KeycloakAdminProvider;
+export default CreateKeycloakAdminProvider;
