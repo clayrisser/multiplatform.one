@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 01:18:06
+ * Last Modified: 19-07-2021 02:13:33
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -23,10 +23,10 @@
  */
 
 import KcAdminClient from 'keycloak-admin';
+import ResourceRepresentation from 'keycloak-admin/lib/defs/resourceRepresentation';
 import RoleRepresentation from 'keycloak-admin/lib/defs/roleRepresentation';
+import ScopeRepresentation from 'keycloak-admin/lib/defs/scopeRepresentation';
 import difference from 'lodash.difference';
-import qs from 'qs';
-import { AxiosResponse } from 'axios';
 import { DiscoveryService, Reflector } from '@nestjs/core';
 import { HttpService } from '@nestjs/axios';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
@@ -42,12 +42,12 @@ import {
   KEYCLOAK_OPTIONS
 } from './types';
 
-const kcAdminClient = new KcAdminClient();
-
 export default class KeycloakRegisterService {
   private logger = new Logger(KeycloakRegisterService.name);
 
   private registerOptions: RegisterOptions;
+
+  private kcAdminClient = new KcAdminClient();
 
   constructor(
     @Inject(KEYCLOAK_OPTIONS) private readonly options: KeycloakOptions,
@@ -61,25 +61,27 @@ export default class KeycloakRegisterService {
         ? {}
         : this.options.register || {})
     };
-    this.realmUrl = `${this.options.baseUrl}/auth/admin/realms/${this.options.realm}`;
-    this.adminClientId = this.options.adminClientId || 'admin-cli';
   }
 
-  private _accessToken?: string;
+  private get realmUrl() {
+    return `${this.options.baseUrl}/auth/admin/realms/${this.options.realm}`;
+  }
 
-  private realmUrl: string;
+  private get adminClientId() {
+    return this.options.adminClientId || 'admin-cli';
+  }
+
+  private _idsFromClientIds: HashMap<string> = {};
 
   private _controllers: any[] | undefined;
 
-  private adminClientId: string;
-
-  get controllers(): InstanceWrapper[] {
+  private get controllers(): InstanceWrapper[] {
     if (this._controllers) return this._controllers;
     this._controllers = this.discoveryService.getControllers();
     return this._controllers;
   }
 
-  get roles() {
+  private get roles() {
     return [
       ...this.controllers.reduce(
         (roles: Set<string>, controller: InstanceWrapper) => {
@@ -96,17 +98,21 @@ export default class KeycloakRegisterService {
     ];
   }
 
-  get applicationRoles() {
+  private get applicationRoles() {
     return this.roles.filter((role: string) => !/^realm:/g.test(role));
   }
 
-  get realmRoles() {
+  private get realmRoles() {
     return this.roles
       .filter((role: string) => /^realm:/g.test(role))
       .map((role: string) => role.replace(/^realm:/g, ''));
   }
 
-  get resources(): HashMap<string[]> {
+  private get accessToken() {
+    return this.kcAdminClient.accessToken;
+  }
+
+  private get resources(): HashMap<string[]> {
     return Object.entries(
       this.controllers.reduce(
         (resources: HashMap<Set<string>>, controller: InstanceWrapper) => {
@@ -148,43 +154,62 @@ export default class KeycloakRegisterService {
     if (!this.options.register) return;
     this.logger.log('registering keycloak');
     await this.initKcAdminClient();
+    await this.enableAuthorization();
     await this.createRoles();
     await this.createScopedResources();
   }
 
-  async initKcAdminClient() {
-    await kcAdminClient.auth({
+  private async initKcAdminClient() {
+    await this.kcAdminClient.auth({
       clientId: this.adminClientId,
       grantType: 'password',
       password: this.options.adminPassword,
       username: this.options.adminUsername
     });
-    kcAdminClient.setConfig({
+    this.kcAdminClient.setConfig({
       realmName: this.options.realm
     });
-    this._accessToken = kcAdminClient.accessToken;
   }
 
-  async enableAuthorization() {
-    await lastValueFrom(
-      this.httpService.put(
-        `${this.realmUrl}/clients/${this.options.clientId}`,
-        {
-          authorizationServicesEnabled: true,
-          clientId: this.options.clientId,
-          serviceAccountsEnabled: true
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${await this.getAccessToken()}`
-          }
-        }
-      )
+  private async enableAuthorization() {
+    await this.kcAdminClient.clients.update(
+      { id: await this.getIdFromClientId(this.options.clientId) },
+      {
+        authorizationServicesEnabled: true,
+        clientId: this.options.clientId,
+        serviceAccountsEnabled: true
+      }
     );
   }
 
-  async createRoles() {
+  private async getIdFromClientId(clientId: string) {
+    if (this._idsFromClientIds[clientId]) {
+      return this._idsFromClientIds[clientId];
+    }
+    const idFromClientId =
+      (
+        (
+          await lastValueFrom(
+            this.httpService.get(
+              `${this.realmUrl}/clients?clientId=${clientId}`,
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${this.accessToken}`
+                }
+              }
+            )
+          )
+        ).data as { id: string }[]
+      )?.[0].id || null;
+    if (!idFromClientId) {
+      throw new Error(`could not find id from clientId '${clientId}'`);
+    }
+    this._idsFromClientIds[clientId] = idFromClientId;
+    return idFromClientId;
+  }
+
+  private async createRoles() {
     const keycloakRoles = (await this.getRoles()).reduce(
       (roles: string[], { name }: RoleRepresentation) => {
         if (name) roles.push(name);
@@ -194,34 +219,38 @@ export default class KeycloakRegisterService {
     );
     const rolesToCreate = difference(this.applicationRoles, keycloakRoles);
     await Promise.all(
-      rolesToCreate.map((role: string) =>
-        kcAdminClient.clients.createRole({
-          id: this.options.adminClientId,
+      rolesToCreate.map(async (role: string) =>
+        this.kcAdminClient.clients.createRole({
+          id: await this.getIdFromClientId(this.options.clientId),
           name: role
         })
       )
     );
   }
 
-  async createScopedResources() {
+  private async createScopedResources() {
     const resources = await this.getResources();
     await Promise.all(
       Object.keys(this.resources).map(async (resourceName: string) => {
         const resource = resources.find(
-          (resource: Resource) => resource.name === resourceName
+          (resource: ResourceRepresentation) => resource.name === resourceName
         );
         const scopes = this.resources[resourceName];
         const scopesToAttach = await this.createScopes(scopes);
         if (
-          new Set(resources.map((resource: Resource) => resource.name)).has(
-            resourceName
-          )
+          new Set(
+            resources.map((resource: ResourceRepresentation) => resource.name)
+          ).has(resourceName)
         ) {
           // TODO: what if the scope exists on another resource but was just added to a new resource???
-          const resourceById = await this.getResourceById(resource?._id || '');
-          const existingScopes = resourceById.scopes.map((scope: Scope) => {
-            return scope.name;
-          });
+          const resourceById = await this.getResourceById(resource?.id || '');
+          const existingScopes = (resourceById.scopes || []).reduce(
+            (existingScopes: string[], scope: ScopeRepresentation) => {
+              if (scope.name) existingScopes.push(scope.name);
+              return existingScopes;
+            },
+            []
+          );
           const scopesToCreate = difference(scopes, existingScopes);
           if (scopesToCreate.length) {
             const scopesToAttach = await this.createScopes(scopesToCreate);
@@ -234,11 +263,17 @@ export default class KeycloakRegisterService {
     );
   }
 
-  async createScopes(scopes: string[]): Promise<Scope[]> {
+  private async createScopes(scopes: string[]): Promise<ScopeRepresentation[]> {
     const createdScopes = await this.getScopes();
     const scopesToCreate = difference(
       scopes,
-      createdScopes.map((scope: Scope) => scope.name)
+      createdScopes.reduce(
+        (createdScopes: string[], scope: ScopeRepresentation) => {
+          if (scope.name) createdScopes.push(scope.name);
+          return createdScopes;
+        },
+        []
+      )
     );
     await Promise.all(
       scopesToCreate.map(async (scopeName: string) => {
@@ -249,42 +284,28 @@ export default class KeycloakRegisterService {
     return createdScopes;
   }
 
-  async getRoles(): Promise<RoleRepresentation[]> {
-    return kcAdminClient.clients.listRoles({
-      id: this.options.adminClientId || ''
+  private async getRoles(): Promise<RoleRepresentation[]> {
+    return this.kcAdminClient.clients.listRoles({
+      id: await this.getIdFromClientId(this.options.clientId)
     });
   }
 
-  async getAccessToken() {
-    if (this._accessToken) return this._accessToken;
-    this._accessToken = (
-      await lastValueFrom(
-        this.httpService.post(
-          `${this.options.baseUrl}/auth/realms/master/protocol/openid-connect/token`,
-          qs.stringify({
-            client_id: this.adminClientId,
-            grant_type: 'password',
-            password: this.options.adminPassword || '',
-            username: this.options.adminUsername || ''
-          }),
-          {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-          }
-        )
-      )
-    )?.data?.access_token;
-    return this._accessToken;
+  private async getClientUrl(): Promise<string> {
+    return `${this.realmUrl}/clients/${await this.getIdFromClientId(
+      this.options.clientId
+    )}`;
   }
 
-  async getResources() {
+  private async getResources(): Promise<ResourceRepresentation[]> {
     return (
       (
         await lastValueFrom(
-          this.httpService.get<Resource[]>(
-            `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/resource`,
+          this.httpService.get<ResourceRepresentation[]>(
+            `${await this.getClientUrl()}/authz/resource-server/resource`,
             {
               headers: {
-                Authorization: `Bearer ${await this.getAccessToken()}`
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.accessToken}`
               }
             }
           )
@@ -295,39 +316,30 @@ export default class KeycloakRegisterService {
 
   async createResource(
     resourceName: string,
-    scopes: Scope[] = []
-  ): Promise<AxiosResponse<any> | undefined> {
-    return (
-      await lastValueFrom(
-        this.httpService.post(
-          `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/resource`,
-          {
-            attributes: {},
-            displayName: resourceName,
-            name: resourceName,
-            ownerManagedAccess: '',
-            scopes,
-            uris: []
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${await this.getAccessToken()}`
-            }
-          }
-        )
-      )
-    ).data;
+    scopes: ScopeRepresentation[] = []
+  ): Promise<ResourceRepresentation> {
+    return this.kcAdminClient.clients.createResource(
+      {
+        id: await this.getIdFromClientId(this.options.clientId)
+      },
+      {
+        attributes: {},
+        displayName: resourceName,
+        name: resourceName,
+        scopes
+      }
+    );
   }
 
-  async getResourceById(resourceId: string) {
+  async getResourceById(resourceId: string): Promise<ResourceRepresentation> {
     return (
       await lastValueFrom(
         this.httpService.get(
-          `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/resource/${resourceId}`,
+          `${this.realmUrl}/clients/${this.options.clientId}/authz/resource-server/resource/${resourceId}`,
           {
             headers: {
-              Authorization: `Bearer ${await this.getAccessToken()}`
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${this.accessToken}`
             }
           }
         )
@@ -335,42 +347,35 @@ export default class KeycloakRegisterService {
     ).data;
   }
 
-  async updateResource(resource: Resource, scopes: Array<Scope>) {
-    return (
-      await lastValueFrom(
-        this.httpService.put(
-          `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/resource/${resource?._id}`,
-          qs.stringify({
-            attributes: {},
-            displayName: resource?.name,
-            name: resource?.name,
-            owner: {
-              id: this.options.adminClientId,
-              name: this.options.realm
-            },
-            ownerManagedAccess: false,
-            scopes,
-            uris: [],
-            _id: resource?._id
-          }),
-          {
-            headers: {
-              Authorization: `Bearer ${await this.getAccessToken()}`
-            }
-          }
-        )
-      )
-    ).data;
+  async updateResource(
+    resource: ResourceRepresentation,
+    scopes: ScopeRepresentation[]
+  ) {
+    return this.kcAdminClient.clients.updateResource(
+      {
+        id: await this.getIdFromClientId(this.options.clientId),
+        resourceId: resource.id || ''
+      },
+      {
+        attributes: {},
+        displayName: resource?.name,
+        id: resource?.id,
+        name: resource?.name,
+        ownerManagedAccess: false,
+        scopes
+      }
+    );
   }
 
-  async getScopes() {
+  async getScopes(): Promise<ScopeRepresentation[]> {
     return (
       await lastValueFrom(
-        this.httpService.get<Scope[]>(
-          `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/scope`,
+        this.httpService.get<ScopeRepresentation[]>(
+          `${await this.getClientUrl()}/authz/resource-server/scope`,
           {
             headers: {
-              Authorization: `Bearer ${await this.getAccessToken()}`
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${this.accessToken}`
             }
           }
         )
@@ -381,12 +386,13 @@ export default class KeycloakRegisterService {
   async createScope(scope: string) {
     return (
       await lastValueFrom(
-        this.httpService.post<Scope>(
-          `${this.realmUrl}/clients/${this.options.adminClientId}/authz/resource-server/scope`,
+        this.httpService.post<ScopeRepresentation>(
+          `${await this.getClientUrl()}/authz/resource-server/scope`,
           { name: scope },
           {
             headers: {
-              Authorization: `Bearer ${await this.getAccessToken()}`
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${this.accessToken}`
             }
           }
         )
@@ -409,43 +415,4 @@ function getMethods(obj: any): ((...args: any[]) => any)[] {
     .map((propertyName: string) => obj[propertyName]) as ((
     ...args: any[]
   ) => any)[];
-}
-
-export interface Role {
-  clientRole: boolean;
-  composite: boolean;
-  containerId: string;
-  id: string;
-  name: string;
-}
-
-export interface Resource {
-  name: string;
-  owner: Resource;
-  ownerManagedAccess: boolean;
-  displayName: string;
-  type: string;
-  uris: [string];
-  id: string;
-  _id?: string;
-  scopes: [Scope];
-}
-
-export interface ResourceOwner {
-  id: string;
-  name: string;
-}
-
-export interface Data {
-  roles: string[];
-  resources: DataResources;
-}
-
-export interface DataResources {
-  [key: string]: Array<string>;
-}
-
-export interface Scope {
-  name: string;
-  id: string;
 }
