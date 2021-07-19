@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:39:50
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 02:15:21
+ * Last Modified: 19-07-2021 06:24:22
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,6 +22,7 @@
  * limitations under the License.
  */
 
+import KcAdminClient from 'keycloak-admin';
 import { HttpService } from '@nestjs/axios';
 import { Keycloak } from 'keycloak-connect';
 import { Reflector } from '@nestjs/core';
@@ -34,6 +35,7 @@ import {
 } from '@nestjs/common';
 import KeycloakService from '../keycloak.service';
 import { KEYCLOAK } from '../keycloak.provider';
+import { KEYCLOAK_ADMIN } from '../keycloakAdmin.provider';
 import { KEYCLOAK_OPTIONS, KeycloakOptions } from '../types';
 import { RESOURCE, SCOPES } from '../decorators';
 
@@ -53,7 +55,8 @@ export class ResourceGuard implements CanActivate {
     @Inject(KEYCLOAK_OPTIONS) private options: KeycloakOptions,
     @Inject(KEYCLOAK) private readonly keycloak: Keycloak,
     private readonly httpService: HttpService,
-    private readonly reflector: Reflector
+    private readonly reflector: Reflector,
+    @Inject(KEYCLOAK_ADMIN) private readonly keycloakAdmin?: KcAdminClient
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -61,7 +64,8 @@ export class ResourceGuard implements CanActivate {
       this.options,
       this.keycloak,
       this.httpService,
-      context
+      context,
+      this.keycloakAdmin
     );
     const resource = this.getResource(context);
     if (!resource) return true;
