@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 01:14:45
+ * Last Modified: 19-07-2021 01:18:06
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -162,6 +162,7 @@ export default class KeycloakRegisterService {
     kcAdminClient.setConfig({
       realmName: this.options.realm
     });
+    this._accessToken = kcAdminClient.accessToken;
   }
 
   async enableAuthorization() {

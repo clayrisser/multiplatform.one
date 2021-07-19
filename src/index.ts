@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 00:50:54
+ * Last Modified: 19-07-2021 01:19:23
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -68,6 +68,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
       imports: KeycloakModule.imports,
       providers: [
         KeycloakProvider,
+        KeycloakRegisterService,
         KeycloakService,
         {
           provide: KEYCLOAK_OPTIONS,
@@ -88,6 +89,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
       providers: [
         KeycloakModule.createOptionsProvider(asyncOptions),
         KeycloakProvider,
+        KeycloakRegisterService,
         KeycloakService
       ],
       exports: [KEYCLOAK_OPTIONS, KeycloakProvider, KeycloakService]
