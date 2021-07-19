@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 09:06:15
+ * Last Modified: 18-07-2021 23:35:55
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,6 +22,7 @@
  * limitations under the License.
  */
 
+import Token from 'keycloak-connect/middleware/auth-utils/token';
 import { ApiProperty } from '@nestjs/swagger';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
 
@@ -33,6 +34,11 @@ export interface HashMap<T = any> {
   [key: string]: T;
 }
 
+export interface RegisterOptions {
+  resources?: HashMap<string[]>;
+  roles?: string[];
+}
+
 export interface KeycloakOptions {
   adminClientId?: string;
   adminPassword?: string;
@@ -42,7 +48,7 @@ export interface KeycloakOptions {
   clientSecret: string;
   enforceIssuedByClient?: boolean;
   realm: string;
-  register?: boolean;
+  register?: RegisterOptions | boolean;
   strict?: boolean;
 }
 
@@ -184,6 +190,43 @@ export class GrantProperties {
 
   @ApiProperty()
   token_type?: string;
+}
+
+export class GrantTokensOptions {
+  @ApiProperty()
+  password?: string;
+
+  @ApiProperty()
+  refreshToken?: string;
+
+  @ApiProperty()
+  scope?: string | string[];
+
+  @ApiProperty()
+  username?: string;
+}
+
+export class RefreshTokenGrant {
+  @ApiProperty()
+  accessToken?: Token;
+
+  @ApiProperty()
+  expiresIn?: number;
+
+  @ApiProperty()
+  message!: string;
+
+  @ApiProperty()
+  refreshExpiresIn?: number;
+
+  @ApiProperty()
+  refreshToken?: Token;
+
+  @ApiProperty()
+  scope?: string;
+
+  @ApiProperty()
+  tokenType?: string;
 }
 
 export const KEYCLOAK_OPTIONS = 'KEYCLOAK_OPTIONS';

@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 18-07-2021 10:04:43
+ * Last Modified: 18-07-2021 23:25:49
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -29,6 +29,7 @@ import { Grant, Keycloak } from 'keycloak-connect';
 import { HttpService } from '@nestjs/axios';
 import { REQUEST } from '@nestjs/core';
 import { Request, NextFunction } from 'express';
+import { lastValueFrom } from 'rxjs';
 import {
   Injectable,
   Inject,
@@ -37,10 +38,12 @@ import {
   Logger
 } from '@nestjs/common';
 import {
+  GrantTokensOptions,
   GraphqlCtx,
   KEYCLOAK_OPTIONS,
   KeycloakOptions,
   KeycloakRequest,
+  RefreshTokenGrant,
   UserInfo
 } from './types';
 import { KEYCLOAK } from './keycloak.provider';
@@ -251,15 +254,15 @@ export default class KeycloakService {
       });
     }
     try {
-      const res = (await this.httpService
-        .post(
+      const res = (await lastValueFrom(
+        this.httpService.post(
           `${this.options.baseUrl}/auth/realms/${this.options.realm}/protocol/openid-connect/token`,
           data,
           {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
           }
         )
-        .toPromise()) as AxiosResponse<TokenResponseData>;
+      )) as AxiosResponse<TokenResponseData>;
       const {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         access_token,
@@ -329,7 +332,12 @@ export default class KeycloakService {
   async isAuthenticated(): Promise<boolean> {
     await this.init();
     const accessToken = await this.getAccessToken();
-    return !this.grant?.isExpired() && !accessToken?.isExpired();
+    return (
+      !this.grant?.isExpired() &&
+      !!accessToken &&
+      this.issuedByClient(accessToken) &&
+      !accessToken?.isExpired()
+    );
   }
 
   async authenticate(
@@ -456,13 +464,6 @@ export default class KeycloakService {
   }
 }
 
-export class GrantTokensOptions {
-  password?: string;
-  refreshToken?: string;
-  scope?: string | string[];
-  username?: string;
-}
-
 export interface TokenResponseData {
   'not-before-policy'?: number;
   access_token?: string;
@@ -473,14 +474,4 @@ export interface TokenResponseData {
   scope?: string;
   session_state?: string;
   token_type?: string;
-}
-
-export class RefreshTokenGrant {
-  accessToken?: Token;
-  expiresIn?: number;
-  message!: string;
-  refreshExpiresIn?: number;
-  refreshToken?: Token;
-  scope?: string;
-  tokenType?: string;
 }
