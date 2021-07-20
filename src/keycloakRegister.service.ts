@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 17:10:17
+ * Last Modified: 19-07-2021 23:47:57
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -79,7 +79,18 @@ export default class KeycloakRegisterService {
   private get providers(): InstanceWrapper[] {
     if (this._providers) return this._providers;
     this._providers = [
-      ...this.discoveryService.getProviders(),
+      ...this.discoveryService
+        .getProviders()
+        .reduce(
+          (
+            providers: InstanceWrapper<any>[],
+            provider: InstanceWrapper<any>
+          ) => {
+            if (/Resolver$/.test(provider.name)) providers.push(provider);
+            return providers;
+          },
+          []
+        ),
       ...this.discoveryService.getControllers()
     ];
     return this._providers;
@@ -90,10 +101,16 @@ export default class KeycloakRegisterService {
       ...this.providers.reduce(
         (roles: Set<string>, controller: InstanceWrapper) => {
           const methods = getMethods(controller.instance);
-          const values = this.reflector.getAllAndMerge(AUTHORIZED, [
-            controller.metatype,
-            ...methods
-          ]);
+          let values: any[] = [];
+          try {
+            values = this.reflector.getAllAndMerge(AUTHORIZED, [
+              controller.metatype,
+              ...methods
+            ]);
+          } catch (err) {
+            this.logger.warn(err);
+            // noop
+          }
           return new Set([...roles, ...values.flat()]);
         },
         new Set()
