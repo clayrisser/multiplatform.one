@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 07:21:42
+ * Last Modified: 19-07-2021 23:51:51
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,8 +22,8 @@
  * limitations under the License.
  */
 
+import { DiscoveryModule, APP_GUARD } from '@nestjs/core';
 import { HttpModule } from '@nestjs/axios';
-import { DiscoveryModule } from '@nestjs/core';
 import {
   DynamicModule,
   Global,
@@ -39,6 +39,7 @@ import KeycloakMiddleware from './keycloak.middleware';
 import KeycloakProvider from './keycloak.provider';
 import KeycloakRegisterService from './keycloakRegister.service';
 import KeycloakService from './keycloak.service';
+import { AuthGuard, ResourceGuard } from './guards';
 import {
   KeycloakOptions,
   KeycloakAsyncOptions,
@@ -75,6 +76,14 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
         {
           provide: KEYCLOAK_OPTIONS,
           useValue: options
+        },
+        {
+          provide: APP_GUARD,
+          useClass: AuthGuard
+        },
+        {
+          provide: APP_GUARD,
+          useClass: ResourceGuard
         }
       ],
       exports: [
@@ -99,7 +108,15 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
         KeycloakModule.createOptionsProvider(asyncOptions),
         KeycloakProvider,
         KeycloakRegisterService,
-        KeycloakService
+        KeycloakService,
+        {
+          provide: APP_GUARD,
+          useClass: AuthGuard
+        },
+        {
+          provide: APP_GUARD,
+          useClass: ResourceGuard
+        }
       ],
       exports: [
         KEYCLOAK_OPTIONS,
