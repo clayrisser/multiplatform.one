@@ -21,9 +21,5 @@
       "~tests/*": ["tests/*"]
     }
   },
-  "include": [
-    ".eslintrc.js",
-    "src",
-    "tests"
-  ]
+  "include": [".eslintrc.js", "src", "tests"]
 }
