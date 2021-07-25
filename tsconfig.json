@@ -24,9 +24,6 @@
   "include": [
     ".eslintrc.js",
     "src",
-    "tests",
-    "typegraphql.d.ts",
-    "typegraphql.js",
-    "webpack.config.js"
+    "tests"
   ]
 }

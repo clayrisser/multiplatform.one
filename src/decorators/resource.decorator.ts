@@ -1,10 +1,10 @@
 /**
- * File: /.eslintrc.js
+ * File: /src/decorators/resource.decorator.ts
  * Project: nestjs-keycloak
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 16:23:09
+ * Last Modified: 25-07-2021 04:18:28
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -24,6 +24,6 @@
 
 import { SetMetadata } from '@nestjs/common';
 
-export const RESOURCE = 'resource';
+export const RESOURCE = 'KEYCLOAK_RESOURCE';
 
 export const Resource = (resource: string) => SetMetadata(RESOURCE, resource);
