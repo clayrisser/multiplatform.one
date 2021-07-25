@@ -1,10 +1,10 @@
 /**
- * File: /.eslintrc.js
+ * File: /src/decorators/public.decorator.ts
  * Project: nestjs-keycloak
- * File Created: 14-07-2021 11:43:59
+ * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 16:23:09
+ * Last Modified: 25-07-2021 04:18:41
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,35 +22,10 @@
  * limitations under the License.
  */
 
-const path = require('path');
+import { SetMetadata } from '@nestjs/common';
 
-module.exports = {
-  mode: 'production',
-  entry: './src/index.ts',
-  target: 'web',
-  resolve: {
-    extensions: ['.mjs', '.tsx', '.ts', '.js', '.jsx']
-  },
-  output: {
-    filename: 'bundle.js',
-    library: 'whiskerKeycloak',
-    libraryExport: 'default',
-    libraryTarget: 'assign',
-    path: path.resolve(__dirname, 'dist')
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(m?js)|([jt]sx?)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            babelrc: true,
-            envName: 'umd'
-          }
-        }
-      }
-    ]
-  }
+export const PUBLIC = 'KEYCLOAK_PUBLIC';
+
+export const Public = () => {
+  return SetMetadata(PUBLIC, true);
 };

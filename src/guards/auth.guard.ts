@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 07:20:00
+ * Last Modified: 25-07-2021 04:23:12
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -37,7 +37,7 @@ import KeycloakService from '../keycloak.service';
 import { CREATE_KEYCLOAK_ADMIN } from '../createKeycloakAdmin.provider';
 import { KEYCLOAK } from '../keycloak.provider';
 import { KEYCLOAK_OPTIONS, KeycloakOptions } from '../types';
-import { RESOURCE, AUTHORIZED } from '../decorators';
+import { RESOURCE, AUTHORIZED, PUBLIC } from '../decorators';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -53,6 +53,9 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const isPublic = this.getPublic(context);
+    const roles = this.getRoles(context);
+    if (isPublic || typeof roles === 'undefined') return true;
     const keycloakService = new KeycloakService(
       this.options,
       this.keycloak,
@@ -60,8 +63,6 @@ export class AuthGuard implements CanActivate {
       context,
       this.createKeycloakAdmin
     );
-    const roles = this.getRoles(context);
-    if (typeof roles === 'undefined') return true;
     const username = (await keycloakService.getUserInfo())?.preferredUsername;
     if (!username) return false;
     const resource = this.getResource(context);
@@ -94,6 +95,10 @@ export class AuthGuard implements CanActivate {
       return undefined;
     }
     return [...new Set([...(handlerRoles || []), ...(classRoles || [])])];
+  }
+
+  private getPublic(context: ExecutionContext): boolean {
+    return !!this.reflector.get<boolean>(PUBLIC, context.getHandler());
   }
 
   private getResource(context: ExecutionContext) {
