@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-07-2021 04:23:12
+ * Last Modified: 25-07-2021 04:33:11
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -53,7 +53,7 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const isPublic = this.getPublic(context);
+    const isPublic = this.getIsPublic(context);
     const roles = this.getRoles(context);
     if (isPublic || typeof roles === 'undefined') return true;
     const keycloakService = new KeycloakService(
@@ -97,7 +97,7 @@ export class AuthGuard implements CanActivate {
     return [...new Set([...(handlerRoles || []), ...(classRoles || [])])];
   }
 
-  private getPublic(context: ExecutionContext): boolean {
+  private getIsPublic(context: ExecutionContext): boolean {
     return !!this.reflector.get<boolean>(PUBLIC, context.getHandler());
   }
 
