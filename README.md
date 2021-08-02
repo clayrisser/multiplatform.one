@@ -140,10 +140,6 @@ the `adminUser` and `adminPassword` configuration.
 If you want to log the registraion api calls to KeyCloak during the application bootstrap, you can setup
 [nestjs-axios-logger](https://www.npmjs.com/package/nestjs-axios-logger) as demonstrated below.
 
-You can find a full example at the link below.
-
-https://github.com/clayrisser/nestjs-example/blob/main/src/app.ts
-
 ### KeyCloak Service
 
 The keycloak service provides a ton of awesome utility methods. Here are just a few
@@ -167,6 +163,12 @@ it does not make an api call to the server.
 You can find all of the available methods at the link below.
 
 https://github.com/silicon-hills/nestjs-keycloak/blob/main/src/keycloak.service.ts
+
+### Example
+
+You can find a full example at the link below.
+
+https://github.com/clayrisser/nestjs-example/blob/main/src/app.ts
 
 ## License
 
