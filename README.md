@@ -79,7 +79,7 @@ getCats() {
 }
 ```
 
-You can specify a union of roles by using an array. The following example
+You can specify an intersection of roles as well. The following example
 means a user must have at least the role `one`, `two` or `three`.
 
 ```ts
