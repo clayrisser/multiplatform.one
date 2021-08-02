@@ -8,7 +8,7 @@ Please ★ this repo if you found it useful ★ ★ ★
 
 What sets this apart from projects such as [nest-keycloak-connect](https://www.npmjs.com/package/nest-keycloak-connect) is
 the support for [TypeGraphQL](https://typegraphql.com) using [nestjs-keycloak-typegraphql](https://www.npmjs.com/package/nestjs-keycloak-typegraphql).
-This makes it possible to use this with projects such as [https://www.npmjs.com/package/typegraphql-nestjs](https://www.npmjs.com/package/typegraphql-nestjs)
+This makes it possible to use this with projects such as [typegraphql-nestjs](https://www.npmjs.com/package/typegraphql-nestjs)
 and [typegraphql-prisma](https://www.npmjs.com/package/typegraphql-prisma).
 
 There are several key decisions in the architecture that differ from [nest-keycloak-connect](https://www.npmjs.com/package/nest-keycloak-connect). Most of these decisions were made to increase comptiblity with [TypeGraphQL](https://typegraphql.com). The most obvious difference is that all
