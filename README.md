@@ -17,6 +17,7 @@ the `@Roles()` decorator is replaced with [`@Authorized()`](src/decorators/autho
 TypeGraphQL `@Authorized()` decorator.
 
 [src/decorators/authorized.decorator.ts](src/decorators/authorized.decorator.ts)
+
 [https://typegraphql.com/docs/authorization.html](https://typegraphql.com/docs/authorization.html)
 
 There are also some enhancements such as the ability to use a union or intersection of roles.
