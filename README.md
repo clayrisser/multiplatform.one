@@ -22,6 +22,7 @@ TypeGraphQL `@Authorized()` decorator.
 There are also some enhancements such as the ability to use a union or intersection of roles.
 
 Another key enhancement is the automatic registration of resources, roles and scopes with KeyCloak during the bootstrapping of the application.
+
 https://github.com/silicon-hills/nestjs-keycloak/blob/main/src/keycloakRegister.service.ts#L170
 
 
