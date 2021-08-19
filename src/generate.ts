@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 18:34:35
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 14-07-2021 19:06:47
+ * Last Modified: 19-08-2021 12:45:32
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -34,6 +34,7 @@ const { env } = process;
 const prismaPath = process.cwd();
 
 export default async function generate() {
+  const sqliteUrl = env.SQLITE_URL || 'file:./sqlite.db';
   const postgresUrl = env.POSTGRES_URL
     ? env.POSTGRES_URL
     : `postgresql://${env.POSTGRES_USERNAME || 'postgres'}:${
@@ -52,6 +53,7 @@ export default async function generate() {
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 GENERATED_POSTGRES_URL=${postgresUrl}
+GENERATED_SQLITE_URL=${sqliteUrl}
 `
   );
   await execa('node', [prisma, 'generate'], { stdio: 'inherit' });
