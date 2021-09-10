@@ -4,7 +4,7 @@
  * File Created: 19-07-2021 06:06:32
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 10-09-2021 10:21:04
+ * Last Modified: 10-09-2021 12:51:54
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -35,7 +35,7 @@ const CreateKeycloakAdminProvider: FactoryProvider<
   inject: [KEYCLOAK_OPTIONS],
   useFactory: (options: KeycloakOptions) => async () => {
     if (!options.adminUsername || !options.adminPassword) return undefined;
-    const keycloakAdmin = new KcAdminClient();
+    const keycloakAdmin = new KcAdminClient({ baseUrl: options.baseUrl });
     await keycloakAdmin.auth({
       clientId: options.adminClientId || 'admin-cli',
       grantType: 'password',
