@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 10-09-2021 10:22:14
+ * Last Modified: 10-09-2021 10:33:07
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -30,6 +30,7 @@ import difference from 'lodash.difference';
 import { DiscoveryService, Reflector } from '@nestjs/core';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
 import { Logger, Inject } from '@nestjs/common';
+import KeycloakService from './keycloak.service';
 import { AUTHORIZED } from './decorators/authorized.decorator';
 import { RESOURCE } from './decorators/resource.decorator';
 import { SCOPES } from './decorators/scopes.decorator';
@@ -53,7 +54,8 @@ export default class KeycloakRegisterService {
   constructor(
     @Inject(KEYCLOAK_OPTIONS) private readonly options: KeycloakOptions,
     private readonly discoveryService: DiscoveryService,
-    private readonly reflector: Reflector
+    private readonly reflector: Reflector,
+    private readonly keycloakService: KeycloakService
   ) {
     this.registerOptions = {
       roles: [],
@@ -169,6 +171,8 @@ export default class KeycloakRegisterService {
 
   async register(force = false) {
     if (!force && !this.canRegister) return;
+    this.logger.log('waiting for keycloak');
+    await this.keycloakService.waitForReady();
     this.logger.log('registering keycloak');
     await this.initializeKeycloakAdmin();
     await this.enableAuthorization();
