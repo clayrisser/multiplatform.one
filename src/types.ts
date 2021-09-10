@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 16:21:08
+ * Last Modified: 10-09-2021 10:27:33
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -24,7 +24,7 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
-import { RequiredActionAlias } from 'keycloak-admin/lib/defs/requiredActionProviderRepresentation';
+import { RequiredActionAlias } from '@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation';
 import Token, {
   ResourceAccess
 } from 'keycloak-connect/middleware/auth-utils/token';
@@ -95,6 +95,11 @@ export interface Kauth {
 export interface GraphqlCtx {
   req?: KeycloakRequest<Request>;
   res?: Response;
+  [key: string]: any;
+}
+
+export interface KeycloakError extends Error {
+  statusCode: number;
   [key: string]: any;
 }
 

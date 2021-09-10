@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 23:47:57
+ * Last Modified: 10-09-2021 10:22:14
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,10 +22,10 @@
  * limitations under the License.
  */
 
-import KcAdminClient from 'keycloak-admin';
-import ResourceRepresentation from 'keycloak-admin/lib/defs/resourceRepresentation';
-import RoleRepresentation from 'keycloak-admin/lib/defs/roleRepresentation';
-import ScopeRepresentation from 'keycloak-admin/lib/defs/scopeRepresentation';
+import KcAdminClient from '@keycloak/keycloak-admin-client';
+import ResourceRepresentation from '@keycloak/keycloak-admin-client/lib/defs/resourceRepresentation';
+import RoleRepresentation from '@keycloak/keycloak-admin-client/lib/defs/roleRepresentation';
+import ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation';
 import difference from 'lodash.difference';
 import { DiscoveryService, Reflector } from '@nestjs/core';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';

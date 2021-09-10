@@ -1,10 +1,10 @@
 /**
- * File: /src/keycloakAdmin.provider.ts
+ * File: /src/createKeycloakAdmin.provider.ts
  * Project: nestjs-keycloak
  * File Created: 19-07-2021 06:06:32
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 07:10:49
+ * Last Modified: 10-09-2021 10:21:04
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-import KcAdminClient from 'keycloak-admin';
+import KcAdminClient from '@keycloak/keycloak-admin-client';
 import { FactoryProvider } from '@nestjs/common';
 import { KeycloakOptions, KEYCLOAK_OPTIONS } from './types';
 
