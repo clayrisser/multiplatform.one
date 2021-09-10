@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-07-2021 04:33:11
+ * Last Modified: 10-09-2021 10:21:42
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-import KcAdminClient from 'keycloak-admin';
+import KcAdminClient from '@keycloak/keycloak-admin-client';
 import { HttpService } from '@nestjs/axios';
 import { Keycloak } from 'keycloak-connect';
 import { Reflector } from '@nestjs/core';

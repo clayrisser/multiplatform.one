@@ -7,11 +7,11 @@
 Please ★ this repo if you found it useful ★ ★ ★
 
 What sets this apart from projects such as [nest-keycloak-connect](https://www.npmjs.com/package/nest-keycloak-connect) is
-the several awesome enahancements as well as support for [TypeGraphQL](https://typegraphql.com) using [nestjs-keycloak-typegraphql](https://www.npmjs.com/package/nestjs-keycloak-typegraphql).
+the several awesome enhancements as well as support for [TypeGraphQL](https://typegraphql.com) using [nestjs-keycloak-typegraphql](https://www.npmjs.com/package/nestjs-keycloak-typegraphql).
 This makes it possible to use this with projects such as [typegraphql-nestjs](https://www.npmjs.com/package/typegraphql-nestjs)
 and [typegraphql-prisma](https://www.npmjs.com/package/typegraphql-prisma).
 
-There are several key decisions in the architecture that differ from [nest-keycloak-connect](https://www.npmjs.com/package/nest-keycloak-connect). Most of these decisions were made to increase comptiblity with [TypeGraphQL](https://typegraphql.com). The most obvious difference is that all
+There are several key decisions in the architecture that differ from [nest-keycloak-connect](https://www.npmjs.com/package/nest-keycloak-connect). Most of these decisions were made to increase compatibility with [TypeGraphQL](https://typegraphql.com). The most obvious difference is that all
 the controllers and resolvers are public by default, unless a decorator explicitly annotates a class or method. Another key difference is that
 the `@Roles()` decorator is replaced with [`@Authorized()`](src/decorators/authorized.decorator.ts). It works basically the same way as the
 TypeGraphQL `@Authorized()` decorator.
@@ -25,7 +25,6 @@ There are also some enhancements such as the ability to use a union or intersect
 Another key enhancement is the automatic registration of resources, roles and scopes with KeyCloak during the bootstrapping of the application.
 
 https://github.com/silicon-hills/nestjs-keycloak/blob/main/src/keycloakRegister.service.ts#L170
-
 
 ## Installation
 
@@ -46,24 +45,24 @@ import KeycloakModule from 'nestjs-keycloak';
 ```
 
 ```ts
-    KeycloakModule.registerAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        return {
-          adminClientId: config.get('KEYCLOAK_ADMIN_CLIENT_ID') || '',
-          adminPassword: config.get('KEYCLOAK_ADMIN_PASSWORD') || '',
-          adminUsername: config.get('KEYCLOAK_ADMIN_USERNAME') || '',
-          baseUrl: config.get('KEYCLOAK_BASE_URL') || '',
-          clientId: config.get('KEYCLOAK_CLIENT_ID') || '',
-          clientSecret: config.get('KEYCLOAK_CLIENT_SECRET') || '',
-          realm: config.get('KEYCLOAK_REALM') || '',
-          register: {
-            resources: {},
-            roles: []
-          }
-        };
+KeycloakModule.registerAsync({
+  inject: [ConfigService],
+  useFactory: (config: ConfigService) => {
+    return {
+      adminClientId: config.get('KEYCLOAK_ADMIN_CLIENT_ID') || '',
+      adminPassword: config.get('KEYCLOAK_ADMIN_PASSWORD') || '',
+      adminUsername: config.get('KEYCLOAK_ADMIN_USERNAME') || '',
+      baseUrl: config.get('KEYCLOAK_BASE_URL') || '',
+      clientId: config.get('KEYCLOAK_CLIENT_ID') || '',
+      clientSecret: config.get('KEYCLOAK_CLIENT_SECRET') || '',
+      realm: config.get('KEYCLOAK_REALM') || '',
+      register: {
+        resources: {},
+        roles: []
       }
-    })
+    };
+  }
+});
 ```
 
 ### Unions and Intersections
@@ -124,7 +123,7 @@ import KeycloakTypegraphql from 'nestjs-keycloak-typegraphql';
 ```
 
 ```ts
-    KeycloakTypegraphql.register({})
+KeycloakTypegraphql.register({});
 ```
 
 ### Decorators
@@ -133,11 +132,11 @@ https://github.com/silicon-hills/nestjs-keycloak/tree/main/src/decorators
 
 ### KeyCloak Registration
 
-One of the really cool things about this project is the automatic registraion of
+One of the really cool things about this project is the automatic registration of
 roles, resources and scopes with keycloak. This will only work if you provide
 the `adminUser` and `adminPassword` configuration.
 
-If you want to log the registraion api calls to KeyCloak during the application bootstrap, you can setup
+If you want to log the registration api calls to KeyCloak during the application bootstrap, you can setup
 [nestjs-axios-logger](https://www.npmjs.com/package/nestjs-axios-logger) as demonstrated below.
 
 ### KeyCloak Service

@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 26-07-2021 18:05:23
+ * Last Modified: 10-09-2021 10:27:52
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,9 +22,9 @@
  * limitations under the License.
  */
 
-import KcAdminClient from 'keycloak-admin';
+import KcAdminClient from '@keycloak/keycloak-admin-client';
 import Token from 'keycloak-connect/middleware/auth-utils/token';
-import UserRepresentation from 'keycloak-admin/lib/defs/userRepresentation';
+import UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
 import qs from 'qs';
 import { AxiosResponse } from 'axios';
 import { Grant, Keycloak } from 'keycloak-connect';
@@ -46,7 +46,8 @@ import {
   KeycloakOptions,
   KeycloakRequest,
   RefreshTokenGrant,
-  UserInfo
+  UserInfo,
+  KeycloakError
 } from './types';
 import { KEYCLOAK } from './keycloak.provider';
 import { CREATE_KEYCLOAK_ADMIN } from './createKeycloakAdmin.provider';
@@ -183,15 +184,16 @@ export default class KeycloakService {
         this.sessionSetTokens(tokens.accessToken, tokens.refreshToken);
         if (tokens.accessToken) accessToken = tokens.accessToken;
       } catch (err) {
-        if (err.statusCode && err.statusCode < 500) {
+        const error = err as KeycloakError;
+        if (error.statusCode && error.statusCode < 500) {
           this.logger.error(
-            `${err.statusCode}:`,
-            ...[err.message ? [err.message] : []],
-            ...[err.payload ? [JSON.stringify(err.payload)] : []]
+            `${error.statusCode}:`,
+            ...[error.message ? [error.message] : []],
+            ...[error.payload ? [JSON.stringify(error.payload)] : []]
           );
           return null;
         }
-        throw err;
+        throw error;
       }
     }
     this._accessToken = accessToken;
@@ -301,16 +303,17 @@ export default class KeycloakService {
         scope
       };
     } catch (err) {
-      if (err.response?.data && err.response?.status) {
-        const { data } = err.response;
-        err.statusCode = err.response.status;
-        err.payload = {
+      const error = err as KeycloakError;
+      if (error.response?.data && error.response?.status) {
+        const { data } = error.response;
+        error.statusCode = error.response.status;
+        error.payload = {
           error: data.error,
           message: data.error_description || '',
-          statusCode: err.statusCode
+          statusCode: error.statusCode
         };
       }
-      throw err;
+      throw error;
     }
   }
 
@@ -407,6 +410,17 @@ export default class KeycloakService {
         }
       );
     });
+  }
+
+  async waitForReady(pingInterval = 5000): Promise<void> {
+    const res = await lastValueFrom(
+      this.httpService.get(`${this.options.baseUrl}/auth`)
+    );
+    if (res.status > 399) {
+      await new Promise((r) => setTimeout(r, pingInterval));
+      return this.waitForReady(pingInterval);
+    }
+    return undefined;
   }
 
   private issuedByClient(token: Token, clientId?: string) {
