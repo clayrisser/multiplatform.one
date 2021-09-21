@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-09-2021 22:12:24
+ * Last Modified: 21-09-2021 15:40:15
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -30,6 +30,7 @@ import {
   ExceptionFilter,
   HttpException,
   Inject,
+  Logger,
   SetMetadata,
   UseFilters,
   applyDecorators
@@ -48,9 +49,16 @@ export const Authorized = (...roles: (string | string[])[]) => {
 };
 
 export class UnauthorizedFilter implements ExceptionFilter {
+  private logger = new Logger(UnauthorizedFilter.name);
+
   constructor(@Inject(KEYCLOAK_OPTIONS) private options: KeycloakOptions) {}
 
-  catch(exception: HttpException, host: ArgumentsHost) {
+  catch(err: HttpException | Error, host: ArgumentsHost) {
+    let exception = err as HttpException;
+    if (!exception.getStatus) {
+      this.logger.error(err);
+      exception = new HttpException(err.message || err.toString(), 500);
+    }
     const req = host.switchToHttp()?.getRequest<KeycloakRequest<Request>>();
     const res = host.switchToHttp()?.getResponse<Response>();
     if (req.redirectUnauthorized) {
@@ -68,7 +76,7 @@ export class UnauthorizedFilter implements ExceptionFilter {
           ? `${baseUrl}${this.options.defaultCallbackEndpoint}`
           : this.options.defaultCallbackEndpoint
         : `${baseUrl}/auth/callback`;
-      return res.status(exception.getStatus()).redirect(
+      return res.status(301).redirect(
         `${this.options.baseUrl}/auth/realms/${
           this.options.realm
         }/protocol/openid-connect/auth?${new URLSearchParams({
@@ -84,7 +92,7 @@ export class UnauthorizedFilter implements ExceptionFilter {
         }).toString()}`
       );
     }
-    return res.status(exception.getStatus()).json(exception.getResponse());
+    return res.status(exception?.getStatus()).json(exception.getResponse());
   }
 
   private getBaseUrl(req: Request): string {
