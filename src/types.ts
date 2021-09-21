@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 10-09-2021 10:27:33
+ * Last Modified: 20-09-2021 21:40:48
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -49,6 +49,7 @@ export interface KeycloakOptions {
   baseUrl: string;
   clientId: string;
   clientSecret: string;
+  defaultCallbackEndpoint?: string;
   enforceIssuedByClient?: boolean;
   realm: string;
   register?: RegisterOptions | boolean;
@@ -74,7 +75,9 @@ export class UserInfo {
 }
 
 export type KeycloakRequest<T = Request> = {
+  annotationKeys?: Set<string>;
   kauth?: Kauth;
+  redirectUnauthorized?: RedirectMeta | false;
   resourceDenied?: boolean;
   session?: {
     token?: string;
@@ -215,6 +218,36 @@ export class GrantTokensOptions {
 
   @ApiProperty()
   username?: string;
+
+  @ApiProperty()
+  authorizationCode?: string;
+
+  @ApiProperty()
+  redirectUri?: string;
+}
+
+export class PasswordGrantOptions {
+  @ApiProperty()
+  password?: string;
+
+  @ApiProperty()
+  scope?: string | string[];
+
+  @ApiProperty()
+  username?: string;
+}
+
+export class RefreshTokenGrantOptions {
+  @ApiProperty()
+  refreshToken?: string;
+}
+
+export class AuthorizationCodeGrantOptions {
+  @ApiProperty()
+  code?: string;
+
+  @ApiProperty()
+  redirectUri?: string;
 }
 
 export class RefreshTokenGrant {
@@ -381,3 +414,8 @@ export class User {
 }
 
 export const KEYCLOAK_OPTIONS = 'KEYCLOAK_OPTIONS';
+
+export interface RedirectMeta {
+  status: number;
+  url: string;
+}

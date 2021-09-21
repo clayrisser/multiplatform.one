@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 10-09-2021 10:21:42
+ * Last Modified: 20-09-2021 22:40:44
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -25,7 +25,9 @@
 import KcAdminClient from '@keycloak/keycloak-admin-client';
 import { HttpService } from '@nestjs/axios';
 import { Keycloak } from 'keycloak-connect';
+import { RENDER_METADATA } from '@nestjs/common/constants';
 import { Reflector } from '@nestjs/core';
+import { Request } from 'express';
 import {
   CanActivate,
   ExecutionContext,
@@ -36,8 +38,14 @@ import {
 import KeycloakService from '../keycloak.service';
 import { CREATE_KEYCLOAK_ADMIN } from '../createKeycloakAdmin.provider';
 import { KEYCLOAK } from '../keycloak.provider';
-import { KEYCLOAK_OPTIONS, KeycloakOptions } from '../types';
+import { REDIRECT_UNAUTHORIZED } from '../decorators/redirectUnauthorized.decorator';
 import { RESOURCE, AUTHORIZED, PUBLIC } from '../decorators';
+import {
+  KEYCLOAK_OPTIONS,
+  KeycloakOptions,
+  KeycloakRequest,
+  RedirectMeta
+} from '../types';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -63,6 +71,24 @@ export class AuthGuard implements CanActivate {
       context,
       this.createKeycloakAdmin
     );
+    const req = context.switchToHttp().getRequest<KeycloakRequest<Request>>();
+    const redirectFrom = decodeURIComponent(
+      new URLSearchParams(req?.originalUrl?.split('?')?.[1] || '').get(
+        'redirect_from'
+      ) || ''
+    );
+    if (req && !redirectFrom) {
+      // adds defer flags to req object
+      const render = this.getRender(context);
+      const unauthorizedRedirect = this.getUnauthorizedRedirect(context);
+      if (typeof unauthorizedRedirect !== 'undefined') {
+        req.redirectUnauthorized = unauthorizedRedirect;
+      }
+      if (render) {
+        if (!req.annotationKeys) req.annotationKeys = new Set();
+        req.annotationKeys.add(RENDER_METADATA);
+      }
+    }
     const username = (await keycloakService.getUserInfo())?.preferredUsername;
     if (!username) return false;
     const resource = this.getResource(context);
@@ -97,11 +123,24 @@ export class AuthGuard implements CanActivate {
     return [...new Set([...(handlerRoles || []), ...(classRoles || [])])];
   }
 
+  private getRender(context: ExecutionContext) {
+    return this.reflector.get<string>(RENDER_METADATA, context.getHandler());
+  }
+
   private getIsPublic(context: ExecutionContext): boolean {
     return !!this.reflector.get<boolean>(PUBLIC, context.getHandler());
   }
 
   private getResource(context: ExecutionContext) {
     return this.reflector.get<string>(RESOURCE, context.getClass());
+  }
+
+  private getUnauthorizedRedirect(
+    context: ExecutionContext
+  ): RedirectMeta | false | void {
+    return this.reflector.get<RedirectMeta>(
+      REDIRECT_UNAUTHORIZED,
+      context.getHandler()
+    );
   }
 }
