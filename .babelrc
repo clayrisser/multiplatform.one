@@ -4,7 +4,6 @@
       "@babel/preset-env",
       {
         "corejs": 3,
-        "loose": false,
         "spec": true,
         "useBuiltIns": "usage",
         "targets": {
@@ -48,7 +47,6 @@
           "@babel/preset-env",
           {
             "corejs": 3,
-            "loose": false,
             "modules": false,
             "spec": true,
             "useBuiltIns": "usage",
@@ -87,7 +85,6 @@
           "@babel/preset-env",
           {
             "corejs": 3,
-            "loose": false,
             "modules": "umd",
             "spec": true,
             "useBuiltIns": "usage",
