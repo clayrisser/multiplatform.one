@@ -4,7 +4,7 @@
       "@babel/preset-env",
       {
         "corejs": 3,
-        "loose": true,
+        "loose": false,
         "spec": true,
         "useBuiltIns": "usage",
         "targets": {
@@ -27,7 +27,7 @@
     "babel-plugin-macros",
     "babel-plugin-transform-typescript-metadata",
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
-    ["@babel/plugin-proposal-class-properties", { "loose": true }],
+    ["@babel/plugin-proposal-class-properties"],
     "@babel/plugin-proposal-optional-chaining",
     "@babel/plugin-transform-runtime",
     [
@@ -48,7 +48,7 @@
           "@babel/preset-env",
           {
             "corejs": 3,
-            "loose": true,
+            "loose": false,
             "modules": false,
             "spec": true,
             "useBuiltIns": "usage",
@@ -87,7 +87,7 @@
           "@babel/preset-env",
           {
             "corejs": 3,
-            "loose": true,
+            "loose": false,
             "modules": "umd",
             "spec": true,
             "useBuiltIns": "usage",
