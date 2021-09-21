@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 23:51:51
+ * Last Modified: 21-09-2021 16:46:25
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -30,6 +30,7 @@ import {
   Logger,
   MiddlewareConsumer,
   Module,
+  OnApplicationBootstrap,
   NestModule,
   OnModuleInit,
   RequestMethod
@@ -48,19 +49,17 @@ import {
 
 @Global()
 @Module({})
-export default class KeycloakModule implements OnModuleInit, NestModule {
+export default class KeycloakModule
+  implements OnModuleInit, OnApplicationBootstrap
+{
   private readonly logger = new Logger(KeycloakModule.name);
 
   private static imports = [HttpModule, DiscoveryModule];
 
   constructor(
     private readonly keycloakRegisterService: KeycloakRegisterService
-  ) {}
-
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(KeycloakMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
+  ) {
+    console.log('CONSTRUCTED');
   }
 
   public static register(options: KeycloakOptions): DynamicModule {
@@ -99,6 +98,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
   public static registerAsync(
     asyncOptions: KeycloakAsyncOptions
   ): DynamicModule {
+    console.log('REGISTER ASYNC');
     return {
       module: KeycloakModule,
       global: true,
@@ -140,8 +140,21 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
   }
 
   async onModuleInit() {
-    await this.keycloakRegisterService.register();
+    console.log('ON MODULE INIT');
   }
+
+  onApplicationBootstrap() {
+    console.log('YAY BOOTED');
+  }
+
+  // async configure(consumer: MiddlewareConsumer) {
+  //   console.log('CONFIGURING MIDDLEWARE');
+  //   await this.keycloakRegisterService.register();
+  //   consumer
+  //     .apply(KeycloakMiddleware)
+  //     .forRoutes({ path: '*', method: RequestMethod.ALL });
+  //   console.log('YAY DONE');
+  // }
 }
 
 export {

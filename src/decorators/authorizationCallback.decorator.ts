@@ -1,10 +1,10 @@
 /**
- * File: /src/decorators/index.ts
+ * File: /src/decorators/authorizationCallback.decorator.ts
  * Project: nestjs-keycloak
- * File Created: 15-07-2021 22:24:44
+ * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-09-2021 15:59:17
+ * Last Modified: 21-09-2021 15:53:51
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,9 +22,10 @@
  * limitations under the License.
  */
 
-export * from './authorizationCallback.decorator';
-export * from './authorized.decorator';
-export * from './public.decorator';
-export * from './redirectUnauthorized.decorator';
-export * from './resource.decorator';
-export * from './scopes.decorator';
+import { SetMetadata } from '@nestjs/common';
+
+export const AUTHORIZATION_CALLBACK = 'KEYCLOAK_AUTHORIZATION_CALLBACK';
+
+export const AuthorizationCallback = () => {
+  return SetMetadata(AUTHORIZATION_CALLBACK, {});
+};

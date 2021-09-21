@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-09-2021 15:40:15
+ * Last Modified: 21-09-2021 15:55:30
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -71,7 +71,7 @@ export class UnauthorizedFilter implements ExceptionFilter {
       req.annotationKeys?.has(RENDER_METADATA)
     ) {
       const baseUrl = this.getBaseUrl(req);
-      const callbackEndpoint = this.options.defaultCallbackEndpoint
+      const authorizationCallbackEndpoint = this.options.defaultCallbackEndpoint
         ? this.options.defaultCallbackEndpoint[0] === '/'
           ? `${baseUrl}${this.options.defaultCallbackEndpoint}`
           : this.options.defaultCallbackEndpoint
@@ -82,7 +82,7 @@ export class UnauthorizedFilter implements ExceptionFilter {
         }/protocol/openid-connect/auth?${new URLSearchParams({
           client_id: this.options.clientId,
           redirect_uri: encodeURI(
-            `${callbackEndpoint}?redirect_uri=${encodeURIComponent(
+            `${authorizationCallbackEndpoint}?redirect_uri=${encodeURIComponent(
               `${baseUrl}${req.originalUrl}`
             )}`
           ),

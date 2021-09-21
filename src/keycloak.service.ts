@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-09-2021 15:46:22
+ * Last Modified: 21-09-2021 16:55:27
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -205,6 +205,7 @@ export default class KeycloakService {
         if (error.statusCode && error.statusCode < 500) {
           this.logger.error(
             `${error.statusCode}:`,
+            // @ts-ignore
             ...[error.message ? [error.message] : []],
             ...[error.payload ? [JSON.stringify(error.payload)] : []]
           );
@@ -491,7 +492,7 @@ export default class KeycloakService {
     return undefined;
   }
 
-  async handleCallback(
+  async handleAuthorizationCallback(
     res: Response,
     redirectUri?: string
   ): Promise<RefreshTokenGrant | null> {
@@ -503,19 +504,20 @@ export default class KeycloakService {
     query.delete('code');
     query.delete('session_state');
     query.delete('state');
-    const callbackEndpoint = this.options.defaultCallbackEndpoint
+    const authorizationCallbackEndpoint = this.options.defaultCallbackEndpoint
       ? this.options.defaultCallbackEndpoint[0] === '/'
         ? `${baseUrl}${this.options.defaultCallbackEndpoint}`
         : this.options.defaultCallbackEndpoint
       : `${baseUrl}/auth/callback`;
-    if (!redirectUri) redirectUri = `${callbackEndpoint}?${query.toString()}`;
+    if (!redirectUri)
+      redirectUri = `${authorizationCallbackEndpoint}?${query.toString()}`;
     const result = await this.authorizationCodeGrant({
       code,
       redirectUri
     });
     const finalRedirect = decodeURIComponent(query.get('redirect_uri') || '');
     if (result && res && finalRedirect) {
-      res.cookie('redirect_from', callbackEndpoint);
+      res.cookie('redirect_from', authorizationCallbackEndpoint);
       const queryString = new URLSearchParams(
         finalRedirect.split('?')?.[1] || ''
       ).toString();

@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 10-09-2021 10:33:07
+ * Last Modified: 21-09-2021 16:09:40
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -31,6 +31,7 @@ import { DiscoveryService, Reflector } from '@nestjs/core';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
 import { Logger, Inject } from '@nestjs/common';
 import KeycloakService from './keycloak.service';
+import { AUTHORIZATION_CALLBACK } from './decorators/authorizationCallback.decorator';
 import { AUTHORIZED } from './decorators/authorized.decorator';
 import { RESOURCE } from './decorators/resource.decorator';
 import { SCOPES } from './decorators/scopes.decorator';
@@ -78,6 +79,10 @@ export default class KeycloakRegisterService {
 
   private _providers: any[] | undefined;
 
+  private _roles: string[] | undefined;
+
+  private _authorizationCallbacks: string[] | undefined;
+
   private get providers(): InstanceWrapper[] {
     if (this._providers) return this._providers;
     this._providers = [
@@ -99,7 +104,8 @@ export default class KeycloakRegisterService {
   }
 
   private get roles() {
-    return [
+    if (this._roles) return this._roles;
+    this._roles = [
       ...this.providers.reduce(
         (roles: Set<string>, controller: InstanceWrapper) => {
           const methods = getMethods(controller.instance);
@@ -119,6 +125,35 @@ export default class KeycloakRegisterService {
       ),
       ...(this.registerOptions.roles || [])
     ];
+    return this._roles;
+  }
+
+  private get authorizationCallbacks(): string[] {
+    if (this._authorizationCallbacks) return this._authorizationCallbacks;
+    console.log('getting auth callbacks');
+    this._authorizationCallbacks = [
+      ...this.providers.reduce(
+        (authorizationCallbacks: Set<string>, controller: InstanceWrapper) => {
+          console.log('provider', controller.name);
+          const methods = getMethods(controller.instance);
+          console.log('methods', methods);
+          methods.forEach((method: any) => console.log(method));
+          let values: any[] = [];
+          try {
+            values = this.reflector.getAllAndMerge(
+              AUTHORIZATION_CALLBACK,
+              methods
+            );
+          } catch (err) {
+            this.logger.warn(err);
+            // noop
+          }
+          return new Set([...authorizationCallbacks, ...values.flat()]);
+        },
+        new Set()
+      )
+    ];
+    return this._authorizationCallbacks;
   }
 
   private get applicationRoles() {
@@ -170,6 +205,8 @@ export default class KeycloakRegisterService {
   }
 
   async register(force = false) {
+    console.log('registering');
+    this.authorizationCallbacks;
     if (!force && !this.canRegister) return;
     this.logger.log('waiting for keycloak');
     await this.keycloakService.waitForReady();
