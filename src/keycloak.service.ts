@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-09-2021 22:44:38
+ * Last Modified: 21-09-2021 15:46:22
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -515,10 +515,13 @@ export default class KeycloakService {
     });
     const finalRedirect = decodeURIComponent(query.get('redirect_uri') || '');
     if (result && res && finalRedirect) {
-      const query = new URLSearchParams(finalRedirect.split('?')?.[1] || '');
-      query.append('redirect_from', callbackEndpoint);
-      res.header('Authorization', `Bearer ${result?.accessToken}`);
-      res.status(301).redirect(`${finalRedirect}?${query.toString()}`);
+      res.cookie('redirect_from', callbackEndpoint);
+      const queryString = new URLSearchParams(
+        finalRedirect.split('?')?.[1] || ''
+      ).toString();
+      res
+        .status(301)
+        .redirect(`${finalRedirect}${queryString ? `?${queryString}` : ''}`);
     }
     return result;
   }

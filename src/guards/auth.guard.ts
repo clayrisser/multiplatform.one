@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-09-2021 22:40:44
+ * Last Modified: 21-09-2021 15:46:11
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -27,7 +27,7 @@ import { HttpService } from '@nestjs/axios';
 import { Keycloak } from 'keycloak-connect';
 import { RENDER_METADATA } from '@nestjs/common/constants';
 import { Reflector } from '@nestjs/core';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import {
   CanActivate,
   ExecutionContext,
@@ -72,12 +72,8 @@ export class AuthGuard implements CanActivate {
       this.createKeycloakAdmin
     );
     const req = context.switchToHttp().getRequest<KeycloakRequest<Request>>();
-    const redirectFrom = decodeURIComponent(
-      new URLSearchParams(req?.originalUrl?.split('?')?.[1] || '').get(
-        'redirect_from'
-      ) || ''
-    );
-    if (req && !redirectFrom) {
+    const res = context.switchToHttp().getResponse<Response>();
+    if (req?.session && req.cookies && !req.cookies?.redirect_from) {
       // adds defer flags to req object
       const render = this.getRender(context);
       const unauthorizedRedirect = this.getUnauthorizedRedirect(context);
@@ -89,6 +85,7 @@ export class AuthGuard implements CanActivate {
         req.annotationKeys.add(RENDER_METADATA);
       }
     }
+    if (res.clearCookie) res.clearCookie('redirect_from');
     const username = (await keycloakService.getUserInfo())?.preferredUsername;
     if (!username) return false;
     const resource = this.getResource(context);
