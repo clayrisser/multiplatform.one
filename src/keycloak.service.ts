@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 10-09-2021 10:27:52
+ * Last Modified: 20-09-2021 22:44:38
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -30,7 +30,7 @@ import { AxiosResponse } from 'axios';
 import { Grant, Keycloak } from 'keycloak-connect';
 import { HttpService } from '@nestjs/axios';
 import { REQUEST } from '@nestjs/core';
-import { Request, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { lastValueFrom } from 'rxjs';
 import {
   Injectable,
@@ -40,14 +40,17 @@ import {
   Logger
 } from '@nestjs/common';
 import {
+  AuthorizationCodeGrantOptions,
   GrantTokensOptions,
   GraphqlCtx,
   KEYCLOAK_OPTIONS,
+  KeycloakError,
   KeycloakOptions,
   KeycloakRequest,
+  PasswordGrantOptions,
   RefreshTokenGrant,
-  UserInfo,
-  KeycloakError
+  RefreshTokenGrantOptions,
+  UserInfo
 } from './types';
 import { KEYCLOAK } from './keycloak.provider';
 import { CREATE_KEYCLOAK_ADMIN } from './createKeycloakAdmin.provider';
@@ -119,6 +122,20 @@ export default class KeycloakService {
       ? new Token(this.req.session?.kauth.refreshToken, clientId)
       : null;
     return this._refreshToken;
+  }
+
+  private get baseUrl(): string {
+    if (!this.req) return '';
+    const { req } = this;
+    const host =
+      (req.get('x-forwarded-host')
+        ? req.get('x-forwarded-host')
+        : req.get('host')) ||
+      `${req.hostname}${
+        req.get('x-forwarded-port') ? `:${req.get('x-forwarded-port')}` : ''
+      }`;
+    if (!host) return req.originalUrl;
+    return `${req.get('x-forwarded-proto') || req.protocol}://${host}`;
   }
 
   // this is used privately to prevent a circular dependency
@@ -237,7 +254,9 @@ export default class KeycloakService {
   }
 
   async grantTokens({
+    authorizationCode,
     password,
+    redirectUri,
     refreshToken,
     scope,
     username
@@ -248,15 +267,28 @@ export default class KeycloakService {
       ...(Array.isArray(scope) ? scope : (scope || 'profile').split(' '))
     ];
     let data: string;
-    if (refreshToken?.length) {
+    if (refreshToken) {
+      // refresh token grant
       data = qs.stringify({
         ...(clientSecret ? { client_secret: clientSecret } : {}),
         client_id: clientId,
         grant_type: 'refresh_token',
         refresh_token: refreshToken
       });
+    } else if (authorizationCode && redirectUri) {
+      // authorization code grant
+      data = qs.stringify({
+        ...(clientSecret ? { client_secret: clientSecret } : {}),
+        client_id: clientId,
+        code: authorizationCode,
+        grant_type: 'authorization_code',
+        redirect_uri: redirectUri
+      });
     } else {
-      if (!username) throw new Error('missing username or refreshToken');
+      // password grant
+      if (!username) {
+        throw new Error('missing username, authorizationCode or refreshToken');
+      }
       data = qs.stringify({
         ...(clientSecret ? { client_secret: clientSecret } : {}),
         client_id: clientId,
@@ -363,15 +395,51 @@ export default class KeycloakService {
     );
   }
 
-  async authenticate(
-    options: GrantTokensOptions
+  async passwordGrant(
+    { username, password, scope }: PasswordGrantOptions,
+    persistSession = true
+  ): Promise<RefreshTokenGrant | null> {
+    const tokens = await this.grantTokens({ username, password, scope });
+    const { accessToken, refreshToken } = tokens;
+    if (accessToken && !this.issuedByClient(accessToken)) {
+      return null;
+    }
+    if (persistSession) this.sessionSetTokens(accessToken, refreshToken);
+    if (accessToken) this._accessToken = accessToken;
+    if (refreshToken) this._refreshToken = refreshToken;
+    await this.init(true);
+    return tokens;
+  }
+
+  async refreshTokenGrant(
+    options: RefreshTokenGrantOptions,
+    persistSession = true
   ): Promise<RefreshTokenGrant | null> {
     const tokens = await this.grantTokens(options);
     const { accessToken, refreshToken } = tokens;
     if (accessToken && !this.issuedByClient(accessToken)) {
       return null;
     }
-    this.sessionSetTokens(accessToken, refreshToken);
+    if (persistSession) this.sessionSetTokens(accessToken, refreshToken);
+    if (accessToken) this._accessToken = accessToken;
+    if (refreshToken) this._refreshToken = refreshToken;
+    await this.init(true);
+    return tokens;
+  }
+
+  async authorizationCodeGrant(
+    { code, redirectUri }: AuthorizationCodeGrantOptions,
+    persistSession = true
+  ): Promise<RefreshTokenGrant | null> {
+    const tokens = await this.grantTokens({
+      authorizationCode: code,
+      redirectUri
+    });
+    const { accessToken, refreshToken } = tokens;
+    if (accessToken && !this.issuedByClient(accessToken)) {
+      return null;
+    }
+    if (persistSession) this.sessionSetTokens(accessToken, refreshToken);
     if (accessToken) this._accessToken = accessToken;
     if (refreshToken) this._refreshToken = refreshToken;
     await this.init(true);
@@ -421,6 +489,38 @@ export default class KeycloakService {
       return this.waitForReady(pingInterval);
     }
     return undefined;
+  }
+
+  async handleCallback(
+    res: Response,
+    redirectUri?: string
+  ): Promise<RefreshTokenGrant | null> {
+    if (!this.req) return null;
+    const { baseUrl, req } = this;
+    const query = new URLSearchParams(req.originalUrl.split('?')?.[1] || '');
+    const code = query.get('code');
+    if (!code) throw new Error('missing authorization code');
+    query.delete('code');
+    query.delete('session_state');
+    query.delete('state');
+    const callbackEndpoint = this.options.defaultCallbackEndpoint
+      ? this.options.defaultCallbackEndpoint[0] === '/'
+        ? `${baseUrl}${this.options.defaultCallbackEndpoint}`
+        : this.options.defaultCallbackEndpoint
+      : `${baseUrl}/auth/callback`;
+    if (!redirectUri) redirectUri = `${callbackEndpoint}?${query.toString()}`;
+    const result = await this.authorizationCodeGrant({
+      code,
+      redirectUri
+    });
+    const finalRedirect = decodeURIComponent(query.get('redirect_uri') || '');
+    if (result && res && finalRedirect) {
+      const query = new URLSearchParams(finalRedirect.split('?')?.[1] || '');
+      query.append('redirect_from', callbackEndpoint);
+      res.header('Authorization', `Bearer ${result?.accessToken}`);
+      res.status(301).redirect(`${finalRedirect}?${query.toString()}`);
+    }
+    return result;
   }
 
   private issuedByClient(token: Token, clientId?: string) {

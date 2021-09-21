@@ -1,10 +1,10 @@
 /**
- * File: /src/decorators/index.ts
+ * File: /src/decorators/redirectUnauthorized.decorator.ts
  * Project: nestjs-keycloak
- * File Created: 15-07-2021 22:24:44
+ * File Created: 16-09-2021 15:11:28
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 16-09-2021 16:07:42
+ * Last Modified: 20-09-2021 17:52:18
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,8 +22,13 @@
  * limitations under the License.
  */
 
-export * from './authorized.decorator';
-export * from './public.decorator';
-export * from './redirectUnauthorized.decorator';
-export * from './resource.decorator';
-export * from './scopes.decorator';
+import { SetMetadata } from '@nestjs/common';
+
+export const REDIRECT_UNAUTHORIZED = 'REDIRECT_UNAUTHORIZED';
+
+export const RedirectUnauthorized = (url: string | false, status = 301) => {
+  return SetMetadata(
+    REDIRECT_UNAUTHORIZED,
+    url ? { url: url.toString(), status } : false
+  );
+};
