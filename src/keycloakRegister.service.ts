@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-09-2021 16:09:40
+ * Last Modified: 21-09-2021 17:45:15
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -29,7 +29,7 @@ import ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/scopeR
 import difference from 'lodash.difference';
 import { DiscoveryService, Reflector } from '@nestjs/core';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
-import { Logger, Inject } from '@nestjs/common';
+import { Logger, Inject, Injectable } from '@nestjs/common';
 import KeycloakService from './keycloak.service';
 import { AUTHORIZATION_CALLBACK } from './decorators/authorizationCallback.decorator';
 import { AUTHORIZED } from './decorators/authorized.decorator';
@@ -45,6 +45,7 @@ import {
 // makes registration idempotent
 let registeredKeycloak = false;
 
+@Injectable()
 export default class KeycloakRegisterService {
   private logger = new Logger(KeycloakRegisterService.name);
 
@@ -206,7 +207,7 @@ export default class KeycloakRegisterService {
 
   async register(force = false) {
     console.log('registering');
-    this.authorizationCallbacks;
+    // this.authorizationCallbacks;
     if (!force && !this.canRegister) return;
     this.logger.log('waiting for keycloak');
     await this.keycloakService.waitForReady();
