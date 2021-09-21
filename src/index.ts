@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-09-2021 18:08:26
+ * Last Modified: 21-09-2021 18:29:54
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -47,60 +47,48 @@ import {
 } from './types';
 
 @Global()
-@Module({ imports: [], exports: [], providers: [] })
-export class KeycloakModule implements OnModuleInit {
+@Module({})
+export default class KeycloakModule implements OnModuleInit, NestModule {
   private readonly logger = new Logger(KeycloakModule.name);
 
   private static imports = [HttpModule, DiscoveryModule];
 
-  constructor() {
-    // private readonly keycloakRegisterService: KeycloakRegisterService
-    console.log('CCCCC');
+  constructor(
+    private readonly keycloakRegisterService: KeycloakRegisterService
+  ) {}
+
+  public static register(options: KeycloakOptions): DynamicModule {
+    return {
+      module: KeycloakModule,
+      global: true,
+      imports: KeycloakModule.imports,
+      providers: [
+        CreateKeycloakAdminProvider,
+        KeycloakProvider,
+        KeycloakRegisterService,
+        KeycloakService,
+        {
+          provide: KEYCLOAK_OPTIONS,
+          useValue: options
+        },
+        {
+          provide: APP_GUARD,
+          useClass: AuthGuard
+        },
+        {
+          provide: APP_GUARD,
+          useClass: ResourceGuard
+        }
+      ],
+      exports: [
+        KEYCLOAK_OPTIONS,
+        CreateKeycloakAdminProvider,
+        KeycloakProvider,
+        KeycloakRegisterService,
+        KeycloakService
+      ]
+    };
   }
-
-  onModuleInit() {
-    console.log('ON MOD INIT');
-    // this.keycloakRegisterService.register();
-  }
-
-  // configure(consumer: MiddlewareConsumer) {
-  //   consumer
-  //     .apply(KeycloakMiddleware)
-  //     .forRoutes({ path: '*', method: RequestMethod.ALL });
-  // }
-
-  // public static register(options: KeycloakOptions): DynamicModule {
-  //   return {
-  //     module: KeycloakModule,
-  //     global: true,
-  //     imports: KeycloakModule.imports,
-  //     providers: [
-  //       CreateKeycloakAdminProvider,
-  //       KeycloakProvider,
-  //       KeycloakRegisterService,
-  //       KeycloakService,
-  //       {
-  //         provide: KEYCLOAK_OPTIONS,
-  //         useValue: options
-  //       },
-  //       {
-  //         provide: APP_GUARD,
-  //         useClass: AuthGuard
-  //       },
-  //       {
-  //         provide: APP_GUARD,
-  //         useClass: ResourceGuard
-  //       }
-  //     ],
-  //     exports: [
-  //       KEYCLOAK_OPTIONS,
-  //       CreateKeycloakAdminProvider,
-  //       KeycloakProvider,
-  //       KeycloakRegisterService,
-  //       KeycloakService
-  //     ]
-  //   };
-  // }
 
   public static registerAsync(
     asyncOptions: KeycloakAsyncOptions
@@ -143,6 +131,16 @@ export class KeycloakModule implements OnModuleInit {
       provide: KEYCLOAK_OPTIONS,
       useFactory: asyncOptions.useFactory
     };
+  }
+
+  async onModuleInit() {
+    await this.keycloakRegisterService.register();
+  }
+
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(KeycloakMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }
 

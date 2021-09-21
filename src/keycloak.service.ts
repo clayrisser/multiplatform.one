@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-09-2021 17:41:50
+ * Last Modified: 21-09-2021 18:29:28
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -56,7 +56,7 @@ import { KEYCLOAK } from './keycloak.provider';
 import { CREATE_KEYCLOAK_ADMIN } from './createKeycloakAdmin.provider';
 import { getReq } from './util';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export default class KeycloakService {
   private options: KeycloakOptions;
 

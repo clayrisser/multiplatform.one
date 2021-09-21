@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-09-2021 15:53:51
+ * Last Modified: 21-09-2021 18:41:06
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -27,5 +27,5 @@ import { SetMetadata } from '@nestjs/common';
 export const AUTHORIZATION_CALLBACK = 'KEYCLOAK_AUTHORIZATION_CALLBACK';
 
 export const AuthorizationCallback = () => {
-  return SetMetadata(AUTHORIZATION_CALLBACK, {});
+  return SetMetadata(AUTHORIZATION_CALLBACK, true);
 };
