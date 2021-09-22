@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-09-2021 16:26:22
+ * Last Modified: 22-09-2021 17:03:33
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -30,7 +30,7 @@ import difference from 'lodash.difference';
 import { DiscoveryService, Reflector } from '@nestjs/core';
 import { HttpService } from '@nestjs/axios';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
-import { Logger, Inject, Injectable, Scope } from '@nestjs/common';
+import { Logger, Inject, Injectable } from '@nestjs/common';
 import { PATH_METADATA } from '@nestjs/common/constants';
 import { lastValueFrom } from 'rxjs';
 import { AUTHORIZED } from './decorators/authorized.decorator';
@@ -46,6 +46,8 @@ import {
   RegisterOptions,
   KEYCLOAK_OPTIONS
 } from './types';
+
+export const globalRegistrationMap: GlobalRegistrationMap = {};
 
 // makes registration idempotent
 let registeredKeycloak = false;
@@ -82,7 +84,9 @@ export default class KeycloakRegisterService {
 
   private _defaultAuthorizationCallback: AuthorizationCallback | undefined;
 
-  get defaultAuthorizationCallback(): AuthorizationCallback | void {
+  private get defaultAuthorizationCallback():
+    | AuthorizationCallback
+    | undefined {
     if (this._defaultAuthorizationCallback) {
       return this._defaultAuthorizationCallback;
     }
@@ -100,60 +104,6 @@ export default class KeycloakRegisterService {
       ) ||
       undefined;
     return this._defaultAuthorizationCallback;
-  }
-
-  private get canRegister() {
-    return (
-      !registeredKeycloak &&
-      !!this.options.register &&
-      this.options.adminUsername &&
-      this.options.adminPassword
-    );
-  }
-
-  private get providers(): InstanceWrapper[] {
-    if (this._providers) return this._providers;
-    this._providers = [
-      ...this.discoveryService
-        .getProviders()
-        .reduce(
-          (
-            providers: InstanceWrapper<any>[],
-            provider: InstanceWrapper<any>
-          ) => {
-            if (/Resolver$/.test(provider.name)) providers.push(provider);
-            return providers;
-          },
-          []
-        ),
-      ...this.discoveryService.getControllers()
-    ];
-    return this._providers;
-  }
-
-  private get roles() {
-    if (this._roles) return this._roles;
-    this._roles = [
-      ...this.providers.reduce(
-        (roles: Set<string>, controller: InstanceWrapper) => {
-          const methods = getMethods(controller.instance);
-          let values: any[] = [];
-          try {
-            values = this.reflector.getAllAndMerge(AUTHORIZED, [
-              controller.metatype,
-              ...methods
-            ]);
-          } catch (err) {
-            this.logger.warn(err);
-            // noop
-          }
-          return new Set([...roles, ...values.flat()]);
-        },
-        new Set()
-      ),
-      ...(this.registerOptions.roles || [])
-    ];
-    return this._roles;
   }
 
   private get authorizationCallbacks(): AuthorizationCallback[] {
@@ -210,6 +160,60 @@ export default class KeycloakRegisterService {
     return this._authorizationCallbacks;
   }
 
+  private get canRegister() {
+    return (
+      !registeredKeycloak &&
+      !!this.options.register &&
+      this.options.adminUsername &&
+      this.options.adminPassword
+    );
+  }
+
+  private get providers(): InstanceWrapper[] {
+    if (this._providers) return this._providers;
+    this._providers = [
+      ...this.discoveryService
+        .getProviders()
+        .reduce(
+          (
+            providers: InstanceWrapper<any>[],
+            provider: InstanceWrapper<any>
+          ) => {
+            if (/Resolver$/.test(provider.name)) providers.push(provider);
+            return providers;
+          },
+          []
+        ),
+      ...this.discoveryService.getControllers()
+    ];
+    return this._providers;
+  }
+
+  private get roles() {
+    if (this._roles) return this._roles;
+    this._roles = [
+      ...this.providers.reduce(
+        (roles: Set<string>, controller: InstanceWrapper) => {
+          const methods = getMethods(controller.instance);
+          let values: any[] = [];
+          try {
+            values = this.reflector.getAllAndMerge(AUTHORIZED, [
+              controller.metatype,
+              ...methods
+            ]);
+          } catch (err) {
+            this.logger.warn(err);
+            // noop
+          }
+          return new Set([...roles, ...values.flat()]);
+        },
+        new Set()
+      ),
+      ...(this.registerOptions.roles || [])
+    ];
+    return this._roles;
+  }
+
   private get applicationRoles() {
     return this.roles.filter((role: string) => !/^realm:/g.test(role));
   }
@@ -259,7 +263,8 @@ export default class KeycloakRegisterService {
   }
 
   async register(force = false) {
-    this.defaultAuthorizationCallback;
+    globalRegistrationMap.defaultAuthorizationCallback =
+      this.defaultAuthorizationCallback;
     if (!force && !this.canRegister) return;
     this.logger.log('waiting for keycloak');
     await this.waitForReady();
@@ -485,10 +490,15 @@ export default class KeycloakRegisterService {
   }
 
   private async waitForReady(pingInterval = 5000): Promise<void> {
-    const res = await lastValueFrom(
-      this.httpService.get(`${this.options.baseUrl}/auth`)
-    );
-    if (res.status > 399) {
+    try {
+      const res = await lastValueFrom(
+        this.httpService.get(`${this.options.baseUrl}/auth`)
+      );
+      if (res.status > 399) {
+        await new Promise((r) => setTimeout(r, pingInterval));
+        return this.waitForReady(pingInterval);
+      }
+    } catch (err) {
       await new Promise((r) => setTimeout(r, pingInterval));
       return this.waitForReady(pingInterval);
     }
@@ -510,4 +520,8 @@ function getMethods(obj: any): ((...args: any[]) => any)[] {
     .map((propertyName: string) => obj[propertyName]) as ((
     ...args: any[]
   ) => any)[];
+}
+
+export interface GlobalRegistrationMap {
+  defaultAuthorizationCallback?: AuthorizationCallback;
 }

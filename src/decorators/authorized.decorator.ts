@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-09-2021 01:00:34
+ * Last Modified: 22-09-2021 17:04:12
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -27,6 +27,7 @@ import { RENDER_METADATA } from '@nestjs/common/constants';
 import { Request, Response } from 'express';
 import {
   ArgumentsHost,
+  Catch,
   ExceptionFilter,
   HttpException,
   Inject,
@@ -35,7 +36,10 @@ import {
   UseFilters,
   applyDecorators
 } from '@nestjs/common';
-import KeycloakRegisterService from '../keycloakRegister.service';
+import {
+  globalRegistrationMap,
+  GlobalRegistrationMap
+} from '../keycloakRegister.service';
 import { KeycloakRequest, KEYCLOAK_OPTIONS, KeycloakOptions } from '../types';
 
 export const AUTHORIZED = 'KEYCLOAK_AUTHORIZED';
@@ -49,20 +53,13 @@ export const Authorized = (...roles: (string | string[])[]) => {
   );
 };
 
+@Catch(HttpException)
 export class UnauthorizedFilter implements ExceptionFilter {
   private logger = new Logger(UnauthorizedFilter.name);
 
-  constructor(
-    @Inject(KEYCLOAK_OPTIONS) private options: KeycloakOptions,
-    private readonly keycloakRegisterService: KeycloakRegisterService
-  ) {}
+  constructor(@Inject(KEYCLOAK_OPTIONS) private options: KeycloakOptions) {}
 
-  catch(err: HttpException | Error, host: ArgumentsHost) {
-    let exception = err as HttpException;
-    if (!exception.getStatus) {
-      this.logger.error(err);
-      exception = new HttpException(err.message || err.toString(), 500);
-    }
+  catch(exception: HttpException, host: ArgumentsHost) {
     const req = host.switchToHttp()?.getRequest<KeycloakRequest<Request>>();
     const res = host.switchToHttp()?.getResponse<Response>();
     if (req.redirectUnauthorized) {
@@ -71,7 +68,7 @@ export class UnauthorizedFilter implements ExceptionFilter {
         .redirect(req.redirectUnauthorized.url);
     }
     const authorizationCallback =
-      this.keycloakRegisterService.defaultAuthorizationCallback;
+      globalRegistrationMap.defaultAuthorizationCallback;
     if (
       authorizationCallback &&
       req.redirectUnauthorized !== false &&
