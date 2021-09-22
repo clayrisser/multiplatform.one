@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-09-2021 18:00:15
+ * Last Modified: 22-09-2021 18:30:30
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -68,7 +68,7 @@ export default class KeycloakRegisterService {
 
   private registerOptions: RegisterOptions;
 
-  private keycloakAdmin = new KcAdminClient();
+  private keycloakAdmin: KcAdminClient;
 
   constructor(
     @Inject(KEYCLOAK_OPTIONS) private readonly options: KeycloakOptions,
@@ -76,6 +76,7 @@ export default class KeycloakRegisterService {
     private readonly reflector: Reflector,
     private readonly httpService: HttpService
   ) {
+    this.keycloakAdmin = new KcAdminClient({ baseUrl: this.options.baseUrl });
     this.registerOptions = {
       roles: [],
       ...(typeof this.options.register === 'boolean'
