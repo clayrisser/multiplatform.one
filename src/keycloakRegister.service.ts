@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-09-2021 01:20:45
+ * Last Modified: 22-09-2021 16:26:22
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -86,21 +86,19 @@ export default class KeycloakRegisterService {
     if (this._defaultAuthorizationCallback) {
       return this._defaultAuthorizationCallback;
     }
-    const { baseUrl } = this.options;
-    const authorizationCallback =
+    this._defaultAuthorizationCallback =
       this.authorizationCallbacks.find(
         (authorizationCallback: AuthorizationCallback) =>
-          authorizationCallback.default
+          authorizationCallback.default &&
+          !authorizationCallback.manuel &&
+          authorizationCallback.destinationUriFromQuery
       ) ||
-      this.authorizationCallbacks?.[0] ||
+      this.authorizationCallbacks.find(
+        (authorizationCallback: AuthorizationCallback) =>
+          !authorizationCallback.manuel &&
+          authorizationCallback.destinationUriFromQuery
+      ) ||
       undefined;
-    this._defaultAuthorizationCallback =
-      authorizationCallback?.callbackEndpoint?.[0] === '/'
-        ? {
-            ...authorizationCallback,
-            callbackEndpoint: `${baseUrl}${authorizationCallback.callbackEndpoint}`
-          }
-        : authorizationCallback;
     return this._defaultAuthorizationCallback;
   }
 
@@ -184,12 +182,20 @@ export default class KeycloakRegisterService {
                     ) || '';
                   const methodPath =
                     this.reflector.get(PATH_METADATA, method) || '';
+                  let callbackEndpoint =
+                    authorizationCallback.callbackEndpoint ||
+                    `/${controllerPath}${
+                      controllerPath && methodPath ? '/' : ''
+                    }${methodPath}`;
+                  callbackEndpoint =
+                    callbackEndpoint?.[0] === '/'
+                      ? `${this.options.baseUrl}${callbackEndpoint}`
+                      : callbackEndpoint;
                   authorizationCallbacks.push({
                     destinationUriFromQuery: true,
-                    callbackEndpoint: `/${controllerPath}${
-                      controllerPath && methodPath ? '/' : ''
-                    }${methodPath}`,
-                    ...authorizationCallback
+                    manuel: false,
+                    ...authorizationCallback,
+                    callbackEndpoint
                   });
                 }
                 return authorizationCallbacks;
