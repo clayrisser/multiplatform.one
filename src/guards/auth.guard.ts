@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-09-2021 16:45:56
+ * Last Modified: 22-09-2021 18:33:37
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,44 +22,28 @@
  * limitations under the License.
  */
 
-import KcAdminClient from '@keycloak/keycloak-admin-client';
-import { HttpService } from '@nestjs/axios';
-import { Keycloak } from 'keycloak-connect';
 import { RENDER_METADATA } from '@nestjs/common/constants';
 import { Reflector } from '@nestjs/core';
 import { Request, Response } from 'express';
 import {
   CanActivate,
   ExecutionContext,
-  Inject,
   Injectable,
   Logger,
   Scope
 } from '@nestjs/common';
 import KeycloakService from '../keycloak.service';
-import { CREATE_KEYCLOAK_ADMIN } from '../createKeycloakAdmin.provider';
-import { KEYCLOAK } from '../keycloak.provider';
 import { REDIRECT_UNAUTHORIZED } from '../decorators/redirectUnauthorized.decorator';
 import { RESOURCE, AUTHORIZED, PUBLIC } from '../decorators';
-import {
-  KEYCLOAK_OPTIONS,
-  KeycloakOptions,
-  KeycloakRequest,
-  RedirectMeta
-} from '../types';
+import { KeycloakRequest, RedirectMeta } from '../types';
 
 @Injectable({ scope: Scope.REQUEST })
 export class AuthGuard implements CanActivate {
   logger = new Logger(AuthGuard.name);
 
   constructor(
-    @Inject(KEYCLOAK_OPTIONS) private options: KeycloakOptions,
-    @Inject(KEYCLOAK) private readonly keycloak: Keycloak,
-    private readonly httpService: HttpService,
     private readonly reflector: Reflector,
-    private readonly keycloakService: KeycloakService,
-    @Inject(CREATE_KEYCLOAK_ADMIN)
-    private readonly createKeycloakAdmin?: () => Promise<KcAdminClient | void>
+    private readonly keycloakService: KeycloakService
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -67,13 +51,6 @@ export class AuthGuard implements CanActivate {
     const roles = this.getRoles(context);
     if (isPublic || typeof roles === 'undefined') return true;
     const { keycloakService } = this;
-    // const keycloakService = new KeycloakService(
-    //   this.options,
-    //   this.keycloak,
-    //   this.httpService,
-    //   context,
-    //   this.createKeycloakAdmin
-    // );
     const req = context.switchToHttp().getRequest<KeycloakRequest<Request>>();
     const res = context.switchToHttp().getResponse<Response>();
     if (req?.session && req.cookies && !req.cookies?.redirect_from) {
