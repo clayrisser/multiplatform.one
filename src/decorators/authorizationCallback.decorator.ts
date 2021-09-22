@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-09-2021 16:21:27
+ * Last Modified: 22-09-2021 18:15:38
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -29,7 +29,6 @@ import { Request } from 'express';
 import {
   CallHandler,
   ExecutionContext,
-  Inject,
   Injectable,
   NestInterceptor,
   SetMetadata,
@@ -38,12 +37,7 @@ import {
   createParamDecorator
 } from '@nestjs/common';
 import KeycloakService from '../keycloak.service';
-import {
-  RefreshTokenGrant,
-  KeycloakRequest,
-  KeycloakOptions,
-  KEYCLOAK_OPTIONS
-} from '../types';
+import { RefreshTokenGrant, KeycloakRequest } from '../types';
 
 export const AUTHORIZATION_CALLBACK = 'KEYCLOAK_AUTHORIZATION_CALLBACK';
 
@@ -52,7 +46,7 @@ export const AuthorizationCallback = (
 ) => {
   return applyDecorators(
     UseInterceptors(AuthorizationCallbackInterceptor),
-    SetMetadata(AUTHORIZATION_CALLBACK, authorizationCallback)
+    SetMetadata(AUTHORIZATION_CALLBACK, authorizationCallback || {})
   );
 };
 
@@ -76,34 +70,22 @@ export const HandleAuthorizationCallback = createParamDecorator(
   (
     _data: unknown,
     context: ExecutionContext
-  ): ((
-    code?: string,
-    state?: string
-  ) => Promise<
-    (RefreshTokenGrant & { destinationUri: string; redirectUri: string }) | null
-  >) => {
+  ): HandleAuthorizationCallbackFunction => {
     const req = context.switchToHttp().getRequest();
-    return (code?: string, state?: string) => {
-      // @ts-ignore extract keycloak service from context
-      const keycloakService: KeycloakService = context.keycloakService;
-      // @ts-ignore extract reflector from context
-      const reflector: Reflector = context.reflector;
-      // @ts-ignore extract reflector from context
-      const options: KeycloakOptions = context.options;
-      // @ts-ignore
-      delete context.options;
-      // @ts-ignore
-      delete context.reflector;
-      // @ts-ignore
-      delete context.keycloakService;
-      if (!keycloakService || !reflector || !options) {
+    return async (code?: string, state?: string) => {
+      const req: KeycloakRequest<Request> = context.switchToHttp().getRequest();
+      if (!req) return null;
+      const keycloakService = req.keycloakService;
+      const reflector = req.reflector;
+      delete req.reflector;
+      delete req.keycloakService;
+      if (!keycloakService || !reflector) {
         throw new Error(
           '@AuthorizationCallback({ manuel: true }) decorator is required to use @HandleAuthorizationCallback() decorator'
         );
       }
       const authorizationCallback = getAuthorizationCallback(
         context,
-        options,
         reflector
       );
       return handleAuthorizationCallback(
@@ -121,7 +103,6 @@ export const HandleAuthorizationCallback = createParamDecorator(
 export class AuthorizationCallbackInterceptor implements NestInterceptor {
   constructor(
     private readonly keycloakService: KeycloakService,
-    @Inject(KEYCLOAK_OPTIONS) private readonly options: KeycloakOptions,
     private readonly reflector: Reflector
   ) {}
 
@@ -131,18 +112,11 @@ export class AuthorizationCallbackInterceptor implements NestInterceptor {
   ): Promise<Observable<any>> {
     const req: KeycloakRequest<Request> = context.switchToHttp().getRequest();
     const res = context.switchToHttp().getResponse();
-    // @ts-ignore add keycloak service to context so it can be accessed in param decorator
-    if (!context.keycloakService) {
-      // @ts-ignore
-      context.keycloakService = this.keycloakService;
-    }
-    // @ts-ignore add reflector to context so it can be accessed in param decorator
-    if (!context.reflector) context.reflector = this.reflector;
-    // @ts-ignore add options to context so it can be accessed in param decorator
-    if (!context.options) context.options = this.options;
+    if (!req) return next.handle();
+    if (!req.keycloakService) req.keycloakService = this.keycloakService;
+    if (!req.reflector) req.reflector = this.reflector;
     const authorizationCallback = getAuthorizationCallback(
       context,
-      this.options,
       this.reflector
     );
     if (!authorizationCallback?.manuel) {
@@ -163,10 +137,11 @@ export class AuthorizationCallbackInterceptor implements NestInterceptor {
 
 function getAuthorizationCallback(
   context: ExecutionContext,
-  options?: KeycloakOptions,
   reflector?: Reflector
 ): AuthorizationCallback | undefined {
-  if (!reflector || !options) return;
+  const req = context.switchToHttp().getRequest();
+  if (!reflector || !req) return;
+  const baseUrl = getBaseUrl(req);
   const authorizationCallback: AuthorizationCallback = reflector.get(
     AUTHORIZATION_CALLBACK,
     context.getHandler()
@@ -179,11 +154,12 @@ function getAuthorizationCallback(
     `/${controllerPath}${controllerPath && methodPath ? '/' : ''}${methodPath}`;
   callbackEndpoint =
     callbackEndpoint?.[0] === '/'
-      ? `${options.baseUrl}${callbackEndpoint}`
+      ? `${baseUrl}${callbackEndpoint}`
       : callbackEndpoint;
   return {
     destinationUriFromQuery: true,
     manuel: false,
+    persistSession: true,
     ...authorizationCallback,
     callbackEndpoint
   };
@@ -198,7 +174,7 @@ async function handleAuthorizationCallback(
 ): Promise<
   (RefreshTokenGrant & { destinationUri: string; redirectUri: string }) | null
 > {
-  let { destinationUri, redirectUri } = authorizationCallback || {};
+  let { redirectUri } = authorizationCallback || {};
   const query = new URLSearchParams(req.originalUrl.split('?')?.[1] || '');
   if (!code) code = query.get('code') || undefined;
   if (!code) throw new Error('missing authorization code');
@@ -214,22 +190,35 @@ async function handleAuthorizationCallback(
       throw new Error('authorization callback requires a redirect uri');
     }
   }
-  const grantResult = await keycloakService.authorizationCodeGrant({
-    code,
-    redirectUri
-  });
+  const grantResult = await keycloakService.authorizationCodeGrant(
+    {
+      code,
+      redirectUri
+    },
+    authorizationCallback?.persistSession !== false
+  );
   if (!grantResult) return null;
-  if (!destinationUri) {
-    destinationUri =
-      !authorizationCallback || authorizationCallback?.destinationUriFromQuery
-        ? decodeURIComponent(query.get('destination_uri') || '') ||
-          authorizationCallback?.destinationUri
-        : authorizationCallback?.destinationUri;
-  }
+  const destinationUri =
+    !authorizationCallback || authorizationCallback?.destinationUriFromQuery
+      ? decodeURIComponent(query.get('destination_uri') || '') ||
+        authorizationCallback?.destinationUri
+      : authorizationCallback?.destinationUri;
   if (!destinationUri) {
     throw new Error('authorization callback requires a destination uri');
   }
   return { ...grantResult, destinationUri, redirectUri };
+}
+
+export function getBaseUrl(req: KeycloakRequest<Request> | Request): string {
+  const host =
+    (req.get('x-forwarded-host')
+      ? req.get('x-forwarded-host')
+      : req.get('host')) ||
+    `${req.hostname}${
+      req.get('x-forwarded-port') ? `:${req.get('x-forwarded-port')}` : ''
+    }`;
+  if (!host) return req.originalUrl;
+  return `${req.get('x-forwarded-proto') || req.protocol}://${host}`;
 }
 
 export interface AuthorizationCallback {
@@ -238,5 +227,13 @@ export interface AuthorizationCallback {
   destinationUri?: string;
   destinationUriFromQuery?: boolean;
   manuel?: boolean;
+  persistSession?: boolean;
   redirectUri?: string;
 }
+
+export type HandleAuthorizationCallbackFunction = (
+  code?: string,
+  state?: string
+) => Promise<
+  (RefreshTokenGrant & { destinationUri: string; redirectUri: string }) | null
+>;

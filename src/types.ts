@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-09-2021 15:48:32
+ * Last Modified: 22-09-2021 17:48:48
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -24,10 +24,12 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
+import { Reflector } from '@nestjs/core';
 import { RequiredActionAlias } from '@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation';
 import Token, {
   ResourceAccess
 } from 'keycloak-connect/middleware/auth-utils/token';
+import KeycloakService from './keycloak.service';
 
 type Grant = import('keycloak-connect').Grant;
 type Request = import('express').Request;
@@ -76,7 +78,9 @@ export class UserInfo {
 export type KeycloakRequest<T = Request> = {
   annotationKeys?: Set<string>;
   kauth?: Kauth;
+  keycloakService?: KeycloakService;
   redirectUnauthorized?: RedirectMeta | false;
+  reflector?: Reflector;
   resourceDenied?: boolean;
   session?: {
     token?: string;
