@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-09-2021 15:55:30
+ * Last Modified: 22-09-2021 01:00:34
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -35,6 +35,7 @@ import {
   UseFilters,
   applyDecorators
 } from '@nestjs/common';
+import KeycloakRegisterService from '../keycloakRegister.service';
 import { KeycloakRequest, KEYCLOAK_OPTIONS, KeycloakOptions } from '../types';
 
 export const AUTHORIZED = 'KEYCLOAK_AUTHORIZED';
@@ -51,7 +52,10 @@ export const Authorized = (...roles: (string | string[])[]) => {
 export class UnauthorizedFilter implements ExceptionFilter {
   private logger = new Logger(UnauthorizedFilter.name);
 
-  constructor(@Inject(KEYCLOAK_OPTIONS) private options: KeycloakOptions) {}
+  constructor(
+    @Inject(KEYCLOAK_OPTIONS) private options: KeycloakOptions,
+    private readonly keycloakRegisterService: KeycloakRegisterService
+  ) {}
 
   catch(err: HttpException | Error, host: ArgumentsHost) {
     let exception = err as HttpException;
@@ -66,23 +70,22 @@ export class UnauthorizedFilter implements ExceptionFilter {
         .status(req.redirectUnauthorized.status)
         .redirect(req.redirectUnauthorized.url);
     }
+    const authorizationCallback =
+      this.keycloakRegisterService.defaultAuthorizationCallback;
     if (
+      authorizationCallback &&
       req.redirectUnauthorized !== false &&
       req.annotationKeys?.has(RENDER_METADATA)
     ) {
+      const { callbackEndpoint } = authorizationCallback;
       const baseUrl = this.getBaseUrl(req);
-      const authorizationCallbackEndpoint = this.options.defaultCallbackEndpoint
-        ? this.options.defaultCallbackEndpoint[0] === '/'
-          ? `${baseUrl}${this.options.defaultCallbackEndpoint}`
-          : this.options.defaultCallbackEndpoint
-        : `${baseUrl}/auth/callback`;
       return res.status(301).redirect(
         `${this.options.baseUrl}/auth/realms/${
           this.options.realm
         }/protocol/openid-connect/auth?${new URLSearchParams({
           client_id: this.options.clientId,
           redirect_uri: encodeURI(
-            `${authorizationCallbackEndpoint}?redirect_uri=${encodeURIComponent(
+            `${callbackEndpoint}?redirect_uri=${encodeURIComponent(
               `${baseUrl}${req.originalUrl}`
             )}`
           ),

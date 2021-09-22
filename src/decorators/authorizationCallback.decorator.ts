@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-09-2021 18:41:06
+ * Last Modified: 22-09-2021 14:04:54
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -22,10 +22,103 @@
  * limitations under the License.
  */
 
-import { SetMetadata } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { Reflector } from '@nestjs/core';
+import { Request, Response } from 'express';
+import {
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  NestInterceptor,
+  SetMetadata,
+  UseInterceptors,
+  applyDecorators
+} from '@nestjs/common';
+import KeycloakService from '../keycloak.service';
+import { RefreshTokenGrant, KeycloakRequest } from '../types';
 
 export const AUTHORIZATION_CALLBACK = 'KEYCLOAK_AUTHORIZATION_CALLBACK';
 
-export const AuthorizationCallback = () => {
-  return SetMetadata(AUTHORIZATION_CALLBACK, true);
+export const AuthorizationCallback = (
+  authorizationCallback?: AuthorizationCallback
+) => {
+  return applyDecorators(
+    UseInterceptors(AuthorizationCallbackInterceptor),
+    SetMetadata(AUTHORIZATION_CALLBACK, authorizationCallback)
+  );
 };
+
+@Injectable()
+export class AuthorizationCallbackInterceptor implements NestInterceptor {
+  constructor(
+    private readonly keycloakService: KeycloakService,
+    private readonly reflector: Reflector
+  ) {}
+
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const req = context.switchToHttp().getRequest();
+    const res = context.switchToHttp().getResponse();
+    const authorizationCallback: AuthorizationCallback = this.reflector.get(
+      AUTHORIZATION_CALLBACK,
+      context.getHandler()
+    );
+    return next.handle();
+  }
+
+  private async handleAuthorizationCallback(
+    authorizationCallback: AuthorizationCallback,
+    req: KeycloakRequest<Request>,
+    res: Response,
+    destinationUri?: string,
+    redirectUri?: string
+  ): Promise<RefreshTokenGrant | null> {
+    if (!req) {
+      throw new Error(
+        'KeycloakService.handleAuthorizationCallback requires req'
+      );
+    }
+    const query = new URLSearchParams(req.originalUrl.split('?')?.[1] || '');
+    const code = query.get('code');
+    if (!code) throw new Error('missing authorization code');
+    query.delete('code');
+    query.delete('session_state');
+    query.delete('state');
+    if (!redirectUri) {
+      if (authorizationCallback) {
+        redirectUri = `${
+          authorizationCallback.callbackEndpoint
+        }?${query.toString()}`;
+      } else {
+        throw new Error(
+          'KeycloakService.handleAuthorizationCallback requires a redirect uri'
+        );
+      }
+    }
+    const result = await this.keycloakService.authorizationCodeGrant({
+      code,
+      redirectUri
+    });
+    if (!destinationUri) {
+      destinationUri =
+        !authorizationCallback || authorizationCallback?.destinationUriFromQuery
+          ? decodeURIComponent(query.get('destination_uri') || '') ||
+            authorizationCallback?.destinationUri
+          : authorizationCallback?.destinationUri;
+    }
+    if (!destinationUri) {
+      throw new Error(
+        'KeycloakService.handleAuthorizationCallback requires a destination uri'
+      );
+    }
+    res.cookie('redirect_from', redirectUri.split('?')[0]);
+    res.status(301).redirect(destinationUri);
+    return result;
+  }
+}
+
+export interface AuthorizationCallback {
+  callbackEndpoint?: string;
+  default?: boolean;
+  destinationUri?: string;
+  destinationUriFromQuery?: boolean;
+}

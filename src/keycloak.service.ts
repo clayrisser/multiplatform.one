@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-09-2021 18:29:28
+ * Last Modified: 22-09-2021 13:58:18
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -30,7 +30,7 @@ import { AxiosResponse } from 'axios';
 import { Grant, Keycloak } from 'keycloak-connect';
 import { HttpService } from '@nestjs/axios';
 import { REQUEST } from '@nestjs/core';
-import { Request, Response, NextFunction } from 'express';
+import { Request, NextFunction } from 'express';
 import { lastValueFrom } from 'rxjs';
 import {
   Injectable,
@@ -39,6 +39,9 @@ import {
   ExecutionContext,
   Logger
 } from '@nestjs/common';
+import { CREATE_KEYCLOAK_ADMIN } from './createKeycloakAdmin.provider';
+import { KEYCLOAK } from './keycloak.provider';
+import { getReq } from './util';
 import {
   AuthorizationCodeGrantOptions,
   GrantTokensOptions,
@@ -52,9 +55,6 @@ import {
   RefreshTokenGrantOptions,
   UserInfo
 } from './types';
-import { KEYCLOAK } from './keycloak.provider';
-import { CREATE_KEYCLOAK_ADMIN } from './createKeycloakAdmin.provider';
-import { getReq } from './util';
 
 @Injectable({ scope: Scope.REQUEST })
 export default class KeycloakService {
@@ -479,53 +479,6 @@ export default class KeycloakService {
         }
       );
     });
-  }
-
-  async waitForReady(pingInterval = 5000): Promise<void> {
-    const res = await lastValueFrom(
-      this.httpService.get(`${this.options.baseUrl}/auth`)
-    );
-    if (res.status > 399) {
-      await new Promise((r) => setTimeout(r, pingInterval));
-      return this.waitForReady(pingInterval);
-    }
-    return undefined;
-  }
-
-  async handleAuthorizationCallback(
-    res: Response,
-    redirectUri?: string
-  ): Promise<RefreshTokenGrant | null> {
-    if (!this.req) return null;
-    const { baseUrl, req } = this;
-    const query = new URLSearchParams(req.originalUrl.split('?')?.[1] || '');
-    const code = query.get('code');
-    if (!code) throw new Error('missing authorization code');
-    query.delete('code');
-    query.delete('session_state');
-    query.delete('state');
-    const authorizationCallbackEndpoint = this.options.defaultCallbackEndpoint
-      ? this.options.defaultCallbackEndpoint[0] === '/'
-        ? `${baseUrl}${this.options.defaultCallbackEndpoint}`
-        : this.options.defaultCallbackEndpoint
-      : `${baseUrl}/auth/callback`;
-    if (!redirectUri)
-      redirectUri = `${authorizationCallbackEndpoint}?${query.toString()}`;
-    const result = await this.authorizationCodeGrant({
-      code,
-      redirectUri
-    });
-    const finalRedirect = decodeURIComponent(query.get('redirect_uri') || '');
-    if (result && res && finalRedirect) {
-      res.cookie('redirect_from', authorizationCallbackEndpoint);
-      const queryString = new URLSearchParams(
-        finalRedirect.split('?')?.[1] || ''
-      ).toString();
-      res
-        .status(301)
-        .redirect(`${finalRedirect}${queryString ? `?${queryString}` : ''}`);
-    }
-    return result;
   }
 
   private issuedByClient(token: Token, clientId?: string) {

@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-09-2021 18:58:35
+ * Last Modified: 22-09-2021 01:20:45
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -28,14 +28,18 @@ import RoleRepresentation from '@keycloak/keycloak-admin-client/lib/defs/roleRep
 import ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation';
 import difference from 'lodash.difference';
 import { DiscoveryService, Reflector } from '@nestjs/core';
+import { HttpService } from '@nestjs/axios';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
-import { Logger, Inject, Injectable } from '@nestjs/common';
+import { Logger, Inject, Injectable, Scope } from '@nestjs/common';
 import { PATH_METADATA } from '@nestjs/common/constants';
-import KeycloakService from './keycloak.service';
-import { AUTHORIZATION_CALLBACK } from './decorators/authorizationCallback.decorator';
+import { lastValueFrom } from 'rxjs';
 import { AUTHORIZED } from './decorators/authorized.decorator';
 import { RESOURCE } from './decorators/resource.decorator';
 import { SCOPES } from './decorators/scopes.decorator';
+import {
+  AUTHORIZATION_CALLBACK,
+  AuthorizationCallback
+} from './decorators/authorizationCallback.decorator';
 import {
   HashMap,
   KeycloakOptions,
@@ -57,7 +61,8 @@ export default class KeycloakRegisterService {
   constructor(
     @Inject(KEYCLOAK_OPTIONS) private readonly options: KeycloakOptions,
     private readonly discoveryService: DiscoveryService,
-    private readonly reflector: Reflector // private readonly keycloakService: KeycloakService
+    private readonly reflector: Reflector,
+    private readonly httpService: HttpService
   ) {
     this.registerOptions = {
       roles: [],
@@ -65,6 +70,38 @@ export default class KeycloakRegisterService {
         ? {}
         : this.options.register || {})
     };
+  }
+
+  private _idsFromClientIds: HashMap<string> = {};
+
+  private _providers: any[] | undefined;
+
+  private _roles: string[] | undefined;
+
+  private _authorizationCallbacks: AuthorizationCallback[] | undefined;
+
+  private _defaultAuthorizationCallback: AuthorizationCallback | undefined;
+
+  get defaultAuthorizationCallback(): AuthorizationCallback | void {
+    if (this._defaultAuthorizationCallback) {
+      return this._defaultAuthorizationCallback;
+    }
+    const { baseUrl } = this.options;
+    const authorizationCallback =
+      this.authorizationCallbacks.find(
+        (authorizationCallback: AuthorizationCallback) =>
+          authorizationCallback.default
+      ) ||
+      this.authorizationCallbacks?.[0] ||
+      undefined;
+    this._defaultAuthorizationCallback =
+      authorizationCallback?.callbackEndpoint?.[0] === '/'
+        ? {
+            ...authorizationCallback,
+            callbackEndpoint: `${baseUrl}${authorizationCallback.callbackEndpoint}`
+          }
+        : authorizationCallback;
+    return this._defaultAuthorizationCallback;
   }
 
   private get canRegister() {
@@ -75,14 +112,6 @@ export default class KeycloakRegisterService {
       this.options.adminPassword
     );
   }
-
-  private _idsFromClientIds: HashMap<string> = {};
-
-  private _providers: any[] | undefined;
-
-  private _roles: string[] | undefined;
-
-  private _authorizationCallbacks: string[] | undefined;
 
   private get providers(): InstanceWrapper[] {
     if (this._providers) return this._providers;
@@ -129,17 +158,25 @@ export default class KeycloakRegisterService {
     return this._roles;
   }
 
-  private get authorizationCallbacks(): string[] {
+  private get authorizationCallbacks(): AuthorizationCallback[] {
     if (this._authorizationCallbacks) return this._authorizationCallbacks;
     this._authorizationCallbacks = [
       ...this.providers.reduce(
-        (authorizationCallbacks: Set<string>, controller: InstanceWrapper) => {
+        (
+          authorizationCallbacks: AuthorizationCallback[],
+          controller: InstanceWrapper
+        ) => {
           const methods = getMethods(controller.instance);
-          return new Set([
+          return [
             ...authorizationCallbacks,
             ...methods.reduce(
-              (authorizationCallbacks: string[], method: any) => {
-                if (this.reflector.get(AUTHORIZATION_CALLBACK, method)) {
+              (
+                authorizationCallbacks: AuthorizationCallback[],
+                method: any
+              ) => {
+                const authorizationCallback: AuthorizationCallback =
+                  this.reflector.get(AUTHORIZATION_CALLBACK, method);
+                if (authorizationCallback) {
                   const controllerPath =
                     this.reflector.get(
                       PATH_METADATA,
@@ -147,19 +184,21 @@ export default class KeycloakRegisterService {
                     ) || '';
                   const methodPath =
                     this.reflector.get(PATH_METADATA, method) || '';
-                  authorizationCallbacks.push(
-                    `${controllerPath}${
+                  authorizationCallbacks.push({
+                    destinationUriFromQuery: true,
+                    callbackEndpoint: `/${controllerPath}${
                       controllerPath && methodPath ? '/' : ''
-                    }${methodPath}`
-                  );
+                    }${methodPath}`,
+                    ...authorizationCallback
+                  });
                 }
                 return authorizationCallbacks;
               },
               []
             )
-          ]);
+          ];
         },
-        new Set()
+        []
       )
     ];
     return this._authorizationCallbacks;
@@ -214,10 +253,10 @@ export default class KeycloakRegisterService {
   }
 
   async register(force = false) {
-    this.authorizationCallbacks;
+    this.defaultAuthorizationCallback;
     if (!force && !this.canRegister) return;
-    // this.logger.log('waiting for keycloak');
-    // await this.keycloakService.waitForReady();
+    this.logger.log('waiting for keycloak');
+    await this.waitForReady();
     this.logger.log('registering keycloak');
     await this.initializeKeycloakAdmin();
     await this.enableAuthorization();
@@ -437,6 +476,17 @@ export default class KeycloakRegisterService {
         name: scope
       }
     );
+  }
+
+  private async waitForReady(pingInterval = 5000): Promise<void> {
+    const res = await lastValueFrom(
+      this.httpService.get(`${this.options.baseUrl}/auth`)
+    );
+    if (res.status > 399) {
+      await new Promise((r) => setTimeout(r, pingInterval));
+      return this.waitForReady(pingInterval);
+    }
+    return undefined;
   }
 }
 

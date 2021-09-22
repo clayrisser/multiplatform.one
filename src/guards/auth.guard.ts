@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-09-2021 15:46:11
+ * Last Modified: 22-09-2021 14:02:38
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -33,7 +33,8 @@ import {
   ExecutionContext,
   Inject,
   Injectable,
-  Logger
+  Logger,
+  Scope
 } from '@nestjs/common';
 import KeycloakService from '../keycloak.service';
 import { CREATE_KEYCLOAK_ADMIN } from '../createKeycloakAdmin.provider';
@@ -47,7 +48,7 @@ import {
   RedirectMeta
 } from '../types';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class AuthGuard implements CanActivate {
   logger = new Logger(AuthGuard.name);
 
@@ -56,6 +57,7 @@ export class AuthGuard implements CanActivate {
     @Inject(KEYCLOAK) private readonly keycloak: Keycloak,
     private readonly httpService: HttpService,
     private readonly reflector: Reflector,
+    private readonly keycloakService: KeycloakService,
     @Inject(CREATE_KEYCLOAK_ADMIN)
     private readonly createKeycloakAdmin?: () => Promise<KcAdminClient | void>
   ) {}
@@ -64,13 +66,14 @@ export class AuthGuard implements CanActivate {
     const isPublic = this.getIsPublic(context);
     const roles = this.getRoles(context);
     if (isPublic || typeof roles === 'undefined') return true;
-    const keycloakService = new KeycloakService(
-      this.options,
-      this.keycloak,
-      this.httpService,
-      context,
-      this.createKeycloakAdmin
-    );
+    const { keycloakService } = this;
+    // const keycloakService = new KeycloakService(
+    //   this.options,
+    //   this.keycloak,
+    //   this.httpService,
+    //   context,
+    //   this.createKeycloakAdmin
+    // );
     const req = context.switchToHttp().getRequest<KeycloakRequest<Request>>();
     const res = context.switchToHttp().getResponse<Response>();
     if (req?.session && req.cookies && !req.cookies?.redirect_from) {
