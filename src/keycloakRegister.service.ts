@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-09-2021 17:03:33
+ * Last Modified: 22-09-2021 18:00:15
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -47,7 +47,17 @@ import {
   KEYCLOAK_OPTIONS
 } from './types';
 
-export const globalRegistrationMap: GlobalRegistrationMap = {};
+const _globalRegistrationMap: GlobalRegistrationMap = {};
+
+export function getGlobalRegistrationMap() {
+  const globalRegistrationMap = { ..._globalRegistrationMap };
+  if (globalRegistrationMap.defaultAuthorizationCallback) {
+    globalRegistrationMap.defaultAuthorizationCallback = {
+      ...globalRegistrationMap.defaultAuthorizationCallback
+    };
+  }
+  return globalRegistrationMap;
+}
 
 // makes registration idempotent
 let registeredKeycloak = false;
@@ -95,11 +105,13 @@ export default class KeycloakRegisterService {
         (authorizationCallback: AuthorizationCallback) =>
           authorizationCallback.default &&
           !authorizationCallback.manuel &&
+          authorizationCallback.persistSession &&
           authorizationCallback.destinationUriFromQuery
       ) ||
       this.authorizationCallbacks.find(
         (authorizationCallback: AuthorizationCallback) =>
           !authorizationCallback.manuel &&
+          authorizationCallback.persistSession &&
           authorizationCallback.destinationUriFromQuery
       ) ||
       undefined;
@@ -137,13 +149,10 @@ export default class KeycloakRegisterService {
                     `/${controllerPath}${
                       controllerPath && methodPath ? '/' : ''
                     }${methodPath}`;
-                  callbackEndpoint =
-                    callbackEndpoint?.[0] === '/'
-                      ? `${this.options.baseUrl}${callbackEndpoint}`
-                      : callbackEndpoint;
                   authorizationCallbacks.push({
                     destinationUriFromQuery: true,
                     manuel: false,
+                    persistSession: true,
                     ...authorizationCallback,
                     callbackEndpoint
                   });
@@ -263,7 +272,7 @@ export default class KeycloakRegisterService {
   }
 
   async register(force = false) {
-    globalRegistrationMap.defaultAuthorizationCallback =
+    _globalRegistrationMap.defaultAuthorizationCallback =
       this.defaultAuthorizationCallback;
     if (!force && !this.canRegister) return;
     this.logger.log('waiting for keycloak');
