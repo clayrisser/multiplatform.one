@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-09-2021 17:34:18
+ * Last Modified: 23-09-2021 16:50:24
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -67,7 +67,6 @@ export class UnauthorizedFilter implements ExceptionFilter {
     }
     const authorizationCallback =
       getGlobalRegistrationMap().defaultAuthorizationCallback;
-
     if (
       authorizationCallback &&
       req.redirectUnauthorized !== false &&
