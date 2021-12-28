@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-09-2021 18:36:01
+ * Last Modified: 28-12-2021 05:27:26
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -453,10 +453,15 @@ export default class KeycloakRegisterService {
       {
         attributes: {},
         displayName: resource?.name,
-        id: resource?.id,
         name: resource?.name,
         ownerManagedAccess: false,
-        scopes
+        scopes,
+        // TODO: probably can remove the following
+        ...((resource as unknown as any)?.id
+          ? {
+              id: (resource as unknown as any)?.id
+            }
+          : {})
       }
     );
   }

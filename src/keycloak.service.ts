@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-09-2021 13:58:18
+ * Last Modified: 28-12-2021 05:29:22
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -382,7 +382,7 @@ export default class KeycloakService {
     if (!userId) return null;
     const keycloakAdmin = await this.createKeycloakAdmin();
     if (!keycloakAdmin) return null;
-    return keycloakAdmin.users.findOne({ id: userId });
+    return (await keycloakAdmin.users.findOne({ id: userId })) || null;
   }
 
   async isAuthenticated(): Promise<boolean> {
