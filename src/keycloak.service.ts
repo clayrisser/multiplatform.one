@@ -22,26 +22,26 @@
  * limitations under the License.
  */
 
-import KcAdminClient from '@keycloak/keycloak-admin-client';
-import Token from 'keycloak-connect/middleware/auth-utils/token';
-import UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
-import qs from 'qs';
-import { AxiosResponse } from 'axios';
-import { Grant, Keycloak } from 'keycloak-connect';
-import { HttpService } from '@nestjs/axios';
-import { REQUEST } from '@nestjs/core';
-import { Request, NextFunction } from 'express';
-import { lastValueFrom } from 'rxjs';
+import KcAdminClient from "@keycloak/keycloak-admin-client";
+import Token from "keycloak-connect/middleware/auth-utils/token";
+import UserRepresentation from "@keycloak/keycloak-admin-client/lib/defs/userRepresentation";
+import qs from "qs";
+import { AxiosResponse } from "axios";
+import { Grant, Keycloak } from "keycloak-connect";
+import { HttpService } from "@nestjs/axios";
+import { REQUEST } from "@nestjs/core";
+import { Request, NextFunction } from "express";
+import { lastValueFrom } from "rxjs";
 import {
   Injectable,
   Inject,
   Scope,
   ExecutionContext,
-  Logger
-} from '@nestjs/common';
-import { CREATE_KEYCLOAK_ADMIN } from './createKeycloakAdmin.provider';
-import { KEYCLOAK } from './keycloak.provider';
-import { getReq } from './util';
+  Logger,
+} from "@nestjs/common";
+import { CREATE_KEYCLOAK_ADMIN } from "./createKeycloakAdmin.provider";
+import { KEYCLOAK } from "./keycloak.provider";
+import { getReq } from "./util";
 import {
   AuthorizationCodeGrantOptions,
   GrantTokensOptions,
@@ -53,8 +53,8 @@ import {
   PasswordGrantOptions,
   RefreshTokenGrant,
   RefreshTokenGrantOptions,
-  UserInfo
-} from './types';
+  UserInfo,
+} from "./types";
 
 @Injectable({ scope: Scope.REQUEST })
 export default class KeycloakService {
@@ -76,7 +76,7 @@ export default class KeycloakService {
   ) {
     this.options = {
       enforceIssuedByClient: false,
-      ...options
+      ...options,
     };
     this.req = getReq(reqOrExecutionContext);
   }
@@ -97,17 +97,17 @@ export default class KeycloakService {
     if (this._bearerToken) return this._bearerToken;
     const { clientId, strict } = this.options;
     const { authorization } = this.req.headers;
-    if (typeof authorization === 'undefined') return null;
-    if (authorization?.indexOf(' ') <= -1) {
+    if (typeof authorization === "undefined") return null;
+    if (authorization?.indexOf(" ") <= -1) {
       if (strict) return null;
       this._bearerToken = new Token(authorization, clientId);
       return this._bearerToken;
     }
-    const authorizationArr = authorization?.split(' ');
+    const authorizationArr = authorization?.split(" ");
     if (
       authorizationArr &&
       authorizationArr[0] &&
-      authorizationArr[0].toLowerCase() === 'bearer'
+      authorizationArr[0].toLowerCase() === "bearer"
     ) {
       this._bearerToken = new Token(authorizationArr[1], clientId);
       return this._bearerToken;
@@ -125,17 +125,17 @@ export default class KeycloakService {
   }
 
   private get baseUrl(): string {
-    if (!this.req) return '';
+    if (!this.req) return "";
     const { req } = this;
     const host =
-      (req.get('x-forwarded-host')
-        ? req.get('x-forwarded-host')
-        : req.get('host')) ||
+      (req.get("x-forwarded-host")
+        ? req.get("x-forwarded-host")
+        : req.get("host")) ||
       `${req.hostname}${
-        req.get('x-forwarded-port') ? `:${req.get('x-forwarded-port')}` : ''
+        req.get("x-forwarded-port") ? `:${req.get("x-forwarded-port")}` : ""
       }`;
     if (!host) return req.originalUrl;
-    return `${req.get('x-forwarded-proto') || req.protocol}://${host}`;
+    return `${req.get("x-forwarded-proto") || req.protocol}://${host}`;
   }
 
   // this is used privately to prevent a circular dependency
@@ -166,14 +166,14 @@ export default class KeycloakService {
       ...(accessToken.content?.realm_access?.roles || []).map(
         (role: string) => `realm:${role}`
       ),
-      ...(accessToken.content?.resource_access?.[clientId]?.roles || [])
+      ...(accessToken.content?.resource_access?.[clientId]?.roles || []),
     ];
   }
 
   async getScopes(): Promise<string[] | null> {
     const accessToken = await this.getAccessToken();
     if (!accessToken) return null;
-    return (accessToken.content?.scope || '').split(' ');
+    return (accessToken.content?.scope || "").split(" ");
   }
 
   async getAccessToken(): Promise<Token | null> {
@@ -196,7 +196,7 @@ export default class KeycloakService {
     ) {
       try {
         const tokens = await this.grantTokens({
-          refreshToken: this.refreshToken.token
+          refreshToken: this.refreshToken.token,
         });
         this.sessionSetTokens(tokens.accessToken, tokens.refreshToken);
         if (tokens.accessToken) accessToken = tokens.accessToken;
@@ -244,9 +244,9 @@ export default class KeycloakService {
     const result = {
       ...{
         emailVerified: userInfo?.email_verified,
-        preferredUsername: userInfo?.preferred_username
+        preferredUsername: userInfo?.preferred_username,
       },
-      ...userInfo
+      ...userInfo,
     } as UserInfo;
     delete result?.email_verified;
     delete result?.preferred_username;
@@ -260,12 +260,12 @@ export default class KeycloakService {
     redirectUri,
     refreshToken,
     scope,
-    username
+    username,
   }: GrantTokensOptions): Promise<RefreshTokenGrant> {
     const { clientId, clientSecret } = this.options;
     const scopeArr = [
-      'openid',
-      ...(Array.isArray(scope) ? scope : (scope || 'profile').split(' '))
+      "openid",
+      ...(Array.isArray(scope) ? scope : (scope || "profile").split(" ")),
     ];
     let data: string;
     if (refreshToken) {
@@ -273,8 +273,8 @@ export default class KeycloakService {
       data = qs.stringify({
         ...(clientSecret ? { client_secret: clientSecret } : {}),
         client_id: clientId,
-        grant_type: 'refresh_token',
-        refresh_token: refreshToken
+        grant_type: "refresh_token",
+        refresh_token: refreshToken,
       });
     } else if (authorizationCode && redirectUri) {
       // authorization code grant
@@ -282,21 +282,21 @@ export default class KeycloakService {
         ...(clientSecret ? { client_secret: clientSecret } : {}),
         client_id: clientId,
         code: authorizationCode,
-        grant_type: 'authorization_code',
-        redirect_uri: redirectUri
+        grant_type: "authorization_code",
+        redirect_uri: redirectUri,
       });
     } else {
       // password grant
       if (!username) {
-        throw new Error('missing username, authorizationCode or refreshToken');
+        throw new Error("missing username, authorizationCode or refreshToken");
       }
       data = qs.stringify({
         ...(clientSecret ? { client_secret: clientSecret } : {}),
         client_id: clientId,
-        grant_type: 'password',
-        password: password || '',
-        scope: scopeArr.join(' '),
-        username
+        grant_type: "password",
+        password: password || "",
+        scope: scopeArr.join(" "),
+        username,
       });
     }
     try {
@@ -305,7 +305,7 @@ export default class KeycloakService {
           `${this.options.baseUrl}/auth/realms/${this.options.realm}/protocol/openid-connect/token`,
           data,
           {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
           }
         )
       )) as AxiosResponse<TokenResponseData>;
@@ -320,7 +320,7 @@ export default class KeycloakService {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         refresh_expires_in,
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        token_type
+        token_type,
       } = res.data;
       return {
         ...(access_token
@@ -332,8 +332,8 @@ export default class KeycloakService {
           ? { refreshToken: new Token(refresh_token, clientId) }
           : {}),
         ...(token_type ? { tokenType: token_type } : {}),
-        message: 'authentication successful',
-        scope
+        message: "authentication successful",
+        scope,
       };
     } catch (err) {
       const error = err as KeycloakError;
@@ -342,8 +342,8 @@ export default class KeycloakService {
         error.statusCode = error.response.status;
         error.payload = {
           error: data.error,
-          message: data.error_description || '',
-          statusCode: error.statusCode
+          message: data.error_description || "",
+          statusCode: error.statusCode,
         };
       }
       throw error;
@@ -434,7 +434,7 @@ export default class KeycloakService {
   ): Promise<RefreshTokenGrant | null> {
     const tokens = await this.grantTokens({
       authorizationCode: code,
-      redirectUri
+      redirectUri,
     });
     const { accessToken, refreshToken } = tokens;
     if (accessToken && !this.issuedByClient(accessToken)) {
@@ -551,13 +551,13 @@ export default class KeycloakService {
         : {}),
       ...(accessToken.content?.typ
         ? { token_type: accessToken.content.typ }
-        : {})
+        : {}),
     });
   }
 }
 
 export interface TokenResponseData {
-  'not-before-policy'?: number;
+  "not-before-policy"?: number;
   access_token?: string;
   expires_in?: number;
   id_token?: string;

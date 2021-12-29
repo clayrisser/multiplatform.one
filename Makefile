@@ -1,10 +1,10 @@
 # File: /Makefile
 # Project: nestjs-keycloak
-# File Created: 14-07-2021 11:43:59
-# Author: Clay Risser <email@clayrisser.com>
+# File Created: 10-09-2021 10:07:28
+# Author: Clay Risser
 # -----
-# Last Modified: 28-12-2021 05:29:54
-# Modified By: Clay Risser <email@clayrisser.com>
+# Last Modified: 29-12-2021 03:06:14
+# Modified By: Clay Risser
 # -----
 # Silicon Hills LLC (c) Copyright 2021
 #
@@ -20,172 +20,107 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export MAKE_CACHE := $(shell pwd)/node_modules/.make
-export PARENT := true
-include blackmagic.mk
-
-BABEL ?= node_modules/.bin/babel
-BABEL_NODE ?= node_modules/.bin/babel-node
-CLOC ?= cloc
-CSPELL ?= node_modules/.bin/cspell
-ESLINT ?= node_modules/.bin/eslint
-JEST ?= node_modules/.bin/jest
-LOCKFILE_LINT ?= node_modules/.bin/lockfile-lint
-MAJESTIC ?= node_modules/.bin/majestic
-PRETTIER ?= node_modules/.bin/prettier
-TMP_DIR ?= node_modules/.tmp
-TSC ?= node_modules/.bin/tsc
-COLLECT_COVERAGE_FROM := ["src/**/*.{js,jsx,ts,tsx}"]
-
-.PHONY: all
-all: build
+include mkpm.mk
+ifneq (,$(MKPM_READY))
+include $(MKPM)/gnu
+include $(MKPM)/mkchain
+include $(MKPM)/yarn
+include config.mk
+-include .env
 
 ACTIONS += install
-INSTALL_DEPS := $(patsubst %,$(DONE)/_install/%,package.json)
-INSTALL_TARGET := $(INSTALL_DEPS) $(ACTION)/install
-$(ACTION)/install:
-	@$(NPM) install
+$(ACTION)/install: $(PROJECT_ROOT)/package.json package.json ##
+ifneq (,$(SUBPROC))
+	@$(MAKE) -C $(PROJECT_ROOT) \~install ARGS=$(ARGS)
+else
+	@$(YARN) workspaces focus $(ARGS)
+endif
 	@$(call done,install)
 
-ACTIONS += format~install
-FORMAT_DEPS := $(call deps,format,$(shell $(GIT) ls-files 2>$(NULL) | \
-	grep -E "\.((json)|(ya?ml)|(md)|([jt]sx?))$$"))
-FORMAT_TARGET := $(FORMAT_DEPS) $(ACTION)/format
-$(ACTION)/format:
-#	@for i in $$($(call get_deps,format)); do echo $$i | \
-#		grep -E "\.[jt]sx?$$"; done | xargs $(ESLINT) --fix >/dev/null ||true
-	@$(PRETTIER) --write $(shell $(call get_deps,format))
+ACTIONS += format~install ##
+$(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
+	-@$(call prettier,$?,$(ARGS))
 	@$(call done,format)
 
-ACTIONS += spellcheck~format
-SPELLCHECK_DEPS := $(call deps,spellcheck,$(shell $(GIT) ls-files 2>$(NULL) | \
-	$(GIT) ls-files | grep -E "\.(md)$$"))
-SPELLCHECK_TARGET := $(SPELLCHECK_DEPS) $(ACTION)/spellcheck
-$(ACTION)/spellcheck:
-	@mkdir -p $(TMP_DIR)
-	@echo '{"language":"en","version":"0.1","words":$(shell cat .vscode/settings.json | $(SED) 's|^\s*//.*||g' | jq ".[\"cSpell.words\"]")}' > \
-		$(TMP_DIR)/cspellrc.json
-	-@$(CSPELL) --config $(TMP_DIR)/cspellrc.json $(shell $(call get_deps,spellcheck))
+ACTIONS += spellcheck~format ##
+$(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
+	-@$(call cspell,$?,$(ARGS))
 	@$(call done,spellcheck)
 
-ACTIONS += lint~spellcheck
-LINT_DEPS := $(call deps,lint,$(shell $(GIT) ls-files 2>$(NULL) | \
-	grep -E "\.([jt]sx?)$$"))
-LINT_TARGET := $(LINT_DEPS) $(ACTION)/lint
-$(ACTION)/lint:
-#	-@$(LOCKFILE_LINT) --type npm --path package-lock.json --validate-https
-	-@$(ESLINT) -f json -o node_modules/.tmp/eslintReport.json $(shell $(call get_deps,lint)) $(NOFAIL)
-	-@$(ESLINT) $(shell $(call get_deps,lint))
+ACTIONS += lint~spellcheck ##
+$(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
+	-@$(call eslint,$?,$(ARGS))
 	@$(call done,lint)
 
-ACTIONS += test~lint
-TEST_DEPS := $(call deps,test,$(shell $(GIT) ls-files 2>$(NULL) | \
-	grep -E "\.([jt]sx?)$$"))
-TEST_TARGET := $(TEST_DEPS) $(ACTION)/test
-$(ACTION)/test:
-	-@$(JEST) --pass-with-no-tests --json --outputFile=node_modules/.tmp/jestTestResults.json--coverage \
-		--coverageDirectory=node_modules/.tmp/coverage --testResultsProcessor=jest-sonar-reporter \
-		--collectCoverageFrom='$(COLLECT_COVERAGE_FROM)' --findRelatedTests $(shell $(call get_deps,test))
+ACTIONS += test~lint ##
+$(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
+	-@$(call jest,$?,$(ARGS))
 	@$(call done,test)
 
-ACTIONS += build~test
-BUILD_DEPS := $(call deps,build,$(shell $(GIT) ls-files 2>$(NULL) | \
-	grep -E "\.([jt]sx?)$$"))
+ACTIONS += build~test ##
 BUILD_TARGET := lib/index.js
 lib/index.js:
-	@$(MAKE) -s _build
-	@rm -rf $(ACTION)/build $(NOFAIL)
-$(ACTION)/build:
+	@$(call reset,build)
+$(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(BABEL) --env-name umd src -d lib --extensions '.js,.jsx,.ts,.tsx' --source-maps
 	@$(BABEL) --env-name esm src -d es --extensions '.js,.jsx,.ts,.tsx' --source-maps
 	@$(TSC) -p tsconfig.app.json -d --emitDeclarationOnly
-	@$(call cache,$@)
 	@$(call done,build)
+
+.PHONY: start +start
+start: | ~install +start ##
++start: ##
+	@$(BABEL_NODE) -x '.ts,.tsx' src $(ARGS)
+
+.PHONY: publish +publish
+publish: | ~build +publish
++publish:
+	@$(NPM) publish
+
+.PHONY: pack +pack
+pack: ~build +pack
++pack:
+	@$(NPM) pack
+
+COLLECT_COVERAGE_FROM := ["src/**/*.{js,jsx,ts,tsx}"]
+.PHONY: coverage +coverage
+coverage: | ~lint +coverage ##
++coverage:
+	@$(JEST) --coverage --collectCoverageFrom='$(COLLECT_COVERAGE_FROM)' $(ARGS)
 
 .PHONY: prepare
 prepare: ;
 
 .PHONY: upgrade
-upgrade:
-	@$(NPM) upgrade --latest
+upgrade: ##
+ifeq ($(NPM),yarn)
+	@$(NPM) upgrade-interactive
+else
+	@$(NPM) upgrade -L
+endif
 
 .PHONY: inc
-inc:
+inc: ##
 	@npm version patch --git=false $(NOFAIL)
 
 .PHONY: count
-count:
-	@LC_ALL=C $(CLOC) $(shell $(GIT) ls-files)
+count: ##
+	@$(CLOC) $(shell $(GIT) ls-files)
 
-.PHONY: publish +publish
-publish: build
-	@$(MAKE) -s +publish
-+publish:
-	@$(NPM) publish
-
-.PHONY: pack +pack
-pack: build
-	@$(MAKE) -s +pack
-+pack:
-	@$(NPM) pack
-
-.PHONY: coverage
-coverage: ~lint
-	@$(MAKE) -s +coverage
-+coverage:
-	@$(JEST) --coverage --collectCoverageFrom='$(COLLECT_COVERAGE_FROM)' $(ARGS)
-
-.PHONY: test-ui
-test-ui: ~lint
-	@$(MAKE) -s +test-ui
-+test-ui:
-	@$(MAJESTIC) $(ARGS)
-
-.PHONY: test-watch
-test-watch: ~lint
-	@$(MAKE) -s +test-watch
-+test-watch:
-	@$(JEST) --watch $(ARGS)
-
-.PHONY: start +start
-start: ~format
-	@$(MAKE) -s +start
-+start:
-	@$(BABEL_NODE) --extensions '.ts,.tsx' src $(ARGS)
+.PHONY: env
+env: .env ##
+.env: example.env
+	$(CP) $< $@
 
 .PHONY: clean
-clean:
-	-@$(call clean)
+clean: ##
+	-@$(MKCACHE_CLEAN)
 	-@$(JEST) --clearCache $(NOFAIL)
 	-@$(GIT) clean -fXd \
-		-e $(BANG)/node_modules \
-		-e $(BANG)/node_modules/**/* \
-		-e $(BANG)/package-lock.json \
-		-e $(BANG)/pnpm-lock.yaml \
-		-e $(BANG)/yarn.lock $(NOFAIL)
-	-@rm -rf node_modules/.cache $(NOFAIL)
-	-@rm -rf node_modules/.tmp $(NOFAIL)
+		$(MKPM_GIT_CLEAN_FLAGS) \
+		$(YARN_GIT_CLEAN_FLAGS) \
+		$(NOFAIL)
 
-.PHONY: purge
-purge: clean
-	-@$(GIT) clean -fXd
+-include $(call actions)
 
--include $(patsubst %,$(_ACTIONS)/%,$(ACTIONS))
-
-+%:
-	@$(MAKE) -e -s $(shell echo $@ | $(SED) 's/^\+//g')
-
-%: ;
-
-CACHE_ENVS += \
-	BABEL \
-	BABEL_NODE \
-	CLOC \
-	CSPELL \
-	ESLINT \
-	JEST \
-	LOCKFILE_LINT \
-	MAJESTIC \
-	PRETTIER \
-	TMP_DIR \
-	TSC
+endif

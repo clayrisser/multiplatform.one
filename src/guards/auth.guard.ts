@@ -22,20 +22,20 @@
  * limitations under the License.
  */
 
-import { RENDER_METADATA } from '@nestjs/common/constants';
-import { Reflector } from '@nestjs/core';
-import { Request, Response } from 'express';
+import { RENDER_METADATA } from "@nestjs/common/constants";
+import { Reflector } from "@nestjs/core";
+import { Request, Response } from "express";
 import {
   CanActivate,
   ExecutionContext,
   Injectable,
   Logger,
-  Scope
-} from '@nestjs/common';
-import KeycloakService from '../keycloak.service';
-import { REDIRECT_UNAUTHORIZED } from '../decorators/redirectUnauthorized.decorator';
-import { RESOURCE, AUTHORIZED, PUBLIC } from '../decorators';
-import { KeycloakRequest, RedirectMeta } from '../types';
+  Scope,
+} from "@nestjs/common";
+import KeycloakService from "../keycloak.service";
+import { REDIRECT_UNAUTHORIZED } from "../decorators/redirectUnauthorized.decorator";
+import { RESOURCE, AUTHORIZED, PUBLIC } from "../decorators";
+import { KeycloakRequest, RedirectMeta } from "../types";
 
 @Injectable({ scope: Scope.REQUEST })
 export class AuthGuard implements CanActivate {
@@ -49,7 +49,7 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.getIsPublic(context);
     const roles = this.getRoles(context);
-    if (isPublic || typeof roles === 'undefined') return true;
+    if (isPublic || typeof roles === "undefined") return true;
     const { keycloakService } = this;
     const req = context.switchToHttp().getRequest<KeycloakRequest<Request>>();
     const res = context.switchToHttp().getResponse<Response>();
@@ -57,7 +57,7 @@ export class AuthGuard implements CanActivate {
       // adds defer flags to req object
       const render = this.getRender(context);
       const unauthorizedRedirect = this.getUnauthorizedRedirect(context);
-      if (typeof unauthorizedRedirect !== 'undefined') {
+      if (typeof unauthorizedRedirect !== "undefined") {
         req.redirectUnauthorized = unauthorizedRedirect;
       }
       if (render) {
@@ -65,13 +65,13 @@ export class AuthGuard implements CanActivate {
         req.annotationKeys.add(RENDER_METADATA);
       }
     }
-    if (res.clearCookie) res.clearCookie('redirect_from');
+    if (res.clearCookie) res.clearCookie("redirect_from");
     const username = (await keycloakService.getUserInfo())?.preferredUsername;
     if (!username) return false;
     const resource = this.getResource(context);
     this.logger.verbose(
-      `resource${resource ? ` '${resource}'` : ''} for '${username}' requires ${
-        roles.length ? `roles [ ${roles.join(' | ')} ]` : 'authentication'
+      `resource${resource ? ` '${resource}'` : ""} for '${username}' requires ${
+        roles.length ? `roles [ ${roles.join(" | ")} ]` : "authentication"
       }`
     );
     if (await keycloakService.isAuthorizedByRoles(roles)) {
@@ -92,8 +92,8 @@ export class AuthGuard implements CanActivate {
       context.getClass()
     );
     if (
-      (typeof classRoles === 'undefined' || classRoles === null) &&
-      (typeof handlerRoles === 'undefined' || handlerRoles === null)
+      (typeof classRoles === "undefined" || classRoles === null) &&
+      (typeof handlerRoles === "undefined" || handlerRoles === null)
     ) {
       return undefined;
     }

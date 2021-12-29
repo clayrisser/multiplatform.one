@@ -22,18 +22,18 @@
  * limitations under the License.
  */
 
-import { ApiProperty } from '@nestjs/swagger';
-import { ModuleMetadata } from '@nestjs/common/interfaces';
-import { Reflector } from '@nestjs/core';
-import { RequiredActionAlias } from '@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation';
+import { ApiProperty } from "@nestjs/swagger";
+import { ModuleMetadata } from "@nestjs/common/interfaces";
+import { Reflector } from "@nestjs/core";
+import { RequiredActionAlias } from "@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation";
 import Token, {
-  ResourceAccess
-} from 'keycloak-connect/middleware/auth-utils/token';
-import KeycloakService from './keycloak.service';
+  ResourceAccess,
+} from "keycloak-connect/middleware/auth-utils/token";
+import KeycloakService from "./keycloak.service";
 
-type Grant = import('keycloak-connect').Grant;
-type Request = import('express').Request;
-type Response = import('express').Response;
+type Grant = import("keycloak-connect").Grant;
+type Request = import("express").Request;
+type Response = import("express").Response;
 
 export interface HashMap<T = any> {
   [key: string]: T;
@@ -57,7 +57,7 @@ export interface KeycloakOptions {
   strict?: boolean;
 }
 
-export interface KeycloakAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
+export interface KeycloakAsyncOptions extends Pick<ModuleMetadata, "imports"> {
   inject?: any[];
   useFactory?: (...args: any[]) => Promise<KeycloakOptions> | KeycloakOptions;
 }
@@ -127,7 +127,7 @@ export class TokenHeader {
 
 export class TokenContent {
   @ApiProperty()
-  'allowed-origins'?: string[];
+  "allowed-origins"?: string[];
 
   @ApiProperty()
   acr?: string;
@@ -416,7 +416,7 @@ export class User {
   username?: string;
 }
 
-export const KEYCLOAK_OPTIONS = 'KEYCLOAK_OPTIONS';
+export const KEYCLOAK_OPTIONS = "KEYCLOAK_OPTIONS";
 
 export interface RedirectMeta {
   status: number;

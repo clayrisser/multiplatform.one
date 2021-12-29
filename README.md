@@ -41,7 +41,7 @@ Submit an [issue](https://github.com/silicon-hills/nestjs-keycloak/issues/new)
 Here is a basic example of how to use this.
 
 ```ts
-import KeycloakModule from 'nestjs-keycloak';
+import KeycloakModule from "nestjs-keycloak";
 ```
 
 ```ts
@@ -49,19 +49,19 @@ KeycloakModule.registerAsync({
   inject: [ConfigService],
   useFactory: (config: ConfigService) => {
     return {
-      adminClientId: config.get('KEYCLOAK_ADMIN_CLIENT_ID') || '',
-      adminPassword: config.get('KEYCLOAK_ADMIN_PASSWORD') || '',
-      adminUsername: config.get('KEYCLOAK_ADMIN_USERNAME') || '',
-      baseUrl: config.get('KEYCLOAK_BASE_URL') || '',
-      clientId: config.get('KEYCLOAK_CLIENT_ID') || '',
-      clientSecret: config.get('KEYCLOAK_CLIENT_SECRET') || '',
-      realm: config.get('KEYCLOAK_REALM') || '',
+      adminClientId: config.get("KEYCLOAK_ADMIN_CLIENT_ID") || "",
+      adminPassword: config.get("KEYCLOAK_ADMIN_PASSWORD") || "",
+      adminUsername: config.get("KEYCLOAK_ADMIN_USERNAME") || "",
+      baseUrl: config.get("KEYCLOAK_BASE_URL") || "",
+      clientId: config.get("KEYCLOAK_CLIENT_ID") || "",
+      clientSecret: config.get("KEYCLOAK_CLIENT_SECRET") || "",
+      realm: config.get("KEYCLOAK_REALM") || "",
       register: {
         resources: {},
-        roles: []
-      }
+        roles: [],
+      },
     };
-  }
+  },
 });
 ```
 
@@ -119,7 +119,7 @@ getCats() {
 If you also want to add typegraphql support, you can add the following . . .
 
 ```ts
-import KeycloakTypegraphql from 'nestjs-keycloak-typegraphql';
+import KeycloakTypegraphql from "nestjs-keycloak-typegraphql";
 ```
 
 ```ts

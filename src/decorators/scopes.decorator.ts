@@ -22,8 +22,8 @@
  * limitations under the License.
  */
 
-import { SetMetadata } from '@nestjs/common';
+import { SetMetadata } from "@nestjs/common";
 
-export const SCOPES = 'KEYCLOAK_SCOPES';
+export const SCOPES = "KEYCLOAK_SCOPES";
 
 export const Scopes = (...scopes: string[]) => SetMetadata(SCOPES, scopes);

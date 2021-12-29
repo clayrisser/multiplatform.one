@@ -22,9 +22,9 @@
  * limitations under the License.
  */
 
-import { SetMetadata } from '@nestjs/common';
+import { SetMetadata } from "@nestjs/common";
 
-export const PUBLIC = 'KEYCLOAK_PUBLIC';
+export const PUBLIC = "KEYCLOAK_PUBLIC";
 
 export const Public = () => {
   return SetMetadata(PUBLIC, true);

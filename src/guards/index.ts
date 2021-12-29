@@ -22,5 +22,5 @@
  * limitations under the License.
  */
 
-export * from './auth.guard';
-export * from './resource.guard';
+export * from "./auth.guard";
+export * from "./resource.guard";

@@ -22,8 +22,8 @@
  * limitations under the License.
  */
 
-import { DiscoveryModule, APP_GUARD } from '@nestjs/core';
-import { HttpModule } from '@nestjs/axios';
+import { DiscoveryModule, APP_GUARD } from "@nestjs/core";
+import { HttpModule } from "@nestjs/axios";
 import {
   DynamicModule,
   Global,
@@ -32,19 +32,19 @@ import {
   Module,
   NestModule,
   OnModuleInit,
-  RequestMethod
-} from '@nestjs/common';
-import CreateKeycloakAdminProvider from './createKeycloakAdmin.provider';
-import KeycloakMiddleware from './keycloak.middleware';
-import KeycloakProvider from './keycloak.provider';
-import KeycloakRegisterService from './keycloakRegister.service';
-import KeycloakService from './keycloak.service';
-import { AuthGuard, ResourceGuard } from './guards';
+  RequestMethod,
+} from "@nestjs/common";
+import CreateKeycloakAdminProvider from "./createKeycloakAdmin.provider";
+import KeycloakMiddleware from "./keycloak.middleware";
+import KeycloakProvider from "./keycloak.provider";
+import KeycloakRegisterService from "./keycloakRegister.service";
+import KeycloakService from "./keycloak.service";
+import { AuthGuard, ResourceGuard } from "./guards";
 import {
   KeycloakOptions,
   KeycloakAsyncOptions,
-  KEYCLOAK_OPTIONS
-} from './types';
+  KEYCLOAK_OPTIONS,
+} from "./types";
 
 @Global()
 @Module({})
@@ -69,24 +69,24 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
         KeycloakService,
         {
           provide: KEYCLOAK_OPTIONS,
-          useValue: options
+          useValue: options,
         },
         {
           provide: APP_GUARD,
-          useClass: AuthGuard
+          useClass: AuthGuard,
         },
         {
           provide: APP_GUARD,
-          useClass: ResourceGuard
-        }
+          useClass: ResourceGuard,
+        },
       ],
       exports: [
         KEYCLOAK_OPTIONS,
         CreateKeycloakAdminProvider,
         KeycloakProvider,
         KeycloakRegisterService,
-        KeycloakService
-      ]
+        KeycloakService,
+      ],
     };
   }
 
@@ -105,20 +105,20 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
         KeycloakService,
         {
           provide: APP_GUARD,
-          useClass: AuthGuard
+          useClass: AuthGuard,
         },
         {
           provide: APP_GUARD,
-          useClass: ResourceGuard
-        }
+          useClass: ResourceGuard,
+        },
       ],
       exports: [
         KEYCLOAK_OPTIONS,
         CreateKeycloakAdminProvider,
         KeycloakProvider,
         KeycloakRegisterService,
-        KeycloakService
-      ]
+        KeycloakService,
+      ],
     };
   }
 
@@ -129,7 +129,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
     return {
       inject: asyncOptions.inject || [],
       provide: KEYCLOAK_OPTIONS,
-      useFactory: asyncOptions.useFactory
+      useFactory: asyncOptions.useFactory,
     };
   }
 
@@ -140,7 +140,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(KeycloakMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
+      .forRoutes({ path: "*", method: RequestMethod.ALL });
   }
 }
 
@@ -149,12 +149,12 @@ export {
   KeycloakMiddleware,
   KeycloakProvider,
   KeycloakRegisterService,
-  KeycloakService
+  KeycloakService,
 };
 
-export * from './decorators';
-export * from './guards';
-export * from './keycloak.provider';
-export * from './keycloak.service';
-export * from './createKeycloakAdmin.provider';
-export * from './types';
+export * from "./decorators";
+export * from "./guards";
+export * from "./keycloak.provider";
+export * from "./keycloak.service";
+export * from "./createKeycloakAdmin.provider";
+export * from "./types";

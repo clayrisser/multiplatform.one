@@ -22,9 +22,9 @@
  * limitations under the License.
  */
 
-export * from './authorizationCallback.decorator';
-export * from './authorized.decorator';
-export * from './public.decorator';
-export * from './redirectUnauthorized.decorator';
-export * from './resource.decorator';
-export * from './scopes.decorator';
+export * from "./authorizationCallback.decorator";
+export * from "./authorized.decorator";
+export * from "./public.decorator";
+export * from "./redirectUnauthorized.decorator";
+export * from "./resource.decorator";
+export * from "./scopes.decorator";
