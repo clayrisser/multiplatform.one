@@ -22,14 +22,14 @@
  * limitations under the License.
  */
 
-import { ExecutionContext } from '@nestjs/common';
-import { Request, Response } from 'express';
-import { KeycloakRequest, GraphqlCtx } from './types';
+import { ExecutionContext } from "@nestjs/common";
+import { Request, Response } from "express";
+import { KeycloakRequest, GraphqlCtx } from "./types";
 
 let nestjsGraphql: any;
 try {
   // eslint-disable-next-line global-require
-  nestjsGraphql = require('@nestjs/graphql');
+  nestjsGraphql = require("@nestjs/graphql");
 } catch (err) {
   // void
 }
@@ -45,10 +45,10 @@ export function getReq(
   const context = reqOrExecutionContext as ExecutionContext;
   const GraphqlCtx = reqOrExecutionContext as GraphqlCtx;
   if (
-    typeof context.switchToHttp === 'function' &&
-    typeof context.getType === 'function' &&
-    typeof req.headers === 'undefined' &&
-    typeof GraphqlCtx.req === 'undefined'
+    typeof context.switchToHttp === "function" &&
+    typeof context.getType === "function" &&
+    typeof req.headers === "undefined" &&
+    typeof GraphqlCtx.req === "undefined"
   ) {
     if (
       (context.getType() as string) === ContextType.Graphql &&
@@ -61,7 +61,7 @@ export function getReq(
     }
     return context.switchToHttp().getRequest();
   }
-  if (typeof GraphqlCtx.req !== 'undefined') {
+  if (typeof GraphqlCtx.req !== "undefined") {
     return GraphqlCtx.req;
   }
   return req;
@@ -75,10 +75,10 @@ export function getRes(
   const context = resOrExecutionContext as ExecutionContext;
   const GraphqlCtx = resOrExecutionContext as GraphqlCtx;
   if (
-    typeof context.switchToHttp === 'function' &&
-    typeof context.getType === 'function' &&
-    typeof res.send !== 'function' &&
-    typeof GraphqlCtx.res === 'undefined'
+    typeof context.switchToHttp === "function" &&
+    typeof context.getType === "function" &&
+    typeof res.send !== "function" &&
+    typeof GraphqlCtx.res === "undefined"
   ) {
     if (
       (context.getType() as string) === ContextType.Graphql &&
@@ -91,12 +91,12 @@ export function getRes(
     }
     return context.switchToHttp().getResponse();
   }
-  if (typeof GraphqlCtx.res !== 'undefined') {
+  if (typeof GraphqlCtx.res !== "undefined") {
     return GraphqlCtx.res;
   }
   return res;
 }
 
 export enum ContextType {
-  Graphql = 'graphql'
+  Graphql = "graphql",
 }

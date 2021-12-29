@@ -22,11 +22,11 @@
  * limitations under the License.
  */
 
-import KcAdminClient from '@keycloak/keycloak-admin-client';
-import { FactoryProvider } from '@nestjs/common';
-import { KeycloakOptions, KEYCLOAK_OPTIONS } from './types';
+import KcAdminClient from "@keycloak/keycloak-admin-client";
+import { FactoryProvider } from "@nestjs/common";
+import { KeycloakOptions, KEYCLOAK_OPTIONS } from "./types";
 
-export const CREATE_KEYCLOAK_ADMIN = 'CREATE_KEYCLOAK_ADMIN';
+export const CREATE_KEYCLOAK_ADMIN = "CREATE_KEYCLOAK_ADMIN";
 
 const CreateKeycloakAdminProvider: FactoryProvider<
   () => Promise<KcAdminClient | void>
@@ -36,19 +36,19 @@ const CreateKeycloakAdminProvider: FactoryProvider<
   useFactory: (options: KeycloakOptions) => async () => {
     if (!options.adminUsername || !options.adminPassword) return undefined;
     const keycloakAdmin = new KcAdminClient({
-      baseUrl: `${options.baseUrl}/auth`
+      baseUrl: `${options.baseUrl}/auth`,
     });
     await keycloakAdmin.auth({
-      clientId: options.adminClientId || 'admin-cli',
-      grantType: 'password',
+      clientId: options.adminClientId || "admin-cli",
+      grantType: "password",
       password: options.adminPassword,
-      username: options.adminUsername
+      username: options.adminUsername,
     });
     keycloakAdmin.setConfig({
-      realmName: options.realm
+      realmName: options.realm,
     });
     return keycloakAdmin;
-  }
+  },
 };
 
 export default CreateKeycloakAdminProvider;

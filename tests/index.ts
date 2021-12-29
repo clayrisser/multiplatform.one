@@ -22,8 +22,8 @@
  * limitations under the License.
  */
 
-describe('nestjs-keycloak', () => {
-  it('should work', async () => {
+describe("nestjs-keycloak", () => {
+  it("should work", async () => {
     expect(true).toBe(true);
   });
 });

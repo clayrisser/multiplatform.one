@@ -22,24 +22,24 @@
  * limitations under the License.
  */
 
-import KcAdminClient from '@keycloak/keycloak-admin-client';
-import { HttpService } from '@nestjs/axios';
-import { Keycloak } from 'keycloak-connect';
-import { Reflector } from '@nestjs/core';
+import KcAdminClient from "@keycloak/keycloak-admin-client";
+import { HttpService } from "@nestjs/axios";
+import { Keycloak } from "keycloak-connect";
+import { Reflector } from "@nestjs/core";
 import {
   CanActivate,
   ExecutionContext,
   Inject,
   Injectable,
-  Logger
-} from '@nestjs/common';
-import KeycloakService from '../keycloak.service';
-import { KEYCLOAK } from '../keycloak.provider';
-import { CREATE_KEYCLOAK_ADMIN } from '../createKeycloakAdmin.provider';
-import { KEYCLOAK_OPTIONS, KeycloakOptions } from '../types';
-import { RESOURCE, SCOPES } from '../decorators';
+  Logger,
+} from "@nestjs/common";
+import KeycloakService from "../keycloak.service";
+import { KEYCLOAK } from "../keycloak.provider";
+import { CREATE_KEYCLOAK_ADMIN } from "../createKeycloakAdmin.provider";
+import { KEYCLOAK_OPTIONS, KeycloakOptions } from "../types";
+import { RESOURCE, SCOPES } from "../decorators";
 
-declare module 'keycloak-connect' {
+declare module "keycloak-connect" {
   interface Keycloak {
     enforcer(
       expectedPermissions: string | string[]
@@ -75,7 +75,7 @@ export class ResourceGuard implements CanActivate {
     const username = (await keycloakService.getUserInfo())?.preferredUsername;
     if (!username) return false;
     this.logger.verbose(
-      `protecting resource '${resource}' with scopes [ ${scopes.join(', ')} ]`
+      `protecting resource '${resource}' with scopes [ ${scopes.join(", ")} ]`
     );
     const permissions = scopes.map((scope) => `${resource}:${scope}`);
     if (await keycloakService.enforce(permissions)) {

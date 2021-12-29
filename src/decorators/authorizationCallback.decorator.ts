@@ -22,10 +22,10 @@
  * limitations under the License.
  */
 
-import { Observable } from 'rxjs';
-import { PATH_METADATA } from '@nestjs/common/constants';
-import { Reflector } from '@nestjs/core';
-import { Request } from 'express';
+import { Observable } from "rxjs";
+import { PATH_METADATA } from "@nestjs/common/constants";
+import { Reflector } from "@nestjs/core";
+import { Request } from "express";
 import {
   CallHandler,
   ExecutionContext,
@@ -34,12 +34,12 @@ import {
   SetMetadata,
   UseInterceptors,
   applyDecorators,
-  createParamDecorator
-} from '@nestjs/common';
-import KeycloakService from '../keycloak.service';
-import { RefreshTokenGrant, KeycloakRequest } from '../types';
+  createParamDecorator,
+} from "@nestjs/common";
+import KeycloakService from "../keycloak.service";
+import { RefreshTokenGrant, KeycloakRequest } from "../types";
 
-export const AUTHORIZATION_CALLBACK = 'KEYCLOAK_AUTHORIZATION_CALLBACK';
+export const AUTHORIZATION_CALLBACK = "KEYCLOAK_AUTHORIZATION_CALLBACK";
 
 export const AuthorizationCallback = (
   authorizationCallback?: AuthorizationCallback
@@ -53,16 +53,16 @@ export const AuthorizationCallback = (
 export const AuthorizationCode = createParamDecorator(
   (_data: unknown, context: ExecutionContext): string | null => {
     const req = context.switchToHttp().getRequest();
-    const query = new URLSearchParams(req.originalUrl.split('?')?.[1] || '');
-    return query.get('code');
+    const query = new URLSearchParams(req.originalUrl.split("?")?.[1] || "");
+    return query.get("code");
   }
 );
 
 export const AuthorizationState = createParamDecorator(
   (_data: unknown, context: ExecutionContext): string | null => {
     const req = context.switchToHttp().getRequest();
-    const query = new URLSearchParams(req.originalUrl.split('?')?.[1] || '');
-    return query.get('state');
+    const query = new URLSearchParams(req.originalUrl.split("?")?.[1] || "");
+    return query.get("state");
   }
 );
 
@@ -81,7 +81,7 @@ export const HandleAuthorizationCallback = createParamDecorator(
       delete req.keycloakService;
       if (!keycloakService || !reflector) {
         throw new Error(
-          '@AuthorizationCallback({ manuel: true }) decorator is required to use @HandleAuthorizationCallback() decorator'
+          "@AuthorizationCallback({ manuel: true }) decorator is required to use @HandleAuthorizationCallback() decorator"
         );
       }
       const authorizationCallback = getAuthorizationCallback(
@@ -127,7 +127,7 @@ export class AuthorizationCallbackInterceptor implements NestInterceptor {
       );
       if (result) {
         const { redirectUri, destinationUri } = result;
-        res.cookie('redirect_from', redirectUri.split('?')[0]);
+        res.cookie("redirect_from", redirectUri.split("?")[0]);
         res.status(301).redirect(destinationUri);
       }
     }
@@ -147,13 +147,13 @@ function getAuthorizationCallback(
     context.getHandler()
   );
   if (!authorizationCallback) return;
-  const controllerPath = reflector.get(PATH_METADATA, context.getClass()) || '';
-  const methodPath = reflector.get(PATH_METADATA, context.getHandler()) || '';
+  const controllerPath = reflector.get(PATH_METADATA, context.getClass()) || "";
+  const methodPath = reflector.get(PATH_METADATA, context.getHandler()) || "";
   let callbackEndpoint =
     authorizationCallback.callbackEndpoint ||
-    `/${controllerPath}${controllerPath && methodPath ? '/' : ''}${methodPath}`;
+    `/${controllerPath}${controllerPath && methodPath ? "/" : ""}${methodPath}`;
   callbackEndpoint =
-    callbackEndpoint?.[0] === '/'
+    callbackEndpoint?.[0] === "/"
       ? `${baseUrl}${callbackEndpoint}`
       : callbackEndpoint;
   return {
@@ -161,7 +161,7 @@ function getAuthorizationCallback(
     manuel: false,
     persistSession: true,
     ...authorizationCallback,
-    callbackEndpoint
+    callbackEndpoint,
   };
 }
 
@@ -175,50 +175,50 @@ async function handleAuthorizationCallback(
   (RefreshTokenGrant & { destinationUri: string; redirectUri: string }) | null
 > {
   let { redirectUri } = authorizationCallback || {};
-  const query = new URLSearchParams(req.originalUrl.split('?')?.[1] || '');
-  if (!code) code = query.get('code') || undefined;
-  if (!code) throw new Error('missing authorization code');
-  query.delete('code');
-  query.delete('session_state');
-  query.delete('state');
+  const query = new URLSearchParams(req.originalUrl.split("?")?.[1] || "");
+  if (!code) code = query.get("code") || undefined;
+  if (!code) throw new Error("missing authorization code");
+  query.delete("code");
+  query.delete("session_state");
+  query.delete("state");
   if (!redirectUri) {
     if (authorizationCallback?.callbackEndpoint) {
       redirectUri = `${
         authorizationCallback.callbackEndpoint
       }?${query.toString()}`;
     } else {
-      throw new Error('authorization callback requires a redirect uri');
+      throw new Error("authorization callback requires a redirect uri");
     }
   }
   const grantResult = await keycloakService.authorizationCodeGrant(
     {
       code,
-      redirectUri
+      redirectUri,
     },
     authorizationCallback?.persistSession !== false
   );
   if (!grantResult) return null;
   const destinationUri =
     !authorizationCallback || authorizationCallback?.destinationUriFromQuery
-      ? decodeURIComponent(query.get('destination_uri') || '') ||
+      ? decodeURIComponent(query.get("destination_uri") || "") ||
         authorizationCallback?.destinationUri
       : authorizationCallback?.destinationUri;
   if (!destinationUri) {
-    throw new Error('authorization callback requires a destination uri');
+    throw new Error("authorization callback requires a destination uri");
   }
   return { ...grantResult, destinationUri, redirectUri };
 }
 
 export function getBaseUrl(req: KeycloakRequest<Request> | Request): string {
   const host =
-    (req.get('x-forwarded-host')
-      ? req.get('x-forwarded-host')
-      : req.get('host')) ||
+    (req.get("x-forwarded-host")
+      ? req.get("x-forwarded-host")
+      : req.get("host")) ||
     `${req.hostname}${
-      req.get('x-forwarded-port') ? `:${req.get('x-forwarded-port')}` : ''
+      req.get("x-forwarded-port") ? `:${req.get("x-forwarded-port")}` : ""
     }`;
   if (!host) return req.originalUrl;
-  return `${req.get('x-forwarded-proto') || req.protocol}://${host}`;
+  return `${req.get("x-forwarded-proto") || req.protocol}://${host}`;
 }
 
 export interface AuthorizationCallback {

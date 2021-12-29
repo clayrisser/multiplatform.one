@@ -22,8 +22,8 @@
  * limitations under the License.
  */
 
-import { SetMetadata } from '@nestjs/common';
+import { SetMetadata } from "@nestjs/common";
 
-export const RESOURCE = 'KEYCLOAK_RESOURCE';
+export const RESOURCE = "KEYCLOAK_RESOURCE";
 
 export const Resource = (resource: string) => SetMetadata(RESOURCE, resource);

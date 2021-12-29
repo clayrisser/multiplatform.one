@@ -22,9 +22,9 @@
  * limitations under the License.
  */
 
-import { SetMetadata } from '@nestjs/common';
+import { SetMetadata } from "@nestjs/common";
 
-export const REDIRECT_UNAUTHORIZED = 'REDIRECT_UNAUTHORIZED';
+export const REDIRECT_UNAUTHORIZED = "REDIRECT_UNAUTHORIZED";
 
 export const RedirectUnauthorized = (url: string | false, status = 301) => {
   return SetMetadata(

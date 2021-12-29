@@ -22,13 +22,13 @@
  * limitations under the License.
  */
 
-import KeycloakConnect, { Keycloak } from 'keycloak-connect';
-import session from 'express-session';
-import { FactoryProvider } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
-import { KeycloakOptions, KeycloakRequest, KEYCLOAK_OPTIONS } from './types';
+import KeycloakConnect, { Keycloak } from "keycloak-connect";
+import session from "express-session";
+import { FactoryProvider } from "@nestjs/common";
+import { Request, Response, NextFunction } from "express";
+import { KeycloakOptions, KeycloakRequest, KEYCLOAK_OPTIONS } from "./types";
 
-export const KEYCLOAK = 'KEYCLOAK';
+export const KEYCLOAK = "KEYCLOAK";
 
 const KeycloakProvider: FactoryProvider<Keycloak> = {
   inject: [KEYCLOAK_OPTIONS],
@@ -43,8 +43,8 @@ const KeycloakProvider: FactoryProvider<Keycloak> = {
         realm,
         serverUrl: `${baseUrl}/auth`,
         credentials: {
-          ...(clientSecret ? { secret: clientSecret } : {})
-        }
+          ...(clientSecret ? { secret: clientSecret } : {}),
+        },
       } as unknown as any
     );
     keycloak.accessDenied = (
@@ -56,7 +56,7 @@ const KeycloakProvider: FactoryProvider<Keycloak> = {
       next();
     };
     return keycloak;
-  }
+  },
 };
 
 export default KeycloakProvider;

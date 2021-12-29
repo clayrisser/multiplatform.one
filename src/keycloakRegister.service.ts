@@ -22,30 +22,30 @@
  * limitations under the License.
  */
 
-import KcAdminClient from '@keycloak/keycloak-admin-client';
-import ResourceRepresentation from '@keycloak/keycloak-admin-client/lib/defs/resourceRepresentation';
-import RoleRepresentation from '@keycloak/keycloak-admin-client/lib/defs/roleRepresentation';
-import ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation';
-import difference from 'lodash.difference';
-import { DiscoveryService, Reflector } from '@nestjs/core';
-import { HttpService } from '@nestjs/axios';
-import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
-import { Logger, Inject, Injectable } from '@nestjs/common';
-import { PATH_METADATA } from '@nestjs/common/constants';
-import { lastValueFrom } from 'rxjs';
-import { AUTHORIZED } from './decorators/authorized.decorator';
-import { RESOURCE } from './decorators/resource.decorator';
-import { SCOPES } from './decorators/scopes.decorator';
+import KcAdminClient from "@keycloak/keycloak-admin-client";
+import ResourceRepresentation from "@keycloak/keycloak-admin-client/lib/defs/resourceRepresentation";
+import RoleRepresentation from "@keycloak/keycloak-admin-client/lib/defs/roleRepresentation";
+import ScopeRepresentation from "@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation";
+import difference from "lodash.difference";
+import { DiscoveryService, Reflector } from "@nestjs/core";
+import { HttpService } from "@nestjs/axios";
+import { InstanceWrapper } from "@nestjs/core/injector/instance-wrapper";
+import { Logger, Inject, Injectable } from "@nestjs/common";
+import { PATH_METADATA } from "@nestjs/common/constants";
+import { lastValueFrom } from "rxjs";
+import { AUTHORIZED } from "./decorators/authorized.decorator";
+import { RESOURCE } from "./decorators/resource.decorator";
+import { SCOPES } from "./decorators/scopes.decorator";
 import {
   AUTHORIZATION_CALLBACK,
-  AuthorizationCallback
-} from './decorators/authorizationCallback.decorator';
+  AuthorizationCallback,
+} from "./decorators/authorizationCallback.decorator";
 import {
   HashMap,
   KeycloakOptions,
   RegisterOptions,
-  KEYCLOAK_OPTIONS
-} from './types';
+  KEYCLOAK_OPTIONS,
+} from "./types";
 
 const _globalRegistrationMap: GlobalRegistrationMap = {};
 
@@ -53,7 +53,7 @@ export function getGlobalRegistrationMap() {
   const globalRegistrationMap = { ..._globalRegistrationMap };
   if (globalRegistrationMap.defaultAuthorizationCallback) {
     globalRegistrationMap.defaultAuthorizationCallback = {
-      ...globalRegistrationMap.defaultAuthorizationCallback
+      ...globalRegistrationMap.defaultAuthorizationCallback,
     };
   }
   return globalRegistrationMap;
@@ -77,13 +77,13 @@ export default class KeycloakRegisterService {
     private readonly httpService: HttpService
   ) {
     this.keycloakAdmin = new KcAdminClient({
-      baseUrl: `${this.options.baseUrl}/auth`
+      baseUrl: `${this.options.baseUrl}/auth`,
     });
     this.registerOptions = {
       roles: [],
-      ...(typeof this.options.register === 'boolean'
+      ...(typeof this.options.register === "boolean"
         ? {}
-        : this.options.register || {})
+        : this.options.register || {}),
     };
   }
 
@@ -144,30 +144,30 @@ export default class KeycloakRegisterService {
                     this.reflector.get(
                       PATH_METADATA,
                       controller.instance.constructor
-                    ) || '';
+                    ) || "";
                   const methodPath =
-                    this.reflector.get(PATH_METADATA, method) || '';
+                    this.reflector.get(PATH_METADATA, method) || "";
                   let callbackEndpoint =
                     authorizationCallback.callbackEndpoint ||
                     `/${controllerPath}${
-                      controllerPath && methodPath ? '/' : ''
+                      controllerPath && methodPath ? "/" : ""
                     }${methodPath}`;
                   authorizationCallbacks.push({
                     destinationUriFromQuery: true,
                     manuel: false,
                     persistSession: true,
                     ...authorizationCallback,
-                    callbackEndpoint
+                    callbackEndpoint,
                   });
                 }
                 return authorizationCallbacks;
               },
               []
-            )
+            ),
           ];
         },
         []
-      )
+      ),
     ];
     return this._authorizationCallbacks;
   }
@@ -196,7 +196,7 @@ export default class KeycloakRegisterService {
           },
           []
         ),
-      ...this.discoveryService.getControllers()
+      ...this.discoveryService.getControllers(),
     ];
     return this._providers;
   }
@@ -211,7 +211,7 @@ export default class KeycloakRegisterService {
           try {
             values = this.reflector.getAllAndMerge(AUTHORIZED, [
               controller.metatype,
-              ...methods
+              ...methods,
             ]);
           } catch (err) {
             this.logger.warn(err);
@@ -221,7 +221,7 @@ export default class KeycloakRegisterService {
         },
         new Set()
       ),
-      ...(this.registerOptions.roles || [])
+      ...(this.registerOptions.roles || []),
     ];
     return this._roles;
   }
@@ -233,7 +233,7 @@ export default class KeycloakRegisterService {
   private get realmRoles() {
     return this.roles
       .filter((role: string) => /^realm:/g.test(role))
-      .map((role: string) => role.replace(/^realm:/g, ''));
+      .map((role: string) => role.replace(/^realm:/g, ""));
   }
 
   private get resources(): HashMap<string[]> {
@@ -254,7 +254,7 @@ export default class KeycloakRegisterService {
                 return new Set([...scopes, ...(methodValues || [])]);
               },
               new Set()
-            )
+            ),
           ]);
           return resources;
         },
@@ -266,7 +266,7 @@ export default class KeycloakRegisterService {
         [resourceName, scopes]: [string, Set<string>]
       ) => {
         resources[resourceName] = [
-          ...new Set([...(resources[resourceName] || []), ...scopes])
+          ...new Set([...(resources[resourceName] || []), ...scopes]),
         ];
         return resources;
       },
@@ -278,9 +278,9 @@ export default class KeycloakRegisterService {
     _globalRegistrationMap.defaultAuthorizationCallback =
       this.defaultAuthorizationCallback;
     if (!force && !this.canRegister) return;
-    this.logger.log('waiting for keycloak');
+    this.logger.log("waiting for keycloak");
     await this.waitForReady();
-    this.logger.log('registering keycloak');
+    this.logger.log("registering keycloak");
     await this.initializeKeycloakAdmin();
     await this.enableAuthorization();
     await this.createRealmRoles();
@@ -291,13 +291,13 @@ export default class KeycloakRegisterService {
 
   private async initializeKeycloakAdmin() {
     await this.keycloakAdmin.auth({
-      clientId: this.options.adminClientId || 'admin-cli',
-      grantType: 'password',
+      clientId: this.options.adminClientId || "admin-cli",
+      grantType: "password",
       password: this.options.adminPassword,
-      username: this.options.adminUsername
+      username: this.options.adminUsername,
     });
     this.keycloakAdmin.setConfig({
-      realmName: this.options.realm
+      realmName: this.options.realm,
     });
     return this.keycloakAdmin;
   }
@@ -308,7 +308,7 @@ export default class KeycloakRegisterService {
       {
         authorizationServicesEnabled: true,
         clientId: this.options.clientId,
-        serviceAccountsEnabled: true
+        serviceAccountsEnabled: true,
       }
     );
   }
@@ -316,7 +316,7 @@ export default class KeycloakRegisterService {
   private async createApplicationRoles() {
     const applicationRoles = (
       await this.keycloakAdmin!.clients.listRoles({
-        id: await this.getIdFromClientId(this.options.clientId)
+        id: await this.getIdFromClientId(this.options.clientId),
       })
     ).reduce((roles: string[], { name }: RoleRepresentation) => {
       if (name) roles.push(name);
@@ -327,7 +327,7 @@ export default class KeycloakRegisterService {
       rolesToCreate.map(async (role: string) =>
         this.keycloakAdmin!.clients.createRole({
           id: await this.getIdFromClientId(this.options.clientId),
-          name: role
+          name: role,
         })
       )
     );
@@ -369,7 +369,7 @@ export default class KeycloakRegisterService {
         } else {
           await this.createResource(resourceName, [
             ...existingScopes,
-            ...createdScopes
+            ...createdScopes,
           ]);
         }
       })
@@ -418,7 +418,7 @@ export default class KeycloakRegisterService {
     // cannot have property 'name' to list all resource
     // @ts-ignore
     return this.keycloakAdmin.clients.listResources({
-      id: await this.getIdFromClientId(this.options.clientId)
+      id: await this.getIdFromClientId(this.options.clientId),
     });
   }
 
@@ -428,13 +428,13 @@ export default class KeycloakRegisterService {
   ): Promise<ResourceRepresentation> {
     return this.keycloakAdmin!.clients.createResource(
       {
-        id: await this.getIdFromClientId(this.options.clientId)
+        id: await this.getIdFromClientId(this.options.clientId),
       },
       {
         attributes: {},
         displayName: resourceName,
         name: resourceName,
-        scopes
+        scopes,
       }
     );
   }
@@ -448,7 +448,7 @@ export default class KeycloakRegisterService {
         id: await this.getIdFromClientId(this.options.clientId),
         // resource.id is resource._id
         // @ts-ignore
-        resourceId: resource.id || resource._id || ''
+        resourceId: resource.id || resource._id || "",
       },
       {
         attributes: {},
@@ -459,9 +459,9 @@ export default class KeycloakRegisterService {
         // TODO: probably can remove the following
         ...((resource as unknown as any)?.id
           ? {
-              id: (resource as unknown as any)?.id
+              id: (resource as unknown as any)?.id,
             }
-          : {})
+          : {}),
       }
     );
   }
@@ -475,11 +475,11 @@ export default class KeycloakRegisterService {
       scopes = await this.keycloakAdmin!.clients.listScopesByResource({
         id: await this.getIdFromClientId(this.options.clientId),
         // resourceName is actually the resource id
-        resourceName: resourceId
+        resourceName: resourceId,
       });
     } else {
       scopes = await this.keycloakAdmin!.clients.listAllScopes({
-        id: await this.getIdFromClientId(this.options.clientId)
+        id: await this.getIdFromClientId(this.options.clientId),
       });
     }
     if (scopeNames) {
@@ -498,10 +498,10 @@ export default class KeycloakRegisterService {
   private async createScope(scope: string) {
     return this.keycloakAdmin!.clients.createAuthorizationScope(
       {
-        id: await this.getIdFromClientId(this.options.clientId)
+        id: await this.getIdFromClientId(this.options.clientId),
       },
       {
-        name: scope
+        name: scope,
       }
     );
   }
@@ -533,7 +533,7 @@ function getMethods(obj: any): ((...args: any[]) => any)[] {
     // eslint-disable-next-line no-cond-assign
   } while ((current = Object.getPrototypeOf(current)));
   return [...propertyNames]
-    .filter((propertyName: string) => typeof obj[propertyName] === 'function')
+    .filter((propertyName: string) => typeof obj[propertyName] === "function")
     .map((propertyName: string) => obj[propertyName]) as ((
     ...args: any[]
   ) => any)[];

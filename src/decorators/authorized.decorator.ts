@@ -22,9 +22,9 @@
  * limitations under the License.
  */
 
-import random from 'random';
-import { RENDER_METADATA } from '@nestjs/common/constants';
-import { Request, Response } from 'express';
+import random from "random";
+import { RENDER_METADATA } from "@nestjs/common/constants";
+import { Request, Response } from "express";
 import {
   ArgumentsHost,
   Catch,
@@ -34,13 +34,13 @@ import {
   Logger,
   SetMetadata,
   UseFilters,
-  applyDecorators
-} from '@nestjs/common';
-import { KeycloakRequest, KEYCLOAK_OPTIONS, KeycloakOptions } from '../types';
-import { getBaseUrl } from './authorizationCallback.decorator';
-import { getGlobalRegistrationMap } from '../keycloakRegister.service';
+  applyDecorators,
+} from "@nestjs/common";
+import { KeycloakRequest, KEYCLOAK_OPTIONS, KeycloakOptions } from "../types";
+import { getBaseUrl } from "./authorizationCallback.decorator";
+import { getGlobalRegistrationMap } from "../keycloakRegister.service";
 
-export const AUTHORIZED = 'KEYCLOAK_AUTHORIZED';
+export const AUTHORIZED = "KEYCLOAK_AUTHORIZED";
 
 const randomUniform = random.uniform();
 
@@ -75,7 +75,7 @@ export class UnauthorizedFilter implements ExceptionFilter {
       const baseUrl = getBaseUrl(req);
       let { callbackEndpoint } = authorizationCallback;
       callbackEndpoint =
-        callbackEndpoint?.[0] === '/'
+        callbackEndpoint?.[0] === "/"
           ? `${baseUrl}${callbackEndpoint}`
           : callbackEndpoint;
       return res.status(301).redirect(
@@ -86,9 +86,9 @@ export class UnauthorizedFilter implements ExceptionFilter {
           redirect_uri: `${callbackEndpoint}?destination_uri=${encodeURIComponent(
             `${baseUrl}${req.originalUrl}`
           )}`,
-          response_type: 'code',
-          scope: 'openid',
-          state: randomUniform().toString().substr(2, 8)
+          response_type: "code",
+          scope: "openid",
+          state: randomUniform().toString().substr(2, 8),
         }).toString()}`
       );
     }
