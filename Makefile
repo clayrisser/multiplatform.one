@@ -3,7 +3,7 @@
 # File Created: 10-09-2021 10:07:28
 # Author: Clay Risser
 # -----
-# Last Modified: 29-12-2021 03:06:14
+# Last Modified: 29-12-2021 03:22:03
 # Modified By: Clay Risser
 # -----
 # Silicon Hills LLC (c) Copyright 2021
@@ -75,7 +75,7 @@ start: | ~install +start ##
 .PHONY: publish +publish
 publish: | ~build +publish
 +publish:
-	@$(NPM) publish
+	@npm publish
 
 .PHONY: pack +pack
 pack: ~build +pack
