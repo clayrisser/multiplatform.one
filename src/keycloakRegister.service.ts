@@ -4,8 +4,8 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 28-12-2021 05:27:26
- * Modified By: Clay Risser <email@clayrisser.com>
+ * Last Modified: 02-01-2022 10:35:17
+ * Modified By: Clay Risser
  * -----
  * Silicon Hills LLC (c) Copyright 2021
  *
@@ -191,7 +191,11 @@ export default class KeycloakRegisterService {
             providers: InstanceWrapper<any>[],
             provider: InstanceWrapper<any>
           ) => {
-            if (/Resolver$/.test(provider.name)) providers.push(provider);
+            if (
+              typeof provider.name !== "symbol" &&
+              /Resolver$/.test(provider.name)
+            )
+              providers.push(provider);
             return providers;
           },
           []
