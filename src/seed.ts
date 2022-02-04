@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 18:34:35
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 14-07-2021 19:00:20
+ * Last Modified: 04-02-2022 03:22:22
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -54,7 +54,7 @@ export default async function seedDb(
     ? outputPath
     : 'prisma');
   const prisma = new PrismaClient();
-  const result = await Promise.all<Result>(
+  const result = (await Promise.all(
     Object.entries(entities).map(
       async ([key, entity]: [string, Entity | Entity[]]) => {
         spinner.start(`seeding '${key}'`);
@@ -67,13 +67,13 @@ export default async function seedDb(
           spinner.info(`already seeded '${key}'`);
           return [key, null];
         }
-        let result = await Promise.all<any[]>(
+        let result = await Promise.all(
           entity.map(async (entity: Entity) => {
             try {
               const result = await prisma[key].create({ data: entity });
               return hideResults(key, result, hide);
             } catch (err) {
-              spinner.fail(err);
+              spinner.fail((err as Error).message || (err as string));
               process.exit(1);
               return null;
             }
@@ -86,7 +86,7 @@ export default async function seedDb(
         return [key, result];
       }
     )
-  );
+  )) as Result[];
   await prisma.$disconnect();
   return result.reduce((mappedResult: MappedResult, [key, value]: Result) => {
     mappedResult[key] = value;
