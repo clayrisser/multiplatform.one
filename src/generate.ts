@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 18:34:35
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-08-2021 12:45:32
+ * Last Modified: 04-02-2022 03:04:52
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -52,8 +52,8 @@ export default async function generate() {
     `# ------------------------------------------------------
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
-GENERATED_POSTGRES_URL=${postgresUrl}
-GENERATED_SQLITE_URL=${sqliteUrl}
+POSTGRES_URL=${postgresUrl}
+SQLITE_URL=${sqliteUrl}
 `
   );
   await execa('node', [prisma, 'generate'], { stdio: 'inherit' });
