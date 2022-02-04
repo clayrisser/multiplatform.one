@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 18:34:35
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 14-07-2021 20:05:26
+ * Last Modified: 04-02-2022 03:23:57
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -35,7 +35,7 @@ export default async function main(spinner = ora()) {
   try {
     await waitForPostgres(spinner);
   } catch (err) {
-    return spinner.fail(err.message);
+    return spinner.fail((err as Error).message || (err as string));
   }
   return null;
 }
@@ -57,7 +57,7 @@ export async function waitForPostgres(spinner = ora(), interval = 1000) {
         break;
       }
     } catch (err) {
-      const execaErr: ExecaError = err;
+      const execaErr = err as ExecaError;
       if (typeof execaErr.exitCode !== 'number') throw err;
       spinner.warn(execaErr.stdout || execaErr.message || execaErr.toString());
       spinner.start('waiting for postgres');
