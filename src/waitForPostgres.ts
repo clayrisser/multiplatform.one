@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 18:34:35
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 04-02-2022 03:23:57
+ * Last Modified: 04-02-2022 03:49:37
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -41,15 +41,15 @@ export default async function main(spinner = ora()) {
 }
 
 export async function waitForPostgres(spinner = ora(), interval = 1000) {
-  if (!env.GENERATED_POSTGRES_URL) {
-    throw new Error('$GENERATED_POSTGRES_URL not set');
+  if (!env.POSTGRES_URL) {
+    throw new Error('$POSTGRES_URL not set');
   }
   spinner.start('waiting for postgres');
   for (;;) {
     try {
       if (
         (
-          await execa('psql', [env.GENERATED_POSTGRES_URL, '-c', '\\l'], {
+          await execa('psql', [env.POSTGRES_URL, '-c', '\\l'], {
             stdio: 'pipe'
           })
         ).exitCode === 0
