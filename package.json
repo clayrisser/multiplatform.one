@@ -1,5 +1,5 @@
 {
-  "name": "prisma-scripts",
+  "name": "@risserlabs/prisma-scripts",
   "version": "0.4.0",
   "description": "scripts for managing prisma orm",
   "sideEffects": false,
@@ -123,5 +123,9 @@
   "prettier": {
     "singleQuote": true,
     "trailingComma": "none"
+  },
+  "publishConfig": {
+    "@risserlabs:registry": "https://gitlab.com/api/v4/projects/33412251/packages/npm/",
+    "registry": "https://gitlab.com/api/v4/projects/33412251/packages/npm/"
   }
 }
