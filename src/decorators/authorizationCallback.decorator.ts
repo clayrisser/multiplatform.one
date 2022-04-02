@@ -4,8 +4,8 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-09-2021 18:15:38
- * Modified By: Clay Risser <email@clayrisser.com>
+ * Last Modified: 02-04-2022 09:12:01
+ * Modified By: Clay Risser
  * -----
  * Silicon Hills LLC (c) Copyright 2021
  *
@@ -71,7 +71,6 @@ export const HandleAuthorizationCallback = createParamDecorator(
     _data: unknown,
     context: ExecutionContext
   ): HandleAuthorizationCallbackFunction => {
-    const req = context.switchToHttp().getRequest();
     return async (code?: string, state?: string) => {
       const req: KeycloakRequest<Request> = context.switchToHttp().getRequest();
       if (!req) return null;
@@ -81,7 +80,7 @@ export const HandleAuthorizationCallback = createParamDecorator(
       delete req.keycloakService;
       if (!keycloakService || !reflector) {
         throw new Error(
-          "@AuthorizationCallback({ manuel: true }) decorator is required to use @HandleAuthorizationCallback() decorator"
+          "@AuthorizationCallback({ manual: true }) decorator is required to use @HandleAuthorizationCallback() decorator"
         );
       }
       const authorizationCallback = getAuthorizationCallback(
@@ -119,7 +118,7 @@ export class AuthorizationCallbackInterceptor implements NestInterceptor {
       context,
       this.reflector
     );
-    if (!authorizationCallback?.manuel) {
+    if (!authorizationCallback?.manual) {
       const result = await handleAuthorizationCallback(
         req,
         this.keycloakService,
@@ -158,7 +157,7 @@ function getAuthorizationCallback(
       : callbackEndpoint;
   return {
     destinationUriFromQuery: true,
-    manuel: false,
+    manual: false,
     persistSession: true,
     ...authorizationCallback,
     callbackEndpoint,
@@ -175,7 +174,7 @@ async function handleAuthorizationCallback(
   (RefreshTokenGrant & { destinationUri: string; redirectUri: string }) | null
 > {
   let { redirectUri } = authorizationCallback || {};
-  const query = new URLSearchParams(req.originalUrl.split("?")?.[1] || "");
+  const query = new URLSearchParams(req.originalUrl?.split("?")?.[1] || "");
   if (!code) code = query.get("code") || undefined;
   if (!code) throw new Error("missing authorization code");
   query.delete("code");
@@ -226,7 +225,7 @@ export interface AuthorizationCallback {
   default?: boolean;
   destinationUri?: string;
   destinationUriFromQuery?: boolean;
-  manuel?: boolean;
+  manual?: boolean;
   persistSession?: boolean;
   redirectUri?: string;
 }

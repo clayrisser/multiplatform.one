@@ -4,8 +4,8 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-09-2021 19:48:47
- * Modified By: Clay Risser <email@clayrisser.com>
+ * Last Modified: 02-04-2022 09:12:18
+ * Modified By: Clay Risser
  * -----
  * Silicon Hills LLC (c) Copyright 2021
  *
@@ -35,7 +35,7 @@ module.exports = {
   env: {
     browser: true,
   },
-  plugins: ["spellcheck"],
+  plugins: ["spellcheck", "import"],
   parserOptions: {
     project: "./tsconfig.json",
     ecmaFeatures: {
@@ -44,7 +44,8 @@ module.exports = {
   },
   rules: {
     "no-inner-declarations": "off",
-    "@typescript-eslint/comma-dangle": ["error", "never"],
+    "@typescript-eslint/comma-dangle": "off",
+    "@typescript-eslint/no-redeclare": "off",
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/no-shadow": "off",
     "@typescript-eslint/no-use-before-define": "off",

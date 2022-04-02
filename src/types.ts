@@ -4,8 +4,8 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-09-2021 17:48:48
- * Modified By: Clay Risser <email@clayrisser.com>
+ * Last Modified: 02-04-2022 09:10:36
+ * Modified By: Clay Risser
  * -----
  * Silicon Hills LLC (c) Copyright 2021
  *
@@ -79,6 +79,7 @@ export type KeycloakRequest<T = Request> = {
   annotationKeys?: Set<string>;
   kauth?: Kauth;
   keycloakService?: KeycloakService;
+  originalUrl?: string;
   redirectUnauthorized?: RedirectMeta | false;
   reflector?: Reflector;
   resourceDenied?: boolean;

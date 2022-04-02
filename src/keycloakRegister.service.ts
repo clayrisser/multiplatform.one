@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 02-01-2022 10:35:17
+ * Last Modified: 02-04-2022 09:11:28
  * Modified By: Clay Risser
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -47,10 +47,10 @@ import {
   KEYCLOAK_OPTIONS,
 } from "./types";
 
-const _globalRegistrationMap: GlobalRegistrationMap = {};
+const privateGlobalRegistrationMap: GlobalRegistrationMap = {};
 
 export function getGlobalRegistrationMap() {
-  const globalRegistrationMap = { ..._globalRegistrationMap };
+  const globalRegistrationMap = { ...privateGlobalRegistrationMap };
   if (globalRegistrationMap.defaultAuthorizationCallback) {
     globalRegistrationMap.defaultAuthorizationCallback = {
       ...globalRegistrationMap.defaultAuthorizationCallback,
@@ -107,13 +107,13 @@ export default class KeycloakRegisterService {
       this.authorizationCallbacks.find(
         (authorizationCallback: AuthorizationCallback) =>
           authorizationCallback.default &&
-          !authorizationCallback.manuel &&
+          !authorizationCallback.manual &&
           authorizationCallback.persistSession &&
           authorizationCallback.destinationUriFromQuery
       ) ||
       this.authorizationCallbacks.find(
         (authorizationCallback: AuthorizationCallback) =>
-          !authorizationCallback.manuel &&
+          !authorizationCallback.manual &&
           authorizationCallback.persistSession &&
           authorizationCallback.destinationUriFromQuery
       ) ||
@@ -154,7 +154,7 @@ export default class KeycloakRegisterService {
                     }${methodPath}`;
                   authorizationCallbacks.push({
                     destinationUriFromQuery: true,
-                    manuel: false,
+                    manual: false,
                     persistSession: true,
                     ...authorizationCallback,
                     callbackEndpoint,
@@ -279,7 +279,7 @@ export default class KeycloakRegisterService {
   }
 
   async register(force = false) {
-    _globalRegistrationMap.defaultAuthorizationCallback =
+    privateGlobalRegistrationMap.defaultAuthorizationCallback =
       this.defaultAuthorizationCallback;
     if (!force && !this.canRegister) return;
     this.logger.log("waiting for keycloak");
@@ -513,11 +513,13 @@ export default class KeycloakRegisterService {
   private async waitForReady(pingInterval = 5000): Promise<void> {
     try {
       const res = await lastValueFrom(
-        this.httpService.get(`${this.options.baseUrl}/auth`)
+        this.httpService.get(
+          `${this.options.baseUrl}/realms/${this.options.realm}`
+        )
       );
       if (res.status > 399) {
         await new Promise((r) => setTimeout(r, pingInterval));
-        return this.waitForReady(pingInterval);
+        return await this.waitForReady(pingInterval);
       }
     } catch (err) {
       await new Promise((r) => setTimeout(r, pingInterval));
