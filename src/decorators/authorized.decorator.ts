@@ -4,8 +4,8 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 23-09-2021 16:50:24
- * Modified By: Clay Risser <email@clayrisser.com>
+ * Last Modified: 06-05-2022 05:19:22
+ * Modified By: Clay Risser
  * -----
  * Silicon Hills LLC (c) Copyright 2021
  *
@@ -79,7 +79,7 @@ export class UnauthorizedFilter implements ExceptionFilter {
           ? `${baseUrl}${callbackEndpoint}`
           : callbackEndpoint;
       return res.status(301).redirect(
-        `${this.options.baseUrl}/auth/realms/${
+        `${this.options.baseUrl}/realms/${
           this.options.realm
         }/protocol/openid-connect/auth?${new URLSearchParams({
           client_id: this.options.clientId,

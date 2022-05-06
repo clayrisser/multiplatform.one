@@ -4,8 +4,8 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 19-07-2021 07:21:10
- * Modified By: Clay Risser <email@clayrisser.com>
+ * Last Modified: 06-05-2022 07:56:13
+ * Modified By: Clay Risser
  * -----
  * Silicon Hills LLC (c) Copyright 2021
  *
@@ -41,7 +41,7 @@ const KeycloakProvider: FactoryProvider<Keycloak> = {
         bearerOnly: true,
         clientId,
         realm,
-        serverUrl: `${baseUrl}/auth`,
+        serverUrl: `${baseUrl}`,
         credentials: {
           ...(clientSecret ? { secret: clientSecret } : {}),
         },
