@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 02-04-2022 09:11:28
+ * Last Modified: 06-05-2022 07:56:33
  * Modified By: Clay Risser
  * -----
  * Silicon Hills LLC (c) Copyright 2021
@@ -77,7 +77,7 @@ export default class KeycloakRegisterService {
     private readonly httpService: HttpService
   ) {
     this.keycloakAdmin = new KcAdminClient({
-      baseUrl: `${this.options.baseUrl}/auth`,
+      baseUrl: `${this.options.baseUrl}`,
     });
     this.registerOptions = {
       roles: [],

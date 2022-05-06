@@ -3,7 +3,7 @@
 # File Created: 10-09-2021 10:07:28
 # Author: Clay Risser
 # -----
-# Last Modified: 06-05-2022 04:06:29
+# Last Modified: 06-05-2022 07:48:32
 # Modified By: Clay Risser
 # -----
 # Silicon Hills LLC (c) Copyright 2021
@@ -93,12 +93,8 @@ coverage: | ~lint +coverage ##
 prepare: ;
 
 .PHONY: upgrade
-upgrade: ##
-ifeq ($(NPM),yarn)
+upgrade:
 	@$(NPM) upgrade-interactive
-else
-	@$(NPM) upgrade -L
-endif
 
 .PHONY: inc
 inc: ##
