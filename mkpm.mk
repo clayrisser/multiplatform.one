@@ -3,7 +3,7 @@
 # File Created: 29-12-2021 02:40:15
 # Author: Clay Risser
 # -----
-# Last Modified: 29-12-2021 02:40:44
+# Last Modified: 06-05-2022 04:08:36
 # Modified By: Clay Risser
 # -----
 # Silicon Hills LLC (c) Copyright 2021
@@ -21,15 +21,16 @@
 # limitations under the License.
 
 MKPM_PACKAGES := \
+	dotenv=0.0.7 \
 	gnu=0.0.3 \
-	mkchain=0.0.13 \
+	mkchain=0.0.16 \
 	yarn=0.0.1
 
 MKPM_REPOS := \
-	https://gitlab.com/bitspur/community/mkpm-stable.git
+	https://gitlab.com/risserlabs/community/mkpm-stable.git
 
 ############# MKPM BOOTSTRAP SCRIPT BEGIN #############
-MKPM_BOOTSTRAP := https://bitspur.gitlab.io/community/mkpm/bootstrap.mk
+MKPM_BOOTSTRAP := https://risserlabs.gitlab.io/community/mkpm/bootstrap.mk
 export PROJECT_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 NULL := /dev/null
 TRUE := true

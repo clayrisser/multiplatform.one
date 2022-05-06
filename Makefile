@@ -3,7 +3,7 @@
 # File Created: 10-09-2021 10:07:28
 # Author: Clay Risser
 # -----
-# Last Modified: 29-12-2021 03:22:03
+# Last Modified: 06-05-2022 04:06:29
 # Modified By: Clay Risser
 # -----
 # Silicon Hills LLC (c) Copyright 2021
@@ -22,6 +22,7 @@
 
 include mkpm.mk
 ifneq (,$(MKPM_READY))
+include $(MKPM)/dotenv
 include $(MKPM)/gnu
 include $(MKPM)/mkchain
 include $(MKPM)/yarn
@@ -75,7 +76,7 @@ start: | ~install +start ##
 .PHONY: publish +publish
 publish: | ~build +publish
 +publish:
-	@npm publish
+	@npm publish $(ARGS)
 
 .PHONY: pack +pack
 pack: ~build +pack
