@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 13:45:30
+ * Last Modified: 25-10-2022 15:21:06
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -23,13 +23,14 @@
  */
 
 import type { NestMiddleware } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import type { Request, Response, NextFunction } from 'express';
-import type KeycloakService from './keycloak.service';
+import KeycloakService from './keycloak.service';
 
 @Injectable()
 export default class KeycloakMiddleware implements NestMiddleware {
-  constructor(private readonly keycloakService: KeycloakService) {}
+  constructor(@Inject(KeycloakService) private readonly keycloakService: KeycloakService) {}
 
   async use(_req: Request, _res: Response, next: NextFunction) {
     try {
