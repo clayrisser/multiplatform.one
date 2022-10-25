@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 11:31:02
+ * Last Modified: 25-10-2022 13:45:14
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -23,30 +23,24 @@
  */
 
 import KcAdminClient from "@keycloak/keycloak-admin-client";
-import ResourceRepresentation from "@keycloak/keycloak-admin-client/lib/defs/resourceRepresentation";
-import RoleRepresentation from "@keycloak/keycloak-admin-client/lib/defs/roleRepresentation";
-import ScopeRepresentation from "@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation";
+import type ResourceRepresentation from "@keycloak/keycloak-admin-client/lib/defs/resourceRepresentation";
+import type RoleRepresentation from "@keycloak/keycloak-admin-client/lib/defs/roleRepresentation";
+import type ScopeRepresentation from "@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation";
 import difference from "lodash.difference";
-import { DiscoveryService, Reflector } from "@nestjs/core";
-import { HttpService } from "@nestjs/axios";
-import { InstanceWrapper } from "@nestjs/core/injector/instance-wrapper";
+import type { DiscoveryService, Reflector } from "@nestjs/core";
+import type { HttpService } from "@nestjs/axios";
+import type { InstanceWrapper } from "@nestjs/core/injector/instance-wrapper";
 import { Logger, Inject, Injectable } from "@nestjs/common";
 import { PATH_METADATA } from "@nestjs/common/constants";
 import { lastValueFrom } from "rxjs";
 import { AUTHORIZED } from "./decorators/authorized.decorator";
 import { RESOURCE } from "./decorators/resource.decorator";
 import { SCOPES } from "./decorators/scopes.decorator";
-import {
-  AUTHORIZATION_CALLBACK,
-  AuthorizationCallback,
-} from "./decorators/authorizationCallback.decorator";
-import {
-  HashMap,
-  KeycloakOptions,
-  RegisterOptions,
-  KEYCLOAK_OPTIONS,
-} from "./types";
-import ClientRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientRepresentation";
+import type { AuthorizationCallback } from "./decorators/authorizationCallback.decorator";
+import { AUTHORIZATION_CALLBACK } from "./decorators/authorizationCallback.decorator";
+import type { HashMap, KeycloakOptions, RegisterOptions } from "./types";
+import { KEYCLOAK_OPTIONS } from "./types";
+import type ClientRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientRepresentation";
 
 const privateGlobalRegistrationMap: GlobalRegistrationMap = {};
 

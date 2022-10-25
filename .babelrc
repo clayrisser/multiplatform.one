@@ -47,6 +47,7 @@
           }
         ]
       ],
+      "plugins": ["babel-plugin-add-import-extension"],
       "ignore": [
         "**/*.d.ts",
         "**/*.d.tsx",

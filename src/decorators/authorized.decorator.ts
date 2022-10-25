@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 11:31:02
+ * Last Modified: 25-10-2022 13:44:06
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -24,11 +24,10 @@
 
 import random from "random";
 import { RENDER_METADATA } from "@nestjs/common/constants";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
+import type { ArgumentsHost, ExceptionFilter } from "@nestjs/common";
 import {
-  ArgumentsHost,
   Catch,
-  ExceptionFilter,
   HttpException,
   Inject,
   Logger,
@@ -36,7 +35,8 @@ import {
   UseFilters,
   applyDecorators,
 } from "@nestjs/common";
-import { KeycloakRequest, KEYCLOAK_OPTIONS, KeycloakOptions } from "../types";
+import type { KeycloakRequest, KeycloakOptions } from "../types";
+import { KEYCLOAK_OPTIONS } from "../types";
 import { getBaseUrl } from "./authorizationCallback.decorator";
 import { getGlobalRegistrationMap } from "../keycloakRegister.service";
 

@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 11:31:02
+ * Last Modified: 25-10-2022 13:44:29
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -23,19 +23,14 @@
  */
 
 import { RENDER_METADATA } from "@nestjs/common/constants";
-import { Reflector } from "@nestjs/core";
-import { Request, Response } from "express";
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  Logger,
-  Scope,
-} from "@nestjs/common";
-import KeycloakService from "../keycloak.service";
+import type { Reflector } from "@nestjs/core";
+import type { Request, Response } from "express";
+import type { CanActivate, ExecutionContext } from "@nestjs/common";
+import { Injectable, Logger, Scope } from "@nestjs/common";
+import type KeycloakService from "../keycloak.service";
 import { REDIRECT_UNAUTHORIZED } from "../decorators/redirectUnauthorized.decorator";
 import { RESOURCE, AUTHORIZED, PUBLIC } from "../decorators";
-import { KeycloakRequest, RedirectMeta } from "../types";
+import type { KeycloakRequest, RedirectMeta } from "../types";
 
 @Injectable({ scope: Scope.REQUEST })
 export class AuthGuard implements CanActivate {

@@ -1,6 +1,6 @@
 {
   "name": "@risserlabs/nestjs-keycloak",
-  "version": "2.3.1",
+  "version": "2.3.5",
   "description": "nestjs module for authenticating keycloak",
   "sideEffects": false,
   "keywords": [
@@ -13,19 +13,12 @@
   },
   "license": "Apache-2.0",
   "author": "Risser Labs LLC <support@risserlabs.com> (https://risserlabs.com)",
-  "main": "lib/index.js",
+  "main": "esm/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
   "source": "src/index.ts",
   "exports": {
-    ".": {
-      "import": "./esm/index.js",
-      "require": "./lib/index.js"
-    },
-    "./axiosInherit": {
-      "import": "./esm/axiosInherit.js",
-      "require": "./lib/axiosInherit.js"
-    }
+    ".": "./esm/index.js"
   },
   "files": [
     "esm",
@@ -93,6 +86,7 @@
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
     "babel-loader": "8.2.5",
+    "babel-plugin-add-import-extension": "^1.6.0",
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-typescript-metadata": "^0.3.2",

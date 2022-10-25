@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 11:31:02
+ * Last Modified: 25-10-2022 13:44:17
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -22,22 +22,24 @@
  * limitations under the License.
  */
 
-import { Observable } from "rxjs";
+import type { Observable } from "rxjs";
 import { PATH_METADATA } from "@nestjs/common/constants";
-import { Reflector } from "@nestjs/core";
-import { Request } from "express";
-import {
+import type { Reflector } from "@nestjs/core";
+import type { Request } from "express";
+import type {
   CallHandler,
   ExecutionContext,
-  Injectable,
   NestInterceptor,
+} from "@nestjs/common";
+import {
+  Injectable,
   SetMetadata,
   UseInterceptors,
   applyDecorators,
   createParamDecorator,
 } from "@nestjs/common";
-import KeycloakService from "../keycloak.service";
-import { RefreshTokenGrant, KeycloakRequest } from "../types";
+import type KeycloakService from "../keycloak.service";
+import type { RefreshTokenGrant, KeycloakRequest } from "../types";
 
 export const AUTHORIZATION_CALLBACK = "KEYCLOAK_AUTHORIZATION_CALLBACK";
 

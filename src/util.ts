@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 17:43:04
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 11:31:02
+ * Last Modified: 25-10-2022 13:54:28
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -22,9 +22,9 @@
  * limitations under the License.
  */
 
-import { ExecutionContext } from "@nestjs/common";
-import { Request, Response } from "express";
-import { KeycloakRequest, GraphqlCtx } from "./types";
+import type { ExecutionContext } from "@nestjs/common";
+import type { Request, Response } from "express";
+import type { KeycloakRequest, GraphqlCtx } from "./types";
 
 let nestjsGraphql: any;
 try {

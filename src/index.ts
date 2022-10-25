@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 11:31:02
+ * Last Modified: 25-10-2022 13:44:54
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -24,27 +24,21 @@
 
 import { DiscoveryModule, APP_GUARD } from "@nestjs/core";
 import { HttpModule } from "@nestjs/axios";
-import {
+import type {
   DynamicModule,
-  Global,
-  Logger,
   MiddlewareConsumer,
-  Module,
   NestModule,
   OnModuleInit,
-  RequestMethod,
 } from "@nestjs/common";
+import { Global, Logger, Module, RequestMethod } from "@nestjs/common";
 import CreateKeycloakAdminProvider from "./createKeycloakAdmin.provider";
 import KeycloakMiddleware from "./keycloak.middleware";
 import KeycloakProvider from "./keycloak.provider";
 import KeycloakRegisterService from "./keycloakRegister.service";
 import KeycloakService from "./keycloak.service";
 import { AuthGuard, ResourceGuard } from "./guards";
-import {
-  KeycloakOptions,
-  KeycloakAsyncOptions,
-  KEYCLOAK_OPTIONS,
-} from "./types";
+import type { KeycloakOptions, KeycloakAsyncOptions } from "./types";
+import { KEYCLOAK_OPTIONS } from "./types";
 
 @Global()
 @Module({})
