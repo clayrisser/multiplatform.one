@@ -2,7 +2,6 @@
 .tern-port
 .yarn/install-state.gz
 .yarn/unplugged
-/esm
 /lib
 tsconfig.tsbuildinfo
 yarn.lock

@@ -61,33 +61,6 @@
         "**/*.test.tsx",
         "src/@types"
       ]
-    },
-    "umd": {
-      "presets": [
-        [
-          "@babel/preset-env",
-          {
-            "corejs": 3,
-            "loose": false,
-            "modules": "umd",
-            "spec": true,
-            "useBuiltIns": "usage"
-          }
-        ]
-      ],
-      "ignore": [
-        "**/*.d.ts",
-        "**/*.d.tsx",
-        "**/*.spec.js",
-        "**/*.spec.jsx",
-        "**/*.spec.ts",
-        "**/*.spec.tsx",
-        "**/*.test.js",
-        "**/*.test.jsx",
-        "**/*.test.ts",
-        "**/*.test.tsx",
-        "src/@types"
-      ]
     }
   }
 }

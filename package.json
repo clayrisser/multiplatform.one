@@ -1,6 +1,6 @@
 {
   "name": "@risserlabs/nestjs-keycloak",
-  "version": "2.3.5",
+  "version": "2.3.6",
   "description": "nestjs module for authenticating keycloak",
   "sideEffects": false,
   "keywords": [
@@ -13,15 +13,14 @@
   },
   "license": "Apache-2.0",
   "author": "Risser Labs LLC <support@risserlabs.com> (https://risserlabs.com)",
-  "main": "esm/index.js",
-  "module": "esm/index.js",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "source": "src/index.ts",
   "exports": {
-    ".": "./esm/index.js"
+    ".": "./lib/index.js"
   },
   "files": [
-    "esm",
     "lib",
     "src"
   ],
@@ -106,7 +105,6 @@
     "node": ">=6.0.0"
   },
   "eslintIgnore": [
-    "esm",
     "lib"
   ],
   "jest": {
@@ -114,7 +112,6 @@
     "testEnvironment": "node",
     "verbose": true,
     "testPathIgnorePatterns": [
-      "<rootDir>/esm/",
       "<rootDir>/lib/"
     ],
     "setupFilesAfterEnv": [
