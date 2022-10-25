@@ -1,12 +1,12 @@
 # File: /mkpm.mk
-# Project: nestjs-keycloak
-# File Created: 29-12-2021 02:40:15
+# Project: @risserlabs/nestjs-keycloak
+# File Created: 25-10-2022 11:30:37
 # Author: Clay Risser
 # -----
-# Last Modified: 06-05-2022 04:08:36
+# Last Modified: 25-10-2022 11:31:01
 # Modified By: Clay Risser
 # -----
-# Silicon Hills LLC (c) Copyright 2021
+# Risser Labs LLC (c) Copyright 2021 - 2022
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,17 +20,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-MKPM_PACKAGES := \
-	dotenv=0.0.7 \
+export MKPM_PACKAGES_DEFAULT := \
+	envcache=0.1.0 \
+	yarn=0.0.5 \
+	mkchain=0.1.0 \
 	gnu=0.0.3 \
-	mkchain=0.0.16 \
-	yarn=0.0.1
+	dotenv=0.0.9
 
-MKPM_REPOS := \
+export MKPM_REPO_DEFAULT := \
 	https://gitlab.com/risserlabs/community/mkpm-stable.git
 
 ############# MKPM BOOTSTRAP SCRIPT BEGIN #############
-MKPM_BOOTSTRAP := https://risserlabs.gitlab.io/community/mkpm/bootstrap.mk
+MKPM_BOOTSTRAP := https://gitlab.com/api/v4/projects/29276259/packages/generic/mkpm/0.3.0/bootstrap.mk
 export PROJECT_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 NULL := /dev/null
 TRUE := true
@@ -38,11 +39,10 @@ ifneq ($(patsubst %.exe,%,$(SHELL)),$(SHELL))
 	NULL = nul
 	TRUE = type nul
 endif
--include $(PROJECT_ROOT)/.mkpm/.bootstrap.mk
+include $(PROJECT_ROOT)/.mkpm/.bootstrap.mk
 $(PROJECT_ROOT)/.mkpm/.bootstrap.mk:
 	@mkdir $(@D) 2>$(NULL) || $(TRUE)
 	@$(shell curl --version >$(NULL) 2>$(NULL) && \
-			echo curl -L -o || \
-			echo wget --content-on-error -O) \
+		echo curl -Lo || echo wget -O) \
 		$@ $(MKPM_BOOTSTRAP) >$(NULL)
 ############## MKPM BOOTSTRAP SCRIPT END ##############

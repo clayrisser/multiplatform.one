@@ -1,13 +1,13 @@
 /**
- * File: /.eslintrc.js
+ * File: /tests/index.ts
  * Project: nestjs-keycloak
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 15-07-2021 16:23:09
- * Modified By: Clay Risser <email@clayrisser.com>
+ * Last Modified: 25-10-2022 11:31:02
+ * Modified By: Clay Risser
  * -----
- * Silicon Hills LLC (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

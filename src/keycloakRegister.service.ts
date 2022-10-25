@@ -4,10 +4,10 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 06-05-2022 07:56:33
+ * Last Modified: 25-10-2022 11:31:02
  * Modified By: Clay Risser
  * -----
- * Silicon Hills LLC (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ import {
   RegisterOptions,
   KEYCLOAK_OPTIONS,
 } from "./types";
+import ClientRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientRepresentation";
 
 const privateGlobalRegistrationMap: GlobalRegistrationMap = {};
 
@@ -286,10 +287,13 @@ export default class KeycloakRegisterService {
     await this.waitForReady();
     this.logger.log("registering keycloak");
     await this.initializeKeycloakAdmin();
-    await this.enableAuthorization();
+    const client = await this.getClient();
     await this.createRealmRoles();
-    await this.createApplicationRoles();
-    await this.createScopedResources();
+    if (await this.canEnableAuthorization(client)) {
+      await this.enableAuthorization(client);
+      await this.createApplicationRoles();
+      await this.createScopedResources();
+    }
     registeredKeycloak = true;
   }
 
@@ -306,15 +310,41 @@ export default class KeycloakRegisterService {
     return this.keycloakAdmin;
   }
 
-  private async enableAuthorization() {
-    await this.keycloakAdmin!.clients.update(
-      { id: await this.getIdFromClientId(this.options.clientId) },
-      {
-        authorizationServicesEnabled: true,
-        clientId: this.options.clientId,
-        serviceAccountsEnabled: true,
-      }
-    );
+  private async getClient() {
+    const client = await this.keycloakAdmin!.clients.findOne({
+      id: await this.getIdFromClientId(this.options.clientId),
+    });
+    if (!client) {
+      throw new Error(`client ${this.options.clientId} does not exist`);
+    }
+    return client;
+  }
+
+  private async canEnableAuthorization(client: ClientRepresentation) {
+    if (client?.publicClient) {
+      this.logger.warn(
+        { clientId: this.options.clientId },
+        "authorization cannot be enabled on a public client"
+      );
+      return false;
+    }
+    return true;
+  }
+
+  private async enableAuthorization(client: ClientRepresentation) {
+    if (
+      !client?.serviceAccountsEnabled ||
+      !client.authorizationServicesEnabled
+    ) {
+      await this.keycloakAdmin!.clients.update(
+        { id: await this.getIdFromClientId(this.options.clientId) },
+        {
+          authorizationServicesEnabled: true,
+          clientId: this.options.clientId,
+          serviceAccountsEnabled: true,
+        }
+      );
+    }
   }
 
   private async createApplicationRoles() {

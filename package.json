@@ -1,25 +1,38 @@
 {
   "name": "@risserlabs/nestjs-keycloak",
-  "version": "2.2.7",
+  "version": "2.3.0",
   "description": "nestjs module for authenticating keycloak",
   "sideEffects": false,
   "keywords": [
-    "nestjs-keycloak"
+    "nestjs"
   ],
-  "homepage": "https://github.com/silicon-hills/nestjs-keycloak",
+  "homepage": "https://gitlab.com/risserlabs/nestjs/nestjs-keycloak",
   "bugs": {
-    "url": "https://github.com/silicon-hills/nestjs-keycloak/issues",
-    "email": "support@siliconhills.dev"
+    "url": "https://gitlab.com/risserlabs/nestjs/nestjs-keycloak/issues",
+    "email": "support@risserlabs.com"
   },
   "license": "Apache-2.0",
-  "author": "Silicon Hills LLC <support@siliconhills.dev> (https://siliconhills.dev)",
-  "files": [
-    "es",
-    "lib"
-  ],
-  "module": "es/index.js",
+  "author": "Risser Labs LLC <support@risserlabs.com> (https://risserlabs.com)",
   "main": "lib/index.js",
-  "repository": "https://github.com/silicon-hills/nestjs-keycloak",
+  "module": "esm/index.js",
+  "types": "lib/index.d.ts",
+  "source": "src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./esm/index.js",
+      "require": "./lib/index.js"
+    },
+    "./axiosInherit": {
+      "import": "./esm/axiosInherit.js",
+      "require": "./lib/axiosInherit.js"
+    }
+  },
+  "files": [
+    "esm",
+    "lib",
+    "src"
+  ],
+  "repository": "https://gitlab.com/risserlabs/nestjs/nestjs-keycloak",
   "scripts": {
     "build": "make -s build",
     "clean": "make -s clean",
@@ -38,17 +51,17 @@
     "test:watch": "make -s test-watch"
   },
   "dependencies": {
-    "@babel/runtime": "^7.17.9",
-    "@keycloak/keycloak-admin-client": "^18.0.0",
+    "@babel/runtime": "^7.19.4",
+    "@keycloak/keycloak-admin-client": "^19.0.3",
     "axios": "^0.27.2",
     "class-validator": "^0.13.2",
-    "core-js": "^3.22.4",
-    "express-session": "^1.17.2",
-    "keycloak-connect": "^18.0.0",
+    "core-js": "^3.26.0",
+    "express-session": "^1.17.3",
+    "keycloak-connect": "^19.0.3",
     "lodash.difference": "^4.5.0",
-    "qs": "^6.10.3",
+    "qs": "^6.11.0",
     "random": "^3.0.6",
-    "rxjs": "^7.5.5"
+    "rxjs": "^7.5.7"
   },
   "peerDependencies": {
     "@nestjs/axios": "^0.0.3",
@@ -59,51 +72,47 @@
     "express": "^4.17.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.10",
-    "@babel/core": "^7.17.10",
-    "@babel/node": "^7.17.10",
-    "@babel/plugin-proposal-class-properties": "^7.16.7",
-    "@babel/plugin-proposal-decorators": "^7.17.9",
-    "@babel/plugin-proposal-optional-chaining": "^7.16.7",
-    "@babel/plugin-proposal-private-methods": "^7.16.11",
-    "@babel/plugin-transform-runtime": "^7.17.10",
-    "@babel/preset-env": "^7.17.10",
-    "@babel/preset-typescript": "^7.16.7",
-    "@nestjs/axios": "^0.0.7",
-    "@nestjs/common": "^8.4.4",
-    "@nestjs/core": "^8.4.4",
-    "@nestjs/graphql": "^10.0.11",
-    "@nestjs/swagger": "^5.2.1",
-    "@types/express-session": "^1.17.4",
-    "@types/jest": "^27.5.0",
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.19.6",
+    "@babel/node": "^7.19.1",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.19.6",
+    "@babel/plugin-transform-runtime": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
+    "@babel/preset-typescript": "^7.18.6",
+    "@nestjs/axios": "^0.1.0",
+    "@nestjs/common": "^9.1.6",
+    "@nestjs/core": "^9.1.6",
+    "@nestjs/graphql": "^10.1.4",
+    "@nestjs/swagger": "^6.1.2",
+    "@types/eslint": "^8.4.8",
+    "@types/express-session": "^1.17.5",
+    "@types/jest": "^29.2.0",
     "@types/lodash.difference": "^4.5.7",
-    "@types/node": "^17.0.31",
-    "@typescript-eslint/eslint-plugin": "^5.22.0",
-    "@typescript-eslint/parser": "^5.22.0",
+    "@types/node": "^18.11.5",
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "@typescript-eslint/parser": "^5.41.0",
     "babel-loader": "8.2.5",
-    "babel-plugin-inline-import": "^3.0.0",
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-typescript-metadata": "^0.3.2",
-    "cspell": "^5.20.0",
-    "eslint": "^8.14.0",
-    "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-import": "^2.26.0",
+    "cspell": "^6.12.0",
+    "eslint": "^8.26.0",
+    "eslint-config-alloy": "^4.7.0",
     "eslint-plugin-spellcheck": "^0.0.19",
-    "express": "^4.18.1",
-    "jest": "^28.1.0",
+    "express": "^4.18.2",
+    "jest": "^29.2.2",
     "jest-sonar-reporter": "^2.0.0",
-    "lockfile-lint": "^4.7.4",
+    "lockfile-lint": "^4.9.6",
     "majestic": "^1.8.1",
-    "prettier": "^2.6.2",
-    "typescript": "^4.6.4"
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.4"
   },
   "engines": {
     "node": ">=6.0.0"
   },
   "eslintIgnore": [
-    "es",
+    "esm",
     "lib"
   ],
   "jest": {
@@ -111,7 +120,7 @@
     "testEnvironment": "node",
     "verbose": true,
     "testPathIgnorePatterns": [
-      "<rootDir>/es/",
+      "<rootDir>/esm/",
       "<rootDir>/lib/"
     ],
     "setupFilesAfterEnv": [
@@ -123,7 +132,7 @@
     "reportFile": "test-report.xml",
     "indent": 4
   },
-  "packageManager": "yarn@3.2.0-rc.8",
+  "packageManager": "yarn@3.2.4",
   "publishConfig": {
     "@risserlabs:registry": "https://gitlab.com/api/v4/projects/35933722/packages/npm/",
     "registry": "https://gitlab.com/api/v4/projects/35933722/packages/npm/"

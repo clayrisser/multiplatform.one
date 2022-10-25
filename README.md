@@ -1,7 +1,5 @@
 # nestjs-keycloak
 
-[![GitHub stars](https://img.shields.io/github/stars/silicon-hills/nestjs-keycloak.svg?style=social&label=Stars)](https://github.com/silicon-hills/nestjs-keycloak)
-
 > nestjs module for authenticating keycloak
 
 Please ★ this repo if you found it useful ★ ★ ★
@@ -24,7 +22,7 @@ There are also some enhancements such as the ability to use a union or intersect
 
 Another key enhancement is the automatic registration of resources, roles and scopes with KeyCloak during the bootstrapping of the application.
 
-https://github.com/silicon-hills/nestjs-keycloak/blob/main/src/keycloakRegister.service.ts#L170
+https://gitlab.com/risserlabs/nestjs/nestjs-keycloak/blob/main/src/keycloakRegister.service.ts#L170
 
 ## Installation
 
@@ -34,7 +32,7 @@ npm install --save nestjs-keycloak
 
 ## Support
 
-Submit an [issue](https://github.com/silicon-hills/nestjs-keycloak/issues/new)
+Submit an [issue](https://gitlab.com/risserlabs/nestjs/nestjs-keycloak/issues/new)
 
 ## Usage
 
@@ -128,7 +126,7 @@ KeycloakTypegraphql.register({});
 
 ### Decorators
 
-https://github.com/silicon-hills/nestjs-keycloak/tree/main/src/decorators
+https://gitlab.com/risserlabs/nestjs/nestjs-keycloak/tree/main/src/decorators
 
 ### KeyCloak Registration
 
@@ -161,19 +159,19 @@ it does not make an api call to the server.
 
 You can find all of the available methods at the link below.
 
-https://github.com/silicon-hills/nestjs-keycloak/blob/main/src/keycloak.service.ts
+https://gitlab.com/risserlabs/nestjs/nestjs-keycloak/blob/main/src/keycloak.service.ts
 
 ### Example
 
 You can find a full example at the link below.
 
-https://github.com/clayrisser/nestjs-example/blob/main/src/app.ts
+https://gitlab.com/clayrisser/nestjs-example/blob/main/src/app.ts
 
 ## License
 
 [Apache-2.0 License](LICENSE)
 
-[Silicon Hills LLC](https://siliconhills.dev) © 2021
+[Risser Labs LLC](https://risserlabs.com) © 2021
 
 ## Credits
 
