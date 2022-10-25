@@ -3,7 +3,7 @@
 # File Created: 23-10-2022 05:07:14
 # Author: Risser Labs LLC <info@risserlabs.com>
 # -----
-# Last Modified: 25-10-2022 11:58:56
+# Last Modified: 25-10-2022 13:58:46
 # Modified By: Clay Risser
 # -----
 # Risser Labs LLC (c) Copyright 2021 - 2022
@@ -72,10 +72,8 @@ BUILD_TARGET := lib/index.js
 lib/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(BABEL) --env-name umd src -d lib --extensions '.js,.jsx,.ts,.tsx' --source-maps
-	@$(ECHO) '{"type": "commonjs"}' > lib/package.json
-	@$(BABEL) --env-name esm src -d esm --extensions '.js,.jsx,.ts,.tsx' --source-maps
-	@$(ECHO) '{"type": "module"}' > esm/package.json
+	@$(BABEL) --env-name esm src -d lib --extensions '.js,.jsx,.ts,.tsx' --source-maps
+	@$(ECHO) '{"type": "module"}' > lib/package.json
 	@$(TSC) -p tsconfig.build.json -d
 	@$(call done,build)
 
@@ -136,4 +134,3 @@ export CACHE_ENVS += \
 	TSC
 
 endif
-
