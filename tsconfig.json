@@ -9,7 +9,7 @@
     "incremental": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "module": "CommonJS",
+    "module": "ES2022",
     "moduleResolution": "Node",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
