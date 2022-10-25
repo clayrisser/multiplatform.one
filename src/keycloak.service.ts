@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 11:31:02
+ * Last Modified: 25-10-2022 13:51:00
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -22,31 +22,25 @@
  * limitations under the License.
  */
 
-import KcAdminClient from "@keycloak/keycloak-admin-client";
+import type KcAdminClient from "@keycloak/keycloak-admin-client";
 import Token from "keycloak-connect/middleware/auth-utils/token";
-import UserRepresentation from "@keycloak/keycloak-admin-client/lib/defs/userRepresentation";
+import type UserRepresentation from "@keycloak/keycloak-admin-client/lib/defs/userRepresentation";
 import qs from "qs";
-import { AxiosResponse } from "axios";
-import { Grant, Keycloak } from "keycloak-connect";
-import { HttpService } from "@nestjs/axios";
+import type { AxiosResponse } from "axios";
+import type { Grant, Keycloak } from "keycloak-connect";
+import type { HttpService } from "@nestjs/axios";
 import { REQUEST } from "@nestjs/core";
-import { Request, NextFunction } from "express";
+import type { Request, NextFunction, Response } from "express";
 import { lastValueFrom } from "rxjs";
-import {
-  Injectable,
-  Inject,
-  Scope,
-  ExecutionContext,
-  Logger,
-} from "@nestjs/common";
+import type { ExecutionContext } from "@nestjs/common";
+import { Injectable, Inject, Scope, Logger } from "@nestjs/common";
 import { CREATE_KEYCLOAK_ADMIN } from "./createKeycloakAdmin.provider";
 import { KEYCLOAK } from "./keycloak.provider";
 import { getReq } from "./util";
-import {
+import type {
   AuthorizationCodeGrantOptions,
   GrantTokensOptions,
   GraphqlCtx,
-  KEYCLOAK_OPTIONS,
   KeycloakError,
   KeycloakOptions,
   KeycloakRequest,
@@ -55,6 +49,7 @@ import {
   RefreshTokenGrantOptions,
   UserInfo,
 } from "./types";
+import { KEYCLOAK_OPTIONS } from "./types";
 
 @Injectable({ scope: Scope.REQUEST })
 export default class KeycloakService {
@@ -105,8 +100,7 @@ export default class KeycloakService {
     }
     const authorizationArr = authorization?.split(" ");
     if (
-      authorizationArr &&
-      authorizationArr[0] &&
+      authorizationArr?.[0] &&
       authorizationArr[0].toLowerCase() === "bearer"
     ) {
       this._bearerToken = new Token(authorizationArr[1], clientId);
@@ -472,11 +466,11 @@ export default class KeycloakService {
     return new Promise<boolean>((resolve) => {
       return this.keycloak.enforcer(permissions)(
         this.req,
-        {},
-        (_: Request, _res: {}, _next: NextFunction) => {
+        {} as Response,
+        ((_: Request, _res: Response, _next: NextFunction) => {
           if (this.req.resourceDenied) return resolve(false);
           return resolve(true);
-        }
+        }) as NextFunction
       );
     });
   }

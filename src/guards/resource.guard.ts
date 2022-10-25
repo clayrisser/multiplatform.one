@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:39:50
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 11:31:02
+ * Last Modified: 25-10-2022 13:47:56
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -22,30 +22,18 @@
  * limitations under the License.
  */
 
-import KcAdminClient from "@keycloak/keycloak-admin-client";
-import { HttpService } from "@nestjs/axios";
-import { Keycloak } from "keycloak-connect";
-import { Reflector } from "@nestjs/core";
-import {
-  CanActivate,
-  ExecutionContext,
-  Inject,
-  Injectable,
-  Logger,
-} from "@nestjs/common";
+import type KcAdminClient from "@keycloak/keycloak-admin-client";
+import type { HttpService } from "@nestjs/axios";
+import type { Keycloak } from "keycloak-connect";
+import type { Reflector } from "@nestjs/core";
+import type { CanActivate, ExecutionContext } from "@nestjs/common";
+import { Inject, Injectable, Logger } from "@nestjs/common";
 import KeycloakService from "../keycloak.service";
 import { KEYCLOAK } from "../keycloak.provider";
 import { CREATE_KEYCLOAK_ADMIN } from "../createKeycloakAdmin.provider";
-import { KEYCLOAK_OPTIONS, KeycloakOptions } from "../types";
+import type { KeycloakOptions } from "../types";
+import { KEYCLOAK_OPTIONS } from "../types";
 import { RESOURCE, SCOPES } from "../decorators";
-
-declare module "keycloak-connect" {
-  interface Keycloak {
-    enforcer(
-      expectedPermissions: string | string[]
-    ): (req: any, res: any, next: any) => any;
-  }
-}
 
 @Injectable()
 export class ResourceGuard implements CanActivate {

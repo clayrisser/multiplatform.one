@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 11:31:02
+ * Last Modified: 25-10-2022 13:45:30
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -22,9 +22,10 @@
  * limitations under the License.
  */
 
-import { Injectable, NestMiddleware } from "@nestjs/common";
-import { Request, Response, NextFunction } from "express";
-import KeycloakService from "./keycloak.service";
+import type { NestMiddleware } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
+import type { Request, Response, NextFunction } from "express";
+import type KeycloakService from "./keycloak.service";
 
 @Injectable()
 export default class KeycloakMiddleware implements NestMiddleware {

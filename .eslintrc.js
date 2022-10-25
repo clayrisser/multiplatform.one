@@ -4,7 +4,7 @@
  * File Created: 16-10-2022 05:08:44
  * Author: Clay Risser
  * -----
- * Last Modified: 25-10-2022 11:50:35
+ * Last Modified: 25-10-2022 13:43:39
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -44,6 +44,7 @@ module.exports = {
   rules: {
     "max-lines": ["error", 999],
     "max-lines-per-function": ["warn", 99],
+    "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/lines-between-class-members": [
       "error",
       "always",

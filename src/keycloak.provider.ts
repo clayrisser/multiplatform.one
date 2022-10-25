@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 11:31:02
+ * Last Modified: 25-10-2022 13:45:25
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -22,11 +22,13 @@
  * limitations under the License.
  */
 
-import KeycloakConnect, { Keycloak } from "keycloak-connect";
+import type { Keycloak } from "keycloak-connect";
+import KeycloakConnect from "keycloak-connect";
 import session from "express-session";
-import { FactoryProvider } from "@nestjs/common";
-import { Request, Response, NextFunction } from "express";
-import { KeycloakOptions, KeycloakRequest, KEYCLOAK_OPTIONS } from "./types";
+import type { FactoryProvider } from "@nestjs/common";
+import type { Request, Response, NextFunction } from "express";
+import type { KeycloakOptions, KeycloakRequest } from "./types";
+import { KEYCLOAK_OPTIONS } from "./types";
 
 export const KEYCLOAK = "KEYCLOAK";
 

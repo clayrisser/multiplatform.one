@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 11:31:02
+ * Last Modified: 25-10-2022 13:53:48
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -22,18 +22,15 @@
  * limitations under the License.
  */
 
+import type Token from "keycloak-connect/middleware/auth-utils/token";
+import type { Grant } from "keycloak-connect";
+import type { ModuleMetadata } from "@nestjs/common/interfaces";
+import type { Reflector } from "@nestjs/core";
+import type { Request, Response } from "express";
+import type { RequiredActionAlias } from "@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation";
+import type { ResourceAccess } from "keycloak-connect/middleware/auth-utils/token";
 import { ApiProperty } from "@nestjs/swagger";
-import { ModuleMetadata } from "@nestjs/common/interfaces";
-import { Reflector } from "@nestjs/core";
-import { RequiredActionAlias } from "@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation";
-import Token, {
-  ResourceAccess,
-} from "keycloak-connect/middleware/auth-utils/token";
-import KeycloakService from "./keycloak.service";
-
-type Grant = import("keycloak-connect").Grant;
-type Request = import("express").Request;
-type Response = import("express").Response;
+import type KeycloakService from "./keycloak.service";
 
 export interface HashMap<T = any> {
   [key: string]: T;
@@ -72,6 +69,7 @@ export class UserInfo {
   @ApiProperty()
   sub!: string;
 
+  // eslint-disable-next-line no-undef
   [key: string]: any;
 }
 
