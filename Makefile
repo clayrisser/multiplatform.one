@@ -3,8 +3,8 @@
 # File Created: 23-10-2022 05:07:14
 # Author: Risser Labs LLC <info@risserlabs.com>
 # -----
-# Last Modified: 23-10-2022 05:29:59
-# Modified By: Risser Labs LLC <info@risserlabs.com>
+# Last Modified: 25-10-2022 11:58:56
+# Modified By: Clay Risser
 # -----
 # Risser Labs LLC (c) Copyright 2021 - 2022
 #
@@ -37,6 +37,9 @@ export ESLINT ?= $(call yarn_binary,eslint)
 export JEST ?= $(call yarn_binary,jest)
 export PRETTIER ?= $(call yarn_binary,prettier)
 export TSC ?= $(call yarn_binary,tsc)
+
+export NPM_AUTH_TOKEN ?= $(shell $(CAT) $(HOME)/.docker/config.json 2>$(NULL) | \
+	$(JQ) -r '.auths["registry.gitlab.com"].auth' | $(BASE64_NOWRAP) -d | $(CUT) -d':' -f2)
 
 ACTIONS += install
 $(ACTION)/install: package.json
