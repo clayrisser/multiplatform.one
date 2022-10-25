@@ -22,23 +22,18 @@
  * limitations under the License.
  */
 
-import { DiscoveryModule, APP_GUARD } from "@nestjs/core";
-import { HttpModule } from "@nestjs/axios";
-import type {
-  DynamicModule,
-  MiddlewareConsumer,
-  NestModule,
-  OnModuleInit,
-} from "@nestjs/common";
-import { Global, Logger, Module, RequestMethod } from "@nestjs/common";
-import CreateKeycloakAdminProvider from "./createKeycloakAdmin.provider";
-import KeycloakMiddleware from "./keycloak.middleware";
-import KeycloakProvider from "./keycloak.provider";
-import KeycloakRegisterService from "./keycloakRegister.service";
-import KeycloakService from "./keycloak.service";
-import { AuthGuard, ResourceGuard } from "./guards";
-import type { KeycloakOptions, KeycloakAsyncOptions } from "./types";
-import { KEYCLOAK_OPTIONS } from "./types";
+import { DiscoveryModule, APP_GUARD } from '@nestjs/core';
+import { HttpModule } from '@nestjs/axios';
+import type { DynamicModule, MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/common';
+import { Global, Logger, Module, RequestMethod } from '@nestjs/common';
+import CreateKeycloakAdminProvider from './createKeycloakAdmin.provider';
+import KeycloakMiddleware from './keycloak.middleware';
+import KeycloakProvider from './keycloak.provider';
+import KeycloakRegisterService from './keycloakRegister.service';
+import KeycloakService from './keycloak.service';
+import { AuthGuard, ResourceGuard } from './guards';
+import type { KeycloakOptions, KeycloakAsyncOptions } from './types';
+import { KEYCLOAK_OPTIONS } from './types';
 
 @Global()
 @Module({})
@@ -47,9 +42,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
 
   private static imports = [HttpModule, DiscoveryModule];
 
-  constructor(
-    private readonly keycloakRegisterService: KeycloakRegisterService
-  ) {}
+  constructor(private readonly keycloakRegisterService: KeycloakRegisterService) {}
 
   public static register(options: KeycloakOptions): DynamicModule {
     return {
@@ -84,9 +77,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
     };
   }
 
-  public static registerAsync(
-    asyncOptions: KeycloakAsyncOptions
-  ): DynamicModule {
+  public static registerAsync(asyncOptions: KeycloakAsyncOptions): DynamicModule {
     return {
       module: KeycloakModule,
       global: true,
@@ -132,23 +123,15 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
   }
 
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(KeycloakMiddleware)
-      .forRoutes({ path: "*", method: RequestMethod.ALL });
+    consumer.apply(KeycloakMiddleware).forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }
 
-export {
-  CreateKeycloakAdminProvider,
-  KeycloakMiddleware,
-  KeycloakProvider,
-  KeycloakRegisterService,
-  KeycloakService,
-};
+export { CreateKeycloakAdminProvider, KeycloakMiddleware, KeycloakProvider, KeycloakRegisterService, KeycloakService };
 
-export * from "./decorators";
-export * from "./guards";
-export * from "./keycloak.provider";
-export * from "./keycloak.service";
-export * from "./createKeycloakAdmin.provider";
-export * from "./types";
+export * from './decorators';
+export * from './guards';
+export * from './keycloak.provider';
+export * from './keycloak.service';
+export * from './createKeycloakAdmin.provider';
+export * from './types';

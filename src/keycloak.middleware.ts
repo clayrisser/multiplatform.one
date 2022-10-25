@@ -22,10 +22,10 @@
  * limitations under the License.
  */
 
-import type { NestMiddleware } from "@nestjs/common";
-import { Injectable } from "@nestjs/common";
-import type { Request, Response, NextFunction } from "express";
-import type KeycloakService from "./keycloak.service";
+import type { NestMiddleware } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import type { Request, Response, NextFunction } from 'express';
+import type KeycloakService from './keycloak.service';
 
 @Injectable()
 export default class KeycloakMiddleware implements NestMiddleware {

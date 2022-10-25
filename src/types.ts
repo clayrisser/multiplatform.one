@@ -22,15 +22,15 @@
  * limitations under the License.
  */
 
-import type Token from "keycloak-connect/middleware/auth-utils/token";
-import type { Grant } from "keycloak-connect";
-import type { ModuleMetadata } from "@nestjs/common/interfaces";
-import type { Reflector } from "@nestjs/core";
-import type { Request, Response } from "express";
-import type { RequiredActionAlias } from "@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation";
-import type { ResourceAccess } from "keycloak-connect/middleware/auth-utils/token";
-import { ApiProperty } from "@nestjs/swagger";
-import type KeycloakService from "./keycloak.service";
+import type Token from 'keycloak-connect/middleware/auth-utils/token';
+import type { Grant } from 'keycloak-connect';
+import type { ModuleMetadata } from '@nestjs/common/interfaces';
+import type { Reflector } from '@nestjs/core';
+import type { Request, Response } from 'express';
+import type { RequiredActionAlias } from '@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation';
+import type { ResourceAccess } from 'keycloak-connect/middleware/auth-utils/token';
+import { ApiProperty } from '@nestjs/swagger';
+import type KeycloakService from './keycloak.service';
 
 export interface HashMap<T = any> {
   [key: string]: T;
@@ -54,7 +54,7 @@ export interface KeycloakOptions {
   strict?: boolean;
 }
 
-export interface KeycloakAsyncOptions extends Pick<ModuleMetadata, "imports"> {
+export interface KeycloakAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
   inject?: any[];
   useFactory?: (...args: any[]) => Promise<KeycloakOptions> | KeycloakOptions;
 }
@@ -126,7 +126,7 @@ export class TokenHeader {
 
 export class TokenContent {
   @ApiProperty()
-  "allowed-origins"?: string[];
+  'allowed-origins'?: string[];
 
   @ApiProperty()
   acr?: string;
@@ -415,7 +415,7 @@ export class User {
   username?: string;
 }
 
-export const KEYCLOAK_OPTIONS = "KEYCLOAK_OPTIONS";
+export const KEYCLOAK_OPTIONS = 'KEYCLOAK_OPTIONS';
 
 export interface RedirectMeta {
   status: number;
