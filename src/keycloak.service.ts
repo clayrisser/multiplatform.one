@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 13:51:00
+ * Last Modified: 25-10-2022 15:10:03
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -28,7 +28,7 @@ import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/us
 import qs from 'qs';
 import type { AxiosResponse } from 'axios';
 import type { Grant, Keycloak } from 'keycloak-connect';
-import type { HttpService } from '@nestjs/axios';
+import { HttpService } from '@nestjs/axios';
 import { REQUEST } from '@nestjs/core';
 import type { Request, NextFunction, Response } from 'express';
 import { lastValueFrom } from 'rxjs';
@@ -60,7 +60,7 @@ export default class KeycloakService {
   constructor(
     @Inject(KEYCLOAK_OPTIONS) options: KeycloakOptions,
     @Inject(KEYCLOAK) private readonly keycloak: Keycloak,
-    private readonly httpService: HttpService,
+    @Inject(HttpService) private readonly httpService: HttpService,
     @Inject(REQUEST)
     reqOrExecutionContext: KeycloakRequest<Request> | ExecutionContext | GraphqlCtx,
     @Inject(CREATE_KEYCLOAK_ADMIN)

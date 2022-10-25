@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:39:50
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 13:47:56
+ * Last Modified: 25-10-2022 15:15:16
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -23,9 +23,9 @@
  */
 
 import type KcAdminClient from '@keycloak/keycloak-admin-client';
-import type { HttpService } from '@nestjs/axios';
+import { HttpService } from '@nestjs/axios';
 import type { Keycloak } from 'keycloak-connect';
-import type { Reflector } from '@nestjs/core';
+import { Reflector } from '@nestjs/core';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import KeycloakService from '../keycloak.service';
@@ -42,8 +42,8 @@ export class ResourceGuard implements CanActivate {
   constructor(
     @Inject(KEYCLOAK_OPTIONS) private options: KeycloakOptions,
     @Inject(KEYCLOAK) private readonly keycloak: Keycloak,
-    private readonly httpService: HttpService,
-    private readonly reflector: Reflector,
+    @Inject(HttpService) private readonly httpService: HttpService,
+    @Inject(Reflector) private readonly reflector: Reflector,
     @Inject(CREATE_KEYCLOAK_ADMIN)
     private readonly createKeycloakAdmin?: () => Promise<KcAdminClient | void>,
   ) {}

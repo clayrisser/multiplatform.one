@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 13:44:29
+ * Last Modified: 25-10-2022 15:16:17
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -22,21 +22,25 @@
  * limitations under the License.
  */
 
-import { RENDER_METADATA } from '@nestjs/common/constants';
-import type { Reflector } from '@nestjs/core';
-import type { Request, Response } from 'express';
+import KeycloakService from '../keycloak.service';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
-import { Injectable, Logger, Scope } from '@nestjs/common';
-import type KeycloakService from '../keycloak.service';
-import { REDIRECT_UNAUTHORIZED } from '../decorators/redirectUnauthorized.decorator';
-import { RESOURCE, AUTHORIZED, PUBLIC } from '../decorators';
 import type { KeycloakRequest, RedirectMeta } from '../types';
+import type { Request, Response } from 'express';
+import { Inject } from '@nestjs/common';
+import { Injectable, Logger, Scope } from '@nestjs/common';
+import { REDIRECT_UNAUTHORIZED } from '../decorators/redirectUnauthorized.decorator';
+import { RENDER_METADATA } from '@nestjs/common/constants';
+import { RESOURCE, AUTHORIZED, PUBLIC } from '../decorators';
+import { Reflector } from '@nestjs/core';
 
 @Injectable({ scope: Scope.REQUEST })
 export class AuthGuard implements CanActivate {
   logger = new Logger(AuthGuard.name);
 
-  constructor(private readonly reflector: Reflector, private readonly keycloakService: KeycloakService) {}
+  constructor(
+    @Inject(Reflector) private readonly reflector: Reflector,
+    @Inject(KeycloakService) private readonly keycloakService: KeycloakService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.getIsPublic(context);
