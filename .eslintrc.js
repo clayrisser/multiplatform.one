@@ -22,15 +22,13 @@
  * limitations under the License.
  */
 
-const fs = require("fs");
+const fs = require('fs');
 
-const cspell = JSON.parse(fs.readFileSync(".vscode/settings.json").toString())[
-  "cSpell.words"
-];
+const cspell = JSON.parse(fs.readFileSync('.vscode/settings.json').toString())['cSpell.words'];
 
 module.exports = {
-  extends: ["alloy", "alloy/typescript"],
-  plugins: ["spellcheck"],
+  extends: ['alloy', 'alloy/typescript'],
+  plugins: ['spellcheck'],
   env: {
     browser: true,
     jest: true,
@@ -42,44 +40,40 @@ module.exports = {
     NodeJS: true,
   },
   rules: {
-    "max-lines": ["error", 999],
-    "max-lines-per-function": ["warn", 99],
-    "@typescript-eslint/consistent-type-imports": "error",
-    "@typescript-eslint/lines-between-class-members": [
-      "error",
-      "always",
-      { exceptAfterSingleLine: true },
-    ],
-    "no-empty-function": ["warn", { allow: ["constructors"] }],
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
+    'max-lines': ['error', 999],
+    'max-lines-per-function': ['warn', 99],
+    '@typescript-eslint/consistent-type-imports': 'error',
+    '@typescript-eslint/lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
+    'no-empty-function': ['warn', { allow: ['constructors'] }],
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
       {
-        args: "after-used",
-        argsIgnorePattern: "^_",
+        args: 'after-used',
+        argsIgnorePattern: '^_',
         ignoreRestSiblings: true,
-        vars: "all",
+        vars: 'all',
       },
     ],
-    "spellcheck/spell-checker": [
-      "warn",
+    'spellcheck/spell-checker': [
+      'warn',
       {
         comments: true,
         strings: true,
         identifiers: true,
-        lang: "en_US",
+        lang: 'en_US',
         skipWords: cspell,
-        skipIfMatch: ["http?://[^s]*", "^[-\\w]+/[-\\w\\.]+$"],
+        skipIfMatch: ['http?://[^s]*', '^[-\\w]+/[-\\w\\.]+$'],
         skipWordIfMatch: [],
         minLength: 3,
       },
     ],
-    "@typescript-eslint/consistent-type-assertions": "off",
-    "@typescript-eslint/explicit-member-accessibility": "off",
-    "@typescript-eslint/member-ordering": "off",
-    "@typescript-eslint/no-invalid-void-type": "off",
-    "@typescript-eslint/no-require-imports": "off",
-    "max-params": "off",
-    "no-param-reassign": "off",
-    "no-promise-executor-return": "off",
+    '@typescript-eslint/consistent-type-assertions': 'off',
+    '@typescript-eslint/explicit-member-accessibility': 'off',
+    '@typescript-eslint/member-ordering': 'off',
+    '@typescript-eslint/no-invalid-void-type': 'off',
+    '@typescript-eslint/no-require-imports': 'off',
+    'max-params': 'off',
+    'no-param-reassign': 'off',
+    'no-promise-executor-return': 'off',
   },
 };

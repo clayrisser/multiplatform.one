@@ -22,38 +22,31 @@
  * limitations under the License.
  */
 
-import type { Keycloak } from "keycloak-connect";
-import KeycloakConnect from "keycloak-connect";
-import session from "express-session";
-import type { FactoryProvider } from "@nestjs/common";
-import type { Request, Response, NextFunction } from "express";
-import type { KeycloakOptions, KeycloakRequest } from "./types";
-import { KEYCLOAK_OPTIONS } from "./types";
+import type { Keycloak } from 'keycloak-connect';
+import KeycloakConnect from 'keycloak-connect';
+import session from 'express-session';
+import type { FactoryProvider } from '@nestjs/common';
+import type { Request, Response, NextFunction } from 'express';
+import type { KeycloakOptions, KeycloakRequest } from './types';
+import { KEYCLOAK_OPTIONS } from './types';
 
-export const KEYCLOAK = "KEYCLOAK";
+export const KEYCLOAK = 'KEYCLOAK';
 
 const KeycloakProvider: FactoryProvider<Keycloak> = {
   inject: [KEYCLOAK_OPTIONS],
   provide: KEYCLOAK,
   useFactory: (options: KeycloakOptions) => {
     const { baseUrl, clientSecret, clientId, realm } = options;
-    const keycloak: Keycloak & { accessDenied: any } = new KeycloakConnect(
-      { store: new session.MemoryStore() },
-      {
-        bearerOnly: true,
-        clientId,
-        realm,
-        serverUrl: `${baseUrl}`,
-        credentials: {
-          ...(clientSecret ? { secret: clientSecret } : {}),
-        },
-      } as unknown as any
-    );
-    keycloak.accessDenied = (
-      req: KeycloakRequest<Request>,
-      _res: Response,
-      next: NextFunction
-    ) => {
+    const keycloak: Keycloak & { accessDenied: any } = new KeycloakConnect({ store: new session.MemoryStore() }, {
+      bearerOnly: true,
+      clientId,
+      realm,
+      serverUrl: `${baseUrl}`,
+      credentials: {
+        ...(clientSecret ? { secret: clientSecret } : {}),
+      },
+    } as unknown as any);
+    keycloak.accessDenied = (req: KeycloakRequest<Request>, _res: Response, next: NextFunction) => {
       req.resourceDenied = true;
       next();
     };

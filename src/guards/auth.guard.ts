@@ -22,29 +22,26 @@
  * limitations under the License.
  */
 
-import { RENDER_METADATA } from "@nestjs/common/constants";
-import type { Reflector } from "@nestjs/core";
-import type { Request, Response } from "express";
-import type { CanActivate, ExecutionContext } from "@nestjs/common";
-import { Injectable, Logger, Scope } from "@nestjs/common";
-import type KeycloakService from "../keycloak.service";
-import { REDIRECT_UNAUTHORIZED } from "../decorators/redirectUnauthorized.decorator";
-import { RESOURCE, AUTHORIZED, PUBLIC } from "../decorators";
-import type { KeycloakRequest, RedirectMeta } from "../types";
+import { RENDER_METADATA } from '@nestjs/common/constants';
+import type { Reflector } from '@nestjs/core';
+import type { Request, Response } from 'express';
+import type { CanActivate, ExecutionContext } from '@nestjs/common';
+import { Injectable, Logger, Scope } from '@nestjs/common';
+import type KeycloakService from '../keycloak.service';
+import { REDIRECT_UNAUTHORIZED } from '../decorators/redirectUnauthorized.decorator';
+import { RESOURCE, AUTHORIZED, PUBLIC } from '../decorators';
+import type { KeycloakRequest, RedirectMeta } from '../types';
 
 @Injectable({ scope: Scope.REQUEST })
 export class AuthGuard implements CanActivate {
   logger = new Logger(AuthGuard.name);
 
-  constructor(
-    private readonly reflector: Reflector,
-    private readonly keycloakService: KeycloakService
-  ) {}
+  constructor(private readonly reflector: Reflector, private readonly keycloakService: KeycloakService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.getIsPublic(context);
     const roles = this.getRoles(context);
-    if (isPublic || typeof roles === "undefined") return true;
+    if (isPublic || typeof roles === 'undefined') return true;
     const { keycloakService } = this;
     const req = context.switchToHttp().getRequest<KeycloakRequest<Request>>();
     const res = context.switchToHttp().getResponse<Response>();
@@ -52,7 +49,7 @@ export class AuthGuard implements CanActivate {
       // adds defer flags to req object
       const render = this.getRender(context);
       const unauthorizedRedirect = this.getUnauthorizedRedirect(context);
-      if (typeof unauthorizedRedirect !== "undefined") {
+      if (typeof unauthorizedRedirect !== 'undefined') {
         req.redirectUnauthorized = unauthorizedRedirect;
       }
       if (render) {
@@ -60,14 +57,14 @@ export class AuthGuard implements CanActivate {
         req.annotationKeys.add(RENDER_METADATA);
       }
     }
-    if (res.clearCookie) res.clearCookie("redirect_from");
+    if (res.clearCookie) res.clearCookie('redirect_from');
     const username = (await keycloakService.getUserInfo())?.preferredUsername;
     if (!username) return false;
     const resource = this.getResource(context);
     this.logger.verbose(
-      `resource${resource ? ` '${resource}'` : ""} for '${username}' requires ${
-        roles.length ? `roles [ ${roles.join(" | ")} ]` : "authentication"
-      }`
+      `resource${resource ? ` '${resource}'` : ''} for '${username}' requires ${
+        roles.length ? `roles [ ${roles.join(' | ')} ]` : 'authentication'
+      }`,
     );
     if (await keycloakService.isAuthorizedByRoles(roles)) {
       this.logger.verbose(`authorization for '${username}' granted`);
@@ -78,17 +75,11 @@ export class AuthGuard implements CanActivate {
   }
 
   private getRoles(context: ExecutionContext): (string | string[])[] | void {
-    const handlerRoles = this.reflector.get<(string | string[])[]>(
-      AUTHORIZED,
-      context.getHandler()
-    );
-    const classRoles = this.reflector.get<(string | string[])[]>(
-      AUTHORIZED,
-      context.getClass()
-    );
+    const handlerRoles = this.reflector.get<(string | string[])[]>(AUTHORIZED, context.getHandler());
+    const classRoles = this.reflector.get<(string | string[])[]>(AUTHORIZED, context.getClass());
     if (
-      (typeof classRoles === "undefined" || classRoles === null) &&
-      (typeof handlerRoles === "undefined" || handlerRoles === null)
+      (typeof classRoles === 'undefined' || classRoles === null) &&
+      (typeof handlerRoles === 'undefined' || handlerRoles === null)
     ) {
       return undefined;
     }
@@ -107,12 +98,7 @@ export class AuthGuard implements CanActivate {
     return this.reflector.get<string>(RESOURCE, context.getClass());
   }
 
-  private getUnauthorizedRedirect(
-    context: ExecutionContext
-  ): RedirectMeta | false | void {
-    return this.reflector.get<RedirectMeta>(
-      REDIRECT_UNAUTHORIZED,
-      context.getHandler()
-    );
+  private getUnauthorizedRedirect(context: ExecutionContext): RedirectMeta | false | void {
+    return this.reflector.get<RedirectMeta>(REDIRECT_UNAUTHORIZED, context.getHandler());
   }
 }

@@ -22,16 +22,14 @@
  * limitations under the License.
  */
 
-import KcAdminClient from "@keycloak/keycloak-admin-client";
-import type { FactoryProvider } from "@nestjs/common";
-import type { KeycloakOptions } from "./types";
-import { KEYCLOAK_OPTIONS } from "./types";
+import KcAdminClient from '@keycloak/keycloak-admin-client';
+import type { FactoryProvider } from '@nestjs/common';
+import type { KeycloakOptions } from './types';
+import { KEYCLOAK_OPTIONS } from './types';
 
-export const CREATE_KEYCLOAK_ADMIN = "CREATE_KEYCLOAK_ADMIN";
+export const CREATE_KEYCLOAK_ADMIN = 'CREATE_KEYCLOAK_ADMIN';
 
-const CreateKeycloakAdminProvider: FactoryProvider<
-  () => Promise<KcAdminClient | void>
-> = {
+const CreateKeycloakAdminProvider: FactoryProvider<() => Promise<KcAdminClient | void>> = {
   provide: CREATE_KEYCLOAK_ADMIN,
   inject: [KEYCLOAK_OPTIONS],
   useFactory: (options: KeycloakOptions) => async () => {
@@ -40,8 +38,8 @@ const CreateKeycloakAdminProvider: FactoryProvider<
       baseUrl: `${options.baseUrl}`,
     });
     await keycloakAdmin.auth({
-      clientId: options.adminClientId || "admin-cli",
-      grantType: "password",
+      clientId: options.adminClientId || 'admin-cli',
+      grantType: 'password',
       password: options.adminPassword,
       username: options.adminUsername,
     });

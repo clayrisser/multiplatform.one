@@ -22,25 +22,25 @@
  * limitations under the License.
  */
 
-import KcAdminClient from "@keycloak/keycloak-admin-client";
-import type ResourceRepresentation from "@keycloak/keycloak-admin-client/lib/defs/resourceRepresentation";
-import type RoleRepresentation from "@keycloak/keycloak-admin-client/lib/defs/roleRepresentation";
-import type ScopeRepresentation from "@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation";
-import difference from "lodash.difference";
-import type { DiscoveryService, Reflector } from "@nestjs/core";
-import type { HttpService } from "@nestjs/axios";
-import type { InstanceWrapper } from "@nestjs/core/injector/instance-wrapper";
-import { Logger, Inject, Injectable } from "@nestjs/common";
-import { PATH_METADATA } from "@nestjs/common/constants";
-import { lastValueFrom } from "rxjs";
-import { AUTHORIZED } from "./decorators/authorized.decorator";
-import { RESOURCE } from "./decorators/resource.decorator";
-import { SCOPES } from "./decorators/scopes.decorator";
-import type { AuthorizationCallback } from "./decorators/authorizationCallback.decorator";
-import { AUTHORIZATION_CALLBACK } from "./decorators/authorizationCallback.decorator";
-import type { HashMap, KeycloakOptions, RegisterOptions } from "./types";
-import { KEYCLOAK_OPTIONS } from "./types";
-import type ClientRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientRepresentation";
+import KcAdminClient from '@keycloak/keycloak-admin-client';
+import type ResourceRepresentation from '@keycloak/keycloak-admin-client/lib/defs/resourceRepresentation';
+import type RoleRepresentation from '@keycloak/keycloak-admin-client/lib/defs/roleRepresentation';
+import type ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation';
+import difference from 'lodash.difference';
+import type { DiscoveryService, Reflector } from '@nestjs/core';
+import type { HttpService } from '@nestjs/axios';
+import type { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
+import { Logger, Inject, Injectable } from '@nestjs/common';
+import { PATH_METADATA } from '@nestjs/common/constants';
+import { lastValueFrom } from 'rxjs';
+import { AUTHORIZED } from './decorators/authorized.decorator';
+import { RESOURCE } from './decorators/resource.decorator';
+import { SCOPES } from './decorators/scopes.decorator';
+import type { AuthorizationCallback } from './decorators/authorizationCallback.decorator';
+import { AUTHORIZATION_CALLBACK } from './decorators/authorizationCallback.decorator';
+import type { HashMap, KeycloakOptions, RegisterOptions } from './types';
+import { KEYCLOAK_OPTIONS } from './types';
+import type ClientRepresentation from '@keycloak/keycloak-admin-client/lib/defs/clientRepresentation';
 
 const privateGlobalRegistrationMap: GlobalRegistrationMap = {};
 
@@ -69,16 +69,14 @@ export default class KeycloakRegisterService {
     @Inject(KEYCLOAK_OPTIONS) private readonly options: KeycloakOptions,
     private readonly discoveryService: DiscoveryService,
     private readonly reflector: Reflector,
-    private readonly httpService: HttpService
+    private readonly httpService: HttpService,
   ) {
     this.keycloakAdmin = new KcAdminClient({
       baseUrl: `${this.options.baseUrl}`,
     });
     this.registerOptions = {
       roles: [],
-      ...(typeof this.options.register === "boolean"
-        ? {}
-        : this.options.register || {}),
+      ...(typeof this.options.register === 'boolean' ? {} : this.options.register || {}),
     };
   }
 
@@ -92,9 +90,7 @@ export default class KeycloakRegisterService {
 
   private _defaultAuthorizationCallback: AuthorizationCallback | undefined;
 
-  private get defaultAuthorizationCallback():
-    | AuthorizationCallback
-    | undefined {
+  private get defaultAuthorizationCallback(): AuthorizationCallback | undefined {
     if (this._defaultAuthorizationCallback) {
       return this._defaultAuthorizationCallback;
     }
@@ -104,13 +100,13 @@ export default class KeycloakRegisterService {
           authorizationCallback.default &&
           !authorizationCallback.manual &&
           authorizationCallback.persistSession &&
-          authorizationCallback.destinationUriFromQuery
+          authorizationCallback.destinationUriFromQuery,
       ) ||
       this.authorizationCallbacks.find(
         (authorizationCallback: AuthorizationCallback) =>
           !authorizationCallback.manual &&
           authorizationCallback.persistSession &&
-          authorizationCallback.destinationUriFromQuery
+          authorizationCallback.destinationUriFromQuery,
       ) ||
       undefined;
     return this._defaultAuthorizationCallback;
@@ -119,61 +115,36 @@ export default class KeycloakRegisterService {
   private get authorizationCallbacks(): AuthorizationCallback[] {
     if (this._authorizationCallbacks) return this._authorizationCallbacks;
     this._authorizationCallbacks = [
-      ...this.providers.reduce(
-        (
-          authorizationCallbacks: AuthorizationCallback[],
-          controller: InstanceWrapper
-        ) => {
-          const methods = getMethods(controller.instance);
-          return [
-            ...authorizationCallbacks,
-            ...methods.reduce(
-              (
-                authorizationCallbacks: AuthorizationCallback[],
-                method: any
-              ) => {
-                const authorizationCallback: AuthorizationCallback =
-                  this.reflector.get(AUTHORIZATION_CALLBACK, method);
-                if (authorizationCallback) {
-                  const controllerPath =
-                    this.reflector.get(
-                      PATH_METADATA,
-                      controller.instance.constructor
-                    ) || "";
-                  const methodPath =
-                    this.reflector.get(PATH_METADATA, method) || "";
-                  let callbackEndpoint =
-                    authorizationCallback.callbackEndpoint ||
-                    `/${controllerPath}${
-                      controllerPath && methodPath ? "/" : ""
-                    }${methodPath}`;
-                  authorizationCallbacks.push({
-                    destinationUriFromQuery: true,
-                    manual: false,
-                    persistSession: true,
-                    ...authorizationCallback,
-                    callbackEndpoint,
-                  });
-                }
-                return authorizationCallbacks;
-              },
-              []
-            ),
-          ];
-        },
-        []
-      ),
+      ...this.providers.reduce((authorizationCallbacks: AuthorizationCallback[], controller: InstanceWrapper) => {
+        const methods = getMethods(controller.instance);
+        return [
+          ...authorizationCallbacks,
+          ...methods.reduce((authorizationCallbacks: AuthorizationCallback[], method: any) => {
+            const authorizationCallback: AuthorizationCallback = this.reflector.get(AUTHORIZATION_CALLBACK, method);
+            if (authorizationCallback) {
+              const controllerPath = this.reflector.get(PATH_METADATA, controller.instance.constructor) || '';
+              const methodPath = this.reflector.get(PATH_METADATA, method) || '';
+              let callbackEndpoint =
+                authorizationCallback.callbackEndpoint ||
+                `/${controllerPath}${controllerPath && methodPath ? '/' : ''}${methodPath}`;
+              authorizationCallbacks.push({
+                destinationUriFromQuery: true,
+                manual: false,
+                persistSession: true,
+                ...authorizationCallback,
+                callbackEndpoint,
+              });
+            }
+            return authorizationCallbacks;
+          }, []),
+        ];
+      }, []),
     ];
     return this._authorizationCallbacks;
   }
 
   private get canRegister() {
-    return (
-      !registeredKeycloak &&
-      !!this.options.register &&
-      this.options.adminUsername &&
-      this.options.adminPassword
-    );
+    return !registeredKeycloak && !!this.options.register && this.options.adminUsername && this.options.adminPassword;
   }
 
   private get providers(): InstanceWrapper[] {
@@ -181,20 +152,10 @@ export default class KeycloakRegisterService {
     this._providers = [
       ...this.discoveryService
         .getProviders()
-        .reduce(
-          (
-            providers: InstanceWrapper<any>[],
-            provider: InstanceWrapper<any>
-          ) => {
-            if (
-              typeof provider.name !== "symbol" &&
-              /Resolver$/.test(provider.name)
-            )
-              providers.push(provider);
-            return providers;
-          },
-          []
-        ),
+        .reduce((providers: InstanceWrapper<any>[], provider: InstanceWrapper<any>) => {
+          if (typeof provider.name !== 'symbol' && /Resolver$/.test(provider.name)) providers.push(provider);
+          return providers;
+        }, []),
       ...this.discoveryService.getControllers(),
     ];
     return this._providers;
@@ -203,23 +164,17 @@ export default class KeycloakRegisterService {
   private get roles() {
     if (this._roles) return this._roles;
     this._roles = [
-      ...this.providers.reduce(
-        (roles: Set<string>, controller: InstanceWrapper) => {
-          const methods = getMethods(controller.instance);
-          let values: any[] = [];
-          try {
-            values = this.reflector.getAllAndMerge(AUTHORIZED, [
-              controller.metatype,
-              ...methods,
-            ]);
-          } catch (err) {
-            this.logger.warn(err);
-            // noop
-          }
-          return new Set([...roles, ...values.flat()]);
-        },
-        new Set()
-      ),
+      ...this.providers.reduce((roles: Set<string>, controller: InstanceWrapper) => {
+        const methods = getMethods(controller.instance);
+        let values: any[] = [];
+        try {
+          values = this.reflector.getAllAndMerge(AUTHORIZED, [controller.metatype, ...methods]);
+        } catch (err) {
+          this.logger.warn(err);
+          // noop
+        }
+        return new Set([...roles, ...values.flat()]);
+      }, new Set()),
       ...(this.registerOptions.roles || []),
     ];
     return this._roles;
@@ -232,54 +187,36 @@ export default class KeycloakRegisterService {
   private get realmRoles() {
     return this.roles
       .filter((role: string) => /^realm:/g.test(role))
-      .map((role: string) => role.replace(/^realm:/g, ""));
+      .map((role: string) => role.replace(/^realm:/g, ''));
   }
 
   private get resources(): HashMap<string[]> {
     return Object.entries(
-      this.providers.reduce(
-        (resources: HashMap<Set<string>>, controller: InstanceWrapper) => {
-          const methods = getMethods(controller.instance);
-          const resourceName = this.reflector.get(
-            RESOURCE,
-            controller.metatype
-          );
-          if (!resourceName) return resources;
-          resources[resourceName] = new Set([
-            ...(resourceName in resources ? resources[resourceName] : []),
-            ...methods.reduce(
-              (scopes: Set<string>, method: (...args: any[]) => any) => {
-                const methodValues = this.reflector.get(SCOPES, method);
-                return new Set([...scopes, ...(methodValues || [])]);
-              },
-              new Set()
-            ),
-          ]);
-          return resources;
-        },
-        {}
-      )
-    ).reduce(
-      (
-        resources: HashMap<string[]>,
-        [resourceName, scopes]: [string, Set<string>]
-      ) => {
-        resources[resourceName] = [
-          ...new Set([...(resources[resourceName] || []), ...scopes]),
-        ];
+      this.providers.reduce((resources: HashMap<Set<string>>, controller: InstanceWrapper) => {
+        const methods = getMethods(controller.instance);
+        const resourceName = this.reflector.get(RESOURCE, controller.metatype);
+        if (!resourceName) return resources;
+        resources[resourceName] = new Set([
+          ...(resourceName in resources ? resources[resourceName] : []),
+          ...methods.reduce((scopes: Set<string>, method: (...args: any[]) => any) => {
+            const methodValues = this.reflector.get(SCOPES, method);
+            return new Set([...scopes, ...(methodValues || [])]);
+          }, new Set()),
+        ]);
         return resources;
-      },
-      this.registerOptions.resources || {}
-    );
+      }, {}),
+    ).reduce((resources: HashMap<string[]>, [resourceName, scopes]: [string, Set<string>]) => {
+      resources[resourceName] = [...new Set([...(resources[resourceName] || []), ...scopes])];
+      return resources;
+    }, this.registerOptions.resources || {});
   }
 
   async register(force = false) {
-    privateGlobalRegistrationMap.defaultAuthorizationCallback =
-      this.defaultAuthorizationCallback;
+    privateGlobalRegistrationMap.defaultAuthorizationCallback = this.defaultAuthorizationCallback;
     if (!force && !this.canRegister) return;
-    this.logger.log("waiting for keycloak");
+    this.logger.log('waiting for keycloak');
     await this.waitForReady();
-    this.logger.log("registering keycloak");
+    this.logger.log('registering keycloak');
     await this.initializeKeycloakAdmin();
     const client = await this.getClient();
     await this.createRealmRoles();
@@ -293,8 +230,8 @@ export default class KeycloakRegisterService {
 
   private async initializeKeycloakAdmin() {
     await this.keycloakAdmin.auth({
-      clientId: this.options.adminClientId || "admin-cli",
-      grantType: "password",
+      clientId: this.options.adminClientId || 'admin-cli',
+      grantType: 'password',
       password: this.options.adminPassword,
       username: this.options.adminUsername,
     });
@@ -316,27 +253,21 @@ export default class KeycloakRegisterService {
 
   private async canEnableAuthorization(client: ClientRepresentation) {
     if (client?.publicClient) {
-      this.logger.warn(
-        { clientId: this.options.clientId },
-        "authorization cannot be enabled on a public client"
-      );
+      this.logger.warn({ clientId: this.options.clientId }, 'authorization cannot be enabled on a public client');
       return false;
     }
     return true;
   }
 
   private async enableAuthorization(client: ClientRepresentation) {
-    if (
-      !client?.serviceAccountsEnabled ||
-      !client.authorizationServicesEnabled
-    ) {
+    if (!client?.serviceAccountsEnabled || !client.authorizationServicesEnabled) {
       await this.keycloakAdmin!.clients.update(
         { id: await this.getIdFromClientId(this.options.clientId) },
         {
           authorizationServicesEnabled: true,
           clientId: this.options.clientId,
           serviceAccountsEnabled: true,
-        }
+        },
       );
     }
   }
@@ -356,8 +287,8 @@ export default class KeycloakRegisterService {
         this.keycloakAdmin!.clients.createRole({
           id: await this.getIdFromClientId(this.options.clientId),
           name: role,
-        })
-      )
+        }),
+      ),
     );
   }
 
@@ -367,40 +298,31 @@ export default class KeycloakRegisterService {
         if (name) roles.push(name);
         return roles;
       },
-      []
+      [],
     );
     const rolesToCreate = difference(this.realmRoles, realmRoles);
-    await Promise.all(
-      rolesToCreate.map(async (role: string) =>
-        this.keycloakAdmin!.roles.create({ name: role })
-      )
-    );
+    await Promise.all(rolesToCreate.map(async (role: string) => this.keycloakAdmin!.roles.create({ name: role })));
   }
 
   private async createScopedResources() {
     const resources = await this.getResources();
     await Promise.all(
       Object.keys(this.resources).map(async (resourceName: string) => {
-        const resource = resources.find(
-          (resource: ResourceRepresentation) => resource.name === resourceName
-        );
+        const resource = resources.find((resource: ResourceRepresentation) => resource.name === resourceName);
         const scopes = this.resources[resourceName];
         const existingScopes = await this.getScopes(
           // resource.id is resource._id
           // @ts-ignore
           resource?.id || resource?._id,
-          scopes
+          scopes,
         );
         const createdScopes = await this.createScopes(scopes, existingScopes);
         if (resource) {
           this.updateResource(resource, [...existingScopes, ...createdScopes]);
         } else {
-          await this.createResource(resourceName, [
-            ...existingScopes,
-            ...createdScopes,
-          ]);
+          await this.createResource(resourceName, [...existingScopes, ...createdScopes]);
         }
-      })
+      }),
     );
   }
 
@@ -408,9 +330,7 @@ export default class KeycloakRegisterService {
     if (this._idsFromClientIds[clientId]) {
       return this._idsFromClientIds[clientId];
     }
-    const idFromClientId = (
-      await this.keycloakAdmin!.clients.find({ clientId })
-    )?.[0].id;
+    const idFromClientId = (await this.keycloakAdmin!.clients.find({ clientId }))?.[0].id;
     if (!idFromClientId) {
       throw new Error(`could not find id from clientId '${clientId}'`);
     }
@@ -420,24 +340,21 @@ export default class KeycloakRegisterService {
 
   private async createScopes(
     scopes: string[],
-    existingScopes: ScopeRepresentation[] = []
+    existingScopes: ScopeRepresentation[] = [],
   ): Promise<ScopeRepresentation[]> {
     const scopesToCreate = difference(
       scopes,
-      existingScopes.reduce(
-        (scopeNames: string[], scope: ScopeRepresentation) => {
-          if (scope.name) scopeNames.push(scope.name);
-          return scopeNames;
-        },
-        []
-      )
+      existingScopes.reduce((scopeNames: string[], scope: ScopeRepresentation) => {
+        if (scope.name) scopeNames.push(scope.name);
+        return scopeNames;
+      }, []),
     );
     const createdScopes: ScopeRepresentation[] = [];
     await Promise.all(
       scopesToCreate.map(async (scopeName: string) => {
         const scope = await this.createScope(scopeName);
         if (scope) createdScopes.push(scope);
-      })
+      }),
     );
     return createdScopes;
   }
@@ -452,7 +369,7 @@ export default class KeycloakRegisterService {
 
   private async createResource(
     resourceName: string,
-    scopes: ScopeRepresentation[] = []
+    scopes: ScopeRepresentation[] = [],
   ): Promise<ResourceRepresentation> {
     return this.keycloakAdmin!.clients.createResource(
       {
@@ -463,20 +380,17 @@ export default class KeycloakRegisterService {
         displayName: resourceName,
         name: resourceName,
         scopes,
-      }
+      },
     );
   }
 
-  private async updateResource(
-    resource: ResourceRepresentation,
-    scopes: ScopeRepresentation[]
-  ) {
+  private async updateResource(resource: ResourceRepresentation, scopes: ScopeRepresentation[]) {
     return this.keycloakAdmin!.clients.updateResource(
       {
         id: await this.getIdFromClientId(this.options.clientId),
         // resource.id is resource._id
         // @ts-ignore
-        resourceId: resource.id || resource._id || "",
+        resourceId: resource.id || resource._id || '',
       },
       {
         attributes: {},
@@ -490,14 +404,11 @@ export default class KeycloakRegisterService {
               id: (resource as unknown as any)?.id,
             }
           : {}),
-      }
+      },
     );
   }
 
-  private async getScopes(
-    resourceId?: string,
-    scopeNames?: string[]
-  ): Promise<ScopeRepresentation[]> {
+  private async getScopes(resourceId?: string, scopeNames?: string[]): Promise<ScopeRepresentation[]> {
     let scopes: ScopeRepresentation[] = [];
     if (resourceId) {
       scopes = await this.keycloakAdmin!.clients.listScopesByResource({
@@ -512,13 +423,10 @@ export default class KeycloakRegisterService {
     }
     if (scopeNames) {
       const scopeNamesSet = new Set(scopeNames);
-      return scopes.reduce(
-        (scopes: ScopeRepresentation[], scope: ScopeRepresentation) => {
-          if (scope.name && scopeNamesSet.has(scope.name)) scopes.push(scope);
-          return scopes;
-        },
-        []
-      );
+      return scopes.reduce((scopes: ScopeRepresentation[], scope: ScopeRepresentation) => {
+        if (scope.name && scopeNamesSet.has(scope.name)) scopes.push(scope);
+        return scopes;
+      }, []);
     }
     return scopes;
   }
@@ -530,17 +438,13 @@ export default class KeycloakRegisterService {
       },
       {
         name: scope,
-      }
+      },
     );
   }
 
   private async waitForReady(pingInterval = 5000): Promise<void> {
     try {
-      const res = await lastValueFrom(
-        this.httpService.get(
-          `${this.options.baseUrl}/realms/${this.options.realm}`
-        )
-      );
+      const res = await lastValueFrom(this.httpService.get(`${this.options.baseUrl}/realms/${this.options.realm}`));
       if (res.status > 399) {
         await new Promise((r) => setTimeout(r, pingInterval));
         return await this.waitForReady(pingInterval);
@@ -557,16 +461,12 @@ function getMethods(obj: any): ((...args: any[]) => any)[] {
   const propertyNames = new Set<string>();
   let current = obj;
   do {
-    Object.getOwnPropertyNames(current).map((propertyName) =>
-      propertyNames.add(propertyName)
-    );
+    Object.getOwnPropertyNames(current).map((propertyName) => propertyNames.add(propertyName));
     // eslint-disable-next-line no-cond-assign
   } while ((current = Object.getPrototypeOf(current)));
   return [...propertyNames]
-    .filter((propertyName: string) => typeof obj[propertyName] === "function")
-    .map((propertyName: string) => obj[propertyName]) as ((
-    ...args: any[]
-  ) => any)[];
+    .filter((propertyName: string) => typeof obj[propertyName] === 'function')
+    .map((propertyName: string) => obj[propertyName]) as ((...args: any[]) => any)[];
 }
 
 export interface GlobalRegistrationMap {

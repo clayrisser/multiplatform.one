@@ -22,18 +22,18 @@
  * limitations under the License.
  */
 
-import type KcAdminClient from "@keycloak/keycloak-admin-client";
-import type { HttpService } from "@nestjs/axios";
-import type { Keycloak } from "keycloak-connect";
-import type { Reflector } from "@nestjs/core";
-import type { CanActivate, ExecutionContext } from "@nestjs/common";
-import { Inject, Injectable, Logger } from "@nestjs/common";
-import KeycloakService from "../keycloak.service";
-import { KEYCLOAK } from "../keycloak.provider";
-import { CREATE_KEYCLOAK_ADMIN } from "../createKeycloakAdmin.provider";
-import type { KeycloakOptions } from "../types";
-import { KEYCLOAK_OPTIONS } from "../types";
-import { RESOURCE, SCOPES } from "../decorators";
+import type KcAdminClient from '@keycloak/keycloak-admin-client';
+import type { HttpService } from '@nestjs/axios';
+import type { Keycloak } from 'keycloak-connect';
+import type { Reflector } from '@nestjs/core';
+import type { CanActivate, ExecutionContext } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import KeycloakService from '../keycloak.service';
+import { KEYCLOAK } from '../keycloak.provider';
+import { CREATE_KEYCLOAK_ADMIN } from '../createKeycloakAdmin.provider';
+import type { KeycloakOptions } from '../types';
+import { KEYCLOAK_OPTIONS } from '../types';
+import { RESOURCE, SCOPES } from '../decorators';
 
 @Injectable()
 export class ResourceGuard implements CanActivate {
@@ -45,7 +45,7 @@ export class ResourceGuard implements CanActivate {
     private readonly httpService: HttpService,
     private readonly reflector: Reflector,
     @Inject(CREATE_KEYCLOAK_ADMIN)
-    private readonly createKeycloakAdmin?: () => Promise<KcAdminClient | void>
+    private readonly createKeycloakAdmin?: () => Promise<KcAdminClient | void>,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -54,7 +54,7 @@ export class ResourceGuard implements CanActivate {
       this.keycloak,
       this.httpService,
       context,
-      this.createKeycloakAdmin
+      this.createKeycloakAdmin,
     );
     const resource = this.getResource(context);
     if (!resource) return true;
@@ -62,9 +62,7 @@ export class ResourceGuard implements CanActivate {
     if (!scopes.length) return true;
     const username = (await keycloakService.getUserInfo())?.preferredUsername;
     if (!username) return false;
-    this.logger.verbose(
-      `protecting resource '${resource}' with scopes [ ${scopes.join(", ")} ]`
-    );
+    this.logger.verbose(`protecting resource '${resource}' with scopes [ ${scopes.join(', ')} ]`);
     const permissions = scopes.map((scope) => `${resource}:${scope}`);
     if (await keycloakService.enforce(permissions)) {
       this.logger.verbose(`resource '${resource}' granted to '${username}'`);
@@ -75,10 +73,8 @@ export class ResourceGuard implements CanActivate {
   }
 
   private getScopes(context: ExecutionContext) {
-    const handlerScopes =
-      this.reflector.get<string[]>(SCOPES, context.getHandler()) || [];
-    const classScopes =
-      this.reflector.get<string[]>(SCOPES, context.getClass()) || [];
+    const handlerScopes = this.reflector.get<string[]>(SCOPES, context.getHandler()) || [];
+    const classScopes = this.reflector.get<string[]>(SCOPES, context.getClass()) || [];
     return [...new Set([...handlerScopes, ...classScopes])];
   }
 
