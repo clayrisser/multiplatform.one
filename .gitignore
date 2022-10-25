@@ -1,3 +1,12 @@
+# app
+.tern-port
+.yarn/install-state.gz
+.yarn/unplugged
+/esm
+/lib
+tsconfig.tsbuildinfo
+yarn.lock
+
 # nodejs
 *.log
 *.pid
@@ -30,15 +39,8 @@ typings/
 yarn-debug.log*
 yarn-error.log*
 
-# application
-.mkpm/
-.tern-port
-.yarn/install-state.gz
-.yarn/unplugged
-/dist
-/es
-/lib
-package-lock.json
-pnpm-lock.yaml
-tsconfig.tsbuildinfo
-yarn.lock
+# mkpm
+.mkpm/*
+**/.mkpm/*
+!/.mkpm/.cache.tar.gz
+!/.mkpm/.bootstrap.mk

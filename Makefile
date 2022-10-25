@@ -1,12 +1,12 @@
 # File: /Makefile
-# Project: nestjs-keycloak
-# File Created: 10-09-2021 10:07:28
-# Author: Clay Risser
+# Project: nestjs-axios-logger
+# File Created: 23-10-2022 05:07:14
+# Author: Risser Labs LLC <info@risserlabs.com>
 # -----
-# Last Modified: 06-05-2022 07:48:32
-# Modified By: Clay Risser
+# Last Modified: 23-10-2022 05:29:59
+# Modified By: Risser Labs LLC <info@risserlabs.com>
 # -----
-# Silicon Hills LLC (c) Copyright 2021
+# Risser Labs LLC (c) Copyright 2021 - 2022
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,20 +22,25 @@
 
 include mkpm.mk
 ifneq (,$(MKPM_READY))
-include $(MKPM)/dotenv
 include $(MKPM)/gnu
 include $(MKPM)/mkchain
 include $(MKPM)/yarn
-include config.mk
--include .env
+include $(MKPM)/envcache
+include $(MKPM)/dotenv
+
+export BABEL ?= $(call yarn_binary,babel)
+export BABEL_NODE ?= $(call yarn_binary,babel-node)
+export BROWSERSLIST_BINARY ?= $(call yarn_binary,browserslist)
+export CLOC ?= cloc
+export CSPELL ?= $(call yarn_binary,cspell)
+export ESLINT ?= $(call yarn_binary,eslint)
+export JEST ?= $(call yarn_binary,jest)
+export PRETTIER ?= $(call yarn_binary,prettier)
+export TSC ?= $(call yarn_binary,tsc)
 
 ACTIONS += install
-$(ACTION)/install: $(PROJECT_ROOT)/package.json package.json ##
-ifneq (,$(SUBPROC))
-	@$(MAKE) -C $(PROJECT_ROOT) \~install ARGS=$(ARGS)
-else
-	@$(YARN) workspaces focus $(ARGS)
-endif
+$(ACTION)/install: package.json
+	@$(YARN) install $(ARGS)
 	@$(call done,install)
 
 ACTIONS += format~install ##
@@ -55,6 +60,7 @@ $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 
 ACTIONS += test~lint ##
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
+	-@$(MKDIR) -p node_modules/.tmp
 	-@$(call jest,$?,$(ARGS))
 	@$(call done,test)
 
@@ -64,50 +70,46 @@ lib/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(BABEL) --env-name umd src -d lib --extensions '.js,.jsx,.ts,.tsx' --source-maps
-	@$(BABEL) --env-name esm src -d es --extensions '.js,.jsx,.ts,.tsx' --source-maps
-	@$(TSC) -p tsconfig.app.json -d --emitDeclarationOnly
+	@$(ECHO) '{"type": "commonjs"}' > lib/package.json
+	@$(BABEL) --env-name esm src -d esm --extensions '.js,.jsx,.ts,.tsx' --source-maps
+	@$(ECHO) '{"type": "module"}' > esm/package.json
+	@$(TSC) -p tsconfig.build.json -d
 	@$(call done,build)
 
-.PHONY: start +start
-start: | ~install +start ##
-+start: ##
-	@$(BABEL_NODE) -x '.ts,.tsx' src $(ARGS)
-
-.PHONY: publish +publish
-publish: | ~build +publish
-+publish:
-	@npm publish $(ARGS)
-
-.PHONY: pack +pack
-pack: ~build +pack
-+pack:
-	@$(NPM) pack
+# .PHONY: start +start
+# start: | ~install +start ##
+# +start:
+# 	@$(NODEMON) --exec $(BABEL_NODE) --extensions .ts src/main.ts $(ARGS)
 
 COLLECT_COVERAGE_FROM := ["src/**/*.{js,jsx,ts,tsx}"]
 .PHONY: coverage +coverage
-coverage: | ~lint +coverage ##
+coverage: | ~lint +coverage
 +coverage:
 	@$(JEST) --coverage --collectCoverageFrom='$(COLLECT_COVERAGE_FROM)' $(ARGS)
 
 .PHONY: prepare
 prepare: ;
 
+.PHONY: browserslist
+browserslist:
+	@$(BROWSERSLIST_BINARY)
+
 .PHONY: upgrade
 upgrade:
-	@$(NPM) upgrade-interactive
+	@$(YARN) upgrade-interactive
 
 .PHONY: inc
-inc: ##
-	@npm version patch --git=false $(NOFAIL)
+inc:
+	@$(NPM) version patch --git=false $(NOFAIL)
 
 .PHONY: count
-count: ##
+count:
 	@$(CLOC) $(shell $(GIT) ls-files)
 
-.PHONY: env
-env: .env ##
-.env: example.env
-	$(CP) $< $@
+.PHONY: publish +publish
+publish: | ~build +publish ##
++publish:
+	@$(NPM) publish --access=public
 
 .PHONY: clean
 clean: ##
@@ -120,4 +122,15 @@ clean: ##
 
 -include $(call actions)
 
+export CACHE_ENVS += \
+	BABEL \
+	BABEL_NODE \
+	CLOC \
+	CSPELL \
+	ESLINT \
+	JEST \
+	PRETTIER \
+	TSC
+
 endif
+
