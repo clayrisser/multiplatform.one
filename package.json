@@ -1,6 +1,6 @@
 {
   "name": "@risserlabs/nestjs-keycloak",
-  "version": "2.3.12",
+  "version": "2.3.13",
   "description": "nestjs module for authenticating keycloak",
   "sideEffects": false,
   "keywords": [
@@ -50,6 +50,7 @@
     "core-js": "^3.26.0",
     "express-session": "^1.17.3",
     "keycloak-connect": "^19.0.3",
+    "lodash": "^4.17.21",
     "lodash.difference": "^4.5.0",
     "qs": "^6.11.0",
     "random": "^3.0.6",
@@ -80,6 +81,7 @@
     "@types/eslint": "^8.4.8",
     "@types/express-session": "^1.17.5",
     "@types/jest": "^29.2.0",
+    "@types/lodash": "^4",
     "@types/lodash.difference": "^4.5.7",
     "@types/node": "^18.11.5",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
