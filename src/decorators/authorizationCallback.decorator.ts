@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 13:44:17
+ * Last Modified: 26-10-2022 11:21:08
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -22,13 +22,14 @@
  * limitations under the License.
  */
 
-import type { Observable } from 'rxjs';
-import { PATH_METADATA } from '@nestjs/common/constants';
-import type { Reflector } from '@nestjs/core';
-import type { Request } from 'express';
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
+import type { Observable } from 'rxjs';
+import type { Request } from 'express';
+import { Inject } from '@nestjs/common';
 import { Injectable, SetMetadata, UseInterceptors, applyDecorators, createParamDecorator } from '@nestjs/common';
-import type KeycloakService from '../keycloak.service';
+import { PATH_METADATA } from '@nestjs/common/constants';
+import { Reflector } from '@nestjs/core';
+import KeycloakService from '../keycloak.service';
 import type { RefreshTokenGrant, KeycloakRequest } from '../types';
 
 export const AUTHORIZATION_CALLBACK = 'KEYCLOAK_AUTHORIZATION_CALLBACK';
@@ -74,7 +75,10 @@ export const HandleAuthorizationCallback = createParamDecorator(
 
 @Injectable()
 export class AuthorizationCallbackInterceptor implements NestInterceptor {
-  constructor(private readonly keycloakService: KeycloakService, private readonly reflector: Reflector) {}
+  constructor(
+    @Inject(KeycloakService) private readonly keycloakService: KeycloakService,
+    @Inject(Reflector) private readonly reflector: Reflector,
+  ) {}
 
   async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
     const req: KeycloakRequest<Request> = context.switchToHttp().getRequest();
