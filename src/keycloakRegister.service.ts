@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 04-11-2022 10:08:49
+ * Last Modified: 04-11-2022 10:17:46
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -42,7 +42,6 @@ import { Logger, Inject, Injectable } from '@nestjs/common';
 import { PATH_METADATA } from '@nestjs/common/constants';
 import { RESOURCE } from './decorators/resource.decorator';
 import { SCOPES } from './decorators/scopes.decorator';
-import { lastValueFrom } from 'rxjs';
 
 const privateGlobalRegistrationMap: GlobalRegistrationMap = {};
 
@@ -450,12 +449,12 @@ export default class KeycloakRegisterService {
     try {
       let res: AxiosResponse | null = null;
       if (!this.healthEndpointDisabled) {
-        res = await lastValueFrom(this.httpService.get(`${this.options.baseUrl}/health/live`));
+        res = await this.httpService.axiosRef.get(`${this.options.baseUrl}/health/live`);
       }
       if (this.healthEndpointDisabled || res?.status === 404) {
         this.healthEndpointDisabled = true;
-        res = await lastValueFrom(
-          this.httpService.get(`${this.options.baseUrl}/realms/master/.well-known/openid-configuration`),
+        res = await this.httpService.axiosRef.get(
+          `${this.options.baseUrl}/realms/master/.well-known/openid-configuration`,
         );
       }
       if ((res?.status || 500) > 299) {
