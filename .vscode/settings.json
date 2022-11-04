@@ -46,6 +46,7 @@
     "uris",
     "userinfo",
     "vscode",
+    "wellknown",
     "yoda"
   ],
   "psi-header.variables": [["projectCreationYear", "2021"]],

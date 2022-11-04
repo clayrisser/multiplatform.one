@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 04-11-2022 10:17:46
+ * Last Modified: 04-11-2022 10:51:58
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -29,7 +29,7 @@ import type ResourceRepresentation from '@keycloak/keycloak-admin-client/lib/def
 import type RoleRepresentation from '@keycloak/keycloak-admin-client/lib/defs/roleRepresentation';
 import type ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation';
 import type { AuthorizationCallback } from './decorators/authorizationCallback.decorator';
-import type { AxiosResponse } from 'axios';
+import type { AxiosError } from 'axios';
 import type { HashMap, KeycloakOptions, RegisterOptions } from './types';
 import type { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
 import { HttpService } from '@nestjs/axios';
@@ -447,19 +447,35 @@ export default class KeycloakRegisterService {
 
   private async waitForReady(pingInterval = 5000): Promise<void> {
     try {
-      let res: AxiosResponse | null = null;
-      if (!this.healthEndpointDisabled) {
-        res = await this.httpService.axiosRef.get(`${this.options.baseUrl}/health/live`);
+      if (this.healthEndpointDisabled) {
+        return this.waitForWellknownReady(pingInterval);
       }
-      if (this.healthEndpointDisabled || res?.status === 404) {
-        this.healthEndpointDisabled = true;
-        res = await this.httpService.axiosRef.get(
-          `${this.options.baseUrl}/realms/master/.well-known/openid-configuration`,
-        );
-      }
+      const res = await this.httpService.axiosRef.get(`${this.options.baseUrl}/health/live`);
       if ((res?.status || 500) > 299) {
         await new Promise((r) => setTimeout(r, pingInterval));
-        return await this.waitForReady(pingInterval);
+        return this.waitForReady(pingInterval);
+      }
+    } catch (err) {
+      const error = err as AxiosError;
+      const res = error.response;
+      if (res?.status === 404) {
+        this.healthEndpointDisabled = true;
+        return this.waitForWellknownReady();
+      }
+      await new Promise((r) => setTimeout(r, pingInterval));
+      return this.waitForReady(pingInterval);
+    }
+    return undefined;
+  }
+
+  private async waitForWellknownReady(pingInterval = 5000): Promise<void> {
+    try {
+      const res = await this.httpService.axiosRef.get(
+        `${this.options.baseUrl}/realms/master/.well-known/openid-configuration`,
+      );
+      if ((res.status || 500) > 299) {
+        await new Promise((r) => setTimeout(r, pingInterval));
+        return this.waitForReady(pingInterval);
       }
     } catch (err) {
       await new Promise((r) => setTimeout(r, pingInterval));
