@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 15:10:03
+ * Last Modified: 04-11-2022 10:19:11
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -26,12 +26,10 @@ import type KcAdminClient from '@keycloak/keycloak-admin-client';
 import Token from 'keycloak-connect/middleware/auth-utils/token';
 import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
 import qs from 'qs';
-import type { AxiosResponse } from 'axios';
 import type { Grant, Keycloak } from 'keycloak-connect';
 import { HttpService } from '@nestjs/axios';
 import { REQUEST } from '@nestjs/core';
 import type { Request, NextFunction, Response } from 'express';
-import { lastValueFrom } from 'rxjs';
 import type { ExecutionContext } from '@nestjs/common';
 import { Injectable, Inject, Scope, Logger } from '@nestjs/common';
 import { CREATE_KEYCLOAK_ADMIN } from './createKeycloakAdmin.provider';
@@ -277,15 +275,13 @@ export default class KeycloakService {
       });
     }
     try {
-      const res = (await lastValueFrom(
-        this.httpService.post(
-          `${this.options.baseUrl}/realms/${this.options.realm}/protocol/openid-connect/token`,
-          data,
-          {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          },
-        ),
-      )) as AxiosResponse<TokenResponseData>;
+      const res = await this.httpService.axiosRef.post(
+        `${this.options.baseUrl}/realms/${this.options.realm}/protocol/openid-connect/token`,
+        data,
+        {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        },
+      );
       const {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         access_token,
