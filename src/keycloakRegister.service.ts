@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 04-11-2022 10:51:58
+ * Last Modified: 04-11-2022 10:54:57
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -450,7 +450,7 @@ export default class KeycloakRegisterService {
       if (this.healthEndpointDisabled) {
         return this.waitForWellknownReady(pingInterval);
       }
-      const res = await this.httpService.axiosRef.get(`${this.options.baseUrl}/health/live`);
+      const res = await this.httpService.axiosRef.get(`${this.options.baseUrl}/health/live`, { silent: true } as any);
       if ((res?.status || 500) > 299) {
         await new Promise((r) => setTimeout(r, pingInterval));
         return this.waitForReady(pingInterval);
@@ -472,6 +472,7 @@ export default class KeycloakRegisterService {
     try {
       const res = await this.httpService.axiosRef.get(
         `${this.options.baseUrl}/realms/master/.well-known/openid-configuration`,
+        { silent: true } as any,
       );
       if ((res.status || 500) > 299) {
         await new Promise((r) => setTimeout(r, pingInterval));
