@@ -4,10 +4,10 @@
  * File Created: 14-07-2021 18:34:35
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 14-07-2021 18:41:47
- * Modified By: Clay Risser <email@clayrisser.com>
+ * Last Modified: 04-11-2022 07:23:40
+ * Modified By: Clay Risser
  * -----
- * Silicon Hills LLC (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,6 @@
  * limitations under the License.
  */
 
-import waitForPostgres from '~/waitForPostgres';
+import waitForPostgres from '../waitForPostgres';
 
 waitForPostgres();

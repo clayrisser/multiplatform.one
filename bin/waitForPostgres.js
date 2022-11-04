@@ -26,5 +26,5 @@
 
 if (typeof require !== 'undefined' && require.main === module) {
   // eslint-disable-next-line global-require
-  require('../lib/bin/waitForPostgres');
+  require('../dist/waitForPostgres');
 }

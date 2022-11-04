@@ -1,6 +1,6 @@
 {
   "name": "@risserlabs/prisma-scripts",
-  "version": "0.4.1",
+  "version": "0.5.12",
   "description": "scripts for managing prisma orm",
   "sideEffects": false,
   "keywords": [
@@ -11,38 +11,40 @@
     "database",
     "db"
   ],
-  "homepage": "https://github.com/silicon-hills/prisma-scripts",
+  "homepage": "https://gitlab.com/risserlabs/nestjs/prisma-scripts",
   "bugs": {
-    "url": "https://github.com/silicon-hills/prisma-scripts/issues",
-    "email": "jam@codejam.ninja"
+    "url": "https://gitlab.com/risserlabs/nestjs/prisma-scripts/issues",
+    "email": "support@risserlabs.com"
   },
   "license": "Apache-2.0",
-  "author": {
-    "name": "Jam Risser",
-    "email": "jam@codejam.ninja",
-    "url": "https://codejam.ninja"
+  "author": "Risser Labs LLC <support@risserlabs.com> (https://risserlabs.com)",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "source": "src/index.ts",
+  "exports": {
+    ".": "./lib/index.js"
   },
   "files": [
     "bin",
-    "es",
-    "lib"
+    "dist",
+    "lib",
+    "src"
   ],
-  "main": "lib/index.js",
-  "module": "es/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/risserlabs/nestjs/prisma-scripts"
+  },
   "bin": {
     "generate-prisma": "bin/generate.js",
     "wait-for-postgres": "bin/waitForPostgres.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/silicon-hills/prisma-scripts"
   },
   "scripts": {
     "build": "make -s build",
     "clean": "make -s clean",
     "coverage": "make -s coverage",
     "format": "make -s format",
-    "inc": "npm version patch --git=false 2>/dev/null || true",
+    "inc": "make -s inc",
     "lint": "make -s lint",
     "make": "make",
     "prepare": "make -s prepare",
@@ -55,64 +57,65 @@
     "test:watch": "make -s test-watch"
   },
   "dependencies": {
-    "@babel/runtime": "^7.14.6",
-    "core-js": "^3.15.2",
-    "dotenv": "^10.0.0",
-    "execa": "^5.1.1",
-    "fs-extra": "^10.0.0",
-    "ora": "^5.4.1",
-    "pkg-dir": "^5.0.0"
+    "@babel/runtime": "^7.20.1",
+    "core-js": "^3.26.0",
+    "dependency-tree": "^8.1.2",
+    "dotenv": "^16.0.3",
+    "execa": "^6.1.0",
+    "fs-extra": "^10.1.0",
+    "ora": "^6.1.2"
   },
   "peerDependencies": {
     "prisma": "^3.9.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.14.5",
-    "@babel/core": "^7.14.6",
-    "@babel/node": "^7.14.7",
-    "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@babel/plugin-proposal-decorators": "^7.14.5",
-    "@babel/plugin-proposal-optional-chaining": "^7.14.5",
-    "@babel/plugin-proposal-private-methods": "^7.14.5",
-    "@babel/plugin-proposal-private-property-in-object": "^7.14.5",
-    "@babel/plugin-transform-runtime": "^7.14.5",
-    "@babel/preset-env": "^7.14.7",
-    "@babel/preset-typescript": "^7.14.5",
-    "@types/fs-extra": "^9.0.12",
-    "@types/jest": "^26.0.24",
-    "@typescript-eslint/eslint-plugin": "^4.28.3",
-    "@typescript-eslint/parser": "^4.28.3",
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.19.6",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.20.0",
+    "@babel/plugin-transform-runtime": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
+    "@babel/preset-typescript": "^7.18.6",
+    "@types/fs-extra": "^9.0.13",
+    "@types/jest": "^29.2.1",
+    "@typescript-eslint/eslint-plugin": "^5.42.0",
+    "@typescript-eslint/parser": "^5.42.0",
+    "babel-loader": "^9.1.0",
+    "babel-plugin-add-import-extension": "^1.6.0",
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-typescript-metadata": "^0.3.2",
-    "cspell": "^5.6.6",
-    "eslint": "^7.30.0",
-    "eslint-config-airbnb-typescript": "^12.3.1",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.23.4",
+    "cspell": "^6.14.0",
+    "eslint": "^8.26.0",
+    "eslint-config-alloy": "^4.7.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-spellcheck": "^0.0.19",
-    "jest": "^27.0.6",
+    "jest": "^29.2.2",
     "jest-sonar-reporter": "^2.0.0",
-    "lockfile-lint": "^4.6.2",
+    "lockfile-lint": "^4.9.6",
     "majestic": "^1.8.1",
-    "prettier": "^2.3.2",
-    "prisma": "^2.27.0",
-    "typescript": "^4.3.5"
+    "prettier": "^2.7.1",
+    "prisma": "^4.5.0",
+    "typescript": "^4.8.4",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-node-externals": "^3.0.0"
   },
+  "transpileModules": [],
   "engines": {
     "node": ">=6.0.0"
   },
   "eslintIgnore": [
-    "lib",
-    "es"
+    "dist",
+    "lib"
   ],
   "jest": {
     "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
     "testEnvironment": "node",
     "verbose": true,
     "testPathIgnorePatterns": [
-      "<rootDir>/es/",
-      "<rootDir>/lib/"
+      "<rootDir>/lib/",
+      "<rootDir>/dist/"
     ]
   },
   "jestSonar": {
@@ -120,12 +123,10 @@
     "reportFile": "test-report.xml",
     "indent": 4
   },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "none"
-  },
+  "prettier": "eslint-config-alloy/.prettierrc.js",
   "publishConfig": {
     "@risserlabs:registry": "https://gitlab.com/api/v4/projects/33412251/packages/npm/",
     "registry": "https://gitlab.com/api/v4/projects/33412251/packages/npm/"
-  }
+  },
+  "packageManager": "yarn@3.2.4"
 }

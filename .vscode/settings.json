@@ -5,6 +5,7 @@
     "dotenv",
     "ecma",
     "execa",
+    "globals",
     "jsx",
     "lang",
     "ora",
@@ -16,6 +17,7 @@
     "rebased",
     "risser",
     "risserlabs",
+    "sqlite",
     "sslmode",
     "stdout",
     "tsconfig",
@@ -26,11 +28,9 @@
   ],
   "psi-header.variables": [["projectCreationYear", "2021"]],
   "psi-header.config": {
-    "author": "Clay Risser",
-    "authorEmail": "email@clayrisser.com",
     "blankLinesAfter": 1,
-    "company": "Silicon Hills LLC",
-    "copyrightHolder": "Silicon Hills LLC",
+    "company": "Risser Labs LLC",
+    "copyrightHolder": "Risser Labs LLC",
     "creationDateZero": "asIs",
     "forceToTop": true,
     "initials": "CR",
@@ -56,10 +56,10 @@
         " File: <<filerelativepath>>",
         " Project: <<projectname>>",
         " File Created: <<filecreated('DD-MM-YYYY HH:mm:ss')>>",
-        " Author: <<author>> <<<authoremail>>>",
+        " Author: <<author>>",
         " -----",
         " Last Modified: <<dateformat('DD-MM-YYYY HH:mm:ss')>>",
-        " Modified By: <<author>> <<<authoremail>>>",
+        " Modified By: <<author>>",
         " -----",
         " <<copyrightholder>> (c) Copyright <<yeartoyear(<<projectCreationYear>>, now)>>",
         "",
@@ -113,5 +113,18 @@
   "psi-header.license-reference": {
     "uri": "../LICENSE",
     "uriIsLocalFile": true
+  },
+  "files.eol": "\n",
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "editor.tabSize": 2,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
   }
 }

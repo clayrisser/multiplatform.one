@@ -4,10 +4,10 @@
  * File Created: 14-07-2021 18:34:35
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 04-02-2022 03:49:37
+ * Last Modified: 04-11-2022 05:51:58
  * Modified By: Clay Risser <email@clayrisser.com>
  * -----
- * Silicon Hills LLC (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,10 @@
  */
 
 import dotenv from 'dotenv';
-import execa, { ExecaError } from 'execa';
 import ora from 'ora';
 import path from 'path';
+import type { ExecaError } from 'execa';
+import { execa } from 'execa';
 
 const { argv, env } = process;
 const prismaPath = path.resolve(process.cwd(), argv[2] || '');
@@ -50,7 +51,7 @@ export async function waitForPostgres(spinner = ora(), interval = 1000) {
       if (
         (
           await execa('psql', [env.POSTGRES_URL, '-c', '\\l'], {
-            stdio: 'pipe'
+            stdio: 'pipe',
           })
         ).exitCode === 0
       ) {

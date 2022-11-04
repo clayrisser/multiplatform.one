@@ -4,10 +4,10 @@
  * File Created: 14-07-2021 18:34:35
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 04-02-2022 03:22:22
- * Modified By: Clay Risser <email@clayrisser.com>
+ * Last Modified: 04-11-2022 08:38:34
+ * Modified By: Clay Risser
  * -----
- * Silicon Hills LLC (c) Copyright 2021
+ * Risser Labs LLC (c) Copyright 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@
  */
 
 import dotenv from 'dotenv';
-import fs from 'fs-extra';
 import ora from 'ora';
 import path from 'path';
 
@@ -31,61 +30,40 @@ const logger = console;
 
 const { argv } = process;
 dotenv.config({ path: path.resolve(process.cwd(), argv[2] || '.', '.env') });
-const PRISMA_CLIENT_REGEX =
-  /provider\s*=\s*"prisma-client-js"\n\s*output\s*=\s*"(.+)"/g;
 
-export default async function seedDb(
-  entities: Entities,
-  hide: string[] = [],
-  spinner = ora()
-) {
-  const prismaSchema = (
-    await fs.readFile(path.resolve(process.cwd(), 'schema.prisma'))
-  ).toString();
-  const prismaOutput = [
-    ...prismaSchema.matchAll(PRISMA_CLIENT_REGEX)
-  ]?.[0]?.[1];
-  const outputPath = prismaOutput
-    ? path.resolve(prismaOutput, 'index.js')
-    : null;
-  // eslint-disable-next-line global-require,import/no-dynamic-require
-  const { PrismaClient } = require(outputPath &&
-    (await fs.pathExists(outputPath))
-    ? outputPath
-    : 'prisma');
+export default async function seedDb(entities: Entities, hide: string[] = [], spinner = ora()) {
+  const { PrismaClient } = require('@prisma/client');
   const prisma = new PrismaClient();
   const result = (await Promise.all(
-    Object.entries(entities).map(
-      async ([key, entity]: [string, Entity | Entity[]]) => {
-        spinner.start(`seeding '${key}'`);
-        if (!prisma[key]) {
-          spinner.warn(`failed to find '${key}'`);
-          return [key, null];
-        }
-        if (!Array.isArray(entity)) entity = [entity];
-        if (await prisma[key].count()) {
-          spinner.info(`already seeded '${key}'`);
-          return [key, null];
-        }
-        let result = await Promise.all(
-          entity.map(async (entity: Entity) => {
-            try {
-              const result = await prisma[key].create({ data: entity });
-              return hideResults(key, result, hide);
-            } catch (err) {
-              spinner.fail((err as Error).message || (err as string));
-              process.exit(1);
-              return null;
-            }
-          })
-        );
-        if (result.length === 1) [result] = result;
-        spinner.stop();
-        logger.log(result);
-        spinner.succeed(`seeded '${key}'`);
-        return [key, result];
+    Object.entries(entities).map(async ([key, entity]: [string, Entity | Entity[]]) => {
+      spinner.start(`seeding '${key}'`);
+      if (!prisma[key]) {
+        spinner.warn(`failed to find '${key}'`);
+        return [key, null];
       }
-    )
+      if (!Array.isArray(entity)) entity = [entity];
+      if (await prisma[key].count()) {
+        spinner.info(`already seeded '${key}'`);
+        return [key, null];
+      }
+      let result = await Promise.all(
+        entity.map(async (entity: Entity) => {
+          try {
+            const result = await prisma[key].create({ data: entity });
+            return hideResults(key, result, hide);
+          } catch (err) {
+            spinner.fail((err as Error).message || (err as string));
+            process.exit(1);
+            return null;
+          }
+        }),
+      );
+      if (result.length === 1) [result] = result;
+      spinner.stop();
+      logger.log(result);
+      spinner.succeed(`seeded '${key}'`);
+      return [key, result];
+    }),
   )) as Result[];
   await prisma.$disconnect();
   return result.reduce((mappedResult: MappedResult, [key, value]: Result) => {
@@ -98,9 +76,7 @@ export function hideResults(model: string, result: Entity, hide: string[]) {
   hide = hide
     .filter((path: string) => {
       const hideArr = path.split('.');
-      return (
-        hideArr.length === 1 || (hideArr.length > 1 && hideArr[0] === model)
-      );
+      return hideArr.length === 1 || (hideArr.length > 1 && hideArr[0] === model);
     })
     .map((path: string) => {
       const hideArr = path.split('.');
@@ -114,7 +90,7 @@ export function hideResults(model: string, result: Entity, hide: string[]) {
     ...hide.reduce((hiddenResult: Entity, key: string) => {
       if (typeof result[key] !== 'undefined') hiddenResult[key] = '***';
       return hiddenResult;
-    }, {})
+    }, {}),
   };
 }
 
