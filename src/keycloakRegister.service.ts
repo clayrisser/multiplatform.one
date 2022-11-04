@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 15:08:55
+ * Last Modified: 04-11-2022 10:08:49
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -29,9 +29,10 @@ import type ResourceRepresentation from '@keycloak/keycloak-admin-client/lib/def
 import type RoleRepresentation from '@keycloak/keycloak-admin-client/lib/defs/roleRepresentation';
 import type ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation';
 import type { AuthorizationCallback } from './decorators/authorizationCallback.decorator';
+import type { AxiosResponse } from 'axios';
 import type { HashMap, KeycloakOptions, RegisterOptions } from './types';
-import { HttpService } from '@nestjs/axios';
 import type { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
+import { HttpService } from '@nestjs/axios';
 import { Reflector } from '@nestjs/core';
 import { AUTHORIZATION_CALLBACK } from './decorators/authorizationCallback.decorator';
 import { AUTHORIZED } from './decorators/authorized.decorator';
@@ -65,6 +66,8 @@ export default class KeycloakRegisterService {
   private registerOptions: RegisterOptions;
 
   private keycloakAdmin: KcAdminClient;
+
+  private healthEndpointDisabled = false;
 
   constructor(
     @Inject(KEYCLOAK_OPTIONS) private readonly options: KeycloakOptions,
@@ -445,8 +448,17 @@ export default class KeycloakRegisterService {
 
   private async waitForReady(pingInterval = 5000): Promise<void> {
     try {
-      const res = await lastValueFrom(this.httpService.get(`${this.options.baseUrl}/realms/${this.options.realm}`));
-      if (res.status > 399) {
+      let res: AxiosResponse | null = null;
+      if (!this.healthEndpointDisabled) {
+        res = await lastValueFrom(this.httpService.get(`${this.options.baseUrl}/health/live`));
+      }
+      if (this.healthEndpointDisabled || res?.status === 404) {
+        this.healthEndpointDisabled = true;
+        res = await lastValueFrom(
+          this.httpService.get(`${this.options.baseUrl}/realms/master/.well-known/openid-configuration`),
+        );
+      }
+      if ((res?.status || 500) > 299) {
         await new Promise((r) => setTimeout(r, pingInterval));
         return await this.waitForReady(pingInterval);
       }
