@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 05-11-2022 05:13:05
+ * Last Modified: 05-11-2022 05:30:32
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -272,39 +272,7 @@ export default class KeycloakService {
     return !this.grant?.isExpired() && !!accessToken && this.issuedByClient(accessToken) && !accessToken?.isExpired();
   }
 
-  async passwordGrant(
-    { username, password, scope }: PasswordGrantOptions,
-    persistSession = true,
-  ): Promise<RefreshTokenGrant | null> {
-    const tokens = await this.grantTokens({ username, password, scope });
-    const { accessToken, refreshToken } = tokens;
-    if (accessToken && !this.issuedByClient(accessToken)) {
-      return null;
-    }
-    if (persistSession) this.sessionSetTokens(accessToken, refreshToken);
-    if (accessToken) this._accessToken = accessToken;
-    if (refreshToken) this._refreshToken = refreshToken;
-    await this.init(true);
-    return tokens;
-  }
-
-  async clientCredentialsGrant(
-    { clientId, clientSecret, scope }: ClientCredentialsGrantOptions,
-    persistSession = true,
-  ): Promise<RefreshTokenGrant | null> {
-    const tokens = await this.grantTokens({ clientId, clientSecret, scope });
-    const { accessToken, refreshToken } = tokens;
-    if (accessToken && !this.issuedByClient(accessToken)) {
-      return null;
-    }
-    if (persistSession) this.sessionSetTokens(accessToken, refreshToken);
-    if (accessToken) this._accessToken = accessToken;
-    if (refreshToken) this._refreshToken = refreshToken;
-    await this.init(true);
-    return tokens;
-  }
-
-  async refreshTokenGrant(options: RefreshTokenGrantOptions, persistSession = true): Promise<RefreshTokenGrant | null> {
+  async smartGrant(options: GrantTokensOptions, persistSession = true): Promise<RefreshTokenGrant | null> {
     const tokens = await this.grantTokens(options);
     const { accessToken, refreshToken } = tokens;
     if (accessToken && !this.issuedByClient(accessToken)) {
@@ -317,23 +285,38 @@ export default class KeycloakService {
     return tokens;
   }
 
+  async passwordGrant(
+    { username, password, scope }: PasswordGrantOptions,
+    persistSession = true,
+  ): Promise<RefreshTokenGrant | null> {
+    return this.smartGrant({ username, password, scope }, persistSession);
+  }
+
+  async clientCredentialsGrant(
+    { clientId, clientSecret, scope }: ClientCredentialsGrantOptions,
+    persistSession = true,
+  ): Promise<RefreshTokenGrant | null> {
+    return this.smartGrant({ clientId, clientSecret, scope }, persistSession);
+  }
+
+  async refreshTokenGrant(
+    { refreshToken }: RefreshTokenGrantOptions,
+    persistSession = true,
+  ): Promise<RefreshTokenGrant | null> {
+    return this.smartGrant({ refreshToken }, persistSession);
+  }
+
   async authorizationCodeGrant(
     { code, redirectUri }: AuthorizationCodeGrantOptions,
     persistSession = true,
   ): Promise<RefreshTokenGrant | null> {
-    const tokens = await this.grantTokens({
-      authorizationCode: code,
-      redirectUri,
-    });
-    const { accessToken, refreshToken } = tokens;
-    if (accessToken && !this.issuedByClient(accessToken)) {
-      return null;
-    }
-    if (persistSession) this.sessionSetTokens(accessToken, refreshToken);
-    if (accessToken) this._accessToken = accessToken;
-    if (refreshToken) this._refreshToken = refreshToken;
-    await this.init(true);
-    return tokens;
+    return this.smartGrant(
+      {
+        code,
+        redirectUri,
+      },
+      persistSession,
+    );
   }
 
   async logout() {
@@ -371,7 +354,7 @@ export default class KeycloakService {
   }
 
   private async grantTokens({
-    authorizationCode,
+    code,
     clientId,
     clientSecret,
     password,
@@ -391,12 +374,12 @@ export default class KeycloakService {
         grant_type: 'refresh_token',
         refresh_token: refreshToken,
       });
-    } else if (authorizationCode && redirectUri) {
+    } else if (code && redirectUri) {
       // authorization code grant
       data = qs.stringify({
         ...(options.clientSecret ? { client_secret: options.clientSecret } : {}),
         client_id: options.clientId,
-        code: authorizationCode,
+        code,
         grant_type: 'authorization_code',
         redirect_uri: redirectUri,
       });
@@ -412,7 +395,7 @@ export default class KeycloakService {
     } else {
       // password grant
       if (!username) {
-        throw new Error('missing username, clientId, authorizationCode or refreshToken');
+        throw new Error('missing username, clientId, code or refreshToken');
       }
       data = qs.stringify({
         ...(options.clientSecret ? { client_secret: options.clientSecret } : {}),
