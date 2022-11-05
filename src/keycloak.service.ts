@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 04-11-2022 10:19:11
+ * Last Modified: 05-11-2022 05:13:05
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -37,6 +37,7 @@ import { KEYCLOAK } from './keycloak.provider';
 import { getReq } from './util';
 import type {
   AuthorizationCodeGrantOptions,
+  ClientCredentialsGrantOptions,
   GrantTokensOptions,
   GraphqlCtx,
   KeycloakError,
@@ -232,93 +233,6 @@ export default class KeycloakService {
     return this._userInfo;
   }
 
-  async grantTokens({
-    authorizationCode,
-    password,
-    redirectUri,
-    refreshToken,
-    scope,
-    username,
-  }: GrantTokensOptions): Promise<RefreshTokenGrant> {
-    const { clientId, clientSecret } = this.options;
-    const scopeArr = ['openid', ...(Array.isArray(scope) ? scope : (scope || 'profile').split(' '))];
-    let data: string;
-    if (refreshToken) {
-      // refresh token grant
-      data = qs.stringify({
-        ...(clientSecret ? { client_secret: clientSecret } : {}),
-        client_id: clientId,
-        grant_type: 'refresh_token',
-        refresh_token: refreshToken,
-      });
-    } else if (authorizationCode && redirectUri) {
-      // authorization code grant
-      data = qs.stringify({
-        ...(clientSecret ? { client_secret: clientSecret } : {}),
-        client_id: clientId,
-        code: authorizationCode,
-        grant_type: 'authorization_code',
-        redirect_uri: redirectUri,
-      });
-    } else {
-      // password grant
-      if (!username) {
-        throw new Error('missing username, authorizationCode or refreshToken');
-      }
-      data = qs.stringify({
-        ...(clientSecret ? { client_secret: clientSecret } : {}),
-        client_id: clientId,
-        grant_type: 'password',
-        password: password || '',
-        scope: scopeArr.join(' '),
-        username,
-      });
-    }
-    try {
-      const res = await this.httpService.axiosRef.post(
-        `${this.options.baseUrl}/realms/${this.options.realm}/protocol/openid-connect/token`,
-        data,
-        {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        },
-      );
-      const {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        access_token,
-        scope,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        refresh_token,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        expires_in,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        refresh_expires_in,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        token_type,
-      } = res.data;
-      return {
-        ...(access_token ? { accessToken: new Token(access_token, clientId) } : {}),
-        ...(expires_in ? { expiresIn: expires_in } : {}),
-        ...(refresh_expires_in ? { refreshExpiresIn: refresh_expires_in } : {}),
-        ...(refresh_token ? { refreshToken: new Token(refresh_token, clientId) } : {}),
-        ...(token_type ? { tokenType: token_type } : {}),
-        message: 'authentication successful',
-        scope,
-      };
-    } catch (err) {
-      const error = err as KeycloakError;
-      if (error.response?.data && error.response?.status) {
-        const { data } = error.response;
-        error.statusCode = error.response.status;
-        error.payload = {
-          error: data.error,
-          message: data.error_description || '',
-          statusCode: error.statusCode,
-        };
-      }
-      throw error;
-    }
-  }
-
   async getUserId(): Promise<string | null> {
     const userInfo = await this.getUserInfo();
     return userInfo?.sub || null;
@@ -363,6 +277,22 @@ export default class KeycloakService {
     persistSession = true,
   ): Promise<RefreshTokenGrant | null> {
     const tokens = await this.grantTokens({ username, password, scope });
+    const { accessToken, refreshToken } = tokens;
+    if (accessToken && !this.issuedByClient(accessToken)) {
+      return null;
+    }
+    if (persistSession) this.sessionSetTokens(accessToken, refreshToken);
+    if (accessToken) this._accessToken = accessToken;
+    if (refreshToken) this._refreshToken = refreshToken;
+    await this.init(true);
+    return tokens;
+  }
+
+  async clientCredentialsGrant(
+    { clientId, clientSecret, scope }: ClientCredentialsGrantOptions,
+    persistSession = true,
+  ): Promise<RefreshTokenGrant | null> {
+    const tokens = await this.grantTokens({ clientId, clientSecret, scope });
     const { accessToken, refreshToken } = tokens;
     if (accessToken && !this.issuedByClient(accessToken)) {
       return null;
@@ -438,6 +368,104 @@ export default class KeycloakService {
         }) as NextFunction,
       );
     });
+  }
+
+  private async grantTokens({
+    authorizationCode,
+    clientId,
+    clientSecret,
+    password,
+    redirectUri,
+    refreshToken,
+    scope,
+    username,
+  }: GrantTokensOptions): Promise<RefreshTokenGrant> {
+    const { options } = this;
+    const scopeArr = ['openid', ...(Array.isArray(scope) ? scope : (scope || 'profile').split(' '))];
+    let data: string;
+    if (refreshToken) {
+      // refresh token grant
+      data = qs.stringify({
+        ...(options.clientSecret ? { client_secret: options.clientSecret } : {}),
+        client_id: options.clientId,
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      });
+    } else if (authorizationCode && redirectUri) {
+      // authorization code grant
+      data = qs.stringify({
+        ...(options.clientSecret ? { client_secret: options.clientSecret } : {}),
+        client_id: options.clientId,
+        code: authorizationCode,
+        grant_type: 'authorization_code',
+        redirect_uri: redirectUri,
+      });
+    } else if (clientId && clientSecret) {
+      // client credentials grant
+      data = qs.stringify({
+        ...(options.clientSecret ? { client_secret: options.clientSecret } : {}),
+        client_id: clientId,
+        client_secret: clientSecret,
+        grant_type: 'client_credentials',
+        scope: scopeArr.join(' '),
+      });
+    } else {
+      // password grant
+      if (!username) {
+        throw new Error('missing username, clientId, authorizationCode or refreshToken');
+      }
+      data = qs.stringify({
+        ...(options.clientSecret ? { client_secret: options.clientSecret } : {}),
+        client_id: options.clientId,
+        grant_type: 'password',
+        password: password || '',
+        scope: scopeArr.join(' '),
+        username,
+      });
+    }
+    try {
+      const res = await this.httpService.axiosRef.post(
+        `${this.options.baseUrl}/realms/${this.options.realm}/protocol/openid-connect/token`,
+        data,
+        {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        },
+      );
+      const {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        access_token,
+        scope,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        refresh_token,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        expires_in,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        refresh_expires_in,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        token_type,
+      } = res.data;
+      return {
+        ...(access_token ? { accessToken: new Token(access_token, options.clientId) } : {}),
+        ...(expires_in ? { expiresIn: expires_in } : {}),
+        ...(refresh_expires_in ? { refreshExpiresIn: refresh_expires_in } : {}),
+        ...(refresh_token ? { refreshToken: new Token(refresh_token, options.clientId) } : {}),
+        ...(token_type ? { tokenType: token_type } : {}),
+        message: 'authentication successful',
+        scope,
+      };
+    } catch (err) {
+      const error = err as KeycloakError;
+      if (error.response?.data && error.response?.status) {
+        const { data } = error.response;
+        error.statusCode = error.response.status;
+        error.payload = {
+          error: data.error,
+          message: data.error_description || '',
+          statusCode: error.statusCode,
+        };
+      }
+      throw error;
+    }
   }
 
   private issuedByClient(token: Token, clientId?: string) {
