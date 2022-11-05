@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 05-11-2022 05:30:32
+ * Last Modified: 05-11-2022 06:35:34
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -210,6 +210,7 @@ export default class KeycloakService {
     const accessToken = await this.getAccessToken();
     const userInfo =
       accessToken &&
+      !accessToken.isExpired() &&
       (await this.keycloak.grantManager.userInfo<
         Token | string,
         {
@@ -499,6 +500,9 @@ export default class KeycloakService {
     if (!refreshToken) {
       const token = this.refreshToken;
       if (token) refreshToken = token;
+    }
+    if ((!refreshToken || refreshToken.isExpired()) && (!accessToken || accessToken.isExpired())) {
+      return null;
     }
     return this.keycloak.grantManager.createGrant({
       // access_token is actually a string even though keycloak-connect
