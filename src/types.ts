@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 13:53:48
+ * Last Modified: 05-11-2022 05:11:42
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -226,30 +226,47 @@ export class GrantTokensOptions {
 
   @ApiProperty()
   redirectUri?: string;
+
+  @ApiProperty()
+  clientId?: string;
+
+  @ApiProperty()
+  clientSecret?: string;
 }
 
 export class PasswordGrantOptions {
   @ApiProperty()
-  password?: string;
+  password!: string;
 
   @ApiProperty()
   scope?: string | string[];
 
   @ApiProperty()
-  username?: string;
+  username!: string;
+}
+
+export class ClientCredentialsGrantOptions {
+  @ApiProperty()
+  clientId!: string;
+
+  @ApiProperty()
+  clientSecret!: string;
+
+  @ApiProperty()
+  scope?: string | string[];
 }
 
 export class RefreshTokenGrantOptions {
   @ApiProperty()
-  refreshToken?: string;
+  refreshToken!: string;
 }
 
 export class AuthorizationCodeGrantOptions {
   @ApiProperty()
-  code?: string;
+  code!: string;
 
   @ApiProperty()
-  redirectUri?: string;
+  redirectUri!: string;
 }
 
 export class RefreshTokenGrant {
