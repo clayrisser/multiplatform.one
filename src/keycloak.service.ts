@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 05-11-2022 06:35:34
+ * Last Modified: 06-11-2022 03:33:13
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -22,16 +22,17 @@
  * limitations under the License.
  */
 
-import type KcAdminClient from '@keycloak/keycloak-admin-client';
 import Token from 'keycloak-connect/middleware/auth-utils/token';
-import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
 import qs from 'qs';
-import type { Grant, Keycloak } from 'keycloak-connect';
-import { HttpService } from '@nestjs/axios';
-import { REQUEST } from '@nestjs/core';
-import type { Request, NextFunction, Response } from 'express';
+import type KcAdminClient from '@keycloak/keycloak-admin-client';
+import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
+import type { AxiosError } from 'axios';
 import type { ExecutionContext } from '@nestjs/common';
+import type { Grant, Keycloak } from 'keycloak-connect';
+import type { Request, NextFunction, Response } from 'express';
+import { HttpService } from '@nestjs/axios';
 import { Injectable, Inject, Scope, Logger } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
 import { CREATE_KEYCLOAK_ADMIN } from './createKeycloakAdmin.provider';
 import { KEYCLOAK } from './keycloak.provider';
 import { getReq } from './util';
@@ -46,7 +47,7 @@ import type {
   PasswordGrantOptions,
   RefreshTokenGrant,
   RefreshTokenGrantOptions,
-  UserInfo,
+  TUserInfo,
 } from './types';
 import { KEYCLOAK_OPTIONS } from './types';
 
@@ -80,7 +81,7 @@ export default class KeycloakService {
 
   private _accessToken: Token | null = null;
 
-  private _userInfo: UserInfo | null = null;
+  private _userInfo: TUserInfo | null = null;
 
   private _initialized = false;
 
@@ -129,7 +130,13 @@ export default class KeycloakService {
   }
 
   async init(force = false) {
-    if (this._initialized && !force) return;
+    if (!force) {
+      if (this._initialized) return;
+      if (this.req?.kauth?.userInfo && this.req.kauth.grant && !this.req.kauth.grant.isExpired()) {
+        this._initialized = true;
+        return;
+      }
+    }
     await this.setGrant();
     await this.setUserInfo(force);
     this._initialized = true;
@@ -163,10 +170,9 @@ export default class KeycloakService {
       this._accessToken = this.bearerToken;
       return this._accessToken;
     }
-    const { clientId } = this.options;
     let accessToken = (this.req.kauth?.grant?.access_token as Token) || null;
     if (!accessToken && this.req.session?.kauth?.accessToken) {
-      accessToken = new Token(this.req.session?.kauth?.accessToken, clientId);
+      accessToken = new Token(this.req.session?.kauth?.accessToken, this.options.clientId);
     }
     if (
       (!accessToken || !this.issuedByClient(accessToken) || accessToken.isExpired()) &&
@@ -184,7 +190,6 @@ export default class KeycloakService {
         if (error.statusCode && error.statusCode < 500) {
           this.logger.error(
             `${error.statusCode}:`,
-            // @ts-ignore
             ...[error.message ? [error.message] : []],
             ...[error.payload ? [JSON.stringify(error.payload)] : []],
           );
@@ -197,7 +202,7 @@ export default class KeycloakService {
     return this._accessToken;
   }
 
-  async getUserInfo(force = false): Promise<UserInfo | null> {
+  async getUserInfo(force = false): Promise<TUserInfo | null> {
     if (this._userInfo && !force) return this._userInfo;
     if (this.req.kauth?.userInfo) {
       this._userInfo = this.req.kauth.userInfo;
@@ -222,12 +227,10 @@ export default class KeycloakService {
       >(accessToken));
     if (!userInfo) return null;
     const result = {
-      ...{
-        emailVerified: userInfo?.email_verified,
-        preferredUsername: userInfo?.preferred_username,
-      },
+      emailVerified: userInfo?.email_verified,
+      preferredUsername: userInfo?.preferred_username,
       ...userInfo,
-    } as UserInfo;
+    } as TUserInfo;
     delete result?.email_verified;
     delete result?.preferred_username;
     this._userInfo = result;
@@ -258,13 +261,41 @@ export default class KeycloakService {
     });
   }
 
+  // username must start with `service-account-`
+  async getClientFromServiceAccountUsername(username?: string) {
+    if (!this.createKeycloakAdmin) return null;
+    if (!username) username = (await this.getUserInfo())?.preferredUsername;
+    if (!username) return null;
+    const clientId = (username.match(/service-account-(.+)/) || [])?.[1];
+    if (!clientId) return null;
+    const keycloakAdmin = await this.createKeycloakAdmin();
+    if (!keycloakAdmin) return null;
+    try {
+      return (
+        (await keycloakAdmin.clients.findOne({
+          clientId,
+        } as any)) || null
+      );
+    } catch (err) {
+      const error = err as AxiosError;
+      if (error.response?.status !== 404) throw err;
+      return null;
+    }
+  }
+
   async getUser(userId?: string): Promise<UserRepresentation | null> {
     if (!this.createKeycloakAdmin) return null;
     if (!userId) userId = (await this.getUserId()) || undefined;
     if (!userId) return null;
     const keycloakAdmin = await this.createKeycloakAdmin();
     if (!keycloakAdmin) return null;
-    return (await keycloakAdmin.users.findOne({ id: userId })) || null;
+    try {
+      return (await keycloakAdmin.users.findOne({ id: userId })) || null;
+    } catch (err) {
+      const error = err as AxiosError;
+      if (error.response?.status !== 404) throw err;
+      return null;
+    }
   }
 
   async isAuthenticated(): Promise<boolean> {

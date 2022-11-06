@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 13:44:06
+ * Last Modified: 05-11-2022 12:10:44
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -42,8 +42,6 @@ export const Authorized = (...roles: (string | string[])[]) => {
 
 @Catch(HttpException)
 export class UnauthorizedFilter implements ExceptionFilter {
-  private logger = new Logger(UnauthorizedFilter.name);
-
   constructor(@Inject(KEYCLOAK_OPTIONS) private options: KeycloakOptions) {}
 
   catch(exception: HttpException, host: ArgumentsHost) {

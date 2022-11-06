@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 17:43:04
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 13:54:28
+ * Last Modified: 06-11-2022 03:29:31
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -40,12 +40,12 @@ export function getReq(
 ): KeycloakRequest<Request> {
   const req = reqOrExecutionContext as KeycloakRequest<Request>;
   const context = reqOrExecutionContext as ExecutionContext;
-  const GraphqlCtx = reqOrExecutionContext as GraphqlCtx;
+  const graphqlCtx = reqOrExecutionContext as GraphqlCtx;
   if (
     typeof context.switchToHttp === 'function' &&
     typeof context.getType === 'function' &&
     typeof req.headers === 'undefined' &&
-    typeof GraphqlCtx.req === 'undefined'
+    typeof graphqlCtx.req === 'undefined'
   ) {
     if ((context.getType() as string) === ContextType.Graphql && nestjsGraphql) {
       const ctx = nestjsGraphql.GqlExecutionContext.create(context).getContext();
@@ -54,8 +54,8 @@ export function getReq(
     }
     return context.switchToHttp().getRequest();
   }
-  if (typeof GraphqlCtx.req !== 'undefined') {
-    return GraphqlCtx.req;
+  if (typeof graphqlCtx.req !== 'undefined') {
+    return graphqlCtx.req;
   }
   return req;
 }
