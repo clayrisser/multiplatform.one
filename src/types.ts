@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 06-11-2022 03:32:37
+ * Last Modified: 06-11-2022 04:13:35
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -68,6 +68,12 @@ export class TUserInfo {
 
   @ApiProperty()
   sub!: string;
+
+  @ApiProperty()
+  familyName?: string;
+
+  @ApiProperty()
+  givenName?: string;
 
   // eslint-disable-next-line no-undef
   [key: string]: any;
