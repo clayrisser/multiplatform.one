@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:57
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 05-11-2022 12:10:44
+ * Last Modified: 06-11-2022 04:14:02
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -26,7 +26,7 @@ import random from 'random';
 import { RENDER_METADATA } from '@nestjs/common/constants';
 import type { Request, Response } from 'express';
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
-import { Catch, HttpException, Inject, Logger, SetMetadata, UseFilters, applyDecorators } from '@nestjs/common';
+import { Catch, HttpException, Inject, SetMetadata, UseFilters, applyDecorators } from '@nestjs/common';
 import type { KeycloakRequest, KeycloakOptions } from '../types';
 import { KEYCLOAK_OPTIONS } from '../types';
 import { getBaseUrl } from './authorizationCallback.decorator';

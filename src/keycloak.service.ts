@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 06-11-2022 03:33:13
+ * Last Modified: 06-11-2022 04:08:55
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -220,6 +220,8 @@ export default class KeycloakService {
         Token | string,
         {
           email_verified: boolean;
+          family_name?: string;
+          given_name?: string;
           preferred_username: string;
           sub: string;
           [key: string]: any;
@@ -228,10 +230,14 @@ export default class KeycloakService {
     if (!userInfo) return null;
     const result = {
       emailVerified: userInfo?.email_verified,
+      familyName: userInfo?.family_name,
+      givenName: userInfo?.given_name,
       preferredUsername: userInfo?.preferred_username,
       ...userInfo,
     } as TUserInfo;
     delete result?.email_verified;
+    delete result?.family_name;
+    delete result?.given_name;
     delete result?.preferred_username;
     this._userInfo = result;
     return this._userInfo;
