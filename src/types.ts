@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 05-11-2022 05:29:58
+ * Last Modified: 06-11-2022 03:32:37
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -59,7 +59,7 @@ export interface KeycloakAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
   useFactory?: (...args: any[]) => Promise<KeycloakOptions> | KeycloakOptions;
 }
 
-export class UserInfo {
+export class TUserInfo {
   @ApiProperty()
   emailVerified!: boolean;
 
@@ -86,7 +86,7 @@ export type KeycloakRequest<T = Request> = {
     kauth?: {
       accessToken?: string;
       refreshToken?: string;
-      userInfo?: UserInfo;
+      userInfo?: TUserInfo;
     };
     [key: string]: any;
   };
@@ -94,7 +94,7 @@ export type KeycloakRequest<T = Request> = {
 
 export interface Kauth {
   grant?: Grant;
-  userInfo?: UserInfo;
+  userInfo?: TUserInfo;
 }
 
 export interface GraphqlCtx {

@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 22:24:44
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 26-10-2022 13:30:43
+ * Last Modified: 05-11-2022 13:13:05
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -29,3 +29,4 @@ export * from './public.decorator';
 export * from './redirectUnauthorized.decorator';
 export * from './resource.decorator';
 export * from './scopes.decorator';
+export * from './userInfo.decorator';
