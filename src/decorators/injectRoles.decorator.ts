@@ -1,10 +1,10 @@
 /**
- * File: /src/decorators/username.decorator.ts
+ * File: /src/decorators/injectRoles.decorator.ts
  * Project: @risserlabs/nestjs-keycloak
  * File Created: 05-11-2022 12:16:14
  * Author: Clay Risser
  * -----
- * Last Modified: 06-11-2022 04:12:38
+ * Last Modified: 06-11-2022 04:53:58
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,12 +22,19 @@
  * limitations under the License.
  */
 
+import type Token from 'keycloak-connect/middleware/auth-utils/token';
 import type { ExecutionContext } from '@nestjs/common';
 import { createParamDecorator } from '@risserlabs/typegraphql-nestjs';
 import { getReq } from '../util';
 
-export const Username = createParamDecorator((_data?: unknown, ctx?: ExecutionContext, resolverData?: any) => {
-  const req = getReq(ctx || resolverData?.context);
-  if (!req?.kauth?.userInfo?.preferredUsername) return null;
-  return req.kauth.userInfo.preferredUsername;
-});
+export function InjectRoles() {
+  return createParamDecorator((_data?: unknown, ctx?: ExecutionContext, resolverData?: any) => {
+    const req = getReq(ctx || resolverData?.context);
+    if (!req?.kauth?.grant?.access_token || !req.kauth.options) return;
+    const accessToken = req.kauth.grant.access_token as Token;
+    return [
+      ...(accessToken.content?.realm_access?.roles || []).map((role: string) => `realm:${role}`),
+      ...(accessToken.content?.resource_access?.[req.kauth.options.clientId]?.roles || []),
+    ];
+  });
+}

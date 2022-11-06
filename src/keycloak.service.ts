@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 06-11-2022 04:08:55
+ * Last Modified: 06-11-2022 04:52:31
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -47,7 +47,7 @@ import type {
   PasswordGrantOptions,
   RefreshTokenGrant,
   RefreshTokenGrantOptions,
-  TUserInfo,
+  UserInfo,
 } from './types';
 import { KEYCLOAK_OPTIONS } from './types';
 
@@ -81,7 +81,7 @@ export default class KeycloakService {
 
   private _accessToken: Token | null = null;
 
-  private _userInfo: TUserInfo | null = null;
+  private _userInfo: UserInfo | null = null;
 
   private _initialized = false;
 
@@ -132,11 +132,17 @@ export default class KeycloakService {
   async init(force = false) {
     if (!force) {
       if (this._initialized) return;
-      if (this.req?.kauth?.userInfo && this.req.kauth.grant && !this.req.kauth.grant.isExpired()) {
+      if (
+        this.req?.kauth?.options &&
+        this.req?.kauth?.userInfo &&
+        this.req.kauth.grant &&
+        !this.req.kauth.grant.isExpired()
+      ) {
         this._initialized = true;
         return;
       }
     }
+    await this.setOptions();
     await this.setGrant();
     await this.setUserInfo(force);
     this._initialized = true;
@@ -202,7 +208,7 @@ export default class KeycloakService {
     return this._accessToken;
   }
 
-  async getUserInfo(force = false): Promise<TUserInfo | null> {
+  async getUserInfo(force = false): Promise<UserInfo | null> {
     if (this._userInfo && !force) return this._userInfo;
     if (this.req.kauth?.userInfo) {
       this._userInfo = this.req.kauth.userInfo;
@@ -234,7 +240,7 @@ export default class KeycloakService {
       givenName: userInfo?.given_name,
       preferredUsername: userInfo?.preferred_username,
       ...userInfo,
-    } as TUserInfo;
+    } as UserInfo;
     delete result?.email_verified;
     delete result?.family_name;
     delete result?.given_name;
@@ -506,6 +512,11 @@ export default class KeycloakService {
         this.req.session.token = accessToken.token;
       }
     }
+  }
+
+  private async setOptions() {
+    if (!this.req.kauth) this.req.kauth = {};
+    this.req.kauth.options = this.options;
   }
 
   private async setUserInfo(force = false) {

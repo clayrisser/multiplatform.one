@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 22:24:44
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 06-11-2022 04:11:54
+ * Last Modified: 06-11-2022 04:33:21
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -24,12 +24,14 @@
 
 export * from './authorizationCallback.decorator';
 export * from './authorized.decorator';
-export * from './grant.decorator';
+export * from './injectGrant.decorator';
+export * from './injectRoles.decorator';
+export * from './injectScopes.decorator';
+export * from './injectUserId.decorator';
+export * from './injectUserInfo.decorator';
+export * from './injectUsername.decorator';
 export * from './onlyOwner.decorator';
 export * from './public.decorator';
 export * from './redirectUnauthorized.decorator';
 export * from './resource.decorator';
 export * from './scopes.decorator';
-export * from './userId.decorator';
-export * from './userInfo.decorator';
-export * from './username.decorator';

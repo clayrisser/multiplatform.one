@@ -1,10 +1,10 @@
 /**
- * File: /src/decorators/userId.decorator.ts
+ * File: /src/decorators/injectUsername.decorator.ts
  * Project: @risserlabs/nestjs-keycloak
  * File Created: 05-11-2022 12:16:14
  * Author: Clay Risser
  * -----
- * Last Modified: 06-11-2022 04:12:32
+ * Last Modified: 06-11-2022 04:38:50
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -26,8 +26,10 @@ import type { ExecutionContext } from '@nestjs/common';
 import { createParamDecorator } from '@risserlabs/typegraphql-nestjs';
 import { getReq } from '../util';
 
-export const UserId = createParamDecorator((_data?: unknown, ctx?: ExecutionContext, resolverData?: any) => {
-  const req = getReq(ctx || resolverData?.context);
-  if (!req?.kauth?.userInfo?.sub) return null;
-  return req.kauth.userInfo.sub;
-});
+export function InjectUsername() {
+  return createParamDecorator((_data?: unknown, ctx?: ExecutionContext, resolverData?: any) => {
+    const req = getReq(ctx || resolverData?.context);
+    if (!req?.kauth?.userInfo?.preferredUsername) return;
+    return req.kauth.userInfo.preferredUsername;
+  });
+}
