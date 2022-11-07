@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 13:44:54
+ * Last Modified: 06-11-2022 22:46:23
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -34,6 +34,7 @@ import KeycloakService from './keycloak.service';
 import { AuthGuard, ResourceGuard } from './guards';
 import type { KeycloakOptions, KeycloakAsyncOptions } from './types';
 import { KEYCLOAK_OPTIONS } from './types';
+import { KeycloakAdminProvider } from './keycloakAdmin.provider';
 
 @Global()
 @Module({})
@@ -51,6 +52,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
       imports: KeycloakModule.imports,
       providers: [
         CreateKeycloakAdminProvider,
+        KeycloakAdminProvider,
         KeycloakProvider,
         KeycloakRegisterService,
         KeycloakService,
@@ -84,6 +86,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
       imports: [...KeycloakModule.imports, ...(asyncOptions.imports || [])],
       providers: [
         CreateKeycloakAdminProvider,
+        KeycloakAdminProvider,
         KeycloakModule.createOptionsProvider(asyncOptions),
         KeycloakProvider,
         KeycloakRegisterService,
@@ -129,9 +132,10 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
 
 export { CreateKeycloakAdminProvider, KeycloakMiddleware, KeycloakProvider, KeycloakRegisterService, KeycloakService };
 
+export * from './createKeycloakAdmin.provider';
 export * from './decorators';
 export * from './guards';
 export * from './keycloak.provider';
 export * from './keycloak.service';
-export * from './createKeycloakAdmin.provider';
+export * from './keycloakAdmin.provider';
 export * from './types';
