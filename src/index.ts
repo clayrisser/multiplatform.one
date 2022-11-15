@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 06-11-2022 22:46:23
+ * Last Modified: 06-11-2022 22:49:33
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -72,6 +72,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
       exports: [
         KEYCLOAK_OPTIONS,
         CreateKeycloakAdminProvider,
+        KeycloakAdminProvider,
         KeycloakProvider,
         KeycloakRegisterService,
         KeycloakService,
@@ -103,6 +104,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
       exports: [
         KEYCLOAK_OPTIONS,
         CreateKeycloakAdminProvider,
+        KeycloakAdminProvider,
         KeycloakProvider,
         KeycloakRegisterService,
         KeycloakService,
