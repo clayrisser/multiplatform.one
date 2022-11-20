@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-11-2022 11:01:57
+ * Last Modified: 20-11-2022 11:45:10
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -44,6 +44,11 @@ import { RESOURCE } from './decorators/resource.decorator';
 import { SCOPES } from './decorators/scopes.decorator';
 
 const privateGlobalRegistrationMap: GlobalRegistrationMap = {};
+let _baseUrl: string;
+
+export function getBaseUrl() {
+  return _baseUrl;
+}
 
 export function getGlobalRegistrationMap() {
   const globalRegistrationMap = { ...privateGlobalRegistrationMap };
@@ -66,17 +71,13 @@ export default class KeycloakRegisterService {
 
   private keycloakAdmin: KcAdminClient;
 
-  private healthEndpointDisabled = false;
-
   constructor(
     @Inject(KEYCLOAK_OPTIONS) private readonly options: KeycloakOptions,
     @Inject(DiscoveryService) private readonly discoveryService: DiscoveryService,
     @Inject(Reflector) private readonly reflector: Reflector,
     @Inject(HttpService) private readonly httpService: HttpService,
   ) {
-    this.keycloakAdmin = new KcAdminClient({
-      baseUrl: `${this.options.baseUrl}`,
-    });
+    this.keycloakAdmin = this.createKeycloakAdmin(options.baseUrl);
     this.registerOptions = {
       roles: [],
       ...(typeof this.options.register === 'boolean' ? {} : this.options.register || {}),
@@ -92,6 +93,10 @@ export default class KeycloakRegisterService {
   private _authorizationCallbacks: AuthorizationCallback[] | undefined;
 
   private _defaultAuthorizationCallback: AuthorizationCallback | undefined;
+
+  private get baseUrl() {
+    return getBaseUrl();
+  }
 
   private get defaultAuthorizationCallback(): AuthorizationCallback | undefined {
     if (this._defaultAuthorizationCallback) {
@@ -144,6 +149,11 @@ export default class KeycloakRegisterService {
       }, []),
     ];
     return this._authorizationCallbacks;
+  }
+
+  private createKeycloakAdmin(baseUrl: string) {
+    _baseUrl = baseUrl;
+    return new KcAdminClient({ baseUrl });
   }
 
   private get canRegister() {
@@ -219,6 +229,7 @@ export default class KeycloakRegisterService {
     if (!force && !this.canRegister) return;
     this.logger.log('waiting for keycloak');
     await this.waitForReady();
+    await this.setBaseUrl();
     this.logger.log('registering keycloak');
     await this.initializeKeycloakAdmin();
     const client = await this.getClient();
@@ -447,9 +458,6 @@ export default class KeycloakRegisterService {
 
   private async waitForReady(pingInterval = 5000): Promise<void> {
     try {
-      if (this.healthEndpointDisabled) {
-        return this.waitForWellknownReady(pingInterval);
-      }
       const res = await this.httpService.axiosRef.get(`${this.options.baseUrl}/health/live`, {
         silent: !this.options.debug,
       } as any);
@@ -460,54 +468,34 @@ export default class KeycloakRegisterService {
     } catch (err) {
       const error = err as AxiosError;
       const res = error.response;
-      if (res?.status === 404) {
-        this.healthEndpointDisabled = true;
-        return this.waitForWellknownReady();
+      if (res?.status !== 404) {
+        await new Promise((r) => setTimeout(r, pingInterval));
+        return this.waitForReady(pingInterval);
       }
-      await new Promise((r) => setTimeout(r, pingInterval));
-      return this.waitForReady(pingInterval);
     }
-    return undefined;
   }
 
-  private async waitForWellknownReady(pingInterval = 5000): Promise<void> {
+  private async setBaseUrl(pingInterval = 5000): Promise<void> {
+    const { baseUrl } = this;
     try {
-      const res = await this.httpService.axiosRef.get(
-        `${this.options.baseUrl}/realms/master/.well-known/openid-configuration`,
-        { silent: !this.options.debug } as any,
-      );
+      const res = await this.httpService.axiosRef.get(`${baseUrl}/realms/master/.well-known/openid-configuration`, {
+        silent: !this.options.debug,
+      } as any);
       if ((res.status || 500) > 299) {
         await new Promise((r) => setTimeout(r, pingInterval));
-        return this.waitForWellknownReady(pingInterval);
+        return this.setBaseUrl(pingInterval);
       }
     } catch (err) {
       const error = err as AxiosError;
       const res = error.response;
       if (res?.status === 404) {
-        this.healthEndpointDisabled = true;
-        return this.waitForAuthWellknownReady();
+        if (baseUrl.substring(baseUrl.length - 5) !== '/auth') {
+          this.keycloakAdmin = this.createKeycloakAdmin(`${baseUrl}/auth`);
+        }
       }
       await new Promise((r) => setTimeout(r, pingInterval));
-      return this.waitForWellknownReady(pingInterval);
+      return this.setBaseUrl(pingInterval);
     }
-    return undefined;
-  }
-
-  private async waitForAuthWellknownReady(pingInterval = 5000): Promise<void> {
-    try {
-      const res = await this.httpService.axiosRef.get(
-        `${this.options.baseUrl}/auth/realms/master/.well-known/openid-configuration`,
-        { silent: !this.options.debug } as any,
-      );
-      if ((res.status || 500) > 299) {
-        await new Promise((r) => setTimeout(r, pingInterval));
-        return this.waitForAuthWellknownReady(pingInterval);
-      }
-    } catch (err) {
-      await new Promise((r) => setTimeout(r, pingInterval));
-      return this.waitForAuthWellknownReady(pingInterval);
-    }
-    return undefined;
   }
 }
 

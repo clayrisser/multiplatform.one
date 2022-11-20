@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-11-2022 09:39:30
+ * Last Modified: 20-11-2022 11:48:01
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -36,6 +36,7 @@ import { REQUEST } from '@nestjs/core';
 import { CREATE_KEYCLOAK_ADMIN } from './createKeycloakAdmin.provider';
 import { KEYCLOAK } from './keycloak.provider';
 import { getReq } from './util';
+import { getBaseUrl } from './keycloakRegister.service';
 import type {
   AuthorizationCodeGrantOptions,
   ClientCredentialsGrantOptions,
@@ -112,14 +113,8 @@ export default class KeycloakService {
     return this._refreshToken;
   }
 
-  private get baseUrl(): string {
-    if (!this.req) return '';
-    const { req } = this;
-    const host =
-      (req.get('x-forwarded-host') ? req.get('x-forwarded-host') : req.get('host')) ||
-      `${req.hostname}${req.get('x-forwarded-port') ? `:${req.get('x-forwarded-port')}` : ''}`;
-    if (!host) return req.originalUrl;
-    return `${req.get('x-forwarded-proto') || req.protocol}://${host}`;
+  get baseUrl(): string {
+    return getBaseUrl();
   }
 
   // this is used privately to prevent a circular dependency
@@ -453,7 +448,7 @@ export default class KeycloakService {
     }
     try {
       const res = await this.httpService.axiosRef.post(
-        `${this.options.baseUrl}/realms/${this.options.realm}/protocol/openid-connect/token`,
+        `${this.baseUrl}/realms/${this.options.realm}/protocol/openid-connect/token`,
         data,
         {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

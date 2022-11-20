@@ -4,7 +4,7 @@
  * File Created: 19-07-2021 06:06:32
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 13:44:46
+ * Last Modified: 20-11-2022 11:46:54
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -26,6 +26,7 @@ import KcAdminClient from '@keycloak/keycloak-admin-client';
 import type { FactoryProvider } from '@nestjs/common';
 import type { KeycloakOptions } from './types';
 import { KEYCLOAK_OPTIONS } from './types';
+import { getBaseUrl } from './keycloakRegister.service';
 
 export const CREATE_KEYCLOAK_ADMIN = 'CREATE_KEYCLOAK_ADMIN';
 
@@ -35,7 +36,7 @@ const CreateKeycloakAdminProvider: FactoryProvider<() => Promise<KcAdminClient |
   useFactory: (options: KeycloakOptions) => async () => {
     if (!options.adminUsername || !options.adminPassword) return undefined;
     const keycloakAdmin = new KcAdminClient({
-      baseUrl: `${options.baseUrl}`,
+      baseUrl: getBaseUrl(),
     });
     await keycloakAdmin.auth({
       clientId: options.adminClientId || 'admin-cli',

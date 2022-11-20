@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-11-2022 09:36:41
+ * Last Modified: 20-11-2022 11:47:23
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -29,6 +29,7 @@ import type { FactoryProvider } from '@nestjs/common';
 import type { Request, Response, NextFunction } from 'express';
 import type { KeycloakOptions, KeycloakRequest } from './types';
 import { KEYCLOAK_OPTIONS } from './types';
+import { getBaseUrl } from './keycloakRegister.service';
 
 export const KEYCLOAK = 'KEYCLOAK';
 
@@ -36,12 +37,12 @@ const KeycloakProvider: FactoryProvider<Keycloak> = {
   inject: [KEYCLOAK_OPTIONS],
   provide: KEYCLOAK,
   useFactory: (options: KeycloakOptions) => {
-    const { baseUrl, clientSecret, clientId, realm } = options;
+    const { clientSecret, clientId, realm } = options;
     const keycloak: Keycloak & { accessDenied: any } = new KeycloakConnect({ store: new session.MemoryStore() }, {
       bearerOnly: true,
       clientId,
       realm,
-      serverUrl: `${baseUrl}`,
+      serverUrl: getBaseUrl(),
       credentials: {
         ...(clientSecret ? { secret: clientSecret } : {}),
       },
