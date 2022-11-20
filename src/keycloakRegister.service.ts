@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-11-2022 09:37:27
+ * Last Modified: 20-11-2022 11:01:57
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -478,11 +478,34 @@ export default class KeycloakRegisterService {
       );
       if ((res.status || 500) > 299) {
         await new Promise((r) => setTimeout(r, pingInterval));
-        return this.waitForReady(pingInterval);
+        return this.waitForWellknownReady(pingInterval);
+      }
+    } catch (err) {
+      const error = err as AxiosError;
+      const res = error.response;
+      if (res?.status === 404) {
+        this.healthEndpointDisabled = true;
+        return this.waitForAuthWellknownReady();
+      }
+      await new Promise((r) => setTimeout(r, pingInterval));
+      return this.waitForWellknownReady(pingInterval);
+    }
+    return undefined;
+  }
+
+  private async waitForAuthWellknownReady(pingInterval = 5000): Promise<void> {
+    try {
+      const res = await this.httpService.axiosRef.get(
+        `${this.options.baseUrl}/auth/realms/master/.well-known/openid-configuration`,
+        { silent: !this.options.debug } as any,
+      );
+      if ((res.status || 500) > 299) {
+        await new Promise((r) => setTimeout(r, pingInterval));
+        return this.waitForAuthWellknownReady(pingInterval);
       }
     } catch (err) {
       await new Promise((r) => setTimeout(r, pingInterval));
-      return this.waitForReady(pingInterval);
+      return this.waitForAuthWellknownReady(pingInterval);
     }
     return undefined;
   }
