@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 06-11-2022 04:52:31
+ * Last Modified: 20-11-2022 09:39:30
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -363,14 +363,14 @@ export default class KeycloakService {
     );
   }
 
-  async logout() {
+  async logout(redirectUri: string): Promise<LogoutResult> {
     this._accessToken = null;
     this._bearerToken = null;
     this._refreshToken = null;
     this._userInfo = null;
     delete this.req.kauth;
     this._initialized = false;
-    if (!this.req.session) return;
+    if (!this.req.session) return {};
     delete this.req.session.kauth;
     delete this.req.session.token;
     await new Promise<void>((resolve, reject) => {
@@ -381,6 +381,7 @@ export default class KeycloakService {
       });
       return null;
     });
+    return { redirect: this.keycloak.logoutUrl(redirectUri) };
   }
 
   async enforce(permissions: string[]) {
@@ -578,4 +579,8 @@ export interface TokenResponseData {
   scope?: string;
   session_state?: string;
   token_type?: string;
+}
+
+export interface LogoutResult {
+  redirect?: string;
 }
