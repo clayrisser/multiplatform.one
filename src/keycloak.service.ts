@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-11-2022 11:48:01
+ * Last Modified: 21-11-2022 05:03:16
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -36,7 +36,6 @@ import { REQUEST } from '@nestjs/core';
 import { CREATE_KEYCLOAK_ADMIN } from './createKeycloakAdmin.provider';
 import { KEYCLOAK } from './keycloak.provider';
 import { getReq } from './util';
-import { getBaseUrl } from './keycloakRegister.service';
 import type {
   AuthorizationCodeGrantOptions,
   ClientCredentialsGrantOptions,
@@ -111,10 +110,6 @@ export default class KeycloakService {
       ? new Token(this.req.session?.kauth.refreshToken, clientId)
       : null;
     return this._refreshToken;
-  }
-
-  get baseUrl(): string {
-    return getBaseUrl();
   }
 
   // this is used privately to prevent a circular dependency
@@ -448,7 +443,7 @@ export default class KeycloakService {
     }
     try {
       const res = await this.httpService.axiosRef.post(
-        `${this.baseUrl}/realms/${this.options.realm}/protocol/openid-connect/token`,
+        `${this.options.baseUrl}/realms/${this.options.realm}/protocol/openid-connect/token`,
         data,
         {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

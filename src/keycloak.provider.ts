@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-11-2022 11:47:23
+ * Last Modified: 21-11-2022 05:03:37
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -29,7 +29,6 @@ import type { FactoryProvider } from '@nestjs/common';
 import type { Request, Response, NextFunction } from 'express';
 import type { KeycloakOptions, KeycloakRequest } from './types';
 import { KEYCLOAK_OPTIONS } from './types';
-import { getBaseUrl } from './keycloakRegister.service';
 
 export const KEYCLOAK = 'KEYCLOAK';
 
@@ -42,7 +41,7 @@ const KeycloakProvider: FactoryProvider<Keycloak> = {
       bearerOnly: true,
       clientId,
       realm,
-      serverUrl: getBaseUrl(),
+      serverUrl: options.baseUrl,
       credentials: {
         ...(clientSecret ? { secret: clientSecret } : {}),
       },
