@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-11-2022 05:03:16
+ * Last Modified: 21-11-2022 08:14:15
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -449,19 +449,7 @@ export default class KeycloakService {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         },
       );
-      const {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        access_token,
-        scope,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        refresh_token,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        expires_in,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        refresh_expires_in,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        token_type,
-      } = res.data;
+      const { access_token, scope, refresh_token, expires_in, refresh_expires_in, token_type } = res.data;
       return {
         ...(access_token ? { accessToken: new Token(access_token, options.clientId) } : {}),
         ...(expires_in ? { expiresIn: expires_in } : {}),
