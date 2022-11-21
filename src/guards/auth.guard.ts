@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-11-2022 07:45:52
+ * Last Modified: 21-11-2022 08:08:48
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -65,7 +65,14 @@ export class AuthGuard implements CanActivate {
     }
     if (res.clearCookie) res.clearCookie('redirect_from');
     if (!(await keycloakService.isAuthenticated())) {
-      throw new HttpException(httpStatus[HttpStatus.UNAUTHORIZED], HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.UNAUTHORIZED,
+          message: httpStatus[HttpStatus.UNAUTHORIZED],
+          error: httpStatus[HttpStatus.UNAUTHORIZED],
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
     }
     const username = (await keycloakService.getUserInfo())?.preferredUsername;
     if (!username) return false;
