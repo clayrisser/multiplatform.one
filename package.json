@@ -1,6 +1,6 @@
 {
   "name": "@risserlabs/nestjs-keycloak",
-  "version": "2.4.9",
+  "version": "2.4.10",
   "description": "nestjs module for authenticating keycloak",
   "sideEffects": false,
   "keywords": [
@@ -50,6 +50,7 @@
     "class-validator": "^0.13.2",
     "core-js": "^3.26.0",
     "express-session": "^1.17.3",
+    "http-status": "^1.5.3",
     "keycloak-connect": "^20.0.0",
     "lodash": "^4.17.21",
     "lodash.difference": "^4.5.0",

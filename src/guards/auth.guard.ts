@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 15:16:17
+ * Last Modified: 21-11-2022 07:45:52
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -23,9 +23,11 @@
  */
 
 import KeycloakService from '../keycloak.service';
+import httpStatus from 'http-status';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import type { KeycloakRequest, RedirectMeta } from '../types';
 import type { Request, Response } from 'express';
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { Inject } from '@nestjs/common';
 import { Injectable, Logger, Scope } from '@nestjs/common';
 import { REDIRECT_UNAUTHORIZED } from '../decorators/redirectUnauthorized.decorator';
@@ -62,6 +64,9 @@ export class AuthGuard implements CanActivate {
       }
     }
     if (res.clearCookie) res.clearCookie('redirect_from');
+    if (!(await keycloakService.isAuthenticated())) {
+      throw new HttpException(httpStatus[HttpStatus.UNAUTHORIZED], HttpStatus.UNAUTHORIZED);
+    }
     const username = (await keycloakService.getUserInfo())?.preferredUsername;
     if (!username) return false;
     const resource = this.getResource(context);
