@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 20-11-2022 09:32:02
+ * Last Modified: 22-11-2022 19:11:35
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -240,6 +240,9 @@ export class GrantTokensOptions {
 
   @ApiProperty()
   clientSecret?: string;
+
+  @ApiProperty()
+  codeVerifier?: string;
 }
 
 export class PasswordGrantOptions {

@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-11-2022 08:14:15
+ * Last Modified: 22-11-2022 19:12:49
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -309,9 +309,7 @@ export default class KeycloakService {
   async smartGrant(options: GrantTokensOptions, persistSession = true): Promise<RefreshTokenGrant | null> {
     const tokens = await this.grantTokens(options);
     const { accessToken, refreshToken } = tokens;
-    if (accessToken && !this.issuedByClient(accessToken)) {
-      return null;
-    }
+    if (accessToken && !this.issuedByClient(accessToken)) return null;
     if (persistSession) this.sessionSetTokens(accessToken, refreshToken);
     if (accessToken) this._accessToken = accessToken;
     if (refreshToken) this._refreshToken = refreshToken;
@@ -395,6 +393,7 @@ export default class KeycloakService {
     password,
     redirectUri,
     refreshToken,
+    codeVerifier,
     scope,
     username,
   }: GrantTokensOptions): Promise<RefreshTokenGrant> {
@@ -413,6 +412,7 @@ export default class KeycloakService {
       // authorization code grant
       data = qs.stringify({
         ...(options.clientSecret ? { client_secret: options.clientSecret } : {}),
+        ...(codeVerifier ? { code_verifier: codeVerifier } : {}),
         client_id: options.clientId,
         code,
         grant_type: 'authorization_code',
