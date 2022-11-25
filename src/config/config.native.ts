@@ -4,7 +4,7 @@
  * File Created: 19-11-2022 11:58:58
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:11:16
+ * Last Modified: 25-11-2022 13:41:58
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,13 +22,23 @@
  * limitations under the License.
  */
 
-import { IConfig } from "./types";
+import constants from 'expo-constants';
+import { IConfig } from './types';
 
 export class Config implements IConfig {
   private _config: Record<string, string | undefined> = {};
 
   constructor(config: Record<string, string | undefined> = {}) {
-    this._config = config;
+    this._config = {
+      ...Object.entries(config).reduce<Record<string, string | undefined>>(
+        (config, [key, value]: [string, string | undefined]) => {
+          if (typeof value !== 'undefined') config[key] = value;
+          return config;
+        },
+        {},
+      ),
+      ...(constants.expoConfig?.extra || {}),
+    };
   }
 
   get(): Record<string, string | undefined>;
