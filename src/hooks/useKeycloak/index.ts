@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 14:10:44
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 09:52:31
+ * Last Modified: 25-11-2022 14:17:22
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,13 +22,14 @@
  * limitations under the License.
  */
 
+import type { KeycloakTokenParsed } from "keycloak-js";
 export * from "./useKeycloak";
 
 export interface IKeycloak {
   authenticated?: boolean;
   token?: string;
   refreshToken?: string;
-  tokenParsed?: any;
+  tokenParsed?: KeycloakTokenParsed;
   login: () => unknown;
   logout: () => unknown;
 }

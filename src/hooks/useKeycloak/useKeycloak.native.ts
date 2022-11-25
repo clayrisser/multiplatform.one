@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 14:10:25
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:21:56
+ * Last Modified: 25-11-2022 14:19:06
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -23,6 +23,7 @@
  */
 
 import { useKeycloak as useKeycloakExpo } from "expo-keycloak-auth";
+import { KeycloakTokenParsed } from "keycloak-js";
 import { MultiPlatform } from "multiplatform.one";
 import { IKeycloak } from "./index";
 
@@ -36,6 +37,8 @@ export function useKeycloak() {
 export class ExpoKeycloak implements IKeycloak {
   authenticated?: boolean;
 
+  tokenParsed?: KeycloakTokenParsed;
+
   constructor(
     ready: boolean,
     isLoggedIn: boolean,
@@ -44,5 +47,29 @@ export class ExpoKeycloak implements IKeycloak {
     public token?: string
   ) {
     if (ready) this.authenticated = isLoggedIn;
+    if (this.authenticated && this.token) {
+      this.tokenParsed = decodeToken(this.token);
+    }
   }
+}
+
+function decodeToken(str: string) {
+  str = str.split(".")[1];
+  str = str.replace(/-/g, "+");
+  str = str.replace(/_/g, "/");
+  switch (str.length % 4) {
+    case 0:
+      break;
+    case 2:
+      str += "==";
+      break;
+    case 3:
+      str += "=";
+      break;
+    default:
+      throw "Invalid token";
+  }
+  str = decodeURIComponent(escape(atob(str)));
+  str = JSON.parse(str);
+  return str as unknown as KeycloakTokenParsed;
 }
