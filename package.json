@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/keycloak",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "keycloak client for multiplatform.one ecosystem",
   "main": "lib/index.js",
   "module": "esm/index.js",
