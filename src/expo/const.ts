@@ -1,13 +1,13 @@
 /**
- * File: /src/hooks/useKeycloak/index.ts
- * Project: app
- * File Created: 08-11-2022 14:10:44
+ * File: /src/expo/const.ts
+ * Project: @multiplatform.one/keycloak
+ * File Created: 26-11-2022 06:58:16
  * Author: Clay Risser
  * -----
- * Last Modified: 26-11-2022 08:31:01
+ * Last Modified: 26-11-2022 08:17:10
  * Modified By: Clay Risser
  * -----
- * Risser Labs LLC (c) Copyright 2021 - 2022
+ * Risser Labs LLC (c) Copyright 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,20 +22,21 @@
  * limitations under the License.
  */
 
-import type {
-  KeycloakResourceAccess,
-  KeycloakRoles,
-  KeycloakTokenParsed,
-} from "keycloak-js";
-export * from "./useKeycloak";
+const logger = console;
 
-export interface IKeycloak {
-  authenticated?: boolean;
-  token?: string;
-  refreshToken?: string;
-  tokenParsed?: KeycloakTokenParsed;
-  realmAccess?: KeycloakRoles;
-  resourceAccess?: KeycloakResourceAccess;
-  login: () => Promise<unknown> | unknown;
-  logout: () => Promise<unknown> | unknown;
-}
+export const KC_INITIAL_VALUE = {
+  ready: false,
+  isLoggedIn: false,
+  login: async () => {
+    logger.error("kc not initialized");
+    return undefined;
+  },
+  logout: () => {
+    logger.error("not logged in");
+    return undefined;
+  },
+  token: null,
+};
+export const NATIVE_REDIRECT_PATH = "auth/redirect";
+export const TOKEN_STORAGE_KEY = "keycloak_token";
+export const REFRESH_TIME_BUFFER = 20;
