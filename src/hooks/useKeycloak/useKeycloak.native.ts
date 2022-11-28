@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 14:10:25
  * Author: Clay Risser
  * -----
- * Last Modified: 26-11-2022 09:05:23
+ * Last Modified: 28-11-2022 05:44:54
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,17 +22,17 @@
  * limitations under the License.
  */
 
-import "core-js/actual/atob";
-import "core-js/actual/escape";
+import atob from "core-js-pure/stable/atob";
+import escape from "core-js-pure/stable/escape";
 import { AuthRequestPromptOptions, AuthSessionResult } from "expo-auth-session";
-import { IKeycloak } from "./index";
+import { MultiPlatform } from "multiplatform.one";
 import {
   KeycloakResourceAccess,
   KeycloakRoles,
   KeycloakTokenParsed,
 } from "keycloak-js";
-import { MultiPlatform } from "multiplatform.one";
 import { useExpoKeycloak } from "../../expo";
+import { IKeycloak } from "./index";
 
 export function useKeycloak() {
   if (MultiPlatform.isStorybook()) return { authenticated: true } as IKeycloak;
