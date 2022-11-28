@@ -1,0 +1,23 @@
+diff --git a/src/useKeycloak.js b/src/useKeycloak.js
+index 7107d1bba79e27c9e284a3a851bdd3407e802174..17ef90569c1e6eddac43551bceb2d4ec3143fc8f 100644
+--- a/src/useKeycloak.js
++++ b/src/useKeycloak.js
+@@ -1,5 +1,5 @@
+-import { useContext, useMemo } from 'react';
+-import { KeycloakContext } from './KeycloakContext';
++import { useContext, useMemo } from "react";
++import { KeycloakContext } from "./KeycloakContext";
+ 
+ export const useKeycloak = () => {
+   const {
+@@ -15,6 +15,7 @@ export const useKeycloak = () => {
+     login,
+     logout,
+     ready,
+-    token: token?.accessToken ?? null
+-  }
+-}
++    token: token?.accessToken ?? null,
++    refreshToken: token?.refreshToken ?? null,
++  };
++};

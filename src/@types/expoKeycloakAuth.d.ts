@@ -1,10 +1,10 @@
 /**
- * File: /src/expo/useExpoKeycloak.ts
+ * File: /src/@types/expoKeycloakAuth.d.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 26-11-2022 06:58:16
+ * File Created: 28-11-2022 14:56:57
  * Author: Clay Risser
  * -----
- * Last Modified: 26-11-2022 08:38:57
+ * Last Modified: 28-11-2022 14:57:43
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022
@@ -22,23 +22,7 @@
  * limitations under the License.
  */
 
-import { useContext } from "react";
-import { ExpoKeycloakContext } from "./ExpoKeycloakContext";
-
-export function useExpoKeycloak() {
-  const {
-    isLoggedIn,
-    login,
-    logout,
-    ready = false,
-    token = null,
-  } = useContext(ExpoKeycloakContext);
-  return {
-    isLoggedIn,
-    login,
-    logout,
-    ready,
-    token: token?.accessToken ?? null,
-    refreshToken: token?.refreshToken ?? null,
-  };
+declare module "expo-keycloak-auth" {
+  export function useKeycloak(): any;
+  export const KeycloakProvider: any;
 }

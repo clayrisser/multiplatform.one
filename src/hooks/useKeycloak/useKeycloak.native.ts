@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 14:10:25
  * Author: Clay Risser
  * -----
- * Last Modified: 28-11-2022 05:44:54
+ * Last Modified: 28-11-2022 14:56:48
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -31,7 +31,7 @@ import {
   KeycloakRoles,
   KeycloakTokenParsed,
 } from "keycloak-js";
-import { useExpoKeycloak } from "../../expo";
+import { useKeycloak as useExpoKeycloak } from "expo-keycloak-auth";
 import { IKeycloak } from "./index";
 
 export function useKeycloak() {
