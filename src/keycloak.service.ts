@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-11-2022 19:12:49
+ * Last Modified: 12-12-2022 10:11:29
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -135,6 +135,7 @@ export default class KeycloakService {
     await this.setOptions();
     await this.setGrant();
     await this.setUserInfo(force);
+    await this.setACLRoles();
     this._initialized = true;
   }
 
@@ -152,6 +153,12 @@ export default class KeycloakService {
       ...(accessToken.content?.realm_access?.roles || []).map((role: string) => `realm:${role}`),
       ...(accessToken.content?.resource_access?.[clientId]?.roles || []),
     ];
+  }
+
+  async getACLRoles(): Promise<string[] | null> {
+    const roles = await this.getRoles();
+    if (!roles) return null;
+    return roles.map((role: string) => role.replace(/^realm:/g, ''));
   }
 
   async getScopes(): Promise<string[] | null> {
@@ -503,6 +510,7 @@ export default class KeycloakService {
     if (!this.req.kauth) this.req.kauth = {};
     if (userInfo) {
       this.req.kauth.userInfo = userInfo;
+      this.req.user = userInfo;
       if (this.req.session) {
         if (!this.req.session?.kauth) this.req.session.kauth = {};
         this.req.session.kauth.userInfo = userInfo;
@@ -516,6 +524,12 @@ export default class KeycloakService {
     if (!accessToken) return;
     const grant = await this.createGrant(accessToken, this.refreshToken || undefined);
     if (grant) this.req.kauth.grant = grant;
+  }
+
+  private async setACLRoles() {
+    const roles = await this.getACLRoles();
+    if (!roles || !this.req.user) return;
+    this.req.user.roles = roles;
   }
 
   private async createGrant(accessToken?: Token, refreshToken?: Token): Promise<Grant | null> {

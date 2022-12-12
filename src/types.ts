@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 22-11-2022 19:11:35
+ * Last Modified: 12-12-2022 10:03:46
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -88,6 +88,7 @@ export type KeycloakRequest<T = Request> = {
   redirectUnauthorized?: RedirectMeta | false;
   reflector?: Reflector;
   resourceDenied?: boolean;
+  user?: ACLUser;
   session?: {
     token?: string;
     kauth?: {
@@ -98,6 +99,10 @@ export type KeycloakRequest<T = Request> = {
     [key: string]: any;
   };
 } & T;
+
+export type ACLUser = UserInfo & {
+  roles?: string[];
+};
 
 export interface Kauth {
   grant?: Grant;
