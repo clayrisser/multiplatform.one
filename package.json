@@ -13,7 +13,6 @@
     "web:extract": "DISABLE_EXTRACTION=false yarn workspace next-app dev",
     "web:prod": "yarn workspace next-app build",
     "web:prod:serve": "yarn workspace next-app serve",
-    "postinstall": "yarn build",
     "build": "yarn workspaces foreach --exclude next-app -pi run build"
   },
   "resolutions": {
@@ -24,8 +23,15 @@
     "react-native-svg": "13.4.0",
     "react-native-web": "0.18.9"
   },
+  "transpileModules": [
+    "expo-constants",
+    "expo-linking",
+    "expo-modules-core",
+    "react-native-web",
+    "solito"
+  ],
   "dependencies": {
-    "@babel/runtime": "^7.18.9"
+    "@babel/runtime": "^7.20.7"
   },
   "devDependencies": {
     "eslint": "^8.21.0",

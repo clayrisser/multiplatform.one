@@ -1,4 +1,5 @@
 # app
+.env
 
 # tamagui
 **/.expo/*
@@ -14,9 +15,9 @@
 .vercel
 .yarn/*
 /build
-/node_modules
 /out/
 THUMBS_DB
+node_modules/
 npm-debug.log*
 thumbs.db
 yarn-debug.log*
