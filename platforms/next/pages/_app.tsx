@@ -2,14 +2,13 @@ import "@tamagui/core/reset.css";
 import "@tamagui/font-inter/css/400.css";
 import "@tamagui/font-inter/css/700.css";
 import "raf/polyfill";
-
-import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
-import { Provider } from "../../../app/provider";
 import Head from "next/head";
 import React, { startTransition } from "react";
 import type { SolitoAppProps } from "solito";
+import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
+import { Provider } from "app/provider";
 
-function MyApp({ Component, pageProps }: SolitoAppProps) {
+function App({ Component, pageProps }: SolitoAppProps) {
   return (
     <>
       <Head>
@@ -26,7 +25,6 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useRootTheme();
-
   return (
     <NextThemeProvider
       onChangeTheme={(next) => {
@@ -42,4 +40,4 @@ function ThemeProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default MyApp;
+export default App;
