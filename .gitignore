@@ -1,25 +1,32 @@
 # app
 .env
 
-# tamagui
+# node
 **/.expo/*
 **/.next/*
-**/.tamagui/*
 *.tsbuildinfo
 .DS_Store
+.env
 .env.development.local
 .env.local
 .env.production.local
 .env.test.local
+.graphqlconfig
+.idea
 .pnpm-debug.log*
+.tamagui
 .vercel
+.vscode
 .yarn/*
 /build
+/node_modules
 /out/
 THUMBS_DB
-node_modules/
+graphql.config.*
 npm-debug.log*
+schema.graphql
 thumbs.db
+turbo-build.log
 yarn-debug.log*
 yarn-error.log*
 !.yarn/cache

@@ -8,7 +8,7 @@ include $(MKPM)/mkchain
 include $(MKPM)/yarn
 include ../../shared.mk
 
-export STORYBOOK_SERVER ?= node $(CURDIR)/node_modules/@storybook/react/bin/index.js
+export START_STORYBOOK ?= $(call yarn_binary,start-storybook)
 
 ACTIONS += install ##
 $(ACTION)/install: $(PROJECT_ROOT)/package.json package.json
@@ -51,7 +51,7 @@ $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 .PHONY: start +start
 start: | ~install +start ##
 +start:
-	@$(STORYBOOK_SERVER) --no-version-updates -p 6006
+	@TAMAGUI_TARGET=web $(START_STORYBOOK) -p 6006 -s ./public
 
 .PHONY: vr-update
 vr-update: ~build@storybook ##

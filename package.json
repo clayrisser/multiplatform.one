@@ -7,37 +7,57 @@
     "ui"
   ],
   "scripts": {
-    "native": "cd apps/expo && yarn start",
-    "watch": "yarn workspaces foreach -pi run watch",
-    "web": "yarn build && cd apps/next && yarn next",
-    "web:extract": "DISABLE_EXTRACTION=false yarn workspace next-app dev",
+    "native": "yarn build && cd platforms/expo && yarn start",
+    "web": "yarn build && cd platforms/next && yarn next",
+    "sb": "cd platforms/storybook && yarn sb",
     "web:prod": "yarn workspace next-app build",
-    "web:prod:serve": "yarn workspace next-app serve",
-    "build": "yarn workspaces foreach --exclude next-app -pi run build"
+    "watch": "yarn turbo run watch --filter=ui",
+    "build": "yarn workspaces foreach --exclude next-app --exclude sb-react --exclude vite -pi run build",
+    "build:all": "yarn turbo run build --filter=...ui",
+    "build:web": "yarn turbo run build --filter=next-app && yarn turbo run start --filter=next-app",
+    "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader && manypkg upgrade react-native-web-lite",
+    "upgrade:rnw": "manypkg upgrade react-native-web",
+    "upgrade:next": "manypkg upgrade next && manypkg upgrade eslint-config-next",
+    "sync:tamagui": "${TAMAGUI_PATH:-$HOME/tamagui}/starters-sync.sh",
+    "eas:dev:ios": "cd apps/expo && yarn eas:dev:ios",
+    "doctor": "yarn turbo run doc",
+    "tests": "yarn build && cd apps/tests && yarn test",
+    "check-types": "yarn turbo run check-types",
+    "codegen": "yarn turbo run codegen",
+    "rm:nodemodule": "rm -rf node_modules apps/expo/node_modules apps/next/node_modules packages/ui/node_modules yarn.lock apps/storybook-react/node_modules apps/storybook-react-native/node_modules apps/storybook-react/dist"
   },
   "resolutions": {
     "esbuild": "0.15.6",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "18.1.0",
+    "react-dom": "18.1.0",
     "react-refresh": "^0.14.0",
-    "react-native-svg": "13.4.0",
-    "react-native-web": "0.18.9"
+    "typescript": "4.9.4",
+    "react-native-web": "~0.18.9",
+    "webpack": "^5.74.0",
+    "react-native-svg": "13.4.0"
   },
   "transpileModules": [
+    "app",
+    "expo-asset",
     "expo-constants",
     "expo-linking",
     "expo-modules-core",
+    "react-i18next",
     "react-native-web",
-    "solito"
+    "solito",
+    "ui"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.20.7"
+    "@babel/runtime": "^7.18.9"
   },
   "devDependencies": {
-    "eslint": "^8.32.0",
-    "prettier": "^2.8.3",
-    "turbo": "^1.4.2",
-    "typescript": "^4.7.4"
+    "@manypkg/cli": "^0.19.2",
+    "@types/react": "^18.0.21",
+    "@types/react-native": "^0.69",
+    "eslint": "^8.21.0",
+    "prettier": "^2.7.1",
+    "turbo": "^1.6.3",
+    "typescript": "^4.9.4"
   },
   "packageManager": "yarn@3.2.3"
 }

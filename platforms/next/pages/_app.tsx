@@ -3,41 +3,31 @@ import "@tamagui/font-inter/css/400.css";
 import "@tamagui/font-inter/css/700.css";
 import "raf/polyfill";
 import Head from "next/head";
-import React, { startTransition } from "react";
+import React, { useMemo } from "react";
 import type { SolitoAppProps } from "solito";
 import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
 import { Provider } from "app/provider";
 
-function App({ Component, pageProps }: SolitoAppProps) {
+function MyApp({ Component, pageProps }: SolitoAppProps) {
+  const [theme, setTheme] = useRootTheme();
+  const contents = useMemo(() => {
+    return <Component {...pageProps} />;
+  }, [pageProps, Component]);
+
   return (
     <>
       <Head>
         <title>Tamagui Example App</title>
         <meta name="description" content="Tamagui, Solito, Expo & Next.js" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/apps/next/public/favicon.ico" />
       </Head>
-      <ThemeProvider>
-        <Component {...pageProps} />
-      </ThemeProvider>
+      <NextThemeProvider onChangeTheme={setTheme} forcedTheme={theme}>
+        <Provider disableRootThemeClass defaultTheme={theme}>
+          {contents}
+        </Provider>
+      </NextThemeProvider>
     </>
   );
 }
 
-function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useRootTheme();
-  return (
-    <NextThemeProvider
-      onChangeTheme={(next) => {
-        startTransition(() => {
-          setTheme(next);
-        });
-      }}
-    >
-      <Provider disableRootThemeClass defaultTheme={theme}>
-        {children}
-      </Provider>
-    </NextThemeProvider>
-  );
-}
-
-export default App;
+export default MyApp;
