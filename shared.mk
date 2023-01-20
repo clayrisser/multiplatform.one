@@ -16,8 +16,6 @@ export TSC ?= $(call yarn_binary,tsc)
 export WATCHMAN ?= watchman
 export STORYBOOK_NATIVE_SERVER ?= node $(call ternary,$(TEST) -f \
 	$(PROJECT_ROOT)/node_modules/@risserlabs/storybook-react-native-server/bin/index.js,$(PROJECT_ROOT)/node_modules/@risserlabs/storybook-react-native-server/bin/index.js,$(CURDIR)/node_modules/@risserlabs/storybook-react-native-server/bin/index.js) 
-export STORYBOOK_SERVER ?= node $(call ternary,$(TEST) -f \
-	$(PROJECT_ROOT)/node_modules/@storybook/react/bin/index.js,$(PROJECT_ROOT)/node_modules/@storybook/react/bin/index.js,$(CURDIR)/node_modules/@storybook/react/bin/index.js) 
 
 export NPM_AUTH_TOKEN ?= $(shell $(CAT) $(HOME)/.docker/config.json 2>$(NULL) | \
 	$(JQ) -r '.auths["registry.gitlab.com"].auth' | $(BASE64_NOWRAP) -d | $(CUT) -d':' -f2)
