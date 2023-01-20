@@ -1,8 +1,31 @@
 {
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "build/**",
+        "api/**",
+        "public/build/**"
+      ]
+    },
+    "watch": {
+      "cache": false
+    },
+    "doc": {
+      "cache": false
+    },
+    "check-types": {
+      "cache": false
+    },
+    "codegen": {
+      "cache": false
+    },
+    "start": {
+      "cache": false
     }
   }
 }

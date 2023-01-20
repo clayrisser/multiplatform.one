@@ -3,20 +3,10 @@ module.exports = function (api) {
   return {
     presets: [["babel-preset-expo", { jsxRuntime: "automatic" }]],
     plugins: [
-      [
-        require.resolve("babel-plugin-module-resolver"),
-        {
-          root: ["../.."],
-          alias: {
-            // define aliases to shorten the import paths
-            app: "../../app",
-            ui: "../../ui",
-          },
-          extensions: [".js", ".jsx", ".tsx", ".ios.js", ".android.js"],
-        },
-      ],
+      "inline-dotenv",
       // if you want reanimated support
       // 'react-native-reanimated/plugin',
+      // fix android
       ...(process.env.EAS_BUILD_PLATFORM === "android"
         ? []
         : [

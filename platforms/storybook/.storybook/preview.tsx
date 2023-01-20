@@ -1,15 +1,11 @@
-import "@fontsource/inter/400.css";
-import "@fontsource/inter/700.css";
 import "@tamagui/core/reset.css";
+import "@tamagui/font-inter/css/400.css";
+import "@tamagui/font-inter/css/700.css";
 import "raf/polyfill";
-import React, { createContext } from "react";
+import React from "react";
 import { Provider } from "app/provider";
-import { YStack } from "tamagui";
+import { YStack } from "ui";
 import { themes as storybookThemes } from "@storybook/theming";
-import { withDesign } from "storybook-addon-designs";
-import { withThemes } from "storybook-addon-themes/react";
-
-const GlobalValuesContext = createContext<Record<string, any>>({});
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -19,7 +15,6 @@ export const parameters = {
       date: /Date$/,
     },
   },
-  globalsControls: {},
   status: {
     statuses: {},
   },
@@ -38,31 +33,32 @@ export const parameters = {
 
 export const globalTypes = {
   // theme: {
-  //   name: "Theme",
-  //   title: "Theme",
-  //   description: "Theme for your components",
-  //   defaultValue: "light",
+  //   name: 'Theme',
+  //   title: 'Theme',
+  //   description: 'Theme for your components',
+  //   defaultValue: 'light',
   //   toolbar: {
-  //     icon: "paintbrush",
+  //     icon: 'paintbrush',
   //     dynamicTitle: true,
   //     items: [
-  //       { value: "light", left: "☀️", title: "Light Mode" },
-  //       { value: "dark", left: "🌙", title: "Dark Mode" },
+  //       { value: 'light', left: '☀️', title: 'Light Mode' },
+  //       { value: 'dark', left: '🌙', title: 'Dark Mode' },
   //     ],
   //   },
   // },
 };
 
 export const decorators = [
-  withThemes,
-  withDesign,
   (Story, args: any) => {
-    let { theme } = args.globals;
+    // The theme global we just declared
+    const { theme: themeKey } = args.globals;
+    let theme = themeKey;
     if (
       !theme &&
       window.matchMedia &&
       window.matchMedia("(prefers-color-scheme: dark)").matches
     ) {
+      // dark mode
       theme = "dark";
     }
     return (

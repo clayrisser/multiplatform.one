@@ -1,14 +1,16 @@
+node_modules/
+.expo/
+.expo-shared
+dist/
+npm-debug.*
 *.jks
+*.p8
+*.p12
 *.key
 *.mobileprovision
 *.orig.*
-*.p12
-*.p8
-.DS_Store
-.expo-shared
-.expo/
-dist/
-node_modules/
-npm-debug.*
-storybook-static
 web-build/
+
+# macOS
+.DS_Store
+storybook-static

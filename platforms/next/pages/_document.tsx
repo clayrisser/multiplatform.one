@@ -1,12 +1,14 @@
 import NextDocument, { Head, Html, Main, NextScript } from "next/document";
-import { AppRegistry } from "react-native";
 import { Children } from "react";
+import { AppRegistry } from "react-native";
+
 import Tamagui from "../tamagui.config";
 
 export default class Document extends NextDocument {
   static async getInitialProps({ renderPage }: any) {
     AppRegistry.registerComponent("Main", () => Main);
     const page = await renderPage();
+
     // @ts-ignore
     const { getStyleElement } = AppRegistry.getApplication("Main");
     const styles = [
@@ -16,7 +18,6 @@ export default class Document extends NextDocument {
         dangerouslySetInnerHTML={{ __html: Tamagui.getCSS() }}
       />,
     ];
-
     return { ...page, styles: Children.toArray(styles) };
   }
 

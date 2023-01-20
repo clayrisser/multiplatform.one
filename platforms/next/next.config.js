@@ -1,7 +1,7 @@
-/** @type {import('next').NextConfig} */
 const { withTamagui } = require("@tamagui/next-plugin");
-const withImages = require("next-images");
 const { join } = require("path");
+const withImages = require("next-images");
+const withTM = require("next-transpile-modules"); // pass the modules you would like to see transpiled
 const transpileModules = require("./transpileModules");
 
 process.env.IGNORE_TS_CONFIG_PATHS = "true";
@@ -17,32 +17,31 @@ const disableExtraction =
   boolVals[process.env.DISABLE_EXTRACTION] ??
   process.env.NODE_ENV === "development";
 
+if (disableExtraction) {
+  console.log("Disabling static extraction in development mode for better HMR");
+}
+
 const plugins = [
+  withTM(transpileModules),
   withImages,
   withTamagui({
     config: "./tamagui.config.ts",
-    components: ["tamagui", "ui"],
+    components: ["ui", "tamagui"],
     importsWhitelist: ["constants.js", "colors.js"],
     logTimings: true,
     disableExtraction,
-    // experiment - reduced bundle size react-native-web
-    useReactNativeWebLite: false,
     shouldExtract: (path) => {
       if (path.includes(join("packages", "app"))) {
         return true;
       }
     },
+    useReactNativeWebLite: false, // if enabled dont need excludeReactNativeWebExports
     excludeReactNativeWebExports: [
       "Switch",
       "ProgressBar",
       "Picker",
       "CheckBox",
       "Touchable",
-      // "AnimatedFlatList",
-      // "FlatList",
-      // "SectionList",
-      // "VirtualizedList",
-      // "VirtualizedSectionList",
     ],
   }),
 ];
@@ -50,15 +49,18 @@ const plugins = [
 module.exports = function () {
   /** @type {import('next').NextConfig} */
   let config = {
+    i18n: {
+      defaultLocale: "en",
+      locales: ["en", "de", "fr"],
+    },
     typescript: {
       ignoreBuildErrors: true,
     },
     images: {
       disableStaticImages: true,
     },
-    transpilePackages: transpileModules,
+    // transpilePackages: transpilePackages,
     experimental: {
-      // optimizeCss: true,
       scrollRestoration: true,
       legacyBrowsers: false,
     },

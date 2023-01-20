@@ -1,7 +1,7 @@
-const path = require("path");
-const transpileModules = require("../transpileModules");
+import path from "path";
+import transpileModules from "../transpileModules";
 
-module.exports = {
+const config = {
   stories: [
     "../stories/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../../../app/**/*.stories.@(js|jsx|ts|tsx|mdx)",
@@ -72,8 +72,22 @@ module.exports = {
           : true,
     },
   },
+  webpackFinal: async (config, { configType }) => {
+    config.resolve = {
+      ...config.resolve,
+      fallback: {
+        ...(config.resolve?.fallback || []),
+        fs: false,
+        stream: false,
+        os: false,
+        util: false,
+      },
+    };
+    return config;
+  },
   env: (config) => ({
     ...config,
     TAMAGUI_TARGET: "web",
   }),
 };
+export default config;
