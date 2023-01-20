@@ -4,13 +4,10 @@ import "@tamagui/core/reset.css";
 import "raf/polyfill";
 import React, { createContext } from "react";
 import { Provider } from "app/provider";
-import { View } from "react-native";
 import { YStack } from "tamagui";
 import { themes as storybookThemes } from "@storybook/theming";
 import { withDesign } from "storybook-addon-designs";
-import { withGlobals } from "@luigiminardim/storybook-addon-globals-controls";
 import { withThemes } from "storybook-addon-themes/react";
-import { decorators as nextDecorators } from "storybook-addon-next/dist/preview";
 
 const GlobalValuesContext = createContext<Record<string, any>>({});
 
@@ -56,19 +53,9 @@ export const globalTypes = {
   // },
 };
 
-const withDisplayGlobals = withGlobals((Story, globalValues) => (
-  <GlobalValuesContext.Provider value={globalValues}>
-    <View style={{ flex: 1 }}>
-      <Story />
-    </View>
-  </GlobalValuesContext.Provider>
-));
-
 export const decorators = [
-  ...nextDecorators,
   withThemes,
   withDesign,
-  withDisplayGlobals,
   (Story, args: any) => {
     let { theme } = args.globals;
     if (
