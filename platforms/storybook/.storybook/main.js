@@ -1,3 +1,4 @@
+const path = require("path");
 const transpileModules = require("../transpileModules");
 
 module.exports = {
@@ -8,7 +9,6 @@ module.exports = {
   ],
   addons: [
     "@etchteam/storybook-addon-status",
-    "@luigiminardim/storybook-addon-globals-controls",
     "@storybook/addon-a11y",
     "@storybook/addon-ie11",
     "@storybook/addon-links",
@@ -23,6 +23,12 @@ module.exports = {
     "storybook-color-picker",
     "storybook-dark-mode",
     "storybook-mobile",
+    {
+      name: "storybook-addon-next",
+      options: {
+        nextConfigPath: path.resolve(__dirname, "../../next/next.config.js"),
+      },
+    },
     {
       name: "@storybook/addon-react-native-web",
       options: {
