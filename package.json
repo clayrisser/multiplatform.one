@@ -1,9 +1,10 @@
 {
-  "name": "myapp-monorepo",
+  "name": "example",
   "private": true,
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "platforms/*",
+    "app",
+    "ui"
   ],
   "scripts": {
     "native": "cd apps/expo && yarn start",
@@ -13,8 +14,7 @@
     "web:prod": "yarn workspace next-app build",
     "web:prod:serve": "yarn workspace next-app serve",
     "postinstall": "yarn build",
-    "build": "yarn workspaces foreach --exclude next-app -pi run build",
-    "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader && manypkg upgrade react-native-web-lite"
+    "build": "yarn workspaces foreach --exclude next-app -pi run build"
   },
   "resolutions": {
     "esbuild": "0.15.6",
@@ -28,7 +28,6 @@
     "@babel/runtime": "^7.18.9"
   },
   "devDependencies": {
-    "@manypkg/cli": "^0.19.1",
     "eslint": "^8.21.0",
     "prettier": "^2.7.1",
     "turbo": "^1.4.2",
