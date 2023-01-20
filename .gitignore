@@ -1,43 +1,35 @@
-/node_modules
+# app
+
+# tamagui
+**/.expo/*
+**/.next/*
+**/.tamagui/*
+*.tsbuildinfo
+.DS_Store
+.env.development.local
+.env.local
+.env.production.local
+.env.test.local
+.pnpm-debug.log*
+.vercel
 .yarn/*
+/build
+/node_modules
+/out/
+THUMBS_DB
+npm-debug.log*
+thumbs.db
+yarn-debug.log*
+yarn-error.log*
+!.yarn/cache
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
 
-# expo
-**/.expo/*
-
-# next.js
-**/.next/*
-/out/
-
-# tamagui
-**/.tamagui/*
-
-# production
-/build
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# local env files
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-
-# os
-.DS_Store
-THUMBS_DB
-thumbs.db
+# mkpm
+.mkpm/*
+**/.mkpm/*
+!/.mkpm/.cache.tar.gz
+!/.mkpm/.bootstrap.mk
