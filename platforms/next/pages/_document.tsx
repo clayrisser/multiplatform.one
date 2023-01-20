@@ -1,21 +1,14 @@
 import NextDocument, { Head, Html, Main, NextScript } from "next/document";
-import { Children } from "react";
 import { AppRegistry } from "react-native";
-
+import { Children } from "react";
 import Tamagui from "../tamagui.config";
 
 export default class Document extends NextDocument {
   static async getInitialProps({ renderPage }: any) {
     AppRegistry.registerComponent("Main", () => Main);
     const page = await renderPage();
-
     // @ts-ignore
     const { getStyleElement } = AppRegistry.getApplication("Main");
-
-    /**
-     * Note: be sure to keep tamagui styles after react-native-web styles like it is here!
-     * So Tamagui styles can override the react-native-web styles.
-     */
     const styles = [
       getStyleElement(),
       <style

@@ -46,6 +46,11 @@ module.exports = {
     builder: "webpack5",
   },
   framework: "@storybook/react",
+  features: {
+    buildStoriesJson: false,
+    postcss: false,
+    storyStoreV7: false,
+  },
   typescript: {
     check: false,
     checkOptions: {},

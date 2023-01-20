@@ -1,0 +1,14 @@
+*.jks
+*.key
+*.mobileprovision
+*.orig.*
+*.p12
+*.p8
+.DS_Store
+.expo-shared
+.expo/
+dist/
+node_modules/
+npm-debug.*
+storybook-static
+web-build/

@@ -13,8 +13,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch"
+    "postinstall": "make -s +build"
   },
   "dependencies": {
     "@tamagui/animations-react-native": "^1.0.17",

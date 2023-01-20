@@ -10,8 +10,9 @@ import { themes as storybookThemes } from "@storybook/theming";
 import { withDesign } from "storybook-addon-designs";
 import { withGlobals } from "@luigiminardim/storybook-addon-globals-controls";
 import { withThemes } from "storybook-addon-themes/react";
+import { decorators as nextDecorators } from "storybook-addon-next/dist/preview";
 
-const GlobalValuesContext = createContext(undefined);
+const GlobalValuesContext = createContext<Record<string, any>>({});
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -64,6 +65,7 @@ const withDisplayGlobals = withGlobals((Story, globalValues) => (
 ));
 
 export const decorators = [
+  ...nextDecorators,
   withThemes,
   withDesign,
   withDisplayGlobals,
@@ -79,7 +81,7 @@ export const decorators = [
     return (
       <>
         <Provider defaultTheme={theme}>
-          <YStack bc={"$backgroundStrong"}>
+          <YStack backgroundColor={"$backgroundStrong"}>
             <Story />
           </YStack>
         </Provider>
