@@ -10,7 +10,6 @@ export GM ?= command gm
 export JEST ?= $(call yarn_binary,jest)
 export LOKI ?= $(call yarn_binary,loki)
 export PRETTIER ?= $(call yarn_binary,prettier)
-export SB_RN_GET_STORIES ?= $(call yarn_binary,sb-rn-get-stories)
 export TSC ?= $(call yarn_binary,tsc)
 export WATCHMAN ?= watchman
 
