@@ -4,7 +4,7 @@ import {
 } from "tamagui";
 import config from "../tamagui.config";
 
-type TamaguiProviderProps = Omit<OriginalTamaguiProviderProps, "config">;
+export type TamaguiProviderProps = Omit<OriginalTamaguiProviderProps, "config">;
 
 export function TamaguiProvider({ children, ...rest }: TamaguiProviderProps) {
   return (
