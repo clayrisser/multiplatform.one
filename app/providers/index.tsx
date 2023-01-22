@@ -1,6 +1,6 @@
 import type { ProviderProps } from "./types";
 import { NavigationProvider } from "./navigation";
-import { StateProvider } from "./state/state";
+import { StateProvider } from "./state";
 import { TamaguiProvider } from "./tamagui";
 import { TamaguiProviderProps } from "ui";
 
@@ -26,6 +26,6 @@ export function GlobalProvider({ children, ...props }: GlobalProviderProps) {
 }
 
 export * from "./navigation";
-export * from "./state/state";
+export * from "./state";
 export * from "./tamagui";
 export * from "./types";
