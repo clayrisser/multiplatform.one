@@ -45,6 +45,7 @@
     "react-i18next",
     "react-native-web",
     "solito",
+    "react-native-recoil-persist",
     "ui"
   ],
   "dependencies": {

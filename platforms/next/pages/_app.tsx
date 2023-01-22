@@ -6,7 +6,7 @@ import Head from "next/head";
 import React, { useMemo } from "react";
 import type { SolitoAppProps } from "solito";
 import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
-import { Provider } from "app/provider";
+import { GlobalProvider } from "app/providers";
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
   const [theme, setTheme] = useRootTheme();
@@ -22,9 +22,9 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
         <link rel="icon" href="/apps/next/public/favicon.ico" />
       </Head>
       <NextThemeProvider onChangeTheme={setTheme} forcedTheme={theme}>
-        <Provider disableRootThemeClass defaultTheme={theme}>
+        <GlobalProvider disableRootThemeClass defaultTheme={theme}>
           {contents}
-        </Provider>
+        </GlobalProvider>
       </NextThemeProvider>
     </>
   );
