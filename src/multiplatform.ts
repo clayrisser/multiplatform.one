@@ -22,8 +22,8 @@
  * limitations under the License.
  */
 
-import { Platform } from "react-native";
-import { MultiPlatformBase, MultiPlatformOS } from "./multiplatformBase";
+import { Platform } from 'react-native';
+import { MultiPlatformBase, MultiPlatformOS } from './multiplatformBase';
 
 export class MultiPlatform extends MultiPlatformBase {
   static OS = getMultiplatformOS();
@@ -33,23 +33,19 @@ export class MultiPlatform extends MultiPlatformBase {
   }
 
   static isNext() {
-    return (
-      Platform.OS === "web" &&
-      (typeof window === "undefined" ||
-        typeof window.__NEXT_DATA__ === "object")
-    );
+    return Platform.OS === 'web' && (typeof window === 'undefined' || typeof window.__NEXT_DATA__ === 'object');
   }
 }
 
 function getMultiplatformOS() {
-  if (Platform.OS === "web") {
-    if (typeof window === "undefined") {
+  if (Platform.OS === 'web') {
+    if (typeof window === 'undefined') {
       return MultiPlatformOS.NextSsr;
     }
-    if (typeof window.__NEXT_DATA__ === "object") {
+    if (typeof window.__NEXT_DATA__ === 'object') {
       return MultiPlatformOS.Next;
     }
-    if (typeof window.__STORYBOOK_ADDONS === "object") {
+    if (typeof window.__STORYBOOK_ADDONS === 'object') {
       return MultiPlatformOS.StorybookWeb;
     }
   }

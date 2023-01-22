@@ -1,13 +1,13 @@
 /**
- * File: /tests/index.ts
+ * File: /src/hooks/useTranslation/index.ts
  * Project: multiplatform.one
- * File Created: 25-11-2022 10:10:36
+ * File Created: 22-01-2023 11:33:46
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:10:56
+ * Last Modified: 22-01-2023 11:35:56
  * Modified By: Clay Risser
  * -----
- * Risser Labs LLC (c) Copyright 2022
+ * Risser Labs LLC (c) Copyright 2022 - 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,14 @@
  * limitations under the License.
  */
 
-describe('multiplatform.one', () => {
-  it('should work', async () => {
-    expect(true).toBe(true);
-  });
-});
+import { MultiPlatform } from '../../multiplatform';
+import { useTranslation as nextUseTranslation } from 'next-i18next';
+import { useTranslation as reactUseTranslation } from 'react-i18next';
 
-export default null;
+let useTranslation = reactUseTranslation;
+
+if (MultiPlatform.isNext()) {
+  useTranslation = nextUseTranslation;
+}
+
+export { useTranslation };

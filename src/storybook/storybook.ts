@@ -22,4 +22,4 @@
  * limitations under the License.
  */
 
-export * from "@storybook/react";
+export * from '@storybook/react';

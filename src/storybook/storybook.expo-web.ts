@@ -22,4 +22,4 @@
  * limitations under the License.
  */
 
-export * from "@storybook/react-native";
+export * from '@storybook/react-native';

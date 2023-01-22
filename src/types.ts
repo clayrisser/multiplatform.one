@@ -4,7 +4,7 @@
  * File Created: 25-11-2022 10:00:46
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:01:31
+ * Last Modified: 22-01-2023 11:38:21
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022
@@ -23,11 +23,10 @@
  */
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type StyleProp = import("react-native").StyleProp<any>;
+export type StyleProp = import('react-native').StyleProp<any>;
 
 declare global {
   interface Window {
     __STORYBOOK_ADDONS: unknown;
-    __NEXT_DATA__: unknown;
   }
 }

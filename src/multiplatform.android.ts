@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-import { MultiPlatformBase, MultiPlatformOS } from "./multiplatformBase";
+import { MultiPlatformBase, MultiPlatformOS } from './multiplatformBase';
 
 export class MultiPlatform extends MultiPlatformBase {
   static OS = getMultiplatformOS();
@@ -37,7 +37,7 @@ export class MultiPlatform extends MultiPlatformBase {
 }
 
 function getMultiplatformOS() {
-  if (typeof window.__STORYBOOK_ADDONS === "object") {
+  if (typeof window.__STORYBOOK_ADDONS === 'object') {
     return MultiPlatformOS.StorybookExpoAndroid;
   }
   return MultiPlatformOS.ExpoAndroid;

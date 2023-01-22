@@ -1,13 +1,13 @@
 /**
- * File: /tests/index.ts
+ * File: /src/hooks/index.ts
  * Project: multiplatform.one
- * File Created: 25-11-2022 10:10:36
+ * File Created: 22-01-2023 11:34:32
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:10:56
+ * Last Modified: 22-01-2023 11:34:37
  * Modified By: Clay Risser
  * -----
- * Risser Labs LLC (c) Copyright 2022
+ * Risser Labs LLC (c) Copyright 2022 - 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,4 @@
  * limitations under the License.
  */
 
-describe('multiplatform.one', () => {
-  it('should work', async () => {
-    expect(true).toBe(true);
-  });
-});
-
-export default null;
+export * from './useTranslation';

@@ -23,16 +23,16 @@
  */
 
 export enum MultiPlatformOS {
-  ExpoAndroid = "ExpoAndroid",
-  ExpoIos = "ExpoIos",
-  ExpoWeb = "ExpoWeb",
-  Next = "Next",
-  NextSsr = "NextSsr",
-  StorybookExpoAndroid = "StorybookExpoAndroid",
-  StorybookExpoIos = "StorybookExpoIos",
-  StorybookExpoWeb = "StorybookExpoWeb",
-  StorybookWeb = "StorybookWeb",
-  Unknown = "Unknown",
+  ExpoAndroid = 'ExpoAndroid',
+  ExpoIos = 'ExpoIos',
+  ExpoWeb = 'ExpoWeb',
+  Next = 'Next',
+  NextSsr = 'NextSsr',
+  StorybookExpoAndroid = 'StorybookExpoAndroid',
+  StorybookExpoIos = 'StorybookExpoIos',
+  StorybookExpoWeb = 'StorybookExpoWeb',
+  StorybookWeb = 'StorybookWeb',
+  Unknown = 'Unknown',
 }
 
 export class MultiPlatformBase {
@@ -51,11 +51,11 @@ export class MultiPlatformBase {
   }
 
   static isStorybook() {
-    return typeof window.__STORYBOOK_ADDONS === "object";
+    return typeof window.__STORYBOOK_ADDONS === 'object';
   }
 
   static isSsr() {
-    return typeof window === "undefined";
+    return typeof window === 'undefined';
   }
 
   static isNext() {

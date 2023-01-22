@@ -4,7 +4,7 @@
  * File Created: 09-11-2022 08:55:55
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:11:16
+ * Last Modified: 22-01-2023 11:35:43
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,6 +22,7 @@
  * limitations under the License.
  */
 
-export * from "./config";
-export * from "./multiplatform";
-export * from "./multiplatformBase";
+export * from './config';
+export * from './hooks';
+export * from './multiplatform';
+export * from './multiplatformBase';

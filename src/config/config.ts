@@ -22,9 +22,9 @@
  * limitations under the License.
  */
 
-import getConfig from "next/config";
-import { IConfig } from "./types";
-import { MultiPlatform } from "../multiplatform";
+import getConfig from 'next/config';
+import { IConfig } from './types';
+import { MultiPlatform } from '../multiplatform';
 
 export class Config implements IConfig {
   private _config: Record<string, string | undefined> = {};
@@ -35,17 +35,13 @@ export class Config implements IConfig {
       this._config = {
         ...Object.entries(config).reduce<Record<string, string | undefined>>(
           (config, [key, value]: [string, string | undefined]) => {
-            if (typeof value !== "undefined") config[key] = value;
+            if (typeof value !== 'undefined') config[key] = value;
             return config;
           },
-          {}
+          {},
         ),
-        ...(nextConfig.publicRuntimeConfig
-          ? nextConfig.publicRuntimeConfig
-          : {}),
-        ...(nextConfig.serverRuntimeConfig
-          ? nextConfig.serverRuntimeConfig
-          : {}),
+        ...(nextConfig.publicRuntimeConfig ? nextConfig.publicRuntimeConfig : {}),
+        ...(nextConfig.serverRuntimeConfig ? nextConfig.serverRuntimeConfig : {}),
       };
     }
   }

@@ -22,4 +22,4 @@
  * limitations under the License.
  */
 
-export * from "./storybook";
+export * from './storybook';
