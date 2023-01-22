@@ -3,7 +3,7 @@ import "@tamagui/font-inter/css/400.css";
 import "@tamagui/font-inter/css/700.css";
 import "raf/polyfill";
 import React from "react";
-import { Provider } from "app/provider";
+import { GlobalProvider } from "app/providers";
 import { YStack } from "ui";
 import { themes as storybookThemes } from "@storybook/theming";
 
@@ -62,13 +62,11 @@ export const decorators = [
       theme = "dark";
     }
     return (
-      <>
-        <Provider defaultTheme={theme}>
-          <YStack backgroundColor={"$backgroundStrong"}>
-            <Story />
-          </YStack>
-        </Provider>
-      </>
+      <GlobalProvider defaultTheme={theme}>
+        <YStack backgroundColor={"$backgroundStrong"}>
+          <Story />
+        </YStack>
+      </GlobalProvider>
     );
   },
 ];
