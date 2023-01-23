@@ -2,17 +2,12 @@
   "name": "@platform/storybook",
   "version": "0.0.1",
   "private": true,
-  "scripts": {
-    "build": "TAMAGUI_TARGET=web build-storybook -s public -o dist",
-    "sb": "TAMAGUI_TARGET=web start-storybook -p 6006 -s ./public",
-    "check-types": "tsc --noemit"
-  },
   "dependencies": {
     "app": "*",
-    "react": "18.1.0",
-    "react-dom": "18.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "react-native": "0.70.5",
-    "react-native-web": "~0.18.9"
+    "react-native-web": "~0.18.10"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
@@ -32,10 +27,9 @@
     "@types/node": "18.11.18",
     "@types/react": "^18.0.27",
     "addon-screen-reader": "^1.8.6",
-    "babel-loader": "^8.3.0",
+    "babel-loader": "^9.1.2",
     "babel-plugin-react-native-web": "^0.18.10",
-    "eslint": "7",
-    "eslint-config-next": "13.1.4",
+    "eslint": "8.32.0",
     "eslint-plugin-storybook": "^0.6.10",
     "path-browserify": "^1.0.1",
     "storybook-addon-breakpoints": "^1.0.0",
