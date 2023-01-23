@@ -44,8 +44,8 @@ ACTIONS += build~test
 BUILD_TARGETS := dist/cjs/index.js
 dist/cjs/index.js:
 	@$(call reset,build)
-$(ACTION)/build: $(call git_deps,\)
-	-@$(TAMAGUI_BUILD)
+$(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
+	@$(TAMAGUI_BUILD)
 	@$(call done,build)
 
 .PHONY: clean

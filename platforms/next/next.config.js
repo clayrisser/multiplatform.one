@@ -5,6 +5,7 @@ const withTM = require('next-transpile-modules');
 const { join } = require('path');
 const { withTamagui } = require('@tamagui/next-plugin');
 const { i18n } = require('./next-i18next.config');
+const tamaguiModules = require('./tamaguiModules');
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true';
 process.env.TAMAGUI_TARGET = 'web';
@@ -26,7 +27,7 @@ const plugins = [
   withImages,
   withTamagui({
     config: './tamagui.config.ts',
-    components: ['ui', 'tamagui'],
+    components: tamaguiModules,
     importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,
     disableExtraction,

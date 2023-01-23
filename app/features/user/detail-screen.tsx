@@ -1,4 +1,4 @@
-import { Button, Paragraph, YStack } from 'ui';
+import { Button, Paragraph, YStack } from '@multiplatform.one/ui';
 import { ChevronLeft } from '@tamagui/lucide-icons';
 import React from 'react';
 import { createParam } from 'solito';

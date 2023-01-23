@@ -1,3 +1,3 @@
-import { config } from 'ui';
+import { config } from '@multiplatform.one/ui';
 
 export default config;
