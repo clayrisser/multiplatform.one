@@ -4,7 +4,7 @@
  * File Created: 22-11-2022 17:40:53
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 09:52:31
+ * Last Modified: 23-01-2023 04:54:52
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -23,7 +23,7 @@
  */
 
 import { atom, useRecoilState } from "recoil";
-import persist from "react-native-recoil-persist";
+import { persistAtom } from "multiplatform.one";
 
 export function useAuthState() {
   return useRecoilState(authState);
@@ -32,5 +32,5 @@ export function useAuthState() {
 export const authState = atom<{ token?: string; refreshToken?: string }>({
   key: "auth",
   default: {},
-  effects: [persist.persistAtom],
+  effects: [persistAtom],
 });

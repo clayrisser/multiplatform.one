@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 08:49:14
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:36:32
+ * Last Modified: 22-01-2023 08:01:02
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-import { useRouter } from "@risserlabs/solito/router";
+import { useRouter } from "solito/router";
 import { MultiPlatform } from "multiplatform.one";
 import { useCurrentRouteName } from "./useCurrentRouteName";
 import { useKeycloak } from "./useKeycloak/useKeycloak";

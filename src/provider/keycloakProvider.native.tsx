@@ -25,8 +25,8 @@
 import React, { FC } from "react";
 import type { KeycloakProviderProps } from "./keycloakProvider";
 import { AfterAuth } from "./afterAuth";
-import { KeycloakProvider as ExpoKeycloakProvider } from "expo-keycloak-auth";
 import { KeycloakConfig } from "keycloak-js";
+import { KeycloakProvider as ExpoKeycloakProvider } from "expo-keycloak-auth";
 
 export const KeycloakProvider: FC<KeycloakProviderProps> = ({
   children,
