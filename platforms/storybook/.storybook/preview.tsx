@@ -1,14 +1,15 @@
-import "@tamagui/core/reset.css";
-import "@tamagui/font-inter/css/400.css";
-import "@tamagui/font-inter/css/700.css";
-import "raf/polyfill";
-import React from "react";
-import { GlobalProvider } from "app/providers";
-import { YStack } from "ui";
-import { themes as storybookThemes } from "@storybook/theming";
+import '@tamagui/core/reset.css';
+import '@tamagui/font-inter/css/400.css';
+import '@tamagui/font-inter/css/700.css';
+import 'app/i18n';
+import 'raf/polyfill';
+import React from 'react';
+import { GlobalProvider } from 'app/providers';
+import { YStack } from 'ui';
+import { themes as storybookThemes } from '@storybook/theming';
 
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
+  actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
     matchers: {
       color: /(background|color)$/i,
@@ -23,11 +24,11 @@ export const parameters = {
     light: { ...storybookThemes.normal },
   },
   paddings: {
-    default: "Small",
+    default: 'Small',
   },
   backgrounds: [
-    { name: "light", value: "white", default: true },
-    { name: "dark", value: "#262626" },
+    { name: 'light', value: 'white', default: true },
+    { name: 'dark', value: '#262626' },
   ],
 };
 
@@ -53,17 +54,13 @@ export const decorators = [
     // The theme global we just declared
     const { theme: themeKey } = args.globals;
     let theme = themeKey;
-    if (
-      !theme &&
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-    ) {
+    if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       // dark mode
-      theme = "dark";
+      theme = 'dark';
     }
     return (
       <GlobalProvider defaultTheme={theme}>
-        <YStack backgroundColor={"$backgroundStrong"}>
+        <YStack backgroundColor={'$backgroundStrong'}>
           <Story />
         </YStack>
       </GlobalProvider>

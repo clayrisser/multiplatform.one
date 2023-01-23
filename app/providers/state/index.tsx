@@ -1,7 +1,7 @@
-import React, { Suspense } from "react";
-import { RecoilRoot } from "recoil";
-import { Text } from "react-native";
-import type { ProviderProps } from "../types";
+import React, { Suspense } from 'react';
+import { RecoilRoot } from 'recoil';
+import { Text } from 'react-native';
+import type { ProviderProps } from '../types';
 
 export type StateProviderProps = ProviderProps;
 

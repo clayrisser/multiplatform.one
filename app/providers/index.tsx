@@ -1,13 +1,13 @@
-import type { ProviderProps } from "./types";
-import { NavigationProvider } from "./navigation";
-import { StateProvider } from "./state/index";
-import { TamaguiProvider } from "./tamagui";
-import { TamaguiProviderProps } from "ui";
-import { KeycloakProvider, KeycloakProviderProps } from "./keycloak";
+import type { ProviderProps } from './types';
+import { NavigationProvider } from './navigation';
+import { StateProvider } from './state/index';
+import { TamaguiProvider } from './tamagui';
+import { TamaguiProviderProps } from 'ui';
+import { KeycloakProvider, KeycloakProviderProps } from './keycloak';
 
 export type GlobalProviderProps = ProviderProps &
   KeycloakProviderProps &
-  Omit<TamaguiProviderProps, "config"> & {
+  Omit<TamaguiProviderProps, 'config'> & {
     noNavigation?: boolean;
     strict?: boolean;
   };
@@ -31,7 +31,7 @@ export function GlobalProvider({ children, ...props }: GlobalProviderProps) {
   );
 }
 
-export * from "./navigation";
-export * from "./state/index";
-export * from "./tamagui";
-export * from "./types";
+export * from './navigation';
+export * from './state/index';
+export * from './tamagui';
+export * from './types';

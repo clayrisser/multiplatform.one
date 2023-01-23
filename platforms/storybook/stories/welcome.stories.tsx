@@ -1,7 +1,7 @@
-import { Text } from "tamagui";
+import { Text } from 'tamagui';
 
 export default {
-  title: "Welcome",
+  title: 'Welcome',
 };
 
 export const welcome = () => <Text>Welcome</Text>;

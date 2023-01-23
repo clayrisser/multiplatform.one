@@ -7,7 +7,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@multiplatform.one/keycloak": "^0.1.1",
+    "@multiplatform.one/keycloak": "^0.1.2",
     "@react-navigation/bottom-tabs": "^6.3.3",
     "@react-navigation/native": "^6.0.11",
     "@react-navigation/native-stack": "^6.7.0",
@@ -23,7 +23,7 @@
     "expo-random": "^13.0.0",
     "i18next": "^21.9.1",
     "keycloak-js": "20.0.1",
-    "multiplatform.one": "^0.0.2",
+    "multiplatform.one": "^0.1.0",
     "react-i18next": "^11.18.6",
     "react-native-recoil-persist": "^0.0.6",
     "react-native-svg": "13.4.0",

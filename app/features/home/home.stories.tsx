@@ -1,7 +1,7 @@
-import { HomeScreen } from "./screen";
+import { HomeScreen } from './screen';
 
 export default {
-  title: "screens/Home",
+  title: 'screens/Home',
 };
 
 export const main = () => <HomeScreen />;
