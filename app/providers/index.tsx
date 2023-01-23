@@ -2,7 +2,7 @@ import type { ProviderProps } from './types';
 import { NavigationProvider } from './navigation';
 import { StateProvider } from './state/index';
 import { TamaguiProvider } from './tamagui';
-import { TamaguiProviderProps } from '@multiplatform.one/ui';
+import { TamaguiProviderProps } from 'tamagui';
 import { KeycloakProvider, KeycloakProviderProps } from './keycloak';
 
 export type GlobalProviderProps = ProviderProps &

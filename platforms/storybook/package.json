@@ -29,8 +29,6 @@
     "addon-screen-reader": "^1.8.6",
     "babel-loader": "^9.1.2",
     "babel-plugin-react-native-web": "^0.18.10",
-    "eslint": "8.32.0",
-    "eslint-plugin-storybook": "^0.6.10",
     "path-browserify": "^1.0.1",
     "storybook-addon-breakpoints": "^1.0.0",
     "storybook-addon-designs": "^6.3.1",

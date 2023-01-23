@@ -1,4 +1,5 @@
 import 'react-native';
+import { MouseEvent } from 'react';
 
 declare module 'react-native' {
   interface PressableStateCallbackType {
@@ -25,6 +26,6 @@ declare module 'react-native' {
       rel: 'noreferrer';
       target?: '_blank';
     };
-    onClick?: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+    onClick?: (e: MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
   }
 }
