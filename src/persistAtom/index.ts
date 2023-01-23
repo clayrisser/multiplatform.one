@@ -1,13 +1,13 @@
 /**
- * File: /src/index.ts
+ * File: /src/persistAtom/index.ts
  * Project: multiplatform.one
- * File Created: 09-11-2022 08:55:55
+ * File Created: 23-01-2023 04:51:22
  * Author: Clay Risser
  * -----
- * Last Modified: 23-01-2023 04:52:51
+ * Last Modified: 23-01-2023 04:51:54
  * Modified By: Clay Risser
  * -----
- * Risser Labs LLC (c) Copyright 2021 - 2022
+ * Risser Labs LLC (c) Copyright 2022 - 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,6 @@
  * limitations under the License.
  */
 
-export * from './config';
-export * from './hooks';
-export * from './multiplatform';
-export * from './multiplatformBase';
-export * from './persistAtom';
+import persist from 'react-native-recoil-persist';
+
+export const persistAtom = persist.persistAtom;
