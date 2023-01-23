@@ -1,6 +1,6 @@
-import { ProviderProps } from './types';
 import { KeycloakInitOptions } from 'keycloak-js';
 import { KeycloakConfig, AuthProvider, AuthConfig } from '@multiplatform.one/keycloak';
+import { ProviderProps } from './types';
 
 export interface KeycloakProviderProps extends ProviderProps {
   authConfig?: AuthConfig;

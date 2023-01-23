@@ -1,9 +1,9 @@
 import { config } from './tamagui.config';
 
-export type Conf = typeof config;
+export type AppConfig = typeof config;
 
 declare module 'tamagui' {
-  interface TamaguiCustomConfig extends Conf {}
+  interface TamaguiCustomConfig extends AppConfig {}
 }
 
 export default config;

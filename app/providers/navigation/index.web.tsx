@@ -1,1 +1,3 @@
-export const NavigationProvider = ({ children }: { children: React.ReactElement }) => <>{children}</>;
+import React, { ReactElement } from 'react';
+
+export const NavigationProvider = ({ children }: { children: ReactElement }) => <>{children}</>;

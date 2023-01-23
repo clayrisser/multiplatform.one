@@ -47,6 +47,7 @@ module.exports = {
     '@typescript-eslint/consistent-type-assertions': 'off',
     '@typescript-eslint/explicit-member-accessibility': 'off',
     '@typescript-eslint/no-require-imports': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
     'max-params': 'off',
     'no-param-reassign': 'off',
     'no-promise-executor-return': 'off',
