@@ -36,7 +36,7 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 
 ACTIONS += build ##
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(call workspace_foreach,build,$(ARGS))
+	@$(MAKE) -s ui/build
 	@$(call done,build)
 
 .PHONY: upgrade

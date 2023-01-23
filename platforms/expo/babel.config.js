@@ -1,3 +1,5 @@
+const tamaguiModules = require('./tamaguiModules');
+
 module.exports = function (api) {
   api.cache(true);
   return {
@@ -13,7 +15,7 @@ module.exports = function (api) {
             [
               '@tamagui/babel-plugin',
               {
-                components: ['ui', 'tamagui'],
+                components: tamaguiModules,
                 config: './tamagui.config.ts',
               },
             ],

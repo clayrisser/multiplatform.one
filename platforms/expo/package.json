@@ -14,7 +14,7 @@
     "check-types": "tsc --noemit"
   },
   "dependencies": {
-    "@babel/runtime": "^7.18.9",
+    "@babel/runtime": "^7.20.13",
     "app": "*",
     "babel-plugin-inline-dotenv": "^1.7.0",
     "expo": "~47.0.8",
@@ -35,9 +35,9 @@
     "react-native-web": "~0.18.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.9",
-    "@expo/metro-config": "^0.3.21",
-    "@tamagui/babel-plugin": "1.0.17",
+    "@babel/core": "^7.20.12",
+    "@expo/metro-config": "^0.3.22",
+    "@tamagui/babel-plugin": "1.0.22",
     "@types/react": "^18.0.27",
     "@types/react-native": "^0.69.16",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",

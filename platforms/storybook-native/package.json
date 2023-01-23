@@ -14,7 +14,7 @@
     "check-types": "tsc --noemit"
   },
   "dependencies": {
-    "@babel/runtime": "^7.18.9",
+    "@babel/runtime": "^7.20.13",
     "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-community/datetimepicker": "6.5.2",
     "@react-native-community/slider": "4.2.4",
@@ -38,14 +38,14 @@
     "react-native-web": "~0.18.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.9",
-    "@expo/metro-config": "^0.3.21",
+    "@babel/core": "^7.20.12",
+    "@expo/metro-config": "^0.3.22",
     "@storybook/addon-ondevice-actions": "6.0.1-beta.7",
     "@storybook/addon-ondevice-backgrounds": "6.0.1-beta.7",
     "@storybook/addon-ondevice-controls": "6.0.1-beta.7",
     "@storybook/addon-ondevice-notes": "6.0.1-beta.7",
     "@storybook/react-native": "6.0.1-beta.7",
-    "@tamagui/babel-plugin": "1.0.17",
+    "@tamagui/babel-plugin": "1.0.22",
     "@types/react": "^18.0.27",
     "@types/react-native": "^0.69.16",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
