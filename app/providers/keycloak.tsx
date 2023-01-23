@@ -1,10 +1,6 @@
-import { ProviderProps } from "./types";
-import { KeycloakInitOptions } from "keycloak-js";
-import {
-  KeycloakConfig,
-  AuthProvider,
-  AuthConfig,
-} from "@multiplatform.one/keycloak";
+import { ProviderProps } from './types';
+import { KeycloakInitOptions } from 'keycloak-js';
+import { KeycloakConfig, AuthProvider, AuthConfig } from '@multiplatform.one/keycloak';
 
 export interface KeycloakProviderProps extends ProviderProps {
   authConfig?: AuthConfig;
@@ -13,10 +9,7 @@ export interface KeycloakProviderProps extends ProviderProps {
   keycloakInitOptions?: KeycloakInitOptions;
 }
 
-export function KeycloakProvider({
-  children,
-  ...props
-}: KeycloakProviderProps) {
+export function KeycloakProvider({ children, ...props }: KeycloakProviderProps) {
   if (!props.keycloak) return <>{children}</>;
   return (
     <AuthProvider

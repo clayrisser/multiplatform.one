@@ -1,65 +1,55 @@
-const { withTamagui } = require("@tamagui/next-plugin");
-const { join } = require("path");
-const withImages = require("next-images");
-const withTM = require("next-transpile-modules"); // pass the modules you would like to see transpiled
-const transpileModules = require("./transpileModules");
+const locales = require('app/i18n/locales');
+const transpileModules = require('./transpileModules');
+const withImages = require('next-images');
+const withTM = require('next-transpile-modules');
+const { join } = require('path');
+const { withTamagui } = require('@tamagui/next-plugin');
+const { i18n } = require('./next-i18next.config');
 
-process.env.IGNORE_TS_CONFIG_PATHS = "true";
-process.env.TAMAGUI_TARGET = "web";
-process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = "1";
+process.env.IGNORE_TS_CONFIG_PATHS = 'true';
+process.env.TAMAGUI_TARGET = 'web';
+process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = '1';
 
+const logger = console;
 const boolVals = {
   true: true,
   false: false,
 };
-
-const disableExtraction =
-  boolVals[process.env.DISABLE_EXTRACTION] ??
-  process.env.NODE_ENV === "development";
+const disableExtraction = boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development';
 
 if (disableExtraction) {
-  console.log("Disabling static extraction in development mode for better HMR");
+  logger.info('Disabling static extraction in development mode for better HMR');
 }
 
 const plugins = [
   withTM(transpileModules),
   withImages,
   withTamagui({
-    config: "./tamagui.config.ts",
-    components: ["ui", "tamagui"],
-    importsWhitelist: ["constants.js", "colors.js"],
+    config: './tamagui.config.ts',
+    components: ['ui', 'tamagui'],
+    importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,
     disableExtraction,
     shouldExtract: (path) => {
-      if (path.includes(join("packages", "app"))) {
+      if (path.includes(join('packages', 'app'))) {
         return true;
       }
     },
-    useReactNativeWebLite: false, // if enabled dont need excludeReactNativeWebExports
-    excludeReactNativeWebExports: [
-      "Switch",
-      "ProgressBar",
-      "Picker",
-      "CheckBox",
-      "Touchable",
-    ],
+    useReactNativeWebLite: false,
+    excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
   }),
 ];
 
 module.exports = function () {
   /** @type {import('next').NextConfig} */
   let config = {
-    i18n: {
-      defaultLocale: "en",
-      locales: ["en", "de", "fr"],
-    },
+    i18n,
     typescript: {
       ignoreBuildErrors: true,
     },
     images: {
       disableStaticImages: true,
     },
-    // transpilePackages: transpilePackages,
     experimental: {
       scrollRestoration: true,
       legacyBrowsers: false,

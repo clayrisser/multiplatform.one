@@ -1,22 +1,23 @@
-import "./.storybook/storybook.requires";
-import "expo-dev-client";
-import * as SplashScreen from "expo-splash-screen";
-import React, { useEffect } from "react";
-import { Platform, View, StatusBar as RNStatusBar } from "react-native";
-import { GlobalProvider } from "app/providers";
-import { StatusBar } from "expo-status-bar";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { getStorybookUI } from "@storybook/react-native";
-import { useFonts } from "expo-font";
-import { fonts } from "app/fonts";
+import './.storybook/storybook.requires';
+import 'app/i18n';
+import 'expo-dev-client';
+import * as SplashScreen from 'expo-splash-screen';
+import React, { useEffect } from 'react';
+import { GlobalProvider } from 'app/providers';
+import { Platform, View, StatusBar as RNStatusBar } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { fonts } from 'app/fonts';
+import { getStorybookUI } from '@storybook/react-native';
+import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
 const logger = console;
 SplashScreen.preventAutoHideAsync().catch(logger.error);
 const StorybookUI = getStorybookUI({
   initialSelection: {
-    kind: "welcome",
-    name: "welcome",
+    kind: 'welcome',
+    name: 'welcome',
   },
 });
 
@@ -40,7 +41,7 @@ export default function App() {
     );
   }
 
-  if (Platform.OS === "android") {
+  if (Platform.OS === 'android') {
     return (
       <GlobalProvider>
         <StatusBar />

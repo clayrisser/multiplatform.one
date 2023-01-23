@@ -1,18 +1,18 @@
-import { addons } from "@storybook/addons";
-import { themes as storybookThemes } from "@storybook/theming";
+import { addons } from '@storybook/addons';
+import { themes as storybookThemes } from '@storybook/theming';
 
 addons.setConfig({
   enableShortcuts: true,
-  initialActive: "sidebar",
+  initialActive: 'sidebar',
   isFullscreen: false,
   isToolshown: true,
-  panelPosition: "bottom",
+  panelPosition: 'bottom',
   selectedPanel: undefined,
   showNav: true,
   showPanel: true,
   theme: storybookThemes.normal,
   sidebar: {
-    collapsedRoots: ["other"],
+    collapsedRoots: ['other'],
     showRoots: false,
   },
   toolbar: {

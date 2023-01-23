@@ -1,43 +1,29 @@
-import {
-  Anchor,
-  Button,
-  H1,
-  Paragraph,
-  Separator,
-  Sheet,
-  XStack,
-  YStack,
-} from "ui";
-import { ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
-import React, { useState } from "react";
-import { useLink } from "solito/link";
+import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack } from 'ui';
+import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
+import React, { useState } from 'react';
+import { useLink } from 'solito/link';
+import { useTranslation } from 'multiplatform.one';
 
 export function HomeScreen() {
+  const { t } = useTranslation();
   const linkProps = useLink({
-    href: "/user/alice",
+    href: '/user/alice',
   });
 
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
       <YStack space="$4" maw={600}>
-        <H1 ta="center">Welcome to Multiplatform.One.</H1>
-        <Paragraph ta="center">
-          Here's a basic starter to show navigating from one screen to another.
-          This screen uses the same code on Next.js and React Native.
-        </Paragraph>
+        <H1 ta="center">{t('welcomeScreen.welcome')}</H1>
+        <Paragraph ta="center">{t('welcomeScreen.message')}</Paragraph>
         <Separator />
         <Paragraph ta="center">
-          <Anchor
-            color="$color12"
-            href="https://multiplatform.one"
-            target="_blank"
-          >
+          <Anchor color="$color12" href="https://multiplatform.one" target="_blank">
             multiplatform.one
           </Anchor>
         </Paragraph>
       </YStack>
       <XStack>
-        <Button {...linkProps}>Link to user</Button>
+        <Button {...linkProps}>{t('welcomeScreen.link')}</Button>
       </XStack>
       <SheetDemo />
     </YStack>
@@ -49,12 +35,7 @@ function SheetDemo() {
   const [position, setPosition] = useState(0);
   return (
     <>
-      <Button
-        size="$6"
-        icon={open ? ChevronDown : ChevronUp}
-        circular
-        onPress={() => setOpen((x) => !x)}
-      />
+      <Button size="$6" icon={open ? ChevronDown : ChevronUp} circular onPress={() => setOpen((x) => !x)} />
       <Sheet
         modal
         open={open}

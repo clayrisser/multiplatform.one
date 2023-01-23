@@ -1,27 +1,27 @@
 module.exports = function (api) {
   api.cache(true);
   return {
-    presets: [["babel-preset-expo", { jsxRuntime: "automatic" }]],
+    presets: [['babel-preset-expo', { jsxRuntime: 'automatic' }]],
     plugins: [
-      "inline-dotenv",
+      'inline-dotenv',
       // if you want reanimated support
       // 'react-native-reanimated/plugin',
       // fix android
-      ...(process.env.EAS_BUILD_PLATFORM === "android"
+      ...(process.env.EAS_BUILD_PLATFORM === 'android'
         ? []
         : [
             [
-              "@tamagui/babel-plugin",
+              '@tamagui/babel-plugin',
               {
-                components: ["ui", "tamagui"],
-                config: "./tamagui.config.ts",
+                components: ['ui', 'tamagui'],
+                config: './tamagui.config.ts',
               },
             ],
           ]),
       [
-        "transform-inline-environment-variables",
+        'transform-inline-environment-variables',
         {
-          include: "TAMAGUI_TARGET",
+          include: 'TAMAGUI_TARGET',
         },
       ],
     ],

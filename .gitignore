@@ -16,7 +16,6 @@
 .pnpm-debug.log*
 .tamagui
 .vercel
-.vscode
 .yarn/*
 /build
 /node_modules

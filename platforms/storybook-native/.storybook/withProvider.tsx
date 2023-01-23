@@ -1,9 +1,9 @@
-import { ReactNode } from "react";
-import { makeDecorator, LegacyStoryFn, StoryWrapper } from "@storybook/addons";
+import { ReactNode } from 'react';
+import { makeDecorator, LegacyStoryFn, StoryWrapper } from '@storybook/addons';
 
 const withProvider = makeDecorator({
-  name: "withProvider",
-  parameterName: "provider",
+  name: 'withProvider',
+  parameterName: 'provider',
   skipIfNoParametersOrOptions: false,
   wrapper: ((getStory: LegacyStoryFn<ReactNode>, context: any) => {
     return getStory(context);

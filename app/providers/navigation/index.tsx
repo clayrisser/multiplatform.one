@@ -1,18 +1,18 @@
-import { NavigationContainer } from "@react-navigation/native";
-import * as Linking from "expo-linking";
-import { useMemo } from "react";
-import { ProviderProps } from "../types";
-import { routeMaps } from "../../navigation/native";
+import { NavigationContainer } from '@react-navigation/native';
+import * as Linking from 'expo-linking';
+import { useMemo } from 'react';
+import { ProviderProps } from '../types';
+import { routeMaps } from '../../navigation/native';
 
 const initialRouteName = Object.entries(routeMaps).reduce(
   (initialRouteName: string, [key, value]: [string, string]) => {
-    if (initialRouteName !== "") return initialRouteName;
-    if (value === "") initialRouteName = key;
+    if (initialRouteName !== '') return initialRouteName;
+    if (value === '') initialRouteName = key;
     return initialRouteName;
   },
-  ""
+  '',
 );
-const domain = "multiplatform.one";
+const domain = 'multiplatform.one';
 
 export function NavigationProvider({ children }: ProviderProps) {
   return (
@@ -21,7 +21,7 @@ export function NavigationProvider({ children }: ProviderProps) {
         useMemo(
           () => ({
             prefixes: [
-              Linking.createURL("/"),
+              Linking.createURL('/'),
               `https://${domain}/`,
               `https://*.${domain}/`,
               `http://${domain}/`,
@@ -32,7 +32,7 @@ export function NavigationProvider({ children }: ProviderProps) {
               screens: routeMaps,
             },
           }),
-          []
+          [],
         ) as any
       }
     >

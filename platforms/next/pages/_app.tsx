@@ -1,12 +1,14 @@
-import "@tamagui/core/reset.css";
-import "@tamagui/font-inter/css/400.css";
-import "@tamagui/font-inter/css/700.css";
-import "raf/polyfill";
-import Head from "next/head";
-import React, { useMemo } from "react";
-import type { SolitoAppProps } from "solito";
-import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
-import { GlobalProvider } from "app/providers";
+import '@tamagui/core/reset.css';
+import '@tamagui/font-inter/css/400.css';
+import '@tamagui/font-inter/css/700.css';
+import 'app/i18n';
+import 'raf/polyfill';
+import Head from 'next/head';
+import React, { useMemo } from 'react';
+import type { SolitoAppProps } from 'solito';
+import { GlobalProvider } from 'app/providers';
+import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
+import { appWithTranslation } from 'next-i18next';
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
   const [theme, setTheme] = useRootTheme();
@@ -30,4 +32,4 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
   );
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);
