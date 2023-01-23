@@ -39,5 +39,10 @@
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.22"
+  },
+  "jestSonar": {
+    "reportPath": ".mkpm/.tmp/reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
   }
 }
