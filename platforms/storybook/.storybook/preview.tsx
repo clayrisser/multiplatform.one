@@ -5,7 +5,7 @@ import 'app/i18n';
 import 'raf/polyfill';
 import React from 'react';
 import { GlobalProvider } from 'app/providers';
-import { YStack } from '@multiplatform.one/ui';
+import { YStack } from 'tamagui';
 import { themes as storybookThemes } from '@storybook/theming';
 
 export const parameters = {
