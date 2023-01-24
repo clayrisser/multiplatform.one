@@ -1,3 +1,4 @@
+import 'intl-pluralrules';
 import locales from './locales';
 import i18n, { Resource, ResourceKey } from 'i18next';
 import { initReactI18next } from 'react-i18next';

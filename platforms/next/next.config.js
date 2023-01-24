@@ -1,7 +1,7 @@
-const locales = require('app/i18n/locales');
+/** @type {import('next').NextConfig} */
+const tamaguiModules = require('./tamaguiModules');
 const transpileModules = require('./transpileModules');
 const withImages = require('next-images');
-const withTM = require('next-transpile-modules');
 const { join } = require('path');
 const { withTamagui } = require('@tamagui/next-plugin');
 const { i18n } = require('./next-i18next.config');
@@ -10,32 +10,26 @@ process.env.IGNORE_TS_CONFIG_PATHS = 'true';
 process.env.TAMAGUI_TARGET = 'web';
 process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = '1';
 
-const logger = console;
 const boolVals = {
   true: true,
   false: false,
 };
 const disableExtraction = boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development';
-
-if (disableExtraction) {
-  logger.info('Disabling static extraction in development mode for better HMR');
-}
-
 const plugins = [
-  withTM(transpileModules),
   withImages,
   withTamagui({
     config: './tamagui.config.ts',
-    components: ['ui', 'tamagui'],
+    components: tamaguiModules,
     importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,
     disableExtraction,
+    // experiment - reduced bundle size react-native-web
+    useReactNativeWebLite: false,
     shouldExtract: (path) => {
       if (path.includes(join('packages', 'app'))) {
         return true;
       }
     },
-    useReactNativeWebLite: false,
     excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
   }),
 ];
@@ -50,7 +44,15 @@ module.exports = function () {
     images: {
       disableStaticImages: true,
     },
+    modularizeImports: {
+      '@tamagui/lucide-icons': {
+        transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
+        skipDefaultConversion: true,
+      },
+    },
+    transpilePackages: transpileModules,
     experimental: {
+      // optimizeCss: true,
       scrollRestoration: true,
       legacyBrowsers: false,
     },
@@ -61,5 +63,6 @@ module.exports = function () {
       ...plugin(config),
     };
   }
+
   return config;
 };

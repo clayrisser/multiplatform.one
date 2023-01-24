@@ -1,35 +1,45 @@
 import '@tamagui/core/reset.css';
 import '@tamagui/font-inter/css/400.css';
 import '@tamagui/font-inter/css/700.css';
-import 'app/i18n';
 import 'raf/polyfill';
-import Head from 'next/head';
-import React, { useMemo } from 'react';
-import type { SolitoAppProps } from 'solito';
-import { GlobalProvider } from 'app/providers';
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
+import { GlobalProvider } from 'app/providers';
+import Head from 'next/head';
+import React, { startTransition } from 'react';
+import type { SolitoAppProps } from 'solito';
 import { appWithTranslation } from 'next-i18next';
 
-function MyApp({ Component, pageProps }: SolitoAppProps) {
-  const [theme, setTheme] = useRootTheme();
-  const contents = useMemo(() => {
-    return <Component {...pageProps} />;
-  }, [pageProps, Component]);
-
+function App({ Component, pageProps }: SolitoAppProps) {
   return (
     <>
       <Head>
         <title>Tamagui Example App</title>
         <meta name="description" content="Tamagui, Solito, Expo & Next.js" />
-        <link rel="icon" href="/apps/next/public/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NextThemeProvider onChangeTheme={setTheme} forcedTheme={theme}>
-        <GlobalProvider disableRootThemeClass defaultTheme={theme}>
-          {contents}
-        </GlobalProvider>
-      </NextThemeProvider>
+      <ThemeProvider>
+        <Component {...pageProps} />
+      </ThemeProvider>
     </>
   );
 }
 
-export default appWithTranslation(MyApp);
+function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setTheme] = useRootTheme();
+
+  return (
+    <NextThemeProvider
+      onChangeTheme={(next) => {
+        startTransition(() => {
+          setTheme(next);
+        });
+      }}
+    >
+      <GlobalProvider disableRootThemeClass defaultTheme={theme}>
+        {children}
+      </GlobalProvider>
+    </NextThemeProvider>
+  );
+}
+
+export default appWithTranslation(App);

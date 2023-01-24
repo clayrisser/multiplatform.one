@@ -1,6 +1,6 @@
 import type { ProviderProps } from './types';
 import { NavigationProvider } from './navigation';
-import { StateProvider } from './state/index';
+import { StateProvider } from './state';
 import { TamaguiProvider } from './tamagui';
 import { TamaguiProviderProps } from 'ui';
 import { KeycloakProvider, KeycloakProviderProps } from './keycloak';
@@ -32,6 +32,6 @@ export function GlobalProvider({ children, ...props }: GlobalProviderProps) {
 }
 
 export * from './navigation';
-export * from './state/index';
+export * from './state';
 export * from './tamagui';
 export * from './types';

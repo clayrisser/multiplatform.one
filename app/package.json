@@ -2,36 +2,36 @@
   "name": "app",
   "version": "0.0.1",
   "main": "index.ts",
-  "scripts": {
-    "codegen": "graphql-codegen --config graphql.config.ts --errors-only --watch",
-    "check-types": "tsc --noEmit"
-  },
+  "private": true,
+  "sideEffects": [
+    "*.css"
+  ],
   "dependencies": {
     "@multiplatform.one/keycloak": "^0.1.2",
-    "@react-navigation/bottom-tabs": "^6.3.3",
-    "@react-navigation/native": "^6.0.11",
-    "@react-navigation/native-stack": "^6.7.0",
-    "@tamagui/animations-react-native": "1.0.17",
-    "@tamagui/colors": "1.0.17",
-    "@tamagui/font-inter": "1.0.17",
-    "@tamagui/lucide-icons": "^1.0.17",
-    "@tamagui/shorthands": "1.0.17",
-    "@tamagui/theme-base": "1.0.17",
-    "expo-keycloak-auth": "1.0.14",
-    "expo-linking": "^3.2.3",
-    "expo-localization": "~14.0.0",
+    "@react-navigation/native": "^6.1.2",
+    "@react-navigation/native-stack": "^6.9.8",
+    "@tamagui/animations-react-native": "^1.1.1",
+    "@tamagui/colors": "^1.1.1",
+    "@tamagui/font-inter": "^1.1.1",
+    "@tamagui/lucide-icons": "^1.1.1",
+    "@tamagui/shorthands": "^1.1.1",
+    "@tamagui/theme-base": "^1.1.1",
+    "expo-keycloak-auth": "^1.0.14",
+    "expo-linking": "^3.3.0",
     "expo-random": "^13.0.0",
-    "i18next": "^21.9.1",
+    "i18next": "^22.4.9",
+    "intl-pluralrules": "^1.3.1",
     "keycloak-js": "20.0.1",
-    "multiplatform.one": "^0.1.0",
-    "react-i18next": "^11.18.6",
+    "multiplatform.one": "^0.1.1",
+    "react-i18next": "^12.1.4",
     "react-native-recoil-persist": "^0.0.6",
-    "react-native-svg": "13.4.0",
     "recoil": "^0.7.6",
     "recoil-persist": "^4.2.0",
-    "solito": "^2.1.2",
-    "tamagui-phosphor-icons": "^0.1.1",
+    "solito": "^2.1.3",
     "ui": "*"
   },
-  "sideEffects": false
+  "devDependencies": {
+    "@types/react": "^18.0.27",
+    "@types/react-native": "^0.71.0"
+  }
 }
