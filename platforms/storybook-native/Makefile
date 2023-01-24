@@ -54,8 +54,8 @@ start: | ~generate +start ##
 	@$(EXPO) start -c -p $(EXPO_PORT) $(ARGS)
 
 .PHONY: start@web +start@web
-start@web: | ~generate +start@web ##
-+start@web:
+start@web: | ~install +start@web ##
++start@web: +generate
 	@$(EXPO) start -c -p $(EXPO_PORT) --web $(ARGS)
 
 .PHONY: start@android +start@android
