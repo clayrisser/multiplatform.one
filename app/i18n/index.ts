@@ -1,7 +1,9 @@
 import 'intl-pluralrules';
-import locales from './locales';
 import i18n, { Resource, ResourceKey } from 'i18next';
+import locales from './locales';
+import { MultiPlatform } from 'multiplatform.one';
 import { initReactI18next } from 'react-i18next';
+import { useRouter } from 'next/router';
 
 const defaultNS = 'common';
 
@@ -17,6 +19,17 @@ i18n.use(initReactI18next).init({
   },
 });
 
-export const changeLanguage = (str: string) => i18n.changeLanguage(str);
+export const supportedLocales = Object.keys(locales);
+
+export function useChangeLanguage() {
+  if (MultiPlatform.isNext()) {
+    const router = useRouter();
+    return (locale: string) => {
+      const { pathname, asPath, query } = router;
+      router.push({ pathname, query }, asPath, { locale });
+    };
+  }
+  return (locale: string) => i18n.changeLanguage(locale);
+}
 
 export default i18n;

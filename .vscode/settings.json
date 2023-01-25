@@ -13,6 +13,7 @@
     "lucide",
     "multiplatform",
     "ondevice",
+    "pathname",
     "pluralrules",
     "req",
     "resize",
@@ -20,6 +21,7 @@
     "ssr",
     "storyshots",
     "storysource",
+    "str",
     "tamagui",
     "vals"
   ]

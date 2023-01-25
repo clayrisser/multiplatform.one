@@ -1,5 +1,6 @@
-import React, { ComponentType, ReactNode } from 'react';
+import React, { ComponentType, ReactNode, useEffect, useState } from 'react';
 import { Select, ThemeName, YStack, ZStack, XStack } from 'ui';
+import { useChangeLanguage, supportedLocales } from 'app/i18n';
 import { config } from 'app/config';
 import { useThemeState } from 'app/state/theme';
 
@@ -12,6 +13,12 @@ export interface DebugLayoutProps {
 
 export function DebugLayout({ children }) {
   const [theme, setTheme] = useThemeState();
+  const [locale, setLocale] = useState('en');
+  const changeLanguage = useChangeLanguage();
+
+  useEffect(() => {
+    changeLanguage(locale);
+  }, [locale]);
 
   function handleSubThemeChange(subTheme: ThemeName) {
     setTheme((theme) => ({
@@ -39,6 +46,16 @@ export function DebugLayout({ children }) {
 
   function renderRootThemeItems() {
     return rootThemeNames.map((name: string, i: number) => {
+      return (
+        <Select.Item key={i + name} index={i} value={name}>
+          <Select.ItemText>{name}</Select.ItemText>
+        </Select.Item>
+      );
+    });
+  }
+
+  function renderLocaleItems() {
+    return supportedLocales.map((name: string, i: number) => {
       return (
         <Select.Item key={i + name} index={i} value={name}>
           <Select.ItemText>{name}</Select.ItemText>
@@ -84,6 +101,24 @@ export function DebugLayout({ children }) {
           </Select.Adapt>
           <Select.Content zIndex={200000}>
             <Select.Viewport>{renderSubThemeItems()}</Select.Viewport>
+          </Select.Content>
+        </Select>
+        <Select id="locales" value={locale} onValueChange={setLocale}>
+          <Select.Trigger w={96} py={0} bc="$color10">
+            <Select.Value placeholder={locale} />
+          </Select.Trigger>
+          <Select.Adapt when="sm" platform="touch">
+            <Select.Sheet modal dismissOnSnapToBottom>
+              <Select.Sheet.Frame>
+                <Select.Sheet.ScrollView>
+                  <Select.Adapt.Contents />
+                </Select.Sheet.ScrollView>
+              </Select.Sheet.Frame>
+              <Select.Sheet.Overlay />
+            </Select.Sheet>
+          </Select.Adapt>
+          <Select.Content zIndex={200000}>
+            <Select.Viewport>{renderLocaleItems()}</Select.Viewport>
           </Select.Content>
         </Select>
       </XStack>
