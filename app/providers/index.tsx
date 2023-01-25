@@ -10,12 +10,13 @@ export type GlobalProviderProps = ProviderProps &
   Omit<TamaguiProviderProps, 'config'> & {
     noNavigation?: boolean;
     strict?: boolean;
+    disableStateProvider?: boolean;
   };
 
 export function GlobalProvider({ children, ...props }: GlobalProviderProps) {
   return (
-    <TamaguiProvider {...props}>
-      <StateProvider>
+    <StateProvider disable={props.disableStateProvider}>
+      <TamaguiProvider {...props}>
         <NavigationProvider>
           <KeycloakProvider
             authConfig={props.authConfig}
@@ -26,8 +27,8 @@ export function GlobalProvider({ children, ...props }: GlobalProviderProps) {
             {children}
           </KeycloakProvider>
         </NavigationProvider>
-      </StateProvider>
-    </TamaguiProvider>
+      </TamaguiProvider>
+    </StateProvider>
   );
 }
 

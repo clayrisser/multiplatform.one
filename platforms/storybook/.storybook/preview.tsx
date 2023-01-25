@@ -3,10 +3,11 @@ import '@tamagui/font-inter/css/400.css';
 import '@tamagui/font-inter/css/700.css';
 import 'app/i18n';
 import 'raf/polyfill';
-import React from 'react';
-import { GlobalProvider } from 'app/providers';
-import { YStack } from 'tamagui';
+import React, { ReactNode, useEffect } from 'react';
+import { GlobalProvider, StateProvider } from 'app/providers';
 import { themes as storybookThemes } from '@storybook/theming';
+import { useDarkMode } from 'storybook-dark-mode';
+import { ThemeValue, useThemeState } from 'app/state/theme';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -32,38 +33,31 @@ export const parameters = {
   ],
 };
 
-export const globalTypes = {
-  // theme: {
-  //   name: 'Theme',
-  //   title: 'Theme',
-  //   description: 'Theme for your components',
-  //   defaultValue: 'light',
-  //   toolbar: {
-  //     icon: 'paintbrush',
-  //     dynamicTitle: true,
-  //     items: [
-  //       { value: 'light', left: '☀️', title: 'Light Mode' },
-  //       { value: 'dark', left: '🌙', title: 'Dark Mode' },
-  //     ],
-  //   },
-  // },
-};
+export const globalTypes = {};
 
 export const decorators = [
-  (Story, args: any) => {
-    // The theme global we just declared
-    const { theme: themeKey } = args.globals;
-    let theme = themeKey;
-    if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      // dark mode
-      theme = 'dark';
-    }
+  (Story, _args: any) => {
     return (
-      <GlobalProvider defaultTheme={theme}>
-        <YStack backgroundColor={'$backgroundStrong'}>
+      <StateProvider>
+        <Provider>
           <Story />
-        </YStack>
-      </GlobalProvider>
+        </Provider>
+      </StateProvider>
     );
   },
 ];
+
+function Provider({ children }: { children: ReactNode }) {
+  const [theme, setTheme] = useThemeState();
+  const darkMode = useDarkMode();
+
+  useEffect(() => {
+    setTheme((theme) => ({ ...theme, root: darkMode ? 'dark' : 'light' }));
+  }, [darkMode, setTheme]);
+
+  return (
+    <GlobalProvider disableStateProvider defaultTheme={theme.root}>
+      {children}
+    </GlobalProvider>
+  );
+}

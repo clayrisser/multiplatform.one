@@ -1,22 +1,25 @@
 import config from '../tamagui.config';
-import { useColorScheme } from 'react-native';
+import { useThemeState } from 'app/state/theme';
+import { ReactNode } from 'react';
 import {
   TamaguiProvider as OriginalTamaguiProvider,
   TamaguiProviderProps as OriginalTamaguiProviderProps,
-} from 'tamagui';
+  Theme,
+} from 'ui';
 
 export type TamaguiProviderProps = Omit<OriginalTamaguiProviderProps, 'config'>;
 
 export function TamaguiProvider({ children, ...props }: TamaguiProviderProps) {
-  const scheme = useColorScheme();
+  const [theme] = useThemeState();
+
+  function renderSubTheme(children: ReactNode) {
+    if (!theme.sub) return children;
+    return <Theme name={theme.sub}>{children}</Theme>;
+  }
+
   return (
-    <OriginalTamaguiProvider
-      config={config}
-      disableInjectCSS={false}
-      defaultTheme={scheme === 'dark' ? 'light_blue' : 'light_blue'}
-      {...props}
-    >
-      {children}
+    <OriginalTamaguiProvider disableInjectCSS={false} config={config} defaultTheme={theme.root} {...props}>
+      {renderSubTheme(children)}
     </OriginalTamaguiProvider>
   );
 }

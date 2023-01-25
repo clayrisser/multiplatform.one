@@ -1,10 +1,11 @@
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack } from 'ui';
+import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Theme } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import React, { useState } from 'react';
 import { useLink } from 'solito/link';
 import { useTranslation } from 'multiplatform.one';
+import { withDefaultLayout } from 'app/layouts/Default';
 
-export function HomeScreen() {
+function HomeScreen() {
   const { t } = useTranslation();
   const linkProps = useLink({
     href: '/user/alice',
@@ -61,3 +62,5 @@ function SheetDemo() {
     </>
   );
 }
+
+export default withDefaultLayout(HomeScreen);
