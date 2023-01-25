@@ -3,10 +3,11 @@ import { ChevronLeft } from '@tamagui/lucide-icons';
 import React from 'react';
 import { createParam } from 'solito';
 import { useLink } from 'solito/link';
+import { withDefaultLayout } from 'app/layouts/Default';
 
 const { useParam } = createParam<{ id: string }>();
 
-export function UserScreen() {
+function UserScreen() {
   const [id] = useParam('id');
   const linkProps = useLink({ href: '/' });
 
@@ -19,3 +20,5 @@ export function UserScreen() {
     </YStack>
   );
 }
+
+export default withDefaultLayout(UserScreen);

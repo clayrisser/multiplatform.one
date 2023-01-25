@@ -1,4 +1,4 @@
-import { UserScreen } from 'app/screens/user';
+import UserScreen from 'app/screens/user';
 import { GetStaticPaths } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 

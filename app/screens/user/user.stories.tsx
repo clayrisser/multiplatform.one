@@ -1,4 +1,4 @@
-import { UserScreen } from './index';
+import UserScreen from './index';
 
 export default {
   title: 'screens/User',
