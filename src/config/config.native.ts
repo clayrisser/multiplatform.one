@@ -4,7 +4,7 @@
  * File Created: 19-11-2022 11:58:58
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 13:41:58
+ * Last Modified: 25-01-2023 03:17:50
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -26,10 +26,11 @@ import constants from 'expo-constants';
 import { IConfig } from './types';
 
 export class Config implements IConfig {
-  private _config: Record<string, string | undefined> = {};
+  private _config: Record<string, string | undefined> = process?.env || {};
 
   constructor(config: Record<string, string | undefined> = {}) {
     this._config = {
+      ...this._config,
       ...Object.entries(config).reduce<Record<string, string | undefined>>(
         (config, [key, value]: [string, string | undefined]) => {
           if (typeof value !== 'undefined') config[key] = value;
