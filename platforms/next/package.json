@@ -5,6 +5,7 @@
   "dependencies": {
     "@tamagui/next-theme": "^1.1.1",
     "app": "*",
+    "cookie": "^0.5.0",
     "next": "^13.1.5",
     "next-i18next": "^13.0.3",
     "raf": "^3.4.1",
@@ -16,7 +17,9 @@
     "vercel": "^28.13.1"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^13.1.5",
     "@tamagui/next-plugin": "^1.1.1",
+    "@types/cookie": "^0.5.1",
     "@types/node": "^18.11.18",
     "next-images": "^1.8.4"
   }
