@@ -1,4 +1,4 @@
-import { UserDetailScreen } from 'app/features/user/detail-screen';
+import { UserScreen } from 'app/screens/user';
 import { GetStaticPaths } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -17,4 +17,4 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   };
 };
 
-export default UserDetailScreen;
+export default UserScreen;

@@ -1,4 +1,4 @@
-import { HomeScreen } from './screen';
+import { HomeScreen } from '.';
 
 export default {
   title: 'screens/Home',

@@ -1,11 +1,11 @@
 import React from 'react';
-import { HomeScreen } from 'app/features/home/screen';
-import { UserDetailScreen } from 'app/features/user/detail-screen';
+import { HomeScreen } from 'app/screens/home';
+import { UserScreen } from 'app/screens/user';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator<{
   home: undefined;
-  'user-detail': {
+  user: {
     id: string;
   };
 }>();
@@ -21,8 +21,8 @@ export function NativeNavigation() {
         }}
       />
       <Stack.Screen
-        name="user-detail"
-        component={UserDetailScreen}
+        name="user"
+        component={UserScreen}
         options={{
           title: 'User',
         }}
@@ -33,5 +33,5 @@ export function NativeNavigation() {
 
 export const routeMaps = {
   home: '',
-  'user-detail': 'user/:id',
+  user: 'user/:id',
 };
