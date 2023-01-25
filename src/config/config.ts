@@ -4,7 +4,7 @@
  * File Created: 19-11-2022 11:59:11
  * Author: Clay Risser
  * -----
- * Last Modified: 25-01-2023 03:17:45
+ * Last Modified: 25-01-2023 04:29:07
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -30,21 +30,21 @@ export class Config implements IConfig {
   private _config: Record<string, string | undefined> = process?.env || {};
 
   constructor(config: Record<string, string | undefined> = {}) {
-    if (MultiPlatform.isNext() && getConfig) {
-      const nextConfig = getConfig();
-      this._config = {
-        ...this._config,
-        ...Object.entries(config).reduce<Record<string, string | undefined>>(
-          (config, [key, value]: [string, string | undefined]) => {
-            if (typeof value !== 'undefined') config[key] = value;
-            return config;
-          },
-          {},
-        ),
-        ...(nextConfig.publicRuntimeConfig ? nextConfig.publicRuntimeConfig : {}),
-        ...(nextConfig.serverRuntimeConfig ? nextConfig.serverRuntimeConfig : {}),
-      };
-    }
+    const nextConfig = MultiPlatform.isNext() && getConfig ? getConfig() : {};
+    this._config = {
+      ...this._config,
+      ...Object.entries(config).reduce<Record<string, string | undefined>>(
+        (config, [key, value]: [string, string | undefined]) => {
+          if (typeof value !== 'undefined') config[key] = value;
+          return config;
+        },
+        {},
+      ),
+      ...{
+        ...(nextConfig?.publicRuntimeConfig || {}),
+        ...(nextConfig?.serverRuntimeConfig || {}),
+      },
+    };
   }
 
   get(): Record<string, string | undefined>;
