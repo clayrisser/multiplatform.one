@@ -13,7 +13,7 @@ export function TamaguiProvider({ children, ...props }: TamaguiProviderProps) {
     <OriginalTamaguiProvider
       config={config}
       disableInjectCSS={false}
-      defaultTheme={scheme === 'dark' ? 'dark' : 'light'}
+      defaultTheme={scheme === 'dark' ? 'light_blue' : 'light_blue'}
       {...props}
     >
       {children}
