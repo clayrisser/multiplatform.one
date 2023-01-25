@@ -1,5 +1,6 @@
 import path from 'path';
 import transpileModules from '../transpileModules';
+import publicConfig from 'app/config/public';
 
 const config = {
   stories: [
@@ -85,6 +86,7 @@ const config = {
   env: (config) => ({
     ...config,
     TAMAGUI_TARGET: 'web',
+    ...publicConfig,
   }),
 };
 export default config;

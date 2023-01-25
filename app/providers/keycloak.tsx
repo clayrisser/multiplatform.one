@@ -1,6 +1,7 @@
-import { ProviderProps } from './types';
-import { KeycloakInitOptions } from 'keycloak-js';
 import { KeycloakConfig, AuthProvider, AuthConfig } from '@multiplatform.one/keycloak';
+import { KeycloakInitOptions } from 'keycloak-js';
+import { ProviderProps } from './types';
+import { config } from 'app/config';
 
 export interface KeycloakProviderProps extends ProviderProps {
   authConfig?: AuthConfig;
@@ -10,12 +11,12 @@ export interface KeycloakProviderProps extends ProviderProps {
 }
 
 export function KeycloakProvider({ children, ...props }: KeycloakProviderProps) {
-  if (!props.keycloak) return <>{children}</>;
+  if (config.get('KEYCLOAK_ENABLED') !== '1' || !props.keycloak) return <>{children}</>;
   return (
     <AuthProvider
       authConfig={props.authConfig}
       cookies={props.cookies}
-      // debug={config.get("DEBUG") === "1"}
+      debug={config.get('DEBUG') === '1'}
       keycloakConfig={props.keycloak}
       keycloakInitOptions={props.keycloakInitOptions}
     >

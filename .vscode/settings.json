@@ -1,18 +1,25 @@
 {
   "cSpell.words": [
+    "codebase",
+    "ctx",
     "datetimepicker",
     "docgen",
     "esbuild",
     "etchteam",
+    "favicon",
+    "href",
+    "ico",
     "keycloak",
     "lucide",
     "multiplatform",
     "ondevice",
     "pluralrules",
+    "req",
     "solito",
+    "ssr",
     "storyshots",
     "storysource",
     "tamagui",
-    "Vals"
+    "vals"
   ]
 }

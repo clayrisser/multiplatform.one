@@ -1,15 +1,21 @@
 /** @type {import('next').NextConfig} */
+const privateConfig = require('app/config/private');
+const publicConfig = require('app/config/public');
 const tamaguiModules = require('./tamaguiModules');
 const transpileModules = require('./transpileModules');
+const withBundleAnalyzer = require('@next/bundle-analyzer');
 const withImages = require('next-images');
+const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
+const { i18n } = require('./next-i18next.config');
 const { join } = require('path');
 const { withTamagui } = require('@tamagui/next-plugin');
-const { i18n } = require('./next-i18next.config');
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true';
 process.env.TAMAGUI_TARGET = 'web';
 process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = '1';
 
+const logger = console;
+const sharedConfig = { ...publicConfig, ...privateConfig };
 const boolVals = {
   true: true,
   false: false,
@@ -34,9 +40,17 @@ const plugins = [
   }),
 ];
 
-module.exports = function () {
+module.exports = function (phase) {
+  if (phase === PHASE_DEVELOPMENT_SERVER) {
+    plugins.push(
+      withBundleAnalyzer({
+        enabled: sharedConfig.DEBUG === '1',
+        openAnalyzer: false,
+      }),
+    );
+  }
   /** @type {import('next').NextConfig} */
-  let config = {
+  let nextConfig = {
     i18n,
     typescript: {
       ignoreBuildErrors: true,
@@ -56,13 +70,18 @@ module.exports = function () {
       scrollRestoration: true,
       legacyBrowsers: false,
     },
+    publicRuntimeConfig: {
+      ...publicConfig,
+    },
+    serverRuntimeConfig: {
+      ...privateConfig,
+    },
   };
   for (const plugin of plugins) {
-    config = {
-      ...config,
-      ...plugin(config),
+    nextConfig = {
+      ...nextConfig,
+      ...plugin(nextConfig),
     };
   }
-
-  return config;
+  return nextConfig;
 };
