@@ -25,7 +25,7 @@
     "react-dom": "18.1.0",
     "react-refresh": "^0.14.0",
     "react-native-svg": "13.4.0",
-    "react-native-web": "0.18.9",
+    "react-native-web": "~0.18.10",
     "expo-keycloak-auth@1.0.14": "patch:expo-keycloak-auth@npm%3A1.0.14#./.yarn/patches/expo-keycloak-auth-npm-1.0.14-78201597ce.patch",
     "keycloak-js@20.0.1": "patch:keycloak-js@npm:20.0.1#.yarn/patches/keycloak-js-npm-20.0.1-f7fb82c1dc"
   },
