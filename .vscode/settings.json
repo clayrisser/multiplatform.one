@@ -18,6 +18,7 @@
     "mkpm",
     "multiline",
     "multiplatform",
+    "namespaces",
     "nixpkgs",
     "plusplus",
     "redeclare",

@@ -1,10 +1,10 @@
 /**
- * File: /src/hooks/useTranslation/index.ts
+ * File: /next/index.js
  * Project: multiplatform.one
- * File Created: 22-01-2023 11:33:46
+ * File Created: 26-01-2023 09:12:40
  * Author: Clay Risser
  * -----
- * Last Modified: 26-01-2023 08:37:31
+ * Last Modified: 26-01-2023 09:13:12
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,15 +22,4 @@
  * limitations under the License.
  */
 
-import getConfig from 'next/config';
-import { MultiPlatform } from '../../multiplatform';
-import { useTranslation as nextUseTranslation } from 'next-i18next';
-import { useTranslation as reactUseTranslation } from 'react-i18next';
-
-let useTranslation = reactUseTranslation;
-
-if (MultiPlatform.isNext() && (getConfig ? getConfig() : {})?.publicRuntimeConfig?.NEXT_STATIC !== '1') {
-  useTranslation = nextUseTranslation;
-}
-
-export { useTranslation };
+module.exports = require('./lib/next');

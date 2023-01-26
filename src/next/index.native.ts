@@ -1,10 +1,10 @@
 /**
- * File: /src/hooks/useTranslation/index.ts
+ * File: /src/next/index.native.ts
  * Project: multiplatform.one
- * File Created: 22-01-2023 11:33:46
+ * File Created: 26-01-2023 08:49:11
  * Author: Clay Risser
  * -----
- * Last Modified: 26-01-2023 08:37:31
+ * Last Modified: 26-01-2023 08:59:57
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,15 +22,23 @@
  * limitations under the License.
  */
 
-import getConfig from 'next/config';
-import { MultiPlatform } from '../../multiplatform';
-import { useTranslation as nextUseTranslation } from 'next-i18next';
-import { useTranslation as reactUseTranslation } from 'react-i18next';
-
-let useTranslation = reactUseTranslation;
-
-if (MultiPlatform.isNext() && (getConfig ? getConfig() : {})?.publicRuntimeConfig?.NEXT_STATIC !== '1') {
-  useTranslation = nextUseTranslation;
+export async function getBaseStaticProps(_locale: any, _namespacesRequired: string[] = []) {
+  return {};
 }
 
-export { useTranslation };
+export async function createGetStaticProps(namespacesRequired: string[] = []) {
+  return async ({ locale }: { locale: any }) => ({
+    props: await getBaseStaticProps(locale, namespacesRequired),
+  });
+}
+
+export async function createGetStaticPaths(paths: string[] = []) {
+  return async () => ({
+    paths,
+    fallback: 'blocking',
+  });
+}
+
+export const getStaticPaths = createGetStaticPaths();
+
+export const getStaticProps = createGetStaticProps();

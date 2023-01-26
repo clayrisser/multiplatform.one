@@ -1,6 +1,6 @@
 {
   "name": "multiplatform.one",
-  "version": "0.1.6",
+  "version": "0.1.16",
   "description": "multiplatform.one ecosystem",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -11,6 +11,11 @@
     ".": {
       "import": "./esm/index.js",
       "require": "./lib/index.js"
+    },
+    "./next": {
+      "import": "./esm/next/index.js",
+      "require": "./lib/next/index.js",
+      "types": "./lib/next/index.d.ts"
     }
   },
   "author": "Risser Labs LLC",
@@ -25,6 +30,7 @@
   "files": [
     "esm",
     "lib",
+    "next",
     "src"
   ],
   "repository": {
