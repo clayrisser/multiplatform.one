@@ -1,7 +1,7 @@
-import React, { ComponentType, ReactNode, useEffect, useState } from 'react';
+import React, { ComponentType, ReactNode } from 'react';
 import { Select, ThemeName, YStack, ZStack, XStack } from 'ui';
 import { config } from 'app/config';
-import { useChangeLanguage, supportedLocales } from 'app/i18n';
+import { supportedLocales, useLanguage } from 'app/i18n';
 import { useThemeState } from 'app/state/theme';
 
 const rootThemeNames = ['light', 'dark'];
@@ -13,12 +13,7 @@ export interface DebugLayoutProps {
 
 export function DebugLayout({ children }) {
   const [theme, setTheme] = useThemeState();
-  const [locale, setLocale] = useState('en');
-  const changeLanguage = useChangeLanguage();
-
-  useEffect(() => {
-    changeLanguage(locale);
-  }, [locale]);
+  const [language, setLanguage] = useLanguage();
 
   function handleSubThemeChange(subTheme: ThemeName) {
     setTheme((theme) => ({
@@ -103,9 +98,9 @@ export function DebugLayout({ children }) {
             <Select.Viewport>{renderSubThemeItems()}</Select.Viewport>
           </Select.Content>
         </Select>
-        <Select id="locales" value={locale} onValueChange={setLocale}>
+        <Select id="locales" value={language} onValueChange={setLanguage}>
           <Select.Trigger w={96} py={0} bc="$color10">
-            <Select.Value placeholder={locale} />
+            <Select.Value placeholder={language} />
           </Select.Trigger>
           <Select.Adapt when="sm" platform="touch">
             <Select.Sheet modal dismissOnSnapToBottom>
