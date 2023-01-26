@@ -62,13 +62,17 @@ purge: clean ##
 $(patsubst %,%/%,$(WORKSPACE_NAMES)):
 	@$(MAKE) -sC $(call map_workspace,$(@D)) $*
 
-.PHONY: docker/%
-docker/%:
-	@$(MAKE) -sC docker $(subst docker/,,$@) ARGS=$(ARGS)
-
 HELP = help
 help: $(MKCHAIN_HELP)
 	@$(call workspace_foreach_help,$(MKCHAIN_HELP),$(ARGS))
+
+.PHONY: next/docker/%
+next/docker/%:
+	@$(MAKE) -sC platforms/next/docker $(subst next/docker/,,$@) ARGS=$(ARGS)
+
+.PHONY: storybook/docker/%
+storybook/docker/%:
+	@$(MAKE) -sC platforms/storybook/docker $(subst storybook/docker/,,$@) ARGS=$(ARGS)
 
 CACHE_ENVS += \
 

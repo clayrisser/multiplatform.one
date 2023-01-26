@@ -1,7 +1,7 @@
 import React, { ComponentType, ReactNode, useEffect, useState } from 'react';
 import { Select, ThemeName, YStack, ZStack, XStack } from 'ui';
-import { useChangeLanguage, supportedLocales } from 'app/i18n';
 import { config } from 'app/config';
+import { useChangeLanguage, supportedLocales } from 'app/i18n';
 import { useThemeState } from 'app/state/theme';
 
 const rootThemeNames = ['light', 'dark'];

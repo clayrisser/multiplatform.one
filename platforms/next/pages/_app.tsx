@@ -1,6 +1,7 @@
 import '@tamagui/core/reset.css';
 import '@tamagui/font-inter/css/400.css';
 import '@tamagui/font-inter/css/700.css';
+import 'app/i18n';
 import 'raf/polyfill';
 import Head from 'next/head';
 import React, { ReactNode, startTransition, useEffect, useMemo } from 'react';
@@ -14,8 +15,9 @@ import { appWithTranslation } from 'next-i18next';
 import { config } from 'app/config';
 import { useThemeState } from 'app/state/theme';
 
-const keycloakSsr = config.get('KEYCLOAK_SSR') === '1';
 const automaticStaticOptimization = config.get('NEXT_AUTOMATIC_STATIC_OPTIMIZATION') === '1';
+const keycloakSsr = config.get('KEYCLOAK_SSR') === '1';
+const nextStatic = config.get('NEXT_STATIC') === '1';
 
 export interface AppProps extends SolitoAppProps {
   cookies?: unknown;
@@ -25,6 +27,10 @@ function App({ Component, pageProps, cookies }: AppProps) {
   const contents = useMemo(() => {
     return <Component {...pageProps} />;
   }, [pageProps, Component]);
+
+  useEffect(() => {
+    if (nextStatic) import('app/i18n');
+  }, []);
 
   return (
     <>
@@ -88,13 +94,13 @@ function parseCookies(req?: NextIncomingMessage) {
 }
 
 if (keycloakSsr) {
-  App.getInitialProps = async (context: AppContext) => {
-    return {
-      cookies: parseCookies(context?.ctx?.req),
-    };
-  };
+  App.getInitialProps = async (context: AppContext) => ({
+    cookies: parseCookies(context?.ctx?.req) as unknown,
+  });
 } else if (automaticStaticOptimization) {
-  App.getInitialProps = async () => ({} as any);
+  App.getInitialProps = async (_context: AppContext) => ({
+    cookies: undefined,
+  });
 }
 
-export default appWithTranslation(App);
+export default nextStatic ? App : appWithTranslation(App);

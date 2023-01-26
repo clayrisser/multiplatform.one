@@ -1,4 +1,3 @@
-/** @type {import('next').NextConfig} */
 const privateConfig = require('app/config/private');
 const publicConfig = require('app/config/public');
 const tamaguiModules = require('./tamaguiModules');
@@ -8,14 +7,15 @@ const withImages = require('next-images');
 const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
 const { i18n } = require('./next-i18next.config');
 const { join } = require('path');
+const { supportedLocales, defaultLocale, defaultNamespace } = require('app/i18n/config');
 const { withTamagui } = require('@tamagui/next-plugin');
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true';
 process.env.TAMAGUI_TARGET = 'web';
 process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = '1';
 
-const logger = console;
 const sharedConfig = { ...publicConfig, ...privateConfig };
+const static = process.env.NEXT_STATIC === '1';
 const boolVals = {
   true: true,
   false: false,
@@ -51,7 +51,7 @@ module.exports = function (phase) {
   }
   /** @type {import('next').NextConfig} */
   let nextConfig = {
-    i18n,
+    ...(static ? {} : { i18n }),
     typescript: {
       ignoreBuildErrors: true,
     },
@@ -72,6 +72,17 @@ module.exports = function (phase) {
     },
     publicRuntimeConfig: {
       ...publicConfig,
+      NEXT_STATIC: process.env.NEXT_STATIC,
+      ...(static
+        ? {
+            i18n: {
+              languages: supportedLocales,
+              defaultLanguage: defaultLocale,
+              namespaces: [defaultNamespace],
+              defaultNamespace,
+            },
+          }
+        : {}),
     },
     serverRuntimeConfig: {
       ...privateConfig,

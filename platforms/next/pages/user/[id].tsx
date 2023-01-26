@@ -1,20 +1,7 @@
+export { getStaticProps } from 'multiplatform.one/next';
 import UserScreen from 'app/screens/user';
-import { GetStaticPaths } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { createGetStaticPaths } from 'multiplatform.one/next';
 
-export async function getStaticProps({ locale }: { locale: any }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common'])),
-    },
-  };
-}
-
-export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
-  return {
-    paths: [],
-    fallback: 'blocking',
-  };
-};
+export const getStaticPaths = createGetStaticPaths(['/user/alice']);
 
 export default UserScreen;

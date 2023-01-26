@@ -14,8 +14,6 @@ services:
     user: 0:0
     ports:
       - 3000:3000
-    volumes:
-      - ./data/logs:/var/logs
     environment:
       DEBUG: '1'
     depends_on:
@@ -29,7 +27,6 @@ services:
       - 8080:8080
     volumes:
       - ./realm-export.json:/tmp/realm-export.json:ro
-      - ./providers:/opt/keycloak/providers
     entrypoint:
       - sh
       - -c

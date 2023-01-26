@@ -1,9 +1,6 @@
-FROM registry.gitlab.com/risserlabs/community/images/node:16.14.2 AS builder
+FROM registry.gitlab.com/risserlabs/community/images/debian-node:16.19.0 AS builder
 
 WORKDIR /opt/app
-
-RUN curl -Lo /usr/bin/yq https://github.com/mikefarah/yq/releases/download/v4.25.1/yq_linux_amd64 && \
-    chmod +x /usr/bin/yq
 
 COPY package.json .yarnrc.yml yarn.lock *.mk default.env Makefile ./
 COPY .mkpm/.bootstrap.mk .mkpm/.cache.tar.gz .mkpm/
@@ -25,7 +22,7 @@ FROM node:16-alpine
 WORKDIR /opt/app
 
 COPY --from=builder /tmp/app ./
-COPY docker/entrypoint.sh /usr/local/sbin/entrypoint
+COPY platforms/next/docker/entrypoint.sh /usr/local/sbin/entrypoint
 RUN chmod +x /usr/local/sbin/entrypoint
 
 ENTRYPOINT [ "/usr/local/sbin/entrypoint" ]

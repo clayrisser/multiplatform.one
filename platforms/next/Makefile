@@ -45,6 +45,12 @@ $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(NEXT) build
 	@$(call done,build)
 
+ACTIONS += export~test ##
+$(ACTION)/export: $(call git_deps,\.([jt]sx?)$$)
+	@NEXT_STATIC=1 $(NEXT) build
+	@NEXT_STATIC=1 $(NEXT) export
+	@$(call done,export)
+
 PORT ?= 3000
 .PHONY: start +start
 start: | ~install +start ##
@@ -61,8 +67,9 @@ clean: ##
 		$(YARN_GIT_CLEAN_FLAGS) \
 		$(NOFAIL)
 
-.PHONY: postinstall
-postinstall: ##
+.PHONY: docker/%
+docker/%:
+	@echo $(MAKE) -sC docker $(subst docker/,,$@) ARGS=$(ARGS)
 
 CACHE_ENVS += \
 

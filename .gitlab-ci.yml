@@ -1,0 +1,81 @@
+# include:
+#   - template: Auto-DevOps.gitlab-ci.yml
+
+variables:
+  #### CONFIG ####
+  DEBUG: '1'
+  KEYCLOAK_BASE_URL: https://example.com?keycloak
+  KEYCLOAK_CLEANUP: 'true'
+  KEYCLOAK_CLIENT_ID: 'g-${CI_PROJECT_NAME}-${CI_COMMIT_BRANCH}'
+  KEYCLOAK_CLIENT_SECRET_ENABLED: 'false'
+  KEYCLOAK_REALM: main
+
+  #### ENVS ####
+  K8S_SECRET_DEBUG: '${DEBUG}'
+  K8S_SECRET_KEYCLOAK_BASE_URL: '${KEYCLOAK_BASE_URL}'
+  K8S_SECRET_KEYCLOAK_CLIENT_ID: '${KEYCLOAK_CLIENT_ID}'
+  K8S_SECRET_KEYCLOAK_REALM: '${KEYCLOAK_REALM}'
+
+  #### JOBS ####
+  TEST_DISABLED: '1'
+  BUILD_DISABLED: ''
+  CODE_QUALITY_DISABLED: '1'
+  LICENSE_MANAGEMENT_DISABLED: '1'
+  BROWSER_PERFORMANCE_DISABLED: '1'
+  LOAD_PERFORMANCE_DISABLED: '1'
+  SAST_DISABLED: '1'
+  SECRET_DETECTION_DISABLED: '1'
+  DEPENDENCY_SCANNING_DISABLED: '1'
+  CONTAINER_SCANNING_DISABLED: '1'
+  DAST_DISABLED: '1'
+  REVIEW_DISABLED: ''
+  CODE_INTELLIGENCE_DISABLED: '1'
+
+  #### AUTO DEVOPS ####
+  # BUILDPACK_URL=
+  DOCKERFILE_PATH: docker/Dockerfile
+  STAGING_ENABLED: '1'
+  INCREMENTAL_ROLLOUT_MODE: manual
+  CANARY_ENABLED: ''
+  POSTGRES_ENABLED: 'false'
+  AUTO_DEVOPS_CHART_REPOSITORY: https://risserlabs.gitlab.io/community/charts
+  AUTO_DEVOPS_CHART_REPOSITORY_NAME: risserlabs
+  AUTO_DEVOPS_CHART: risserlabs/auto-deploy-app
+  KUBE_NAMESPACE: 'g-${CI_PROJECT_NAME}-${CI_PROJECT_ID}'
+  HELM_UPGRADE_EXTRA_ARGS: >
+    --version=2.35.0
+    --set integrations.keycloak.cleanup=${KEYCLOAK_CLEANUP}
+    --set integrations.keycloak.clientId=${KEYCLOAK_CLIENT_ID}
+    --set integrations.keycloak.clientSecret=${KEYCLOAK_CLIENT_SECRET}
+    --set integrations.keycloak.clientSecretEnabled=${KEYCLOAK_CLIENT_SECRET_ENABLED}
+    --set integrations.keycloak.name=${KEYCLOAK_INTEGRATION}
+
+visual-regression:
+  stage: test
+  image: registry.gitlab.com/risserlabs/community/images/loki:0.0.1
+  script:
+    - yarn
+    - make -s storybook/vr-test || true
+  artifacts:
+    paths:
+      - platforms/storybook/.loki
+    expire_in: 1 week
+  when: manual
+
+pages:
+  stage: deploy
+  image: registry.gitlab.com/risserlabs/community/images/loki:0.0.1
+  script:
+    - rm -rf public
+    ## public storybook ##
+    - make -s storybook/build
+    - cp -r platforms/storybook/storybook-static public
+    ## public next ##
+    # - make -s next/export
+    # - cp -r platforms/next/out public
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
+  when: manual

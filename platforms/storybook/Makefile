@@ -48,13 +48,14 @@ $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(BUILD_STORYBOOK)
 	@$(call done,build)
 
+PORT ?= 6006
 .PHONY: start +start
 start: | ~install +start ##
 +start:
-	@TAMAGUI_TARGET=web $(START_STORYBOOK) -p 6006 -s ./public
+	@TAMAGUI_TARGET=web $(START_STORYBOOK) -p $(PORT) -s ./public
 
 .PHONY: vr-update
-vr-update: ~build@storybook ##
+vr-update: ~build ##
 	@$(LOKI) \
 		--requireReference \
 		--diffingEngine $(VR_DIFFING_ENGINE) \
@@ -63,7 +64,7 @@ vr-update: ~build@storybook ##
 		update
 
 .PHONY: vr-test
-vr-test: ~build@storybook ##
+vr-test: ~build ##
 	@$(LOKI) \
 		--requireReference \
 		--diffingEngine $(VR_DIFFING_ENGINE) \

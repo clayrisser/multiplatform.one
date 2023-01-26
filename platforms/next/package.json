@@ -17,10 +17,22 @@
     "react-native": "0.70.5",
     "react-native-web": "~0.18.11",
     "react-native-web-lite": "^1.1.5",
-    "vercel": "^28.13.1"
+    "vercel": "^28.13.2"
   },
   "devDependencies": {
     "@types/cookie": "^0.5.1",
     "@types/node": "^18.11.18"
+  },
+  "jest": {
+    "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
+    "verbose": true,
+    "testPathIgnorePatterns": [
+      "<rootDir>/out/"
+    ]
+  },
+  "jestSonar": {
+    "reportPath": ".mkpm/.tmp/reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
   }
 }
