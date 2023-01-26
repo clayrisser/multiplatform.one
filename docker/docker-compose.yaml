@@ -1,0 +1,51 @@
+version: '3.7'
+
+services:
+  dev:
+    container_name: dev
+    image: busybox
+    command: tail -f /dev/null
+    depends_on:
+      - keycloak
+
+  app:
+    container_name: ${NAME}
+    image: ${IMAGE}:latest
+    user: 0:0
+    ports:
+      - 3000:3000
+    volumes:
+      - ./data/logs:/var/logs
+    environment:
+      DEBUG: '1'
+    depends_on:
+      - keycloak
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:19.0.3
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - ./realm-export.json:/tmp/realm-export.json:ro
+      - ./providers:/opt/keycloak/providers
+    entrypoint:
+      - sh
+      - -c
+      - |
+        /opt/keycloak/bin/kc.sh build
+        IMPORT_FLAG_FILE=/opt/keycloak/imported.flag
+        if [ "$${KEYCLOAK_IMPORT}" != "" ]; then
+          if [ ! -f "$$IMPORT_FLAG_FILE" ]; then
+            /opt/keycloak/bin/kc.sh import --file "$$KEYCLOAK_IMPORT"
+            touch "$$IMPORT_FLAG_FILE"
+          fi
+        fi
+        /opt/keycloak/bin/kc.sh start-dev
+    environment:
+      KC_HEALTH_ENABLED: 'true'
+      KC_METRICS_ENABLED: 'true'
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: P@ssw0rd
+      KEYCLOAK_IMPORT: /tmp/realm-export.json

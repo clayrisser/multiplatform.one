@@ -62,6 +62,10 @@ purge: clean ##
 $(patsubst %,%/%,$(WORKSPACE_NAMES)):
 	@$(MAKE) -sC $(call map_workspace,$(@D)) $*
 
+.PHONY: docker/%
+docker/%:
+	@$(MAKE) -sC docker $(subst docker/,,$@) ARGS=$(ARGS)
+
 HELP = help
 help: $(MKCHAIN_HELP)
 	@$(call workspace_foreach_help,$(MKCHAIN_HELP),$(ARGS))
