@@ -4,7 +4,7 @@
  * File Created: 22-01-2023 11:33:46
  * Author: Clay Risser
  * -----
- * Last Modified: 22-01-2023 11:35:56
+ * Last Modified: 26-01-2023 07:55:43
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -23,12 +23,13 @@
  */
 
 import { MultiPlatform } from '../../multiplatform';
+import { config } from '../../config';
 import { useTranslation as nextUseTranslation } from 'next-i18next';
 import { useTranslation as reactUseTranslation } from 'react-i18next';
 
 let useTranslation = reactUseTranslation;
 
-if (MultiPlatform.isNext()) {
+if (MultiPlatform.isNext() && config.get('NEXT_STATIC') !== '1') {
   useTranslation = nextUseTranslation;
 }
 

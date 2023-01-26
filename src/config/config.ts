@@ -4,7 +4,7 @@
  * File Created: 19-11-2022 11:59:11
  * Author: Clay Risser
  * -----
- * Last Modified: 25-01-2023 04:29:07
+ * Last Modified: 25-01-2023 05:17:45
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -27,12 +27,11 @@ import { IConfig } from './types';
 import { MultiPlatform } from '../multiplatform';
 
 export class Config implements IConfig {
-  private _config: Record<string, string | undefined> = process?.env || {};
+  private _config: Record<string, string | undefined> = {};
 
   constructor(config: Record<string, string | undefined> = {}) {
     const nextConfig = MultiPlatform.isNext() && getConfig ? getConfig() : {};
     this._config = {
-      ...this._config,
       ...Object.entries(config).reduce<Record<string, string | undefined>>(
         (config, [key, value]: [string, string | undefined]) => {
           if (typeof value !== 'undefined') config[key] = value;
