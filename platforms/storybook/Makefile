@@ -8,7 +8,8 @@ include $(MKPM)/mkchain
 include $(MKPM)/yarn
 include ../../shared.mk
 
-export START_STORYBOOK ?= $(call yarn_binary,start-storybook)
+NODE_HEAP ?= 8192
+export START_STORYBOOK ?= $(NODE) --max-old-space-size=$(NODE_HEAP) $(call yarn_binary,start-storybook)
 
 ACTIONS += install ##
 $(ACTION)/install: $(PROJECT_ROOT)/package.json package.json
