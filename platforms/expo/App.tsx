@@ -7,9 +7,9 @@ import { GlobalProvider } from 'app/providers';
 import { NativeNavigation } from 'app/navigation/native';
 import { Platform, View, StatusBar as RNStatusBar } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { config } from 'app/config';
 import { fonts } from 'app/fonts';
 import { useFonts } from 'expo-font';
+import { config } from 'app/config';
 
 const logger = console;
 SplashScreen.preventAutoHideAsync().catch(logger.error);

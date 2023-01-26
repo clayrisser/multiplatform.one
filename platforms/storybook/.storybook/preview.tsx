@@ -5,9 +5,9 @@ import 'app/i18n';
 import 'raf/polyfill';
 import React, { ReactNode, useEffect } from 'react';
 import { GlobalProvider, StateProvider } from 'app/providers';
+import { useThemeState } from 'app/state/theme';
 import { themes as storybookThemes } from '@storybook/theming';
 import { useDarkMode } from 'storybook-dark-mode';
-import { ThemeValue, useThemeState } from 'app/state/theme';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },

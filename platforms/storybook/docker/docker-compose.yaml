@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  app:
+    container_name: ${NAME}
+    image: ${IMAGE}:latest
+    user: 0:0
+    ports:
+      - 8080:80
+    environment:
+      DEBUG: '1'

@@ -1,10 +1,12 @@
 {
   "recommendations": [
+    "ahmadalli.vscode-nginx-conf",
     "amodio.tsl-problem-matcher",
     "dbaeumer.vscode-eslint",
     "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
     "mikestead.dotenv",
+    "ms-azuretools.vscode-docker",
     "psioniq.psi-header",
     "rubymaniac.vscode-direnv",
     "streetsidesoftware.code-spell-checker"
