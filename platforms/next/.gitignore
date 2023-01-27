@@ -1,3 +1,7 @@
+# app
+/debug.json
+
+# next
 .vercel
 /analyze
 /out

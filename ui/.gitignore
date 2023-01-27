@@ -1,5 +1,7 @@
-dist/
+# app
 .DS_Store
+/debug.json
 THUMBS_DB
+dist/
 node_modules/
 types/

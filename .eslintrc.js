@@ -16,6 +16,12 @@ module.exports = {
   globals: {
     NodeJS: true,
   },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
+  ignorePatterns: ['!.storybook'],
   rules: {
     'max-lines': ['error', 500],
     'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
