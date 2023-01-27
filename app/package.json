@@ -8,6 +8,7 @@
   ],
   "dependencies": {
     "@multiplatform.one/keycloak": "^0.1.3",
+    "@multiplatform.one/ui": "*",
     "@react-navigation/native": "^6.1.2",
     "@react-navigation/native-stack": "^6.9.8",
     "@tamagui/animations-react-native": "^1.1.5",
@@ -28,8 +29,7 @@
     "react-native-svg": "13.4.0",
     "recoil": "^0.7.6",
     "recoil-persist": "^4.2.0",
-    "solito": "^2.1.3",
-    "ui": "*"
+    "solito": "^2.1.3"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

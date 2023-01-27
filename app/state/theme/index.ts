@@ -1,5 +1,5 @@
 import { ColorSchemeName, useColorScheme } from 'react-native';
-import { ThemeName } from 'ui';
+import { ThemeName } from '@multiplatform.one/ui';
 import { useRecoilState, atomFamily } from 'recoil';
 
 export function useThemeState() {

@@ -5,7 +5,7 @@ import {
   TamaguiProvider as OriginalTamaguiProvider,
   TamaguiProviderProps as OriginalTamaguiProviderProps,
   Theme,
-} from 'ui';
+} from '@multiplatform.one/ui';
 
 export type TamaguiProviderProps = Omit<OriginalTamaguiProviderProps, 'config'>;
 

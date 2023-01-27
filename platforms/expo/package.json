@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.20.13",
+    "@multiplatform.one/ui": "*",
     "app": "*",
     "babel-plugin-module-resolver": "^5.0.0",
     "expo": "^47.0.13",
@@ -22,8 +23,7 @@
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
     "react-native-svg": "^13.7.0",
-    "react-native-web": "~0.18.11",
-    "ui": "*"
+    "react-native-web": "~0.18.11"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",

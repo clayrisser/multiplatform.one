@@ -1,4 +1,4 @@
-import { config } from 'ui';
+import { config } from '@multiplatform.one/ui';
 
 export type AppConfig = typeof config;
 
