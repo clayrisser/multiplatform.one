@@ -1,4 +1,4 @@
-import { config } from '@multiplatform.one/ui';
+import { config } from '@multiplatform.one/ui/src/tamagui.config';
 
 export type AppConfig = typeof config;
 

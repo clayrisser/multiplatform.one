@@ -34,11 +34,6 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	@$(call workspace_foreach,test,$(ARGS))
 	@$(call done,test)
 
-ACTIONS += build ##
-$(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(call workspace_foreach,build,$(ARGS))
-	@$(call done,build)
-
 .PHONY: upgrade
 upgrade: ##
 	@$(YARN) upgrade-interactive
@@ -73,6 +68,12 @@ next/docker/%:
 .PHONY: storybook/docker/%
 storybook/docker/%:
 	@$(MAKE) -sC platforms/storybook/docker $(subst storybook/docker/,,$@) ARGS=$(ARGS)
+
+.PHONY: build
+build: ui/build
+
+.PHONY: publish
+publish: ui/publish
 
 CACHE_ENVS += \
 

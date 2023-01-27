@@ -4,9 +4,9 @@ import { ButtonProps } from 'tamagui';
 export const SelectButtonContext = createContext<SelectButtonContextValue>({ values: {} });
 
 interface SelectButtonContextValue {
-  selectedKey?: string;
+  selectedIndex?: number;
   selectedStyle?: ButtonProps;
-  setSelectedKey?: Dispatch<SetStateAction<string | undefined>>;
-  setValues?: Dispatch<SetStateAction<Record<string, string | number>>>;
-  values: Record<string, string | number>;
+  setSelectedIndex?: Dispatch<SetStateAction<number | undefined>>;
+  setValues?: Dispatch<SetStateAction<Record<string, string>>>;
+  values: Record<string, string>;
 }

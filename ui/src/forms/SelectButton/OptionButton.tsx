@@ -1,11 +1,10 @@
-import React, { useContext, useState, useEffect, useCallback, ComponentProps, ReactNode, useMemo } from 'react';
+import React, { useContext, useState, useEffect, useCallback, ComponentProps } from 'react';
 import { Button, styled, ButtonProps } from 'tamagui';
 import { GestureResponderEvent } from 'react-native';
 import { SelectButtonContext } from './context';
-import { fastUnique, useWrapTextChildren } from '../../helpers';
 
 const defaultSelectedStyle: ButtonProps = {
-  bc: '$color7',
+  backgroundColor: '$color7',
 };
 
 const StyledButton = styled(Button, {
@@ -22,44 +21,38 @@ const StyledButton = styled(Button, {
   },
 });
 
-export type OptionButtonProps = Omit<ButtonProps, 'children'> & {
-  children: ReactNode;
+export type OptionButtonProps = ButtonProps & {
+  index: number;
   selectedStyle?: ButtonProps;
-  value?: number | string;
+  value: string;
 };
 
-export function OptionButton(props: OptionButtonProps) {
-  const key = useMemo(() => fastUnique(), []);
+export function OptionButton({ index, value, selectedStyle, ...props }: OptionButtonProps) {
   const [selected, setSelected] = useState(false);
-  const { selectedKey, selectedStyle, setSelectedKey, setValues } = useContext(SelectButtonContext);
-  const children = useWrapTextChildren(props.children);
+  const context = useContext(SelectButtonContext);
   const mergedSelectedStyle = {
+    ...context.selectedStyle,
     ...selectedStyle,
-    ...props.selectedStyle,
   } as ComponentProps<typeof StyledButton>;
 
   useEffect(() => {
-    if (!setValues) return;
-    setValues((values: Record<string, string | number>) => {
-      values[key] =
-        props.value ??
-        (((typeof props.children === 'string' || typeof props.children === 'number') && props.children) ||
-          props.children?.toString() ||
-          '');
+    if (!context.setValues) return;
+    context.setValues((values: Record<string, string>) => {
+      values[index] = value;
       return values;
     });
-  }, [setValues]);
+  }, [context.setValues]);
 
   useEffect(() => {
-    setSelected(typeof selectedKey !== 'undefined' && selectedKey === key);
-  }, [selectedKey]);
+    setSelected(typeof context.selectedIndex !== 'undefined' && context.selectedIndex === index);
+  }, [context.selectedIndex]);
 
   const handlePress = useCallback(
     (e: GestureResponderEvent) => {
-      if (setSelectedKey) setSelectedKey(key);
+      if (context.setSelectedIndex) context.setSelectedIndex(index);
       if (props.onPress) props.onPress(e);
     },
-    [setSelectedKey, props.onPress],
+    [context.setSelectedIndex, props.onPress],
   );
 
   return (
@@ -85,8 +78,6 @@ export function OptionButton(props: OptionButtonProps) {
               : {}),
           })}
       onPress={handlePress}
-    >
-      {children}
-    </StyledButton>
+    />
   );
 }

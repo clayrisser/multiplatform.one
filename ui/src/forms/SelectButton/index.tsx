@@ -5,53 +5,54 @@ import { YStack, XStack, YStackProps, ButtonProps } from 'tamagui';
 import { useEffect } from 'react';
 
 export type SelectButtonProps = YStackProps & {
-  onValueChange?: (value: number | string, key: string) => unknown;
+  onValueChange?: (value: string) => unknown;
   selectedStyle?: ButtonProps;
-  selectedValue?: number | string;
+  selectedValue?: string;
   stack?: 'x' | 'y';
 };
 
-export function SelectButton(props: SelectButtonProps) {
-  const { selectedValue } = props;
+export function SelectButton({ selectedValue, stack, selectedStyle, onValueChange, ...props }: SelectButtonProps) {
   const [values, setValues] = useState<Record<string, string>>({});
-  const [selectedKey, setSelectedKey] = useState<string>();
-  const clonedProps = { ...props };
-  delete clonedProps.onValueChange;
-  delete clonedProps.selectedStyle;
-  delete clonedProps.selectedValue;
-  delete clonedProps.stack;
+  const [selectedIndex, setSelectedIndex] = useState<number>();
 
   const contextValue = useMemo(
     () => ({
-      selectedKey,
-      setSelectedKey,
+      selectedIndex,
+      selectedStyle,
+      setSelectedIndex,
       setValues,
       values,
-      selectedStyle: props.selectedStyle,
     }),
-    [selectedKey, setSelectedKey, setValues, values, props.selectedStyle],
+    [selectedIndex, setSelectedIndex, setValues, values, selectedStyle],
   );
 
   useEffect(() => {
-    if (props.onValueChange && typeof selectedKey === 'string' && selectedKey in values) {
-      props.onValueChange(values[selectedKey], selectedKey);
+    const selectedIndexStr = selectedIndex?.toString();
+    if (
+      onValueChange &&
+      typeof selectedIndex !== 'undefined' &&
+      typeof selectedIndexStr !== 'undefined' &&
+      selectedIndexStr in values
+    ) {
+      onValueChange(values[selectedIndexStr]);
     }
-  }, [selectedKey]);
+  }, [selectedIndex]);
 
   useEffect(() => {
     if (typeof selectedValue === 'undefined') return;
-    for (const [key, value] of Object.entries(values)) {
-      if (value === selectedValue) {
-        setSelectedKey(key);
+    for (const [index, value] of Object.entries(values)) {
+      const indexNum = Number(index);
+      if (value === selectedValue && !Number.isNaN(indexNum)) {
+        setSelectedIndex(indexNum);
         return;
       }
     }
-    setSelectedKey(undefined);
+    setSelectedIndex(undefined);
   }, [selectedValue]);
 
   return (
     <SelectButtonContext.Provider value={contextValue}>
-      {props.stack === 'x' ? <XStack {...clonedProps} /> : <YStack {...clonedProps} />}
+      {stack === 'x' ? <XStack {...props} /> : <YStack {...props} />}
     </SelectButtonContext.Provider>
   );
 }
