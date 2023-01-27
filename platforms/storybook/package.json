@@ -53,5 +53,17 @@
       "pixelmatch": {}
     },
     "verboseRenderer": true
+  },
+  "jest": {
+    "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
+    "verbose": true,
+    "testPathIgnorePatterns": [
+      "<rootDir>/storybook-static/"
+    ]
+  },
+  "jestSonar": {
+    "reportPath": ".mkpm/.tmp/reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
   }
 }

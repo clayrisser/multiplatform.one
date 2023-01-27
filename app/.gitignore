@@ -1,3 +1,5 @@
-node_modules/
+# app
 .DS_Store
+/debug.json
 THUMBS_DB
+node_modules/

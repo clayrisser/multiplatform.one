@@ -70,7 +70,7 @@ const config = {
       propFilter: (prop) => (prop.parent ? !/node_modules\/(?!tamagui)/.test(prop.parent.fileName) : true),
     },
   },
-  webpackFinal: async (config, { configType }) => {
+  webpackFinal: async (config) => {
     config.resolve = {
       ...config.resolve,
       fallback: {
