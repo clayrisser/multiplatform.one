@@ -1,4 +1,4 @@
-// override react-native types with react-native-web types
+import React from 'react';
 import 'react-native';
 
 declare module 'react-native' {

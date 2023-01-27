@@ -1,3 +1,6 @@
+# app
+/debug.json
+
 # storybook
 *.jks
 *.key
