@@ -25,7 +25,7 @@ export const parameters = {
     light: { ...storybookThemes.normal },
   },
   paddings: {
-    default: 'Small',
+    default: undefined,
   },
   backgrounds: [
     { name: 'light', value: 'white', default: true },

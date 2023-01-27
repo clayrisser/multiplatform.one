@@ -4,7 +4,7 @@
   "sideEffects": [
     "*.css"
   ],
-  "description": "keycloak client for multiplatform.one ecosystem",
+  "description": "multiplatform.one ui components",
   "types": "./types/index",
   "main": "dist/cjs",
   "module": "dist/esm",

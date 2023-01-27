@@ -63,4 +63,4 @@ function SheetDemo() {
   );
 }
 
-export default HomeScreen;
+export default withDefaultLayout(HomeScreen);
