@@ -58,6 +58,9 @@ clean: ##
 		$(YARN_GIT_CLEAN_FLAGS) \
 		$(NOFAIL)
 
+.PHONY: postinstall
+postinstall: +build
+
 CACHE_ENVS += \
 
 -include $(call actions)
