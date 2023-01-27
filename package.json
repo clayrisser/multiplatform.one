@@ -32,7 +32,7 @@
     "keycloak-js@20.0.1": "patch:keycloak-js@npm:20.0.1#.yarn/patches/keycloak-js-npm-20.0.1-f7fb82c1dc"
   },
   "tamaguiModules": [
-    "ui"
+    "@multiplatform.one/ui"
   ],
   "transpileModules": [
     "@multiplatform.one/keycloak",
