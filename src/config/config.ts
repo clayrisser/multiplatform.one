@@ -4,7 +4,7 @@
  * File Created: 19-11-2022 11:59:11
  * Author: Clay Risser
  * -----
- * Last Modified: 25-01-2023 05:17:45
+ * Last Modified: 28-01-2023 12:23:02
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -30,7 +30,7 @@ export class Config implements IConfig {
   private _config: Record<string, string | undefined> = {};
 
   constructor(config: Record<string, string | undefined> = {}) {
-    const nextConfig = MultiPlatform.isNext() && getConfig ? getConfig() : {};
+    const nextConfig = MultiPlatform.isNext && getConfig ? getConfig() : {};
     this._config = {
       ...Object.entries(config).reduce<Record<string, string | undefined>>(
         (config, [key, value]: [string, string | undefined]) => {

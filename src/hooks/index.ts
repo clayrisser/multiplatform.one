@@ -4,7 +4,7 @@
  * File Created: 22-01-2023 11:34:32
  * Author: Clay Risser
  * -----
- * Last Modified: 22-01-2023 11:34:37
+ * Last Modified: 28-01-2023 12:52:32
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,4 +22,6 @@
  * limitations under the License.
  */
 
+export * from './useLocale';
 export * from './useTranslation';
+export * from './useSupportedLocales';

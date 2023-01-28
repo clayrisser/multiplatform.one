@@ -4,7 +4,7 @@
  * File Created: 09-11-2022 08:59:29
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:11:16
+ * Last Modified: 28-01-2023 12:24:56
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,23 +22,10 @@
  * limitations under the License.
  */
 
-import { MultiPlatformBase, MultiPlatformOS } from './multiplatformBase';
+import { MultiPlatformBase } from './multiplatformBase';
 
 export class MultiPlatform extends MultiPlatformBase {
-  static OS = getMultiplatformOS();
-
-  static isNative() {
-    return true;
-  }
-
-  static isExpo() {
-    return true;
-  }
-}
-
-function getMultiplatformOS() {
-  if (typeof window.__STORYBOOK_ADDONS === 'object') {
-    return MultiPlatformOS.StorybookExpoIos;
-  }
-  return MultiPlatformOS.ExpoIos;
+  static isNative = true;
+  static isExpo = true;
+  static isIos = true;
 }

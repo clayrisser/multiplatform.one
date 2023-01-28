@@ -4,7 +4,7 @@
  * File Created: 09-11-2022 09:50:38
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:11:16
+ * Last Modified: 28-01-2023 12:24:41
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,43 +22,26 @@
  * limitations under the License.
  */
 
-export enum MultiPlatformOS {
-  ExpoAndroid = 'ExpoAndroid',
-  ExpoIos = 'ExpoIos',
-  ExpoWeb = 'ExpoWeb',
-  Next = 'Next',
-  NextSsr = 'NextSsr',
-  StorybookExpoAndroid = 'StorybookExpoAndroid',
-  StorybookExpoIos = 'StorybookExpoIos',
-  StorybookExpoWeb = 'StorybookExpoWeb',
-  StorybookWeb = 'StorybookWeb',
-  Unknown = 'Unknown',
-}
+import { isTouchable, isWindowDefined } from '@tamagui/constants';
 
 export class MultiPlatformBase {
-  static OS = MultiPlatformOS.Unknown;
-
-  static isExpo() {
-    return false;
-  }
-
-  static isNative() {
-    return false;
-  }
-
-  static isWeb() {
-    return false;
-  }
-
-  static isStorybook() {
-    return typeof window.__STORYBOOK_ADDONS === 'object';
-  }
-
-  static isSsr() {
-    return typeof window === 'undefined';
-  }
-
-  static isNext() {
-    return false;
-  }
+  static isAndroid = false;
+  static isChrome = false;
+  static isClient = false;
+  static isElectron = false;
+  static isElectronMain = false;
+  static isElectronRender = false;
+  static isExpo = false;
+  static isFirefox = false;
+  static isIos = false;
+  static isNative = false;
+  static isNext = false;
+  static isRSC = false;
+  static isServer = false;
+  static isStatic = false;
+  static isStorybook = typeof window.__STORYBOOK_ADDONS === 'object';
+  static isTouchable = isTouchable;
+  static isWeb = false;
+  static isWebTouchable = false;
+  static isWindowDefined = isWindowDefined;
 }

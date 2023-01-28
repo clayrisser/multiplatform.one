@@ -4,7 +4,7 @@
  * File Created: 09-11-2022 08:59:08
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:11:16
+ * Last Modified: 28-01-2023 12:24:49
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,32 +22,23 @@
  * limitations under the License.
  */
 
+import getConfig from 'next/config';
+import { MultiPlatformBase } from './multiplatformBase';
 import { Platform } from 'react-native';
-import { MultiPlatformBase, MultiPlatformOS } from './multiplatformBase';
+import { isChrome, isClient, isRSC, isServer, isWeb, isWebTouchable } from '@tamagui/constants';
 
 export class MultiPlatform extends MultiPlatformBase {
-  static OS = getMultiplatformOS();
-
-  static isWeb() {
-    return true;
-  }
-
-  static isNext() {
-    return Platform.OS === 'web' && (typeof window === 'undefined' || typeof window.__NEXT_DATA__ === 'object');
-  }
-}
-
-function getMultiplatformOS() {
-  if (Platform.OS === 'web') {
-    if (typeof window === 'undefined') {
-      return MultiPlatformOS.NextSsr;
-    }
-    if (typeof window.__NEXT_DATA__ === 'object') {
-      return MultiPlatformOS.Next;
-    }
-    if (typeof window.__STORYBOOK_ADDONS === 'object') {
-      return MultiPlatformOS.StorybookWeb;
-    }
-  }
-  return MultiPlatformOS.Unknown;
+  static isChrome = isChrome;
+  static isClient = isClient;
+  static isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+  static isWeb = Platform.OS === 'web' && isWeb;
+  static isNext = MultiPlatform.isWeb && (!MultiPlatform.isWindowDefined || typeof window.__NEXT_DATA__ === 'object');
+  static isRSC = isRSC;
+  static isServer = isServer;
+  static isStatic = MultiPlatform.isNext && (getConfig ? getConfig() : {})?.publicRuntimeConfig?.NEXT_STATIC !== '1';
+  static isElectronRender = MultiPlatform.isWindowDefined && (window as any).process?.type === 'renderer';
+  static isElectronMain = MultiPlatform.isWindowDefined && (window as any).versions?.electron;
+  static isWebTouchable = isWebTouchable;
+  static isElectron =
+    MultiPlatform.isElectronRender || MultiPlatform.isElectronMain || navigator?.userAgent?.indexOf('Electron') >= 0;
 }

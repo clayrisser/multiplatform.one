@@ -4,7 +4,7 @@
  * File Created: 09-11-2022 08:59:29
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:11:16
+ * Last Modified: 28-01-2023 12:25:02
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,23 +22,11 @@
  * limitations under the License.
  */
 
-import { MultiPlatformBase, MultiPlatformOS } from './multiplatformBase';
+import { isWeb } from '@tamagui/constants';
+import { Platform } from 'react-native';
+import { MultiPlatformBase } from './multiplatformBase';
 
 export class MultiPlatform extends MultiPlatformBase {
-  static OS = getMultiplatformOS();
-
-  static isExpo() {
-    return true;
-  }
-
-  static isWeb() {
-    return true;
-  }
-}
-
-function getMultiplatformOS() {
-  if (typeof window.__STORYBOOK_ADDONS === 'object') {
-    return MultiPlatformOS.StorybookExpoWeb;
-  }
-  return MultiPlatformOS.ExpoWeb;
+  static isExpo = true;
+  static isWeb = Platform.OS === 'web' && isWeb;
 }

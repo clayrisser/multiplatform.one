@@ -4,7 +4,7 @@
  * File Created: 26-01-2023 08:48:52
  * Author: Clay Risser
  * -----
- * Last Modified: 26-01-2023 09:17:36
+ * Last Modified: 28-01-2023 12:29:54
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,13 +22,12 @@
  * limitations under the License.
  */
 
-import getConfig from 'next/config';
 import type { GetStaticPaths } from 'next';
 import { MultiPlatform } from '../multiplatform';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export async function getBaseStaticProps(locale: any, namespacesRequired: string[] = []) {
-  return MultiPlatform.isNext() && (getConfig ? getConfig() : {})?.publicRuntimeConfig?.NEXT_STATIC !== '1'
+  return MultiPlatform.isNext && !MultiPlatform.isStatic
     ? await serverSideTranslations(locale, ['common', ...namespacesRequired])
     : {};
 }

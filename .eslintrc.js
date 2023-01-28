@@ -4,7 +4,7 @@
  * File Created: 25-11-2022 10:12:12
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:12:15
+ * Last Modified: 28-01-2023 12:34:10
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022
@@ -39,6 +39,7 @@ module.exports = {
   },
   globals: {
     NodeJS: true,
+    JSX: true,
   },
   rules: {
     'max-lines': ['error', 500],

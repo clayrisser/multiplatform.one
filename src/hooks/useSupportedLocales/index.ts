@@ -1,10 +1,10 @@
 /**
- * File: /src/hooks/useTranslation/index.ts
+ * File: /src/hooks/useSupportedLocales/index.ts
  * Project: multiplatform.one
- * File Created: 22-01-2023 11:33:46
+ * File Created: 28-01-2023 12:44:12
  * Author: Clay Risser
  * -----
- * Last Modified: 28-01-2023 12:29:47
+ * Last Modified: 28-01-2023 12:52:24
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,14 +22,22 @@
  * limitations under the License.
  */
 
+import { useState, useEffect } from 'react';
 import { MultiPlatform } from '../../multiplatform';
-import { useTranslation as nextUseTranslation } from 'next-i18next';
-import { useTranslation as reactUseTranslation } from 'react-i18next';
 
-let useTranslation = reactUseTranslation;
+export function useSupportedLocales(): string[] | undefined {
+  const [supportedLocales, setSupportedLocales] = useState<string[]>();
 
-if (MultiPlatform.isNext && !MultiPlatform.isStatic) {
-  useTranslation = nextUseTranslation;
+  useEffect(() => {
+    (async () => {
+      if (MultiPlatform.isNext && !MultiPlatform.isStatic) {
+        setSupportedLocales([...((await import('next-i18next')).i18n?.languages || [])]);
+      } else {
+        // @ts-ignore
+        setSupportedLocales((await import('app/i18n')).supportedLocales);
+      }
+    })();
+  }, []);
+
+  return supportedLocales;
 }
-
-export { useTranslation };
