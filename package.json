@@ -36,6 +36,7 @@
   ],
   "transpileModules": [
     "@multiplatform.one/keycloak",
+    "@multiplatform.one/ui",
     "app",
     "expo-asset",
     "expo-constants",
