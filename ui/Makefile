@@ -45,7 +45,34 @@ BUILD_TARGETS := dist/cjs/index.js
 dist/cjs/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	-@$(TAMAGUI_BUILD)
+	@$(TAMAGUI_BUILD)
+	@$(RM) -f \
+		dist/cjs/animations.js \
+		dist/cjs/animations.js.map \
+		dist/cjs/global.js \
+		dist/cjs/global.js.map \
+		dist/cjs/tamagui.config.js \
+		dist/cjs/tamagui.config.js.map \
+		dist/esm/animations.js \
+		dist/esm/animations.js.map \
+		dist/esm/global.js \
+		dist/esm/global.js.map \
+		dist/esm/tamagui.config.js \
+		dist/esm/tamagui.config.js.map \
+		dist/jsx/animations.js \
+		dist/jsx/animations.js.map \
+		dist/jsx/global.js \
+		dist/jsx/global.js.map \
+		dist/jsx/tamagui.config.js \
+		dist/jsx/tamagui.config.js.map \
+		types/animations.d.ts \
+		types/animations.d.ts \
+		types/animations.d.ts.map \
+		types/animations.d.ts.map \
+		types/global.d.ts \
+		types/global.d.ts.map \
+		types/tamagui.config.d.ts \
+		types/tamagui.config.d.ts.map
 	@$(call done,build)
 
 .PHONY: clean
@@ -58,8 +85,12 @@ clean: ##
 		$(YARN_GIT_CLEAN_FLAGS) \
 		$(NOFAIL)
 
-.PHONY: postinstall
-postinstall: +build
+.PHONY: prepare
+prepare: +build
+
+.PHONY: publish
+publish:
+	@$(NPM) publish
 
 CACHE_ENVS += \
 
