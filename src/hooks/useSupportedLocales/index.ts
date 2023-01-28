@@ -4,7 +4,7 @@
  * File Created: 28-01-2023 12:44:12
  * Author: Clay Risser
  * -----
- * Last Modified: 28-01-2023 12:52:24
+ * Last Modified: 28-01-2023 13:35:15
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -31,7 +31,11 @@ export function useSupportedLocales(): string[] | undefined {
   useEffect(() => {
     (async () => {
       if (MultiPlatform.isNext && !MultiPlatform.isStatic) {
-        setSupportedLocales([...((await import('next-i18next')).i18n?.languages || [])]);
+        const getConfig = (await import('next/config')).default;
+        setSupportedLocales([
+          ...((typeof getConfig === 'function' && getConfig()?.publicRuntimeConfig?.i18n?.languages) ||
+            (await import('next-i18next')).i18n?.languages || ['en']),
+        ]);
       } else {
         // @ts-ignore
         setSupportedLocales((await import('app/i18n')).supportedLocales);
