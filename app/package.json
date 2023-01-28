@@ -7,7 +7,7 @@
     "*.css"
   ],
   "dependencies": {
-    "@multiplatform.one/keycloak": "^0.1.4",
+    "@multiplatform.one/keycloak": "^0.1.5",
     "@multiplatform.one/ui": "*",
     "@react-navigation/native": "^6.1.2",
     "@react-navigation/native-stack": "^6.9.8",
