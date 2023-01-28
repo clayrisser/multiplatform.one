@@ -1,22 +1,13 @@
-import React, { ComponentType, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
+import { createWithLayout } from 'ui';
 import { withDebugLayout } from './Debug';
 
 export interface DefaultLayoutProps {
   children: ReactNode;
 }
 
-export function DefaultLayout({ children }) {
+export function DefaultLayout({ children }: DefaultLayoutProps) {
   return <>{children}</>;
 }
 
-export interface WithDefaultLayoutProps {}
-
-export function withDefaultLayout<P extends WithDefaultLayoutProps = WithDefaultLayoutProps>(
-  Component: ComponentType<P>,
-) {
-  return withDebugLayout((props: P) => (
-    <DefaultLayout>
-      <Component {...props} />
-    </DefaultLayout>
-  ));
-}
+export const withDefaultLayout = createWithLayout(DefaultLayout, [withDebugLayout]);
