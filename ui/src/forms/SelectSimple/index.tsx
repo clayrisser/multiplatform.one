@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { Select, SelectProps, SelectTriggerProps, styled } from 'tamagui';
 
 const StyledSelectTrigger = styled(Select.Trigger, {
