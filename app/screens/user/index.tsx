@@ -4,18 +4,20 @@ import React from 'react';
 import { createParam } from 'solito';
 import { useLink } from 'solito/link';
 import { withDefaultLayout } from 'app/layouts/Default';
+import { useTranslation } from 'multiplatform.one';
 
 const { useParam } = createParam<{ id: string }>();
 
 function UserScreen() {
   const [id] = useParam('id');
   const linkProps = useLink({ href: '/' });
+  const { t } = useTranslation();
 
   return (
     <YStack f={1} jc="center" ai="center" space>
       <Paragraph ta="center" fow="800">{`User ID: ${id}`}</Paragraph>
       <Button {...linkProps} icon={ChevronLeft}>
-        Go Home
+        {t('screens.user.goHome')}
       </Button>
     </YStack>
   );

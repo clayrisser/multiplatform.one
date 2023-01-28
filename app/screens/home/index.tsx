@@ -1,6 +1,6 @@
 import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack } from 'tamagui';
-import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import React, { useState } from 'react';
+import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { useLink } from 'solito/link';
 import { useTranslation } from 'multiplatform.one';
 import { withDefaultLayout } from 'app/layouts/Default';
@@ -14,8 +14,8 @@ function HomeScreen() {
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
       <YStack space="$4" maw={600}>
-        <H1 ta="center">{t('welcomeScreen.welcome')}</H1>
-        <Paragraph ta="center">{t('welcomeScreen.message')}</Paragraph>
+        <H1 ta="center">{t('screens.home.welcome')}</H1>
+        <Paragraph ta="center">{t('screens.home.message')}</Paragraph>
         <Separator />
         <Paragraph ta="center">
           <Anchor color="$color12" href="https://multiplatform.one" target="_blank">
@@ -24,7 +24,7 @@ function HomeScreen() {
         </Paragraph>
       </YStack>
       <XStack>
-        <Button {...linkProps}>{t('welcomeScreen.link')}</Button>
+        <Button {...linkProps}>{t('screens.home.link')}</Button>
       </XStack>
       <SheetDemo />
     </YStack>

@@ -1,11 +1,11 @@
 import React, { ComponentType, ReactNode } from 'react';
 import { Select, ThemeName, YStack, ZStack, XStack, Adapt, Popover, Circle } from 'tamagui';
 import { SelectSimple } from '../forms/SelectSimple';
+import { createWithLayout, WithLayout } from 'multiplatform.one';
+import { useLocale } from 'multiplatform.one';
+import { useSupportedLocales } from 'multiplatform.one';
 // @ts-ignore
 import { config } from 'app/config';
-import { createWithLayout, WithLayout } from '../helpers';
-// @ts-ignore
-import { supportedLocales, useLocale } from 'app/i18n';
 // @ts-ignore
 import { useThemeState } from 'app/state/theme';
 
@@ -25,8 +25,9 @@ export function DebugLayout<DebugViewProps>({
   subThemeNames,
 }: DebugLayoutProps<DebugViewProps>) {
   const DebugView = debugView;
-  const [theme, setTheme] = useThemeState();
   const [locale, setLocale] = useLocale();
+  const [theme, setTheme] = useThemeState();
+  const supportedLocales = useSupportedLocales();
 
   function handleSubThemeChange(subTheme: ThemeName) {
     setTheme((theme) => ({
@@ -63,7 +64,7 @@ export function DebugLayout<DebugViewProps>({
   }
 
   function renderLocaleItems() {
-    return supportedLocales.map((name: string, i: number) => {
+    return (supportedLocales || []).map((name: string, i: number) => {
       return (
         <Select.Item key={i + name} index={i} value={name}>
           <Select.ItemText>{name}</Select.ItemText>
@@ -127,7 +128,9 @@ export function DebugLayout<DebugViewProps>({
     );
   }
 
-  if (config.get('DEBUG') !== '1') return <>{children}</>;
+  if (config.get('DEBUG') !== '1') {
+    return <>{children}</>;
+  }
   return (
     <ZStack fullscreen>
       {renderDebug()}
