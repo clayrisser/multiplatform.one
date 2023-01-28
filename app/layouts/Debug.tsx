@@ -1,5 +1,5 @@
 import React, { ComponentType, ReactNode } from 'react';
-import { Select, ThemeName, YStack, ZStack, XStack } from '@multiplatform.one/ui';
+import { Select, ThemeName, YStack, ZStack, XStack } from 'tamagui';
 import { config } from 'app/config';
 import { supportedLocales, useLanguage } from 'app/i18n';
 import { useThemeState } from 'app/state/theme';

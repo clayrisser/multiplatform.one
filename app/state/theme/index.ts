@@ -1,5 +1,5 @@
 import { ColorSchemeName, useColorScheme } from 'react-native';
-import { ThemeName } from '@multiplatform.one/ui';
+import { ThemeName } from 'tamagui';
 import { useRecoilState, atomFamily } from 'recoil';
 
 export function useThemeState() {

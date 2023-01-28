@@ -28,7 +28,7 @@ export const main = () => (
   </SelectButton>
 );
 
-export const xStack = () => (
+export const x = () => (
   <SelectButton onValueChange={action('onValueChange')} space stack="x">
     <SelectButton.OptionButton index={0} value="bmw">
       <Text>BMW</Text>
