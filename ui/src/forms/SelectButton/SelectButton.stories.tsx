@@ -29,7 +29,7 @@ export const main = () => (
 );
 
 export const x = () => (
-  <SelectButton onValueChange={action('onValueChange')} space stack="x">
+  <SelectButton onValueChange={action('onValueChange')} space xStack>
     <SelectButton.OptionButton index={0} value="bmw">
       <Text>BMW</Text>
     </SelectButton.OptionButton>

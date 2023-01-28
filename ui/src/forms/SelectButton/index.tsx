@@ -8,10 +8,10 @@ export type SelectButtonProps = YStackProps & {
   onValueChange?: (value: string) => unknown;
   selectedStyle?: ButtonProps;
   selectedValue?: string;
-  stack?: 'x' | 'y';
+  xStack?: boolean;
 };
 
-export function SelectButton({ selectedValue, stack, selectedStyle, onValueChange, ...props }: SelectButtonProps) {
+export function SelectButton({ selectedValue, xStack, selectedStyle, onValueChange, ...props }: SelectButtonProps) {
   const [values, setValues] = useState<Record<string, string>>({});
   const [selectedIndex, setSelectedIndex] = useState<number>();
 
@@ -52,7 +52,7 @@ export function SelectButton({ selectedValue, stack, selectedStyle, onValueChang
 
   return (
     <SelectButtonContext.Provider value={contextValue}>
-      {stack === 'x' ? <XStack {...props} /> : <YStack {...props} />}
+      {xStack ? <XStack {...props} /> : <YStack {...props} />}
     </SelectButtonContext.Provider>
   );
 }

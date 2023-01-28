@@ -6,7 +6,7 @@ const config = {
   stories: [
     '../stories/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../../app/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-    '../../../ui/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '../../../ui/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
   ],
   addons: [
     '@etchteam/storybook-addon-status',
