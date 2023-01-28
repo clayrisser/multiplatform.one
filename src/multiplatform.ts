@@ -4,7 +4,7 @@
  * File Created: 09-11-2022 08:59:08
  * Author: Clay Risser
  * -----
- * Last Modified: 28-01-2023 12:24:49
+ * Last Modified: 28-01-2023 13:14:03
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -25,20 +25,22 @@
 import getConfig from 'next/config';
 import { MultiPlatformBase } from './multiplatformBase';
 import { Platform } from 'react-native';
-import { isChrome, isClient, isRSC, isServer, isWeb, isWebTouchable } from '@tamagui/constants';
+import { isChrome, isClient, isWindowDefined, isRSC, isServer, isWeb, isWebTouchable } from '@tamagui/constants';
 
 export class MultiPlatform extends MultiPlatformBase {
   static isChrome = isChrome;
   static isClient = isClient;
-  static isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+  static isFirefox = isWindowDefined && window?.navigator?.userAgent?.toLowerCase().indexOf('firefox') > -1;
   static isWeb = Platform.OS === 'web' && isWeb;
-  static isNext = MultiPlatform.isWeb && (!MultiPlatform.isWindowDefined || typeof window.__NEXT_DATA__ === 'object');
+  static isNext = MultiPlatform.isWeb && (!isWindowDefined || typeof window.__NEXT_DATA__ === 'object');
   static isRSC = isRSC;
   static isServer = isServer;
-  static isStatic = MultiPlatform.isNext && (getConfig ? getConfig() : {})?.publicRuntimeConfig?.NEXT_STATIC !== '1';
-  static isElectronRender = MultiPlatform.isWindowDefined && (window as any).process?.type === 'renderer';
-  static isElectronMain = MultiPlatform.isWindowDefined && (window as any).versions?.electron;
+  static isStatic = MultiPlatform.isNext && (getConfig ? getConfig() : {})?.publicRuntimeConfig?.NEXT_STATIC === '1';
+  static isElectronRender = isWindowDefined && (window as any).process?.type === 'renderer';
+  static isElectronMain = isWindowDefined && (window as any).versions?.electron;
   static isWebTouchable = isWebTouchable;
   static isElectron =
-    MultiPlatform.isElectronRender || MultiPlatform.isElectronMain || navigator?.userAgent?.indexOf('Electron') >= 0;
+    MultiPlatform.isElectronRender ||
+    MultiPlatform.isElectronMain ||
+    (isWindowDefined && window?.navigator?.userAgent?.indexOf('Electron') >= 0);
 }

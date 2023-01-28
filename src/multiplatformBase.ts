@@ -4,7 +4,7 @@
  * File Created: 09-11-2022 09:50:38
  * Author: Clay Risser
  * -----
- * Last Modified: 28-01-2023 12:24:41
+ * Last Modified: 28-01-2023 13:01:49
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -39,9 +39,8 @@ export class MultiPlatformBase {
   static isRSC = false;
   static isServer = false;
   static isStatic = false;
-  static isStorybook = typeof window.__STORYBOOK_ADDONS === 'object';
+  static isStorybook = isWindowDefined && typeof window.__STORYBOOK_ADDONS === 'object';
   static isTouchable = isTouchable;
   static isWeb = false;
   static isWebTouchable = false;
-  static isWindowDefined = isWindowDefined;
 }
