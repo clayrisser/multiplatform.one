@@ -12,15 +12,16 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/animations-react-native": "^1.1.5",
-    "@tamagui/font-inter": "^1.1.5",
-    "@tamagui/react-native-media-driver": "^1.1.5",
-    "@tamagui/shorthands": "^1.1.5",
-    "@tamagui/theme-base": "^1.1.5",
-    "tamagui": "^1.1.5"
+    "@multiplatform.one/ui": "^0.0.8",
+    "@tamagui/animations-react-native": "^1.1.7",
+    "@tamagui/font-inter": "^1.1.7",
+    "@tamagui/react-native-media-driver": "^1.1.7",
+    "@tamagui/shorthands": "^1.1.7",
+    "@tamagui/theme-base": "^1.1.7",
+    "tamagui": "^1.1.7"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.1.5"
+    "@tamagui/build": "^1.1.7"
   },
   "jest": {
     "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",

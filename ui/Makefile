@@ -8,8 +8,6 @@ include $(MKPM)/dotenv
 include $(MKPM)/yarn
 include ../shared.mk
 
-export TAMAGUI_BUILD ?= $(call yarn_binary,tamagui-build)
-
 ACTIONS += install ##
 $(ACTION)/install: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
@@ -39,14 +37,6 @@ ACTIONS += test~lint ##
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call jest,$?,$(ARGS))
 	@$(call done,test)
-
-ACTIONS += build~test
-BUILD_TARGETS := dist/cjs/index.js
-dist/cjs/index.js:
-	@$(call reset,build)
-$(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	-@$(TAMAGUI_BUILD)
-	@$(call done,build)
 
 .PHONY: clean
 clean: ##
