@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { createWithLayout } from 'ui';
+import { createWithLayout } from 'multiplatform.one';
 import { withDebugLayout } from './Debug';
 
 export interface DefaultLayoutProps {

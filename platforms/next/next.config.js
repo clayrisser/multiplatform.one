@@ -73,16 +73,12 @@ module.exports = function (phase) {
     publicRuntimeConfig: {
       ...publicConfig,
       NEXT_STATIC: process.env.NEXT_STATIC,
-      ...(static
-        ? {
-            i18n: {
-              languages: supportedLocales,
-              defaultLanguage: defaultLocale,
-              namespaces: [defaultNamespace],
-              defaultNamespace,
-            },
-          }
-        : {}),
+      i18n: {
+        languages: supportedLocales,
+        defaultLanguage: defaultLocale,
+        namespaces: [defaultNamespace],
+        defaultNamespace,
+      },
     },
     serverRuntimeConfig: {
       ...privateConfig,
