@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, ComponentType } from 'react';
 import { Text } from 'tamagui';
 
 const isPerformanceNow = typeof performance !== 'undefined' && performance.now;
@@ -37,3 +37,27 @@ export function useWrapTextChildren(children: any, props?: any): ReactNode {
   }
   return children;
 }
+
+export function createWithLayout<LayoutProps, Props extends JSX.IntrinsicAttributes>(
+  Layout: ComponentType<LayoutProps>,
+  extraLayouts: WithLayout<any>[] = [],
+  layoutProps?: Omit<LayoutProps, 'children'>,
+): WithLayout<Props> {
+  return (Component: ComponentType<Props>) =>
+    flattenLayouts(
+      (props: Props) => (
+        <Layout {...(layoutProps as LayoutProps)}>
+          <Component {...props} />
+        </Layout>
+      ),
+      extraLayouts,
+    );
+}
+
+function flattenLayouts<Props>(layout: ComponentType<Props>, layouts: WithLayout<any>[]): ComponentType<Props> {
+  const currentLayout = layouts.pop();
+  if (!currentLayout) return layout;
+  return flattenLayouts(currentLayout(layout), layouts);
+}
+
+export type WithLayout<Props> = (Component: ComponentType<Props>) => ComponentType<Props>;
