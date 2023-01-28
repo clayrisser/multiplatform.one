@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 08:49:14
  * Author: Clay Risser
  * -----
- * Last Modified: 22-01-2023 08:01:02
+ * Last Modified: 28-01-2023 13:47:42
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -29,7 +29,7 @@ import { useKeycloak } from "./useKeycloak/useKeycloak";
 import { useAuthConfig } from "./useAuthConfig";
 
 export function useLogin(loginRoute?: string) {
-  if (MultiPlatform.isStorybook()) return () => null;
+  if (MultiPlatform.isStorybook) return () => null;
   const keycloak = useKeycloak();
   const authConfig = useAuthConfig();
   const currentRouteName = useCurrentRouteName();

@@ -62,7 +62,7 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
   const [auth] = useAuthState();
   const LoadingComponent =
     loadingComponent || (() => <>{debug ? "authenticating" : null}</>);
-  const { query } = MultiPlatform.isNext() ? useRouter() : { query: {} };
+  const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
   const authConfig = useAuthConfig();
   const [token, setToken] = useState<string | boolean>(
     ("token" in query && (query.token?.toString() || true)) ||

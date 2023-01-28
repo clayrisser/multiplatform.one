@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 06:04:59
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:22:57
+ * Last Modified: 28-01-2023 13:48:24
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -31,8 +31,8 @@ import { useAuthConfig } from "../useAuthConfig";
 
 export function useKeycloak() {
   const authConfig = useAuthConfig();
-  if (MultiPlatform.isStorybook()) return { authenticated: true } as IKeycloak;
-  if (MultiPlatform.isNext() && authConfig.ssr) {
+  if (MultiPlatform.isStorybook) return { authenticated: true } as IKeycloak;
+  if (MultiPlatform.isNext && authConfig.ssr) {
     const { keycloak: ssrKeycloak, initialized } = useSsrKeycloak();
     const keycloak = { ...ssrKeycloak } as Keycloak;
     if (!initialized) keycloak.authenticated = undefined;

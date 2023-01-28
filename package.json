@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/keycloak",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "keycloak client for multiplatform.one ecosystem",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -100,7 +100,7 @@
     "jest-sonar-reporter": "^2.0.0",
     "keycloak-js": "20.0.1",
     "lockfile-lint": "^4.9.6",
-    "multiplatform.one": "^0.1.16",
+    "multiplatform.one": "^0.2.7",
     "next": "^13.1.6",
     "prettier": "^2.8.0",
     "react": "^18.2.0",

@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 08:38:23
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:24:27
+ * Last Modified: 28-01-2023 13:47:18
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -27,8 +27,8 @@ import { useRoute } from "@react-navigation/native";
 import { useRouter } from "next/router";
 
 export function useCurrentRouteName() {
-  if (MultiPlatform.isStorybook()) return null;
-  if (MultiPlatform.isNext()) {
+  if (MultiPlatform.isStorybook) return null;
+  if (MultiPlatform.isNext) {
     const router = useRouter();
     return router.route;
   }
