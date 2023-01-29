@@ -1,8 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { OptionButton, OptionButtonProps } from './OptionButton';
 import { SelectButtonContext } from './context';
 import { YStack, XStack, YStackProps, ButtonProps } from 'tamagui';
-import { useEffect } from 'react';
 
 export type SelectButtonProps = YStackProps & {
   onValueChange?: (value: string) => unknown;
@@ -11,7 +10,13 @@ export type SelectButtonProps = YStackProps & {
   xStack?: boolean;
 };
 
-export function SelectButton({ selectedValue, xStack, selectedStyle, onValueChange, ...props }: SelectButtonProps) {
+export function SelectButton({
+  selectedValue,
+  xStack,
+  selectedStyle,
+  onValueChange,
+  ...stackProps
+}: SelectButtonProps) {
   const [values, setValues] = useState<Record<string, string>>({});
   const [selectedIndex, setSelectedIndex] = useState<number>();
 
@@ -52,7 +57,7 @@ export function SelectButton({ selectedValue, xStack, selectedStyle, onValueChan
 
   return (
     <SelectButtonContext.Provider value={contextValue}>
-      {xStack ? <XStack {...props} /> : <YStack {...props} />}
+      {xStack ? <XStack {...stackProps} /> : <YStack {...stackProps} />}
     </SelectButtonContext.Provider>
   );
 }

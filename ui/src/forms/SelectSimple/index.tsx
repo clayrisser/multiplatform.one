@@ -15,11 +15,11 @@ export function SelectSimple({
   onValueChange,
   value,
   id,
-  ...props
+  ...triggerProps
 }: SelectSimpleProps) {
   return (
     <Select id={id} onOpenChange={onOpenChange} onValueChange={onValueChange} value={value}>
-      <StyledSelectTrigger {...props}>
+      <StyledSelectTrigger {...triggerProps}>
         <Select.Value placeholder={placeholder} />
       </StyledSelectTrigger>
       <Select.Adapt when="sm" platform="touch">
@@ -38,3 +38,5 @@ export function SelectSimple({
     </Select>
   );
 }
+
+export * from './FormSelectSimple';

@@ -27,7 +27,7 @@ export type OptionButtonProps = ButtonProps & {
   value: string;
 };
 
-export function OptionButton({ index, value, selectedStyle, ...props }: OptionButtonProps) {
+export function OptionButton({ index, value, selectedStyle, onPress, ...buttonProps }: OptionButtonProps) {
   const [selected, setSelected] = useState(false);
   const context = useContext(SelectButtonContext);
   const mergedSelectedStyle = {
@@ -50,14 +50,14 @@ export function OptionButton({ index, value, selectedStyle, ...props }: OptionBu
   const handlePress = useCallback(
     (e: GestureResponderEvent) => {
       if (context.setSelectedIndex) context.setSelectedIndex(index);
-      if (props.onPress) props.onPress(e);
+      if (onPress) onPress(e);
     },
-    [context.setSelectedIndex, props.onPress],
+    [context.setSelectedIndex, onPress],
   );
 
   return (
     <StyledButton
-      {...(props as ComponentProps<typeof StyledButton>)}
+      {...(buttonProps as ComponentProps<typeof StyledButton>)}
       selected={selected}
       {...(selected
         ? {
