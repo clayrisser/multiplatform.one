@@ -14,7 +14,7 @@ function WithUseAssets() {
   const [pokerGame1894Png] = useAssets([require('../../../assets/poker-game-1894.png')]);
   return <SimpleImage width={400} height={400} backgroundColor="black" src={pokerGame1894Png} />;
 }
-export const withUseAssets = () => <WithUseAssets />;
+export const main = () => <WithUseAssets />;
 
 function WithRequire() {
   return (
@@ -27,3 +27,9 @@ function WithRequire() {
   );
 }
 export const withRequire = () => <WithRequire />;
+
+function WithSvg() {
+  const [pentagonSvg] = useAssets([require('../../../assets/pentagon.svg')]);
+  return <SimpleImage width={400} height={400} src={pentagonSvg} />;
+}
+export const withSvg = () => <WithSvg />;

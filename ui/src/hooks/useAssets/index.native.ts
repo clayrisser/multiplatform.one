@@ -13,8 +13,14 @@ export function useAssets(modules: any | any[]): (Asset | undefined)[] {
   if (err) logger.error(err);
   if (!assets) return new Array(modulesArr.length);
   return assets.map((asset: ExpoAsset) => ({
+    type: asset.type,
     uri: asset.uri,
     width: asset.width || undefined,
     height: asset.height || undefined,
+    name: asset.name,
+    hash: asset.hash,
+    localUri: asset.localUri,
+    downloading: asset.downloading,
+    downloaded: asset.downloaded,
   }));
 }

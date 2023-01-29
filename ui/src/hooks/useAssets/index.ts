@@ -8,6 +8,7 @@ export function useAssets(modules: any | any[]): (Asset | undefined)[] {
   return modulesArr.map((module: WebModule) => ({
     uri: module.src,
     height: module.height,
+    blurDataURL: module.blurDataURL,
     width: module.width,
   }));
 }
