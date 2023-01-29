@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form } from './index';
 import { FormInput } from '../FormInput';
-import { FormSelectSimple } from '../SelectSimple';
+import { FormSelectSimple } from '../FormSelectSimple';
 import { FormSubmitButton } from '../FormSubmitButton';
 import { Select } from 'tamagui';
 import { action } from '@storybook/addon-actions';
