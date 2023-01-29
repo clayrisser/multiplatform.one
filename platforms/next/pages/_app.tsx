@@ -1,7 +1,6 @@
 import '@tamagui/core/reset.css';
 import '@tamagui/font-inter/css/400.css';
 import '@tamagui/font-inter/css/700.css';
-import 'app/i18n';
 import 'raf/polyfill';
 import Head from 'next/head';
 import React, { ReactNode, startTransition, useEffect, useMemo } from 'react';
@@ -19,6 +18,8 @@ const automaticStaticOptimization = config.get('NEXT_AUTOMATIC_STATIC_OPTIMIZATI
 const keycloakSsr = config.get('KEYCLOAK_SSR') === '1';
 const nextStatic = config.get('NEXT_STATIC') === '1';
 
+if (nextStatic) import('app/i18n');
+
 export interface AppProps extends SolitoAppProps {
   cookies?: unknown;
 }
@@ -27,10 +28,6 @@ function App({ Component, pageProps, cookies }: AppProps) {
   const contents = useMemo(() => {
     return <Component {...pageProps} />;
   }, [pageProps, Component]);
-
-  useEffect(() => {
-    if (nextStatic) import('app/i18n');
-  }, []);
 
   return (
     <>
