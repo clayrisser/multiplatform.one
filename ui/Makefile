@@ -8,8 +8,6 @@ include $(MKPM)/dotenv
 include $(MKPM)/yarn
 include ../shared.mk
 
-export TAMAGUI_BUILD ?= $(call yarn_binary,tamagui-build)
-
 ACTIONS += install ##
 $(ACTION)/install: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
