@@ -1,13 +1,16 @@
 import '@tamagui/core/reset.css';
 import '@tamagui/font-inter/css/400.css';
 import '@tamagui/font-inter/css/700.css';
-import 'app/i18n';
 import 'raf/polyfill';
 import React, { ReactNode, useEffect } from 'react';
+import { DebugLayout, getThemes } from 'ui';
 import { GlobalProvider, StateProvider } from 'app/providers';
-import { useThemeState } from 'app/state/theme';
+import { supportedLocales, defaultLocale } from 'app/i18n';
 import { themes as storybookThemes } from '@storybook/theming';
 import { useDarkMode } from 'storybook-dark-mode';
+import { useLocale } from 'multiplatform.one';
+import { useThemeState } from 'app/state/theme';
+import { withThemes } from 'storybook-addon-themes/react';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -25,18 +28,56 @@ export const parameters = {
     light: { ...storybookThemes.normal },
   },
   paddings: {
-    default: 'Small',
+    default: null,
   },
   backgrounds: [
     { name: 'light', value: 'white', default: true },
     { name: 'dark', value: '#262626' },
   ],
+  themes: {
+    default: 'purple',
+    clearable: false,
+    list: DebugLayout.defaultProps.subThemeNames.map((name) => {
+      const themes = getThemes();
+      return {
+        name,
+        color: (themes[name] || themes[`light_${name}`] || themes[`dark_${name}`])?.backgroundFocus?.val,
+      };
+    }),
+    Decorator: (props) => {
+      const [, setTheme] = useThemeState();
+      useEffect(() => {
+        setTheme((theme) => ({ ...theme, sub: props.theme.name }));
+      }, [props.theme.name]);
+      return props.children;
+    },
+  },
 };
 
-export const globalTypes = {};
+export const globalTypes = {
+  locale: {
+    name: 'locale',
+    title: 'Locale',
+    description: 'i18n locale',
+    defaultValue: defaultLocale,
+    toolbar: {
+      icon: 'globe',
+      dynamicTitle: true,
+      items: supportedLocales.map((locale) => ({
+        value: locale,
+        title: locale,
+      })),
+    },
+  },
+};
 
 export const decorators = [
-  (Story, _args: any) => {
+  withThemes,
+  (Story, { globals }: any) => {
+    const [, setLocale] = useLocale();
+    useEffect(() => {
+      setLocale(globals.locale);
+    }, [globals.locale]);
     return (
       <StateProvider>
         <Provider>
