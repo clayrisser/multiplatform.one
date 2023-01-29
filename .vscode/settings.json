@@ -3,6 +3,7 @@
     "alice",
     "bool",
     "buildpack",
+    "clearable",
     "codebase",
     "cspell",
     "ctx",
