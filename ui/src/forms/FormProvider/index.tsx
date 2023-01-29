@@ -4,7 +4,7 @@ import { StackProps } from '@tamagui/core';
 
 export type FormProviderProps = UseFormProps & StackProps;
 
-export function Form({
+export function FormProvider({
   children,
   context,
   criteriaMode,
