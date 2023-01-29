@@ -4,7 +4,7 @@
  * File Created: 09-11-2022 08:55:55
  * Author: Clay Risser
  * -----
- * Last Modified: 28-01-2023 12:34:27
+ * Last Modified: 29-01-2023 09:53:09
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,9 +22,11 @@
  * limitations under the License.
  */
 
+import { MultiPlatform } from './multiplatform';
+
+export { MultiPlatform };
+
 export * from './config';
 export * from './hooks';
-export * from './multiplatform';
-export * from './multiplatformBase';
 export * from './persistAtom';
 export * from './helpers';
