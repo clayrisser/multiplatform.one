@@ -2,7 +2,7 @@ import React, { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormControllerProps } from '../types';
 import { FormField, FormFieldProps } from '../FormField';
-import { SelectSimple, SelectSimpleProps } from './index';
+import { SelectSimple, SelectSimpleProps } from '../SelectSimple';
 
 export type FormSelectSimpleProps = SelectSimpleProps &
   FormControllerProps & {

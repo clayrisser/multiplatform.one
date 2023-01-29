@@ -38,5 +38,3 @@ export function SelectSimple({
     </Select>
   );
 }
-
-export * from './FormSelectSimple';

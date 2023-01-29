@@ -26,6 +26,7 @@
     "@tamagui/react-native-media-driver": "^1.1.11",
     "@tamagui/shorthands": "^1.1.11",
     "@tamagui/theme-base": "^1.1.11",
+    "expo-asset": "^8.7.0",
     "immer": "^9.0.19",
     "react-hook-form": "^7.42.1",
     "react-native-svg": "13.4.0",

@@ -1,6 +1,7 @@
 export * from './Form';
 export * from './FormField';
 export * from './FormInput';
+export * from './FormSelectSimple';
 export * from './FormSubmitButton';
 export * from './SelectButton';
 export * from './SelectButton';
