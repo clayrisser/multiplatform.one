@@ -45,6 +45,7 @@
     "multiplatform.one",
     "react-i18next",
     "react-native-recoil-persist",
+    "react-native-svg",
     "react-native-web",
     "solito"
   ],
