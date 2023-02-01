@@ -19,7 +19,7 @@ export const withTheme = makeDecorator({
     const defaultValue = data.default ? backgrounds.find((b) => b.name === data.default) : undefined;
     const defaultOrFirst = defaultValue ? defaultValue : backgrounds[0];
     const [background, setBackground] = useState(defaultOrFirst?.value || '');
-    const [, setTheme] = useThemeState();
+    const themeState = useThemeState();
 
     useEffect(() => {
       channel.on(UPDATE_BACKGROUND, setBackground);
@@ -32,11 +32,8 @@ export const withTheme = makeDecorator({
 
     useEffect(() => {
       if (!themeName) return;
-      setTheme((theme) => ({
-        ...theme,
-        root: themeName,
-      }));
-    }, [themeName, setTheme]);
+      themeState.setRoot(themeName);
+    }, [themeName, themeState.setRoot]);
 
     return <>{getStory(context)}</>;
   },
