@@ -15,5 +15,6 @@ nixpkgs.stdenv.mkDerivation rec {
     nixpkgs.jq
     nixpkgs.postgresql
     nixpkgs.watchman
+    nixpkgs.yq-go
   ];
 }
