@@ -47,12 +47,12 @@ function App({ Component, pageProps, cookies }: AppProps) {
 }
 
 function Provider({ children, ...props }: { children: ReactNode; cookies: unknown }) {
-  const [{ root }] = useThemeState();
+  const themeState = useThemeState();
   const [rootTheme, setRootTheme] = useRootTheme();
 
   useEffect(() => {
-    if (root) setRootTheme(root);
-  }, [root, setRootTheme]);
+    if (themeState.root) setRootTheme(themeState.root);
+  }, [themeState.root, setRootTheme]);
 
   return (
     <NextThemeProvider

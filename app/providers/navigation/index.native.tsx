@@ -42,11 +42,11 @@ const themes: Record<'dark' | 'light', Theme> = {
 };
 
 export function NavigationProvider({ children }: ProviderProps) {
-  const [theme] = useThemeState();
+  const themeState = useThemeState();
 
   return (
     <NavigationContainer
-      theme={themes[theme.root === 'dark' ? 'dark' : 'light']}
+      theme={themes[themeState.root === 'dark' ? 'dark' : 'light']}
       linking={
         useMemo(
           () => ({
