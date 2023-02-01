@@ -1,0 +1,81 @@
+/**
+ * File: /src/zustand.ts
+ * Project: multiplatform.one
+ * File Created: 01-02-2023 09:10:54
+ * Author: Clay Risser
+ * -----
+ * Last Modified: 01-02-2023 10:10:06
+ * Modified By: Clay Risser
+ * -----
+ * Risser Labs LLC (c) Copyright 2022 - 2023
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { InitStateType } from 'zustand-tools/dist/types';
+import { StateCreator, StoreApi } from 'zustand';
+import { createSimple } from 'zustand-tools';
+import { devtools, persist, createJSONStorage, PersistOptions } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
+import { mountStoreDevtool } from 'simple-zustand-devtools';
+
+type MiddlewareOptionType<State extends InitStateType> = (
+  initializer: StateCreator<State>,
+) => StateCreator<State, any, any>;
+
+interface CreateOptions<State extends InitStateType, Actions extends ActionsType<State>> {
+  middlewares?: MiddlewareOptionType<State & ReturnType<Actions>>[];
+  persist?: boolean | PersistOptions<State>;
+  devtools?: boolean;
+}
+
+type ActionsType<State, Return = Record<string, Function>> = (
+  setState: StoreApi<State>['setState'],
+  getState: StoreApi<State>['getState'],
+  store: StoreApi<State>,
+) => Return;
+
+export function createStateStore<State extends InitStateType, Actions extends ActionsType<State>>(
+  name: string,
+  initState: State,
+  actions?: Actions,
+  options: CreateOptions<State, Actions> = {},
+) {
+  const store = createSimple(initState, {
+    actions,
+    middlewares: [
+      ...(options.devtools === false
+        ? []
+        : ([(initializer) => devtools(initializer, { enabled: true })] as MiddlewareOptionType<
+            State & ReturnType<Actions>
+          >[])),
+      (initializer) => immer(initializer),
+      ...(options.persist
+        ? ([
+            (initializer) =>
+              persist(initializer, {
+                ...((typeof options.persist === 'object' ? options.persist : {}) as PersistOptions<any>),
+                name,
+                storage: createJSONStorage(() => AsyncStorage),
+              }),
+          ] as MiddlewareOptionType<State & ReturnType<Actions>>[])
+        : []),
+      ...(options.middlewares || []),
+    ],
+  });
+  mountStoreDevtool(name, store);
+  return store;
+}
+
+export type Actions<State extends InitStateType, Actions> = ActionsType<State, Actions>;
