@@ -1,4 +1,4 @@
-import { Actions, createStateStore } from 'multiplatform.one';
+import { Actions, createStateStore } from 'multiplatform.one/zustand';
 import { ThemeName } from 'tamagui';
 import { useColorScheme } from 'react-native';
 import { useEffect } from 'react';
