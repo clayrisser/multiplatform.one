@@ -4,7 +4,7 @@
  * File Created: 01-02-2023 09:10:54
  * Author: Clay Risser
  * -----
- * Last Modified: 01-02-2023 10:12:48
+ * Last Modified: 01-02-2023 10:28:34
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -26,9 +26,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { InitStateType } from 'zustand-tools/dist/types';
 import { StateCreator, StoreApi } from 'zustand';
 import { createSimple } from 'zustand-tools';
-import { devtools, persist, createJSONStorage, PersistOptions } from 'zustand/middleware';
+import { devtools, persist, createJSONStorage, PersistOptions, DevtoolsOptions } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
-import { mountStoreDevtool } from 'simple-zustand-devtools';
 
 type MiddlewareOptionType<State extends InitStateType> = (
   initializer: StateCreator<State>,
@@ -37,7 +36,7 @@ type MiddlewareOptionType<State extends InitStateType> = (
 interface CreateOptions<State extends InitStateType, Actions extends ActionsType<State>> {
   middlewares?: MiddlewareOptionType<State & ReturnType<Actions>>[];
   persist?: boolean | Partial<PersistOptions<State>>;
-  devtools?: boolean;
+  devtools?: boolean | DevtoolsOptions;
 }
 
 type ActionsType<State, Return = Record<string, Function>> = (
@@ -57,9 +56,14 @@ export function createStateStore<State extends InitStateType, Actions extends Ac
     middlewares: [
       ...(options.devtools === false
         ? []
-        : ([(initializer) => devtools(initializer, { enabled: true })] as MiddlewareOptionType<
-            State & ReturnType<Actions>
-          >[])),
+        : ([
+            (initializer) =>
+              devtools(initializer, {
+                name,
+                enabled: true,
+                ...(typeof options.devtools === 'object' ? options.devtools : {}),
+              }),
+          ] as MiddlewareOptionType<State & ReturnType<Actions>>[])),
       (initializer) => immer(initializer),
       ...(options.persist
         ? ([
@@ -74,7 +78,6 @@ export function createStateStore<State extends InitStateType, Actions extends Ac
       ...(options.middlewares || []),
     ],
   });
-  mountStoreDevtool(name, store);
   return store;
 }
 

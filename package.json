@@ -1,6 +1,6 @@
 {
   "name": "multiplatform.one",
-  "version": "0.3.4",
+  "version": "0.3.6",
   "description": "multiplatform.one ecosystem",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -146,7 +146,6 @@
   "prettier": "eslint-config-alloy/.prettierrc.js",
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
-    "simple-zustand-devtools": "^1.1.0",
     "zustand": "^4.3.2",
     "zustand-tools": "^0.0.6"
   }
