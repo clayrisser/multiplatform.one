@@ -45,10 +45,10 @@ export const parameters = {
       };
     }),
     Decorator: (props) => {
-      const [, setTheme] = useThemeState();
+      const themeState = useThemeState();
       useEffect(() => {
-        setTheme((theme) => ({ ...theme, sub: props.theme.name }));
-      }, [props.theme.name]);
+        themeState.setSub(props.theme.name);
+      }, [props.theme.name, themeState.setSub]);
       return props.children;
     },
   },
@@ -89,15 +89,15 @@ export const decorators = [
 ];
 
 function Provider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useThemeState();
+  const themeState = useThemeState();
   const darkMode = useDarkMode();
 
   useEffect(() => {
-    setTheme((theme) => ({ ...theme, root: darkMode ? 'dark' : 'light' }));
-  }, [darkMode, setTheme]);
+    themeState.setRoot(darkMode ? 'dark' : 'light');
+  }, [darkMode, themeState.setRoot]);
 
   return (
-    <GlobalProvider disableStateProvider defaultTheme={theme.root}>
+    <GlobalProvider disableStateProvider defaultTheme={themeState.root}>
       {children}
     </GlobalProvider>
   );
