@@ -1,6 +1,6 @@
 {
   "name": "multiplatform.one",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "multiplatform.one ecosystem",
   "main": "lib/index.js",
   "module": "esm/index.js",

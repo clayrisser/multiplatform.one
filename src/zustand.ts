@@ -4,7 +4,7 @@
  * File Created: 01-02-2023 09:10:54
  * Author: Clay Risser
  * -----
- * Last Modified: 01-02-2023 10:10:06
+ * Last Modified: 01-02-2023 10:12:48
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -36,7 +36,7 @@ type MiddlewareOptionType<State extends InitStateType> = (
 
 interface CreateOptions<State extends InitStateType, Actions extends ActionsType<State>> {
   middlewares?: MiddlewareOptionType<State & ReturnType<Actions>>[];
-  persist?: boolean | PersistOptions<State>;
+  persist?: boolean | Partial<PersistOptions<State>>;
   devtools?: boolean;
 }
 
@@ -65,9 +65,9 @@ export function createStateStore<State extends InitStateType, Actions extends Ac
         ? ([
             (initializer) =>
               persist(initializer, {
-                ...((typeof options.persist === 'object' ? options.persist : {}) as PersistOptions<any>),
                 name,
                 storage: createJSONStorage(() => AsyncStorage),
+                ...((typeof options.persist === 'object' ? options.persist : {}) as Partial<PersistOptions<any>>),
               }),
           ] as MiddlewareOptionType<State & ReturnType<Actions>>[])
         : []),
