@@ -26,21 +26,15 @@ export function DebugLayout<DebugViewProps>({
 }: DebugLayoutProps<DebugViewProps>) {
   const DebugView = debugView;
   const [locale, setLocale] = useLocale();
-  const [theme, setTheme] = useThemeState();
+  const themeState = useThemeState();
   const supportedLocales = useSupportedLocales();
 
   function handleSubThemeChange(subTheme: ThemeName) {
-    setTheme((theme) => ({
-      ...theme,
-      sub: subTheme,
-    }));
+    themeState.setSub(subTheme);
   }
 
   function handleRootThemeChange(rootTheme: ThemeName) {
-    setTheme((theme) => ({
-      ...theme,
-      root: rootTheme,
-    }));
+    themeState.setRoot(rootTheme);
   }
 
   function renderSubThemeItems() {
@@ -89,23 +83,22 @@ export function DebugLayout<DebugViewProps>({
             </Popover.Sheet>
           </Adapt>
           <Popover.Content bw={1} boc="$borderColor" elevate>
-            <Popover.Arrow bw={1} boc="$borderColor" />
             <XStack space>
               <SelectSimple
                 id="root-theme"
-                placeholder={theme.root}
+                placeholder={themeState.root}
                 w={96}
-                value={theme.root}
+                value={themeState.root}
                 onValueChange={handleRootThemeChange}
               >
                 {renderRootThemeItems()}
               </SelectSimple>
               <SelectSimple
                 id="sub-theme"
-                placeholder={theme.sub}
+                placeholder={themeState.sub}
                 w={96}
                 bc="$color5"
-                value={theme.sub}
+                value={themeState.sub}
                 onValueChange={handleSubThemeChange}
               >
                 {renderSubThemeItems()}
