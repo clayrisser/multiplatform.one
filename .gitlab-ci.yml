@@ -68,6 +68,7 @@ pages:
   script:
     - rm -rf public
     ## public storybook ##
+    - make -s build
     - make -s storybook/build
     - cp -r platforms/storybook/storybook-static public
     ## public next ##
