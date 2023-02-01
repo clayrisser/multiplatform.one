@@ -4,7 +4,7 @@
  * File Created: 22-11-2022 17:40:53
  * Author: Clay Risser
  * -----
- * Last Modified: 23-01-2023 04:54:52
+ * Last Modified: 01-02-2023 14:38:51
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -23,7 +23,7 @@
  */
 
 import { atom, useRecoilState } from "recoil";
-import { persistAtom } from "multiplatform.one";
+import { persistAtom } from "multiplatform.one/recoil";
 
 export function useAuthState() {
   return useRecoilState(authState);
