@@ -1,10 +1,10 @@
 /**
  * File: /src/next/index.ts
  * Project: multiplatform.one
- * File Created: 26-01-2023 08:48:52
+ * File Created: 01-02-2023 15:20:06
  * Author: Clay Risser
  * -----
- * Last Modified: 28-01-2023 12:29:54
+ * Last Modified: 01-02-2023 15:20:10
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,29 +22,4 @@
  * limitations under the License.
  */
 
-import type { GetStaticPaths } from 'next';
-import { MultiPlatform } from '../multiplatform';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-
-export async function getBaseStaticProps(locale: any, namespacesRequired: string[] = []) {
-  return MultiPlatform.isNext && !MultiPlatform.isStatic
-    ? await serverSideTranslations(locale, ['common', ...namespacesRequired])
-    : {};
-}
-
-export function createGetStaticProps(namespacesRequired: string[] = []) {
-  return async ({ locale }: { locale: any }) => ({
-    props: await getBaseStaticProps(locale, namespacesRequired),
-  });
-}
-
-export function createGetStaticPaths(paths: string[] = []): GetStaticPaths<{ slug: string }> {
-  return async () => ({
-    paths,
-    fallback: 'blocking',
-  });
-}
-
-export const getStaticPaths = createGetStaticPaths();
-
-export const getStaticProps = createGetStaticProps();
+export * from './next';

@@ -1,10 +1,10 @@
 /**
- * File: /src/recoil/index.ts
+ * File: /src/persistAtom/index.ts
  * Project: multiplatform.one
- * File Created: 01-02-2023 15:19:21
+ * File Created: 23-01-2023 04:51:22
  * Author: Clay Risser
  * -----
- * Last Modified: 01-02-2023 15:19:29
+ * Last Modified: 23-01-2023 04:51:54
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,4 +22,6 @@
  * limitations under the License.
  */
 
-export * from './recoil';
+import persist from 'react-native-recoil-persist';
+
+export const persistAtom = persist.persistAtom;
