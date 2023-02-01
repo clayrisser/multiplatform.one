@@ -3,10 +3,15 @@ import { ThemeName } from 'ui';
 import { useColorScheme } from 'react-native';
 import { useEffect } from 'react';
 
-const { useStore } = createStateStore<ThemeState, ThemeActions>('theme', {
-  root: 'light',
-  sub: 'purple',
-});
+const { useStore } = createStateStore<ThemeState, ThemeActions>(
+  'theme',
+  {
+    root: 'light',
+    sub: 'purple',
+  },
+  undefined,
+  { persist: true },
+);
 
 export function useThemeState() {
   const scheme = useColorScheme();
