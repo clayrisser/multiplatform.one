@@ -1,6 +1,6 @@
 {
   "name": "multiplatform.one",
-  "version": "0.3.6",
+  "version": "0.4.1",
   "description": "multiplatform.one ecosystem",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -31,7 +31,9 @@
     "esm",
     "lib",
     "next",
-    "src"
+    "recoil",
+    "src",
+    "zustand"
   ],
   "repository": {
     "type": "git",
@@ -82,7 +84,7 @@
     "@babel/runtime": "^7.20.1",
     "@storybook/react": "^6.5.13",
     "@storybook/react-native": "^5.3.27",
-    "@tamagui/constants": "^1.1.7",
+    "@tamagui/constants": "^1.2.2",
     "@types/eslint": "^8.4.10",
     "@types/jest": "^29.2.3",
     "@types/react": "18.0.25",

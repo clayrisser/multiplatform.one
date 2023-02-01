@@ -1,13 +1,13 @@
 /**
- * File: /src/index.ts
+ * File: /zustand/index.js
  * Project: multiplatform.one
- * File Created: 09-11-2022 08:55:55
+ * File Created: 26-01-2023 09:12:40
  * Author: Clay Risser
  * -----
- * Last Modified: 01-02-2023 14:09:40
+ * Last Modified: 01-02-2023 14:57:15
  * Modified By: Clay Risser
  * -----
- * Risser Labs LLC (c) Copyright 2021 - 2022
+ * Risser Labs LLC (c) Copyright 2022 - 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,4 @@
  * limitations under the License.
  */
 
-import { MultiPlatform } from './multiplatform';
-
-export { MultiPlatform };
-
-export * from './config';
-export * from './helpers';
-export * from './hooks';
+module.exports = require('../lib/zustand');
