@@ -13,7 +13,7 @@ export function TamaguiProvider({ children, ...props }: TamaguiProviderProps) {
   const themeState = useThemeState();
 
   function renderSubTheme(children: ReactNode) {
-    if (!themeState.sub) return children;
+    if (!themeState.sub) return <>{children}</>;
     return <Theme name={themeState.sub}>{children}</Theme>;
   }
 
