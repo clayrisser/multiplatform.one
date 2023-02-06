@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "@next/bundle-analyzer": "^13.1.5",
-    "@tamagui/next-plugin": "^1.2.2",
-    "@tamagui/next-theme": "^1.2.2",
+    "@tamagui/next-plugin": "^1.2.9",
+    "@tamagui/next-theme": "^1.2.9",
     "app": "*",
     "cookie": "^0.5.0",
     "next": "^13.1.5",
@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@types/cookie": "^0.5.1",
-    "@types/node": "^18.11.18"
+    "@types/node": "^18.11.19"
   },
   "jest": {
     "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
