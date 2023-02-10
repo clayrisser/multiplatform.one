@@ -4,6 +4,7 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { useLink } from 'solito/link';
 import { useTranslation } from 'multiplatform.one';
 import { withDefaultLayout } from 'app/layouts/Default';
+import { SimpleImage } from '@multiplatform.one/ui';
 
 function HomeScreen() {
   const { t } = useTranslation();
@@ -14,6 +15,7 @@ function HomeScreen() {
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
       <YStack space="$4" maw={600}>
+        <SimpleImage src={require('../../assets/pentagon.svg')} />
         <H1 ta="center">{t('screens.home.welcome')}</H1>
         <Paragraph ta="center">{t('screens.home.message')}</Paragraph>
         <Separator />

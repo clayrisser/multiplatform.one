@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from 'react';
 import { ImageProps, YStack, YStackProps, Image } from 'tamagui';
 import { ImageURISource, ImageResizeMode, Platform, Image as RNImage } from 'react-native';
-import React, { useEffect, useState } from 'react';
 import { MultiPlatform } from 'multiplatform.one';
 import { SvgUri, SvgUriProps } from '../SvgUri';
 import { XMLParser } from 'fast-xml-parser';
@@ -15,71 +15,66 @@ export type SimpleImageProps = Omit<ImageProps, 'src' | 'width' | 'height'> & {
 };
 
 export function SimpleImage({ src, svg, width, height, resizeMode, aspectRatio, ...imageProps }: SimpleImageProps) {
+  const preserveAspectRatio = useMemo(() => getPreserveAspectRatio(resizeMode), [resizeMode]);
   let source: string | number | ImageURISource | undefined = src;
   if ((typeof src === 'object' && typeof (src as ImageURISource).uri === 'undefined') || typeof src === 'number') {
     [source] = useAssets(src);
   }
-  if (!aspectRatio) {
-    if (typeof source === 'object') {
-      const w = typeof width === 'number' && Number.isFinite(width) ? width : source.width;
-      const h = typeof height === 'number' && Number.isFinite(height) ? height : source.height;
-      if (w && h) aspectRatio = w / h;
-    }
-  }
-  const [calculatedAspectRatio, setCalculatedAspectRatio] = useState(aspectRatio);
+  const [imageAspectRatio, setImageAspectRatio] = useState(
+    typeof source === 'object' && source.width && source.height ? source.width / source.height : undefined,
+  );
+  if (!Number.isFinite(aspectRatio)) aspectRatio = imageAspectRatio;
   const uri = typeof source === 'object' ? source.uri : source;
   const origin = uri?.replace(/\?.+/g, '');
-  const calculateHeight = height === 'auto' || typeof height === 'undefined';
   // fixes bug on web where width is calculated differently than on native
   if (
     Platform.OS === 'web' &&
-    typeof calculatedAspectRatio === 'number' &&
+    typeof aspectRatio === 'number' &&
     typeof height === 'number' &&
     Number.isFinite(height) &&
-    (typeof width === 'undefined' || width === 'auto')
+    (!Number.isFinite(width) || width === 'auto')
   ) {
-    width = height * calculatedAspectRatio;
+    width = height * aspectRatio;
   }
+  if (Number.isFinite(height) && Number.isFinite(width)) aspectRatio = undefined;
+  const isSvg =
+    svg ||
+    (((src as any).type === 'svg' || origin?.substring(origin.length - 4) === '.svg') && typeof svg === 'undefined');
+
   useEffect(() => {
-    if (Platform.OS !== 'web' && svg) {
+    if (Platform.OS !== 'web' && isSvg) {
       (async () => {
-        if (!calculatedAspectRatio) {
-          const { height, width } = await getSvgMeta(uri);
-          if (
-            typeof height === 'number' &&
-            Number.isFinite(height) &&
-            typeof width === 'number' &&
-            Number.isFinite(width)
-          ) {
-            setCalculatedAspectRatio(width / height);
-          }
+        const meta = await getSvgMeta(uri);
+        const height = Number.isFinite(meta.height) ? meta.height : meta.viewBox?.[3];
+        const width = Number.isFinite(meta.width) ? meta.width : meta.viewBox?.[2];
+        if (
+          typeof height === 'number' &&
+          Number.isFinite(height) &&
+          typeof width === 'number' &&
+          Number.isFinite(width)
+        ) {
+          setImageAspectRatio(width / height);
         }
       })();
-    } else if (!calculatedAspectRatio && typeof uri !== 'number' && uri /* && calculateHeight */) {
+    } else if (typeof uri !== 'number' && uri /* && calculateHeight */) {
       RNImage.getSize(uri, (width: number, height: number) => {
         const ratio = width / height;
-        if (Number.isFinite(ratio)) setCalculatedAspectRatio(ratio);
+        if (Number.isFinite(ratio)) setImageAspectRatio(ratio);
       });
     }
-  }, [uri, calculatedAspectRatio, calculateHeight]);
+  }, [uri]);
 
   if (!uri) {
-    return (
-      <YStack {...(imageProps as YStackProps)} width={width} height={height} aspectRatio={calculatedAspectRatio} />
-    );
+    return <YStack {...(imageProps as YStackProps)} width={width} height={height} aspectRatio={aspectRatio} />;
   }
-  if (
-    !MultiPlatform.isWeb &&
-    (svg ||
-      (((src as any).type === 'svg' || origin?.substring(origin.length - 4) === '.svg') && typeof svg === 'undefined'))
-  ) {
+  if (!MultiPlatform.isWeb && isSvg) {
     return (
       <SvgUri
         {...(imageProps as SvgUriProps)}
-        width={width}
+        width={Number.isFinite(width) ? width : Number.isFinite(height) ? undefined : '100%'}
         height={height}
-        preserveAspectRatio={useMemo(() => getPreserveAspectRatio(resizeMode), [resizeMode])}
-        aspectRatio={calculatedAspectRatio}
+        preserveAspectRatio={preserveAspectRatio}
+        aspectRatio={aspectRatio}
         uri={uri}
       />
     );
@@ -91,23 +86,27 @@ export function SimpleImage({ src, svg, width, height, resizeMode, aspectRatio, 
       width={width}
       // @ts-ignore
       height={height}
-      aspectRatio={calculatedAspectRatio}
+      aspectRatio={aspectRatio}
       resizeMode={resizeMode}
       src={uri}
     />
   );
 }
 
+SimpleImage.defaultProps = {
+  resizeMode: 'cover',
+};
+
 function getPreserveAspectRatio(resizeMode?: ImageResizeMode): string {
   switch (resizeMode) {
     case 'stretch': {
       return 'none';
     }
-    case 'cover': {
-      return 'xMidYMid slice';
+    case 'contain': {
+      return 'xMidYMid meet';
     }
   }
-  return 'xMidYMid meet';
+  return 'xMidYMid slice';
 }
 
 const logger = console;
@@ -154,6 +153,6 @@ export type SvgViewBox = [number, number, Width, Height];
 
 export interface SvgMeta {
   height?: number;
-  width?: number;
   viewBox?: SvgViewBox;
+  width?: number;
 }
