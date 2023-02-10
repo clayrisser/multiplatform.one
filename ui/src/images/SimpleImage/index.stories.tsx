@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { useAssets } from '../../hooks';
 import { SimpleImage } from './index';
 
@@ -15,13 +16,24 @@ main.args = {
   aspectRatio: undefined,
   height: undefined,
   width: undefined,
+  bg: 'black',
 };
 
 export const withSvg = (args: any[]) => <SimpleImage src={require('../../../assets/pentagon.svg')} {...args} />;
 withSvg.args = {
   aspectRatio: undefined,
   height: undefined,
+  bg: 'black',
   width: undefined,
+  resizeMode: undefined,
+};
+withSvg.argTypes = {
+  resizeMode: {
+    control: {
+      type: Platform.OS === 'web' ? 'select' : 'text',
+      options: ['contain', 'cover', 'stretch'],
+    },
+  },
 };
 
 function WithUseAssets() {

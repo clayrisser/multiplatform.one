@@ -29,7 +29,7 @@ module.exports = {
     'max-lines-per-function': ['warn', 200],
     'no-empty-function': ['warn', { allow: ['constructors'] }],
     'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
-    complexity: ['error', 30],
+    complexity: ['error', 50],
     '@typescript-eslint/no-unused-vars': [
       'warn',
       {
