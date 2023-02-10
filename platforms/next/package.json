@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "@next/bundle-analyzer": "^13.1.5",
-    "@tamagui/next-plugin": "^1.2.9",
-    "@tamagui/next-theme": "^1.2.9",
+    "@tamagui/next-plugin": "^1.2.15",
+    "@tamagui/next-theme": "^1.2.15",
     "app": "*",
     "cookie": "^0.5.0",
     "next": "^13.1.5",
