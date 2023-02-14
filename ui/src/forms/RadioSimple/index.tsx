@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Select, SelectProps, SelectTriggerProps, styled, RadioGroup, Checkbox } from 'tamagui';
+import { Select, SelectProps, SelectTriggerProps, styled } from 'tamagui';
 
 const StyledSelectTrigger = styled(Select.Trigger, {
   paddingVertical: 0,
