@@ -7,4 +7,8 @@ export * from './SelectButton';
 export * from './SelectSimple';
 export * from './FormSwitch';
 export * from './FormSlider';
+export * from './FormTextArea';
+export * from './SimpleAlertDialog';
+export * from './SimpleDialog';
+export * from './SimplePopover';
 // export * from './FormRadio';

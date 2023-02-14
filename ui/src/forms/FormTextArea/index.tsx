@@ -1,15 +1,15 @@
 import React, { useId } from 'react';
-import { Switch, SwitchProps } from 'tamagui';
+import { TextArea, TextAreaProps } from 'tamagui';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormControllerProps } from '../types';
 import { FormField, FormFieldProps } from '../FormField';
 
-export type FormSwitchProps = SwitchProps &
+export type FormTextAreaProps = TextAreaProps &
   FormControllerProps & {
     fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
   } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
 
-export function FormSwitch({
+export function FormTextArea({
   control,
   defaultValue,
   error,
@@ -19,26 +19,24 @@ export function FormSwitch({
   name,
   required,
   rules,
-  onPress,
-  ...switchProps
-}: FormSwitchProps) {
+  ...textAreaProps
+}: FormTextAreaProps) {
   const formContext = useFormContext();
   const id = useId();
   if (!formContext) {
     return (
       <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
-        <Switch {...switchProps} />
+        <TextArea {...textAreaProps} />
       </FormField>
     );
   }
-  console.log('switchProps', switchProps);
   return (
     <Controller
       name={name}
       control={control}
       rules={rules}
       defaultValue={defaultValue}
-      render={({ field: { onChange, value }, fieldState: { error } }) => (
+      render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
         <FormField
           id={id}
           error={!!error}
@@ -47,19 +45,7 @@ export function FormSwitch({
           required={required}
           {...fieldProps}
         >
-          <Switch
-            {...switchProps}
-            checked={value ?? false}
-            onPress={(e) => {
-              e.preventDefault();
-              if (onPress) onPress(e);
-            }}
-            onCheckedChange={onChange}
-            size="$3"
-            id="no"
-          >
-            <Switch.Thumb animation="quick" />
-          </Switch>
+          <TextArea {...textAreaProps} value={value ?? ''} onBlur={onBlur} onChangeText={onChange} />
         </FormField>
       )}
     />
