@@ -8,7 +8,7 @@ export function SimplePopover({ children, ...props }: SimplePopoverProps) {
     <Popover size="$5" {...props}>
       <Popover.Trigger asChild>
         {children}
-        <Button icon={Icon} />
+        {/* <Button icon={Icon} /> */}
       </Popover.Trigger>
 
       <Adapt when="sm" platform="web">
@@ -42,10 +42,10 @@ export function SimplePopover({ children, ...props }: SimplePopoverProps) {
 
         <YGroup space="$3">
           <XStack space="$3">
-            <Label size="$3" htmlFor={Name}>
+            {/* <Label size="$3" htmlFor={Name}>
               Name
-            </Label>
-            <Input size="$3" id={Name} />
+            </Label> */}
+            {/* <Input size="$3" id={Name} /> */}
           </XStack>
           <Popover.Close asChild>
             <Button
