@@ -39,7 +39,7 @@ export function SimpleImage({ src, svg, width, height, resizeMode, aspectRatio, 
   if (Number.isFinite(height) && Number.isFinite(width)) aspectRatio = undefined;
   const isSvg =
     svg ||
-    (((src as any).type === 'svg' || origin?.substring(origin.length - 4) === '.svg') && typeof svg === 'undefined');
+    (((src as any)?.type === 'svg' || origin?.substring(origin.length - 4) === '.svg') && typeof svg === 'undefined');
 
   useEffect(() => {
     if (Platform.OS !== 'web' && isSvg) {
