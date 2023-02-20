@@ -12,7 +12,7 @@
     "dist"
   ],
   "dependencies": {
-    "@multiplatform.one/ui": "^0.0.29",
+    "@multiplatform.one/ui": "^0.0.30",
     "@tamagui/animations-react-native": "^1.2.9",
     "@tamagui/font-inter": "^1.2.15",
     "@tamagui/react-native-media-driver": "^1.2.15",
