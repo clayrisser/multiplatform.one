@@ -36,7 +36,7 @@ export function FormProvider({
   });
   return (
     <RhfFormProvider {...methods}>
-      <TForm {...formProps}>{children}</TForm>
+      <TForm {...(formProps as any)}>{children}</TForm>
     </RhfFormProvider>
   );
 }
