@@ -1,6 +1,6 @@
-import { SimpleAlertDialog, SimpleDialog } from '../../../../ui/src/forms';
+import { SimpleAlertDialog, SimpleDialog, SimplePopover, SimpleSheet } from '../../../../ui/src/forms';
 export { getStaticProps } from 'multiplatform.one/next';
-import { YStack, Button, XStack, Label, Input, Dialog } from 'tamagui';
+import { YStack, Button, XStack, Label, Input, Dialog, Popover, Text } from 'tamagui';
 
 const DialogComponent = () => (
   <YStack>
@@ -13,11 +13,11 @@ const DialogComponent = () => (
 );
 export default function Tags() {
   return (
-    <XStack space jc="center" ai="center">
+    <XStack space="$11" jc="center" ai="center">
       <SimpleAlertDialog
         title="Alert"
         description={<>Current Time is :: {new Date(Date.now()).toLocaleString()} </>}
-        accept="ok"
+        accept="Okay"
       >
         <Button>Get Alert</Button>
       </SimpleAlertDialog>
@@ -27,8 +27,25 @@ export default function Tags() {
         element={<DialogComponent />}
         description="make changes on the form and save the details"
       >
-        <Button>Edit Details</Button>
+        <Button>get Dialogs</Button>
       </SimpleDialog>
+
+      <SimplePopover
+        element={
+          <YStack>
+            Give Some Information Here!
+            <Text>Hello! User</Text>
+            <Popover.Close>
+              <Button>Close</Button>
+            </Popover.Close>
+          </YStack>
+        }
+      >
+        <Button>Popover</Button>
+      </SimplePopover>
+      <SimpleSheet model="Inline">
+        <Button>Sheet</Button>
+      </SimpleSheet>
     </XStack>
   );
 }

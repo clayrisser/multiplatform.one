@@ -1,15 +1,12 @@
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from '@tamagui/lucide-icons';
-import { Adapt, Button, Input, Label, Popover, PopoverProps, XStack, YGroup } from 'tamagui';
+import { Adapt, Popover, PopoverProps, YStack } from 'tamagui';
+import React from 'react';
 
-type SimplePopoverProps = PopoverProps & { children: any };
+type SimplePopoverProps = PopoverProps & { element: React.ReactNode };
 
-export function SimplePopover({ children, ...props }: SimplePopoverProps) {
+export function SimplePopover({ children, element, ...props }: SimplePopoverProps) {
   return (
     <Popover size="$5" {...props}>
-      <Popover.Trigger asChild>
-        {children}
-        <Button icon={Icon} />
-      </Popover.Trigger>
+      <Popover.Trigger asChild>{children}</Popover.Trigger>
 
       <Adapt when="sm" platform="web">
         <Popover.Sheet modal dismissOnSnapToBottom>
@@ -23,13 +20,13 @@ export function SimplePopover({ children, ...props }: SimplePopoverProps) {
       <Popover.Content
         bw={1}
         boc="$borderColor"
-        enterStyle={{ x: 0, y: -10, o: 0 }}
-        exitStyle={{ x: 0, y: -10, o: 0 }}
+        enterStyle={{ x: 10, y: -10, o: 0, scale: 0.1 }}
+        exitStyle={{ x: 10, y: 10, o: 0, scale: 0.2 }}
         x={0}
         y={0}
         o={1}
         animation={[
-          'quick',
+          'bouncy',
           {
             opacity: {
               overshootClamping: true,
@@ -40,24 +37,7 @@ export function SimplePopover({ children, ...props }: SimplePopoverProps) {
       >
         <Popover.Arrow bw={1} boc="$borderColor" />
 
-        <YGroup space="$3">
-          <XStack space="$3">
-            <Label size="$3" htmlFor={Name}>
-              Name
-            </Label>
-            <Input size="$3" id={Name} />
-          </XStack>
-          <Popover.Close asChild>
-            <Button
-              size="$3"
-              onPress={() => {
-                /* Custom code goes here, does not interfere with popover closure */
-              }}
-            >
-              Submit
-            </Button>
-          </Popover.Close>
-        </YGroup>
+        <YStack>{element}</YStack>
       </Popover.Content>
     </Popover>
   );
