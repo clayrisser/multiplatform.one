@@ -1,29 +1,30 @@
 {
   "name": "multiplatform.one",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "multiplatform.one ecosystem",
   "main": "lib/index.js",
-  "module": "esm/index.js",
+  "module": "esm/index.mjs",
   "types": "lib/index.d.ts",
   "react-native": "src/index.ts",
   "source": "src/index.ts",
   "exports": {
     ".": {
-      "import": "./esm/index.js",
-      "require": "./lib/index.js"
+      "import": "./esm/index.mjs",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
     },
     "./next": {
-      "import": "./esm/next/index.js",
+      "import": "./esm/next/index.mjs",
       "require": "./lib/next/index.js",
       "types": "./lib/next/index.d.ts"
     },
     "./recoil": {
-      "import": "./esm/recoil/index.js",
+      "import": "./esm/recoil/index.mjs",
       "require": "./lib/recoil/index.js",
       "types": "./lib/recoil/index.d.ts"
     },
     "./zustand": {
-      "import": "./esm/zustand.js",
+      "import": "./esm/zustand.mjs",
       "require": "./lib/zustand.js",
       "types": "./lib/zustand.d.ts"
     }
