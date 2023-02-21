@@ -4,7 +4,7 @@
  * File Created: 01-02-2023 14:09:56
  * Author: Clay Risser
  * -----
- * Last Modified: 01-02-2023 14:10:39
+ * Last Modified: 21-02-2023 15:12:41
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,9 +22,11 @@
  * limitations under the License.
  */
 
-import { InitStateType } from 'zustand-tools/dist/types';
-import { StateCreator, StoreApi } from 'zustand';
-import { PersistOptions, DevtoolsOptions } from 'zustand/middleware';
+import type { CreateSimpleHooksType } from 'zustand-tools/dist/types';
+import type { InitStateType } from 'zustand-tools/dist/types';
+import type { PersistOptions, DevtoolsOptions } from 'zustand/middleware';
+import type { StateCreator, StoreApi, UseBoundStore } from 'zustand';
+
 type MiddlewareOptionType<State extends InitStateType> = (
   initializer: StateCreator<State>,
 ) => StateCreator<State, any, any>;
@@ -44,7 +46,7 @@ export declare function createStateStore<State extends InitStateType, Actions ex
   actions?: Actions,
   options?: CreateOptions<State, Actions>,
 ): {
-  useStore: import('zustand').UseBoundStore<
+  useStore: UseBoundStore<
     StoreApi<
       State & {
         [Property in keyof State as `set${Capitalize<string & Property>}`]: (value: State[Property]) => void;
@@ -55,7 +57,7 @@ export declare function createStateStore<State extends InitStateType, Actions ex
     useAllData: () => {
       [k: string]: any;
     };
-  } & import('zustand-tools/dist/types').CreateSimpleHooksType<State>;
+  } & CreateSimpleHooksType<State>;
 };
 export type Actions<State extends InitStateType, Actions> = ActionsType<State, Actions>;
 export {};

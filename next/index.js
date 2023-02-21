@@ -4,7 +4,7 @@
  * File Created: 26-01-2023 09:12:40
  * Author: Clay Risser
  * -----
- * Last Modified: 01-02-2023 14:56:33
+ * Last Modified: 21-02-2023 14:46:09
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,4 +22,4 @@
  * limitations under the License.
  */
 
-module.exports = require('../lib/next');
+module.exports = require('../dist/esm/next');

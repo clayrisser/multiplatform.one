@@ -1,4 +1,5 @@
-import React, { ComponentType } from 'react';
+import type { ComponentType } from 'react';
+import React from 'react';
 
 const isPerformanceNow = typeof performance !== 'undefined' && performance.now;
 const date = isPerformanceNow ? performance : Date;

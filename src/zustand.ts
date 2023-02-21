@@ -4,7 +4,7 @@
  * File Created: 01-02-2023 09:10:54
  * Author: Clay Risser
  * -----
- * Last Modified: 01-02-2023 10:28:34
+ * Last Modified: 21-02-2023 15:10:57
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -23,10 +23,11 @@
  */
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { InitStateType } from 'zustand-tools/dist/types';
-import { StateCreator, StoreApi } from 'zustand';
+import type { InitStateType } from 'zustand-tools/dist/types';
+import type { StateCreator, StoreApi } from 'zustand';
 import { createSimple } from 'zustand-tools';
-import { devtools, persist, createJSONStorage, PersistOptions, DevtoolsOptions } from 'zustand/middleware';
+import type { PersistOptions, DevtoolsOptions } from 'zustand/middleware';
+import { devtools, persist, createJSONStorage } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 type MiddlewareOptionType<State extends InitStateType> = (

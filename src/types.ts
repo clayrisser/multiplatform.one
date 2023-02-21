@@ -4,7 +4,7 @@
  * File Created: 25-11-2022 10:00:46
  * Author: Clay Risser
  * -----
- * Last Modified: 22-01-2023 11:38:21
+ * Last Modified: 21-02-2023 15:10:50
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022
@@ -22,8 +22,9 @@
  * limitations under the License.
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type StyleProp = import('react-native').StyleProp<any>;
+import type { StyleProp as RNStyleProp } from 'react-native';
+
+export type StyleProp = RNStyleProp<any>;
 
 declare global {
   interface Window {

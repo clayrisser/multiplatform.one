@@ -3,7 +3,7 @@
 # File Created: 02-03-2022 02:40:13
 # Author: Clay Risser
 # -----
-# Last Modified: 21-02-2023 04:48:08
+# Last Modified: 21-02-2023 14:48:15
 # Modified By: Clay Risser
 # -----
 # Risser Labs LLC (c) Copyright 2022
@@ -28,9 +28,6 @@ include $(MKPM)/yarn
 include $(MKPM)/envcache
 include $(MKPM)/dotenv
 
-export BABEL ?= $(call yarn_binary,babel)
-export BABEL_NODE ?= $(call yarn_binary,babel-node)
-export BROWSERSLIST_BINARY ?= $(call yarn_binary,browserslist)
 export CLOC ?= cloc
 export CSPELL ?= $(call yarn_binary,cspell)
 export ESLINT ?= $(call yarn_binary,eslint)
@@ -68,15 +65,12 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	@$(call done,test)
 
 ACTIONS += build~test ##
-BUILD_TARGET := lib/index.js
-lib/index.js:
+BUILD_TARGET := dist/lib/index.js
+dist/lib/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(BABEL) --env-name umd src -d lib --extensions '.js,.jsx,.ts,.tsx' --source-maps
-	@$(ECHO) '{"type": "commonjs"}' > lib/package.json
-	@$(BABEL) --env-name esm src -d esm --extensions '.js,.jsx,.ts,.tsx' --out-file-extension '.mjs' --source-maps
-	@$(ECHO) '{"type": "module"}' > esm/package.json
-	@$(TSC) -p tsconfig.build.json -d
+	@$(NODE) esbuild.config.js
+	# @$(TSC) -p tsconfig.build.json -d
 	@$(call done,build)
 
 # .PHONY: start +start
@@ -92,10 +86,6 @@ coverage: | ~lint +coverage
 
 .PHONY: prepare
 prepare: ;
-
-.PHONY: browserslist
-browserslist:
-	@$(BROWSERSLIST_BINARY)
 
 .PHONY: upgrade
 upgrade:
@@ -126,8 +116,6 @@ clean: ##
 -include $(call actions)
 
 export CACHE_ENVS += \
-	BABEL \
-	BABEL_NODE \
 	CLOC \
 	CSPELL \
 	ESLINT \

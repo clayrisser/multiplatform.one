@@ -4,7 +4,7 @@
  * File Created: 26-01-2023 09:18:06
  * Author: Clay Risser
  * -----
- * Last Modified: 26-01-2023 09:18:09
+ * Last Modified: 21-02-2023 15:11:49
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,13 +22,11 @@
  * limitations under the License.
  */
 
+import type { SSRConfig } from 'next-i18next';
 import type { GetStaticPaths } from 'next';
-export declare function getBaseStaticProps(
-  locale: any,
-  namespacesRequired?: string[],
-): Promise<import('next-i18next').SSRConfig>;
+export declare function getBaseStaticProps(locale: any, namespacesRequired?: string[]): Promise<SSRConfig>;
 export declare function createGetStaticProps(namespacesRequired?: string[]): ({ locale }: { locale: any }) => Promise<{
-  props: import('next-i18next').SSRConfig;
+  props: SSRConfig;
 }>;
 export declare function createGetStaticPaths(paths?: string[]): GetStaticPaths<{
   slug: string;
@@ -37,5 +35,5 @@ export declare const getStaticPaths: GetStaticPaths<{
   slug: string;
 }>;
 export declare const getStaticProps: ({ locale }: { locale: any }) => Promise<{
-  props: import('next-i18next').SSRConfig;
+  props: SSRConfig;
 }>;

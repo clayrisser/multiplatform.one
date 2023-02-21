@@ -4,7 +4,7 @@
  * File Created: 19-11-2022 11:58:58
  * Author: Clay Risser
  * -----
- * Last Modified: 25-01-2023 05:17:52
+ * Last Modified: 21-02-2023 15:09:35
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -23,7 +23,7 @@
  */
 
 import constants from 'expo-constants';
-import { IConfig } from './types';
+import type { IConfig } from './types';
 
 export class Config implements IConfig {
   private _config: Record<string, string | undefined> = {};

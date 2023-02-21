@@ -4,10 +4,10 @@
  * File Created: 25-11-2022 10:12:12
  * Author: Clay Risser
  * -----
- * Last Modified: 28-01-2023 12:34:10
+ * Last Modified: 21-02-2023 15:09:29
  * Modified By: Clay Risser
  * -----
- * Risser Labs LLC (c) Copyright 2022
+ * Risser Labs LLC (c) Copyright 2022 - 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,12 +41,20 @@ module.exports = {
     NodeJS: true,
     JSX: true,
   },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
+  ignorePatterns: ['!.storybook'],
   rules: {
-    'max-lines': ['error', 500],
-    'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
-    'max-lines-per-function': ['warn', 200],
     '@typescript-eslint/lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
+    '@typescript-eslint/consistent-type-imports': 'error',
+    'max-lines': ['error', 500],
+    'max-lines-per-function': ['warn', 200],
     'no-empty-function': ['warn', { allow: ['constructors'] }],
+    'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
+    complexity: ['error', 50],
     '@typescript-eslint/no-unused-vars': [
       'warn',
       {
@@ -71,6 +79,7 @@ module.exports = {
     ],
     '@typescript-eslint/consistent-type-assertions': 'off',
     '@typescript-eslint/explicit-member-accessibility': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-require-imports': 'off',
     'max-params': 'off',
     'no-param-reassign': 'off',
