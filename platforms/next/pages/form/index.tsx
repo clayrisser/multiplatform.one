@@ -6,6 +6,8 @@ import {
   FormSlider,
   FormTextArea,
   FormSelectSimple,
+  FormRadioGroup,
+  FormCheckBox,
 } from '../../../../ui/src/forms';
 export { getStaticProps } from 'multiplatform.one/next';
 import { YStack, Select } from 'tamagui';
@@ -16,13 +18,19 @@ interface FormProps {
   age: number[];
   email: string;
   fruits: string;
+  gender: string;
+  mango: boolean;
+  apple: boolean;
 }
 const FormFields: FormProps = {
   firstName: '',
-  isMarried: true,
+  isMarried: false,
   age: [0],
   email: '',
   fruits: '',
+  gender: '',
+  mango: false,
+  apple: false,
 };
 
 export default function Form() {
@@ -86,6 +94,22 @@ export default function Form() {
           marginBottom="$3"
         />
         <FormSwitch name="isMarried" label="Are You Married" />
+        <FormRadioGroup
+          rules={{ required: { value: true, message: 'Please Select the Gender' } }}
+          radioElements={[
+            { label: 'Male', value: 'male' },
+            { label: 'Female', value: 'female' },
+            { label: 'Other', value: 'other' },
+          ]}
+          spacingProps={{ space: '$3' }}
+          name="gender"
+          label="Gender"
+          horizontal={true}
+        />
+        <YStack>
+          <FormCheckBox checkBoxElement={{ value: 'Mango' }} name="mango" />
+          <FormCheckBox checkBoxElement={{ label: 'Apple', value: 'apple' }} name="apple" />
+        </YStack>
         <FormSubmitButton onSubmit={(data) => console.log(data)}>Submit</FormSubmitButton>
       </FormProvider>
     </YStack>
