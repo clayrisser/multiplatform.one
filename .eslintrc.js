@@ -25,6 +25,7 @@ module.exports = {
   ignorePatterns: ['!.storybook'],
   rules: {
     '@typescript-eslint/lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
+    '@typescript-eslint/consistent-type-imports': 'error',
     'max-lines': ['error', 500],
     'max-lines-per-function': ['warn', 200],
     'no-empty-function': ['warn', { allow: ['constructors'] }],

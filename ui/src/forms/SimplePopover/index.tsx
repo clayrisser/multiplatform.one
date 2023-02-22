@@ -1,5 +1,5 @@
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from '@tamagui/lucide-icons';
-import { Adapt, Button, Input, Label, Popover, PopoverProps, XStack, YGroup } from 'tamagui';
+import type { PopoverProps } from 'tamagui';
+import { Adapt, Button, Popover, XStack, YGroup } from 'tamagui';
 
 type SimplePopoverProps = PopoverProps & { children: any };
 

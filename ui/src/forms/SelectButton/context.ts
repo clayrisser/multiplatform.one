@@ -1,5 +1,6 @@
-import { createContext, Dispatch, SetStateAction } from 'react';
-import { ButtonProps } from 'tamagui';
+import type { ButtonProps } from 'tamagui';
+import type { Dispatch, SetStateAction } from 'react';
+import { createContext } from 'react';
 
 export const SelectButtonContext = createContext<SelectButtonContextValue>({ values: {} });
 

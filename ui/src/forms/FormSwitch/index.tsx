@@ -1,8 +1,10 @@
 import React, { useId } from 'react';
-import { Switch, SwitchProps } from 'tamagui';
+import type { FormControllerProps } from '../types';
+import type { FormFieldProps } from '../FormField';
+import type { SwitchProps } from 'tamagui';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormControllerProps } from '../types';
-import { FormField, FormFieldProps } from '../FormField';
+import { FormField } from '../FormField';
+import { Switch } from 'tamagui';
 
 export type FormSwitchProps = SwitchProps &
   FormControllerProps & {
@@ -31,7 +33,6 @@ export function FormSwitch({
       </FormField>
     );
   }
-  console.log('switchProps', switchProps);
   return (
     <Controller
       name={name}

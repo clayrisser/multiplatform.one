@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { ImageProps, YStack, YStackProps, Image } from 'tamagui';
-import { ImageURISource, ImageResizeMode, Platform, Image as RNImage } from 'react-native';
+import type { ImageProps, YStackProps } from 'tamagui';
+import type { ImageURISource, ImageResizeMode } from 'react-native';
+import type { SvgUriProps } from '../SvgUri';
 import { MultiPlatform } from 'multiplatform.one';
-import { SvgUri, SvgUriProps } from '../SvgUri';
+import { Platform, Image as RNImage } from 'react-native';
+import { SvgUri } from '../SvgUri';
 import { XMLParser } from 'fast-xml-parser';
+import { YStack, Image } from 'tamagui';
 import { useAssets } from '../../hooks/useAssets';
 import { useMemo } from 'react';
 

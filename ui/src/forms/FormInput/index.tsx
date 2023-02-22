@@ -1,8 +1,10 @@
 import React, { useId } from 'react';
-import { Input, InputProps } from 'tamagui';
+import type { FormControllerProps } from '../types';
+import type { FormFieldProps } from '../FormField';
+import type { InputProps } from 'tamagui';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormControllerProps } from '../types';
-import { FormField, FormFieldProps } from '../FormField';
+import { FormField } from '../FormField';
+import { Input } from 'tamagui';
 
 export type FormInputProps = InputProps &
   FormControllerProps & {

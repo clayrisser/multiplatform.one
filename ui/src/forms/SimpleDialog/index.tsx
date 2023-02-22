@@ -1,6 +1,7 @@
-import { X } from '@tamagui/lucide-icons';
 import React from 'react';
-import { Adapt, Button, Dialog, DialogProps, Sheet, Unspaced } from 'tamagui';
+import type { DialogProps } from 'tamagui';
+import { Adapt, Button, Dialog, Sheet, Unspaced } from 'tamagui';
+import { X } from '@tamagui/lucide-icons';
 
 type SimpleDialogProps = DialogProps & { element: React.ReactNode } & { title: React.ReactNode } & {
   description?: React.ReactNode;

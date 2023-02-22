@@ -1,3 +1,3 @@
-import { ControllerProps } from 'react-hook-form';
+import type { ControllerProps } from 'react-hook-form';
 
 export type FormControllerProps = Pick<ControllerProps, 'name' | 'control' | 'rules' | 'defaultValue'>;

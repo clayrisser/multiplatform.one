@@ -1,5 +1,5 @@
 import type { Asset as ExpoAsset } from 'expo-asset';
-import { Asset } from './types';
+import type { Asset } from './types';
 import { useAssets as expoUseAssets } from 'expo-asset';
 
 const logger = console;
