@@ -21,7 +21,7 @@ export function SimpleDialog({ children, element, title, description, ...props }
       </Adapt>
 
       <Dialog.Portal>
-        <Dialog.Overlay key="overlay" animation="quick" o={0.5} enterStyle={{ o: 0 }} exitStyle={{ o: 0 }} />
+        <Dialog.Overlay key="overlay" animation="bouncy" o={0.5} enterStyle={{ o: 0 }} exitStyle={{ o: 0 }} />
 
         <Dialog.Content
           bordered
