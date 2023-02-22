@@ -4,7 +4,7 @@
  * File Created: 28-01-2023 11:29:31
  * Author: Clay Risser
  * -----
- * Last Modified: 28-01-2023 12:32:30
+ * Last Modified: 22-02-2023 11:55:40
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,10 +22,9 @@
  * limitations under the License.
  */
 
-import { useState } from 'react';
 import i18n from 'i18next';
 import { MultiPlatform } from '../../multiplatform';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 export function useLocale(): [string, (locale: string) => void] {

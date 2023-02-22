@@ -4,7 +4,7 @@
  * File Created: 21-02-2023 13:07:50
  * Author: Clay Risser
  * -----
- * Last Modified: 21-02-2023 14:39:41
+ * Last Modified: 22-02-2023 05:31:19
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -25,6 +25,7 @@
 const esbuild = require('esbuild');
 const fg = require('fast-glob');
 const path = require('path');
+const logger = console;
 
 async function build(options = {}, esbuildOptions = {}) {
   options = {
@@ -56,7 +57,7 @@ async function build(options = {}, esbuildOptions = {}) {
         ...esbuildOptions,
         format: 'cjs',
         outdir: path.resolve(options.cjs),
-        target: 'node14',
+        target: 'node8',
       }),
     );
   }
@@ -105,6 +106,7 @@ async function build(options = {}, esbuildOptions = {}) {
     );
   }
   await Promise.all(builds);
+  logger.info('built');
 }
 
-build({ jsx: false }).catch(console.error);
+build().catch(console.error);
