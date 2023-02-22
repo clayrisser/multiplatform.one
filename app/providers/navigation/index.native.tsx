@@ -1,9 +1,10 @@
-import { NavigationContainer, Theme } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
-import { useMemo } from 'react';
-import { ProviderProps } from '../types';
-import { routeMaps } from 'app/navigation/native';
+import React, { useMemo } from 'react';
 import config from 'app/tamagui.config';
+import type { ProviderProps } from '../types';
+import type { Theme } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
+import { routeMaps } from 'app/navigation/native';
 import { useThemeState } from 'app/state/theme';
 
 const initialRouteName = Object.entries(routeMaps).reduce(

@@ -3,8 +3,9 @@
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
     "paths": {
+      "@multiplatform/ui/*": ["./ui/*"],
       "app/*": ["./app/*"]
     }
   },
-  "extends": "expo/tsconfig.base"
+  "extends": "./tsconfig.base"
 }

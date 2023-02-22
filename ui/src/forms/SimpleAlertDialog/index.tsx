@@ -1,5 +1,7 @@
-import React, { ReactNode } from 'react';
-import { AlertDialog, Button, XStack, YStack, AlertDialogTriggerProps, AlertDialogProps } from 'tamagui';
+import React from 'react';
+import type { AlertDialogTriggerProps, AlertDialogProps } from 'tamagui';
+import type { ReactNode } from 'react';
+import { AlertDialog, Button, XStack, YStack } from 'tamagui';
 
 export type AlterDialogSimpleProps = AlertDialogTriggerProps &
   AlertDialogProps & { placeholder?: ReactNode } & { title?: ReactNode } & { cancel?: string } & { accept?: string } & {

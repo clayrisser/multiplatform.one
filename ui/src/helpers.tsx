@@ -1,4 +1,5 @@
-import React, { ReactNode, ComponentType } from 'react';
+import type { ReactNode, ComponentType } from 'react';
+import React from 'react';
 import { Text } from 'tamagui';
 import { isText } from 'multiplatform.one';
 

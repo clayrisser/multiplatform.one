@@ -4,9 +4,9 @@ import publicConfig from 'app/config/public';
 
 const config = {
   stories: [
-    '../stories/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../../app/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../../ui/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '../stories/**/*.stories.@(js|jsx|ts|tsx|mdx)',
   ],
   addons: [
     '@etchteam/storybook-addon-status',
@@ -70,8 +70,9 @@ const config = {
       propFilter: (prop) => (prop.parent ? !/node_modules\/(?!tamagui)/.test(prop.parent.fileName) : true),
     },
   },
-  webpackFinal: async (config) => {
-    config.resolve = {
+  webpackFinal: async (config) => ({
+    ...config,
+    resolve: {
       ...config.resolve,
       fallback: {
         ...(config.resolve?.fallback || []),
@@ -80,9 +81,21 @@ const config = {
         os: false,
         util: false,
       },
-    };
-    return config;
-  },
+    },
+    cache: { ...config.cache, type: 'memory' },
+    module: {
+      ...config.module,
+      rules: [
+        ...config.module.rules,
+        {
+          test: /\.(js|mjs|jsx)$/,
+          resolve: {
+            fullySpecified: false,
+          },
+        },
+      ],
+    },
+  }),
   env: (config) => ({
     ...config,
     TAMAGUI_TARGET: 'web',

@@ -1,4 +1,4 @@
-import { Asset } from './types';
+import type { Asset } from './types';
 
 export function useAssets(modules: any | any[]): (Asset | undefined)[] {
   const modulesArr = (Array.isArray(modules) ? modules : [modules]).map((module: any) => {
@@ -28,4 +28,4 @@ type WebModule =
       width?: 1024;
     };
 
-export { Asset };
+export type { Asset };

@@ -1,8 +1,10 @@
 import React, { useId } from 'react';
-import { Slider, SliderProps } from 'tamagui';
+import type { FormControllerProps } from '../types';
+import type { FormFieldProps } from '../FormField';
+import type { SliderProps } from 'tamagui';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormControllerProps } from '../types';
-import { FormField, FormFieldProps } from '../FormField';
+import { FormField } from '../FormField';
+import { Slider } from 'tamagui';
 
 export type FormSliderProps = SliderProps &
   FormControllerProps & {

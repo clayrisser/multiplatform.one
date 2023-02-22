@@ -1,5 +1,7 @@
-import React, { ReactNode } from 'react';
-import { Label, LabelProps, Paragraph, YStack, YStackProps, SizeTokens, FontSizeTokens } from 'tamagui';
+import React from 'react';
+import type { LabelProps, YStackProps, SizeTokens, FontSizeTokens } from 'tamagui';
+import type { ReactNode } from 'react';
+import { Label, Paragraph, YStack } from 'tamagui';
 
 export interface FormFieldProps extends YStackProps {
   children: ReactNode;
