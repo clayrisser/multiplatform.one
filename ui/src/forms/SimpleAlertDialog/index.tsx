@@ -3,7 +3,7 @@ import { AlertDialog, Button, XStack, YStack, AlertDialogTriggerProps, AlertDial
 
 export type AlterDialogSimpleProps = AlertDialogTriggerProps &
   AlertDialogProps & { placeholder?: ReactNode } & { title?: ReactNode } & { cancel?: string } & { accept?: string } & {
-    description?: ReactNode;
+    description: ReactNode;
   };
 
 export function SimpleAlertDialog({
@@ -25,15 +25,15 @@ export function SimpleAlertDialog({
           elevate
           key="content"
           animation={[
-            'quick',
+            'bouncy',
             {
               opacity: {
                 overshootClamping: true,
               },
             },
           ]}
-          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
-          exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.2 }}
+          exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.2 }}
           x={0}
           scale={1}
           opacity={1}
