@@ -3,7 +3,7 @@
 # File Created: 02-03-2022 02:40:13
 # Author: Clay Risser
 # -----
-# Last Modified: 21-02-2023 14:48:15
+# Last Modified: 22-02-2023 15:07:07
 # Modified By: Clay Risser
 # -----
 # Risser Labs LLC (c) Copyright 2022
@@ -70,7 +70,7 @@ dist/lib/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(NODE) esbuild.config.js
-	# @$(TSC) -p tsconfig.build.json -d
+	@$(TSC) -p tsconfig.build.json -d
 	@$(call done,build)
 
 # .PHONY: start +start
