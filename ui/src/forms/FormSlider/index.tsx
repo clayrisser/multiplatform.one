@@ -1,5 +1,5 @@
 import React, { useId } from 'react';
-import { Slider, SliderProps } from 'tamagui';
+import { Slider, SliderProps, SliderThumbProps } from 'tamagui';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormControllerProps } from '../types';
 import { FormField, FormFieldProps } from '../FormField';
@@ -7,7 +7,7 @@ import { FormField, FormFieldProps } from '../FormField';
 export type FormSliderProps = SliderProps &
   FormControllerProps & {
     fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
+  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> & { thumbProps?: SliderThumbProps };
 
 export function FormSlider({
   children,
@@ -19,6 +19,7 @@ export function FormSlider({
   label,
   name,
   required,
+  thumbProps,
   rules,
   ...switchProps
 }: FormSliderProps) {
@@ -54,7 +55,7 @@ export function FormSlider({
               <Slider.TrackActive />
             </Slider.Track>
 
-            <Slider.Thumb ai="center" jc="center" bordered circular userSelect="none" elevate index={0}>
+            <Slider.Thumb ai="center" jc="center" bordered circular userSelect="none" elevate index={0} {...thumbProps}>
               {value[0]}
             </Slider.Thumb>
             {children}

@@ -1,14 +1,23 @@
-import { Adapt, Popover, PopoverProps, YStack } from 'tamagui';
+import { Adapt, Popover, PopoverProps, YStack, PopoverContentProps, AdaptProps, PopoverArrowProps } from 'tamagui';
 import React from 'react';
 
-type SimplePopoverProps = PopoverProps & { element: React.ReactNode };
+type SimplePopoverProps = PopoverProps & { element: React.ReactNode } & { contentStyle?: PopoverContentProps } & {
+  adaptStyle?: AdaptProps;
+} & { arrowStyle?: PopoverArrowProps };
 
-export function SimplePopover({ children, element, ...props }: SimplePopoverProps) {
+export function SimplePopover({
+  children,
+  element,
+  contentStyle,
+  adaptStyle,
+  arrowStyle,
+  ...props
+}: SimplePopoverProps) {
   return (
     <Popover size="$5" {...props}>
       <Popover.Trigger asChild>{children}</Popover.Trigger>
 
-      <Adapt when="sm" platform="web">
+      <Adapt when="sm" platform="web" {...adaptStyle}>
         <Popover.Sheet modal dismissOnSnapToBottom>
           <Popover.Sheet.Frame padding="$4">
             <Adapt.Contents />
@@ -34,8 +43,9 @@ export function SimplePopover({ children, element, ...props }: SimplePopoverProp
           },
         ]}
         elevate
+        {...contentStyle}
       >
-        <Popover.Arrow bw={1} boc="$borderColor" />
+        <Popover.Arrow bw={1} boc="$borderColor" {...arrowStyle} />
 
         <YStack>{element}</YStack>
       </Popover.Content>

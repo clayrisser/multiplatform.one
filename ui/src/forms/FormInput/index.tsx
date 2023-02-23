@@ -45,7 +45,18 @@ export function FormInput({
           required={required}
           {...fieldProps}
         >
-          <Input {...inputProps} value={value ?? ''} onBlur={onBlur} onChangeText={onChange} />
+          <Input
+            {...inputProps}
+            value={value ?? ''}
+            onBlur={(e) => {
+              onBlur();
+              if (inputProps.onBlur) inputProps.onBlur(e);
+            }}
+            onChange={(e) => {
+              onChange(e);
+              if (inputProps.onChange) inputProps.onChange(e);
+            }}
+          />
         </FormField>
       )}
     />
