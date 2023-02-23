@@ -6,13 +6,13 @@
   ],
   "private": true,
   "main": "src/index.tsx",
-  "module:jsx": "src",
+  "react-native": "src/index.tsx",
+  "source": "src/index.tsx",
   "files": [
-    "types",
-    "dist"
+    "src"
   ],
   "dependencies": {
-    "@multiplatform.one/ui": "^0.0.32",
+    "@multiplatform.one/ui": "^0.0.36",
     "@tamagui/animations-react-native": "^1.5.16",
     "@tamagui/font-inter": "^1.5.16",
     "@tamagui/react-native-media-driver": "^1.5.16",

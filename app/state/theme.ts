@@ -1,5 +1,6 @@
-import { Actions, createStateStore } from 'multiplatform.one/zustand';
-import { ThemeName } from 'ui';
+import type { Actions } from 'multiplatform.one/zustand';
+import type { ThemeName } from 'ui';
+import { createStateStore } from 'multiplatform.one/zustand';
 import { useColorScheme } from 'react-native';
 import { useEffect } from 'react';
 

@@ -1,9 +1,11 @@
+import React from 'react';
+import type { KeycloakProviderProps } from './keycloak';
 import type { ProviderProps } from './types';
+import type { TamaguiProviderProps } from 'ui';
+import { KeycloakProvider } from './keycloak';
 import { NavigationProvider } from './navigation';
 import { StateProvider } from './state';
 import { TamaguiProvider } from './tamagui';
-import { TamaguiProviderProps } from 'ui';
-import { KeycloakProvider, KeycloakProviderProps } from './keycloak';
 
 export type GlobalProviderProps = ProviderProps &
   KeycloakProviderProps &

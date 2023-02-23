@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import addons, { makeDecorator } from '@storybook/addons';
-import { ThemeName } from 'ui';
+import type { ThemeName } from 'ui';
 import { useThemeState } from 'app/state/theme';
 
 const UPDATE_BACKGROUND = 'storybook-addon-background:update';
