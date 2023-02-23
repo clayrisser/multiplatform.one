@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-import { Text, XStack, YStackProps, XStackProps, TextProps } from 'tamagui';
 import React from 'react';
+import type { YStackProps, XStackProps, TextProps } from 'tamagui';
+import { Text, XStack } from 'tamagui';
 
 export interface TableHeadData {
   children?: React.ReactNode;
