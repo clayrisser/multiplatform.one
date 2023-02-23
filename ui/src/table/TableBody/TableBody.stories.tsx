@@ -1,4 +1,5 @@
-import { TableBody } from '.';
+import React from 'react';
+import { TableBody } from './index';
 
 export default {
   title: 'components/TableBody',
