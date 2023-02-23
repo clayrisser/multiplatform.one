@@ -1,8 +1,8 @@
-import { SimpleAlertDialog, SimpleDialog, SimplePopover, SimpleSheet, SimpleTooltip } from '../../../ui/src/forms';
+import { SimpleAlertDialog, SimpleDialog, SimplePopover, SimpleSheet, SimpleTooltip } from '../../../ui/src/panels';
 import { YStack, Button, XStack, Label, Input, Dialog, Popover, Text, Theme } from 'tamagui';
 
 const DialogComponent = () => (
-  <YStack>
+  <YStack space>
     <Label>Name</Label>
     <Input defaultValue="Welcome to the dialog" />
     <Dialog.Close>

@@ -1,12 +1,34 @@
+/* eslint-disable @typescript-eslint/consistent-type-imports */
 import React from 'react';
-import type { DialogProps } from 'tamagui';
-import { Adapt, Button, Dialog, Sheet, Unspaced } from 'tamagui';
+import {
+  Adapt,
+  Button,
+  Dialog,
+  DialogProps,
+  Sheet,
+  Unspaced,
+  DialogTitleProps,
+  DialogDescriptionProps,
+  DialogContentProps,
+} from 'tamagui';
 import { X } from '@tamagui/lucide-icons';
 
 type SimpleDialogProps = DialogProps & { element: React.ReactNode } & { title: React.ReactNode } & {
   description?: React.ReactNode;
+} & { titleStyle?: DialogTitleProps } & { descriptionStyle?: DialogDescriptionProps } & {
+  contentStyle?: DialogContentProps;
 };
-export function SimpleDialog({ children, element, title, description, ...props }: SimpleDialogProps) {
+
+export function SimpleDialog({
+  children,
+  element,
+  title,
+  description,
+  titleStyle,
+  descriptionStyle,
+  contentStyle,
+  ...props
+}: SimpleDialogProps) {
   return (
     <Dialog modal {...props}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
@@ -38,9 +60,10 @@ export function SimpleDialog({ children, element, title, description, ...props }
           enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
           space
+          {...contentStyle}
         >
-          <Dialog.Title>{title}</Dialog.Title>
-          <Dialog.Description>{description ?? description}</Dialog.Description>
+          <Dialog.Title {...titleStyle}>{title}</Dialog.Title>
+          <Dialog.Description {...descriptionStyle}>{description ?? description}</Dialog.Description>
           {element}
 
           <Unspaced>

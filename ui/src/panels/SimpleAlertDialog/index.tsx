@@ -1,12 +1,20 @@
-import React from 'react';
-import type { AlertDialogTriggerProps, AlertDialogProps } from 'tamagui';
-import type { ReactNode } from 'react';
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+import React, { ReactNode } from 'react';
+import {
+  AlertDialogTriggerProps,
+  AlertDialogProps,
+  AlertDialogTitleProps,
+  AlertDialogDescriptionProps,
+  AlertDialogContentProps,
+} from 'tamagui';
 import { AlertDialog, Button, XStack, YStack } from 'tamagui';
 
 export type AlterDialogSimpleProps = AlertDialogTriggerProps &
   AlertDialogProps & { placeholder?: ReactNode } & { title?: ReactNode } & { cancel?: string } & { accept?: string } & {
     description: ReactNode;
-  };
+  } & { titleStyle?: AlertDialogTitleProps } & {
+    descriptionStyle?: AlertDialogDescriptionProps;
+  } & { contentStyle?: AlertDialogContentProps };
 
 export function SimpleAlertDialog({
   children,
@@ -14,6 +22,9 @@ export function SimpleAlertDialog({
   cancel,
   accept,
   description,
+  titleStyle,
+  contentStyle,
+  descriptionStyle,
   ...triggerProps
 }: AlterDialogSimpleProps) {
   return (
@@ -40,10 +51,11 @@ export function SimpleAlertDialog({
           scale={1}
           opacity={1}
           y={0}
+          {...contentStyle}
         >
           <YStack space>
-            <AlertDialog.Title>{title ?? title}</AlertDialog.Title>
-            <AlertDialog.Description>{description ?? description}</AlertDialog.Description>
+            <AlertDialog.Title {...titleStyle}>{title ?? title}</AlertDialog.Title>
+            <AlertDialog.Description {...descriptionStyle}>{description ?? description}</AlertDialog.Description>
             <XStack space="$3" jc="flex-end">
               <AlertDialog.Cancel asChild>
                 <Button>{cancel || 'cancel'}</Button>

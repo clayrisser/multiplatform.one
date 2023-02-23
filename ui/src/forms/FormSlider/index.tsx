@@ -1,15 +1,16 @@
+/* eslint-disable @typescript-eslint/consistent-type-imports */
 import React, { useId } from 'react';
-import type { FormControllerProps } from '../types';
-import type { FormFieldProps } from '../FormField';
-import type { SliderProps } from 'tamagui';
+import { SliderProps, SliderThumbProps } from 'tamagui';
+import { Slider } from 'tamagui';
+import { FormControllerProps } from '../types';
+import { FormFieldProps } from '../FormField';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormField } from '../FormField';
-import { Slider } from 'tamagui';
 
 export type FormSliderProps = SliderProps &
   FormControllerProps & {
     fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
+  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> & { thumbStyle?: SliderThumbProps };
 
 export function FormSlider({
   children,
@@ -21,6 +22,7 @@ export function FormSlider({
   label,
   name,
   required,
+  thumbStyle,
   rules,
   ...switchProps
 }: FormSliderProps) {
@@ -56,7 +58,7 @@ export function FormSlider({
               <Slider.TrackActive />
             </Slider.Track>
 
-            <Slider.Thumb ai="center" jc="center" bordered circular userSelect="none" elevate index={0}>
+            <Slider.Thumb ai="center" jc="center" bordered circular userSelect="none" elevate index={0} {...thumbStyle}>
               {value[0]}
             </Slider.Thumb>
             {children}
