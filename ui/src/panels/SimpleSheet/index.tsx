@@ -1,8 +1,9 @@
+import React from 'react';
+import type { SheetProps } from '@tamagui/sheet/types/types';
+import type { SizeTokens } from 'tamagui';
+import { Button, XStack, YStack } from 'tamagui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { Sheet } from '@tamagui/sheet';
-import { SheetProps } from '@tamagui/sheet/types/types';
-import { Button, SizeTokens, XStack, YStack } from 'tamagui';
-import React from 'react';
 import { create } from 'zustand';
 
 type SimpleSheetProps = SheetProps & { sheetElement?: React.ReactNode } & { modal?: boolean } & {

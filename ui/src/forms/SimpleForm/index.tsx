@@ -5,7 +5,7 @@ import { FormProvider as RhfFormProvider, useForm } from 'react-hook-form';
 
 export type FormProviderProps = UseFormProps & StackProps;
 
-export function FormProvider({
+export function SimpleForm({
   children,
   context,
   criteriaMode,
