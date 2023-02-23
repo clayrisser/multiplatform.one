@@ -1,4 +1,4 @@
-import { Label, RadioGroup, SizeTokens, XStack, RadioGroupProps, YStack } from 'tamagui';
+import { Label, RadioGroup, SizeTokens, XStack, RadioGroupProps, YStack, LabelProps } from 'tamagui';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormControllerProps } from '../types';
 import { FormField, FormFieldProps } from '../FormField';
@@ -7,7 +7,9 @@ import React, { useId } from 'react';
 export type FormRadioGroupProps = RadioGroupProps &
   FormControllerProps & {
     fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> & { horizontal?: boolean };
+  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> & { horizontal?: boolean } & {
+    labelStyle?: LabelProps;
+  };
 
 export interface FormRadioProps {
   label: string;
@@ -36,6 +38,7 @@ export function FormRadioGroup({
   required,
   horizontal,
   rules,
+  labelStyle,
   spacingProps,
   ...radioProps
 }: FormRadioGroupProps & { radioElements: FormRadioProps[] } & { spacingProps?: spacingProps }) {
@@ -75,17 +78,25 @@ export function FormRadioGroup({
           required={required}
           {...fieldProps}
         >
-          <RadioGroup name={name} value={value} onValueChange={onChange} {...radioProps}>
+          <RadioGroup
+            name={name}
+            {...radioProps}
+            value={value}
+            onValueChange={(e) => {
+              onChange(e);
+              if (radioProps.onValueChange) radioProps.onValueChange(e);
+            }}
+          >
             {horizontal ? (
               <XStack {...spacingProps}>
                 {radioProps.radioElements.map((item) => (
-                  <FormRadio {...item} key={item.value} />
+                  <FormRadio {...item} key={item.value} {...labelStyle} />
                 ))}
               </XStack>
             ) : (
               <YStack {...spacingProps}>
                 {radioProps.radioElements.map((item) => (
-                  <FormRadio {...item} key={item.value} />
+                  <FormRadio {...item} key={item.value} {...labelStyle} />
                 ))}
               </YStack>
             )}
@@ -96,13 +107,13 @@ export function FormRadioGroup({
   );
 }
 
-export function FormRadio({ label, value, size, disabled, id }: FormRadioProps) {
+export function FormRadio({ label, value, size, disabled, id, ...labelStyle }: FormRadioProps) {
   return (
     <XStack ai="center" space="$1">
       <RadioGroup.Item value={value} id={id} size={size}>
         <RadioGroup.Indicator disabled={disabled} />
       </RadioGroup.Item>
-      <Label size={size} htmlFor={id}>
+      <Label size={size} htmlFor={id} {...labelStyle}>
         {label}
       </Label>
     </XStack>

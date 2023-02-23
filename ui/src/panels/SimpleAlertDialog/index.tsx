@@ -1,10 +1,22 @@
 import React, { ReactNode } from 'react';
-import { AlertDialog, Button, XStack, YStack, AlertDialogTriggerProps, AlertDialogProps } from 'tamagui';
+import {
+  AlertDialog,
+  Button,
+  XStack,
+  YStack,
+  AlertDialogTriggerProps,
+  AlertDialogProps,
+  AlertDialogTitleProps,
+  AlertDialogDescriptionProps,
+  AlertDialogContentProps,
+} from 'tamagui';
 
 export type AlterDialogSimpleProps = AlertDialogTriggerProps &
   AlertDialogProps & { placeholder?: ReactNode } & { title?: ReactNode } & { cancel?: string } & { accept?: string } & {
     description: ReactNode;
-  };
+  } & { titleStyle?: AlertDialogTitleProps } & {
+    descriptionStyle?: AlertDialogDescriptionProps;
+  } & { contentStyle?: AlertDialogContentProps };
 
 export function SimpleAlertDialog({
   children,
@@ -12,6 +24,9 @@ export function SimpleAlertDialog({
   cancel,
   accept,
   description,
+  titleStyle,
+  contentStyle,
+  descriptionStyle,
   ...triggerProps
 }: AlterDialogSimpleProps) {
   return (
@@ -38,10 +53,11 @@ export function SimpleAlertDialog({
           scale={1}
           opacity={1}
           y={0}
+          {...contentStyle}
         >
           <YStack space>
-            <AlertDialog.Title>{title ?? title}</AlertDialog.Title>
-            <AlertDialog.Description>{description ?? description}</AlertDialog.Description>
+            <AlertDialog.Title {...titleStyle}>{title ?? title}</AlertDialog.Title>
+            <AlertDialog.Description {...descriptionStyle}>{description ?? description}</AlertDialog.Description>
             <XStack space="$3" jc="flex-end">
               <AlertDialog.Cancel asChild>
                 <Button>{cancel || 'cancel'}</Button>

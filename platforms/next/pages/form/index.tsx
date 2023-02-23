@@ -93,7 +93,13 @@ export default function Form() {
           marginTop="$2"
           marginBottom="$3"
         />
-        <FormSwitch name="isMarried" label="Are You Married" />
+        <FormSwitch
+          name="isMarried"
+          label="Are You Married"
+          ThumbStyle={{ backgroundColor: 'blue', animation: 'quick' }}
+          backgroundColor="yellow"
+          size="$3"
+        />
         <FormRadioGroup
           rules={{ required: { value: true, message: 'Please Select the Gender' } }}
           radioElements={[
@@ -101,14 +107,22 @@ export default function Form() {
             { label: 'Female', value: 'female' },
             { label: 'Other', value: 'other' },
           ]}
+          labelStyle={{ col: '$colorTranslucent' }}
           spacingProps={{ space: '$3' }}
           name="gender"
           label="Gender"
           horizontal={true}
         />
         <YStack>
-          <FormCheckBox checkBoxElement={{ value: 'Mango' }} name="mango" />
-          <FormCheckBox checkBoxElement={{ label: 'Apple', value: 'apple' }} name="apple" />
+          <FormCheckBox
+            checkBoxElement={{ value: 'Mango' }}
+            name="mango"
+            LabelStyle={{ color: 'green' }}
+            IndicatorStyle={{ backgroundColor: 'blue' }}
+            backgroundColor="blue"
+            iconColor="red"
+          />
+          <FormCheckBox checkBoxElement={{ label: 'Apple', value: 'apple' }} name="apple" iconColor="blue" />
         </YStack>
         <FormSubmitButton onSubmit={(data) => console.log(data)}>Submit</FormSubmitButton>
       </FormProvider>
