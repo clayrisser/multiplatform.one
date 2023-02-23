@@ -4,7 +4,7 @@
  * File Created: 21-02-2023 13:07:50
  * Author: Clay Risser
  * -----
- * Last Modified: 22-02-2023 05:31:19
+ * Last Modified: 23-02-2023 03:29:41
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -62,6 +62,25 @@ async function build(options = {}, esbuildOptions = {}) {
     );
   }
   if (options.esm) {
+    builds.push(
+      esbuild.build({
+        allowOverwrite: true,
+        bundle: options.bundle,
+        color: true,
+        entryPoints: files,
+        jsx: 'automatic',
+        keepNames: false,
+        logLevel: 'error',
+        minify: false,
+        platform: options.bundle ? 'node' : 'neutral',
+        plugins: [],
+        sourcemap: true,
+        target: 'node16',
+        ...esbuildOptions,
+        outdir: path.resolve(options.esm),
+        format: 'esm',
+      }),
+    );
     builds.push(
       esbuild.build({
         allowOverwrite: true,
