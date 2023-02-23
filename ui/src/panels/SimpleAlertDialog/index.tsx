@@ -1,15 +1,13 @@
+/* eslint-disable @typescript-eslint/consistent-type-imports */
 import React, { ReactNode } from 'react';
 import {
-  AlertDialog,
-  Button,
-  XStack,
-  YStack,
   AlertDialogTriggerProps,
   AlertDialogProps,
   AlertDialogTitleProps,
   AlertDialogDescriptionProps,
   AlertDialogContentProps,
 } from 'tamagui';
+import { AlertDialog, Button, XStack, YStack } from 'tamagui';
 
 export type AlterDialogSimpleProps = AlertDialogTriggerProps &
   AlertDialogProps & { placeholder?: ReactNode } & { title?: ReactNode } & { cancel?: string } & { accept?: string } & {

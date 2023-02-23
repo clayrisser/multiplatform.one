@@ -1,18 +1,10 @@
-import {
-  Label,
-  Checkbox,
-  SizeTokens,
-  XStack,
-  CheckboxProps,
-  YStack,
-  CheckboxIndicatorProps,
-  LabelProps,
-  ThemeName,
-  ThemeKeys,
-} from 'tamagui';
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+import { SizeTokens, CheckboxProps, CheckboxIndicatorProps, LabelProps, ThemeName, ThemeKeys } from 'tamagui';
+import { Label, Checkbox, XStack, YStack } from 'tamagui';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormControllerProps } from '../types';
-import { FormField, FormFieldProps } from '../FormField';
+import { FormFieldProps } from '../FormField';
+import { FormField } from '../FormField';
 import React, { useId } from 'react';
 import { FlexAlignType } from 'react-native';
 import { Check as CheckIcon } from '@tamagui/lucide-icons';
