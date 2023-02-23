@@ -1,10 +1,10 @@
 /**
- * File: /src/multiplatform.ts
+ * File: /src/multiplatform/index.ts
  * Project: multiplatform.one
  * File Created: 09-11-2022 08:59:08
  * Author: Clay Risser
  * -----
- * Last Modified: 28-01-2023 13:14:03
+ * Last Modified: 23-02-2023 07:33:04
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-import getConfig from 'next/config';
+import getConfig from 'next/config.js';
 import { MultiPlatformBase } from './multiplatformBase';
 import { Platform } from 'react-native';
 import { isChrome, isClient, isWindowDefined, isRSC, isServer, isWeb, isWebTouchable } from '@tamagui/constants';

@@ -4,7 +4,7 @@
  * File Created: 19-11-2022 11:59:11
  * Author: Clay Risser
  * -----
- * Last Modified: 21-02-2023 15:09:38
+ * Last Modified: 23-02-2023 07:33:14
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-import getConfig from 'next/config';
+import getConfig from 'next/config.js';
 import type { IConfig } from './types';
 import { MultiPlatform } from '../multiplatform';
 

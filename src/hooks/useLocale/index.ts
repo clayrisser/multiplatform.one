@@ -4,7 +4,7 @@
  * File Created: 28-01-2023 11:29:31
  * Author: Clay Risser
  * -----
- * Last Modified: 22-02-2023 11:55:40
+ * Last Modified: 23-02-2023 07:35:56
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -25,7 +25,7 @@
 import i18n from 'i18next';
 import { MultiPlatform } from '../../multiplatform';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router.js';
 
 export function useLocale(): [string, (locale: string) => void] {
   const nextRouter = MultiPlatform.isNext && !MultiPlatform.isStatic ? useRouter() : null;
