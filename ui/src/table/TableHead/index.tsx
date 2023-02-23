@@ -11,7 +11,7 @@ export type TableHeadProps = YStackProps & { headRowStyle?: XStackProps } & Tabl
     headTextStyle?: TextProps;
   };
 
-export function TableHead({ label, children, headTextStyle, headRowStyle, ...props }: TableHeadProps) {
+export function TableHead({ label, headTextStyle, headRowStyle }: TableHeadProps) {
   return (
     <XStack jc="space-evenly" {...headRowStyle}>
       {label.map((item, index) => {
