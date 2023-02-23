@@ -1,15 +1,16 @@
+/* eslint-disable @typescript-eslint/consistent-type-imports */
 import React, { useId } from 'react';
-import type { FormControllerProps } from '../types';
-import type { FormFieldProps } from '../FormField';
-import type { SwitchProps } from 'tamagui';
+import { SwitchProps, SwitchThumbProps } from 'tamagui';
+import { Switch } from 'tamagui';
+import { FormControllerProps } from '../types';
+import { FormFieldProps } from '../FormField';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormField } from '../FormField';
-import { Switch } from 'tamagui';
 
 export type FormSwitchProps = SwitchProps &
   FormControllerProps & {
     fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
+  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> & { ThumbStyle?: SwitchThumbProps };
 
 export function FormSwitch({
   control,
@@ -21,7 +22,7 @@ export function FormSwitch({
   name,
   required,
   rules,
-  onPress,
+  ThumbStyle,
   ...switchProps
 }: FormSwitchProps) {
   const formContext = useFormContext();
@@ -49,20 +50,27 @@ export function FormSwitch({
           {...fieldProps}
         >
           <Switch
-            {...switchProps}
             checked={value ?? false}
+            id={id}
+            {...switchProps}
+            onCheckedChange={(e) => {
+              onChange(e);
+              if (switchProps.onCheckedChange) switchProps.onCheckedChange(e);
+            }}
             onPress={(e) => {
               e.preventDefault();
-              if (onPress) onPress(e);
+              if (switchProps.onPress) switchProps.onPress(e);
             }}
-            onCheckedChange={onChange}
-            size="$3"
-            id="no"
           >
-            <Switch.Thumb animation="quick" />
+            <Switch.Thumb {...ThumbStyle} />
           </Switch>
         </FormField>
       )}
     />
   );
 }
+
+FormSwitch.defaultProps = {
+  size: '$3',
+  Animation: 'quick',
+};

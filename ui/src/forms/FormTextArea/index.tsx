@@ -47,7 +47,18 @@ export function FormTextArea({
           required={required}
           {...fieldProps}
         >
-          <TextArea {...textAreaProps} value={value ?? ''} onBlur={onBlur} onChangeText={onChange} />
+          <TextArea
+            {...textAreaProps}
+            value={value ?? ''}
+            onBlur={(e) => {
+              onBlur();
+              if (textAreaProps.onBlur) textAreaProps.onBlur(e);
+            }}
+            onChangeText={(e) => {
+              onChange(e);
+              if (textAreaProps.onChangeText) textAreaProps.onChangeText(e);
+            }}
+          />
         </FormField>
       )}
     />

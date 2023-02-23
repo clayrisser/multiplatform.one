@@ -47,7 +47,14 @@ export function FormSelectSimple({
           required={required}
           {...fieldProps}
         >
-          <SelectSimple {...selectProps} value={value ?? ''} onValueChange={onChange} />
+          <SelectSimple
+            {...selectProps}
+            value={value ?? ''}
+            onValueChange={(e) => {
+              onChange(e);
+              if (selectProps.onValueChange) selectProps.onValueChange(e);
+            }}
+          />
         </FormField>
       )}
     />

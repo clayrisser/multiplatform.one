@@ -1,7 +1,10 @@
-import { Label, Checkbox, SizeTokens, XStack, CheckboxProps, YStack } from 'tamagui';
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+import { SizeTokens, CheckboxProps, CheckboxIndicatorProps, LabelProps, ThemeName, ThemeKeys } from 'tamagui';
+import { Label, Checkbox, XStack, YStack } from 'tamagui';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormControllerProps } from '../types';
-import { FormField, FormFieldProps } from '../FormField';
+import { FormFieldProps } from '../FormField';
+import { FormField } from '../FormField';
 import React, { useId } from 'react';
 import { FlexAlignType } from 'react-native';
 import { Check as CheckIcon } from '@tamagui/lucide-icons';
@@ -9,7 +12,9 @@ import { Check as CheckIcon } from '@tamagui/lucide-icons';
 export type FormCheckBoxProps = CheckboxProps &
   FormControllerProps & {
     fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
+  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> & {
+    IndicatorStyle?: CheckboxIndicatorProps;
+  } & { LabelStyle?: LabelProps } & { iconColor?: string | ThemeName | ThemeKeys };
 
 export interface CheckBoxElement {
   label?: string;
@@ -40,6 +45,9 @@ export function FormCheckBox({
   rules,
   checkBoxElement,
   CheckBoxElementSizing,
+  IndicatorStyle,
+  iconColor,
+  LabelStyle,
   ...checkProps
 }: FormCheckBoxProps & { checkBoxElement: CheckBoxElement } & { CheckBoxElementSizing?: CheckBoxElementSizing }) {
   const formContext = useFormContext();
@@ -99,16 +107,19 @@ export function FormCheckBox({
                 size={checkBoxElement.size}
                 defaultChecked={checkBoxElement.defaultChecked}
                 value={checkBoxElement.value}
-                onCheckedChange={onChange}
                 checked={value}
                 {...checkProps}
+                onCheckedChange={(e) => {
+                  onChange(e);
+                  if (checkProps.onCheckedChange) checkProps.onCheckedChange(e);
+                }}
               >
-                <Checkbox.Indicator>
-                  <CheckIcon />
+                <Checkbox.Indicator {...IndicatorStyle}>
+                  <CheckIcon color={iconColor} />
                 </Checkbox.Indicator>
               </Checkbox>
 
-              <Label size={checkBoxElement.size} htmlFor={id}>
+              <Label size={checkBoxElement.size} htmlFor={id} {...LabelStyle}>
                 {checkBoxElement.label || checkBoxElement.value}
               </Label>
             </XStack>
