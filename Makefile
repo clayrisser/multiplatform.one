@@ -34,11 +34,6 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	@$(call workspace_foreach,test,$(ARGS))
 	@$(call done,test)
 
-ACTIONS += build ##
-$(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(call workspace_foreach,build,$(ARGS))
-	@$(call done,build)
-
 .PHONY: upgrade
 upgrade: ##
 	@$(YARN) upgrade-interactive

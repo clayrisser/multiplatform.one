@@ -1,5 +1,4 @@
 import './.storybook/storybook.requires';
-import 'app/i18n';
 import 'expo-dev-client';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
@@ -9,8 +8,10 @@ import { StatusBar } from 'expo-status-bar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { fonts } from 'app/fonts';
 import { getStorybookUI } from '@storybook/react-native';
+import { i18nInit } from 'app/i18n';
 import { useFonts } from 'expo-font';
 
+i18nInit();
 const Stack = createNativeStackNavigator();
 const logger = console;
 SplashScreen.preventAutoHideAsync().catch(logger.error);

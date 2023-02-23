@@ -15,6 +15,7 @@ module.exports = {
   },
   globals: {
     NodeJS: true,
+    JSX: true,
   },
   settings: {
     react: {
@@ -23,11 +24,13 @@ module.exports = {
   },
   ignorePatterns: ['!.storybook'],
   rules: {
-    'max-lines': ['error', 500],
-    'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
-    'max-lines-per-function': ['warn', 200],
+    '@typescript-eslint/consistent-type-imports': 'error',
     '@typescript-eslint/lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
+    'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
+    'max-lines': ['error', 500],
+    'max-lines-per-function': ['warn', 200],
     'no-empty-function': ['warn', { allow: ['constructors'] }],
+    complexity: ['error', 50],
     '@typescript-eslint/no-unused-vars': [
       'warn',
       {

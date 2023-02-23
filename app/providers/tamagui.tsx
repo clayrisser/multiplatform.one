@@ -1,11 +1,9 @@
+import React from 'react';
 import config from '../tamagui.config';
+import type { ReactNode } from 'react';
+import type { TamaguiProviderProps as OriginalTamaguiProviderProps } from 'ui';
+import { TamaguiProvider as OriginalTamaguiProvider, Theme } from 'ui';
 import { useThemeState } from 'app/state/theme';
-import { ReactNode } from 'react';
-import {
-  TamaguiProvider as OriginalTamaguiProvider,
-  TamaguiProviderProps as OriginalTamaguiProviderProps,
-  Theme,
-} from 'ui';
 
 export type TamaguiProviderProps = Omit<OriginalTamaguiProviderProps, 'config'>;
 
