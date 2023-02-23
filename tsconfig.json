@@ -20,10 +20,6 @@
     "sourceMap": true,
     "strict": true,
     "target": "ES5",
-    "paths": {
-      "~/*": ["./src/*"],
-      "~tests/*": ["./tests/*"]
-    },
     "lib": ["DOM", "DOM.Iterable", "ES2021", "ScriptHost", "WebWorker", "WebWorker.ImportScripts", "Webworker.Iterable"]
   },
   "include": ["src", ".*.js", "tests", "*.js"]

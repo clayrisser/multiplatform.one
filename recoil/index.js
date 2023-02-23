@@ -4,7 +4,7 @@
  * File Created: 01-02-2023 14:09:52
  * Author: Clay Risser
  * -----
- * Last Modified: 21-02-2023 14:45:27
+ * Last Modified: 23-02-2023 07:25:28
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,4 +22,4 @@
  * limitations under the License.
  */
 
-module.exports = require('../dist/esm/recoil');
+module.exports = require('../dist/lib/recoil');

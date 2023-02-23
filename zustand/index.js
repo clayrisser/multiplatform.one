@@ -4,7 +4,7 @@
  * File Created: 26-01-2023 09:12:40
  * Author: Clay Risser
  * -----
- * Last Modified: 21-02-2023 14:45:34
+ * Last Modified: 23-02-2023 07:25:36
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,4 +22,4 @@
  * limitations under the License.
  */
 
-module.exports = require('../dist/esm/zustand');
+module.exports = require('../dist/lib/zustand');

@@ -1,10 +1,10 @@
 /**
- * File: /esbuild.config.js
+ * File: /esbuild.config.mjs
  * Project: multiplatform.one
  * File Created: 21-02-2023 13:07:50
  * Author: Clay Risser
  * -----
- * Last Modified: 23-02-2023 03:29:41
+ * Last Modified: 23-02-2023 07:24:51
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,10 +22,26 @@
  * limitations under the License.
  */
 
-const esbuild = require('esbuild');
-const fg = require('fast-glob');
-const path = require('path');
+import babel from 'esbuild-plugin-babel';
+import esbuild from 'esbuild';
+import fg from 'fast-glob';
+import path from 'path';
+
 const logger = console;
+
+const baseConfig = {
+  allowOverwrite: true,
+  bundle: false,
+  color: true,
+  format: 'esm',
+  jsx: 'automatic',
+  keepNames: false,
+  logLevel: 'error',
+  minify: false,
+  platform: 'node',
+  sourcemap: true,
+  target: 'node16',
+};
 
 async function build(options = {}, esbuildOptions = {}) {
   options = {
@@ -43,17 +59,9 @@ async function build(options = {}, esbuildOptions = {}) {
   if (options.cjs) {
     builds.push(
       esbuild.build({
-        allowOverwrite: true,
+        ...baseConfig,
         bundle: options.bundle,
-        color: true,
         entryPoints: files,
-        jsx: 'automatic',
-        keepNames: false,
-        logLevel: 'error',
-        minify: false,
-        platform: 'node',
-        plugins: [],
-        sourcemap: true,
         ...esbuildOptions,
         format: 'cjs',
         outdir: path.resolve(options.cjs),
@@ -64,39 +72,27 @@ async function build(options = {}, esbuildOptions = {}) {
   if (options.esm) {
     builds.push(
       esbuild.build({
-        allowOverwrite: true,
+        ...baseConfig,
         bundle: options.bundle,
-        color: true,
         entryPoints: files,
-        jsx: 'automatic',
-        keepNames: false,
-        logLevel: 'error',
-        minify: false,
-        platform: options.bundle ? 'node' : 'neutral',
-        plugins: [],
-        sourcemap: true,
-        target: 'node16',
-        ...esbuildOptions,
-        outdir: path.resolve(options.esm),
-        format: 'esm',
-      }),
-    );
-    builds.push(
-      esbuild.build({
-        allowOverwrite: true,
-        bundle: options.bundle,
-        color: true,
-        entryPoints: files,
-        jsx: 'automatic',
-        keepNames: false,
-        logLevel: 'error',
-        minify: false,
         outExtension: { '.js': '.mjs' },
         platform: options.bundle ? 'node' : 'neutral',
-        plugins: [],
-        sourcemap: true,
-        target: 'node16',
         ...esbuildOptions,
+        plugins: [
+          babel({
+            config: {
+              presets: ['@babel/preset-env', '@babel/preset-typescript', '@babel/preset-react'],
+              plugins: [
+                [
+                  'babel-plugin-fully-specified',
+                  {
+                    esExtensionDefault: '.mjs',
+                  },
+                ],
+              ],
+            },
+          }),
+        ],
         outdir: path.resolve(options.esm),
         format: 'esm',
       }),
@@ -105,22 +101,16 @@ async function build(options = {}, esbuildOptions = {}) {
   if (options.jsx) {
     builds.push(
       esbuild.build({
-        allowOverwrite: true,
+        ...baseConfig,
         bundle: options.bundle,
-        color: true,
         entryPoints: files,
         jsx: 'preserve',
-        keepNames: false,
-        logLevel: 'error',
-        minify: false,
         outExtension: { '.js': '.mjs' },
         platform: options.bundle ? 'node' : 'neutral',
-        plugins: [],
-        sourcemap: true,
-        target: 'es2020',
         ...esbuildOptions,
-        outdir: path.resolve(options.jsx),
         format: 'esm',
+        outdir: path.resolve(options.jsx),
+        target: 'es2020',
       }),
     );
   }
