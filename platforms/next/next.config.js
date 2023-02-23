@@ -69,6 +69,8 @@ module.exports = function (phase) {
       // optimizeCss: true,
       scrollRestoration: true,
       legacyBrowsers: false,
+      esmExternals: true,
+      fullySpecified: false,
     },
     publicRuntimeConfig: {
       ...publicConfig,
