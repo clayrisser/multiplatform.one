@@ -1,7 +1,10 @@
-import React, { ComponentType, ReactNode } from 'react';
-import { Select, ThemeName, YStack, ZStack, XStack, Adapt, Popover, Circle } from 'tamagui';
+import type { ComponentType, ReactNode } from 'react';
+import React from 'react';
+import type { ThemeName } from 'tamagui';
+import { Select, YStack, ZStack, XStack, Adapt, Popover, Circle } from 'tamagui';
 import { SelectSimple } from '../forms/SelectSimple';
-import { createWithLayout, WithLayout } from 'multiplatform.one';
+import type { WithLayout } from 'multiplatform.one';
+import { createWithLayout } from 'multiplatform.one';
 import { useLocale } from 'multiplatform.one';
 import { useSupportedLocales } from 'multiplatform.one';
 // @ts-ignore

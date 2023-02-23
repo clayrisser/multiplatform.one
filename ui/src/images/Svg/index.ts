@@ -1,5 +1,5 @@
 import type { Svg as RNSvg } from 'react-native-svg';
-import { ComponentType } from 'react';
+import type { ComponentType } from 'react';
 import { Svg as TSvg } from '@tamagui/react-native-svg';
 import { styled } from 'tamagui';
 

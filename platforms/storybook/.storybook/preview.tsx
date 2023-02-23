@@ -2,16 +2,19 @@ import '@tamagui/core/reset.css';
 import '@tamagui/font-inter/css/400.css';
 import '@tamagui/font-inter/css/700.css';
 import 'raf/polyfill';
-import React, { ReactNode, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import type { ReactNode } from 'react';
 import { DebugLayout } from '@multiplatform.one/ui';
 import { GlobalProvider, StateProvider } from 'app/providers';
 import { getThemes } from 'tamagui';
-import { supportedLocales, defaultLocale } from 'app/i18n';
+import { supportedLocales, defaultLocale, i18nInit } from 'app/i18n';
 import { themes as storybookThemes } from '@storybook/theming';
 import { useDarkMode } from 'storybook-dark-mode';
 import { useLocale } from 'multiplatform.one';
 import { useThemeState } from 'app/state/theme';
 import { withThemes } from 'storybook-addon-themes/react';
+
+i18nInit();
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -50,7 +53,7 @@ export const parameters = {
       useEffect(() => {
         themeState.setSub(props.theme.name);
       }, [props.theme.name, themeState.setSub]);
-      return props.children;
+      return <>{props.children}</>;
     },
   },
 };
@@ -92,11 +95,9 @@ export const decorators = [
 function Provider({ children }: { children: ReactNode }) {
   const themeState = useThemeState();
   const darkMode = useDarkMode();
-
   useEffect(() => {
     themeState.setRoot(darkMode ? 'dark' : 'light');
   }, [darkMode, themeState.setRoot]);
-
   return (
     <GlobalProvider disableStateProvider defaultTheme={themeState.root}>
       {children}

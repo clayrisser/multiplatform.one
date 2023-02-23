@@ -5,10 +5,24 @@
     "*.css"
   ],
   "description": "multiplatform.one ui components",
-  "types": "./types/index",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
+  "react-native": "src/index.ts",
+  "source": "src/index.ts",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "types": "./types/index.d.ts"
+    },
+    "./src/tamagui.config": {
+      "import": "./dist/esm/tamagui.config.mjs",
+      "require": "./dist/cjs/tamagui.config.js",
+      "types": "./types/tamagui.config.d.ts"
+    }
+  },
   "files": [
     "dist",
     "types"
@@ -17,22 +31,19 @@
     "type": "git",
     "url": "https://gitlab.com/risserlabs/multiplatform.one/keycloak"
   },
-  "scripts": {
-    "prepare": "make -s prepare"
-  },
   "dependencies": {
     "@tamagui/animations-react-native": "^1.5.16",
     "@tamagui/font-inter": "^1.5.16",
     "@tamagui/react-native-media-driver": "^1.5.16",
     "@tamagui/shorthands": "^1.5.16",
     "@tamagui/theme-base": "^1.5.16",
-    "expo-asset": "^8.7.0",
-    "fast-xml-parser": "^4.1.1",
+    "expo-asset": "^8.9.0",
+    "fast-xml-parser": "^4.1.2",
     "immer": "^9.0.19",
-    "react-hook-form": "^7.42.1",
+    "react-hook-form": "^7.43.1",
     "react-native-svg": "13.8.0",
     "tamagui": "^1.5.16",
-    "zustand": "^4.3.2"
+    "zustand": "^4.3.3"
   },
   "devDependencies": {
     "@tamagui/build": "^1.5.16"

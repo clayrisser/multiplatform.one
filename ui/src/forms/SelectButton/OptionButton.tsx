@@ -1,6 +1,8 @@
-import React, { useContext, useState, useEffect, useCallback, ComponentProps } from 'react';
-import { Button, styled, ButtonProps } from 'tamagui';
-import { GestureResponderEvent } from 'react-native';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
+import type { ButtonProps } from 'tamagui';
+import type { ComponentProps } from 'react';
+import type { GestureResponderEvent } from 'react-native';
+import { Button, styled } from 'tamagui';
 import { SelectButtonContext } from './context';
 
 const defaultSelectedStyle: ButtonProps = {

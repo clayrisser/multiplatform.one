@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/consistent-type-imports */
 import { Adapt, Popover, PopoverProps, YStack, PopoverContentProps, AdaptProps, PopoverArrowProps } from 'tamagui';
 import React from 'react';
 
@@ -25,7 +26,6 @@ export function SimplePopover({
           <Popover.Sheet.Overlay />
         </Popover.Sheet>
       </Adapt>
-
       <Popover.Content
         bw={1}
         boc="$borderColor"

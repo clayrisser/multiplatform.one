@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import addons, { makeDecorator } from '@storybook/addons';
 import { useThemeState } from 'app/state/theme';
-import { ThemeName } from 'tamagui';
+import type { ThemeName } from 'tamagui';
 
 const UPDATE_BACKGROUND = 'storybook-addon-background:update';
 

@@ -1,6 +1,7 @@
+import type { StackProps } from '@tamagui/core';
+import type { UseFormProps } from 'react-hook-form';
 import { Form as TForm } from 'tamagui';
-import { FormProvider as RhfFormProvider, useForm, UseFormProps } from 'react-hook-form';
-import { StackProps } from '@tamagui/core';
+import { FormProvider as RhfFormProvider, useForm } from 'react-hook-form';
 
 export type FormProviderProps = UseFormProps & StackProps;
 

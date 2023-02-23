@@ -1,4 +1,4 @@
-import { X } from '@tamagui/lucide-icons';
+/* eslint-disable @typescript-eslint/consistent-type-imports */
 import React from 'react';
 import {
   Adapt,
@@ -11,6 +11,7 @@ import {
   DialogDescriptionProps,
   DialogContentProps,
 } from 'tamagui';
+import { X } from '@tamagui/lucide-icons';
 
 type SimpleDialogProps = DialogProps & { element: React.ReactNode } & { title: React.ReactNode } & {
   description?: React.ReactNode;

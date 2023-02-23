@@ -1,7 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { OptionButton, OptionButtonProps } from './OptionButton';
+import type { OptionButtonProps } from './OptionButton';
+import type { YStackProps, ButtonProps } from 'tamagui';
+import { OptionButton } from './OptionButton';
 import { SelectButtonContext } from './context';
-import { YStack, XStack, YStackProps, ButtonProps } from 'tamagui';
+import { YStack, XStack } from 'tamagui';
 
 export type SelectButtonProps = YStackProps & {
   onValueChange?: (value: string) => unknown;

@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "Unspaced",
     "alice",
     "audi",
     "bmw",
@@ -28,6 +29,7 @@
     "jsx",
     "keycloak",
     "lang",
+    "linejoin",
     "lucide",
     "matchers",
     "mdx",
@@ -63,6 +65,7 @@
     "tamagui",
     "toolbars",
     "toolshown",
+    "tooltip",
     "transpile",
     "tsc",
     "Tooltip",
