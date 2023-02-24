@@ -7,8 +7,8 @@ export default {
 
 export const main = () => {
   return (
-    <Table>
-      <Header xStack={{}} text={{}} columns={['S.no', 'Name', 'Age', 'Location']} />
+    <Table yStack={{}}>
+      <Header xStack={{}} text={{ padding: 10 }} columns={['S.no', 'Name', 'Age', 'Location']} />
       <Rows
         yStack={{}}
         xStack={{}}
@@ -18,9 +18,10 @@ export const main = () => {
           [2, 'Tom', 30, 'Texas'],
           [3, 'Dharmendra Boddeda', 25, 'Texas'],
           [4, 'Ajith', 27, 'Vizag'],
+          [5, 'Rani', 23, 'Vizag'],
         ]}
       />
-      <Row xStack={{}} text={{}} row={[5, 'Rani', 23, 'Vizag']} />
+      {/* <Row xStack={{}} text={{}} row={[5, 'Rani', 23, 'Vizag']} /> */}
     </Table>
   );
 };
