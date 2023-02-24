@@ -2,7 +2,7 @@ import React from 'react';
 import type { KeycloakProviderProps } from './keycloak';
 import type { ProviderProps } from './types';
 import type { TamaguiProviderProps } from 'ui';
-import { KeycloakProvider } from './keycloak';
+// import { KeycloakProvider } from './keycloak';
 import { NavigationProvider } from './navigation';
 import { StateProvider } from './state';
 import { TamaguiProvider } from './tamagui';
@@ -20,14 +20,14 @@ export function GlobalProvider({ children, ...props }: GlobalProviderProps) {
     <StateProvider disable={props.disableStateProvider}>
       <TamaguiProvider {...props}>
         <NavigationProvider>
-          <KeycloakProvider
+          {/* <KeycloakProvider
             authConfig={props.authConfig}
             cookies={props.cookies}
             keycloak={props.keycloak}
             keycloakInitOptions={props.keycloakInitOptions}
-          >
-            {children}
-          </KeycloakProvider>
+          > */}
+          {children}
+          {/* </KeycloakProvider> */}
         </NavigationProvider>
       </TamaguiProvider>
     </StateProvider>
