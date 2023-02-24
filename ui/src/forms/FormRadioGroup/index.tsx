@@ -1,8 +1,10 @@
-import { Label, RadioGroup, SizeTokens, XStack, RadioGroupProps, YStack, LabelProps } from 'tamagui';
-import { Controller, useFormContext } from 'react-hook-form';
-import { FormControllerProps } from '../types';
-import { FormField, FormFieldProps } from '../FormField';
 import React, { useId } from 'react';
+import type { FormControllerProps } from '../types';
+import type { FormFieldProps } from '../FormField';
+import type { SizeTokens, RadioGroupProps, LabelProps } from 'tamagui';
+import { Controller, useFormContext } from 'react-hook-form';
+import { FormField } from '../FormField';
+import { Label, RadioGroup, XStack, YStack } from 'tamagui';
 
 export type FormRadioGroupProps = RadioGroupProps &
   FormControllerProps & {
