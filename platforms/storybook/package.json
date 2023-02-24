@@ -17,7 +17,6 @@
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/react": "^6.5.16",
     "addon-screen-reader": "^1.8.6",
-    "app": "*",
     "expo": "^47.0.13",
     "react": "18.1.0",
     "react-dom": "18.1.0",
