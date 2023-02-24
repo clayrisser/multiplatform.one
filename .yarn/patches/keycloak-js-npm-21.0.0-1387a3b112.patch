@@ -1,0 +1,90 @@
+diff --git a/dist/keycloak.js b/dist/keycloak.js
+index 1aca015084716eb59a2e5d6f43e2d2f96b62f012..d730a98e6898d18b87074cf78d556320fc043aa6 100644
+--- a/dist/keycloak.js
++++ b/dist/keycloak.js
+@@ -925,7 +925,7 @@
+ 	                    initPromise.setError(error);
+ 	                });
+ 	            } else if (initOptions) {
+-	                if (initOptions.token && initOptions.refreshToken) {
++	                if (initOptions.token) {
+ 	                    setToken(initOptions.token, initOptions.refreshToken, initOptions.idToken);
+ 
+ 	                    if (loginIframe.enable) {
+@@ -943,17 +943,22 @@
+ 	                            });
+ 	                        });
+ 	                    } else {
+-	                        kc.updateToken(-1).then(function() {
++	                        if (initOptions.refreshToken) {
++	                            kc.updateToken(-1).then(function() {
++	                                kc.onAuthSuccess && kc.onAuthSuccess();
++	                                initPromise.setSuccess();
++	                            }).catch(function(error) {
++	                                kc.onAuthError && kc.onAuthError();
++	                                if (initOptions.onLoad) {
++	                                    onLoad();
++	                                } else {
++	                                    initPromise.setError(error);
++	                                }
++	                            });
++	                        } else {
+ 	                            kc.onAuthSuccess && kc.onAuthSuccess();
+ 	                            initPromise.setSuccess();
+-	                        }).catch(function(error) {
+-	                            kc.onAuthError && kc.onAuthError();
+-	                            if (initOptions.onLoad) {
+-	                                onLoad();
+-	                            } else {
+-	                                initPromise.setError(error);
+-	                            }
+-	                        });
++	                        }
+ 	                    }
+ 	                } else if (initOptions.onLoad) {
+ 	                    onLoad();
+diff --git a/dist/keycloak.mjs b/dist/keycloak.mjs
+index 9e07a9f0d0c56d0a55c30cd058d78eba2dd492c3..9eb86d6ca9a708027f224b29e42ab0a239bf1057 100644
+--- a/dist/keycloak.mjs
++++ b/dist/keycloak.mjs
+@@ -257,7 +257,7 @@ function Keycloak (config) {
+                     initPromise.setError(error);
+                 });
+             } else if (initOptions) {
+-                if (initOptions.token && initOptions.refreshToken) {
++                if (initOptions.token) {
+                     setToken(initOptions.token, initOptions.refreshToken, initOptions.idToken);
+ 
+                     if (loginIframe.enable) {
+@@ -275,17 +275,22 @@ function Keycloak (config) {
+                             });
+                         });
+                     } else {
+-                        kc.updateToken(-1).then(function() {
++                        if (initOptions.refreshToken) {
++                            kc.updateToken(-1).then(function() {
++                                kc.onAuthSuccess && kc.onAuthSuccess();
++                                initPromise.setSuccess();
++                            }).catch(function(error) {
++                                kc.onAuthError && kc.onAuthError();
++                                if (initOptions.onLoad) {
++                                    onLoad();
++                                } else {
++                                    initPromise.setError(error);
++                                }
++                            });
++                        } else {
+                             kc.onAuthSuccess && kc.onAuthSuccess();
+                             initPromise.setSuccess();
+-                        }).catch(function(error) {
+-                            kc.onAuthError && kc.onAuthError();
+-                            if (initOptions.onLoad) {
+-                                onLoad();
+-                            } else {
+-                                initPromise.setError(error);
+-                            }
+-                        });
++                        }
+                     }
+                 } else if (initOptions.onLoad) {
+                     onLoad();
