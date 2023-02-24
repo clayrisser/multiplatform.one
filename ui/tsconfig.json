@@ -4,8 +4,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "composite": true,
-    "esModuleInterop": true,
-    "jsx": "preserve"
+    "esModuleInterop": true
   },
   "references": []
 }

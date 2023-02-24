@@ -1,5 +1,6 @@
-import type { UriProps } from 'react-native-svg';
+import React from 'react';
 import type { StackPropsBase } from 'tamagui';
+import type { UriProps } from 'react-native-svg';
 
 const logger = console;
 
