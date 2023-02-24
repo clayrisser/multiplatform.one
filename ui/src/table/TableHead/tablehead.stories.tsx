@@ -9,7 +9,8 @@ export default {
 export const main = () => (
   <TableHead
     label={['a', 'b', 'c', 'd', 'e', 'f']}
-    backgroundColor="red"
+    backgroundColor="black"
+    headTextStyle={{ col: 'blue' }}
     // textStyle={{ col: 'blue' }}
     jc="space-between"
   />
