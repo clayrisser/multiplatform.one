@@ -24,7 +24,7 @@ export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
                 <Text
                   overflow="hidden"
                   whiteSpace="nowrap"
-                  exitStyle={{ animation: 'scroll 10sec linear infinite' }}
+                  // exitStyle={{ animation: 'scroll 10sec linear infinite' }}
                   hoverStyle={{}}
                   minWidth={100}
                   textAlign="center"
