@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
 import React from 'react';
-import { YGroup, YStackProps, YStack, XStack, XStackProps, XGroup } from 'tamagui';
+import type { YStackProps, XStackProps } from 'tamagui';
+import { YGroup, YStack, XStack, XGroup } from 'tamagui';
 import { Cell } from '../cell';
 
 type CompleteTableProps = TableProps & { yStackProps?: YStackProps } & { xStackProps?: XStackProps } & {
