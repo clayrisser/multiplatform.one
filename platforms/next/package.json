@@ -3,12 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@next/bundle-analyzer": "^13.1.6",
+    "@next/bundle-analyzer": "^13.2.1",
     "@tamagui/next-plugin": "^1.5.17",
     "@tamagui/next-theme": "^1.5.17",
-    "app": "*",
     "cookie": "^0.5.0",
-    "next": "^13.1.6",
+    "next": "^13.2.1",
     "next-i18next": "^13.1.5",
     "next-images": "^1.8.4",
     "raf": "^3.4.1",
@@ -16,12 +15,18 @@
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
     "react-native-web": "~0.18.11",
-    "react-native-web-lite": "^1.5.16"
+    "react-native-web-lite": "^1.5.17"
   },
   "devDependencies": {
     "@types/cookie": "^0.5.1",
-    "@types/node": "^18.14.0"
+    "@types/node": "^18.14.1"
   },
+  "transpileModules": [
+    "@multiplatform.one/keycloak",
+    "@multiplatform.one/ui",
+    "app",
+    "multiplatform.one"
+  ],
   "jest": {
     "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
     "verbose": true,
@@ -33,9 +38,5 @@
     "reportPath": ".mkpm/.tmp/reports",
     "reportFile": "test-report.xml",
     "indent": 4
-  },
-  "transpileModules": [
-    "@multiplatform.one/keycloak",
-    "multiplatform.one"
-  ]
+  }
 }

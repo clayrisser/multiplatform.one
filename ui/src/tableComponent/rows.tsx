@@ -1,7 +1,7 @@
 import React from 'react';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { YStack, XStack, Text, XStackProps, TextProps, YStackProps } from 'tamagui';
+import type { XStackProps, TextProps, YStackProps } from 'tamagui';
+import { YStack, XStack, Text } from 'tamagui';
 
 export interface RowsDataProps {
   rows: any[][];
@@ -24,12 +24,13 @@ export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
                 <Text
                   overflow="hidden"
                   whiteSpace="nowrap"
-                  exitStyle={{ animation: 'scroll 10sec linear infinite' }}
+                  // exitStyle={{ animation: 'scroll 10sec linear infinite' }}
                   hoverStyle={{}}
                   minWidth={100}
                   textAlign="center"
                   alignSelf="center"
                   maxWidth={100}
+                  padding={10}
                   key={j}
                   {...text}
                 >

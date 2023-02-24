@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-import { SizeTokens, CheckboxProps, CheckboxIndicatorProps, LabelProps, ThemeName, ThemeKeys } from 'tamagui';
+import type { SizeTokens, CheckboxProps, CheckboxIndicatorProps, LabelProps, ThemeName, ThemeKeys } from 'tamagui';
 import { Label, Checkbox, XStack, YStack } from 'tamagui';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormControllerProps } from '../types';
-import { FormFieldProps } from '../FormField';
+import type { FormControllerProps } from '../types';
+import type { FormFieldProps } from '../FormField';
 import { FormField } from '../FormField';
 import React, { useId } from 'react';
-import { FlexAlignType } from 'react-native';
+import type { FlexAlignType } from 'react-native';
 import { Check as CheckIcon } from '@tamagui/lucide-icons';
 
 export type FormCheckBoxProps = CheckboxProps &
