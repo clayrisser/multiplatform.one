@@ -1,6 +1,6 @@
 import React from 'react';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { Text, XStack, XStackProps, TextProps } from 'tamagui';
+import type { XStackProps, TextProps } from 'tamagui';
+import { Text, XStack } from 'tamagui';
 
 export interface RowDataProps {
   row: any[];

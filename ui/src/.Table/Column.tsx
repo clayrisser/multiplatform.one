@@ -1,5 +1,4 @@
 import React from 'react';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { YStack, YStackProps, Text, TextProps, XStack } from 'tamagui';
 
 export interface ColumnDataProps {

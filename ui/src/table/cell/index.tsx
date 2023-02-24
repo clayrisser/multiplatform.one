@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-import { YStack, YStackProps } from 'tamagui';
+import type { YStackProps } from 'tamagui';
+import { YStack } from 'tamagui';
 import React from 'react';
 
 type CellProps = YStackProps;

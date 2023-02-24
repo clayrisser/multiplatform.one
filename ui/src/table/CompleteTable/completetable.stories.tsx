@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import React from 'react';
 import { CompleteTable } from './index';
 import { Text, Button } from 'tamagui';
