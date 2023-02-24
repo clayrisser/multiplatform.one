@@ -3,7 +3,7 @@
 # File Created: 02-03-2022 02:40:13
 # Author: Clay Risser
 # -----
-# Last Modified: 23-02-2023 07:10:47
+# Last Modified: 24-02-2023 06:42:11
 # Modified By: Clay Risser
 # -----
 # Risser Labs LLC (c) Copyright 2022
@@ -71,7 +71,6 @@ dist/lib/index.js:
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(NODE) esbuild.config.mjs
 	@$(TSC) -p tsconfig.build.json -d
-#	echo '{"type": "module"}' > dist/esm/package.json
 	@$(call done,build)
 
 # .PHONY: start +start
