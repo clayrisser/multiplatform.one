@@ -1,6 +1,6 @@
 import {
   FormSwitch,
-  FormProvider,
+  SimpleForm,
   FormInput,
   FormSubmitButton,
   FormSlider,
@@ -42,7 +42,7 @@ export default function Form() {
   };
   return (
     <YStack jc="center" ai="center" space>
-      <FormProvider defaultValues={FormFields} space>
+      <SimpleForm defaultValues={FormFields} space>
         <FormInput
           name="firstName"
           label="First Name"
@@ -125,7 +125,7 @@ export default function Form() {
           <FormCheckBox checkBoxElement={{ label: 'Apple', value: 'apple' }} name="apple" iconColor="blue" />
         </YStack>
         <FormSubmitButton onSubmit={(data) => console.log(data)}>Submit</FormSubmitButton>
-      </FormProvider>
+      </SimpleForm>
     </YStack>
   );
 }

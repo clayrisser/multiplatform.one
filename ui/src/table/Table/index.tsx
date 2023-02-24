@@ -1,8 +1,9 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-import { YGroup } from 'tamagui';
 import React from 'react';
-import { TableBody, TableBodyProps } from '../TableBody/index';
-import { TableHead, TableHeadProps } from '../TableHead/index';
+import type { TableBodyProps } from '../TableBody/index';
+import type { TableHeadProps } from '../TableHead/index';
+import { TableBody } from '../TableBody/index';
+import { TableHead } from '../TableHead/index';
+import { YGroup } from 'tamagui';
 
 export type TableProps = Pick<TableHeadProps, 'label' | 'headTextStyle'> &
   Pick<TableBodyProps, 'row' | 'rowDataStyle' | 'rowStyle'> & { headRowStyle?: TableHeadProps['headRowStyle'] };
