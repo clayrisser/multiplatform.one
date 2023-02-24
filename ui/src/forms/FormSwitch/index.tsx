@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
 import React, { useId } from 'react';
-import { SwitchProps, SwitchThumbProps } from 'tamagui';
+import type { SwitchProps, SwitchThumbProps } from 'tamagui';
 import { Switch } from 'tamagui';
-import { FormControllerProps } from '../types';
-import { FormFieldProps } from '../FormField';
+import type { FormControllerProps } from '../types';
+import type { FormFieldProps } from '../FormField';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormField } from '../FormField';
 

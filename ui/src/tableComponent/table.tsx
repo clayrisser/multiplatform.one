@@ -1,7 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import React, { ReactNode } from 'react';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { YStack, YStackProps } from 'tamagui';
+import type { ReactNode } from 'react';
+import React from 'react';
+import type { YStackProps } from 'tamagui';
+import { YStack } from 'tamagui';
 export interface TableDataProps {
   children: ReactNode;
 }
