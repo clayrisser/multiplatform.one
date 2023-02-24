@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-import { YGroup, YStack, XStack, YStackProps, XStackProps, TextProps, Text } from 'tamagui';
 import React from 'react';
+import type { YStackProps, XStackProps, TextProps } from 'tamagui';
+import { YGroup, XStack, Text } from 'tamagui';
 
 export type TableBodyProps = YStackProps & { rowStyle?: XStackProps } & { rowDataStyle?: TextProps } & {
   row: string[][];
@@ -10,7 +10,7 @@ export type TableBodyProps = YStackProps & { rowStyle?: XStackProps } & { rowDat
 //   rowData: string[];
 // }
 
-export function TableBody({ row, rowStyle, rowDataStyle, ...props }: TableBodyProps) {
+export function TableBody({ row, rowStyle, rowDataStyle }: TableBodyProps) {
   return (
     <YGroup>
       {row.map((item, index) => {

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Paragraph, Theme, Tooltip, TooltipProps, ThemeProps, ParagraphProps } from 'tamagui';
+import type { TooltipProps, ThemeProps, ParagraphProps } from 'tamagui';
+import { Paragraph, Theme, Tooltip } from 'tamagui';
 
 type SimpleToolTipProps = TooltipProps & { element: React.ReactNode } & { themeStyle?: ThemeProps } & {
   paragraphStyle?: ParagraphProps;

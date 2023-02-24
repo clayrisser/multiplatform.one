@@ -11,6 +11,7 @@ export const main = () => (
     label={['a', 'b', 'c', 'd', 'e', 'f']}
     backgroundColor="black"
     headTextStyle={{ col: 'blue' }}
+    // textStyle={{ col: 'blue' }}
     jc="space-between"
   />
 );

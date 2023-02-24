@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormProvider } from './index';
+import { SimpleForm } from './index';
 import { FormInput } from '../FormInput';
 import { FormSelectSimple } from '../FormSelectSimple';
 import { FormSubmitButton } from '../FormSubmitButton';
@@ -7,15 +7,15 @@ import { Select } from 'tamagui';
 import { action } from '@storybook/addon-actions';
 
 export default {
-  title: 'forms/FormProvider',
-  component: FormProvider,
+  title: 'forms/SimpleForm',
+  component: SimpleForm,
   parameters: {
     status: { type: 'beta' },
   },
 };
 
 export const main = () => (
-  <FormProvider p="$4" space>
+  <SimpleForm p="$4" space>
     <FormInput name="firstName" label="First Name" />
     <FormInput name="lastName" label="Last Name" />
     <FormSelectSimple name="favoriteColor" label="Favorite Color">
@@ -42,5 +42,5 @@ export const main = () => (
       </Select.Item>
     </FormSelectSimple>
     <FormSubmitButton onSubmit={action('onSubmit')}>Submit</FormSubmitButton>
-  </FormProvider>
+  </SimpleForm>
 );

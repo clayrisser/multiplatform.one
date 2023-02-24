@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-import { Text, XStack, YStackProps, XStackProps, TextProps } from 'tamagui';
 import React from 'react';
+import type { YStackProps, XStackProps, TextProps } from 'tamagui';
+import { Text, XStack } from 'tamagui';
 
 export interface TableHeadData {
   children?: React.ReactNode;
@@ -11,7 +11,7 @@ export type TableHeadProps = YStackProps & { headRowStyle?: XStackProps } & Tabl
     headTextStyle?: TextProps;
   };
 
-export function TableHead({ label, children, headTextStyle, headRowStyle, ...props }: TableHeadProps) {
+export function TableHead({ label, headTextStyle, headRowStyle }: TableHeadProps) {
   return (
     <XStack jc="space-evenly" {...headRowStyle}>
       {label.map((item, index) => {
