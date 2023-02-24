@@ -11,7 +11,7 @@ export const Row = ({ xStack, text, ...props }: RowProps) => {
   return (
     <XStack bc="$background" jc="space-evenly" {...xStack}>
       {props.row.map((cell: any, i: number) => (
-        <Text minWidth={100} textAlign="center" alignSelf="center" maxWidth={100} {...text} key={i}>
+        <Text padding={10} minWidth={100} textAlign="center" alignSelf="center" maxWidth={100} {...text} key={i}>
           {cell}
         </Text>
       ))}
