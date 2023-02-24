@@ -1,6 +1,6 @@
 import React from 'react';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { XStack, Text, XStackProps, TextProps } from 'tamagui';
+import type { XStackProps, TextProps } from 'tamagui';
+import { XStack, Text } from 'tamagui';
 
 export interface HeaderDataProps {
   columns: any[];
