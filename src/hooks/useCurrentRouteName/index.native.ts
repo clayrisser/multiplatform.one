@@ -1,13 +1,13 @@
 /**
- * File: /src/hooks/useAuthConfig.ts
- * Project: app
- * File Created: 08-11-2022 09:20:41
+ * File: /src/hooks/useCurrentRouteName/index.native.ts
+ * Project: @multiplatform.one/keycloak
+ * File Created: 24-02-2023 06:30:36
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 09:52:31
+ * Last Modified: 24-02-2023 06:31:25
  * Modified By: Clay Risser
  * -----
- * Risser Labs LLC (c) Copyright 2021 - 2022
+ * Risser Labs LLC (c) Copyright 2022 - 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,11 @@
  * limitations under the License.
  */
 
-import { useContext } from 'react';
-import { AuthConfigContext } from '../authConfig';
+import { MultiPlatform } from 'multiplatform.one';
+import { useRoute } from '@react-navigation/native';
 
-export function useAuthConfig() {
-  return useContext(AuthConfigContext);
+export function useCurrentRouteName() {
+  if (MultiPlatform.isStorybook) return null;
+  const route = useRoute();
+  return route.name;
 }

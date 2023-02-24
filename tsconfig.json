@@ -8,7 +8,7 @@
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "module": "CommonJS",
     "moduleResolution": "Node",
     "noEmit": true,
@@ -20,19 +20,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "ES5",
-    "paths": {
-      "~/*": ["./src/*"],
-      "~tests/*": ["./tests/*"]
-    },
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2021",
-      "ScriptHost",
-      "WebWorker",
-      "WebWorker.ImportScripts",
-      "Webworker.Iterable"
-    ]
+    "lib": ["DOM", "DOM.Iterable", "ES2021", "ScriptHost", "WebWorker", "WebWorker.ImportScripts", "Webworker.Iterable"]
   },
-  "include": ["src", ".eslintrc.js", "tests", "*.js"]
+  "include": ["src", ".*.js", "tests", "*.js"]
 }

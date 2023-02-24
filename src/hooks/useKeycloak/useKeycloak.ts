@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 06:04:59
  * Author: Clay Risser
  * -----
- * Last Modified: 28-01-2023 13:48:24
+ * Last Modified: 24-02-2023 06:22:07
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,12 +22,12 @@
  * limitations under the License.
  */
 
-import Keycloak from "keycloak-js";
-import { MultiPlatform } from "multiplatform.one";
-import { useKeycloak as useReactKeycloak } from "@react-keycloak/web";
-import { useKeycloak as useSsrKeycloak } from "@react-keycloak/ssr";
-import { IKeycloak } from "./index";
-import { useAuthConfig } from "../useAuthConfig";
+import type Keycloak from 'keycloak-js';
+import type { IKeycloak } from './index';
+import { MultiPlatform } from 'multiplatform.one';
+import { useAuthConfig } from '../useAuthConfig';
+import { useKeycloak as useReactKeycloak } from '@react-keycloak/web';
+import { useKeycloak as useSsrKeycloak } from '@react-keycloak/ssr';
 
 export function useKeycloak() {
   const authConfig = useAuthConfig();

@@ -22,12 +22,8 @@
  * limitations under the License.
  */
 
-import type {
-  KeycloakResourceAccess,
-  KeycloakRoles,
-  KeycloakTokenParsed,
-} from "keycloak-js";
-export * from "./useKeycloak";
+import type { KeycloakResourceAccess, KeycloakRoles, KeycloakTokenParsed } from 'keycloak-js';
+export * from './useKeycloak';
 
 export interface IKeycloak {
   authenticated?: boolean;

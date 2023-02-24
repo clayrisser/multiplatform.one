@@ -4,10 +4,10 @@
  * File Created: 25-11-2022 10:12:12
  * Author: Clay Risser
  * -----
- * Last Modified: 25-11-2022 10:12:15
+ * Last Modified: 21-02-2023 15:09:29
  * Modified By: Clay Risser
  * -----
- * Risser Labs LLC (c) Copyright 2022
+ * Risser Labs LLC (c) Copyright 2022 - 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,16 +22,14 @@
  * limitations under the License.
  */
 
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
-const cspell = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, ".vscode/settings.json")).toString()
-)["cSpell.words"];
+const cspell = JSON.parse(fs.readFileSync(path.resolve(__dirname, '.vscode/settings.json')).toString())['cSpell.words'];
 
 module.exports = {
-  extends: ["alloy", "alloy/typescript", "alloy/react"],
-  plugins: ["spellcheck"],
+  extends: ['alloy', 'alloy/typescript', 'alloy/react'],
+  plugins: ['spellcheck'],
   env: {
     browser: true,
     jest: true,
@@ -41,44 +39,50 @@ module.exports = {
   },
   globals: {
     NodeJS: true,
+    JSX: true,
   },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
+  ignorePatterns: ['!.storybook'],
   rules: {
-    "max-lines": ["error", 500],
-    "react/jsx-no-useless-fragment": ["error", { allowExpressions: true }],
-    "max-lines-per-function": ["warn", 200],
-    "@typescript-eslint/lines-between-class-members": [
-      "error",
-      "always",
-      { exceptAfterSingleLine: true },
-    ],
-    "no-empty-function": ["warn", { allow: ["constructors"] }],
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
+    '@typescript-eslint/lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
+    '@typescript-eslint/consistent-type-imports': 'error',
+    'max-lines': ['error', 500],
+    'max-lines-per-function': ['warn', 200],
+    'no-empty-function': ['warn', { allow: ['constructors'] }],
+    'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
+    complexity: ['error', 50],
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
       {
-        args: "after-used",
-        argsIgnorePattern: "^_",
+        args: 'after-used',
+        argsIgnorePattern: '^_',
         ignoreRestSiblings: true,
-        vars: "all",
+        vars: 'all',
       },
     ],
-    "spellcheck/spell-checker": [
-      "warn",
+    'spellcheck/spell-checker': [
+      'warn',
       {
         comments: true,
         strings: true,
         identifiers: true,
-        lang: "en_US",
+        lang: 'en_US',
         skipWords: cspell,
-        skipIfMatch: ["http?://[^s]*", "^[-\\w]+/[-\\w\\.]+$"],
+        skipIfMatch: ['http?://[^s]*', '^[-\\w]+/[-\\w\\.]+$'],
         skipWordIfMatch: [],
         minLength: 3,
       },
     ],
-    "@typescript-eslint/consistent-type-assertions": "off",
-    "@typescript-eslint/explicit-member-accessibility": "off",
-    "@typescript-eslint/no-require-imports": "off",
-    "max-params": "off",
-    "no-param-reassign": "off",
-    "no-promise-executor-return": "off",
+    '@typescript-eslint/consistent-type-assertions': 'off',
+    '@typescript-eslint/explicit-member-accessibility': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/no-require-imports': 'off',
+    'max-params': 'off',
+    'no-param-reassign': 'off',
+    'no-promise-executor-return': 'off',
   },
 };

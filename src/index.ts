@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-export * from "./Authenticated";
-export * from "./authConfig";
-export * from "./hooks";
-export * from "./provider";
+export * from './Authenticated';
+export * from './authConfig';
+export * from './hooks';
+export * from './provider';

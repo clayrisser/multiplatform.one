@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 08:49:14
  * Author: Clay Risser
  * -----
- * Last Modified: 28-01-2023 13:47:42
+ * Last Modified: 24-02-2023 06:22:27
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,11 +22,11 @@
  * limitations under the License.
  */
 
-import { useRouter } from "solito/router";
-import { MultiPlatform } from "multiplatform.one";
-import { useCurrentRouteName } from "./useCurrentRouteName";
-import { useKeycloak } from "./useKeycloak/useKeycloak";
-import { useAuthConfig } from "./useAuthConfig";
+import { MultiPlatform } from 'multiplatform.one';
+import { useAuthConfig } from './useAuthConfig';
+import { useCurrentRouteName } from './useCurrentRouteName';
+import { useKeycloak } from './useKeycloak/useKeycloak';
+import { useRouter } from 'solito/router';
 
 export function useLogin(loginRoute?: string) {
   if (MultiPlatform.isStorybook) return () => null;
@@ -42,7 +42,7 @@ export function useLogin(loginRoute?: string) {
     }
     const url = new URL(`x://${loginRoute}`);
     const searchParams = new URLSearchParams(url.search);
-    if (currentRouteName) searchParams.append("backTo", currentRouteName);
+    if (currentRouteName) searchParams.append('backTo', currentRouteName);
     let query = searchParams.toString();
     if (query.length) query = `?${query}`;
     router.push(`${url.pathname.substring(2)}${query}`);

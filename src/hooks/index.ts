@@ -22,6 +22,6 @@
  * limitations under the License.
  */
 
-export * from "./useCurrentRouteName";
-export * from "./useKeycloak";
-export * from "./useLogin";
+export * from './useCurrentRouteName';
+export * from './useKeycloak';
+export * from './useLogin';

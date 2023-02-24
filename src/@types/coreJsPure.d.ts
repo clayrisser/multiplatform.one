@@ -22,12 +22,12 @@
  * limitations under the License.
  */
 
-declare module "core-js-pure/stable/atob" {
+declare module 'core-js-pure/stable/atob' {
   const atob: (...args: any[]) => any;
   export = atob;
 }
 
-declare module "core-js-pure/stable/escape" {
+declare module 'core-js-pure/stable/escape' {
   const escape: (...args: any[]) => any;
   export = escape;
 }

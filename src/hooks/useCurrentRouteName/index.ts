@@ -1,13 +1,13 @@
 /**
- * File: /src/hooks/useCurrentRouteName.ts
- * Project: app
- * File Created: 08-11-2022 08:38:23
+ * File: /src/hooks/useCurrentRouteName/index.ts
+ * Project: @multiplatform.one/keycloak
+ * File Created: 24-02-2023 06:30:32
  * Author: Clay Risser
  * -----
- * Last Modified: 28-01-2023 13:47:18
+ * Last Modified: 24-02-2023 06:30:54
  * Modified By: Clay Risser
  * -----
- * Risser Labs LLC (c) Copyright 2021 - 2022
+ * Risser Labs LLC (c) Copyright 2022 - 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@
  * limitations under the License.
  */
 
-import { MultiPlatform } from "multiplatform.one";
-import { useRoute } from "@react-navigation/native";
-import { useRouter } from "next/router";
+import { MultiPlatform } from 'multiplatform.one';
+import { useRoute } from '@react-navigation/native';
+import { useRouter } from 'next/router';
 
 export function useCurrentRouteName() {
   if (MultiPlatform.isStorybook) return null;

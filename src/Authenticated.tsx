@@ -22,8 +22,9 @@
  * limitations under the License.
  */
 
-import React, { ComponentType, FC, ReactNode } from "react";
-import { useLogin, useKeycloak } from "./hooks";
+import React from 'react';
+import type { ComponentType, FC, ReactNode } from 'react';
+import { useLogin, useKeycloak } from './hooks';
 
 export interface AuthenticatedProps {
   children: ReactNode;
@@ -32,9 +33,7 @@ export interface AuthenticatedProps {
   loginRoute?: string;
 }
 
-export const Authenticated: FC<AuthenticatedProps> = (
-  props: AuthenticatedProps
-) => {
+export const Authenticated: FC<AuthenticatedProps> = (props: AuthenticatedProps) => {
   const { authenticated } = useKeycloak();
   const login = useLogin(props.loginRoute);
   if (!props.disabled && !authenticated) {
@@ -45,9 +44,7 @@ export const Authenticated: FC<AuthenticatedProps> = (
   return <>{props.children}</>;
 };
 
-export function withAuthenticated<P extends object>(
-  Component: ComponentType<P>
-) {
+export function withAuthenticated<P extends object>(Component: ComponentType<P>) {
   return (props: P) => (
     <Authenticated>
       <Component {...props} />

@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 14:10:25
  * Author: Clay Risser
  * -----
- * Last Modified: 28-01-2023 13:47:33
+ * Last Modified: 24-02-2023 06:29:25
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,30 +22,18 @@
  * limitations under the License.
  */
 
-import atob from "core-js-pure/stable/atob";
-import escape from "core-js-pure/stable/escape";
-import { AuthRequestPromptOptions, AuthSessionResult } from "expo-auth-session";
-import { MultiPlatform } from "multiplatform.one";
-import {
-  KeycloakResourceAccess,
-  KeycloakRoles,
-  KeycloakTokenParsed,
-} from "keycloak-js";
-import { useKeycloak as useExpoKeycloak } from "expo-keycloak-auth";
-import { IKeycloak } from "./index";
+import atob from 'core-js-pure/stable/atob';
+import escape from 'core-js-pure/stable/escape';
+import type { AuthRequestPromptOptions, AuthSessionResult } from 'expo-auth-session';
+import type { IKeycloak } from './index';
+import type { KeycloakResourceAccess, KeycloakRoles, KeycloakTokenParsed } from 'keycloak-js';
+import { MultiPlatform } from 'multiplatform.one';
+import { useKeycloak as useExpoKeycloak } from 'expo-keycloak-auth';
 
 export function useKeycloak() {
   if (MultiPlatform.isStorybook) return { authenticated: true } as IKeycloak;
-  const { ready, login, isLoggedIn, token, logout, refreshToken } =
-    useExpoKeycloak();
-  const keycloak = new ExpoKeycloak(
-    ready,
-    isLoggedIn,
-    login,
-    logout,
-    token || undefined,
-    refreshToken || undefined
-  );
+  const { ready, login, isLoggedIn, token, logout, refreshToken } = useExpoKeycloak();
+  const keycloak = new ExpoKeycloak(ready, isLoggedIn, login, logout, token || undefined, refreshToken || undefined);
   return keycloak as IKeycloak;
 }
 
@@ -67,12 +55,10 @@ export class ExpoKeycloak implements IKeycloak {
   constructor(
     ready: boolean,
     isLoggedIn: boolean | undefined,
-    login: (
-      options?: AuthRequestPromptOptions
-    ) => Promise<AuthSessionResult | undefined>,
+    login: (options?: AuthRequestPromptOptions) => Promise<AuthSessionResult | undefined>,
     public logout: () => unknown,
     public token?: string,
-    public refreshToken?: string
+    public refreshToken?: string,
   ) {
     if (ready) this.authenticated = isLoggedIn;
     if (this.authenticated) {
@@ -91,20 +77,20 @@ export class ExpoKeycloak implements IKeycloak {
 }
 
 function decodeToken(str: string) {
-  str = str.split(".")[1];
-  str = str.replace(/-/g, "+");
-  str = str.replace(/_/g, "/");
+  str = str.split('.')[1];
+  str = str.replace(/-/g, '+');
+  str = str.replace(/_/g, '/');
   switch (str.length % 4) {
     case 0:
       break;
     case 2:
-      str += "==";
+      str += '==';
       break;
     case 3:
-      str += "=";
+      str += '=';
       break;
     default:
-      throw "Invalid token";
+      throw 'Invalid token';
   }
   str = decodeURIComponent(escape(atob(str)));
   str = JSON.parse(str);

@@ -9,6 +9,7 @@
     "dripsy",
     "ecma",
     "enums",
+    "esbuild",
     "globals",
     "gnumake",
     "iframe",
@@ -41,7 +42,8 @@
     "wcag",
     "webkit",
     "yarnpkg",
-    "yoda"
+    "yoda",
+    "zustand"
   ],
   "psi-header.variables": [["projectCreationYear", "2022"]],
   "psi-header.config": {

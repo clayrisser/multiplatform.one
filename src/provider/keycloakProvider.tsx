@@ -22,22 +22,17 @@
  * limitations under the License.
  */
 
-import Keycloak, { KeycloakInitOptions } from "keycloak-js";
-import { MultiPlatform } from "multiplatform.one";
-import { ReactKeycloakProvider } from "@react-keycloak/web";
-import { SSRKeycloakProvider, SSRCookies } from "@react-keycloak/ssr";
-import { useRouter } from "next/router";
-import React, {
-  FC,
-  ReactNode,
-  useMemo,
-  useEffect,
-  useState,
-  ComponentType,
-} from "react";
-import { useAuthConfig } from "../hooks/useAuthConfig";
-import { useAuthState } from "../state";
-import { AfterAuth } from "./afterAuth";
+import Keycloak from 'keycloak-js';
+import React, { useMemo, useEffect, useState } from 'react';
+import type { FC, ReactNode, ComponentType } from 'react';
+import type { KeycloakInitOptions } from 'keycloak-js';
+import { AfterAuth } from './afterAuth';
+import { MultiPlatform } from 'multiplatform.one';
+import { ReactKeycloakProvider } from '@react-keycloak/web';
+import { SSRKeycloakProvider, SSRCookies } from '@react-keycloak/ssr';
+import { useAuthConfig } from '../hooks/useAuthConfig';
+import { useAuthState } from '../state';
+import { useRouter } from 'next/router';
 
 export interface KeycloakProviderProps {
   children: ReactNode;
@@ -59,59 +54,52 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
   keycloakInitOptions,
   loadingComponent,
 }: KeycloakProviderProps) => {
-  const [auth] = useAuthState();
-  const LoadingComponent =
-    loadingComponent || (() => <>{debug ? "authenticating" : null}</>);
+  const authState = useAuthState();
+  const LoadingComponent = loadingComponent || (() => <>{debug ? 'authenticating' : null}</>);
   const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
   const authConfig = useAuthConfig();
   const [token, setToken] = useState<string | boolean>(
-    ("token" in query && (query.token?.toString() || true)) ||
-      auth.token ||
-      false
+    ('token' in query && (query.token?.toString() || true)) || authState.token || false,
   );
   const [refreshToken, setRefreshToken] = useState<string | boolean>(
-    ("refreshToken" in query && (query.refreshToken?.toString() || true)) ||
-      auth.refreshToken ||
-      false
+    ('refreshToken' in query && (query.refreshToken?.toString() || true)) || authState.refreshToken || false,
   );
 
   useEffect(() => {
     if (token !== true && refreshToken !== true) return;
-    if (debug) logger.debug("post message", { type: "LOADED" });
+    if (debug) logger.debug('post message', { type: 'LOADED' });
     (authConfig.messageHandlerKeys || []).forEach((key: string) => {
-      window?.webkit?.messageHandlers?.[key]?.postMessage(
-        JSON.stringify({ type: "LOADED" })
-      );
+      window?.webkit?.messageHandlers?.[key]?.postMessage(JSON.stringify({ type: 'LOADED' }));
     });
-    window?.ReactNativeWebView?.postMessage(JSON.stringify({ type: "LOADED" }));
-    window?.parent?.postMessage(JSON.stringify({ type: "LOADED" }));
+    window?.ReactNativeWebView?.postMessage(JSON.stringify({ type: 'LOADED' }));
+    window?.parent?.postMessage(JSON.stringify({ type: 'LOADED' }));
   }, []);
 
   useEffect(() => {
     if (token !== true) return;
     const messageCallback = (e: MessageEvent<any>) => {
       let data = e?.data;
-      if (typeof data === "string") {
+      if (typeof data === 'string') {
         try {
           data = JSON.parse(data);
         } catch (err) {}
       }
-      if (debug) logger.debug("received message", data);
+      if (debug) logger.debug('received message', data);
       const message: MessageSchema = data;
       if (!message.type) return;
-      if (message.type.toUpperCase() === "TOKEN" && message.payload) {
-        if (debug) logger.debug("setting token", message.payload);
+      if (message.type.toUpperCase() === 'TOKEN' && message.payload) {
+        if (debug) logger.debug('setting token', message.payload);
         setToken(message.payload);
       }
     };
     if (debug)
-      logger.debug("listening for message", {
-        type: "TOKEN",
-        payload: "<some_token>",
+      logger.debug('listening for message', {
+        type: 'TOKEN',
+        payload: '<some_token>',
       });
-    window.addEventListener("message", messageCallback);
+    window.addEventListener('message', messageCallback);
     return () => {
-      window.removeEventListener("message", messageCallback);
+      window.removeEventListener('message', messageCallback);
     };
   }, []);
 
@@ -119,39 +107,39 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
     if (refreshToken !== true) return;
     const messageCallback = (e: MessageEvent<any>) => {
       let data = e?.data;
-      if (typeof data === "string") {
+      if (typeof data === 'string') {
         try {
           data = JSON.parse(data);
         } catch (err) {}
       }
-      if (debug) logger.debug("received message", data);
+      if (debug) logger.debug('received message', data);
       const message: MessageSchema = data;
       if (!message.type) return;
-      if (message.type.toUpperCase() === "REFRESH_TOKEN" && message.payload) {
-        if (debug) logger.debug("setting refresh token", message.payload);
+      if (message.type.toUpperCase() === 'REFRESH_TOKEN' && message.payload) {
+        if (debug) logger.debug('setting refresh token', message.payload);
         setRefreshToken(message.payload);
       }
     };
     if (debug)
-      logger.debug("listening for message", {
-        type: "REFRESH_TOKEN",
-        payload: "<some_refresh_token>",
+      logger.debug('listening for message', {
+        type: 'REFRESH_TOKEN',
+        payload: '<some_refresh_token>',
       });
-    window.addEventListener("message", messageCallback);
+    window.addEventListener('message', messageCallback);
     return () => {
-      window.removeEventListener("message", messageCallback);
+      window.removeEventListener('message', messageCallback);
     };
   }, []);
 
   const keycloak = useMemo(
     () =>
-      typeof window !== "undefined" &&
+      typeof window !== 'undefined' &&
       new Keycloak({
         url: keycloakConfig.baseUrl,
         realm: keycloakConfig.realm,
         clientId: keycloakConfig.clientId,
       }),
-    []
+    [],
   );
 
   const initOptions = useMemo(() => {
@@ -159,10 +147,9 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
       ...defaultKeycloakInitOptions,
       ...keycloakInitOptions,
     };
-    if (token && typeof token === "string") {
+    if (token && typeof token === 'string') {
       initOptions.token = token;
-      if (refreshToken && typeof refreshToken === "string")
-        initOptions.refreshToken = refreshToken;
+      if (refreshToken && typeof refreshToken === 'string') initOptions.refreshToken = refreshToken;
       initOptions.checkLoginIframe = false;
       initOptions.onLoad = undefined;
     }
@@ -189,11 +176,7 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
   }
   if (!keycloak) return <>{children}</>;
   return (
-    <ReactKeycloakProvider
-      initOptions={initOptions}
-      authClient={keycloak}
-      LoadingComponent={<LoadingComponent />}
-    >
+    <ReactKeycloakProvider initOptions={initOptions} authClient={keycloak} LoadingComponent={<LoadingComponent />}>
       <AfterAuth>{children}</AfterAuth>
     </ReactKeycloakProvider>
   );
@@ -210,8 +193,8 @@ export const defaultKeycloakInitOptions: KeycloakInitOptions = {
   checkLoginIframe: true,
   checkLoginIframeInterval: 5,
   enableLogging: false,
-  onLoad: "check-sso",
-  pkceMethod: "S256",
+  onLoad: 'check-sso',
+  pkceMethod: 'S256',
 };
 
 export interface MessageSchema {

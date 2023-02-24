@@ -22,10 +22,11 @@
  * limitations under the License.
  */
 
-import React, { FC, ReactNode, useEffect } from "react";
-import { useKeycloak } from "../hooks";
-import { useAuthConfig } from "../hooks/useAuthConfig";
-import { useAuthState } from "../state";
+import React, { useEffect } from 'react';
+import type { FC, ReactNode } from 'react';
+import { useAuthConfig } from '../hooks/useAuthConfig';
+import { useAuthState } from '../state';
+import { useKeycloak } from '../hooks';
 
 export interface AfterAuthProps {
   children: ReactNode;
@@ -36,21 +37,19 @@ const logger = console;
 export const AfterAuth: FC<AfterAuthProps> = ({ children }: AfterAuthProps) => {
   const authConfig = useAuthConfig();
   const { token, refreshToken, authenticated } = useKeycloak();
-  const [, setAuth] = useAuthState();
+  const authState = useAuthState();
 
   useEffect(() => {
     if (!authenticated) return;
     if (token) {
-      setAuth({
-        token,
-        ...(refreshToken ? { refreshToken } : {}),
-      });
+      authState.setToken(token);
+      if (refreshToken) authState.setRefreshToken(refreshToken);
     }
   }, [token, refreshToken]);
 
   if (authConfig.debug) {
-    logger.debug("authenticated", authenticated);
-    logger.debug("token", token);
+    logger.debug('authenticated', authenticated);
+    logger.debug('token', token);
   }
   return <>{children}</>;
 };

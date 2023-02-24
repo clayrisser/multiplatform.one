@@ -1,7 +1,6 @@
 # app
 /debug.json
-/esm
-/lib
+/dist
 
 # mkpm
 .mkpm/*

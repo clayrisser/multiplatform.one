@@ -22,21 +22,18 @@
  * limitations under the License.
  */
 
-import React, { FC, useMemo } from "react";
-import {
-  AuthConfig,
-  AuthConfigContext,
-  defaultAuthConfig,
-} from "../authConfig";
-import { KeycloakProvider, KeycloakProviderProps } from "./keycloakProvider";
+import React, { useMemo } from 'react';
+import type { AuthConfig } from '../authConfig';
+import type { FC } from 'react';
+import type { KeycloakProviderProps } from './keycloakProvider';
+import { AuthConfigContext, defaultAuthConfig } from '../authConfig';
+import { KeycloakProvider } from './keycloakProvider';
 
 export interface AuthProviderProps extends KeycloakProviderProps {
   authConfig?: Partial<AuthConfig>;
 }
 
-export const AuthProvider: FC<AuthProviderProps> = (
-  props: AuthProviderProps
-) => {
+export const AuthProvider: FC<AuthProviderProps> = (props: AuthProviderProps) => {
   const { authConfig, debug } = props;
   const authConfigValue = useMemo(
     () => ({
@@ -44,7 +41,7 @@ export const AuthProvider: FC<AuthProviderProps> = (
       ...authConfig,
       debug: !!debug,
     }),
-    []
+    [],
   );
 
   return (
@@ -54,4 +51,4 @@ export const AuthProvider: FC<AuthProviderProps> = (
   );
 };
 
-export * from "./keycloakProvider";
+export * from './keycloakProvider';

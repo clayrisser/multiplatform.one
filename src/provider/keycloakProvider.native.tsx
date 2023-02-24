@@ -22,18 +22,16 @@
  * limitations under the License.
  */
 
-import React, { FC } from "react";
-import type { KeycloakProviderProps } from "./keycloakProvider";
-import { AfterAuth } from "./afterAuth";
-import { KeycloakConfig } from "keycloak-js";
-import { KeycloakProvider as ExpoKeycloakProvider } from "expo-keycloak-auth";
+import React from 'react';
+import type { FC } from 'react';
+import type { KeycloakConfig } from 'keycloak-js';
+import type { KeycloakProviderProps } from './keycloakProvider';
+import { AfterAuth } from './afterAuth';
+import { KeycloakProvider as ExpoKeycloakProvider } from 'expo-keycloak-auth';
 
-export const KeycloakProvider: FC<KeycloakProviderProps> = ({
-  children,
-  keycloakConfig,
-}: KeycloakProviderProps) => {
+export const KeycloakProvider: FC<KeycloakProviderProps> = ({ children, keycloakConfig }: KeycloakProviderProps) => {
   const clonedKeycloakConfig = {
-    ...(keycloakConfig as Omit<KeycloakConfig, "baseUrl">),
+    ...(keycloakConfig as Omit<KeycloakConfig, 'baseUrl'>),
     url: keycloakConfig.baseUrl,
   };
   // @ts-ignore

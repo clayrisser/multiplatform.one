@@ -4,7 +4,7 @@
  * File Created: 22-11-2022 17:40:53
  * Author: Clay Risser
  * -----
- * Last Modified: 01-02-2023 14:38:51
+ * Last Modified: 24-02-2023 06:26:51
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,15 +22,18 @@
  * limitations under the License.
  */
 
-import { atom, useRecoilState } from "recoil";
-import { persistAtom } from "multiplatform.one/recoil";
+import { createStateStore } from 'multiplatform.one/zustand';
+
+const { useStore } = createStateStore(
+  'auth',
+  {
+    token: '',
+    refreshToken: '',
+  },
+  undefined,
+  { persist: true },
+);
 
 export function useAuthState() {
-  return useRecoilState(authState);
+  return useStore();
 }
-
-export const authState = atom<{ token?: string; refreshToken?: string }>({
-  key: "auth",
-  default: {},
-  effects: [persistAtom],
-});
