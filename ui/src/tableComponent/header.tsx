@@ -10,9 +10,9 @@ export type HeaderProps = { xStack?: XStackProps } & { text?: TextProps } & Head
 
 export const Header = ({ xStack, text, ...props }: HeaderProps) => {
   return (
-    <XStack backgroundColor="$backgroundFocus" jc="space-evenly" {...xStack}>
+    <XStack backgroundColor="$backgroundFocus" jc="space-between" {...xStack}>
       {props.columns.map((column, i) => (
-        <Text padding={10} minWidth={100} textAlign="center" alignSelf="center" maxWidth={100} {...text} key={i}>
+        <Text padding={10} textAlign="center" alignSelf="center" width="100%" {...text} key={i}>
           {column}
         </Text>
       ))}

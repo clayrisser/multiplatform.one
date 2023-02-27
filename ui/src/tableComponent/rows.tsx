@@ -18,18 +18,18 @@ export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
     <YStack space {...yStack}>
       {rows.map((row: any, i: number) => {
         return (
-          <XStack bc="$background" jc="space-evenly" {...xStack} key={i}>
+          <XStack bc="$background" jc="space-between" {...xStack} key={i}>
             {row.map((cell: any, j: number) => {
               return (
                 <Text
-                  overflow="hidden"
-                  whiteSpace="nowrap"
-                  // exitStyle={{ animation: 'scroll 10sec linear infinite' }}
+                  // overflow="hidden"
+                  // whiteSpace="nowrap"
+                  // textOverflow="ellipsis"
                   hoverStyle={{}}
-                  minWidth={100}
                   textAlign="center"
                   alignSelf="center"
-                  maxWidth={100}
+                  width="100%"
+                  flexWrap="wrap"
                   padding={10}
                   key={j}
                   {...text}
