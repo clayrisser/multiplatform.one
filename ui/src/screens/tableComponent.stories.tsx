@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, Header, Row, Rows } from '../tableComponent';
 
 export default {
-  title: 'Screens/Table',
+  title: 'Screens/TableComponent',
 };
 
 export const main = () => {
