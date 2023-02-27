@@ -18,7 +18,7 @@ export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
     <YStack space {...yStack}>
       {rows.map((row: any, i: number) => {
         return (
-          <XStack bc="$background" jc="space-between" {...xStack} key={i}>
+          <XStack bc="$background" jc="space-around" {...xStack} key={i}>
             {row.map((cell: any, j: number) => {
               return (
                 <Text
@@ -26,9 +26,9 @@ export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
                   // whiteSpace="nowrap"
                   // textOverflow="ellipsis"
                   hoverStyle={{}}
+                  width="100%"
                   textAlign="center"
                   alignSelf="center"
-                  width="100%"
                   flexWrap="wrap"
                   padding={10}
                   key={j}
