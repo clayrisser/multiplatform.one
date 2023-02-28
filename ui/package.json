@@ -1,40 +1,53 @@
 {
   "name": "@multiplatform.one/ui",
-  "version": "0.0.15",
+  "version": "0.0.38",
   "sideEffects": [
     "*.css"
   ],
   "description": "multiplatform.one ui components",
-  "types": "./types/index",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
+  "react-native": "src/index.ts",
+  "source": "src/index.ts",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "types": "./types/index.d.ts"
+    },
+    "./src/tamagui.config": {
+      "import": "./dist/esm/tamagui.config.mjs",
+      "require": "./dist/cjs/tamagui.config.js",
+      "types": "./types/tamagui.config.d.ts"
+    }
+  },
   "files": [
     "dist",
+    "src",
     "types"
   ],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/risserlabs/multiplatform.one/keycloak"
   },
-  "scripts": {
-    "prepare": "make -s prepare"
-  },
   "dependencies": {
-    "@tamagui/animations-react-native": "^1.1.11",
-    "@tamagui/font-inter": "^1.1.11",
-    "@tamagui/react-native-media-driver": "^1.1.11",
-    "@tamagui/shorthands": "^1.1.11",
-    "@tamagui/theme-base": "^1.1.11",
+    "@tamagui/animations-react-native": "^1.5.17",
+    "@tamagui/font-inter": "^1.5.17",
+    "@tamagui/react-native-media-driver": "^1.5.17",
+    "@tamagui/shorthands": "^1.5.17",
+    "@tamagui/theme-base": "^1.5.17",
     "expo-asset": "^8.7.0",
+    "fast-xml-parser": "^4.1.2",
     "immer": "^9.0.19",
-    "react-hook-form": "^7.42.1",
-    "react-native-svg": "13.4.0",
-    "tamagui": "^1.1.11",
-    "zustand": "^4.3.2"
+    "react-hook-form": "^7.43.2",
+    "react-native-svg": "13.8.0",
+    "tamagui": "^1.5.17",
+    "zustand": "^4.3.3"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.1.11"
+    "@tamagui/build": "^1.5.17"
   },
   "jest": {
     "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",

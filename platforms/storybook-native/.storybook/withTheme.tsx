@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import addons, { makeDecorator } from '@storybook/addons';
 import { useThemeState } from 'app/state/theme';
-import { ThemeName } from 'tamagui';
+import type { ThemeName } from 'tamagui';
 
 const UPDATE_BACKGROUND = 'storybook-addon-background:update';
 
@@ -19,7 +19,7 @@ export const withTheme = makeDecorator({
     const defaultValue = data.default ? backgrounds.find((b) => b.name === data.default) : undefined;
     const defaultOrFirst = defaultValue ? defaultValue : backgrounds[0];
     const [background, setBackground] = useState(defaultOrFirst?.value || '');
-    const [, setTheme] = useThemeState();
+    const themeState = useThemeState();
 
     useEffect(() => {
       channel.on(UPDATE_BACKGROUND, setBackground);
@@ -32,11 +32,8 @@ export const withTheme = makeDecorator({
 
     useEffect(() => {
       if (!themeName) return;
-      setTheme((theme) => ({
-        ...theme,
-        root: themeName,
-      }));
-    }, [themeName, setTheme]);
+      themeState.setRoot(themeName);
+    }, [themeName, themeState.setRoot]);
 
     return <>{getStory(context)}</>;
   },

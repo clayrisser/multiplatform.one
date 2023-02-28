@@ -17,7 +17,6 @@
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/react": "^6.5.16",
     "addon-screen-reader": "^1.8.6",
-    "app": "*",
     "expo": "^47.0.13",
     "react": "18.1.0",
     "react-dom": "18.1.0",
@@ -26,19 +25,19 @@
     "storybook-addon-breakpoints": "^1.0.0",
     "storybook-addon-designs": "^6.3.1",
     "storybook-addon-grid": "^0.3.1",
-    "storybook-addon-next": "^1.7.1",
+    "storybook-addon-next": "^1.7.2",
     "storybook-addon-paddings": "^4.3.0",
     "storybook-addon-themes": "^6.1.0",
     "storybook-color-picker": "^3.1.0",
-    "storybook-dark-mode": "^2.0.5",
+    "storybook-dark-mode": "^2.1.1",
     "storybook-mobile": "^1.0.0"
   },
   "devDependencies": {
     "@loki/target-chrome-core": "0.31.0",
-    "@types/node": "18.11.18",
-    "@types/react": "^18.0.27",
+    "@types/node": "^18.14.1",
+    "@types/react": "^18.0.28",
     "loki": "^0.31.0",
-    "typescript": "4.9.4"
+    "typescript": "^4.9.5"
   },
   "loki": {
     "configurations": {

@@ -3,12 +3,13 @@ import '@tamagui/font-inter/css/400.css';
 import '@tamagui/font-inter/css/700.css';
 import 'raf/polyfill';
 import Head from 'next/head';
-import React, { ReactNode, startTransition, useEffect, useMemo } from 'react';
+import React, { startTransition, useEffect, useMemo } from 'react';
 import cookie from 'cookie';
 import type { AppContext } from 'next/app';
+import type { NextIncomingMessage } from 'next/dist/server/request-meta';
+import type { ReactNode } from 'react';
 import type { SolitoAppProps } from 'solito';
 import { GlobalProvider, StateProvider } from 'app/providers';
-import { NextIncomingMessage } from 'next/dist/server/request-meta';
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
 import { appWithTranslation } from 'next-i18next';
 import { config } from 'app/config';
@@ -18,7 +19,9 @@ const automaticStaticOptimization = config.get('NEXT_AUTOMATIC_STATIC_OPTIMIZATI
 const keycloakSsr = config.get('KEYCLOAK_SSR') === '1';
 const nextStatic = config.get('NEXT_STATIC') === '1';
 
-if (nextStatic) import('app/i18n');
+if (nextStatic) {
+  import('app/i18n').then(({ i18nInit }) => i18nInit());
+}
 
 export interface AppProps extends SolitoAppProps {
   cookies?: unknown;
@@ -47,12 +50,12 @@ function App({ Component, pageProps, cookies }: AppProps) {
 }
 
 function Provider({ children, ...props }: { children: ReactNode; cookies: unknown }) {
-  const [{ root }] = useThemeState();
+  const themeState = useThemeState();
   const [rootTheme, setRootTheme] = useRootTheme();
 
   useEffect(() => {
-    if (root) setRootTheme(root);
-  }, [root, setRootTheme]);
+    if (themeState.root) setRootTheme(themeState.root);
+  }, [themeState.root, setRootTheme]);
 
   return (
     <NextThemeProvider
