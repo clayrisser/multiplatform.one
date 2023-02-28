@@ -13,6 +13,7 @@ ACTIONS += install ##
 $(ACTION)/install: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
 	@$(YARN) install $(ARGS)
 	@$(call done,install)
+	@$(MAKE) build
 
 ACTIONS += format ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)

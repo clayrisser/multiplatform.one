@@ -1,8 +1,10 @@
 import React, { useId } from 'react';
+import type { FormControllerProps } from '../types';
+import type { FormFieldProps } from '../FormField';
+import type { SelectSimpleProps } from '../SelectSimple';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormControllerProps } from '../types';
-import { FormField, FormFieldProps } from '../FormField';
-import { SelectSimple, SelectSimpleProps } from '../SelectSimple';
+import { FormField } from '../FormField';
+import { SelectSimple } from '../SelectSimple';
 
 export type FormSelectSimpleProps = SelectSimpleProps &
   FormControllerProps & {
@@ -45,7 +47,14 @@ export function FormSelectSimple({
           required={required}
           {...fieldProps}
         >
-          <SelectSimple {...selectProps} value={value ?? ''} onValueChange={onChange} />
+          <SelectSimple
+            {...selectProps}
+            value={value ?? ''}
+            onValueChange={(e) => {
+              onChange(e);
+              if (selectProps.onValueChange) selectProps.onValueChange(e);
+            }}
+          />
         </FormField>
       )}
     />

@@ -1,7 +1,9 @@
 import React from 'react';
-import { ButtonProps, Button } from 'tamagui';
-import { FieldValues, useFormContext, UseFormReturn } from 'react-hook-form';
-import { GestureResponderEvent } from 'react-native';
+import type { ButtonProps } from 'tamagui';
+import type { FieldValues, UseFormReturn } from 'react-hook-form';
+import type { GestureResponderEvent } from 'react-native';
+import { Button } from 'tamagui';
+import { useFormContext } from 'react-hook-form';
 
 export type FormSubmitButtonProps<T extends FieldValues> = ButtonProps & {
   onSubmit?: (data: T, context: UseFormReturn<T, any>) => void | Promise<void>;

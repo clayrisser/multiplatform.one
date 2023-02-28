@@ -1,10 +1,12 @@
+import React from 'react';
+import type { StackProps } from '@tamagui/core';
+import type { UseFormProps } from 'react-hook-form';
 import { Form as TForm } from 'tamagui';
-import { FormProvider as RhfFormProvider, useForm, UseFormProps } from 'react-hook-form';
-import { StackProps } from '@tamagui/core';
+import { FormProvider as RhfFormProvider, useForm } from 'react-hook-form';
 
 export type FormProviderProps = UseFormProps & StackProps;
 
-export function FormProvider({
+export function SimpleForm({
   children,
   context,
   criteriaMode,
@@ -36,7 +38,7 @@ export function FormProvider({
   });
   return (
     <RhfFormProvider {...methods}>
-      <TForm {...formProps}>{children}</TForm>
+      <TForm {...(formProps as any)}>{children}</TForm>
     </RhfFormProvider>
   );
 }
