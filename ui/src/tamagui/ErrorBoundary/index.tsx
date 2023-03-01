@@ -1,4 +1,6 @@
+import React from 'react';
 import { Component } from 'react';
+import { YStack, Button, Text } from 'tamagui';
 
 export class ErrorBoundary extends Component<any> {
   static getDerivedStateFromError(error) {
@@ -14,12 +16,10 @@ export class ErrorBoundary extends Component<any> {
   render() {
     if (this.state.hasError) {
       return (
-        <div>
-          <h2>Oops, there is an error!</h2>
-          <button type="button" onClick={() => this.setState({ hasError: false })}>
-            Try again?
-          </button>
-        </div>
+        <YStack>
+          <Text>Oops, there is an error!</Text>
+          <Button onPress={() => this.setState({ hasError: false })}>Try again?</Button>
+        </YStack>
       );
     }
     return this.props.children;
