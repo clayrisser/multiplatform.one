@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTint } from 'ui/src/hooks';
+import { useTint } from 'ui/src/hooks/useTint';
 import type { ButtonProps } from 'tamagui';
 import { Button, Circle, TooltipSimple } from 'tamagui';
 
