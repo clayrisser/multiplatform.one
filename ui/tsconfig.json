@@ -1,6 +1,13 @@
 {
   "extends": "../tsconfig.base",
-  "include": ["src"],
+  "include": [
+    "src",
+    "src/tamagui/.DocsMenuContents",
+    "src/tamagui/.CodeBlock",
+    "src/tamagui/.CodeDemo",
+    "src/tamagui/.DocSearch",
+    "src/tamagui/.DocsRouteNavItem"
+  ],
   "compilerOptions": {
     "rootDir": ".",
     "composite": true,
