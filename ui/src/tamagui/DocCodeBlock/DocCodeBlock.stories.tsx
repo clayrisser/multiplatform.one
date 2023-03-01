@@ -1,5 +1,6 @@
 import React from 'react';
 import { DocCodeBlock } from './index';
+import { Text, Paragraph, YGroup, YStack } from 'tamagui';
 
 export default {
   title: 'ui/tamagui/DocCodeBlock',
@@ -7,4 +8,8 @@ export default {
   parameters: { status: { type: 'beta' } },
 };
 
-export const main = () => <DocCodeBlock />;
+export const main = () => (
+  <DocCodeBlock>
+    <Text>import React from react</Text>
+  </DocCodeBlock>
+);
