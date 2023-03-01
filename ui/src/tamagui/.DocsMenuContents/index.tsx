@@ -2,9 +2,9 @@ import { docsRoutes } from '@lib/docsRoutes';
 import React from 'react';
 import { Paragraph, Separator, XStack, YStack } from 'tamagui';
 
-import { DocsRouteNavItem } from './DocsRouteNavItem';
-import { NavHeading } from './NavHeading';
-import { useDocsMenu } from './useDocsMenu';
+import { DocsRouteNavItem } from 'ui/src/tamagui/DocsRouteNavItem';
+import { NavHeading } from 'ui/src/tamagui/NavHeading';
+import { useDocsMenu } from 'ui/src/hooks/useDocsMenu';
 
 export const DocsMenuContents = React.memo(() => {
   const { currentPath } = useDocsMenu();
