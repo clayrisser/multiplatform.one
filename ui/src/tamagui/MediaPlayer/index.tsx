@@ -3,7 +3,6 @@ import React, { memo, useMemo } from 'react';
 import type { CardProps, ThemeName } from 'tamagui';
 import { Button, Card, Image, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui';
 import { SimpleImage } from 'ui/src/images';
-// import { image } from './mj.jpg';
 
 export const MediaPlayer = memo(
   (
@@ -30,8 +29,7 @@ export const MediaPlayer = memo(
         >
           <XStack ai="center" p="$4" space="$5">
             <Square pos="relative" ov="hidden" br="$6" size="$8">
-              {/* <Image  /> */}
-              <SimpleImage width={90} height={90} src={image.src} />
+              <SimpleImage width={90} height={90} src={require('./mail.png')} />
             </Square>
 
             <YStack als="center" y={-3} miw={165} jc="center">
