@@ -3,5 +3,5 @@ export * from './helpers';
 export * from './hooks';
 export * from './images';
 export * from './layouts';
-export * from './CodyComponent';
+export * from './tamagui';
 export * from './panels';
