@@ -1,45 +1,45 @@
-// import highlightLine from '@lib/rehype-highlight-line';
-// import highlightWord from '@lib/rehype-highlight-word';
-// import { toHtml } from 'hast-util-to-html';
-// import rangeParser from 'parse-numeric-range';
-// import React from 'react';
-// import { refractor } from 'refractor';
-// import tsx from 'refractor/lang/tsx';
-// import type { GetProps } from 'tamagui';
+import highlightLine from '@lib/rehype-highlight-line';
+import highlightWord from '@lib/rehype-highlight-word';
+import { toHtml } from 'hast-util-to-html';
+import rangeParser from 'parse-numeric-range';
+import React from 'react';
+import { refractor } from 'refractor';
+import tsx from 'refractor/lang/tsx';
+import type { GetProps } from 'tamagui';
 
-// import { Code } from '../Code';
-// import { Pre } from '../Pre';
+import { Code } from '../Code';
+import { Pre } from '../Pre';
 
-// refractor.register(tsx);
+refractor.register(tsx);
 
-// type PreProps = Omit<GetProps<typeof Pre>, 'css'>;
+type PreProps = Omit<GetProps<typeof Pre>, 'css'>;
 
-// export type CodeBlockProps = PreProps & {
-//   language: 'tsx';
-//   value: string;
-//   line?: string;
-//   css?: any;
-//   mode?: 'static'; // | 'typewriter' | 'interactive'
-//   showLineNumbers?: boolean;
-// };
+export type CodeBlockProps = PreProps & {
+  language: 'tsx';
+  value: string;
+  line?: string;
+  css?: any;
+  mode?: 'static'; // | 'typewriter' | 'interactive'
+  showLineNumbers?: boolean;
+};
 
-// export default React.forwardRef<HTMLPreElement, CodeBlockProps>((_props, forwardedRef) => {
-//   const { language, value, line = '0', className = '', mode, showLineNumbers, ...props } = _props;
-//   let result: any = refractor.highlight(value, language);
-//   result = highlightLine(result, rangeParser(line));
-//   result = highlightWord(result);
-//   result = toHtml(result);
-//   const classes = `language-${language} ${className}`;
-//   // if (mode === 'typewriter') {
-//   //   return <CodeTypewriter className={classes} variant="" value={result} {...props} />
-//   // }
+export default React.forwardRef<HTMLPreElement, CodeBlockProps>((_props, forwardedRef) => {
+  const { language, value, line = '0', className = '', mode, showLineNumbers, ...props } = _props;
+  let result: any = refractor.highlight(value, language);
+  result = highlightLine(result, rangeParser(line));
+  result = highlightWord(result);
+  result = toHtml(result);
+  const classes = `language-${language} ${className}`;
+  // if (mode === 'typewriter') {
+  //   return <CodeTypewriter className={classes} variant="" value={result} {...props} />
+  // }
 
-//   return (
-//     <Pre ref={forwardedRef} className={classes} data-line-numbers={showLineNumbers} {...props}>
-//       <Code className={classes} dangerouslySetInnerHTML={{ __html: result }} />
-//     </Pre>
-//   );
-// });
+  return (
+    <Pre ref={forwardedRef} className={classes} data-line-numbers={showLineNumbers} {...props}>
+      <Code className={classes} dangerouslySetInnerHTML={{ __html: result }} />
+    </Pre>
+  );
+});
 
 /**
  * recursively get all text nodes as an array for a given element
