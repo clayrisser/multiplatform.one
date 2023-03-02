@@ -1,4 +1,3 @@
-import React from 'react';
 import { YStack, styled } from 'tamagui';
 
 export const OffsetBox = styled(YStack, {

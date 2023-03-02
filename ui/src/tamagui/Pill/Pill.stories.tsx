@@ -3,8 +3,10 @@ import { Pill } from './index';
 
 export default {
   title: 'ui/tamagui/Pill',
-  components: Pill,
-  parameters: { status: { type: 'beta' } },
+  component: Pill,
+  parameters: {
+    status: { type: 'beta' },
+  },
 };
 
-export const main = () => <Pill />;
+export const main = () => <Pill>This is to test Pill</Pill>;

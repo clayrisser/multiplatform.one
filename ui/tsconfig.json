@@ -6,7 +6,8 @@
     "src/tamagui/.CodeBlock",
     "src/tamagui/.CodeDemo",
     "src/tamagui/.DocSearch",
-    "src/tamagui/.DocsRouteNavItem"
+    "src/tamagui/.DocsRouteNavItem",
+    "src/tamagui/HeroBelow/.HeroBelow.stories.tsx"
   ],
   "compilerOptions": {
     "rootDir": ".",
