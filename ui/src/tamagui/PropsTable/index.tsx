@@ -1,3 +1,5 @@
+// import { AccessibleIcon } from '@tamagui/lucide-icons'
+// import { AccessibleIcon } from '@tamagui/lucide-icons'
 import React from 'react';
 import { H3, H4, ListItem, Paragraph, Separator, XStack, YStack, styled } from 'tamagui';
 
