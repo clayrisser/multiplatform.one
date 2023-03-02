@@ -23,7 +23,7 @@ export const ActiveCircle = (props: CircleProps & { isActive?: boolean }) => {
       })}
       {...rest}
     >
-      <YStack br="$10" w={22} h={22} ai="center" jc="center" borderColor="transparent" cursor="pointer">
+      <YStack br="$10" bc="yellow" w={22} h={22} ai="center" jc="center" borderColor="red" cursor="pointer">
         <Circle size={16} opacity={opacity} backgroundColor={backgroundColor} />
       </YStack>
     </YStack>

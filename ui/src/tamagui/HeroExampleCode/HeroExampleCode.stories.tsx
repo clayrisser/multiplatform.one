@@ -11,4 +11,4 @@ export default {
   },
 };
 
-export const main = () => <HeroExampleCode examples={undefined} />;
+export const main = () => <HeroExampleCode examples={[{ name: 'FFlabs', location: 'hybd' }]} onlyDemo={true} />;

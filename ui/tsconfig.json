@@ -8,9 +8,11 @@
     "src/tamagui/.DocSearch",
     "src/tamagui/.DocsRouteNavItem",
     "src/tamagui/HeroBelow/.HeroBelow.stories.tsx",
-    "src/tamagui/.AnimationsDemo",
+    "src/tamagui/AnimationsDemo",
     "src/tamagui/.TintSection",
-    "src/tamagui/.HeroPerformance"
+    "src/tamagui/.HeroPerformance",
+    "src/tamagui/.HomeGlow",
+    "src/tamagui/.BlogSlugPage"
   ],
   "compilerOptions": {
     "rootDir": ".",

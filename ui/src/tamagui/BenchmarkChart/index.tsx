@@ -68,7 +68,7 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
                 })}
               >
                 <Paragraph size="$1" whiteSpace="nowrap" position="absolute" right="$-2" x="100%">
-                  {result.value}ms
+                  {result.value}
                 </Paragraph>
               </YStack>
             </XStack>

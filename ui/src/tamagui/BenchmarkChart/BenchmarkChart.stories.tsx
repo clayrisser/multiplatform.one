@@ -7,4 +7,21 @@ export default {
   parameters: { status: { type: 'beta' } },
 };
 
-export const main = () => <BenchmarkChart data={undefined} large={undefined} />;
+export const main = () => (
+  <BenchmarkChart
+    data={[
+      {
+        name: 'ajith',
+        location: 'vizag',
+        role: 'Developer',
+      },
+    ]}
+    large={[
+      {
+        name: 'Pravallika',
+        role: 'Developer',
+        location: 'Guntur',
+      },
+    ]}
+  />
+);

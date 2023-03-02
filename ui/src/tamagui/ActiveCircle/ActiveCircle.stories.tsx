@@ -7,4 +7,4 @@ export default {
   parameters: { status: { type: 'beta' } },
 };
 
-export const main = () => <ActiveCircle />;
+export const main = () => <ActiveCircle isActive={true}>Hello world</ActiveCircle>;
