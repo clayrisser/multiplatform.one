@@ -29,11 +29,11 @@ export const DocsRouteNavItem = React.memo(({ children, active, href, pending, .
         <YStack
           className="sidebar-indicator"
           o={active ? 1 : 0}
-          pos="absolute"
-          t={0}
-          b={0}
-          r={0}
-          w={1}
+          position="absolute"
+          top={0}
+          bottom={0}
+          right={0}
+          width={1}
           bc={active ? '$color' : '$backgroundHover'}
         />
         <SizableText
