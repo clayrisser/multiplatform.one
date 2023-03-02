@@ -11,4 +11,4 @@ export default {
   },
 };
 
-export const main = () => <OffsetBox> Hello</OffsetBox>;
+export const main = () => <OffsetBox>Hello</OffsetBox>;
