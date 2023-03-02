@@ -8,7 +8,7 @@ import { H3, Paragraph, XStack, YStack, debounce } from 'tamagui';
 
 import { CodeInline } from '../Code';
 import { ContainerLarge } from '../Container';
-import { useHeroHovered } from './heroState';
+import { useHeroHovered } from '../HeroState';
 import { IconStack } from '../IconStack';
 
 const TitleLink = ({ href, children, ...props }: any) => {
