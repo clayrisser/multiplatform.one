@@ -7,4 +7,4 @@ export default {
   parameters: { status: { type: 'beta' } },
 };
 
-export const main = () => <TintSection />;
+export const main = () => <TintSection index={0} />;

@@ -4,7 +4,7 @@ import type { CSSProperties, DetailedHTMLProps, HTMLAttributes } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useIsomorphicLayoutEffect } from 'tamagui';
 
-import { getBoundingClientRectAsync } from '../lib/getBoundingClientRectAsync';
+import { getBoundingClientRectAsync } from 'ui/src/lib/getBoundingClientRectAsync';
 
 interface BoundedCursorProps {
   size?: number;

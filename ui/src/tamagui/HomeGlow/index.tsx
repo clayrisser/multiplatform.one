@@ -5,7 +5,7 @@ import { Dimensions } from 'react-native';
 import type { ThemeName } from 'tamagui';
 import { YStack, isClient, useDebounce } from 'tamagui';
 
-import { useTintSectionIndex } from './TintSection';
+import { useTintSectionIndex } from '../TintSection';
 
 export const HomeGlow = memo(() => {
   const { tints, tint, name, tintIndex } = useTint();
