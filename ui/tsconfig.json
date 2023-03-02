@@ -6,8 +6,7 @@
     "src/tamagui/.CodeBlock",
     "src/tamagui/.CodeDemo",
     "src/tamagui/.DocSearch",
-    "src/tamagui/.DocsRouteNavItem",
-    "src/tamagui/.HoverGlow"
+    "src/tamagui/.DocsRouteNavItem"
   ],
   "compilerOptions": {
     "rootDir": ".",

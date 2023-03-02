@@ -1,5 +1,6 @@
 import React from 'react';
 import { FlatBubbleCard } from './index';
+import { Text } from 'tamagui';
 
 export default {
   title: 'ui/tamagui/FlatBubbleCard',
@@ -11,4 +12,8 @@ export default {
   },
 };
 
-export const main = () => <FlatBubbleCard />;
+export const main = () => (
+  <FlatBubbleCard>
+    <Text>FlatBubbleCard</Text>
+  </FlatBubbleCard>
+);
