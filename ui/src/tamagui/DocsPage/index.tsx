@@ -17,7 +17,7 @@ import { NextLink } from '../NextLink';
 import { ScrollView } from 'react-native';
 import { EnsureFlexed, Paragraph, Theme, XStack, YStack } from 'tamagui';
 import { Container } from '../Container';
-import { DocsMenuContents } from '../DocsMenuContents';
+import { DocsMenuContents } from '../.DocsMenuContents';
 import { Link } from '../Link';
 import { useDocsMenu } from 'ui/src/hooks/useDocsMenu';
 import { allDocsRoutes } from '@lib/docsRoutes';
