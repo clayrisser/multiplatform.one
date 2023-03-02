@@ -2,11 +2,11 @@
   "extends": "../tsconfig.base",
   "include": [
     "src",
-    "src/tamagui/.DocsMenuContents",
+    "src/tamagui/DocsMenuContents",
     "src/tamagui/.CodeBlock",
     "src/tamagui/.CodeDemo",
     "src/tamagui/.DocSearch",
-    "src/tamagui/.DocsRouteNavItem",
+    "src/tamagui/DocsRouteNavItem",
     "src/tamagui/HeroBelow/.HeroBelow.stories.tsx"
   ],
   "compilerOptions": {

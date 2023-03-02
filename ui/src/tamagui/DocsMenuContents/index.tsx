@@ -1,14 +1,13 @@
+/* eslint-disable max-nested-callbacks */
 import { docsRoutes } from '@lib/docsRoutes';
 import React from 'react';
 import { Paragraph, Separator, XStack, YStack } from 'tamagui';
-
-import { DocsRouteNavItem } from 'ui/src/tamagui/DocsRouteNavItem';
 import { NavHeading } from 'ui/src/tamagui/NavHeading';
+import { DocsRouteNavItem } from 'ui/src/tamagui/DocsRouteNavItem';
 import { useDocsMenu } from 'ui/src/hooks/useDocsMenu';
 
 export const DocsMenuContents = React.memo(() => {
   const { currentPath } = useDocsMenu();
-
   return React.useMemo(() => {
     return (
       <>

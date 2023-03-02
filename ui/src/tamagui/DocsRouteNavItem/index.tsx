@@ -1,8 +1,8 @@
 import React from 'react';
-import { NextLink } from 'ui/src/NextLink';
+import { NextLink } from 'ui/src/tamagui/NextLink';
 import { SizableText, Spacer, XStack, YStack } from 'tamagui';
 import type { NavItemProps } from 'ui/src/DocsPage';
-import { ExternalIcon } from 'ui/src/ExternalIcon';
+import { ExternalIcon } from 'ui/src/tamagui/ExternalIcon';
 
 export const DocsRouteNavItem = React.memo(({ children, active, href, pending, ...props }: NavItemProps) => {
   const isExternal = href.startsWith('http');
