@@ -1,8 +1,8 @@
 import { RemoveScroll } from '@tamagui/remove-scroll';
-import { NextLink } from 'components/NextLink';
+import { NextLink } from '../NextLink';
 import React, { useEffect, useState } from 'react';
 import { Circle, H4, Paragraph, ScrollView, XStack, YStack } from 'tamagui';
-import { LinkProps } from './Link';
+import type { LinkProps } from '../Link';
 
 const QuickNavLink = ({ href, ...rest }: LinkProps) => (
   <NextLink href={href}>
@@ -81,7 +81,7 @@ export function QuickNav() {
             {headings.map(({ id, nodeName, innerText }, i) => {
               const level = getLevel(nodeName);
               return (
-                <XStack key={i} tag="li" ai="center">
+                <XStack key={i} tag="li" alignItems="center">
                   {level > 2 && <Circle size={4} mx="$2" />}
                   <QuickNavLink href={`#${id}`}>{innerText}</QuickNavLink>
                 </XStack>

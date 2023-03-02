@@ -6,4 +6,4 @@ export default {
   component: TamaguiCard,
   parameters: { status: { type: 'beta' } },
 };
-export const main = () => <TamaguiCard />;
+export const main = () => <TamaguiCard children={undefined} title={undefined} subTitle={undefined} />;

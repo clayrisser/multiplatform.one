@@ -1,19 +1,20 @@
+import React from 'react';
 import { H3, Paragraph, XStack } from 'tamagui';
-import { Card } from './Card';
+import { Card } from '../Card';
 
 export function TamaguiCard({ children, title, subTitle, ...props }) {
   return (
     <Card
-      p="$4"
-      mx="$1"
-      my="$2"
-      mb="$2"
+      padding="$4"
+      // mx="$1"
+      // my="$2"
+      marginBottom="$2"
       space="$2"
       $gtSm={{
         width: '50%',
         maxWidth: 'calc(50% - var(--space-8))',
       }}
-      $sm={{ width: 'auto', maxWidth: 'auto', f: 1 }}
+      $sm={{ width: 'auto', maxWidth: 'auto', flex: 1 }}
     >
       <H3 tag="span" fontFamily="$silkscreen" size="$7" lh="$6" color="$color" cursor="inherit" ls={0}>
         {title}

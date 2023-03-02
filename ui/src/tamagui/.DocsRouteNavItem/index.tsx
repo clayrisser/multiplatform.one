@@ -1,8 +1,8 @@
 import React from 'react';
-import { NextLink } from 'ui/src/NextLink';
+import { NextLink } from '../NextLink';
 import { SizableText, Spacer, XStack, YStack } from 'tamagui';
-import type { NavItemProps } from 'ui/src/DocsPage';
-import { ExternalIcon } from 'ui/src/ExternalIcon';
+// import type { NavItemProps } from '.../DocsPage;
+import { ExternalIcon } from '../ExternalIcon';
 
 export const DocsRouteNavItem = React.memo(({ children, active, href, pending, ...props }: NavItemProps) => {
   const isExternal = href.startsWith('http');
@@ -29,11 +29,11 @@ export const DocsRouteNavItem = React.memo(({ children, active, href, pending, .
         <YStack
           className="sidebar-indicator"
           o={active ? 1 : 0}
-          pos="absolute"
-          t={0}
-          b={0}
-          r={0}
-          w={1}
+          position="absolute"
+          top={0}
+          bottom={0}
+          radius={0}
+          width={1}
           bc={active ? '$color' : '$backgroundHover'}
         />
         <SizableText

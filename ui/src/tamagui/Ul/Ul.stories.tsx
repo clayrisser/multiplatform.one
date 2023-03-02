@@ -6,4 +6,4 @@ export default {
   component: Ul,
   parameters: { status: { type: 'beta' } },
 };
-export const main = () => <Ul />;
+export const main = () => <Ul>Hello this is from UL component</Ul>;

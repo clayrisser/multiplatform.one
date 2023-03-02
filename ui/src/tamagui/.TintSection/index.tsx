@@ -1,5 +1,6 @@
-import { useOnIntersecting } from '@tamagui/demos';
+// import { useOnIntersecting } from 'ui/src/tamagui/demos';
 import React from 'react';
+import { useOnIntersecting } from 'ui/src/demos';
 import { getTints } from '../Logo/tints';
 import { useTint } from '../../hooks/useTint';
 import { useEffect, useMemo, useRef } from 'react';
@@ -50,13 +51,13 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
   );
 
   return (
-    <YStack zIndex={zIndex} pos="relative">
+    <YStack zIndex={zIndex} position="relative">
       {useMemo(() => {
         return (
           <>
-            <XStack ref={top} pos="absolute" t="10%" l={0} r={0} h={10} o={0} pe="none" />
-            <XStack ref={mid} pos="absolute" t="50%" l={0} r={0} h={10} o={0} pe="none" />
-            <XStack ref={bottom} pos="absolute" b="10%" l={0} r={0} h={10} o={0} pe="none" />
+            <XStack ref={top} position="absolute" top="10%" left={0} right={0} height={10} o={0} pe="none" />
+            <XStack ref={mid} position="absolute" top="50%" left={0} right={0} height={10} o={0} pe="none" />
+            <XStack ref={bottom} position="absolute" bottom="10%" left={0} right={0} height={10} o={0} pe="none" />
           </>
         );
       }, [top, mid, bottom])}
@@ -81,7 +82,7 @@ export const useTintSectionIndex = (cb: (index: number, str: number) => void) =>
 
 export const HomeSection = styled(YStack, {
   name: 'Section',
-  pos: 'relative',
+  position: 'relative',
   py: '$14',
   zi: 2,
 
@@ -122,7 +123,7 @@ export const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTo
         className="all ease-in ms1000"
         zi={-1}
         o={0.4}
-        bc={gradient ? `$${tint}2` : null}
+        backgroundColor={gradient ? `$${tint}2` : null}
         {...(!bubble && {
           btw: noBorderTop ? 0 : 1,
           bbw: 1,

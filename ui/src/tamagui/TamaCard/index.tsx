@@ -2,7 +2,7 @@ import React from 'react';
 import { H3, Paragraph, XStack, YStack, useComposedRefs } from 'tamagui';
 import { FancyCard, OuterSubtleBorder } from 'ui/src/tamagui/FancyCard';
 import { useHoverGlow } from '../HoverGlow';
-import { NotoIcon } from './NotoIcon';
+import { NotoIcon } from '../NotoIcon';
 
 export const TamaCard = ({ title, icon, subtitlePre, subtitlePost, description, footer, children }: any) => {
   // const shadow = useHoverGlow({
@@ -32,13 +32,13 @@ export const TamaCard = ({ title, icon, subtitlePre, subtitlePost, description, 
   return (
     <YStack
       className="transition all ease-in ms100"
-      pos="relative"
+      position="relative"
       width="calc(33.33%)"
       $md={{
         width: 'calc(50%)',
       }}
       $sm={{ width: 'auto', minWidth: '100%' }}
-      p="$3"
+      padding="$3"
       hoverStyle={{
         zIndex: 1000,
       }}
@@ -52,13 +52,13 @@ export const TamaCard = ({ title, icon, subtitlePre, subtitlePost, description, 
       >
         {/* glow */}
         {/* {glow.element} */}
-        <XStack bc="$backgroundStrong" f={1} p="$5" m={1} br="$6" space>
-          <YStack f={1} space="$2" ai="center">
+        <XStack backgroundColor="$backgroundStrong" flex={1} padding="$5" margin={1} borderRadius="$6" space>
+          <YStack flex={1} space="$2" alignItems="center">
             <H3
-              als="flex-start"
+              alignSelf="flex-start"
               fontFamily="$silkscreen"
               size="$7"
-              fow="200"
+              fontWeight="200"
               color="$color"
               cursor="default"
               letterSpacing={1}
@@ -74,14 +74,14 @@ export const TamaCard = ({ title, icon, subtitlePre, subtitlePost, description, 
                   </Paragraph>
                 )}
                 {!!subtitlePost && (
-                  <Paragraph cursor="default" fow="800" theme="alt2" size="$7">
+                  <Paragraph cursor="default" fontWeight="800" theme="alt2" size="$7">
                     {subtitlePost}
                   </Paragraph>
                 )}
               </XStack>
             )}
 
-            <Paragraph o={0.65} cursor="default" theme="alt2" size="$4" fow="500">
+            <Paragraph o={0.65} cursor="default" theme="alt2" size="$4" fontWeight="500">
               {children || description}
             </Paragraph>
 

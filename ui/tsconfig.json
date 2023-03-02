@@ -6,9 +6,17 @@
     "src/tamagui/.CodeBlock",
     "src/tamagui/.CodeDemo",
     "src/tamagui/.DocSearch",
-    "src/tamagui/.DocsRouteNavItem",
-    "src/tamagui/HeroBelow/.HeroBelow.stories.tsx"
-  ],
+    "src/tamagui/DocsRouteNavItem",
+    "src/tamagui/HeroBelow/.HeroBelow.stories.tsx",
+    "src/tamagui/heroState",
+    "src/tamagui/.TintSection",
+    "src/tamagui/.useDocsMenu",
+    "src/tamagui/TamaguiCard,
+    "src/tamagui/TamaCard",
+    "src/tamagui/QuickNav,
+    "src/tamagui/.PropsTable",
+    "src/tamagui/.DocsPage"
+, "src/tamagui/.TamaguiExamplesCode", "src/tamagui/.TamaguiExamplesCode", "src/tamagui/.TamaguiExamplesCode"  ],
   "compilerOptions": {
     "rootDir": ".",
     "composite": true,

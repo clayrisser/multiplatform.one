@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTint } from '@tamagui/logo';
+import { useTint } from 'ui/src/hooks/useTint';
 import { useCallback, useEffect } from 'react';
 import { useForceUpdate } from 'tamagui';
 
