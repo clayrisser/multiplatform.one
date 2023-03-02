@@ -1,8 +1,7 @@
 import dynamic from 'next/dynamic';
 import React, { Suspense, useEffect, useState } from 'react';
 import { YStack } from 'tamagui';
-
-// import type { CodeBlockProps } from 'ui/src/tamagui/CodeBlock';
+import type { CodeBlockProps } from 'ui/src/tamagui/CodeBlock';
 
 export function CodeDemo({ css, line, maxHeight, height, minWidth, ...props }: CodeBlockProps) {
   const [Comp, setComp] = useState<any>(null);

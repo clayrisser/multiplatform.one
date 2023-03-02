@@ -12,4 +12,4 @@ export default {
   },
 };
 
-export const Main = () => <MDXProvider> hello </MDXProvider>;
+export const Main = () => <MDXProvider />;
