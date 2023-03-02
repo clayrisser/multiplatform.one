@@ -1,3 +1,4 @@
+import React from 'react';
 import { YStack, styled } from 'tamagui';
 
 export const Card = styled(YStack, {
