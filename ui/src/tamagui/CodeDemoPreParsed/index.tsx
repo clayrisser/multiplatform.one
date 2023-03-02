@@ -10,9 +10,9 @@ export function CodeDemoPreParsed({
   source,
   language,
   ...props
-}: Omit<YStackProps, 'children'> & {
-  source: string;
-  language: string;
+  // }: Omit<YStackProps, 'children'> & {
+  //   source: string;
+  //   language: string;
 }) {
   return (
     <YStack

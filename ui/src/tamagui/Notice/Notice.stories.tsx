@@ -1,5 +1,6 @@
 import React from 'react';
 import { Notice } from './index';
+import { Text } from 'tamagui';
 
 export default {
   title: 'ui/tamagui/Notice',
@@ -11,4 +12,8 @@ export default {
   },
 };
 
-export const main = () => <Notice />;
+export const main = () => (
+  <Notice>
+    <Text>Hello</Text>
+  </Notice>
+);
