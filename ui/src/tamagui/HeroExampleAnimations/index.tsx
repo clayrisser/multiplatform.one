@@ -6,7 +6,7 @@ import { NextLink } from '../NextLink';
 import React, { memo, useEffect, useRef, useState } from 'react';
 import { Button, ListItem, Paragraph, Separator, XStack, YStack } from 'tamagui';
 
-import { AnimationsDemo } from '../AnimationsDemo';
+import { AnimationsDemo } from '../.AnimationsDemo';
 import { CodeDemoPreParsed } from '../CodeDemoPreParsed';
 import { ContainerLarge } from '../Container';
 import { HomeH2, HomeH3 } from '../HomeH2';

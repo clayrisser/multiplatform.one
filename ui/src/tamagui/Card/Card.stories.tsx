@@ -4,7 +4,6 @@ import { Card } from './index';
 export default {
   title: 'ui/tamagui/Card',
   component: Card,
-<<<<<<< HEAD
   parameters: {
     status: { type: 'beta' },
   },
@@ -17,9 +16,3 @@ export const main = () => (
     requests or reducing the frequency of expensive calculations.
   </Card>
 );
-=======
-  parameters: { status: { type: 'beta' } },
-};
-
-export const main = () => <Card />;
->>>>>>> dev
