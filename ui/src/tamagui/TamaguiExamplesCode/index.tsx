@@ -1,6 +1,6 @@
 import React from 'react';
 import { createContext, useContext } from 'react';
-import { Spacer, YStack } from 'tamagui';
+import { Spacer } from 'tamagui';
 import type { getCompilationExamples } from '../../lib/getCompilationExamples';
 import { HeroContainer } from '../HeroContainer';
 import { HeroExampleCode } from 'ui/src/tamagui/HeroExampleCode';

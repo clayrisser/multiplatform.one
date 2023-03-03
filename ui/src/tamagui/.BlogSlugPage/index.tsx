@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from '../Container';
-import { components } from '@components/MDXComponents';
+import { components } from '../MDXComponents';
 import { authors } from '@data/authors';
 import { useTint } from 'ui/src/hooks/useTint';
 import { ArrowLeft } from '@tamagui/lucide-icons';
@@ -8,8 +8,7 @@ import { format, parseISO } from 'date-fns';
 import { useRouter } from 'next/router';
 import { Button, H1, H2, H3, H6, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui';
 import { LinearGradient } from 'tamagui/linear-gradient';
-
-import { Frontmatter } from '../frontmatter';
+import { Frontatter } from '../FrontmatterContext';
 import { NextLink } from '../NextLink';
 
 export type BlogPost = {
@@ -25,18 +24,18 @@ function BlogArticleHeader({ frontmatter }: BlogPost) {
   const { tint } = useTint();
   return (
     <Theme name={tint as any}>
-      <YStack mt="$-10" pt="$10" mb="$4" pos="relative">
+      <YStack marginTop="$-10" paddingTop="$10" marginBottom="$4" position="relative">
         <LinearGradient fullscreen colors={['$background', 'transparent']} />
         <Container>
-          <YStack mt="$2" ai="flex-start">
+          <YStack marginTop="$2" alignItems="flex-start">
             <NextLink href={isDraft ? '/draft' : '/blog'}>
-              <Button size="$3" chromeless icon={ArrowLeft} ml="$-2" theme="alt1">
+              <Button size="$3" chromeless icon={ArrowLeft} marginLeft="$-2" theme="alt1">
                 {isDraft ? 'Drafts' : 'Blog'}
               </Button>
             </NextLink>
           </YStack>
 
-          <H1 letterSpacing={-1} mt="$5" mb="$2">
+          <H1 letterSpacing={-1} marginTop="$5" marginBottom="$2">
             {frontmatter.title}
           </H1>
 

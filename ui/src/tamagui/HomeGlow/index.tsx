@@ -1,3 +1,5 @@
+/* eslint-disable spellcheck/spell-checker */
+/* eslint-disable eqeqeq */
 import React from 'react';
 import { useTint } from 'ui/src/hooks/useTint';
 import { memo, useMemo, useState } from 'react';
@@ -38,10 +40,10 @@ export const HomeGlow = memo(() => {
             <YStack
               key={`${cur}${i}`}
               overflow="hidden"
-              h="100vh"
-              w={1000}
+              height="100vh"
+              width={1000}
               theme={cur as ThemeName}
-              o={active ? 0.3 : 0}
+              opacity={active ? 0.3 : 0}
               fullscreen
               left="calc(50vw - 500px)"
               x={isOnHeroBelow ? 0 : isDouble ? (isOpposite ? -500 : 500) : 0}
@@ -56,14 +58,14 @@ export const HomeGlow = memo(() => {
 
   return (
     <YStack
-      pos="absolute"
-      t={0}
-      l={0}
+      position="absolute"
+      top={0}
+      left={0}
       contain="layout"
       pe="none"
       animation="quick"
       key={0}
-      zi={-1}
+      zIndex={-1}
       x={0}
       y={scrollTop}
       {...(isOnHeroBelow && {

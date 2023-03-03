@@ -1,9 +1,8 @@
 // import { useOnIntersecting } from 'ui/src/tamagui/demos';
-import React from 'react';
-import { useOnIntersecting } from 'ui/src/demos';
+import { useOnIntersecting } from 'ui/src/hooks/useOnIntersecting';
 import { getTints } from '../Logo/tints';
 import { useTint } from '../../hooks/useTint';
-import { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import type { GetProps } from 'tamagui';
 import { XStack, YStack, styled } from 'tamagui';
 
@@ -55,9 +54,18 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
       {useMemo(() => {
         return (
           <>
-            <XStack ref={top} position="absolute" top="10%" left={0} right={0} height={10} o={0} pe="none" />
-            <XStack ref={mid} position="absolute" top="50%" left={0} right={0} height={10} o={0} pe="none" />
-            <XStack ref={bottom} position="absolute" bottom="10%" left={0} right={0} height={10} o={0} pe="none" />
+            <XStack ref={top} position="absolute" top="10%" left={0} right={0} height={10} opacity={0} pe="none" />
+            <XStack ref={mid} position="absolute" top="50%" left={0} right={0} height={10} opacity={0} pe="none" />
+            <XStack
+              ref={bottom}
+              position="absolute"
+              bottom="10%"
+              left={0}
+              right={0}
+              height={10}
+              opacity={0}
+              pe="none"
+            />
           </>
         );
       }, [top, mid, bottom])}
@@ -83,13 +91,13 @@ export const useTintSectionIndex = (cb: (index: number, str: number) => void) =>
 export const HomeSection = styled(YStack, {
   name: 'Section',
   position: 'relative',
-  py: '$14',
-  zi: 2,
+  paddingVertical: '$14',
+  zIndex: 2,
 
   variants: {
     below: {
       true: {
-        zi: 1,
+        zIndex: 1,
       },
     },
   } as const,
@@ -103,17 +111,17 @@ export const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTo
 
   return (
     <YStack
-      zi={2}
+      zIndex={2}
       contain="paint"
-      pos="relative"
-      py="$14"
+      position="relative"
+      paddingVertical="$14"
       elevation="$2"
       {...(bubble && {
-        maw: 1400,
-        br: '$6',
-        bw: 1,
-        boc: `$${tint}4`,
-        als: 'center',
+        maxWidth: 1400,
+        borderRadius: '$6',
+        borderWidth: 1,
+        borderColor: `$${tint}4`,
+        alignSelf: 'center',
         width: '100%',
       })}
       {...props}
@@ -121,13 +129,13 @@ export const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTo
       <YStack
         fullscreen
         className="all ease-in ms1000"
-        zi={-1}
-        o={0.4}
-        backgroundColor={gradient ? `$${tint}2` : null}
+        zIndex={-1}
+        opacity={0.4}
+        bc={gradient ? `$${tint}2` : null}
         {...(!bubble && {
-          btw: noBorderTop ? 0 : 1,
-          bbw: 1,
-          boc: `$${tint}3`,
+          borderTopWidth: noBorderTop ? 0 : 1,
+          borderBottomWidth: 1,
+          borderColor: `$${tint}3`,
         })}
       />
       {childrenMemo}

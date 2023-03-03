@@ -7,7 +7,7 @@ export default {
   component: Notice,
   parameters: {
     status: {
-      type: 'beta',
+      type: 'keep',
     },
   },
 };
