@@ -25,18 +25,18 @@ function BlogArticleHeader({ frontmatter }: BlogPost) {
   const { tint } = useTint();
   return (
     <Theme name={tint as any}>
-      <YStack mt="$-10" pt="$10" mb="$4" pos="relative">
+      <YStack marginTop="$-10" paddingTop="$10" marginBottom="$4" pos="relative">
         <LinearGradient fullscreen colors={['$background', 'transparent']} />
         <Container>
-          <YStack mt="$2" ai="flex-start">
+          <YStack marginTop="$2" ai="flex-start">
             <NextLink href={isDraft ? '/draft' : '/blog'}>
-              <Button size="$3" chromeless icon={ArrowLeft} ml="$-2" theme="alt1">
+              <Button size="$3" chromeless icon={ArrowLeft} marginLeft="$-2" theme="alt1">
                 {isDraft ? 'Drafts' : 'Blog'}
               </Button>
             </NextLink>
           </YStack>
 
-          <H1 letterSpacing={-1} mt="$5" mb="$2">
+          <H1 letterSpacing={-1} marginTop="$5" marginBottom="$2">
             {frontmatter.title}
           </H1>
 
