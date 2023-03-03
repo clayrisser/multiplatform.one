@@ -1,6 +1,6 @@
 import React from 'react';
 import { useOnIntersecting } from '@tamagui/demos';
-import { useTint } from 'ui/src/hooks/useTint';
+import { useTint } from '../../hooks/useTint';
 import { NextLink } from '../NextLink';
 import { useRef, useState } from 'react';
 import { Button, Paragraph, XStack, YStack } from 'tamagui';
@@ -23,25 +23,33 @@ export function HeroPerformance() {
 
   return (
     <ContainerLarge position="relative">
-      <YStack ai="center" zi={1} space="$4">
-        <YStack ai="center" space="$2">
-          <HomeH2 size="$10" maw={500} ref={ref}>
+      <YStack alignItems="center" zIndex={1} space="$4">
+        <YStack alignItems="center" space="$2">
+          <HomeH2 size="$10" maxWidth={500} ref={ref}>
             Automatically fast
           </HomeH2>
           <HomeH3>Partial evaluation, tree flattening, hoisting and dead-code&nbsp;elimination&nbsp;✅</HomeH3>
         </YStack>
 
         <YStack
-          pos="relative"
-          px="$2"
-          $sm={{ px: '$0', mx: -20, width: 'calc(100% + 40px)' }}
-          h={131}
-          br="$8"
+          position="relative"
+          paddingHorizontal="$2"
+          $sm={{ paddingHorizontal: '$0', marginHorizontal: -20, width: 'calc(100% + 40px)' }}
+          height={131}
+          borderRadius="$8"
           width="100%"
-          ai="stretch"
-          jc="center"
+          alignItems="stretch"
+          justifyContent="center"
         >
-          <Paragraph pos="absolute" b={-20} r={20} marginTop={-20} theme="alt2" size="$2" $sm={{ display: 'none' }}>
+          <Paragraph
+            position="absolute"
+            bottom={-20}
+            right={20}
+            marginTop={-20}
+            theme="alt2"
+            size="$2"
+            $sm={{ display: 'none' }}
+          >
             Lower is better. As of February 2022.
           </Paragraph>
 

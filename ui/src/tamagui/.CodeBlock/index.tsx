@@ -1,5 +1,5 @@
-import highlightLine from '@lib/rehype-highlight-line';
-import highlightWord from '@lib/rehype-highlight-word';
+import highlightLine from '../../lib/rehype-highlight-line';
+import highlightWord from '../../lib/rehype-highlight-word';
 import { toHtml } from 'hast-util-to-html';
 import rangeParser from 'parse-numeric-range';
 import React from 'react';

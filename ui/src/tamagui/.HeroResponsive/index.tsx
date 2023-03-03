@@ -1,7 +1,7 @@
 import { throttle } from '@github/mini-throttle';
-import { demoMedia } from '@tamagui/config';
+import { demoMedia } from '../../config/demoMedia';
 import { useOnIntersecting } from '@tamagui/demos';
-import { useTint } from 'ui/src/hooks/useTint';
+import { useTint } from '../../hooks/useTint';
 import { ChevronLeft, ChevronRight, Lock, MapPin, Monitor, Star } from '@tamagui/lucide-icons';
 import React, { startTransition, useMemo } from 'react';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
@@ -27,7 +27,7 @@ import {
 } from 'tamagui';
 import { LinearGradient } from 'tamagui/linear-gradient';
 
-import favicon from '../public/favicon.svg';
+// import favicon from '../public/favicon.svg';
 import { Container, ContainerLarge } from '../Container';
 import { HomeH2, HomeH3 } from '../HomeH2';
 
@@ -173,16 +173,16 @@ export const HeroResponsive = memo(() => {
   const scale = 0.7 - smIndex * 0.05;
 
   return (
-    <YStack ref={ref} y={0} mt={-80} pos="relative">
-      <ContainerLarge pos="relative">
+    <YStack ref={ref} y={0} marginTop={-80} position="relative">
+      <ContainerLarge position="relative">
         <ResponsiveHeader />
-        <Spacer size="$6" $sm={{ size: '$0' }} />
-        <YStack h={browserHeight + 80} />
+        {/* <Spacer size="$6" $sm={{ size: '$0' }} /> */}
+        <YStack height={browserHeight + 80} />
         <XStack
-          b={-20}
-          pos="absolute"
-          zi={1}
-          f={1}
+          bottom={-20}
+          position="absolute"
+          zIndex={1}
+          flex={1}
           space="$1"
           // mostly keeping this to make sure we get a good ACID test of useMedia().sm
           {...(media.sm && {
@@ -195,9 +195,9 @@ export const HeroResponsive = memo(() => {
             zIndex={2}
             className="unselectable"
             contain="paint layout"
-            pe={isDragging ? 'none' : 'auto'}
-            w={width}
-            f={1}
+            pointerEvents={isDragging ? 'none' : 'auto'}
+            width={width}
+            flex={1}
             ref={safariRef}
             onPress={() => {
               if (isTouchable) {
@@ -209,7 +209,7 @@ export const HeroResponsive = memo(() => {
             <Safari shouldLoad={hasInteracted} isSmall={isSmall} />
           </YStack>
 
-          <Container zi={1} pos="absolute">
+          <Container zIndex={1} position="absolute">
             <XStack x={-10} $sm={{ display: 'none' }}>
               {breakpoints.map((bp, i) => {
                 return (
@@ -227,7 +227,7 @@ export const HeroResponsive = memo(() => {
 
           {!isSafari && (
             <YStack
-              jc="center"
+              justifyContent="center"
               cursor="ew-resize"
               onPressIn={(e) => {
                 e.preventDefault();
@@ -242,18 +242,35 @@ export const HeroResponsive = memo(() => {
                 backgroundColor="$color"
                 opacity={0.35}
                 hoverStyle={{ opacity: 0.4 }}
-                br="$8"
-                w={8}
+                borderRadius="$8"
+                width={8}
                 height={134}
               />
             </YStack>
           )}
         </XStack>
 
-        <YStack pos="absolute" zi={0} h={browserHeight + 120} l={-1000} r={-1000} b={-75} ai="center" jc="center">
-          <XStack pos="absolute" t={0} l={0} r={0} bbw={1} boc="$color" opacity={0.1} />
-          <YStack pos="relative" f={1} h="100%" w="100%">
-            <YStack fullscreen className="mask-gradient-down" zi={-1}>
+        <YStack
+          position="absolute"
+          zIndex={0}
+          height={browserHeight + 120}
+          left={-1000}
+          right={-1000}
+          bottom={-75}
+          alignItems="center"
+          justifyContent="center"
+        >
+          <XStack
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            borderBottomWidth={1}
+            borderColor="$color"
+            opacity={0.1}
+          />
+          <YStack position="relative" flex={1} height="100%" width="100%">
+            <YStack fullscreen className="mask-gradient-down" zIndex={-1}>
               <YStack fullscreen bottom="auto" height={439} className="bg-grid" />
             </YStack>
           </YStack>
@@ -266,14 +283,14 @@ export const HeroResponsive = memo(() => {
 const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
     <YStack className="unselectable" theme={active ? 'pink' : null} pos="absolute" {...props}>
-      <XStack y={-60} ai="flex-start">
-        <YStack w={1} h={70} bc="$colorHover" opacity={active ? 0.2 : 0.05} />
+      <XStack y={-60} alignItems="flex-start">
+        <YStack width={1} height={70} borderColor="$colorHover" opacity={active ? 0.2 : 0.05} />
         <Button
           accessibilityLabel={`Responsive size ${name}`}
           borderWidth={1}
           size="$3"
           circular
-          pos="absolute"
+          position="absolute"
           top={0}
           left={0}
           y={-20}
@@ -292,14 +309,14 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
 
 const ResponsiveHeader = memo(() => {
   return (
-    <YStack f={1} space="$3">
+    <YStack flex={1} space="$3">
       <XStack>
-        <HomeH2 ta="left" als="flex-start">
+        <HomeH2 textAlign="left" alignSelf="flex-start">
           Easily responsive
         </HomeH2>
       </XStack>
 
-      <HomeH3 ta="left" als="flex-start" p={0} maxWidth={450} theme="alt2">
+      <HomeH3 textAlign="left" alignSelf="flex-start" padding={0} maxWidth={450} theme="alt2">
         Responsive props and hooks, compiled to atomic CSS on web.
       </HomeH3>
     </YStack>
@@ -314,12 +331,12 @@ const SafariFrame = ({ children, ...props }: YStackProps) => {
       className="unselectable"
       contain="paint layout"
       elevation="$6"
-      f={1}
-      ov="hidden"
-      br="$4"
-      boc="$borderColor"
+      flex={1}
+      overflow="hidden"
+      borderRadius="$4"
+      borderColor="$borderColor"
       borderWidth={1}
-      w="99%"
+      width="99%"
       {...props}
     >
       {useMemo(() => children, [children])}
@@ -332,12 +349,18 @@ export const Safari = memo(({ isSmall, shouldLoad }: { isSmall?: boolean; should
 
   return (
     <SafariFrame>
-      <YStack bc="$background" px="$4" jc="center" borderBottomWidth={0} h={50}>
-        <XStack pos="relative" ai="center" space="$4">
+      <YStack
+        borderColor="$background"
+        paddingHorizontal="$4"
+        justifyContent="center"
+        borderBottomWidth={0}
+        height={50}
+      >
+        <XStack position="relative" alignItems="center" space="$4">
           <XStack space="$2">
-            <Circle bc="$red10" size={10} />
-            <Circle bc="$yellow10" size={10} />
-            <Circle bc="$green10" size={10} />
+            <Circle borderColor="$red10" size={10} />
+            <Circle borderColor="$yellow10" size={10} />
+            <Circle borderColor="$green10" size={10} />
           </XStack>
 
           {!isSmall && (
@@ -347,18 +370,18 @@ export const Safari = memo(({ isSmall, shouldLoad }: { isSmall?: boolean; should
             </XStack>
           )}
 
-          <XStack fullscreen ai="center">
-            <XStack f={1} />
+          <XStack fullscreen alignItems="center">
+            <XStack flex={1} />
             <XStack
-              h={30}
-              f={2}
-              br="$2"
+              height={30}
+              flex={2}
+              borderRadius="$2"
               borderWidth={1}
-              boc="$borderColor"
-              bc="$backgroundPress"
-              ai="center"
-              px="$2"
-              jc="center"
+              borderColor="$borderColor"
+              backgroundColor="$backgroundPress"
+              alignItems="center"
+              paddingHorizontal="$2"
+              justifyContent="center"
               space
             >
               <Lock color="var(--colorPress)" size={12} />
@@ -366,25 +389,25 @@ export const Safari = memo(({ isSmall, shouldLoad }: { isSmall?: boolean; should
                 tamagui.dev
               </Paragraph>
             </XStack>
-            <XStack f={1} />
+            <XStack flex={1} />
           </XStack>
         </XStack>
       </YStack>
 
-      <XStack bc="$background" mx={-2}>
-        <Tab bc="var(--green7)" btlr={0}>
+      <XStack backgroundColor="$background" marginHorizontal={-2}>
+        <Tab backgroundColor="var(--green7)" btlr={0}>
           Github
         </Tab>
-        <Tab bc="var(--pink7)" active>
+        <Tab backgroundColor="var(--pink7)" active>
           Tamagui - React Native & Web UI kits
         </Tab>
-        <Tab bc="var(--yellow7)" btrr={0}>
+        <Tab backgroundColor="var(--yellow7)" btrr={0}>
           @natebirdman
         </Tab>
       </XStack>
 
-      <YStack pos="relative" bc="$color1" h={browserHeight}>
-        <YStack h="100%" pe="none">
+      <YStack position="relative" backgroundColor="$color1" height={browserHeight}>
+        <YStack height="100%" pointerEvents="none">
           {shouldLoad && (
             <YStack fullscreen contain="paint" opacity={isLoaded ? 1 : 0} backgroundColor="$background" zIndex={10}>
               <iframe
@@ -404,22 +427,22 @@ export const Safari = memo(({ isSmall, shouldLoad }: { isSmall?: boolean; should
             </YStack>
           )}
 
-          <YStack zi={0} fullscreen p="$4">
-            <XStack ai="center" jc="center" pos="relative" br="$6" ov="hidden">
+          <YStack zIndex={0} fullscreen padding="$4">
+            <XStack alignItems="center" justifyContent="center" position="relative" borderRadius="$6" overflow="hidden">
               <YStack width={800} height={200}>
-                <LinearGradient o={0.1} fullscreen colors={['$yellow10', '$green10']} />
+                <LinearGradient opacity={0.1} fullscreen colors={['$yellow10', '$green10']} />
               </YStack>
-              <YStack p="$4" pos="absolute" fullscreen f={1}>
-                <YStack f={1} />
+              <YStack padding="$4" position="absolute" fullscreen flex={1}>
+                <YStack flex={1} />
                 <XStack>
-                  <YStack f={1}>
+                  <YStack flex={1}>
                     <H3>Enchanting Garden</H3>
-                    <XStack ai="center" space>
+                    <XStack alignItems="center" space>
                       <MapPin size={12} color="var(--color)" />
                       <H5>Kailua, HI</H5>
                     </XStack>
                   </YStack>
-                  <YStack ai="flex-end">
+                  <YStack alignItems="flex-end">
                     <H4>$45</H4>
                     <Paragraph>/night</Paragraph>
                   </YStack>
@@ -429,15 +452,15 @@ export const Safari = memo(({ isSmall, shouldLoad }: { isSmall?: boolean; should
 
             <Spacer />
 
-            <YStack px="$4">
+            <YStack paddingHorizontal="$4">
               <XStack>
-                <XStack ai="center" space>
+                <XStack alignItems="center" space>
                   <Paragraph theme="alt2">4 guests</Paragraph>
                   <Paragraph theme="alt2">&middot;</Paragraph>
                   <Paragraph theme="alt2">Entire house</Paragraph>
                 </XStack>
                 <Spacer flex={1} />
-                <XStack ai="center" space>
+                <XStack alignItems="center" space>
                   <Star size={20} color="var(--purple10)" />
                   <Paragraph theme="purple_alt2">4.55</Paragraph>
                 </XStack>
@@ -462,29 +485,29 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
   return (
     <Theme name={active ? null : 'alt1'}>
       <XStack
-        btw={1}
-        boc={active ? 'transparent' : '$borderColor'}
-        w="33.33%"
-        blw={1}
-        brw={1}
-        bbw={1}
-        bbc={active ? '$borderColor' : 'transparent'}
-        btlr={active ? 0 : 4}
-        btrr={active ? 0 : 4}
-        bc="$background"
-        ov="hidden"
-        f={1}
-        py="$1"
-        px="$2"
-        ai="center"
-        jc="center"
+        borderTopWidth={1}
+        borderColor={active ? 'transparent' : '$borderColor'}
+        width="33.33%"
+        borderLeftWidth={1}
+        borderRightWidth={1}
+        borderBottomWidth={1}
+        borderBottomColor={active ? '$borderColor' : 'transparent'}
+        borderTopLeftRadius={active ? 0 : 4}
+        borderTopRightRadius={active ? 0 : 4}
+        backgroundColor="$background"
+        overflow="hidden"
+        flex={1}
+        paddingVertical="$1"
+        paddingHorizontal="$2"
+        alignItems="center"
+        justifyContent="center"
         {...props}
       >
-        <Circle size={16} bc={bc}>
+        <Circle size={16} backgroundColor={bc}>
           <Image width={12} height={12} src={favicon.src} />
         </Circle>
         <Spacer size="$2" />
-        <Paragraph o={active ? 1 : 0.5} cursor="default" size="$1" ellipse>
+        <Paragraph opacity={active ? 1 : 0.5} cursor="default" size="$1" ellipse>
           {children}
         </Paragraph>
       </XStack>

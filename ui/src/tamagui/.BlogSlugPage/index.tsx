@@ -10,7 +10,7 @@ import { Button, H1, H2, H3, H6, Paragraph, Separator, Spacer, Theme, XStack, YS
 import { LinearGradient } from 'tamagui/linear-gradient';
 
 import { Frontmatter } from '../frontmatter';
-import { NextLink } from './NextLink';
+import { NextLink } from '../NextLink';
 
 export type BlogPost = {
   frontmatter: Frontmatter;
