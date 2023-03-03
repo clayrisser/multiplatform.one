@@ -32,14 +32,14 @@ export interface HeaderProps {
 import { AlphaButton } from '../AlphaButton';
 import { ColorToggleButton } from '../ColorToggleButton';
 import { ContainerLarge } from '../Container';
-import { DocsMenuContents } from '../.DocsMenuContents';
+import { DocsMenuContents } from '../DocsMenuContents';
 import { GithubIcon } from '../GithubIcon';
 import { NextLink } from '../NextLink';
-import { SearchButton } from './SearchButton';
-import { SeasonToggleButton } from './SeasonToggleButton';
-import { SponsorButton } from './SponsorButton';
-import { useDocsMenu } from './useDocsMenu';
-
+import { SearchButton } from '../SearchButton';
+import { SeasonToggleButton } from '../SeasonToggleButton';
+import { SponsorButton } from '../SponsorButton';
+import { useDocsMenu } from '../useDocsMenu';
+f;
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false);
 

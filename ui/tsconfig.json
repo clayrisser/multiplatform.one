@@ -13,7 +13,11 @@
     "src/tamagui/.HeroPerformance",
     "src/tamagui/.HomeGlow",
     "src/tamagui/.BlogSlugPage",
-    "src/hooks/.useDocsMenu"
+    "src/hooks/.useDocsMenu",
+    "src/demo/.ColorsDemo",
+    "src/demo/.UpdateThemeDemo",
+    "src/demo/.AnimationsEnterDemo",
+    "src/tamagui/.HeroResponsive"
   ],
   "compilerOptions": {
     "rootDir": ".",
