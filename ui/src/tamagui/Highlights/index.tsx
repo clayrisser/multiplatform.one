@@ -3,11 +3,11 @@ import React from 'react';
 import { H2, Paragraph, Separator, SizableText, Text, VisuallyHidden, XStack, YStack } from 'tamagui';
 
 import { Features } from '../Features';
-import { FrontmatterContext } from '../FrontmatterContext';
+import { FrontMatterContext } from '../FrontMatterContext';
 import { Link } from '../Link';
 
 export function Highlights({ features, disableLinks }: any) {
-  const frontmatter = React.useContext(FrontmatterContext);
+  const frontmatter = React.useContext(FrontMatterContext);
 
   return (
     <YStack
@@ -58,7 +58,7 @@ export function Highlights({ features, disableLinks }: any) {
                 </YStack>
               </XStack>
             </Link>
-            <Link href={`https://www.npmjs.com/package/tamagui`} target="_blank">
+            <Link href="https://www.npmjs.com/package/tamagui" target="_blank">
               <XStack ai="center" space="$1">
                 <SizableText size="$2">View on npm</SizableText>
                 <YStack opacity={0.5} ml="$0.5">

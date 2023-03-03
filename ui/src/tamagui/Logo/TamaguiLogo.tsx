@@ -2,7 +2,7 @@ import React from 'react';
 import { forwardRef, memo, useEffect, useState } from 'react';
 import type { XStackProps } from 'tamagui';
 import { Circle, XStack, YStack } from 'tamagui';
-
+import { Apple } from '@tamagui/lucide-icons';
 import { useTint } from 'ui/src/hooks/useTint';
 
 type LogoProps = {
@@ -15,7 +15,7 @@ export const TamaguiLogo = forwardRef<any, LogoProps>(
   ({ showWords, downscale, animated, ...props }: LogoProps, ref) => {
     return (
       <XStack tag="span" ref={ref} alignItems="center" justifyContent="center" space="$5" {...props}>
-        <LogoIcon downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)} />
+        <LogoIcon downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)} icon={Apple} />
         {showWords && (
           <YStack tag="span" marginBottom={-4}>
             <LogoWords animated={animated} downscale={downscale ?? 2} />

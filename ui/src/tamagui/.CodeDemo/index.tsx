@@ -14,16 +14,16 @@ export function CodeDemo({ css, line, maxHeight, height, minWidth, ...props }: C
 
   return (
     <YStack
-      br="$8"
+      borderRadius="$8"
       className="scroll-vertical"
       maxHeight={maxHeight}
       height={height}
       minWidth={minWidth}
-      bc="$backgroundHover"
-      boc="$borderColor"
-      bw={1}
+      backgroundColor="$backgroundHover"
+      borderColor="$borderColor"
+      borderWidth={1}
       // for hero code
-      f={1}
+      flex={1}
     >
       {!!Comp && <Comp backgroundColor="transparent" borderWidth={0} {...props} line="0" marginBottom={0} />}
     </YStack>

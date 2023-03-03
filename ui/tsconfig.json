@@ -12,7 +12,8 @@
     "src/tamagui/.TintSection",
     "src/tamagui/.HeroPerformance",
     "src/tamagui/.HomeGlow",
-    "src/tamagui/.BlogSlugPage"
+    "src/tamagui/.BlogSlugPage",
+    "src/hooks/.useDocsMenu"
   ],
   "compilerOptions": {
     "rootDir": ".",

@@ -7,4 +7,4 @@ export default {
   parameters: { status: { type: 'beta' } },
 };
 
-export const link = () => <Link href="https://www.tamagui.com">Tamagui</Link>;
+export const main = () => <Link href="https://www.tamagui.com">Tamagui</Link>;

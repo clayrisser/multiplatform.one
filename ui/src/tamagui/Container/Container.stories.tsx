@@ -12,8 +12,4 @@ export default {
   },
 };
 
-export const main = () => (
-  <Container>
-    <H1>container</H1>
-  </Container>
-);
+export const main = () => <Container>container</Container>;
