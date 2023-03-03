@@ -537,3 +537,6 @@ const crosshair =
       />
     </YStack>
   ) : null;
+function throttleFn(arg0: ([entry]: [any]) => void, arg1: number): ResizeObserverCallback {
+  throw new Error('Function not implemented.');
+}
