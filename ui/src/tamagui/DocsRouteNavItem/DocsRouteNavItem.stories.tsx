@@ -11,4 +11,4 @@ export default {
   },
 };
 
-export const main = () => <DocsRouteNavItem />;
+export const main = () => <DocsRouteNavItem href="">Docs Route Nav Item</DocsRouteNavItem>;

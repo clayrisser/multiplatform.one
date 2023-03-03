@@ -2,8 +2,7 @@ import React from 'react';
 import { Check, Copy } from '@tamagui/lucide-icons';
 import { memo } from 'react';
 import { Button, Paragraph, Spacer, TooltipSimple, XStack } from 'tamagui';
-
-import { useClipboard } from '../lib/useClipboard';
+import { useClipboard } from '../../lib/useClipboard';
 
 export const InstallInput = memo(() => {
   const installScript = `npm create tamagui`;

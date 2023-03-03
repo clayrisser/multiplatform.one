@@ -1,4 +1,4 @@
-import { allDocsRoutes } from '@lib/docsRoutes';
+import { allDocsRoutes } from '../../lib/docsRoutes';
 import { LinearGradient } from '@tamagui/linear-gradient';
 import { ThemeTint, useTint } from 'ui/src/hooks/useTint';
 import { NextLink } from '../NextLink';

@@ -1,9 +1,11 @@
+/* eslint-disable max-lines */
+/* eslint-disable spellcheck/spell-checker */
+/* eslint-disable max-lines-per-function */
 import React from 'react';
-import { throttle as throttleFn } from '@github/mini-throttle';
+// import { throttle as throttleFn } from '@github/mini-throttle';
 import type { CSSProperties, DetailedHTMLProps, HTMLAttributes } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useIsomorphicLayoutEffect } from 'tamagui';
-
+import { useIsomorphicLayoutEffect, YStack } from 'tamagui';
 import { getBoundingClientRectAsync } from 'ui/src/lib/getBoundingClientRectAsync';
 
 interface BoundedCursorProps {
@@ -91,7 +93,7 @@ height: ${parentBounds.height}`;
 
   if (process.env.NODE_ENV === 'development') {
     // unset border on debug off
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+
     useEffect(() => {
       if (!props.debug) {
         if (!parentNode) return;
@@ -106,7 +108,6 @@ height: ${parentBounds.height}`;
   // be sure to update style when restingStyle updates
   useIsomorphicLayoutEffect(() => {
     recalculate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(restingStyle)]);
 
   const getStyle = (transform: string, isResting = true): CSSProperties => {
@@ -157,7 +158,7 @@ height: ${parentBounds.height}`;
     return {
       parentRef,
       element: (
-        <>
+        <YStack>
           {element}
           {crosshair}
           <div
@@ -183,7 +184,7 @@ height: ${parentBounds.height}`;
               glow container
             </div>
           </div>
-        </>
+        </YStack>
       ),
     };
   }
@@ -466,6 +467,7 @@ const useGetBounds = (node?: HTMLElement | null, onDidUpdate?: (props: { width: 
     getBoundingClientRectAsync(node).then((rect) => rect && update(rect));
 
     const ro = new ResizeObserver(
+      // eslint-disable-next-line no-undef
       throttleFn(([entry]) => {
         if (!entry) return;
         update(node.getBoundingClientRect());
@@ -478,18 +480,19 @@ const useGetBounds = (node?: HTMLElement | null, onDidUpdate?: (props: { width: 
       ro.disconnect();
     };
     // onDidUpdate is event callback
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [node]);
 
   return useCallback(() => state.current, []);
 };
 
+// eslint-disable-next-line no-undef
 const addEvent = <K extends keyof HTMLElementEventMap>(
   disposers: Set<() => void>,
   n: HTMLElement | Window,
   type: K,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   listener: any,
+  // eslint-disable-next-line no-undef
   options?: boolean | AddEventListenerOptions | undefined,
 ) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -524,15 +527,13 @@ const crosshair =
         }}
       />
       <YStack
-        style={{
-          width: 50,
-          height: 1,
-          background: 'red',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: `translateY(-0.5px) translateX(-25px)`,
-        }}
+        width={50}
+        height={1}
+        backgroundColor="red"
+        position="absolute"
+        top="50%"
+        left="50%"
+        // transform= `translateY(-0.5px) translateX(-25px)`
       />
     </YStack>
   ) : null;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { H4, Paragraph, XStack } from 'tamagui';
-
 import { Card } from '../Card';
 import { DiscordIcon } from '../DiscordIcon';
 import { GithubIcon } from '../GitHubIcon';
