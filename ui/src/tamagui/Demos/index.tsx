@@ -30,7 +30,7 @@ export { SwitchDemo } from '../../demo/SwitchDemo';
 export { SliderDemo } from '../../demo/SliderDemo';
 export { SpinnerDemo } from '../../demo/SpinnerDemo';
 export { AddThemeDemo } from '../../demo/AddThemeDemo';
-// export { UpdateThemeDemo } from '@tamagui/demos';
+export { UpdateThemeDemo } from '../../demo/UpdateThemeDemo';
 export { FeatherIconsDemo } from '../../demo/FeatherIconsDemo';
 export { LucideIconsDemo } from '../../demo/LucideIconsDemo';
 export { ScrollViewDemo } from '../../demo/ScrollViewDemo';
