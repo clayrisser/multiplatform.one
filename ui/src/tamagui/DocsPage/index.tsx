@@ -5,7 +5,6 @@ import { NextLink } from '../NextLink';
 import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { EnsureFlexed, Paragraph, Theme, XStack, YStack } from 'tamagui';
-
 import { Container } from '../Container';
 import { DocsMenuContents } from '../DocsMenuContents';
 import { Link } from '../Link';
@@ -174,10 +173,10 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   );
 }
 
-// export type NavItemProps = {
-//   children: React.ReactNode
-//   active?: boolean
-//   href: string
-//   pending?: boolean
-//   external?: boolean
-// }
+export interface NavItemProps {
+  children: React.ReactNode;
+  active?: boolean;
+  href: string;
+  pending?: boolean;
+  external?: boolean;
+}

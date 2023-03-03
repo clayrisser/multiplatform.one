@@ -20,7 +20,7 @@ import {
 import { ContainerLarge } from '../Container';
 import { DiscordIcon } from '../DiscordIcon';
 import { useHeroHovered } from '../heroState';
-import { InstallInput } from './InstallInput';
+import { InstallInput } from '../InstallInput';
 import { TwitterIcon } from '../TwitterIcon';
 
 // function useAlwaysConcurrent() {

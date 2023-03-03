@@ -1,7 +1,7 @@
 import React from 'react';
 import { H3, Paragraph, XStack, YStack, useComposedRefs } from 'tamagui';
 import { FancyCard, OuterSubtleBorder } from 'ui/src/tamagui/FancyCard';
-import { useHoverGlow } from '../HoverGlow';
+// import { useHoverGlow } from '../HoverGlow';
 import { NotoIcon } from '../NotoIcon';
 
 export const TamaCard = ({ title, icon, subtitlePre, subtitlePost, description, footer, children }: any) => {
