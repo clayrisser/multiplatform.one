@@ -1,7 +1,7 @@
 import React from 'react';
 import { Paragraph, styled } from 'tamagui';
 
-export const LI = styled(Paragraph, {
+export const Li = styled(Paragraph, {
   display: 'list-item' as any,
   tag: 'li',
   size: '$5',

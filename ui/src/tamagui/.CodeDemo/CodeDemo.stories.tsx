@@ -7,4 +7,4 @@ export default {
   parameters: { status: { type: 'beta' } },
 };
 
-export const main = () => <CodeDemo />;
+export const main = () => <CodeDemo language="ssdsds" value="33" />;
