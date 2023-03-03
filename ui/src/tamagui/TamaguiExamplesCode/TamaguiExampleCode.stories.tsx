@@ -6,4 +6,5 @@ export default {
   component: TamaguiExamples,
   parameters: { status: { type: 'beta' } },
 };
+
 export const main = () => <TamaguiExamples />;

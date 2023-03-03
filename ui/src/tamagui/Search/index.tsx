@@ -8,7 +8,7 @@ import React from 'react';
 
 import { SearchContext } from '../SearchContext';
 
-const DocSearchModal = dynamic(() => import('../DocSearch'));
+// const DocSearchModal = dynamic(() => import('../DocSearch'));
 
 // const ACTION_KEY_DEFAULT = ['Ctrl ', 'Control']
 // const ACTION_KEY_APPLE = ['⌘', 'Command']

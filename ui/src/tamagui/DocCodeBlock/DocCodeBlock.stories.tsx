@@ -1,6 +1,6 @@
 import React from 'react';
 import { DocCodeBlock } from './index';
-import { Text, Paragraph, YGroup, YStack } from 'tamagui';
+import { Text } from 'tamagui';
 
 export default {
   title: 'ui/tamagui/DocCodeBlock',
