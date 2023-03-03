@@ -5,7 +5,7 @@ import { Text, Paragraph, YGroup, YStack } from 'tamagui';
 export default {
   title: 'ui/tamagui/DocCodeBlock',
   component: DocCodeBlock,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: 'keep' } },
 };
 
 export const main = () => (

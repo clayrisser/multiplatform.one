@@ -6,7 +6,7 @@ export default {
   component: DataTable,
   parameters: {
     status: {
-      type: 'beta',
+      type: 'keep',
     },
   },
 };

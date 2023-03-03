@@ -6,7 +6,7 @@ export default {
   title: 'ui/tamagui/CodeAndCodeInline',
   component: Code,
   CodeInline,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: 'keep' } },
 };
 
 export const main = () => {
