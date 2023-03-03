@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from '../Container';
-import { components } from '@components/MDXComponents';
+import { components } from '../MDXComponents';
 import { authors } from '@data/authors';
 import { useTint } from 'ui/src/hooks/useTint';
 import { ArrowLeft } from '@tamagui/lucide-icons';
@@ -9,8 +9,8 @@ import { useRouter } from 'next/router';
 import { Button, H1, H2, H3, H6, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui';
 import { LinearGradient } from 'tamagui/linear-gradient';
 
-import { Frontmatter } from '../frontmatter';
-import { NextLink } from './NextLink';
+import { Frontmatter } from '../FrontMatterContext';
+import { NextLink } from '../NextLink';
 
 export type BlogPost = {
   frontmatter: Frontmatter;
