@@ -1,26 +1,14 @@
-// import { allDocsRoutes } from '@lib/docsRoutes';
-// import { LinearGradient } from '@tamagui/linear-gradient';
-// import { ThemeTint, useTint } from '@tamagui/tint';
-// // import { NextLink } from 'ui/'
-// import {NextLink} from 'ui/src/tamagui/NextLink'
-// import * as React from 'react';
-// import { ScrollView } from 'react-native';
-// import { EnsureFlexed, Paragraph, Theme, XStack, YStack } from 'tamagui';
-// import { Container } from './Container';
-// import { DocsMenuContents } from './DocsMenuContents';
-// import { Link } from './Link';
-// import { useDocsMenu } from './useDocsMenu';
-
 import React from 'react';
 import { LinearGradient } from '@tamagui/linear-gradient';
 import { NextLink } from '../NextLink';
 import { ScrollView } from 'react-native';
 import { EnsureFlexed, Paragraph, Theme, XStack, YStack } from 'tamagui';
 import { Container } from '../Container';
-import { DocsMenuContents } from '../.DocsMenuContents';
+import { DocsMenuContents } from '../DocsMenuContents';
 import { Link } from '../Link';
 import { useDocsMenu } from 'ui/src/hooks/useDocsMenu';
 import { allDocsRoutes } from '@lib/docsRoutes';
+import { ThemeTint, useTint } from 'ui/src/hooks/useTint';
 
 export const allNotPending = allDocsRoutes.filter((x) => !x['pending']);
 
@@ -63,7 +51,18 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       </Paragraph>
                       <Paragraph userSelect="none" size="$3" color="$gray10">
                         {previous.title}
-                      </Paragraph>
+                      </Paragraph// import { allDocsRoutes } from '@lib/docsRoutes';
+// import { LinearGradient } from '@tamagui/linear-gradient';
+// import { ThemeTint, useTint } from '@tamagui/tint';
+// // import { NextLink } from 'ui/'
+// import {NextLink} from 'ui/src/tamagui/NextLink'
+// import * as React from 'react';
+// import { ScrollView } from 'react-native';
+// import { EnsureFlexed, Paragraph, Theme, XStack, YStack } from 'tamagui';
+// import { Container } from './Container';
+// import { DocsMenuContents } from './DocsMenuContents';
+// import { Link } from './Link';
+// import { useDocsMenu } from './useDocsMenu';>
                     </YStack>
                   </NextLink>
                 )}

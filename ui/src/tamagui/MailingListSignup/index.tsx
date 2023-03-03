@@ -1,14 +1,12 @@
 import type { Asset } from 'expo-asset';
 import React from 'react';
 import { memo } from 'react';
-import { XStack, Input, Spacer, TooltipSimple, Button } from 'tamagui';
+import { XStack, Input, Spacer, TooltipSimple, Button, YStack } from 'tamagui';
 // import { useAssets } from 'ui/src/hooks';
-// import { SponsorButton } from './index';
+import { SponsorButton } from '../SponsorButton';
 import { Mail } from '@tamagui/lucide-icons';
 
 export const MailingListSignUp = memo(() => {
-  //   return <SponsorButton />;
-
   return (
     <XStack
       borderWidth={1}
