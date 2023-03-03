@@ -1,4 +1,3 @@
-import React from 'react';
 import { Paragraph, styled } from 'tamagui';
 
 export const Pill = styled(Paragraph, {

@@ -6,7 +6,7 @@ export default {
   component: DataTable,
   parameters: {
     status: {
-      type: 'beta',
+      type: 'keep',
     },
   },
 };
@@ -18,7 +18,6 @@ export const main = () => (
       ['a', 'b', 'c'],
       ['d', 'e', 'f'],
       ['g', 'h', 'i'],
-
       ['a', 'b', 'c'],
       ['d', 'e', 'f'],
       ['g', 'h', 'i'],

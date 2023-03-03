@@ -11,4 +11,6 @@ export default {
   },
 };
 
-export const main = () => <HeroExampleCode examples={[{ name: 'FFlabs', location: 'hybd' }]} onlyDemo={true} />;
+export const main = () => (
+  <HeroExampleCode examples={[{ name: 'FlyingFox Labs', location: 'Hyderabad' }]} onlyDemo={true} />
+);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NextLink } from 'ui/src/tamagui/NextLink';
 import { SizableText, Spacer, XStack, YStack } from 'tamagui';
-import type { NavItemProps } from 'ui/src/DocsPage';
+import type { NavItemProps } from 'ui/src/tamagui/DocsPage';
 import { ExternalIcon } from 'ui/src/tamagui/ExternalIcon';
 
 export const DocsRouteNavItem = React.memo(({ children, active, href, pending, ...props }: NavItemProps) => {

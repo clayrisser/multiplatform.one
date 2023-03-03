@@ -33,13 +33,13 @@ import { AlphaButton } from '../AlphaButton';
 import { ColorToggleButton } from '../ColorToggleButton';
 import { ContainerLarge } from '../Container';
 import { DocsMenuContents } from '../DocsMenuContents';
-import { GithubIcon } from '../GithubIcon';
+import { GithubIcon } from '../GitHubIcon';
 import { NextLink } from '../NextLink';
-import { SearchButton } from '../SearchButton';
+// import { SearchButton } from '../SearchButton';
 import { SeasonToggleButton } from '../SeasonToggleButton';
 import { SponsorButton } from '../SponsorButton';
-import { useDocsMenu } from '../useDocsMenu';
-f;
+import { useDocsMenu } from '../../hooks/useDocsMenu';
+
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false);
 
@@ -192,7 +192,7 @@ export function HeaderContents(props: HeaderProps) {
           <XStack ai="center" space="$3">
             <HeaderLinks {...props} />
 
-            <SearchButton size="$2" br="$10" elevation="$4" />
+            {/* <SearchButton size="$2" br="$10" elevation="$4" /> */}
 
             <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
               <YStack

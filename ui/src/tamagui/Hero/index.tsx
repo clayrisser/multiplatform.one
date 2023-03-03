@@ -20,7 +20,7 @@ import {
 import { ContainerLarge } from '../Container';
 import { DiscordIcon } from '../DiscordIcon';
 import { useHeroHovered } from '../heroState';
-import { InstallInput } from './InstallInput';
+import { InstallInput } from '../InstallInput';
 import { TwitterIcon } from '../TwitterIcon';
 
 // function useAlwaysConcurrent() {
@@ -170,7 +170,7 @@ const HeroContents = memo(() => {
             ai="center"
             jc="center"
             space="$2"
-            $xxs={{
+            $xs={{
               // words web-only
               // @ts-ignore
               order: '-1',

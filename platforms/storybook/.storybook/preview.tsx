@@ -25,7 +25,12 @@ export const parameters = {
     },
   },
   status: {
-    statuses: {},
+    statuses: {
+      keep: {
+        background: '#0000ff',
+        color: '#ffffff',
+      },
+    },
   },
   darkMode: {
     dark: { ...storybookThemes.dark },

@@ -1,6 +1,6 @@
 import React from 'react';
 import { H3, H4, ListItem, ScrollView, XStack, YStack } from 'tamagui';
-import { PropDef } from 'ui/src/PropsTable';
+// import { PropDef } from 'ui/src//tamagui/PropsTable';
 
 export function DataTable({
   title = '',

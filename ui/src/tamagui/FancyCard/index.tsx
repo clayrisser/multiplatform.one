@@ -5,7 +5,7 @@ export const FancyCard = styled(YStack, {
   f: 1,
   className: 'transition all ease-in ms100',
   borderRadius: '$6',
-  // backgroundColor: '$background',
+  backgroundColor: '$background',
   flexShrink: 1,
   hoverStyle: {
     borderColor: 'rgba(150,150,150,0.4)',
