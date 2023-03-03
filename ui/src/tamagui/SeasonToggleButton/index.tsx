@@ -3,7 +3,7 @@ import { TamaguiLogo } from '../Logo/TamaguiLogo';
 import { setNextTintFamily } from '../Logo/tints';
 import { useTint } from 'ui/src/hooks/useTint';
 import type { ButtonProps } from 'tamagui';
-import { Button, Image, Text, TooltipSimple } from 'tamagui';
+import { Button, Text, TooltipSimple } from 'tamagui';
 
 export const SeasonToggleButton = (props: ButtonProps) => {
   const { name } = useTint();

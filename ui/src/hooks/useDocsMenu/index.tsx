@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import { allNotPending } from './DocsPage';
+import { allNotPending } from '../../tamagui/DocsPage';
 
 export const useDocsMenu = () => {
   const [open, setOpen] = React.useState(false);
@@ -20,7 +20,7 @@ export const useDocsMenu = () => {
   const previous = allNotPending[currentPageIndex - 1];
   let nextIndex = currentPageIndex + 1;
   let next = allNotPending[nextIndex];
-  while (next && next.route.startsWith('http')) {
+  while (next?.route.startsWith('http')) {
     next = allNotPending[++nextIndex];
   }
 

@@ -1,6 +1,4 @@
-import React from 'react';
-
-export interface Frontmatter {
+export interface FrontMatter {
   title: string;
   description?: string;
   name?: string;

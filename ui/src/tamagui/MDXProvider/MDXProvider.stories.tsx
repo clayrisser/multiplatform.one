@@ -1,6 +1,5 @@
 import React from 'react';
 import { MDXProvider } from './index';
-import { YStack } from 'tamagui';
 
 export default {
   title: 'ui/tamagui/MDXProvider',

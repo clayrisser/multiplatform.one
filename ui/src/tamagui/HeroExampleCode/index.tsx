@@ -3,7 +3,6 @@ import { ThemeTint, useTint } from 'ui/src/hooks/useTint';
 import { FastForward } from '@tamagui/lucide-icons';
 import { memo, useState } from 'react';
 import { Button, H5, Paragraph, ScrollView, ThemeName, XGroup, XStack, YStack } from 'tamagui';
-
 import { CodeDemoPreParsed } from '../CodeDemoPreParsed';
 import { ContainerLarge } from '../Container';
 import { HomeH2, HomeH3 } from '../HomeH2';

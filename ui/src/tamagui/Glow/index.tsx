@@ -1,4 +1,3 @@
-import React from 'react';
 import { Circle, styled } from 'tamagui';
 
 export const Glow = styled(Circle, {

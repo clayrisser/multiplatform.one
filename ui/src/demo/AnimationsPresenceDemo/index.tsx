@@ -5,11 +5,11 @@ import { useState } from 'react';
 import { Button, Image, XStack, YStack, styled } from 'tamagui';
 
 // @ts-ignore
-import photo1 from '../../public/photo1.jpg';
+import photo1 from 'ui/assets/mail.png';
 // @ts-ignore
-import photo2 from '../../public/photo2.jpg';
+import photo2 from 'ui/assets/poker-game-1894.png';
 // @ts-ignore
-import photo3 from '../../public/photo3.jpg';
+import photo3 from 'ui/assets/mail.png';
 
 export const images = [photo1, photo2, photo3].map((x) => x.src || x);
 

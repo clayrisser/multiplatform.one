@@ -1,4 +1,3 @@
-import React from 'react';
 import { H1, H2, H3, styled } from 'tamagui';
 
 export const HomeH1 = styled(H1, {

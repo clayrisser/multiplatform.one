@@ -1,26 +1,14 @@
-// import { allDocsRoutes } from '@lib/docsRoutes';
-// import { LinearGradient } from '@tamagui/linear-gradient';
-// import { ThemeTint, useTint } from '@tamagui/tint';
-// // import { NextLink } from 'ui/'
-// import {NextLink} from 'ui/src/tamagui/NextLink'
-// import * as React from 'react';
-// import { ScrollView } from 'react-native';
-// import { EnsureFlexed, Paragraph, Theme, XStack, YStack } from 'tamagui';
-// import { Container } from './Container';
-// import { DocsMenuContents } from './DocsMenuContents';
-// import { Link } from './Link';
-// import { useDocsMenu } from './useDocsMenu';
-
-import React from 'react';
+import { allDocsRoutes } from '../../lib/docsRoutes';
 import { LinearGradient } from '@tamagui/linear-gradient';
+import { ThemeTint, useTint } from 'ui/src/hooks/useTint';
 import { NextLink } from '../NextLink';
+import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { EnsureFlexed, Paragraph, Theme, XStack, YStack } from 'tamagui';
 import { Container } from '../Container';
-import { DocsMenuContents } from '../.DocsMenuContents';
+import { DocsMenuContents } from '../DocsMenuContents';
 import { Link } from '../Link';
-import { useDocsMenu } from 'ui/src/hooks/useDocsMenu';
-import { allDocsRoutes } from '@lib/docsRoutes';
+import { useDocsMenu } from '../../hooks/useDocsMenu';
 
 export const allNotPending = allDocsRoutes.filter((x) => !x['pending']);
 
@@ -115,16 +103,16 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   }, [children, previous, next, editUrl]);
 
   return (
-    <>
+    <YStack>
       <YStack
         overflow="hidden"
-        marginHorizontal="auto"
+        mx="auto"
         $gtSm={{
           flexDirection: 'row',
         }}
-        maxWidth={1250}
-        zIndex={100}
-        position="relative"
+        maw={1250}
+        zi={100}
+        pos="relative"
       >
         <EnsureFlexed />
         <YStack
@@ -142,13 +130,13 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           }}
         >
           <LinearGradient
-            position="absolute"
-            top={0}
-            left={0}
-            right={0}
-            height={100}
-            width={300}
-            zIndex={100}
+            pos="absolute"
+            t={0}
+            l={0}
+            r={0}
+            h={100}
+            w={300}
+            zi={100}
             colors={['$backgroundStrong', '$backgroundStrong', '$backgroundTransparent']}
           />
           <ScrollView>
@@ -157,9 +145,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 display="none"
                 $gtMd={{
                   display: 'block',
-                  paddingRight: '$6',
-                  marginTop: 108,
-                  paddingBottom: '$18',
+                  pr: '$6',
+                  mt: 108,
+                  pb: '$18',
                 }}
               >
                 <DocsMenuContents />
@@ -172,23 +160,23 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
       <YStack
         maxWidth="100%"
         flex={1}
-        paddingVertical="$8"
+        py="$8"
         $gtMd={{
-          paddingBottom: '$9',
-          paddingLeft: 230,
-          paddingRight: 100,
+          pb: '$9',
+          pl: 230,
+          pr: 100,
         }}
       >
         {pageContents}
       </YStack>
-    </>
+    </YStack>
   );
 }
 
-// export interface NavItemProps = {
-//   children: React.ReactNode;
-//   active?: boolean;
-//   href: string;
-//   pending?: boolean;
-//   external?: boolean;
-// };
+export interface NavItemProps {
+  children: React.ReactNode;
+  active?: boolean;
+  href: string;
+  pending?: boolean;
+  external?: boolean;
+}
