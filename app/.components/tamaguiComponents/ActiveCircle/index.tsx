@@ -7,12 +7,12 @@ export const ActiveCircle = (props: CircleProps & { isActive?: boolean }) => {
 
   return (
     <YStack
-      ai="center"
-      jc="center"
-      br="$10"
+      alignItems="center"
+      justifyContent="center"
+      borderRadius="$10"
       borderColor="transparent"
       borderWidth={1}
-      mx="$1"
+      marginHorizontal="$1"
       {...(isActive && {
         borderColor: '$color',
       })}
@@ -23,7 +23,16 @@ export const ActiveCircle = (props: CircleProps & { isActive?: boolean }) => {
       })}
       {...rest}
     >
-      <YStack br="$10" bc="yellow" w={22} h={22} ai="center" jc="center" borderColor="red" cursor="pointer">
+      <YStack
+        borderRadius="$10"
+        backgroundColor="yellow"
+        width={22}
+        height={22}
+        alignItems="center"
+        justifyContent="center"
+        borderColor="red"
+        cursor="pointer"
+      >
         <Circle size={16} opacity={opacity} backgroundColor={backgroundColor} />
       </YStack>
     </YStack>

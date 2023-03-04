@@ -1,4 +1,4 @@
-import { ThemeTint } from 'ui/src/hooks/useTint';
+import { ThemeTint } from 'app/hooks/useTint';
 import React from 'react';
 import { Theme, XStack, YStack, styled } from 'tamagui';
 
@@ -26,16 +26,15 @@ export function HeroContainer({
   const contents = (
     <YStack
       className={(minimal ? '' : 'hero-gradient') + (noScroll ? '' : ' hero-scroll')}
-      boc="$borderColor"
-      bw={0.5}
-      mt="$4"
-      mb="$4"
+      borderColor="$borderColor"
+      borderWidth={0.5}
+      marginTop="$4"
+      marginBottom="$4"
       position="relative"
       display="flex"
       alignItems={alignItems || 'center'}
       justifyContent="center"
-      py={70}
-      pos="relative"
+      paddingVertical={70}
       minHeight={300}
       y={0}
       borderRadius="$4"
@@ -43,13 +42,13 @@ export function HeroContainer({
         py: 0,
       })}
       $gtMd={{
-        mx: smaller ? 0 : '$-4',
+        marginHorizontal: smaller ? 0 : '$-4',
       }}
     >
       <ErrorBoundary>
         {demoMultiple ? (
           <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
-            <XStack space="$3" px="$8">
+            <XStack space="$3" paddingHorizontal="$8">
               <Theme reset>
                 <Card>{children}</Card>
               </Theme>
@@ -88,13 +87,13 @@ export function HeroContainer({
 }
 
 const Card = styled(YStack, {
-  ai: 'center',
-  jc: 'center',
+  alignItems: 'center',
+  justifyContent: 'center',
   elevation: '$1',
   y: 0,
-  ov: 'hidden',
+  overflow: 'hidden',
   minWidth: 180,
-  bc: '$background',
+  backgroundColor: '$background',
   minHeight: 220,
-  br: '$4',
+  borderRadius: '$4',
 });

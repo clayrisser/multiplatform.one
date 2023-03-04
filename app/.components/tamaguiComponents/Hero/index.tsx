@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTint } from 'ui/src/hooks/useTint';
+import { useTint } from 'app/hooks/useTint';
 import { NextLink } from '../NextLink';
 import { memo } from 'react';
 import {
@@ -19,7 +19,7 @@ import {
 
 import { ContainerLarge } from '../Container';
 import { DiscordIcon } from '../DiscordIcon';
-import { useHeroHovered } from '../heroState';
+import { useHeroHovered } from '../HeroState';
 import { InstallInput } from '../InstallInput';
 import { TwitterIcon } from '../TwitterIcon';
 
@@ -46,7 +46,16 @@ export function Hero() {
   return (
     <Theme className={`${name}-season`} name={tint as any}>
       {/* {element} */}
-      <YStack o={0.5} zi={-1} pos="absolute" t={0} l={0} r={0} h={2000} className="hero-blur" />
+      <YStack
+        opacity={0.5}
+        zIndex={-1}
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+        height={2000}
+        className="hero-blur"
+      />
       <HeroContents />
     </Theme>
   );
@@ -56,7 +65,7 @@ const HeroContents = memo(() => {
   const [hovered, setHovered] = useHeroHovered();
 
   return (
-    <ContainerLarge contain="layout" pos="relative">
+    <ContainerLarge contain="layout" position="relative">
       <YStack
         className="bg-grid mask-gradient-up"
         fullscreen
@@ -64,47 +73,47 @@ const HeroContents = memo(() => {
         height={521}
         left={-1000}
         right={-1000}
-        pe="none"
-        o={0.08}
+        pointerEvents="none"
+        opacity={0.08}
       />
       <YStack
-        f={1}
-        ov="hidden"
+        flex={1}
+        overflow="hidden"
         space="$3"
         position="relative"
-        pt="$13"
-        mb="$4"
+        paddingTop="$13"
+        marginBottom="$4"
         $sm={{
           maxWidth: '100%',
-          mx: 'auto',
-          pb: '$4',
+          marginHorizontal: 'auto',
+          paddingBottom: '$4',
         }}
       >
-        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$2">
+        <YStack alignItems="flex-start" $gtSm={{ alignItems: 'center' }} space="$2">
           <H1
-            ta="left"
+            textAlign="left"
             size="$10"
-            maw={500}
-            h={130}
+            maxWidth={500}
+            height={130}
             // FOR CLS IMPORTANT TO SET EXACT HEIGHT IDK WHY LINE HEIGHT SHOULD BE STABLE
             $gtSm={{
-              mx: 0,
+              marginHorizontal: 0,
               maxWidth: 800,
               size: '$13',
-              h: 190,
-              ta: 'center',
-              als: 'center',
+              height: 190,
+              textAlign: 'center',
+              alignSelf: 'center',
             }}
             $gtMd={{
               maxWidth: 900,
               size: '$14',
-              h: 240,
+              height: 240,
             }}
             $gtLg={{
               size: '$16',
-              lh: '$15',
+              lineHeight: '$15',
               maxWidth: 1200,
-              h: 290,
+              height: 290,
             }}
           >
             <span className="all ease-in ms250 rainbow clip-text">Write less,</span>
@@ -113,20 +122,20 @@ const HeroContents = memo(() => {
           </H1>
 
           <YStack
-            px={0}
-            maw={420}
+            paddingHorizontal={0}
+            maxWidth={420}
             // prevent layout shift
-            h={70}
+            height={70}
             $gtSm={{
-              maw: 500,
+              maxWidth: 500,
             }}
             $gtMd={{
-              h: 90,
-              px: 90,
-              maw: 700,
+              height: 90,
+              padding: 90,
+              maxWidth: 700,
             }}
             $gtLg={{
-              maw: 900,
+              maxWidth: 900,
             }}
           >
             <Subtitle>
@@ -156,9 +165,9 @@ const HeroContents = memo(() => {
         <InstallInput />
         <Spacer size="$1" />
 
-        <XStack ai="center" jc="center" $xxs={{ ai: 'center', fw: 'wrap' }}>
+        <XStack alignItems="center" justifyContent="center" $xxs={{ alignItems: 'center', flexWrap: 'wrap' }}>
           <NextLink target="_blank" href="https://twitter.com/tamagui_js">
-            <YStack p="$6" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
+            <YStack padding="$6" $sm={{ padding: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
               <VisuallyHidden>
                 <Text>Twitter</Text>
               </VisuallyHidden>
@@ -180,15 +189,15 @@ const HeroContents = memo(() => {
             <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
               <Button
                 // layout shifts...
-                w={121}
-                h={52}
+                width={121}
+                height={52}
                 accessibilityLabel="Get started (docs)"
                 fontFamily="$silkscreen"
                 size="$5"
                 borderRadius={1000}
                 bordered
-                bw={2}
-                mx="$2"
+                borderWidth={2}
+                marginHorizontal="$2"
                 tabIndex="0"
                 elevation="$2"
                 pressStyle={{
@@ -204,15 +213,15 @@ const HeroContents = memo(() => {
             <NextLink prefetch={false} href="/docs/intro/introduction">
               <Button
                 // layout shifts...
-                w={118}
-                h={52}
+                width={118}
+                height={52}
                 accessibilityLabel="Get started (docs)"
                 fontFamily="$silkscreen"
                 size="$5"
                 borderRadius={1000}
                 bordered
-                bw={2}
-                mx="$2"
+                borderWidth={2}
+                marginHorizontal="$2"
                 tabIndex="0"
                 elevation="$2"
                 letterSpacing={-2}
@@ -228,7 +237,7 @@ const HeroContents = memo(() => {
           </XStack>
 
           <NextLink target="_blank" href="https://discord.gg/4qh6tdcVDa">
-            <YStack p="$6" $sm={{ p: '$3' }} ml="$-2" opacity={0.65} hoverStyle={{ opacity: 1 }}>
+            <YStack padding="$6" $sm={{ padding: '$3' }} marginLeft="$-2" opacity={0.65} hoverStyle={{ opacity: 1 }}>
               <VisuallyHidden>
                 <Text>Discord</Text>
               </VisuallyHidden>
@@ -247,11 +256,11 @@ const Subtitle = styled(Paragraph, {
   color: '$gray10',
   size: '$6',
   fontFamily: '$silkscreen',
-  ta: 'left',
-  ls: -1,
+  textAlign: 'left',
+  letterSpacing: -1,
 
   $gtSm: {
-    ta: 'center',
+    textAlign: 'center',
     size: '$7',
   },
 
@@ -261,7 +270,7 @@ const Subtitle = styled(Paragraph, {
 
   $gtLg: {
     size: '$9',
-    lh: 50,
+    lineHeight: 50,
   },
 });
 
@@ -270,15 +279,15 @@ const Tag = styled(Text, {
   fontFamily: 'inherit',
   fontSize: 'inherit',
   borderRadius: '$2',
-  px: '$1',
-  mx: '$-1',
+  paddingHorizontal: '$1',
+  marginHorizontal: '$-1',
   cursor: 'pointer',
   color: '$color10',
-  bc: '$color2',
+  backgroundColor: '$color2',
 
   hoverStyle: {
     color: '$color',
-    bc: '$color3',
+    backgroundColor: '$color3',
   },
 
   variants: {

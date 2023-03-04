@@ -1,5 +1,5 @@
 import React from 'react';
 
-import type { FrontMatter } from './frontMatter';
+import { FrontMatter } from './frontMatter';
 
-export const FrontMatterContext = React.createContext<FrontMatter>({} as any);
+export const FrontmatterContext = React.createContext<FrontMatter>({} as any);

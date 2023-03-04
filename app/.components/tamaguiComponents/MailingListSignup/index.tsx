@@ -10,21 +10,21 @@ export const MailingListSignUp = memo(() => {
     <XStack
       borderWidth={1}
       borderColor="$borderColor"
-      px="$7"
-      pl="$6"
+      paddingHorizontal="$7"
+      paddingLeft="$6"
       height={48}
-      ai="center"
-      als="center"
+      alignItems="center"
+      alignSelf="center"
       elevation="$2"
-      bc="$background"
-      br="$10"
+      backgroundColor="$background"
+      borderRadius="$10"
     >
       <Input
-        bc="transparent"
+        backgroundColor="transparent"
         borderWidth={0}
-        w={200}
+        width={200}
         placeholder="SignUp for the Newsletter"
-        p={0}
+        padding={0}
         focusStyle={{
           borderWidth: 0,
         }}
@@ -35,7 +35,7 @@ export const MailingListSignUp = memo(() => {
           accessibilityLabel="SignUp to the Mailing List"
           size="$3"
           borderRadius="$8"
-          mr="$-6"
+          marginRight="$-6"
           x={-1}
           icon={Mail}
           // onPress={onCopy}
