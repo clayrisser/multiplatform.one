@@ -2,7 +2,7 @@ import React from 'react';
 import { HeroExampleProps } from './index';
 
 export default {
-  title: 'ui/tamagui/HeroExampleProps',
+  title: 'app/tamagui/HeroExampleProps',
   component: HeroExampleProps,
   parameters: {
     status: {

@@ -2,7 +2,7 @@ import React from 'react';
 import { HomeGlow } from './index';
 
 export default {
-  title: 'ui/tamagui/HomeGlow',
+  title: 'app/tamagui/HomeGlow',
   component: HomeGlow,
   parameters: { status: { type: 'beta' } },
 };

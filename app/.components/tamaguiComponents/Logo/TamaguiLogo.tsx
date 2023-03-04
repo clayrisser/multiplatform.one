@@ -3,7 +3,7 @@ import { forwardRef, memo, useEffect, useState } from 'react';
 import type { XStackProps } from 'tamagui';
 import { Circle, XStack, YStack } from 'tamagui';
 import { Apple } from '@tamagui/lucide-icons';
-import { useTint } from 'ui/src/hooks/useTint';
+import { useTint } from 'app/hooks/useTint';
 
 type LogoProps = {
   showWords?: boolean;

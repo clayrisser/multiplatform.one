@@ -1,7 +1,7 @@
 /* eslint-disable spellcheck/spell-checker */
 /* eslint-disable eqeqeq */
 import React from 'react';
-import { useTint } from 'ui/src/hooks/useTint';
+import { useTint } from 'app/hooks/useTint';
 import { memo, useMemo, useState } from 'react';
 import { Dimensions } from 'react-native';
 import type { ThemeName } from 'tamagui';
@@ -62,7 +62,7 @@ export const HomeGlow = memo(() => {
       top={0}
       left={0}
       contain="layout"
-      pe="none"
+      pointerEvents="none"
       animation="quick"
       key={0}
       zIndex={-1}

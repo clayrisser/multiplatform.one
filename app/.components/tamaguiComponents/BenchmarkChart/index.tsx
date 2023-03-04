@@ -33,12 +33,12 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
   const maxValue = Math.max(...data.map((r) => r.value));
 
   return (
-    <YStack space="$2" my="$4">
+    <YStack space="$2" marginVertical="$4">
       {data.map((result, i) => {
         const width = `${Math.round((result.value / maxValue) * 100)}%`;
         return (
           <XStack space="$3" key={i}>
-            <YStack w={large ? 120 : 70}>
+            <YStack width={large ? 120 : 70}>
               <Paragraph
                 key={result.name}
                 size="$2"
@@ -49,15 +49,15 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
                 {result.name}
               </Paragraph>
             </YStack>
-            <XStack mr={65} flex={1} ai="center">
+            <XStack marginRight={65} flex={1} alignItems="center">
               <YStack
-                bc={getBarColor(result.name)}
-                o={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
+                backgroundColor={getBarColor(result.name)}
+                opacity={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
                 width={width}
                 height={20}
-                br="$2"
+                borderRadius="$2"
                 position="relative"
-                jc="center"
+                justifyContent="center"
                 scaleX={1}
                 {...(animateEnter && {
                   animation: 'lazy',

@@ -3,33 +3,33 @@ import React from 'react';
 import { H2, Paragraph, Separator, SizableText, Text, VisuallyHidden, XStack, YStack } from 'tamagui';
 
 import { Features } from '../Features';
-import { FrontMatterContext } from '../FrontMatterContext';
+import { FrontmatterContext } from '../FrontMatterContext';
 import { Link } from '../Link';
 
 export function Highlights({ features, disableLinks }: any) {
-  const frontmatter = React.useContext(FrontMatterContext);
+  const frontmatter = React.useContext(FrontmatterContext);
 
   return (
     <YStack
-      my="$2"
-      f={1}
+      marginVertical="$2"
+      flex={1}
       $gtSm={{
-        fd: 'row',
+        flexDirection: 'row',
       }}
     >
       <YStack
-        f={1}
-        mih={142}
+        flex={1}
+        minHeight={142}
         $gtSm={{
           flex: 1,
-          mr: '$5',
+          marginRight: '$5',
         }}
       >
-        <H2 fontFamily="$body" size="$6" mb="$2" fow="800">
+        <H2 fontFamily="$body" size="$6" marginBottom="$2" fontWeight="800">
           Features
         </H2>
 
-        <YStack tag="ul" p={0} m={0} space>
+        <YStack tag="ul" padding={0} margin={0} space>
           <Features space="$2" items={features} />
         </YStack>
       </YStack>
@@ -42,7 +42,7 @@ export function Highlights({ features, disableLinks }: any) {
 
           <Separator />
 
-          <YStack mb="$4" space="$1">
+          <YStack marginBottom="$4" space="$1">
             <Link
               href={`https://github.com/tamagui/tamagui/tree/master/packages/${
                 frontmatter.package
@@ -51,25 +51,25 @@ export function Highlights({ features, disableLinks }: any) {
               }`}
               target="_blank"
             >
-              <XStack ai="center" space="$1">
+              <XStack alignItems="center" space="$1">
                 <SizableText size="$2">View source</SizableText>
-                <YStack opacity={0.5} ml="$0.5">
+                <YStack opacity={0.5} marginLeft="$0.5">
                   <ExternalLink size={12} color="var(--colorHover)" />
                 </YStack>
               </XStack>
             </Link>
             <Link href="https://www.npmjs.com/package/tamagui" target="_blank">
-              <XStack ai="center" space="$1">
+              <XStack alignItems="center" space="$1">
                 <SizableText size="$2">View on npm</SizableText>
-                <YStack opacity={0.5} ml="$0.5">
+                <YStack opacity={0.5} marginLeft="$0.5">
                   <ExternalLink size={12} color="var(--colorHover)" />
                 </YStack>
               </XStack>
             </Link>
             <Link href="https://github.com/tamagui/tamagui/issues/new/choose" target="_blank">
-              <XStack ai="center" space="$1">
+              <XStack alignItems="center" space="$1">
                 <SizableText size="$2">Report an issue</SizableText>
-                <YStack opacity={0.5} ml="$0.5">
+                <YStack opacity={0.5} marginLeft="$0.5">
                   <ExternalLink size={12} color="var(--colorHover)" />
                 </YStack>
               </XStack>
@@ -77,14 +77,14 @@ export function Highlights({ features, disableLinks }: any) {
 
             {/* @ts-ignore */}
             {frontmatter.aria && (
-              <YStack mb="$2">
+              <YStack marginBottom="$2">
                 {/* @ts-ignore */}
                 <Link theme="blue" href={frontmatter.aria} target="_blank">
                   <XStack position="relative">
                     <Paragraph size="$2" theme="alt1">
                       ARIA design pattern
                     </Paragraph>
-                    <YStack ml="$1">
+                    <YStack marginLeft="$1">
                       <Text theme="alt2">
                         <ExternalLink size={12} color="var(--color)" />
                       </Text>

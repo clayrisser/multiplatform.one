@@ -6,8 +6,8 @@ import { SocialLinksRow } from '../SocialLinkRow';
 
 export function Community() {
   return (
-    <ContainerLarge mt="$3" mb="$6" space="$6">
-      <YStack maxWidth="100%" fs={0} als="center">
+    <ContainerLarge marginTop="$3" marginBottom="$6" space="$6">
+      <YStack maxWidth="100%" flexShrink={0} alignSelf="center">
         <EnsureFlexed />
         <SocialLinksRow />
       </YStack>

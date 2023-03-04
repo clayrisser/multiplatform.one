@@ -1,10 +1,10 @@
 import React from 'react';
-import { HoverGlow } from './index';
+import { useHoverGlow } from './index';
 
 export default {
-  title: 'ui/tamagui/HoverGlow',
-  component: HoverGlow,
+  title: 'app/tamagui/HoverGlow',
+  component: useHoverGlow,
   parameters: { status: { type: 'beta' } },
 };
 
-export const main = () => <HoverGlow />;
+export const main = () => <useHoverGlow />;
