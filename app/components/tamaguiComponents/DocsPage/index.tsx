@@ -8,7 +8,7 @@ import { EnsureFlexed, Paragraph, Theme, XStack, YStack } from 'tamagui';
 import { Container } from '../Container';
 import { DocsMenuContents } from '../DocsMenuContents';
 import { Link } from '../Link';
-import { useDocsMenu } from '../../hooks/useDocsMenu';
+import { useDocsMenu } from '../../../hooks/useDocsMenu';
 
 export const allNotPending = allDocsRoutes.filter((x) => !x['pending']);
 
