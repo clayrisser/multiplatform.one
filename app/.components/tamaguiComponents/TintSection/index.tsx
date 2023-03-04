@@ -1,7 +1,7 @@
 // import { useOnIntersecting } from 'ui/src/tamagui/demos';
 import { useOnIntersecting } from 'ui/src/hooks/useOnIntersecting';
 import { getTints } from '../Logo/tints';
-import { useTint } from '../../hooks/useTint';
+import { useTint } from '../../../hooks/useTint';
 import React, { useEffect, useMemo, useRef } from 'react';
 import type { GetProps } from 'tamagui';
 import { XStack, YStack, styled } from 'tamagui';

@@ -1,8 +1,13 @@
 import React from 'react';
 import { Container } from '../Container';
 import { components } from '../MDXComponents';
+<<<<<<< HEAD:app/.components/.BlogSlugPage/index.tsx
 // import { authors } from '@data/authors';
 import { useTint } from '../../hooks/useTint';
+=======
+import { authors } from '@data/authors';
+import { useTint } from '../../../hooks/useTint';
+>>>>>>> a34f6aff2b61210364a4e2b988e1bbb346500a29:app/.components/tamaguiComponents/.BlogSlugPage/index.tsx
 import { ArrowLeft } from '@tamagui/lucide-icons';
 import { format, parseISO } from 'date-fns';
 import { useRouter } from 'next/router';

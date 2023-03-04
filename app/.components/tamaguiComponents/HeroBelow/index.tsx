@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeTint } from '../../hooks/useTint';
+import { ThemeTint } from '../../../hooks/useTint';
 import { ChevronRight, Code, Cpu, Layers } from '@tamagui/lucide-icons';
 import { NextLink } from '../NextLink';
 import { memo, useEffect, useRef } from 'react';

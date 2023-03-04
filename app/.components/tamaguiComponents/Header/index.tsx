@@ -38,7 +38,7 @@ import { NextLink } from '../NextLink';
 // import { SearchButton } from '../SearchButton';
 import { SeasonToggleButton } from '../SeasonToggleButton';
 import { SponsorButton } from '../SponsorButton';
-import { useDocsMenu } from '../../hooks/useDocsMenu';
+import { useDocsMenu } from '../../../hooks/useDocsMenu';
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false);
