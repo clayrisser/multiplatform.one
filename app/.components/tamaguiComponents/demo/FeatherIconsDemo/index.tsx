@@ -20,10 +20,10 @@ export function FeatherIconsDemo() {
     const icons = featherIcons.filter((x) => x.key.startsWith(search.toLowerCase()));
     return icons.map(({ Icon, name }) => {
       return (
-        <YStack h={size} ai="center" jc="center" key={name}>
+        <YStack height={size} alignItems="center" justifyContent="center" key={name}>
           <Icon size={size * 0.25} />
           <Spacer />
-          <Paragraph size="$2" o={0.5}>
+          <Paragraph size="$2" opacity={0.5}>
             {name}
           </Paragraph>
         </YStack>
@@ -32,10 +32,10 @@ export function FeatherIconsDemo() {
   }, [search]);
 
   return (
-    <YStack als="stretch" p="$4" pb="$0" space>
+    <YStack alignSelf="stretch" padding="$4" paddingBottom="$0" space>
       <Input value={searchRaw} onChangeText={setSearch} placeholder="Search..." />
 
-      <YStack h={420}>
+      <YStack height={420}>
         <ScrollView>
           <Grid itemMinWidth={size}>{iconsMemo}</Grid>
         </ScrollView>

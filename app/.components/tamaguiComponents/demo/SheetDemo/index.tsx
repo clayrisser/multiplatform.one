@@ -31,7 +31,7 @@ export const SheetDemo = () => {
       >
         <Sheet.Overlay />
         <Sheet.Handle />
-        <Sheet.Frame f={1} p="$4" jc="center" ai="center" space="$5">
+        <Sheet.Frame flex={1} padding="$4" justifyContent="center" alignItems="center" space="$5">
           <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
 
           {modal && (
@@ -51,9 +51,15 @@ function InnerSheet(props: SheetProps) {
     <Sheet modal snapPoints={[90]} dismissOnSnapToBottom {...props}>
       <Sheet.Overlay />
       <Sheet.Handle />
-      <Sheet.Frame f={1} jc="center" ai="center" space="$5">
-        <Sheet.ScrollView p="$4" space>
-          <Button size="$8" circular als="center" icon={ChevronDown} onPress={() => props.onOpenChange?.(false)} />
+      <Sheet.Frame flex={1} justifyContent="center" alignItems="center" space="$5">
+        <Sheet.ScrollView padding="$4" space>
+          <Button
+            size="$8"
+            circular
+            alignSelf="center"
+            icon={ChevronDown}
+            onPress={() => props.onOpenChange?.(false)}
+          />
           <H1>Hello world</H1>
           <H2>You can scroll me</H2>
           {[1, 2, 3].map((i) => (

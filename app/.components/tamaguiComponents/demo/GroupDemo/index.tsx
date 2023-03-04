@@ -4,7 +4,7 @@ import { Button, ListItem, Separator, XGroup, YGroup, YStack } from 'tamagui';
 
 export function GroupDemo() {
   return (
-    <YStack p="$3" space="$2" ai="center">
+    <YStack padding="$3" space="$2" alignItems="center">
       <XGroup>
         <Button>First</Button>
         <Button>Second</Button>

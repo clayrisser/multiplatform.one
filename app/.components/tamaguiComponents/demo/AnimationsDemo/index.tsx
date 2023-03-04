@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogoIcon } from '../../tamagui/Logo/TamaguiLogo';
+import { LogoIcon } from '../../../tamaguiComponents/Logo/TamaguiLogo';
 import { Play } from '@tamagui/lucide-icons';
 import { Button, Square, useControllableState, useEvent } from 'tamagui';
 
@@ -22,10 +22,10 @@ export function AnimationsDemo(props) {
         animation={props.animation || 'bouncy'}
         onPress={onPress}
         size={104}
-        boc="$borderColor"
-        bw={1}
-        br="$9"
-        bc="$color9"
+        borderColor="$borderColor"
+        borderWidth={1}
+        borderRadius="$9"
+        backgroundColor="$color9"
         hoverStyle={{
           scale: 1.1,
         }}
@@ -37,7 +37,16 @@ export function AnimationsDemo(props) {
         {props.children || <LogoIcon downscale={0.75} />}
       </Square>
 
-      <Button pos="absolute" b={20} l={20} icon={Play} theme={props.tint} size="$5" circular onPress={onPress} />
+      <Button
+        position="absolute"
+        bottom={20}
+        left={20}
+        icon={Play}
+        theme={props.tint}
+        size="$5"
+        circular
+        onPress={onPress}
+      />
     </>
   );
 }
