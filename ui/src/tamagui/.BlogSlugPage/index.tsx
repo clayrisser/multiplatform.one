@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from '../Container';
 import { components } from '../MDXComponents';
 import { authors } from '@data/authors';
-import { useTint } from 'ui/src/hooks/useTint';
+import { useTint } from '../../hooks/useTint';
 import { ArrowLeft } from '@tamagui/lucide-icons';
 import { format, parseISO } from 'date-fns';
 import { useRouter } from 'next/router';
@@ -40,11 +40,11 @@ function BlogArticleHeader({ frontmatter }: BlogPost) {
             {frontmatter.title}
           </H1>
 
-          <H2 o={0.5} theme="alt2" size="$7" fontWeight="500" fontFamily="$body" mb="$1">
+          <H2 opacity={0.5} theme="alt2" size="$7" fontWeight="500" fontFamily="$body" marginBottom="$1">
             {frontmatter.description}
           </H2>
 
-          <XStack ai="center" my="$3">
+          <XStack alignItems="center" marginVertical="$3">
             {/* <Avatar src={authors[data.by].avatar} mr={2} /> */}
 
             <Paragraph size="$3" theme="alt2" whiteSpace="nowrap">
@@ -57,22 +57,22 @@ function BlogArticleHeader({ frontmatter }: BlogPost) {
               </NextLink>
             </Paragraph>
 
-            <Separator vertical mx="$2" />
+            <Separator vertical marginHorizontal="$2" />
 
-            <Paragraph o={0.4} tag="time" size="$3" theme="alt2" whiteSpace="nowrap">
+            <Paragraph opacity={0.4} tag="time" size="$3" theme="alt2" whiteSpace="nowrap">
               {format(parseISO(frontmatter.publishedAt || ''), 'MMMM yyyy')}
             </Paragraph>
 
-            <Separator vertical mx="$2" />
+            <Separator vertical marginHorizontal="$2" />
 
-            <YStack ai="center" display="none" $gtSm={{ display: 'flex' }}>
-              <Paragraph o={0.4} size="$3" theme="alt2">
+            <YStack alignItems="center" display="none" $gtSm={{ display: 'flex' }}>
+              <Paragraph opacity={0.4} size="$3" theme="alt2">
                 {frontmatter.readingTime?.text}
               </Paragraph>
 
               {frontmatter.type === 'changelog' && (
                 <>
-                  <Separator vertical mx="$2" />
+                  <Separator vertical marginHorizontal="$2" />
                   <Button>Changelog</Button>
                 </>
               )}
@@ -101,13 +101,13 @@ export function BlogSlugPage(props: BlogPost) {
       <BlogArticleHeader {...props} />
 
       <Container>
-        <YStack tag="article" px="$2">
+        <YStack tag="article" paddingHorizontal="$2">
           <Component components={components as any} />
         </YStack>
 
-        <Separator my="$8" mx="auto" />
+        <Separator marginVertical="$8" marginHorizontal="auto" />
 
-        <YStack mb="$8" ai="center">
+        <YStack marginBottom="$8" alignItems="center">
           <Paragraph>
             Share this post on{' '}
             <NextLink href={twitterShare} target="_blank" rel="noopener noreferrer" title="Share this post on Twitter">
@@ -119,12 +119,12 @@ export function BlogSlugPage(props: BlogPost) {
 
         {relatedPosts && (
           <YStack>
-            <Separator my="$8" mx="auto" />
-            <H3 mb="$3" ta="center" textTransform="uppercase">
+            <Separator marginVertical="$8" marginHorizontal="auto" />
+            <H3 marginBottom="$3" ta="center" textTransform="uppercase">
               Related
             </H3>
 
-            <YStack my="$4" space="$4">
+            <YStack marginVertical="$4" space="$4">
               {relatedPosts.map((frontmatter) => {
                 return (
                   <Paragraph tag="a" key={frontmatter.slug} href={`/blog/${frontmatter.slug}`}>
