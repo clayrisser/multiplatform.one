@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container } from '../Container';
 import { components } from '../MDXComponents';
-import { authors } from '@data/authors';
+// import { authors } from '@data/authors';
 import { useTint } from '../../hooks/useTint';
 import { ArrowLeft } from '@tamagui/lucide-icons';
 import { format, parseISO } from 'date-fns';
@@ -9,13 +9,14 @@ import { useRouter } from 'next/router';
 import { Button, H1, H2, H3, H6, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui';
 import { LinearGradient } from 'tamagui/linear-gradient';
 
-import { Frontmatter } from '../FrontMatterContext';
+import { FrontMatterContext } from '../FrontMatterContext';
 import { NextLink } from '../NextLink';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type BlogPost = {
-  frontmatter: Frontmatter;
+  frontmatter: Frontager;
   code: any;
-  relatedPosts?: Frontmatter[];
+  relatedPosts?: Frontager[];
   Component?: any;
 };
 
@@ -120,7 +121,7 @@ export function BlogSlugPage(props: BlogPost) {
         {relatedPosts && (
           <YStack>
             <Separator marginVertical="$8" marginHorizontal="auto" />
-            <H3 marginBottom="$3" ta="center" textTransform="uppercase">
+            <H3 marginBottom="$3" textAlign="center" textTransform="uppercase">
               Related
             </H3>
 
