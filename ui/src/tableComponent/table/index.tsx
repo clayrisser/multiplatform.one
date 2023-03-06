@@ -11,7 +11,7 @@ export type TableProps = { yStack?: YStackProps } & TableDataProps;
 export const Table = ({ yStack, ...props }: TableProps) => {
   const { children } = props;
   return (
-    <YStack space {...yStack}>
+    <YStack borderWidth="$1" {...yStack}>
       {children}
     </YStack>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, code, TableCell, TableFrame, TableCol } from './index';
+import { Table, TableCell, TableFrame, TableCol } from './index';
 import { YStack } from 'tamagui';
 
 export default {
