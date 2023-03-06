@@ -47,7 +47,7 @@ export const TamaCard = ({ title, icon, subtitlePre, subtitlePost, description, 
       {/* {shadow.element} */}
       <FancyCard
         // ref={containerRef}
-        ov="hidden"
+        overflow="hidden"
         y={0}
       >
         {/* glow */}
@@ -81,7 +81,7 @@ export const TamaCard = ({ title, icon, subtitlePre, subtitlePost, description, 
               </XStack>
             )}
 
-            <Paragraph o={0.65} cursor="default" theme="alt2" size="$4" fontWeight="500">
+            <Paragraph opacity={0.65} cursor="default" theme="alt2" size="$4" fontWeight="500">
               {children || description}
             </Paragraph>
 
