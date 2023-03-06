@@ -3,7 +3,7 @@ import { NavHeading } from './index';
 import { H4, H3, YStack, H6, H1, H2 } from 'tamagui';
 
 export default {
-  title: 'app/tamagui/NavHeading',
+  title: 'app/tamaguiComponents/NavHeading',
   component: NavHeading,
   parameters: {
     status: {

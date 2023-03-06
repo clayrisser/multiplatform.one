@@ -2,7 +2,7 @@ import React from 'react';
 import { AnimationsDemo } from './index';
 
 export default {
-  title: 'app/tamagui/AnimationsDemo',
+  title: 'app/tamaguiComponents/AnimationsDemo',
   component: AnimationsDemo,
   parameters: { status: { type: 'beta' } },
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { ActiveCircle } from './index';
 
 export default {
-  title: 'app/tamagui/ActiveCircle',
+  title: 'app/tamaguiComponents/ActiveCircle',
   component: ActiveCircle,
   parameters: { status: { type: 'beta' } },
 };

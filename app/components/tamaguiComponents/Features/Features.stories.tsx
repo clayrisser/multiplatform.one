@@ -2,7 +2,7 @@ import React from 'react';
 import { Features } from './index';
 
 export default {
-  title: 'app/tamagui/Features',
+  title: 'app/tamaguiComponents/Features',
   component: Features,
   parameters: { status: { type: 'beta' } },
 };

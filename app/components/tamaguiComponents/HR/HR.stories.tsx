@@ -2,7 +2,7 @@ import React from 'react';
 import { HR } from './index';
 
 export default {
-  title: 'app/tamagui/HR',
+  title: 'app/tamaguiComponents/HR',
   component: HR,
   parameters: { status: { type: 'beta' } },
 };

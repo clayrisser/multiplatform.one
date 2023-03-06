@@ -2,7 +2,7 @@ import React from 'react';
 import { TamaguiLogo } from './TamaguiLogo';
 
 export default {
-  title: 'app/tamagui/TamaguiLogo',
+  title: 'app/tamaguiComponents/TamaguiLogo',
   component: TamaguiLogo,
   parameters: { status: { type: 'beta' } },
 };

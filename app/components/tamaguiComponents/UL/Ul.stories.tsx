@@ -2,7 +2,7 @@ import React from 'react';
 import { Ul } from './index';
 
 export default {
-  title: 'app/components/tamaguiComponents/Ul',
+  title: 'app/tamaguiComponents/Ul',
   component: Ul,
   parameters: { status: { type: 'beta' } },
 };

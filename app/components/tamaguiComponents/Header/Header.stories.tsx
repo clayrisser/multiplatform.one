@@ -2,7 +2,7 @@ import React from 'react';
 import { Header } from './index';
 
 export default {
-  title: 'app/tamagui/Header',
+  title: 'app/tamaguiComponents/Header',
   component: Header,
   parameters: {
     status: {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Li } from './index';
 
 export default {
-  title: 'app/tamagui/LI',
+  title: 'app/tamaguiComponents/LI',
   component: Li,
   parameters: { status: { type: 'beta' } },
 };

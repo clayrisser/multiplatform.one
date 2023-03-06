@@ -2,7 +2,7 @@ import React from 'react';
 import { Footer } from './index';
 
 export default {
-  title: 'app/tamagui/Footer',
+  title: 'app/tamaguiComponents/Footer',
   component: Footer,
   parameters: { status: { type: 'beta' } },
 };

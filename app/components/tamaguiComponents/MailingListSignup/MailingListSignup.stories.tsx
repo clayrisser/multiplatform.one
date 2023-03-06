@@ -2,7 +2,7 @@ import React from 'react';
 import { MailingListSignUp } from './index';
 
 export default {
-  title: 'app/tamagui/MailingListSignUp',
+  title: 'app/tamaguiComponents/MailingListSignUp',
   component: MailingListSignUp,
   parameters: {
     status: {

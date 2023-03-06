@@ -2,7 +2,7 @@ import React from 'react';
 import { RegionTable } from './index';
 
 export default {
-  title: 'app/components/tamaguiComponents/RegionTable',
+  title: 'app/tamaguiComponents/RegionTable',
   components: RegionTable,
   parameters: { status: { type: 'beta' } },
 };

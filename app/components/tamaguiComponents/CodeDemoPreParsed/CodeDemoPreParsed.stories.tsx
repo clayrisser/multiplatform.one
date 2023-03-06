@@ -3,7 +3,7 @@ import { CodeDemoPreParsed } from './index';
 import { H1, YStack, Text } from 'tamagui';
 
 export default {
-  title: 'app/tamagui/CodeDemoPreParsed',
+  title: 'app/tamaguiComponents/CodeDemoPreParsed',
   component: CodeDemoPreParsed,
   parameters: { status: { type: 'beta' } },
 };

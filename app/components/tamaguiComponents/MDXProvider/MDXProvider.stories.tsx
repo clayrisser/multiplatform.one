@@ -2,7 +2,7 @@ import React from 'react';
 import { MDXProvider } from './index';
 
 export default {
-  title: 'app/tamagui/MDXProvider',
+  title: 'app/tamaguiComponents/MDXProvider',
   component: MDXProvider,
   parameters: {
     status: {

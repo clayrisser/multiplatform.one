@@ -3,7 +3,7 @@ import { FlatBubbleCard } from './index';
 import { Text, YStack, XStack } from 'tamagui';
 
 export default {
-  title: 'app/tamagui/FlatBubbleCard',
+  title: 'app/tamaguiComponents/FlatBubbleCard',
   component: FlatBubbleCard,
   parameters: {
     status: {

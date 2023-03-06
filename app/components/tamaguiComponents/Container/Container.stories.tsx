@@ -3,7 +3,7 @@ import { Container } from './index';
 import { H1 } from 'tamagui';
 
 export default {
-  title: 'app/tamagui/Container',
+  title: 'app/tamaguiComponents/Container',
   component: Container,
   parameters: {
     Status: {

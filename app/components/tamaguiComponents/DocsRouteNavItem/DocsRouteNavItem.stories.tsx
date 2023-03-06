@@ -2,7 +2,7 @@ import React from 'react';
 import { DocsRouteNavItem } from './index';
 
 export default {
-  title: 'app/tamagui/DocsRouteNavItem',
+  title: 'app/tamaguiComponents/DocsRouteNavItem',
   component: DocsRouteNavItem,
   parameters: {
     status: {

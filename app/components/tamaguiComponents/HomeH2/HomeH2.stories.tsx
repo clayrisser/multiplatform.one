@@ -3,7 +3,7 @@ import { YStack } from 'tamagui';
 import { HomeH1, HomeH2, HomeH3 } from './index';
 
 export default {
-  title: 'app/tamagui/HomeH2',
+  title: 'app/tamaguiComponents/HomeH2',
   component: HomeH2,
   parameters: { status: { type: 'beta' } },
 };

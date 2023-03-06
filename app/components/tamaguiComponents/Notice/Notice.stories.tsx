@@ -3,7 +3,7 @@ import { Notice } from './index';
 import { Text } from 'tamagui';
 
 export default {
-  title: 'app/tamagui/Notice',
+  title: 'app/tamaguiComponents/Notice',
   component: Notice,
   parameters: {
     status: {

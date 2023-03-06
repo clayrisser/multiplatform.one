@@ -2,7 +2,7 @@ import React from 'react';
 import { SeasonToggleButton } from './index';
 
 export default {
-  title: 'app/tamagui/SeasonToggleButton',
+  title: 'app/tamaguiComponents/SeasonToggleButton',
   components: SeasonToggleButton,
   parameters: { status: { type: 'beta' } },
 };

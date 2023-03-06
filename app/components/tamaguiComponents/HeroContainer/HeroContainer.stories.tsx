@@ -3,7 +3,7 @@ import { HeroContainer } from './index';
 import { Text, Paragraph } from 'tamagui';
 
 export default {
-  title: 'app/tamagui/HeroContainer',
+  title: 'app/tamaguiComponents/HeroContainer',
   component: HeroContainer,
   parameters: { status: { type: 'beta' } },
 };
