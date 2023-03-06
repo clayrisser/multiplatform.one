@@ -1,5 +1,5 @@
 /* eslint-disable max-nested-callbacks */
-import { docsRoutes } from '../../lib/docsRoutes';
+import { docsRoutes } from 'app/components/lib/docsRoutes';
 import React from 'react';
 import { Paragraph, Separator, XStack, YStack } from 'tamagui';
 import { NavHeading } from '../NavHeading';

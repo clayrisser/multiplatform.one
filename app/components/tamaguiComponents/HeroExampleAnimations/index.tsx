@@ -1,4 +1,4 @@
-import { animations } from '../../config/animations';
+import { animations } from 'app/components/config/animations';
 import { useIsIntersecting } from 'app/hooks/useOnIntersecting';
 import { useTint } from 'app/hooks/useTint';
 import { ArrowDown } from '@tamagui/lucide-icons';
