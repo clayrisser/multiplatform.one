@@ -14,6 +14,6 @@ export default {
 
 export const main = () => (
   <Notice>
-    <Text>Hello</Text>
+    <Text>Notice Component</Text>
   </Notice>
 );

@@ -6,4 +6,4 @@ export default {
   component: TintSection,
   parameters: { status: { type: 'beta' } },
 };
-export const main = () => <TintSection index={0} />;
+export const main = () => <TintSection index={0}> Tint Section Component </TintSection>;
