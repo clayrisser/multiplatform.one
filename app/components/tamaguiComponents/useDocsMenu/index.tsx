@@ -20,6 +20,7 @@ export const useDocsMenu = () => {
   const previous = allNotPending[currentPageIndex - 1];
   let nextIndex = currentPageIndex + 1;
   let next = allNotPending[nextIndex];
+  // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
   while (next && next.route.startsWith('http')) {
     next = allNotPending[++nextIndex];
   }

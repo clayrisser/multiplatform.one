@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container } from '../Container';
 import { components } from '../MDXComponents';
-import { authors } from '@data/authors';
+import { authors } from 'app/components/config/data';
 import { useTint } from '../../../hooks/useTint';
 import { ArrowLeft } from '@tamagui/lucide-icons';
 import { format, parseISO } from 'date-fns';
