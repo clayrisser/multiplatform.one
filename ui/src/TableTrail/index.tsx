@@ -1,6 +1,6 @@
 import React from 'react';
 import type { YStackProps, TextProps, XStackProps } from 'tamagui';
-import { YStack, Text, XStack, YGroup } from 'tamagui';
+import { YStack, Text, XStack } from 'tamagui';
 
 export interface TableDataProps {
   headerData: any[];

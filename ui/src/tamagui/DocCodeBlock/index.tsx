@@ -22,7 +22,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const [isCollapsed, setIsCollapsed] = useState(isHero || isCollapsible);
   const [code, setCode] = useState(undefined);
   const preRef = useRef<any>(null);
-  const { hasCopied, onCopy, value } = useClipboard(code);
+  const { hasCopied, onCopy } = useClipboard(code);
   // const frontmatter = useContext(FrontmatterContext)
 
   useEffect(() => {

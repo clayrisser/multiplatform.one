@@ -2,7 +2,7 @@
   "extends": "../tsconfig.base",
   "include": [
     "src",
-    "src/tamagui/DocsMenuContents",
+    "src/tamagui/.DocsMenuContents",
     "src/tamagui/.CodeBlock",
     "src/tamagui/.CodeDemo",
     "src/tamagui/.DocSearch",
@@ -10,18 +10,14 @@
     "src/tamagui/HeroBelow/.HeroBelow.stories.tsx",
     "src/tamagui/AnimationsDemo",
     "src/tamagui/.TintSection",
-    "src/tamagui/HeroPerformance",
+    "src/tamagui/.HeroPerformance",
     "src/tamagui/.HomeGlow",
     "src/tamagui/.BlogSlugPage",
     "src/hooks/.useDocsMenu",
     "src/demo/.ColorsDemo",
-    "src/demo/.UpdateThemeDemo",
+    "src/demo/UpdateThemeDemo",
     "src/demo/.AnimationsEnterDemo",
-    "src/tamagui/.HeroResponsive",
-    "src/hooks/.setTinted",
-    "src/hooks/.useClipboard",
-    "src/hooks/.useTint",
-    "src/hooks/.useOnIntersecting"
+    "src/tamagui/.HeroResponsive"
   ],
   "compilerOptions": {
     "rootDir": ".",
