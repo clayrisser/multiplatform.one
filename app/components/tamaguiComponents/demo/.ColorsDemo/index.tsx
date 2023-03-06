@@ -1,5 +1,5 @@
 import React from 'react';
-import { Variable } from '@tamagui/core';
+import type { Variable } from '@tamagui/core';
 import { H2, Paragraph, Separator, Square, XStack, YStack, getTokens, getVariableValue } from 'tamagui';
 
 const colorGroups = ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red'];
