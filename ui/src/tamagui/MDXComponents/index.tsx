@@ -1,26 +1,26 @@
 /* eslint-disable max-lines */
-import { ThemeTint } from '../../hooks/useTint';
-import { Link } from '@tamagui/lucide-icons';
+// import { ThemeTint } from '../../hooks/useTint';
+// import { Link } from '@tamagui/lucide-icons';
 // import { NextLink } from '../NextLink';
 import React from 'react';
-import { ScrollView } from 'react-native';
-import type { ImageProps, XStackProps } from 'tamagui';
+// import { ScrollView } from 'react-native';
+// import type { ImageProps, XStackProps } from 'tamagui';
 import {
-  Button,
-  H1,
-  H2,
-  H3,
-  H4,
-  H5,
-  Image,
+  // Button,
+  // H1,
+  // H2,
+  // H3,
+  // H4,
+  // H5,
+  // Image,
   Paragraph,
-  Separator,
-  Spacer,
-  Text,
-  Theme,
+  // Separator,
+  // Spacer,
+  // Text,
+  // Theme,
   ThemeableStack,
-  TooltipSimple,
-  XGroup,
+  // TooltipSimple,
+  // XGroup,
   XStack,
   YStack,
   styled,
@@ -29,8 +29,8 @@ import {
 // import { BenchmarkChart } from '../BenchmarkChart';
 // import { BenchmarkChartNative } from '../BenchmarkChartNative';
 // import { BenchmarkChartWeb } from '../BenchmarkChartWeb';
-import { Code, CodeInline } from '../Code';
-import { DataTable } from '../DataTable';
+import { CodeInline } from '../Code';
+// import { DataTable } from '../DataTable';
 // import * as Demos from '../Demos';
 import { DocCodeBlock } from '../DocCodeBlock';
 // import { ExternalIcon } from '../ExternalIcon';

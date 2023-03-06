@@ -3,7 +3,7 @@ import { CheckCircle, Clipboard, Paintbrush } from '@tamagui/lucide-icons';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { Button, TooltipSimple, XStack, YStack } from 'tamagui';
-import { setTinted, toggleTinted } from '../../hooks/setTinted';
+import { toggleTinted } from '../../hooks/setTinted';
 import { useClipboard } from '../../hooks/useClipboard';
 import { Code } from '../Code';
 import { ErrorBoundary } from '../ErrorBoundary';
