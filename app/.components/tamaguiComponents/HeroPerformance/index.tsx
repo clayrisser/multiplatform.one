@@ -1,11 +1,6 @@
 import React from 'react';
-<<<<<<< HEAD:ui/src/tamagui/HeroPerformance/index.tsx
-import { useOnIntersecting } from 'ui/src/hooks/useOnIntersecting';
-import { useTint } from 'ui/src/hooks/useTint';
-=======
-import { useOnIntersecting } from '@tamagui/demos';
-import { useTint } from '../../hooks/useTint';
->>>>>>> 3b90c2d0c68124f141f513124eb2fc14f9eb3da1:app/.components/.HeroPerformance/index.tsx
+import { useOnIntersecting } from 'app/hooks/useOnIntersecting';
+import { useTint } from 'app/hooks/useTint';
 import { NextLink } from '../NextLink';
 import { useRef, useState } from 'react';
 import { Button, Paragraph, XStack, YStack } from 'tamagui';

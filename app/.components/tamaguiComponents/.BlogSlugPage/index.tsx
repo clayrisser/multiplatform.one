@@ -1,24 +1,14 @@
 import React from 'react';
 import { Container } from '../Container';
 import { components } from '../MDXComponents';
-<<<<<<< HEAD:app/.components/.BlogSlugPage/index.tsx
-// import { authors } from '@data/authors';
-import { useTint } from '../../hooks/useTint';
-=======
 import { authors } from '@data/authors';
 import { useTint } from '../../../hooks/useTint';
->>>>>>> a34f6aff2b61210364a4e2b988e1bbb346500a29:app/.components/tamaguiComponents/.BlogSlugPage/index.tsx
 import { ArrowLeft } from '@tamagui/lucide-icons';
 import { format, parseISO } from 'date-fns';
 import { useRouter } from 'next/router';
 import { Button, H1, H2, H3, H6, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui';
 import { LinearGradient } from 'tamagui/linear-gradient';
-<<<<<<< HEAD:ui/src/tamagui/.BlogSlugPage/index.tsx
-
-import { FrontMatterContext } from '../FrontMatterContext';
-=======
 import { Frontatter } from '../FrontmatterContext';
->>>>>>> 3b90c2d0c68124f141f513124eb2fc14f9eb3da1:app/.components/.BlogSlugPage/index.tsx
 import { NextLink } from '../NextLink';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions

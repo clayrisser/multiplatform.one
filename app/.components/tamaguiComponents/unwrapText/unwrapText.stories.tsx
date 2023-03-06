@@ -2,7 +2,7 @@ import React from 'react';
 import { unwrapText } from './index';
 
 export default {
-  title: 'ui/tamagui/unwrapText',
+  title: 'app/components/tamaguiComponents/unwrapText',
   component: unwrapText,
   parameters: { status: { type: 'beta' } },
 };

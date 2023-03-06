@@ -2,7 +2,7 @@ import React from 'react';
 import { TintSection } from './index';
 
 export default {
-  title: 'ui/tamagui/TintSection',
+  title: 'app/components/tamaguiComponents/TintSection',
   component: TintSection,
   parameters: { status: { type: 'beta' } },
 };

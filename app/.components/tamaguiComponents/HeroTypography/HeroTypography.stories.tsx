@@ -2,7 +2,7 @@ import React from 'react';
 import { HeroTypography } from './index';
 
 export default {
-  title: 'ui/tamagui/HeroTypography',
+  title: 'app/component/tamaguiComponents/HeroTypography',
   components: HeroTypography,
   parameters: { status: { type: 'beta' } },
 };
