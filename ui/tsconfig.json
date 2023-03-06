@@ -14,9 +14,9 @@
     "src/tamagui/.HomeGlow",
     "src/tamagui/.BlogSlugPage",
     "src/hooks/.useDocsMenu",
-    "src/demo/.ColorsDemo",
-    "src/demo/.UpdateThemeDemo",
-    "src/demo/.AnimationsEnterDemo",
+    "src/.demo/.ColorsDemo",
+    "src/.demo/.UpdateThemeDemo",
+    "src/.demo/.AnimationsEnterDemo",
     "src/tamagui/.HeroResponsive"
   ],
   "compilerOptions": {
