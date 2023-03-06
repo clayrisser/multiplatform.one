@@ -1,4 +1,4 @@
-import { useTint } from '@multiplatform/ui/src/.hooks/useTint';
+import { useTint } from 'app/hooks/useTint';
 import { useCallback, useEffect } from 'react';
 import { useForceUpdate } from 'tamagui';
 
