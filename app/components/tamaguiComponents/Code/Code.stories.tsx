@@ -3,7 +3,7 @@ import { Code, CodeInline } from './index';
 import { YStack, Text } from 'tamagui';
 
 export default {
-  title: 'app/tamagui/CodeAndCodeInline',
+  title: 'app/tamaguiComponents/CodeAndCodeInline',
   component: Code,
   CodeInline,
   parameters: { status: { type: 'keep' } },

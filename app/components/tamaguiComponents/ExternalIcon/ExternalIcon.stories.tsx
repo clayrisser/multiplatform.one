@@ -2,7 +2,7 @@ import React from 'react';
 import { ExternalIcon } from './index';
 
 export default {
-  title: 'app/tamagui/ExternalIcon',
+  title: 'app/tamaguiComponents/ExternalIcon',
   component: ExternalIcon,
   parameters: {
     status: {

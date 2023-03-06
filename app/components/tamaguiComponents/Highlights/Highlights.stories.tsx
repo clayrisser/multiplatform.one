@@ -2,7 +2,7 @@ import React from 'react';
 import { Highlights } from './index';
 
 export default {
-  title: 'app/tamagui/Highlights',
+  title: 'app/tamaguiComponents/Highlights',
   component: Highlights,
   parameters: { status: { type: 'beta' } },
 };

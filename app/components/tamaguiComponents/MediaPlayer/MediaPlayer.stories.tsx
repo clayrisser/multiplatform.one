@@ -2,7 +2,7 @@ import React from 'react';
 import { MediaPlayer } from './index';
 
 export default {
-  title: 'app/tamagui/MediaPlayer',
+  title: 'app/tamaguiComponents/MediaPlayer',
   component: MediaPlayer,
   parameters: {
     status: {

@@ -2,7 +2,7 @@ import React from 'react';
 import { FeaturesGrid } from './index';
 
 export default {
-  title: 'ui/tamagui/HeroFeaturesGrid',
+  title: 'app/tamaguiComponents/HeroFeaturesGrid',
   component: FeaturesGrid,
   parameters: {
     status: {

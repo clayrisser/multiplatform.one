@@ -2,7 +2,7 @@ import React from 'react';
 import { BenchmarkChart } from './index';
 
 export default {
-  title: 'app/tamagui/BenchmarkChart',
+  title: 'app/tamaguiComponents/BenchmarkChart',
   component: BenchmarkChart,
   parameters: { status: { type: 'beta' } },
 };

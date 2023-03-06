@@ -2,7 +2,7 @@ import React from 'react';
 import { HeroExampleCode } from './index';
 
 export default {
-  title: 'app/tamagui/HeroExampleCode',
+  title: 'app/tamaguiComponents/HeroExampleCode',
   component: HeroExampleCode,
   parameters: {
     status: {

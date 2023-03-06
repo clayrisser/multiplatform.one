@@ -2,7 +2,7 @@ import React from 'react';
 import { HeroPerformance } from './index';
 
 export default {
-  title: 'app/components/tamaguiComponents/HeroPerformance',
+  title: 'app/tamaguiComponents/HeroPerformance',
   component: HeroPerformance,
   parameters: { status: { type: 'beta' } },
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { GithubIcon } from './index';
 
 export default {
-  title: 'app/tamagui/GithubIcon',
+  title: 'app/tamaguiComponents/GithubIcon',
   component: GithubIcon,
   parameters: {
     status: {

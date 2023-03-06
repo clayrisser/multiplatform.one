@@ -2,7 +2,7 @@ import React from 'react';
 import { ColorToggleButton } from './index';
 
 export default {
-  title: 'app/tamagui/ColorToggleButton',
+  title: 'app/tamaguiComponents/ColorToggleButton',
   component: ColorToggleButton,
   parameters: {
     status: {

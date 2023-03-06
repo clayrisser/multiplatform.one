@@ -2,7 +2,7 @@ import React from 'react';
 import { HeroExampleAnimations } from './index';
 
 export default {
-  title: 'app/tamagui/HeroExampleAnimations',
+  title: 'app/tamaguiComponents/HeroExampleAnimations',
   component: HeroExampleAnimations,
   parameters: {
     status: {

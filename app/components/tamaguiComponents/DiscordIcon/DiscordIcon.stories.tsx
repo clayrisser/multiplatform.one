@@ -2,7 +2,7 @@ import React from 'react';
 import { DiscordIcon } from './index';
 
 export default {
-  title: 'app/tamagui/DiscordIcon',
+  title: 'app/tamaguiComponents/DiscordIcon',
   component: DiscordIcon,
   parameters: {
     status: {
