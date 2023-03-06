@@ -97,7 +97,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 horizontal
                 showsHorizontalScrollIndicator={false}
               >
-                <Code padding="$4" backgroundColor="transparent" f={1} className={className}>
+                <Code padding="$4" backgroundColor="transparent" flex={1} className={className}>
                   {children}
                 </Code>
               </ScrollView>

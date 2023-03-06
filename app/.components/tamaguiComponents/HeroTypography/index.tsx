@@ -1,7 +1,7 @@
 import React from 'react';
 import { AnimatePresence } from '@tamagui/animate-presence';
-// import { useIsIntersecting } from '../demos';
-import { useTint } from 'ui/src/hooks/useTint';
+import { useIsIntersecting } from 'app/hooks/useOnIntersecting';
+import { useTint } from 'app/hooks/useTint';
 import { NextLink } from '../NextLink';
 import { memo } from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -36,19 +36,19 @@ export const HeroTypography = memo(() => {
 
   return (
     <>
-      <YStack fullscreen className="" o={0.1} />
+      <YStack fullscreen className="" opacity={0.1} />
       {/* -5 my to fir grid nicely */}
-      <ContainerLarge my={-5} position="relative" space="$8">
-        <YStack ref={ref} ai="center" space="$3">
+      <ContainerLarge marginVertical={-5} position="relative" space="$8">
+        <YStack ref={ref} alignItems="center" space="$3">
           <HomeH2>
             Beautifully expressive font systems with <span className="clip-text rainbow">rhythm</span>.
           </HomeH2>
         </YStack>
 
         <XStack
-          ai="center"
-          jc="center"
-          pos="relative"
+          alignItems="center"
+          justifyContent="center"
+          position="relative"
           space="$8"
           flexDirection="row-reverse"
           $sm={{
@@ -58,16 +58,16 @@ export const HeroTypography = memo(() => {
           <OverlayCard />
 
           <YStack
-            h={300}
-            w="40%"
+            height={300}
+            width="40%"
             space="$0.5"
-            jc="center"
+            justifyContent="center"
             scale={1.1}
             x={-20}
             y={5}
-            $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }}
+            $sm={{ y: 0, minWidth: '110%', alignItems: 'center', x: 0, scale: 0.9 }}
           >
-            <YStack ai="flex-end" contain="paint layout" h={270}>
+            <YStack alignItems="flex-end" contain="paint layout" height={270}>
               <AnimatePresence exitBeforeEnter>
                 <AnimatedHeading key={`${family}1`} index={0} Component={H1} family={family} color="$pink10">
                   Swappable
@@ -101,19 +101,19 @@ const OverlayCard = () => {
 
   // {/* TODO elevation not overriding? */}
   return (
-    <Card bw={1} boc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
-      <YStack jc="center" p="$6" space="$5" maw="calc(min(90vw, 400px))" $sm={{ p: '$5' }}>
-        <Paragraph ta="left" size="$8" fow="400" ls={-1}>
+    <Card borderWidth={1} borderColor="$borderColor" borderRadius="$6" elevation="$6" shadowRadius={60}>
+      <YStack justifyContent="center" padding="$6" space="$5" maxWidth="calc(min(90vw, 400px))" $sm={{ padding: '$5' }}>
+        <Paragraph textAlign="left" size="$8" fontWeight="400" letterSpacing={-1}>
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>
 
-        <Paragraph ta="left" size="$6" theme="alt2" fow="400">
+        <Paragraph textAlign="left" size="$6" theme="alt2" fontWeight="400">
           Typed, sizable fonts with control over every facet - weight, spacing, line-height, letter-spacing, color and
           more.
         </Paragraph>
 
         <NextLink href="/docs/core/configuration">
-          <Button accessibilityLabel="Fonts docs" fontFamily="$silkscreen" als="flex-end" theme={tint as any}>
+          <Button accessibilityLabel="Fonts docs" fontFamily="$silkscreen" alignSelf="flex-end" theme={tint as any}>
             Fonts &raquo;
           </Button>
         </NextLink>
@@ -139,14 +139,14 @@ const AnimatedHeading = memo(
       <Delay by={index * 180}>
         <Component
           animation="lazy"
-          enterStyle={{ o: 0, y: -10 }}
-          exitStyle={{ o: 0, y: 10 }}
-          o={1}
+          enterStyle={{ opacity: 0, y: -10 }}
+          exitStyle={{ opacity: 0, y: 10 }}
+          opacity={1}
           y={0}
-          pr="$1"
-          my="$1"
+          paddingRight="$1"
+          marginVertical="$1"
           $sm={{
-            pr: 0,
+            paddingRight: 0,
           }}
           fontFamily={`$${family}`}
           textShadowColor="$shadowColorFocus"
