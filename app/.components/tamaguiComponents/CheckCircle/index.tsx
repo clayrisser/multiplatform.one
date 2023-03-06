@@ -3,7 +3,16 @@ import React from 'react';
 import { YStack } from 'tamagui';
 
 export const CheckCircle = () => (
-  <YStack mt={2} bc="$backgroundHover" w={40} h={40} ai="center" jc="center" br={100} mr="$2.5">
+  <YStack
+    marginTop={2}
+    backgroundColor="$backgroundHover"
+    width={40}
+    height={40}
+    alignItems="center"
+    justifyContent="center"
+    borderRadius={100}
+    marginRight="$2.5"
+  >
     <Check size={12} color="var(--colorHover)" />
   </YStack>
 );

@@ -7,7 +7,7 @@ import { ContainerLarge } from '../Container';
 const FeatureItem = ({ label, children }) => {
   return (
     <SizableText>
-      <SizableText size="$5" fow="800">
+      <SizableText size="$5" fontWeight="800">
         {label}
       </SizableText>
       &nbsp;&nbsp;-&nbsp;&nbsp;
@@ -22,7 +22,7 @@ const Features = ({ items, ...props }: any) => {
   return (
     <YStack space {...props}>
       {items.map((feature, i) => (
-        <Card key={`feature-${i}`} p="$6" elevation="$1" $sm={{ p: '$4' }}>
+        <Card key={`feature-${i}`} padding="$6" elevation="$1" $sm={{ padding: '$4' }}>
           <XStack tag="li">
             <Text color="$green9">
               <CheckCircle />
@@ -38,8 +38,8 @@ const Features = ({ items, ...props }: any) => {
 export const HeroExampleProps = () => {
   return (
     <ContainerLarge position="relative">
-      <XStack px="$6" pt="$8" space="$4" $sm={{ flexDirection: 'column', px: 0 }}>
-        <YStack w="50%" $sm={{ w: '100%' }}>
+      <XStack paddingHorizontal="$6" paddingTop="$8" space="$4" $sm={{ flexDirection: 'column', paddingHorizontal: 0 }}>
+        <YStack width="50%" $sm={{ width: '100%' }}>
           <Features
             space="$4"
             items={[
@@ -55,7 +55,7 @@ export const HeroExampleProps = () => {
             ]}
           />
         </YStack>
-        <YStack w="50%" $sm={{ w: `100%` }}>
+        <YStack width="50%" $sm={{ width: `100%` }}>
           <Features
             space="$4"
             items={[

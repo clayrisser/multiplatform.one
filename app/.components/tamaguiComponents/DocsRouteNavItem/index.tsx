@@ -1,8 +1,8 @@
 import React from 'react';
-import { NextLink } from 'ui/src/tamagui/NextLink';
+import { NextLink } from '../NextLink';
 import { SizableText, Spacer, XStack, YStack } from 'tamagui';
-import type { NavItemProps } from 'ui/src/tamagui/DocsPage';
-import { ExternalIcon } from 'ui/src/tamagui/ExternalIcon';
+import type { NavItemProps } from '../DocsPage';
+import { ExternalIcon } from '../ExternalIcon';
 
 export const DocsRouteNavItem = React.memo(({ children, active, href, pending, ...props }: NavItemProps) => {
   const isExternal = href.startsWith('http');
@@ -12,29 +12,29 @@ export const DocsRouteNavItem = React.memo(({ children, active, href, pending, .
         className="docs-nav-item all ease-in ms150"
         {...props}
         {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-        ai="center"
-        jc="flex-end"
-        py="$0.25"
-        px="$4"
+        alignItems="center"
+        justifyContent="flex-end"
+        paddingVertical="$0.25"
+        paddingHorizontal="$4"
         opacity={pending ? 0.25 : 1}
         pressStyle={{
           backgroundColor: '$background',
         }}
         pointerEvents={pending ? 'none' : 'auto'}
-        pos="relative"
+        position="relative"
         $sm={{
-          py: '$1',
+          paddingVertical: '$1',
         }}
       >
         <YStack
           className="sidebar-indicator"
-          o={active ? 1 : 0}
+          opacity={active ? 1 : 0}
           position="absolute"
           top={0}
           bottom={0}
           right={0}
           width={1}
-          bc={active ? '$color' : '$backgroundHover'}
+          backgroundColor={active ? '$color' : '$backgroundHover'}
         />
         <SizableText
           className="name"
@@ -58,7 +58,14 @@ export const DocsRouteNavItem = React.memo(({ children, active, href, pending, .
         {pending ? (
           <>
             <XStack flex={1} />
-            <SizableText theme="alt2" size="$1" px="$2" py="$1" bc="$background" borderRadius="$3">
+            <SizableText
+              theme="alt2"
+              size="$1"
+              paddingHorizontal="$2"
+              paddingVertical="$1"
+              backgroundColor="$background"
+              borderRadius="$3"
+            >
               WIP
             </SizableText>
           </>

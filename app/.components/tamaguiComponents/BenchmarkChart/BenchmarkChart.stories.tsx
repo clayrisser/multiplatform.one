@@ -11,8 +11,8 @@ export const main = () => (
   <BenchmarkChart
     data={[
       {
-        name: 'ajith',
-        location: 'vizag',
+        name: 'lavanya',
+        location: 'velpuru',
         role: 'Developer',
       },
     ]}
