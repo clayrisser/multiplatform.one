@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogoIcon } from '../../../tamaguiComponents/Logo/TamaguiLogo';
+import { LogoIcon } from '../../Logo/TamaguiLogo';
 import { Play } from '@tamagui/lucide-icons';
 import { Button, Square, useControllableState, useEvent } from 'tamagui';
 
