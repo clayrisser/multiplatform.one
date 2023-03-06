@@ -1,7 +1,7 @@
 import { throttle } from '@github/mini-throttle';
-import { demoMedia } from '../../config/demoMedia';
-import { useOnIntersecting } from '@tamagui/demos';
-import { useTint } from '../../hooks/useTint';
+import { demoMedia } from 'app/components/config/media';
+import { useOnIntersecting } from 'app/hooks/useOnIntersecting';
+import { useTint } from 'app/hooks/useTint';
 import { ChevronLeft, ChevronRight, Lock, MapPin, Monitor, Star } from '@tamagui/lucide-icons';
 import React, { startTransition, useMemo } from 'react';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';

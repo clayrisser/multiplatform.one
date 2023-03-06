@@ -3,6 +3,10 @@ import { Table, Header, Row, Rows } from '.';
 
 export default {
   title: 'Screens/TableComponent',
+  component: Table,
+  parameters: {
+    status: { type: 'beta' },
+  },
 };
 
 export const main = (args: any) => {
@@ -22,7 +26,7 @@ main.args = {
   columns: {
     xStack: {},
     text: { padding: 10 },
-    columns: ['S.no', 'Name', 'Age', 'Location'],
+    columns: ['S.no', 'Name', 'Age', 'Location', 'S.no', 'Name', 'Age', 'Location'],
   },
   rows: {
     yStack: {},
@@ -35,7 +39,7 @@ main.args = {
       [4, 'Ajith', 27, 'Vizag'],
       [5, 'Rani', 23, 'Vizag'],
     ],
-    emptyValue: 'N/A',
+    emptyValue: '',
   },
   row: {
     xStack: {},
