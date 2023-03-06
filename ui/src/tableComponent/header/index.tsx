@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import type { XStackProps, TextProps } from 'tamagui';
-import { XStack, Text } from 'tamagui';
+import { XStack, H6 } from 'tamagui';
 import { useTableStore } from '../hooks';
 
 export interface HeaderDataProps {
@@ -20,9 +20,19 @@ export const Header = ({ xStack, text, ...props }: HeaderProps) => {
   return (
     <XStack backgroundColor="$backgroundFocus" jc="space-around" {...xStack}>
       {props.columns.map((column, i) => (
-        <Text padding={10} width="100%" flexWrap="wrap" textAlign="center" alignSelf="center" {...text} key={i}>
+        <H6
+          textAlign="center"
+          alignSelf="center"
+          flexWrap="wrap"
+          padding="$1"
+          borderLeftWidth={i === 0 ? 0 : 2}
+          als="stretch"
+          width="100%"
+          {...text}
+          key={i}
+        >
           {column}
-        </Text>
+        </H6>
       ))}
     </XStack>
   );

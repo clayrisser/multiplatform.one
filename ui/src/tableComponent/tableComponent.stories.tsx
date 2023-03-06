@@ -35,6 +35,7 @@ main.args = {
       [4, 'Ajith', 27, 'Vizag'],
       [5, 'Rani', 23, 'Vizag'],
     ],
+    emptyValue: 'N/A',
   },
   row: {
     xStack: {},
