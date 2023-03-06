@@ -10,14 +10,14 @@ export const SocialLinksRow = () => {
     <XStack space="$4" $sm={{ flexDirection: 'column' }}>
       <Card
         width="33.33%"
-        jc="center"
+        justifyContent="center"
         $sm={{ width: 'auto' }}
         space="$2"
         tag="a"
         href="https://twitter.com/tamagui_js"
         target="_blank"
         rel="noopener noreferrer"
-        p="$5"
+        padding="$5"
       >
         <TwitterIcon />
         <H4 cursor="pointer" fontFamily="$silkscreen">
@@ -29,14 +29,14 @@ export const SocialLinksRow = () => {
       </Card>
       <Card
         width="33.33%"
-        jc="center"
+        justifyContent="center"
         space="$2"
         $sm={{ width: 'auto' }}
         tag="a"
         href="https://discord.gg/4qh6tdcVDa"
         target="_blank"
         rel="noopener noreferrer"
-        p="$5"
+        padding="$5"
       >
         <DiscordIcon />
         {/* TODO this is using $body for other attributes not $silkscreen */}
@@ -49,14 +49,14 @@ export const SocialLinksRow = () => {
       </Card>
       <Card
         width="33.33%"
-        jc="center"
+        justifyContent="center"
         $sm={{ width: 'auto' }}
         space="$2"
         tag="a"
         href="https://github.com/tamagui/tamagui"
         target="_blank"
         rel="noopener noreferrer"
-        p="$5"
+        padding="$5"
       >
         <GithubIcon />
         <H4 cursor="pointer" fontFamily="$silkscreen">

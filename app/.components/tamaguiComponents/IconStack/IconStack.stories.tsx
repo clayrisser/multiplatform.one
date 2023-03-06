@@ -2,7 +2,7 @@ import React from 'react';
 import { IconStack } from './index';
 
 export default {
-  title: 'ui/tamagui/IconStack',
+  title: 'app/tamagui/IconStack',
   component: IconStack,
   parameters: { status: { type: 'beta' } },
 };

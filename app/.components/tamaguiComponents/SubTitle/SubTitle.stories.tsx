@@ -2,7 +2,7 @@ import React from 'react';
 import { SubTitle } from './index';
 
 export default {
-  title: 'ui/tamagui/SubTitle',
+  title: 'app/tamagui/SubTitle',
   component: SubTitle,
   parameters: { status: { type: 'beta' } },
 };

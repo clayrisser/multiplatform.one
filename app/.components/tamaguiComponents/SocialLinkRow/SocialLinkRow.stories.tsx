@@ -2,7 +2,7 @@ import React from 'react';
 import { SocialLinksRow } from './index';
 
 export default {
-  title: 'ui/tamagui/SocialLinksRow',
+  title: 'app/tamagui/SocialLinksRow',
   component: SocialLinksRow,
   parameters: { status: { type: 'beta' } },
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { InstallInput } from './index';
 
 export default {
-  title: 'ui/tamagui/InstallInput',
+  title: 'app/tamagui/InstallInput',
   component: InstallInput,
   parameters: {
     status: {
