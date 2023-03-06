@@ -13,8 +13,8 @@ export const main = () => (
     headerDataStyle={{ textAlign: 'center', als: 'center' }}
     headerStyle={{ jc: 'space-evenly', bc: '$background', m: 10, padding: 10, br: 10 }}
     rowData={[
-      ['hello', 'ajith', 'helo', 'ajith'],
-      ['hello', 'name', 'jhsgs', 'hello'],
+      ['hello', 'ajith', 'hello', 'ajith'],
+      ['hello', 'name', 'ajith', 'hello'],
       ['may', 'I', 'hate', 'you'],
       ['ajith', 'hello', 'ajith', 'hello'],
     ]}

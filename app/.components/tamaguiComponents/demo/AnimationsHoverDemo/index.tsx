@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogoIcon } from '../../../tamaguiComponents/Logo/TamaguiLogo';
+import { LogoIcon } from '../../Logo/TamaguiLogo';
 import { Square } from 'tamagui';
 
 export function AnimationsHoverDemo() {

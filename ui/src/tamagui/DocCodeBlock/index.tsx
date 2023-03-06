@@ -3,7 +3,7 @@ import { CheckCircle, Clipboard, Paintbrush } from '@tamagui/lucide-icons';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { Button, TooltipSimple, XStack, YStack } from 'tamagui';
-import { setTinted, toggleTinted } from '../../hooks/setTinted';
+import { toggleTinted } from '../../hooks/setTinted';
 import { useClipboard } from '../../hooks/useClipboard';
 import { Code } from '../Code';
 import { ErrorBoundary } from '../ErrorBoundary';
@@ -22,7 +22,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const [isCollapsed, setIsCollapsed] = useState(isHero || isCollapsible);
   const [code, setCode] = useState(undefined);
   const preRef = useRef<any>(null);
-  const { hasCopied, onCopy, value } = useClipboard(code);
+  const { hasCopied, onCopy } = useClipboard(code);
   // const frontmatter = useContext(FrontmatterContext)
 
   useEffect(() => {
