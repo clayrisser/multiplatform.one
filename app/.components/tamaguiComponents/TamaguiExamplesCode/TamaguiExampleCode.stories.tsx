@@ -2,7 +2,7 @@ import React from 'react';
 import { TamaguiExamples } from './index';
 
 export default {
-  title: 'ui/tamagui/TamaguiExamples',
+  title: 'app/components/tamaguiComponents/TamaguiExamples',
   component: TamaguiExamples,
   parameters: { status: { type: 'beta' } },
 };

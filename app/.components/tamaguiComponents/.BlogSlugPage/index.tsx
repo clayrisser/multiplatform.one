@@ -11,6 +11,7 @@ import { LinearGradient } from 'tamagui/linear-gradient';
 import { FrontMatter } from '../FrontMatterContext/frontMatter';
 import { NextLink } from '../NextLink';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type BlogPost = {
   frontmatter: FrontMatter;
   code: any;

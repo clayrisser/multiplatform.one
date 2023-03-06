@@ -2,7 +2,7 @@ import React from 'react';
 import { Preview } from './index';
 
 export default {
-  title: 'ui/tamagui/Preview',
+  title: 'app/components/tamaguiComponents/Preview',
   components: Preview,
   parameters: { status: { type: 'beta' } },
 };
