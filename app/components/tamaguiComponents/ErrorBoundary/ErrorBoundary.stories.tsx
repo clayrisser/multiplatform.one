@@ -11,7 +11,6 @@ export const main = () => (
   <ErrorBoundary>
     <YStack>
       <Text>Oops, there is an error!</Text>
-      <Button onPress={() => console.log('pressed')}>Try again?</Button>
     </YStack>
   </ErrorBoundary>
 );
