@@ -3,7 +3,7 @@ import { createContext, useContext } from 'react';
 import { Spacer } from 'tamagui';
 import type { getCompilationExamples } from '../../lib/getCompilationExamples';
 import { HeroContainer } from '../HeroContainer';
-import { HeroExampleCode } from 'ui/src/tamagui/HeroExampleCode';
+import { HeroExampleCode } from 'app/.components/tamaguiComponents/HeroExampleCode';
 
 export const TamaguiExamples = createContext<ReturnType<typeof getCompilationExamples> | null>(null);
 
