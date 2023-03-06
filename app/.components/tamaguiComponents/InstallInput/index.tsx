@@ -12,16 +12,16 @@ export const InstallInput = memo(() => {
     <XStack
       borderWidth={1}
       borderColor="$borderColor"
-      px="$7"
-      pl="$6"
+      paddingHorizontal="$7"
+      paddingLeft="$6"
       height={48}
-      ai="center"
-      als="center"
+      alignItems="center"
+      alignSelf="center"
       elevation="$3"
-      bc="$background"
-      br="$10"
+      backgroundColor="$background"
+      borderRadius="$10"
     >
-      <Paragraph ta="center" size="$4" fontWeight="500" fontFamily="$mono" $sm={{ size: '$3' }}>
+      <Paragraph textAlign="center" size="$4" fontWeight="500" fontFamily="$mono" $sm={{ size: '$3' }}>
         {installScript}
       </Paragraph>
       <Spacer size="$6" />
@@ -30,7 +30,7 @@ export const InstallInput = memo(() => {
           accessibilityLabel={installScript}
           size="$3"
           borderRadius="$8"
-          mr="$-6"
+          marginRight="$-6"
           x={-1}
           // TODO broken in latest
           icon={

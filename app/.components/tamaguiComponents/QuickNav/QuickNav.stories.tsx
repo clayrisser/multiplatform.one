@@ -2,7 +2,7 @@ import React from 'react';
 import { QuickNav } from './index';
 
 export default {
-  title: 'app/tamagui/QuickNav',
+  title: 'app/components/tamaguiComponents/QuickNav',
   components: QuickNav,
   parameters: { status: { type: 'beta' } },
 };

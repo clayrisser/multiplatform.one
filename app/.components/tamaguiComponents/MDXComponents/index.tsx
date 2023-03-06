@@ -55,20 +55,20 @@ import { unwrapText } from '../unwrapText';
 
 export const TableFrame = styled(ThemeableStack, {
   bordered: true,
-  br: '$4',
+  borderRadius: '$4',
   ov: 'hidden',
-  my: '$4',
+  marginVertical: '$4',
 });
 
 export const Table = ({ heading, children, ...props }) => {
   return (
     <TableFrame className="no-scrollbar" overflow={'scroll' as any} {...props}>
       {!!heading && (
-        <TableCell size="$4" bc="$color1" fow="500" color="$color9">
+        <TableCell size="$4" backgroundColor="$color1" fontWeight="500" color="$color9">
           {heading}
         </TableCell>
       )}
-      <XStack minWidth="100%" ai="stretch">
+      <XStack minWidth="100%" alignItems="stretch">
         {children}
       </XStack>
     </TableFrame>
@@ -81,7 +81,7 @@ export const code = (props) => {
     return <CodeInline>{unwrapText(children)}</CodeInline>;
   }
   return (
-    <YStack mt="$3">
+    <YStack marginTop="$3">
       <DocCodeBlock
         isHighlightingLines={line !== undefined}
         className={className}
@@ -98,17 +98,17 @@ export const code = (props) => {
 };
 
 export const TableCell = styled(Paragraph, {
-  bbw: 1,
-  bbc: '$borderColor',
-  fd: 'row',
-  ai: 'center',
-  pos: 'relative',
-  f: 1,
-  jc: 'center',
-  ta: 'center',
-  h: '$4',
-  p: '$2',
-  px: '$3',
+  borderBottomWidth: 1,
+  borderBottomColor: '$borderColor',
+  flexDirection: 'row',
+  alignItems: 'center',
+  position: 'relative',
+  flex: 1,
+  justifyContent: 'center',
+  textAlign: 'center',
+  height: '$4',
+  padding: '$2',
+  paddingHorizontal: '$3',
   size: '$5',
   ellipse: true,
 
@@ -127,27 +127,27 @@ export const TableCell = styled(Paragraph, {
 });
 
 export const TableCol = styled(ThemeableStack, {
-  brw: 1,
-  brc: '$borderColor',
-  f: 1,
-  mr: -1,
-  fd: 'column',
+  borderRightWidth: 1,
+  borderRightColor: '$borderColor',
+  flex: 1,
+  marginRight: -1,
+  flexDirection: 'column',
 });
 
 export const TableHighlight = styled(YStack, {
   fullscreen: true,
-  bc: '$yellow1',
+  backgroundColor: '$yellow1',
 });
 
 export const components = {
   SocialLinksRow: () => (
-    <YStack mt="$6" mx="$-4">
+    <YStack marginTop="$6" marginHorizontal="$-4">
       <SocialLinksRow />
     </YStack>
   ),
 
   Wide: (props) => (
-    <YStack mx="$-8" $sm={{ mx: '$-2' }}>
+    <YStack marginHorizontal="$-8" $sm={{ marginHorizontal: '$-2' }}>
       {props.children}
     </YStack>
   ),
@@ -191,14 +191,14 @@ export const components = {
     return (
       <YStack
         $gtMd={{ mx: '$-4' }}
-        mt="$5"
-        mb="$3"
-        px="$6"
-        py="$2"
-        br="$6"
-        bw={1}
-        o={0.8}
-        boc="$borderColor"
+        marginTop="$5"
+        marginBottom="$3"
+        paddingHorizontal="$6"
+        paddingVertical="$2"
+        borderRadius="$6"
+        borderWidth={1}
+        opacity={0.8}
+        borderColor="$borderColor"
         {...props}
       />
     );
@@ -224,9 +224,9 @@ export const components = {
       pe="none"
       size="$2"
       theme="pink_alt2"
-      pos="absolute"
-      t={-15}
-      r={-75}
+      position="absolute"
+      top={-15}
+      right={-75}
       rotate="5deg"
     >
       Beta
@@ -239,8 +239,8 @@ export const components = {
         tag="p"
         size={large ? '$9' : '$7'}
         className={'intro-paragraph' + (large ? ' large' : '')}
-        my="$3"
-        fow={large ? '200' : '300'}
+        marginHorizontal="$3"
+        fontWeight={large ? '200' : '300'}
         {...props}
       >
         {disableUnwrapText ? children : unwrapText(children)}
@@ -248,14 +248,14 @@ export const components = {
     );
   },
 
-  Grid: (props) => <XStack flexWrap="wrap" jc="space-between" {...props} />,
+  Grid: (props) => <XStack flexWrap="wrap" justifyContent="space-between" {...props} />,
   Card: TamaguiCard,
 
   Note: (props) => (
     <YStack
       tag="aside"
-      mt="$5"
-      mb="$5"
+      marginTop="$5"
+      marginBottom="$5"
       borderRadius="$3"
       // & & p
       // fontSize: '$3',
@@ -266,33 +266,50 @@ export const components = {
     />
   ),
 
-  Aside: (props) => <Paragraph color="$color11" tag="span" als="center" fow="600" fontSize="$2" {...props} />,
+  Aside: (props) => (
+    <Paragraph color="$color11" tag="span" alignSelf="center" fontWeight="600" fontSize="$2" {...props} />
+  ),
 
   Notice,
 
-  h1: (props) => <H1 width="max-content" pos="relative" mb="$2" {...props} />,
+  h1: (props) => <H1 width="max-content" position="relative" marginBottom="$2" {...props} />,
 
   h2: ({ children, ...props }) => (
-    <H2 pos="relative" width={`fit-content` as any} pt="$8" mt="$-4" mb="$2" data-heading {...props}>
+    <H2
+      position="relative"
+      width={`fit-content` as any}
+      paddingTop="$8"
+      marginTop="$-4"
+      marginBottom="$2"
+      data-heading
+      {...props}
+    >
       {children}
     </H2>
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading pt="$8" mt="$-4" mb="$1" id={id}>
-      <H3 pos="relative" width={`fit-content` as any} nativeID={id} data-heading {...props}>
+    <LinkHeading paddingTop="$8" marginTop="$-4" marginBottom="$1" id={id}>
+      <H3 position="relative" width={`fit-content` as any} nativeID={id} data-heading {...props}>
         {children}
       </H3>
       {getNonTextChildren(children)}
     </LinkHeading>
   ),
 
-  h4: (props) => <H4 pos="relative" width={`fit-content` as any} mt="$4" mb="$3" {...props} />,
+  h4: (props) => <H4 position="relative" width={`fit-content` as any} marginTop="$4" marginBottom="$3" {...props} />,
 
-  h5: (props) => <H5 mt="$4" {...props} />,
+  h5: (props) => <H5 marginTop="$4" {...props} />,
 
   p: (props) => (
-    <Paragraph className="docs-paragraph" display="block" fontSize={15} lineHeight={24} my="$2.5" {...props} />
+    <Paragraph
+      className="docs-paragraph"
+      display="block"
+      fontSize={15}
+      lineHeight={24}
+      marginVertical="$2.5"
+      {...props}
+    />
   ),
 
   a: ({ href = '', children, ...props }) => {
@@ -304,7 +321,7 @@ export const components = {
           {href.startsWith('http') ? (
             <>
               &nbsp;
-              <Text fontSize="inherit" display="inline-flex" y={2} ml={-1}>
+              <Text fontSize="inherit" display="inline-flex" y={2} marginLeft={-1}>
                 <ExternalIcon />
               </Text>
             </>
@@ -317,10 +334,12 @@ export const components = {
   hr: HR,
 
   ul: ({ children }) => {
-    return <Ul my="$4">{React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}</Ul>;
+    return (
+      <Ul marginVertical="$4">{React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}</Ul>
+    );
   },
 
-  ol: (props) => <YStack {...props} tag="ol" mb="$3" />,
+  ol: (props) => <YStack {...props} tag="ol" marginBottom="$3" />,
 
   li: (props) => {
     return <Li marginVertical="$1">{props.children}</Li>;
@@ -329,7 +348,7 @@ export const components = {
   strong: (props) => <Paragraph tag="strong" fontSize="inherit" {...props} fontWeight="700" />,
 
   img: ({ ...props }) => (
-    <YStack tag="span" my="$6">
+    <YStack tag="span" marginVertical="$6">
       {/* TODO make this a proper <Image /> component */}
       <YStack tag="img" {...props} maxWidth="100%" />
     </YStack>
@@ -350,19 +369,19 @@ export const components = {
       <OffsetBox
         size={size}
         tag="figure"
-        f={1}
-        mx={0}
-        mb="$3"
-        ai="center"
-        jc="center"
+        flex={1}
+        marginHorizontal={0}
+        marginBottom="$3"
+        alignItems="center"
+        justifyContent="center"
         ov="hidden"
         {...(overlap && {
-          mt: '$-6',
+          marginTop: '$-6',
         })}
       >
         <Image maxWidth="100%" {...props} />
         {!!children && (
-          <Text tag="figcaption" lineHeight={23} color="$colorPress" mt="$2">
+          <Text tag="figcaption" lineHeight={23} color="$colorPress" marginTop="$2">
             {children}
           </Text>
         )}
@@ -381,7 +400,7 @@ export const components = {
   },
 
   Video: ({ small, large, src, children = '', muted = true, autoPlay = true, controls, size, ...props }) => (
-    <YStack tag="figure" mx={0} my="$6">
+    <YStack tag="figure" marginHorizontal={0} marginVertical="$6">
       <OffsetBox size={size}>
         <video
           src={src}
@@ -393,7 +412,7 @@ export const components = {
           style={{ width: '100%', display: 'block' }}
         />
       </OffsetBox>
-      <Text tag="figcaption" lineHeight={23} mt="$2" color="$colorPress">
+      <Text tag="figcaption" lineHeight={23} marginTop="$2" color="$colorPress">
         {children}
       </Text>
     </YStack>
@@ -401,14 +420,22 @@ export const components = {
 
   blockquote: ({ children, ...props }) => {
     return (
-      <YStack my="$4" px="$6" ml="$3" borderLeftWidth={1} borderColor="$borderColor" jc="center" {...props}>
+      <YStack
+        marginVertical="$4"
+        paddingHorizontal="$6"
+        marginLeft="$3"
+        borderLeftWidth={1}
+        borderColor="$borderColor"
+        jc="center"
+        {...props}
+      >
         <Paragraph
           fontFamily="$silkscreen"
           whiteSpace="revert"
           size="$8"
-          lh="$9"
-          fow="300"
-          ls="$0"
+          lineHeight="$9"
+          fontWeight="300"
+          letterSpacing="$0"
           color="$color"
           opacity={0.65}
         >
@@ -419,7 +446,7 @@ export const components = {
   },
 
   Preview: (props) => {
-    return <Preview {...props} mt="$5" />;
+    return <Preview {...props} marginTop="$5" />;
   },
 
   MediaPlayerDemo: ({ theme, ...props }) => {
@@ -432,7 +459,7 @@ export const components = {
 
   GroupDisabledDemo: () => {
     return (
-      <XGroup als="center" disabled>
+      <XGroup alignSelf="center" disabled>
         <Button>First</Button>
         <Button>Second</Button>
         <Button>Third</Button>
@@ -472,7 +499,7 @@ export const components = {
 };
 
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
-  <XStack tag="a" href={`#${id}`} id={id} data-id={id} display="inline-flex" ai="center" space {...props}>
+  <XStack tag="a" href={`#${id}`} id={id} data-id={id} display="inline-flex" alignItems="center" space {...props}>
     {children}
     <YStack tag="span" opacity={0.3}>
       <Link size={12} color="var(--color)" aria-hidden />

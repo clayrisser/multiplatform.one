@@ -28,15 +28,15 @@ export const SubTitle = ({ children, ...props }) => {
   const childText = typeof children === 'string' ? children : children.props.children;
   return (
     <H3
-      pos="relative"
+      position="relative"
       width="max-content"
       size="$8"
       color="$gray9"
       fontFamily="$body"
       fontWeight="300"
       tag="p"
-      mb="$2"
-      mt="$0"
+      marginBottom="$2"
+      marginTop="$0"
       maxWidth="80%"
       $sm={{
         maxWidth: '100%',

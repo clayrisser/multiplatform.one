@@ -3,7 +3,7 @@ import { PageSeparator } from './index';
 import { YStack, Text } from 'tamagui';
 
 export default {
-  title: 'app/tamagui/PageSeparator',
+  title: 'app/components/tamaguiComponents/PageSeparator',
   component: PageSeparator,
   parameters: {
     status: { type: 'beta' },

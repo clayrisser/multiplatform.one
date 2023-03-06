@@ -2,7 +2,7 @@ import React from 'react';
 import { SearchButton } from './index';
 
 export default {
-  title: 'ui/tamagui/SearchButton',
+  title: 'app/tamagui/SearchButton',
   component: SearchButton,
   parameters: { status: { type: 'beta' } },
 };
