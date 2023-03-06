@@ -7,7 +7,7 @@ import { Platform, Image as RNImage } from 'react-native';
 import { SvgUri } from '../SvgUri';
 import { XMLParser } from 'fast-xml-parser';
 import { YStack, Image } from 'tamagui';
-import { useAssets } from '../../hooks/useAssets';
+import { useAssets } from '../../.hooks/useAssets';
 import { useMemo } from 'react';
 
 export type SimpleImageProps = Omit<ImageProps, 'src' | 'width' | 'height'> & {

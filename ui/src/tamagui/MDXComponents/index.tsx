@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import { ThemeTint } from '../../hooks/useTint';
+import { ThemeTint } from '../../.hooks/useTint';
 import { Link } from '@tamagui/lucide-icons';
 // import { NextLink } from '../NextLink';
 import React from 'react';

@@ -1,6 +1,6 @@
 import { ThemeToggle } from '../ThemeToggle';
 import { LogoWords, TamaguiLogo } from '../Logo';
-import { ThemeTint, useTint } from 'ui/src/hooks/useTint';
+import { ThemeTint, useTint } from '@multiplatform/ui/src/.hooks/useTint';
 import { Menu } from '@tamagui/lucide-icons';
 import { useRouter } from 'next/router';
 import * as React from 'react';

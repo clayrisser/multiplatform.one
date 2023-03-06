@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { useAssets } from '../../hooks';
+import { useAssets } from '../../.hooks';
 import { SimpleImage } from './index';
 
 export default {
