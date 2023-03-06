@@ -2,7 +2,7 @@ import React from 'react';
 import { DocsMenuContents } from './index';
 
 export default {
-  title: 'app/tamagui/DocsMenuContents',
+  title: 'app/tamaguiComponents/DocsMenuContents',
   component: DocsMenuContents,
   parameters: {
     status: {

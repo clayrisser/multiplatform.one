@@ -2,7 +2,7 @@ import React from 'react';
 import { BenchmarkChartWeb } from './index';
 
 export default {
-  title: 'app/tamagui/BenchmarkChartWeb',
+  title: 'app/tamaguiComponents/BenchmarkChartWeb',
   component: BenchmarkChartWeb,
   parameters: { status: { type: 'beta' } },
 };

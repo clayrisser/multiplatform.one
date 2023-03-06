@@ -2,7 +2,7 @@ import React from 'react';
 import { DataTable } from './index';
 
 export default {
-  title: 'app/tamagui/DataTable',
+  title: 'app/tamaguiComponents/DataTable',
   component: DataTable,
   parameters: {
     status: {

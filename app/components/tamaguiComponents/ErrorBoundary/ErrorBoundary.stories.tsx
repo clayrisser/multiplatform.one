@@ -2,7 +2,7 @@ import React from 'react';
 import { ErrorBoundary } from './index';
 import { YStack, Text, Button } from 'tamagui';
 export default {
-  title: 'app/tamagui/ErrorBoundary',
+  title: 'app/tamaguiComponents/ErrorBoundary',
   component: ErrorBoundary,
   parameters: { status: { type: 'beta' } },
 };

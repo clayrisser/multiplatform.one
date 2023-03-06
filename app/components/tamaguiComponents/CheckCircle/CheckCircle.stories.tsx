@@ -2,7 +2,7 @@ import React from 'react';
 import { CheckCircle } from './index';
 
 export default {
-  title: 'app/tamagui/CheckCircle',
+  title: 'app/tamaguiComponents/CheckCircle',
   component: CheckCircle,
   parameters: { status: { type: 'beta' } },
 };

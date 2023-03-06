@@ -3,7 +3,7 @@ import { FancyCard } from './index';
 import { Text, YStack, XStack } from 'tamagui';
 
 export default {
-  title: 'app/tamagui/FancyCard',
+  title: 'app/tamaguiComponents/FancyCard',
   component: FancyCard,
   parameters: {
     status: {

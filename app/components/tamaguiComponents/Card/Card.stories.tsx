@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from './index';
 
 export default {
-  title: 'app/tamagui/Card',
+  title: 'app/tamaguiComponents/Card',
   component: Card,
   parameters: {
     status: { type: 'beta' },

@@ -3,7 +3,7 @@ import { DocCodeBlock } from './index';
 import { Text } from 'tamagui';
 
 export default {
-  title: 'app/tamagui/DocCodeBlock',
+  title: 'app/tamaguiComponents/DocCodeBlock',
   component: DocCodeBlock,
   parameters: { status: { type: 'keep' } },
 };

@@ -3,7 +3,7 @@ import { Table, code, TableCell, TableFrame, TableCol } from './index';
 import { YStack } from 'tamagui';
 
 export default {
-  title: 'app/tamagui/MDXComponents',
+  title: 'app/tamaguiComponents/MDXComponents',
   component: Table,
   parameters: { status: { type: 'keep' } },
 };
