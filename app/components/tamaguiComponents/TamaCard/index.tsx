@@ -1,6 +1,6 @@
 import React from 'react';
 import { H3, Paragraph, XStack, YStack, useComposedRefs } from 'tamagui';
-import { FancyCard, OuterSubtleBorder } from 'ui/src/tamagui/FancyCard';
+import { FancyCard, OuterSubtleBorder } from '../FancyCard';
 import { useHoverGlow } from '../HoverGlow';
 import { NotoIcon } from '../NotoIcon';
 

@@ -1,4 +1,4 @@
-import * as Config from 'app/components/config';
+import * as Config from 'app/components/config/tamaguiConfig';
 import React, { useState } from 'react';
 import {
   Button,

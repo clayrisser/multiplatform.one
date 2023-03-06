@@ -3,7 +3,7 @@ import { startTransition, useMemo, useSyncExternalStore } from 'react';
 import type { ThemeName } from 'tamagui';
 import { Theme } from 'tamagui';
 
-import { getTints, setNextTintFamily, useTints } from 'ui/src/tamagui/Logo/tints';
+import { getTints, setNextTintFamily, useTints } from 'app/components/tamaguiComponents/Logo/tints';
 
 // TODO useSyncExternalStore
 

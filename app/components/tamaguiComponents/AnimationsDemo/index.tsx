@@ -1,5 +1,5 @@
-import { AnimationsDemo as AnimationsDemoBase } from 'ui/src/demo/AnimationsDemo';
-import { useTint } from 'ui/src/hooks/useTint';
+import { AnimationsDemo as AnimationsDemoBase } from '../demo/AnimationsDemo';
+import { useTint } from 'app/hooks/useTint';
 import React from 'react';
 
 export const AnimationsDemo = (props) => {
