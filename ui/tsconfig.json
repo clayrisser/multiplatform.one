@@ -17,7 +17,11 @@
     "src/demo/.ColorsDemo",
     "src/demo/.UpdateThemeDemo",
     "src/demo/.AnimationsEnterDemo",
-    "src/tamagui/.HeroResponsive"
+    "src/tamagui/.HeroResponsive",
+    "src/hooks/.setTinted",
+    "src/hooks/.useClipboard",
+    "src/hooks/.useTint",
+    "src/hooks/.useOnIntersecting"
   ],
   "compilerOptions": {
     "rootDir": ".",
