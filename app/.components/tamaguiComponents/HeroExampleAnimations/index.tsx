@@ -1,6 +1,6 @@
 import { animations } from '../../config/animations';
-import { useIsIntersecting } from 'ui/src/hooks/useOnIntersecting';
-import { useTint } from 'ui/src/hooks/useTint';
+import { useIsIntersecting } from 'app/hooks/useOnIntersecting';
+import { useTint } from 'app/hooks/useTint';
 import { ArrowDown } from '@tamagui/lucide-icons';
 import { NextLink } from '../NextLink';
 import React, { memo, useEffect, useRef, useState } from 'react';
@@ -41,8 +41,8 @@ export function HeroExampleAnimations({ animationCode }) {
   return (
     <YStack>
       <ContainerLarge position="relative" space="$8">
-        <YStack zi={1} space="$3">
-          <HomeH2 pos="relative">
+        <YStack zIndex={1} space="$3">
+          <HomeH2 position="relative">
             Universal <span className="rainbow clip-text">Animations</span>
           </HomeH2>
           <HomeH3>Better platform targeting with animation drivers that can be changed without changing code.</HomeH3>
@@ -50,14 +50,14 @@ export function HeroExampleAnimations({ animationCode }) {
 
         <XStack>
           <YStack
-            f={2}
-            miw="55%"
-            als="center"
-            mr="$-2"
-            bc="$backgroundHover"
-            zi={100}
+            flex={2}
+            minWidth="55%"
+            alignSelf="center"
+            marginRight="$-2"
+            backgroundColor="$backgroundHover"
+            zIndex={100}
             elevation="$4"
-            br="$4"
+            borderRadius="$4"
             theme={tint as any}
           >
             <ExampleAnimations />
@@ -68,26 +68,26 @@ export function HeroExampleAnimations({ animationCode }) {
             rotateY="-5deg"
             x={-10}
             $sm={{ display: 'none' }}
-            pos="relative"
-            br="$8"
+            position="relative"
+            borderRadius="$8"
             elevation="$5"
-            ov="hidden"
+            overflow="hidden"
           >
             <YStack
-              pe={disableScrollPane ? 'auto' : 'none'}
-              o={disableScrollPane ? 1 : 0}
+              pointerEvents={disableScrollPane ? 'auto' : 'none'}
+              opacity={disableScrollPane ? 1 : 0}
               fullscreen
-              ai="center"
-              jc="center"
+              alignItems="center"
+              justifyContent="center"
             >
-              <YStack fullscreen top="60%" o={0.5} />
+              <YStack fullscreen top="60%" opacity={0.5} />
               <Button
                 accessibilityLabel="View more"
                 y={200}
                 iconAfter={ArrowDown}
                 size="$4"
                 themeInverse
-                zi={10}
+                zIndex={10}
                 onPress={() => setDisableScrollPane(false)}
               >
                 View more
@@ -107,7 +107,7 @@ export function HeroExampleAnimations({ animationCode }) {
           </YStack>
         </XStack>
 
-        <XStack als="center" space="$3">
+        <XStack alignItems="center" space="$3">
           <NextLink href="/docs/core/animations#css">
             <Button accessibilityLabel="CSS docs" fontFamily="$silkscreen" theme={tint as any}>
               CSS &raquo;
@@ -167,23 +167,23 @@ export const ExampleAnimations = memo(() => {
 
   return (
     <XStack
-      bw={1}
-      boc="$borderColor"
+      borderWidth={1}
+      borderColor="$borderColor"
       elevation="$1"
-      w="100%"
-      br="$4"
-      ov="hidden"
-      h={305}
-      als="center"
+      width="100%"
+      borderRadius="$4"
+      overflow="hidden"
+      height={305}
+      alignSelf="center"
       x={0}
       flexDirection="row-reverse"
     >
       <YStack
         ref={container}
-        pos="relative"
-        bc="$background"
-        ai="center"
-        jc="center"
+        position="relative"
+        backgroundColor="$background"
+        alignItems="center"
+        justifyContent="center"
         width="60%"
         $sm={{ width: '100%' }}
       >
@@ -192,8 +192,8 @@ export const ExampleAnimations = memo(() => {
 
       <Separator vertical />
 
-      <YStack pos="relative" $sm={{ display: 'none' }} width="40%">
-        <YStack f={1} theme="alt2" bc="$backgroundPress">
+      <YStack position="relative" $sm={{ display: 'none' }} width="40%">
+        <YStack flex={1} theme="alt2" borderColor="$backgroundPress">
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation;
             return (
@@ -203,13 +203,13 @@ export const ExampleAnimations = memo(() => {
                   bc: '$backgroundHover',
                 })}
                 theme={isActive ? 'active' : 'alt2'}
-                px="$4"
-                py="$2"
+                paddingHorizontal="$4"
+                paddingVertical="$2"
                 title={item.name}
                 subTitle={item.description}
                 cursor="pointer"
                 hoverStyle={{
-                  bc: '$backgroundHover',
+                  borderColor: '$backgroundHover',
                 }}
                 onPress={() => {
                   setAnimationI(i);
@@ -222,8 +222,8 @@ export const ExampleAnimations = memo(() => {
 
         <Separator />
 
-        <XStack bc="$background" p="$4" ai="center" jc="center">
-          {settings.map(([key, value], i) => {
+        <XStack backgroundColor="$background" padding="$4" alignItems="center" justifyContent="center">
+          {settings.map(([key, value]: any, i: number) => {
             if (key === 'type') {
               return null;
             }
@@ -233,7 +233,7 @@ export const ExampleAnimations = memo(() => {
                   <Paragraph size="$2">{key}</Paragraph>
                   <Paragraph>{value}</Paragraph>
                 </YStack>
-                {i < settings.length - 1 && <Separator vertical mx={15} />}
+                {i < settings.length - 1 && <Separator vertical marginHorizontal={15} />}
               </React.Fragment>
             );
           })}

@@ -20,14 +20,14 @@ export const MediaPlayer = memo(
           overflow="visible"
           // debug
           bordered
-          br="$7"
+          borderRadius="$7"
           pointerEvents={pointerEvents}
-          p={0}
-          ai="stretch"
-          mb={40}
+          padding={0}
+          alignItems="stretch"
+          marginBottom={40}
           {...cardProps}
         >
-          <XStack ai="center" p="$4" space="$5">
+          <XStack alignItems="center" p="$4" space="$5">
             <Square pos="relative" ov="hidden" br="$6" size="$8">
               <SimpleImage width={90} height={90} src={require('./mail.png')} />
             </Square>

@@ -28,7 +28,7 @@ export const CodeInline = styled(Paragraph, {
   color: '$colorHover',
   backgroundColor: '$background',
   cursor: 'inherit',
-  br: '$3',
+  borderRadius: '$3',
   fontSize: 'inherit',
-  p: '$1.5',
+  padding: '$1.5',
 });

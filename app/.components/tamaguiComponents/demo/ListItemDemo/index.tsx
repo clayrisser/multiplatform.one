@@ -4,7 +4,7 @@ import { ListItem, Separator, XStack, YGroup } from 'tamagui';
 
 export function ListItemDemo() {
   return (
-    <XStack $sm={{ flexDirection: 'column' }} px="$4" space>
+    <XStack $sm={{ flexDirection: 'column' }} paddingHorizontal="$4" space>
       <ListItemDemo1 />
       <ListItemDemo2 />
     </XStack>
@@ -13,7 +13,7 @@ export function ListItemDemo() {
 
 function ListItemDemo1() {
   return (
-    <YGroup als="center" bordered w={240} size="$4">
+    <YGroup alignSelf="center" bordered width={240} size="$4">
       <ListItem hoverTheme icon={Star} title="Star" subTitle="Twinkles" />
       <ListItem hoverTheme icon={Moon}>
         Moon
@@ -30,7 +30,7 @@ function ListItemDemo1() {
 
 function ListItemDemo2() {
   return (
-    <YGroup als="center" bordered w={240} size="$5" separator={<Separator />}>
+    <YGroup alignSelf="center" bordered width={240} size="$5" separator={<Separator />}>
       <ListItem hoverTheme pressTheme title="Star" subTitle="Subtitle" icon={Star} iconAfter={ChevronRight} />
       <ListItem hoverTheme pressTheme title="Moon" subTitle="Subtitle" icon={Moon} iconAfter={ChevronRight} />
     </YGroup>

@@ -2,7 +2,7 @@ import React from 'react';
 import DocSearch from './index';
 
 export default {
-  title: 'ui/tamagui/DocSearch',
+  title: 'app/tamagui/DocSearch',
   component: DocSearch,
   parameters: {
     status: {

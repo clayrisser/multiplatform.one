@@ -1,6 +1,6 @@
 import React from 'react';
-import { useOnIntersecting } from '@tamagui/demos';
-import { useTint } from '../../hooks/useTint';
+import { useOnIntersecting } from '../../../hooks/useOnIntersecting';
+import { useTint } from '../../../hooks/useTint';
 import { NextLink } from '../NextLink';
 import { useRef, useState } from 'react';
 import { Button, Paragraph, XStack, YStack } from 'tamagui';

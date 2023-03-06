@@ -19,36 +19,42 @@ export function DataTable({
       <YStack
         borderWidth={1}
         borderColor="$borderColor"
-        f={1}
+        flex={1}
         aria-label={hasAriaLabel ? ariaLabel : 'Component Props'}
         aria-labelledby={ariaLabelledBy}
-        my="$4"
-        br="$4"
-        ov="hidden"
-        mx="$-4"
+        marginVertical="$4"
+        borderRadius="$4"
+        overflow="hidden"
+        marginHorizontal="$-4"
         $sm={{
-          mx: 0,
+          marginHorizontal: 0,
         }}
       >
         {!!title && (
-          <XStack ai="center" py="$2" px="$4" backgroundColor="$borderColor">
+          <XStack alignItems="center" paddingVertical="$2" paddingHorizontal="$4" backgroundColor="$borderColor">
             <H3 size="$3">{title}</H3>
           </XStack>
         )}
 
         {rows.map((items, i) => (
-          <ListItem key={i} p={0}>
-            <XStack ai="center" pos="relative" py="$3" px="$4" $sm={{ flexDirection: 'column' }}>
+          <ListItem key={i} padding={0}>
+            <XStack
+              alignItems="center"
+              position="relative"
+              paddingVertical="$3"
+              paddingHorizontal="$4"
+              $sm={{ flexDirection: 'column' }}
+            >
               {items.map((item) => (
                 <H4
                   color="$color"
-                  fow="800"
+                  fontWeight="800"
                   key={item}
-                  maw={100}
+                  maxWidth={100}
                   fontFamily="$mono"
                   textTransform="none"
-                  ai="center"
-                  jc="center"
+                  alignItems="center"
+                  justifyContent="center"
                   textAlign="center"
                   numberOfLines={3}
                   size="$4"

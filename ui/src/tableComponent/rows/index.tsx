@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTableStore } from '../hooks';
 
 import type { XStackProps, TextProps, YStackProps } from 'tamagui';
 import { YStack, XStack, Text } from 'tamagui';
@@ -13,10 +14,21 @@ export type RowsProps = { xStack?: XStackProps } & { text?: TextProps } & {
 
 export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
   const { rows } = props;
+  const [columnsLength] = useTableStore((state: any) => [state.columnsLength]);
+
+  const filteredRow = rows.map((row) => {
+    if (columnsLength < row.length) {
+      return [...row];
+    } else {
+      const diff = columnsLength - row.length;
+      const emptyCells = Array.from({ length: diff }).fill('');
+      return [...row, ...emptyCells];
+    }
+  });
 
   return (
     <YStack space {...yStack}>
-      {rows.map((row: any, i: number) => {
+      {filteredRow.map((row: any, i: number) => {
         return (
           <XStack bc="$background" jc="space-around" {...xStack} key={i}>
             {row.map((cell: any, j: number) => {

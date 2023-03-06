@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeTint, useTint } from 'ui/src/hooks/useTint';
+import { ThemeTint, useTint } from 'app/hooks/useTint';
 import { FastForward } from '@tamagui/lucide-icons';
 import { memo, useState } from 'react';
 import { Button, H5, Paragraph, ScrollView, ThemeName, XGroup, XStack, YStack } from 'tamagui';
@@ -20,11 +20,11 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
 
   return (
     <ContainerLarge position="relative">
-      <YStack zi={1} space="$6" mb="$4">
+      <YStack zIndex={1} space="$6" marginBottom="$4">
         {!onlyDemo && (
-          <YStack ai="center" space="$3">
+          <YStack alignItems="center" space="$3">
             <HomeH2>A better style system</HomeH2>
-            <HomeH3 ai="center" jc="center">
+            <HomeH3 alignItems="center" justifyContent="center">
               A multi-faceted optimizing compiler enables
               <br />
               <strong>{subtitles[activeIndex]}</strong>.
@@ -36,11 +36,11 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
           <XGroup
             scrollable
             bordered
-            bc="$color2"
+            backgroundColor="$color2"
             chromeless
             maxWidth="100%"
-            als="center"
-            ov="hidden"
+            alignSelf="center"
+            overflow="hidden"
             {...(onlyDemo && {
               mt: '$-6',
             })}
@@ -65,23 +65,30 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
         </ThemeTint>
 
         <XStack
-          pos="relative"
-          jc="space-between"
-          $sm={{ fd: 'column' }}
+          position="relative"
+          justifyContent="space-between"
+          $sm={{ flexDirection: 'column' }}
           {...(onlyDemo && {
             fd: 'column',
           })}
         >
           <YStack
             key={`input${activeIndex}`}
-            f={1}
+            flex={1}
             maxWidth="50%"
             {...(onlyDemo && { maxWidth: '100%' })}
             $sm={{ maxWidth: '100%' }}
-            px="$2"
+            paddingHorizontal="$2"
             space
           >
-            <Paragraph maw={480} als="center" size="$5" minHeight={50} ta="center" px="$6">
+            <Paragraph
+              maxWidth={480}
+              alignSelf="center"
+              size="$5"
+              minHeight={50}
+              textAlign="center"
+              paddingHorizontal="$6"
+            >
               <span style={{ opacity: 0.65 }}>{activeExample.input.description}</span>
             </Paragraph>
             <CodeExamples title="Input" {...activeExample.input} />
@@ -90,30 +97,37 @@ export function HeroExampleCode({ examples, onlyDemo }: { examples: any; onlyDem
           <YStack
             $sm={{ display: 'none' }}
             {...(onlyDemo && { display: 'none' })}
-            pos="absolute"
+            position="absolute"
             left={0}
             right={0}
-            ai="center"
-            jc="center"
+            alignItems="center"
+            justifyContent="center"
             top={95}
             theme="alt2"
             zIndex={1000}
-            pe="none"
+            pointerEvents="none"
           >
-            <IconStack als="center" p="$3" mb={0}>
+            <IconStack alignSelf="center" padding="$3" marginBottom={0}>
               <FastForward color="var(--colorHover)" size={22} />
             </IconStack>
           </YStack>
           <YStack
             key={`output${activeIndex}`}
-            f={1}
+            flex={1}
             maxWidth="50%"
             {...(onlyDemo && { maxWidth: '100%', mt: '$6' })}
-            $sm={{ maxWidth: '100%', mt: '$6' }}
-            px="$2"
+            $sm={{ maxWidth: '100%', marginTop: '$6' }}
+            paddingHorizontal="$2"
             space
           >
-            <Paragraph maw={480} als="center" size="$5" minHeight={50} ta="center" px="$6">
+            <Paragraph
+              maxWidth={480}
+              alignSelf="center"
+              size="$5"
+              minHeight={50}
+              textAlign="center"
+              paddingHorizontal="$6"
+            >
               <span style={{ opacity: 0.65 }}>{activeExample.output.description}</span>
             </Paragraph>
             <CodeExamples title="Output" {...activeExample.output} />
@@ -133,17 +147,17 @@ const CodeExamples = memo(({ examples, title }: any) => {
     <YStack overflow="hidden" flex={1}>
       <YStack>
         <ScrollView
-          als="center"
-          ai="center"
-          zi={10}
+          alignSelf="center"
+          alignItems="center"
+          zIndex={10}
           horizontal
           showsHorizontalScrollIndicator={false}
-          mb="$-2"
-          maw="100%"
+          marginBottom="$-2"
+          maxWidth="100%"
         >
-          <XStack px="$4" fs={0} space>
+          <XStack paddingHorizontal="$4" flexShrink={0} space>
             <XGroup size="$2" bordered>
-              <Button disabled size="$2" fontSize="$4" px="$4">
+              <Button disabled size="$2" fontSize="$4" paddingHorizontal="$4">
                 {title}
               </Button>
             </XGroup>
@@ -164,8 +178,8 @@ const CodeExamples = memo(({ examples, title }: any) => {
           </XStack>
         </ScrollView>
       </YStack>
-      <XStack maxWidth="100%" f={1}>
-        <YStack f={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
+      <XStack maxWidth="100%" flex={1}>
+        <YStack flex={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
           <CodeDemoPreParsed height={325} maxHeight={325} f={1} language={example.language} source={example.code} />
         </YStack>
       </XStack>

@@ -34,7 +34,13 @@ export function DialogDemo() {
       </Adapt>
 
       <Dialog.Portal>
-        <Dialog.Overlay key="overlay" animation="quick" o={0.5} enterStyle={{ o: 0 }} exitStyle={{ o: 0 }} />
+        <Dialog.Overlay
+          key="overlay"
+          animation="quick"
+          opacity={0.5}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
 
         <Dialog.Content
           bordered
@@ -55,13 +61,13 @@ export function DialogDemo() {
           <Dialog.Title>Edit profile</Dialog.Title>
           <Dialog.Description>Make changes to your profile here. Click save when you are done.</Dialog.Description>
           <Fieldset space="$4" horizontal>
-            <Label w={160} justifyContent="flex-end" htmlFor="name">
+            <Label width={160} justifyContent="flex-end" htmlFor="name">
               Name
             </Label>
-            <Input f={1} id="name" defaultValue="Nate Wienert" />
+            <Input flex={1} id="name" defaultValue="Nate Wienert" />
           </Fieldset>
           <Fieldset space="$4" horizontal>
-            <Label w={160} justifyContent="flex-end" htmlFor="username">
+            <Label width={160} justifyContent="flex-end" htmlFor="username">
               <TooltipSimple label="Pick your favorite" placement="bottom-start">
                 <Paragraph>Food</Paragraph>
               </TooltipSimple>
@@ -69,7 +75,7 @@ export function DialogDemo() {
             <SelectDemo />
           </Fieldset>
 
-          <YStack ai="flex-end" mt="$2">
+          <YStack alignItems="flex-end" marginTop="$2">
             <Dialog.Close displayWhenAdapted asChild>
               <Button theme="alt1" aria-label="Close">
                 Save changes
@@ -79,7 +85,7 @@ export function DialogDemo() {
 
           <Unspaced>
             <Dialog.Close asChild>
-              <Button pos="absolute" t="$3" r="$3" size="$2" circular icon={X} />
+              <Button position="absolute" top="$3" right="$3" size="$2" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>
