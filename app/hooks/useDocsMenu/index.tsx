@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import { allNotPending } from '../../tamagui/DocsPage';
+import { allNotPending } from 'app/components/tamaguiComponents/DocsPage';
 
 export const useDocsMenu = () => {
   const [open, setOpen] = React.useState(false);
