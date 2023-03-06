@@ -56,7 +56,7 @@ import { unwrapText } from '../unwrapText';
 export const TableFrame = styled(ThemeableStack, {
   bordered: true,
   borderRadius: '$4',
-  ov: 'hidden',
+  overflow: 'hidden',
   marginVertical: '$4',
 });
 
@@ -115,12 +115,12 @@ export const TableCell = styled(Paragraph, {
   variants: {
     head: {
       true: {
-        bc: '$color1',
+        backgroundColor: '$color1',
       },
     },
     highlight: {
       true: {
-        bc: '$yellow2',
+        backgroundColor: '$yellow2',
       },
     },
   },
@@ -374,7 +374,7 @@ export const components = {
         marginBottom="$3"
         alignItems="center"
         justifyContent="center"
-        ov="hidden"
+        overflow="hidden"
         {...(overlap && {
           marginTop: '$-6',
         })}
@@ -426,7 +426,7 @@ export const components = {
         marginLeft="$3"
         borderLeftWidth={1}
         borderColor="$borderColor"
-        jc="center"
+        justifyContent="center"
         {...props}
       >
         <Paragraph
@@ -474,11 +474,11 @@ export const components = {
   SponsorNotice: () => {
     return (
       <NoticeFrame theme="red">
-        <YStack maw="100%" space>
+        <YStack maxWidth="100%" space>
           <H4 color="$color10" fontFamily="$silkscreen">
             👋 Hey! Listen!
           </H4>
-          <YStack ov="hidden" f={1} o={0.85} space>
+          <YStack overflow="hidden" flex={1} opacity={0.85} space>
             <Paragraph>
               Tamagui is fully OSS, self-funded and built by{' '}
               <a href="https://twitter.com/natebirdman" target="_blank">

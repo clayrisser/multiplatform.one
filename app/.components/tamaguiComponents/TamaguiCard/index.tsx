@@ -16,13 +16,21 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
       }}
       $sm={{ width: 'auto', maxWidth: 'auto', flex: 1 }}
     >
-      <H3 tag="span" fontFamily="$silkscreen" size="$7" lh="$6" color="$color" cursor="inherit" ls={0}>
+      <H3
+        tag="span"
+        fontFamily="$silkscreen"
+        size="$7"
+        lineHeight="$6"
+        color="$color"
+        cursor="inherit"
+        letterSpacing={0}
+      >
         {title}
       </H3>
 
-      {!!subTitle && <XStack o={0.5}>{subTitle}</XStack>}
+      {!!subTitle && <XStack opacity={0.5}>{subTitle}</XStack>}
 
-      <Paragraph tag="span" size="$4" cursor="inherit" theme="alt2" o={0.7}>
+      <Paragraph tag="span" size="$4" cursor="inherit" theme="alt2" opacity={0.7}>
         {children}
       </Paragraph>
     </Card>

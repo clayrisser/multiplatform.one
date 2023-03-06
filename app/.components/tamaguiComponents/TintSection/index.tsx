@@ -1,5 +1,5 @@
 // import { useOnIntersecting } from 'ui/src/tamagui/demos';
-import { useOnIntersecting } from 'ui/src/hooks/useOnIntersecting';
+import { useOnIntersecting } from 'app/hooks/useOnIntersecting';
 import { getTints } from '../Logo/tints';
 import { useTint } from '../../../hooks/useTint';
 import React, { useEffect, useMemo, useRef } from 'react';
@@ -131,7 +131,7 @@ export const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTo
         className="all ease-in ms1000"
         zIndex={-1}
         opacity={0.4}
-        bc={gradient ? `$${tint}2` : null}
+        backgroundColor={gradient ? `$${tint}2` : null}
         {...(!bubble && {
           borderTopWidth: noBorderTop ? 0 : 1,
           borderBottomWidth: 1,

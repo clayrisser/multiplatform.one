@@ -3,7 +3,7 @@ import { unwrapText } from './index';
 import { YStack, Text } from 'tamagui';
 
 export default {
-  title: 'app/tamagui/unwrapText',
+  title: 'app/components/tamaguiComponents/unwrapText',
   component: unwrapText,
   parameters: { status: { type: 'beta' } },
 };

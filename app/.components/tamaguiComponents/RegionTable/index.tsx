@@ -17,8 +17,8 @@ export function RegionTable(props: YStackProps) {
       borderWidth={1}
       borderColor="$borderColorHover"
       overflow="hidden"
-      p="$2"
-      mb="$4"
+      padding="$2"
+      marginBottom="$4"
       {...props}
     />
   );
