@@ -1,6 +1,6 @@
 import { allDocsRoutes } from '../../lib/docsRoutes';
 import { LinearGradient } from '@tamagui/linear-gradient';
-import { ThemeTint, useTint } from 'ui/src/hooks/useTint';
+import { ThemeTint } from 'app/hooks/useTint';
 import { NextLink } from '../NextLink';
 import * as React from 'react';
 import { ScrollView } from 'react-native';
@@ -23,11 +23,11 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
     return (
       <YStack>
         <YStack tag="article">
-          <Container pos="relative">{children}</Container>
+          <Container position="relative">{children}</Container>
 
           <Container>
             {(previous || next) && (
-              <XStack aria-label="Pagination navigation" my="$9" jc="space-between" space>
+              <XStack aria-label="Pagination navigation" marginVertical="$9" justifyContent="space-between" space>
                 {previous && (
                   <NextLink href={previous.route}>
                     <YStack
@@ -36,7 +36,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       }}
                       flex={1}
                       width="50%"
-                      p="$5"
+                      padding="$5"
                       borderRadius="$2"
                       borderWidth={1}
                       borderColor="$borderColor"
@@ -44,7 +44,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                         backgroundColor: '$backgroundPress',
                       }}
                       aria-label={`Previous page: ${previous.title}`}
-                      ai="flex-start"
+                      alignItems="flex-start"
                     >
                       <Paragraph userSelect="none" theme="alt1" size="$5">
                         Previous
@@ -63,7 +63,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       }}
                       width="50%"
                       flex={1}
-                      p="$5"
+                      padding="$5"
                       borderRadius="$2"
                       borderWidth={1}
                       borderColor="$borderColor"
@@ -71,7 +71,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                         backgroundColor: '$backgroundPress',
                       }}
                       aria-label={`Previous page: ${next.title}`}
-                      ai="flex-end"
+                      alignItems="flex-end"
                     >
                       <Paragraph userSelect="none" theme="alt1" size="$5">
                         Next
@@ -86,7 +86,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             )}
           </Container>
 
-          <Container my="$3">
+          <Container marginVertical="$3">
             <Link
               href={editUrl}
               // @ts-ignore
@@ -106,13 +106,13 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
     <YStack>
       <YStack
         overflow="hidden"
-        mx="auto"
+        marginHorizontal="auto"
         $gtSm={{
           flexDirection: 'row',
         }}
-        maw={1250}
-        zi={100}
-        pos="relative"
+        maxWidth={1250}
+        zIndex={100}
+        position="relative"
       >
         <EnsureFlexed />
         <YStack
@@ -130,13 +130,13 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           }}
         >
           <LinearGradient
-            pos="absolute"
-            t={0}
-            l={0}
-            r={0}
-            h={100}
-            w={300}
-            zi={100}
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            height={100}
+            width={300}
+            zIndex={100}
             colors={['$backgroundStrong', '$backgroundStrong', '$backgroundTransparent']}
           />
           <ScrollView>
@@ -145,9 +145,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 display="none"
                 $gtMd={{
                   display: 'block',
-                  pr: '$6',
-                  mt: 108,
-                  pb: '$18',
+                  paddingRight: '$6',
+                  marginTop: 108,
+                  paddingBottom: '$18',
                 }}
               >
                 <DocsMenuContents />
@@ -160,11 +160,11 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
       <YStack
         maxWidth="100%"
         flex={1}
-        py="$8"
+        paddingVertical="$8"
         $gtMd={{
-          pb: '$9',
-          pl: 230,
-          pr: 100,
+          paddingBottom: '$9',
+          paddingLeft: 230,
+          paddingRight: 100,
         }}
       >
         {pageContents}
