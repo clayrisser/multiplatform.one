@@ -31,9 +31,9 @@ import {
 // import { BenchmarkChartWeb } from '../BenchmarkChartWeb';
 import { Code, CodeInline } from '../Code';
 import { DataTable } from '../DataTable';
-import * as Demos from '../Demos';
+// import * as Demos from '../Demos';
 import { DocCodeBlock } from '../DocCodeBlock';
-import { ExternalIcon } from '../ExternalIcon';
+// import { ExternalIcon } from '../ExternalIcon';
 // import { Features } from '../Features';
 // import { HeroContainer } from '../HeroContainer';
 // import { ExampleAnimations } from '../HeroExampleAnimations';

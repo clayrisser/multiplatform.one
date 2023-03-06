@@ -221,7 +221,7 @@ export const components = {
   Beta: () => (
     <Button
       accessibilityLabel="Beta blog post"
-      pe="none"
+      pointerEvents="none"
       size="$2"
       theme="pink_alt2"
       position="absolute"
