@@ -10,11 +10,11 @@ const QuickNavLink = ({ href, ...rest }: LinkProps) => (
       tag="span"
       size="$3"
       color="$color"
-      o={0.5}
+      opacity={0.5}
       cursor="pointer"
-      py="$0.5"
+      paddingVertical="$0.5"
       hoverStyle={{
-        o: 1,
+        opacity: 1,
         color: '$colorHover',
       }}
       {...rest}
@@ -61,11 +61,11 @@ export function QuickNav() {
       <YStack
         tag="nav"
         aria-labelledby="site-quick-nav-heading"
-        px="$5"
+        paddingHorizontal="$5"
         display={headings.length === 0 ? 'none' : 'block'}
         space
       >
-        <H4 size="$2" o={0.5} id="site-quick-nav-heading">
+        <H4 size="$2" opacity={0.5} id="site-quick-nav-heading">
           Quick nav
         </H4>
         <ScrollView maxHeight="calc(100vh - var(--space-25))">
@@ -82,7 +82,7 @@ export function QuickNav() {
               const level = getLevel(nodeName);
               return (
                 <XStack key={i} tag="li" alignItems="center">
-                  {level > 2 && <Circle size={4} mx="$2" />}
+                  {level > 2 && <Circle size={4} marginHorizontal="$2" />}
                   <QuickNavLink href={`#${id}`}>{innerText}</QuickNavLink>
                 </XStack>
               );

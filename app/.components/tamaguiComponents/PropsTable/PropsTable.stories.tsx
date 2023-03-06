@@ -2,7 +2,7 @@ import React from 'react';
 import { PropsTable } from './index';
 
 export default {
-  title: 'PropsTable',
+  title: 'app/tamagui/PropsTable',
   component: PropsTable,
   parameters: { status: { type: 'beta' } },
 };

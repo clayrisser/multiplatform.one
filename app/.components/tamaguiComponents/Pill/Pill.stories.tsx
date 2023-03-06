@@ -2,7 +2,7 @@ import React from 'react';
 import { Pill } from './index';
 
 export default {
-  title: 'ui/tamagui/Pill',
+  title: 'app/tamagui/Pill',
   component: Pill,
   parameters: {
     status: { type: 'beta' },

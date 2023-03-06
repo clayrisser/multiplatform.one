@@ -30,7 +30,7 @@ export function TokensDemo() {
 
   return (
     <YStack space>
-      <XGroup ai="center" als="center">
+      <XGroup alignItems="center" alignSelf="center">
         {sections.map(({ name, key }) => {
           return (
             <Button
@@ -63,16 +63,16 @@ function SizeSection({ section }: { section: Section }) {
     .sort((a, b) => (parseFloat(a) > parseFloat(b) ? -1 : 1));
 
   return (
-    <YStack f={1} space>
+    <YStack flex={1} space>
       <H2>Sizes</H2>
-      <YStack w="100%" space="$2" separator={<Separator />}>
+      <YStack width="100%" space="$2" separator={<Separator />}>
         {(section === 'spaceNegative' ? spaceTokensNegative : spaceTokens).map((token) => {
           return (
-            <XStack w="100%" ai="center" key={token}>
-              <YStack w="25%">
+            <XStack width="100%" alignItems="center" key={token}>
+              <YStack width="25%">
                 <H3 size="$6">${token}</H3>
               </YStack>
-              <YStack w="20%">
+              <YStack width="20%">
                 <H4 size="$5">{tokens[token]?.val}px</H4>
               </YStack>
               <Square

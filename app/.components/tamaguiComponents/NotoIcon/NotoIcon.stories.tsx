@@ -3,7 +3,7 @@ import { NotoIcon } from './index';
 import { Text, YStack } from 'tamagui';
 
 export default {
-  title: 'ui/tamagui/NotoIcon',
+  title: 'app/tamagui/NotoIcon',
   component: NotoIcon,
   parameters: {
     status: {

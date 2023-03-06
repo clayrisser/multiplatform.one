@@ -1,4 +1,4 @@
-import * as Config from '../../config/tamaguiConfig';
+import * as Config from 'app/components/config';
 import React, { useState } from 'react';
 import {
   Button,
@@ -31,7 +31,7 @@ export function UpdateThemeDemo() {
   }, []);
 
   return (
-    <YStack ai="center" space>
+    <YStack alignItems="center" space>
       <Theme name={theme ?? null}>
         <Square borderRadius="$8" size={100} backgroundColor="$color" />
       </Theme>

@@ -3,16 +3,16 @@ import { PageSeparator } from './index';
 import { YStack, Text } from 'tamagui';
 
 export default {
-  title: 'ui/tamagui/PageSeparator',
+  title: 'app/tamagui/PageSeparator',
   component: PageSeparator,
   parameters: {
     status: { type: 'beta' },
   },
 };
 export const main = () => (
-  <YStack ai="center">
+  <YStack alignItems="center">
     <Text>this is to test the page separator</Text>
     <PageSeparator />
-    <Text pt="$4">this separates the pages</Text>
+    <Text paddingTop="$4">this separates the pages</Text>
   </YStack>
 );

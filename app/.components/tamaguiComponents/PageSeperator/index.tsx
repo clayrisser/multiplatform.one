@@ -3,9 +3,9 @@ import { YStack } from 'tamagui';
 
 export const PageSeparator = () => (
   <YStack
-    mt="$3"
-    mx="auto"
-    als="center"
+    marginTop="$3"
+    marginHorizontal="auto"
+    alignSelf="center"
     borderBottomColor="$borderColor"
     borderBottomWidth={1}
     width={1000}

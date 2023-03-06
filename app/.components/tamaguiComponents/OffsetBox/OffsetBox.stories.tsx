@@ -2,7 +2,7 @@ import React from 'react';
 import { OffsetBox } from './index';
 
 export default {
-  title: 'ui/tamagui/OffsetBox',
+  title: 'app/tamagui/OffsetBox',
   component: OffsetBox,
   parameters: {
     status: {

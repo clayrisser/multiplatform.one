@@ -29,30 +29,30 @@ export function PropsTable({
     <YStack
       borderWidth={1}
       borderColor="$borderColor"
-      f={1}
+      flex={1}
       aria-label={hasAriaLabel ? ariaLabel : 'Component Props'}
       aria-labelledby={ariaLabelledBy}
-      my="$4"
-      br="$4"
-      ov="hidden"
-      mx="$-4"
+      marginVertical="$4"
+      borderRadius="$4"
+      overflow="hidden"
+      marginHorizontal="$-4"
       $sm={{
-        mx: 0,
+        marginHorizontal: 0,
       }}
     >
-      <XStack ai="center" py="$2" px="$4" backgroundColor="$borderColor">
+      <XStack alignItems="center" paddingVertical="$2" paddingHorizontal="$4" backgroundColor="$borderColor">
         <H3 size="$3">{title}</H3>
       </XStack>
       {data.map(({ name, type, required, default: defaultValue, description }, i) => (
-        <ListItem key={`${name}-${i}`} p={0}>
+        <ListItem key={`${name}-${i}`} padding={0}>
           <YStack width="100%">
-            <XStack pos="relative" py="$3" px="$4" $sm={{ flexDirection: 'column' }}>
-              <YStack fullscreen backgroundColor="$background" zi={-1} o={0.5} />
-              <XStack miw="30%" ai="center" space>
-                <H4 color="$color" fow="800" fontFamily="$mono" textTransform="none" size="$4" width={200}>
+            <XStack position="relative" paddingVertical="$3" paddingHorizontal="$4" $sm={{ flexDirection: 'column' }}>
+              <YStack fullscreen backgroundColor="$background" zIndex={-1} opacity={0.5} />
+              <XStack minWidth="30%" alignItems="center" space>
+                <H4 color="$color" fontWeight="800" fontFamily="$mono" textTransform="none" size="$4" width={200}>
                   {name}
                   {required ? (
-                    <Paragraph tag="span" fontSize="inherit" o={0.5}>
+                    <Paragraph tag="span" fontSize="inherit" opacity={0.5}>
                       {' '}
                       <Paragraph tag="span" fontWeight="300">
                         (required)
@@ -62,29 +62,29 @@ export function PropsTable({
                 </H4>
               </XStack>
 
-              <Separator als="stretch" vertical mx="$4" my="$2" />
+              <Separator alignSelf="stretch" vertical marginHorizontal="$4" marginVertical="$2" />
 
               <XStack
-                f={2}
-                miw="30%"
-                ai="center"
-                separator={<Separator als="stretch" vertical mx="$4" my="$2" />}
+                flex={2}
+                minWidth="30%"
+                alignItems="center"
+                separator={<Separator alignSelf="stretch" vertical marginHorizontal="$4" marginVertical="$2" />}
                 $xs={{
                   flexDirection: 'column',
-                  ai: 'flex-start',
+                  alignItems: 'flex-start',
                 }}
               >
-                <Paragraph size="$3" o={0.8} fontFamily="$mono" overflow="hidden" ellipse mr="auto">
+                <Paragraph size="$3" opacity={0.8} fontFamily="$mono" overflow="hidden" ellipse marginRight="auto">
                   {type}
                 </Paragraph>
 
-                <XStack ai="center">
+                <XStack alignItems="center">
                   {defaultValue ? (
                     <>
-                      <Paragraph o={0.5} size="$2">
+                      <Paragraph opacity={0.5} size="$2">
                         Default:&nbsp;
                       </Paragraph>
-                      <Code my="$-1" bc="$backgroundPress">
+                      <Code marginVertical="$-1" backgroundColor="$backgroundPress">
                         {defaultValue}
                       </Code>
                     </>
@@ -94,14 +94,14 @@ export function PropsTable({
             </XStack>
 
             {!!description && (
-              <YStack py="$2" px="$4">
-                <Paragraph size="$2" o={0.65}>
+              <YStack paddingVertical="$2" paddingHorizontal="$4">
+                <Paragraph size="$2" opacity={0.65}>
                   {description}
                 </Paragraph>
               </YStack>
             )}
           </YStack>
-          <Separator my={2} />
+          <Separator marginVertical={2} />
         </ListItem>
       ))}
     </YStack>

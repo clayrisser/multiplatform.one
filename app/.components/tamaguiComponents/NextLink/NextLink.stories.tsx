@@ -3,7 +3,7 @@ import { NextLink } from './index';
 import { Text } from 'tamagui';
 
 export default {
-  title: 'ui/tamagui/NextLink',
+  title: 'app/tamagui/NextLink',
   component: NextLink,
   parameters: { status: { type: 'beta' } },
 };

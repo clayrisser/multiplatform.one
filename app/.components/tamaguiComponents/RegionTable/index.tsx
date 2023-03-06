@@ -6,7 +6,7 @@ export function RegionTable(props: YStackProps) {
   return (
     <YStack
       theme="alt1"
-      bc="$background"
+      backgroundColor="$background"
       tag="table"
       // @ts-ignore
       display="table"

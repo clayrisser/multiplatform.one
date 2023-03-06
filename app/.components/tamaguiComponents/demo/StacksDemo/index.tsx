@@ -18,8 +18,8 @@ export function StacksDemo() {
 
       <ZStack maxWidth={50} maxHeight={85} width={100} flex={1}>
         <YStack fullscreen borderWidth={2} borderRadius="$4" padding="$2" />
-        <YStack fullscreen y={10} x={10} bw={2} br="$4" p="$2" />
-        <YStack fullscreen y={20} x={20} borderWidth={2} bacc="$color" br="$4" p="$2" />
+        <YStack fullscreen y={10} x={10} borderWidth={2} borderRadius="$4" padding="$2" />
+        <YStack fullscreen y={20} x={20} borderWidth={2} backgroundColor="$color" borderRadius="$4" padding="$2" />
       </ZStack>
     </XStack>
   );
