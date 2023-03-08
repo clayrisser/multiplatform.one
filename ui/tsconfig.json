@@ -17,7 +17,8 @@
     "src/demo/.ColorsDemo",
     "src/demo/UpdateThemeDemo",
     "src/demo/.AnimationsEnterDemo",
-    "src/tamagui/.HeroResponsive"
+    "src/tamagui/.HeroResponsive",
+    "src/hooks/.useTint"
   ],
   "compilerOptions": {
     "rootDir": ".",

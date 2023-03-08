@@ -1,6 +1,6 @@
 import React from 'react';
-import type { MaskOptions } from '@tamagui/create-theme';
-import { addChildren, applyMask, createStrengthenMask, createTheme, createWeakenMask } from '@tamagui/create-theme';
+import type { MaskOptions } from './createTheme';
+import { addChildren, applyMask, createStrengthenMask, createTheme, createWeakenMask } from './createTheme';
 
 import { colorTokens, darkColors, lightColors } from './Tokens';
 
