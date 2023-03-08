@@ -2,7 +2,7 @@ import React from 'react';
 import { CodeDemo } from './index';
 
 export default {
-  title: 'app/tamagui/CodeDemo',
+  title: 'app/tamaguiComponents/CodeDemo',
   component: CodeDemo,
   parameters: { status: { type: 'beta' } },
 };

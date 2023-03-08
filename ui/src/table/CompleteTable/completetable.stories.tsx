@@ -7,23 +7,33 @@ export default {
   component: CompleteTable,
 };
 
-export const main = () => (
+export const main = (i: any) => (
   <CompleteTable
-    tableMetaData={[<Text>Apple</Text>, <Text>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish']}
+    tableMetaData={[<Text key={i}>Apple</Text>, <Text key={i}>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish']}
     width={700}
     height={500}
     als="center"
     jc="center"
     borderWidth="$0.5"
     rows={[
-      [<Text>Apple</Text>, <Text>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
-      [<Text col="red">Apple</Text>, <Text>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
-      [<Text>Apple</Text>, <Text>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
-      [<Text>Apple</Text>, <Text>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
-      [<Text>Apple</Text>, <Text>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
-      [<Text>Apple</Text>, <Text>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
-      [<Text>Apple</Text>, <Text>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
-      [<Text>Apple</Text>, <Text>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
+      [<Text key={i}>Apple</Text>, <Text key={i}>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
+      [
+        <Text key={i} col="red">
+          Apple
+        </Text>,
+        <Text key={i}>Bat</Text>,
+        'Cat',
+        'Dog',
+        'elephant',
+        'fish',
+        'dish',
+      ],
+      [<Text key={i}>Apple</Text>, <Text key={i}>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
+      [<Text key={i}>Apple</Text>, <Text key={i}>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
+      [<Text key={i}>Apple</Text>, <Text key={i}>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
+      [<Text key={i}>Apple</Text>, <Text key={i}>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
+      [<Text key={i}>Apple</Text>, <Text key={i}>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
+      [<Text key={i}>Apple</Text>, <Text key={i}>Bat</Text>, 'Cat', 'Dog', 'elephant', 'fish', 'dish'],
       [
         'a',
         'b',
@@ -31,7 +41,7 @@ export const main = () => (
         'd',
         'e',
         'f',
-        <Button>
+        <Button key={i}>
           <Text>Save</Text>
         </Button>,
         'a',

@@ -2,7 +2,7 @@ import React from 'react';
 import DocSearch from './index';
 
 export default {
-  title: 'app/tamagui/DocSearch',
+  title: 'app/tamaguiComponents/DocSearch',
   component: DocSearch,
   parameters: {
     status: {
@@ -11,4 +11,4 @@ export default {
   },
 };
 
-export const main = () => <DocSearch />;
+export const main = () => <DocSearch appId={''} apiKey={''} indexName={''} initialScrollY={0} />;
