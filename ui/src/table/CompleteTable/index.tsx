@@ -1,6 +1,6 @@
 import React from 'react';
 import type { YStackProps, XStackProps } from 'tamagui';
-import { YGroup, YStack, XStack, XGroup } from 'tamagui';
+import { YGroup, YStack, XGroup } from 'tamagui';
 import { Cell } from '../cell';
 
 type CompleteTableProps = TableProps & { yStackProps?: YStackProps } & { xStackProps?: XStackProps } & {

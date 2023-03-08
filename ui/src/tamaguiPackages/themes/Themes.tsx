@@ -1,4 +1,3 @@
-import React from 'react';
 import type { MaskOptions } from './createTheme';
 import { addChildren, applyMask, createStrengthenMask, createTheme, createWeakenMask } from './createTheme';
 
