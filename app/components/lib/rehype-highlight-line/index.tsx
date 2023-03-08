@@ -1,7 +1,7 @@
 // Inspired by https://github.com/j0lv3r4/mdx-prism
 
 import { toHtml } from 'hast-util-to-html';
-import parse from 'rehype-parse';
+// import parse from 'rehype-parse';
 import { unified } from 'unified';
 
 const lineNumberify = function lineNumberify(ast, lineNum = 1) {
@@ -100,9 +100,9 @@ const applyMultilineFix = function (ast) {
   );
 
   // HTML to AST
-  const hast = unified().use(parse, { emitParseErrors: true, fragment: true }).parse(html);
+  // const hast = unified().use(parse, { emitParseErrors: true, fragment: true }).parse(html);
 
-  return hast.children;
+  // return hast.children;
 };
 
 export default function (ast, lines) {

@@ -1,14 +1,14 @@
 import React from 'react';
 import { Container } from '../Container';
 import { components } from '../MDXComponents';
-import { authors } from '@data/authors';
+import { authors } from 'app/components/config/data';
 import { useTint } from '../../../hooks/useTint';
 import { ArrowLeft } from '@tamagui/lucide-icons';
 import { format, parseISO } from 'date-fns';
 import { useRouter } from 'next/router';
 import { Button, H1, H2, H3, H6, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui';
 import { LinearGradient } from 'tamagui/linear-gradient';
-import { FrontMatter } from '../FrontMatterContext/frontMatter';
+import type { FrontMatter } from '../FrontMatterContext/frontMatter';
 import { NextLink } from '../NextLink';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions

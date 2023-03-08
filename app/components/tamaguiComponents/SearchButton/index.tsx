@@ -3,7 +3,6 @@ import React from 'react';
 import { memo, useContext, useEffect, useRef } from 'react';
 import type { ButtonProps } from 'tamagui';
 import { Button, TooltipSimple, useIsTouchDevice } from 'tamagui';
-
 import { SearchContext } from '../SearchContext';
 
 export const SearchButton = memo((props: ButtonProps) => {

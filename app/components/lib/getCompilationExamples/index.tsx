@@ -4,8 +4,8 @@ import { refractor } from 'refractor';
 import css from 'refractor/lang/css';
 import tsx from 'refractor/lang/tsx';
 import { animationCode, compilationCode } from '../codeExamples';
-import rehypeHighlightLine from './rehype-highlight-line';
-import rehypeHighlightWord from './rehype-highlight-word';
+import rehypeHighlightLine from '../rehype-highlight-line';
+import rehypeHighlightWord from '../rehype-highlight-word';
 
 export function getCompilationExamples() {
   refractor.register(tsx);
