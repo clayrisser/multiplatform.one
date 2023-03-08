@@ -11,4 +11,4 @@ export default {
   },
 };
 
-export const main = () => <DocSearch appId={''} apiKey={''} indexName={''} initialScrollY={0} />;
+export const main = () => <DocSearch appId={'ssss'} apiKey={'dddrff'} indexName={'fffff'} initialScrollY={0} />;
