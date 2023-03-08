@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTableStore } from '../hooks';
 
 import type { XStackProps, TextProps, YStackProps } from 'tamagui';
@@ -15,10 +15,10 @@ export type RowsProps = { xStack?: XStackProps } & { text?: TextProps } & {
 
 export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
   const { rows, emptyValue } = props;
-  const [columnsLength, cellHeight, setCellHeight] = useTableStore((state: any) => [
+  const [columnsLength, setRowsWidths, rowsWidths] = useTableStore((state: any) => [
     state.columnsLength,
-    state.cellHeight,
-    state.setCellHeight,
+    state.setRowsWidths,
+    state.rowsWidths,
   ]);
 
   const filteredRow = rows.map((row) => {
@@ -31,20 +31,20 @@ export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
     }
   });
 
-  React.useEffect(() => {
-    let heightArr: any[] = [];
-
+  useEffect(() => {
+    const rowsWidthArray: any[] = [];
     for (let i = 0; i < filteredRow.length; i++) {
+      const rowWidthArray: any[] = [];
       for (let j = 0; j < filteredRow[i].length; j++) {
-        const height = document.getElementById(`text${i}${j}`)?.clientHeight;
-        heightArr.push(height);
+        const rowWidth = document.getElementById(`text${i}${j}`)?.clientWidth;
+        rowWidthArray.push(rowWidth);
       }
+      rowsWidthArray.push(rowWidthArray);
     }
-    const maxHeight = Math.max(...heightArr);
-    setCellHeight(maxHeight);
-  }, []);
+    setRowsWidths(rowsWidthArray);
+  }, [setRowsWidths]);
 
-  console.log('cellHeight', cellHeight);
+  console.log('rowsWidths', rowsWidths);
 
   return (
     <YStack {...yStack}>
@@ -60,13 +60,11 @@ export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
             {row.map((cell: any, j: number) => {
               return (
                 <Paragraph
-                  // overflow="hidden"
-                  // whiteSpace="nowrap"
-                  // textOverflow="ellipsis"
-                  // minHeight={cellHeight}
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
                   id={`text${i}${j}`}
                   hoverStyle={{}}
-                  width="100%"
                   textAlign="center"
                   alignSelf="center"
                   flexWrap="wrap"
