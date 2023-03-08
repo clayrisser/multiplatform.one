@@ -8,7 +8,7 @@ import { format, parseISO } from 'date-fns';
 import { useRouter } from 'next/router';
 import { Button, H1, H2, H3, H6, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui';
 import { LinearGradient } from 'tamagui/linear-gradient';
-import { FrontMatter } from '../FrontMatterContext/frontMatter';
+import type { FrontMatter } from '../FrontMatterContext/frontMatter';
 import { NextLink } from '../NextLink';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions

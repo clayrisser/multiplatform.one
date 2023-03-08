@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { throttle } from '@github/mini-throttle';
 import { demoMedia } from '../../../components/config/media';
 import { useOnIntersecting } from '../../../../app/hooks/useOnIntersecting';
@@ -5,6 +6,7 @@ import { useTint } from '../../../hooks/useTint';
 import { ChevronLeft, ChevronRight, Lock, MapPin, Monitor, Star } from '@tamagui/lucide-icons';
 import React, { startTransition, useMemo } from 'react';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import type { YStackProps } from 'tamagui';
 import {
   Button,
   Circle,
@@ -17,7 +19,6 @@ import {
   Theme,
   XStack,
   YStack,
-  YStackProps,
   isTouchable,
   useDebounce,
   useDidFinishSSR,
