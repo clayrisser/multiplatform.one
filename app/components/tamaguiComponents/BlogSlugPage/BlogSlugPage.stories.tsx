@@ -2,7 +2,7 @@ import React from 'react';
 import { BlogSlugPage } from './index';
 
 export default {
-  title: 'app/tamagui/BlogSlugPage',
+  title: 'app/tamaguiComponents/BlogSlugPage',
   component: BlogSlugPage,
   parameters: { status: { type: 'beta' } },
 };
