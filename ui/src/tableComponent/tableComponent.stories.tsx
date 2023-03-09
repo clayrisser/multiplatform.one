@@ -35,8 +35,8 @@ main.args = {
     rows: [
       [1, 'Ben', 28, 'Texas'],
       [2, 'Tom', 30, 'Texas'],
-      [3, 'Dharmendra Boddeda'],
-      [4, 'Ajith', 27, 'Vizag'],
+      [3, 'Dharmendra'],
+      [4, 'Aj', 27, 'Vizag'],
       [5, 'Rani', 23, 'Vizag'],
     ],
     emptyValue: '',

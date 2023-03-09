@@ -7,4 +7,6 @@ export const useTableStore = create((set) => ({
   setHeaderColumnsWidth: (value) => set({ headerColumnsWidth: value }),
   rowsWidths: null,
   setRowsWidths: (value) => set({ rowsWidths: value }),
+  eachColumnWidth: null,
+  setEachColumnWidth: (value) => set({ eachColumnWidth: value }),
 }));
