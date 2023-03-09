@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, TableCell, TableFrame, TableCol } from './index';
-import { YStack } from 'tamagui';
+import { YStack, Text } from 'tamagui';
 
 export default {
   title: 'ui/tamagui/MDXComponents',
@@ -8,8 +8,16 @@ export default {
   parameters: { status: { type: 'keep' } },
 };
 
-export const table = () => <Table heading="MDXTable">This is coming from table from MDXComponents</Table>;
-export const Code = () => <code className="className">This is coming from code from MDXComponents</code>;
+export const table = () => (
+  <Table heading="MDXTable">
+    <Text>This is coming from table from MDXComponents</Text>
+  </Table>
+);
+export const Code = () => (
+  <code className="className">
+    <Text>This is coming from code from MDXComponents</Text>
+  </code>
+);
 export const tableCell = () => <TableCell>This is coming from TableCell from MDXComponents</TableCell>;
 export const wholeTable = () => {
   return (

@@ -12,7 +12,9 @@ export default {
 export const main = () => {
   return (
     <YStack>
-      <Code>Hello WOrld </Code>
+      <Code>
+        <Text>Hello World </Text>
+      </Code>
       <Text>
         this is the data from <CodeInline>CodeInLine Component from tamagui </CodeInline>
       </Text>

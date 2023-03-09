@@ -2,7 +2,7 @@ import React from 'react';
 import { useDocsMenu } from './index';
 
 export default {
-  title: 'app/tamagui/useDocsMenu',
+  title: 'app/tamaguiComponents/useDocsMenu',
   component: useDocsMenu,
   parameters: { status: { type: 'beta' } },
 };
