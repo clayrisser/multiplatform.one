@@ -12,10 +12,11 @@ export type HeaderProps = { xStack?: XStackProps } & { text?: TextProps } & Head
 export const Header = ({ xStack, text, ...props }: HeaderProps) => {
   const columnsLength: number = props.columns.length;
 
-  const [setColumnsLength, setHeaderColumnsWidth] = useTableStore((state: any) => [
+  const [setColumnsLength, setHeaderColumnsWidth, eachColumnWidth] = useTableStore((state: any) => [
     state.setColumnsLength,
     state.setHeaderColumnsWidth,
     state.headerColumnsWidth,
+    state.eachColumnWidth,
   ]);
   useEffect(() => {
     setColumnsLength(columnsLength);
@@ -28,7 +29,7 @@ export const Header = ({ xStack, text, ...props }: HeaderProps) => {
       columnWidthArray.push(columnWidth);
       setHeaderColumnsWidth(columnWidthArray);
     }
-  }, [props.columns, setHeaderColumnsWidth]);
+  }, [props.columns]);
 
   return (
     <XStack backgroundColor="$backgroundFocus" jc="space-around" {...xStack}>
@@ -36,12 +37,13 @@ export const Header = ({ xStack, text, ...props }: HeaderProps) => {
         <H6
           id={`column${i}`}
           overflow="hidden"
-          // whiteSpace="nowrap"
+          whiteSpace="nowrap"
+          minWidth={eachColumnWidth !== null ? eachColumnWidth[i] : 0}
+          maxWidth={300}
           textOverflow="ellipsis"
           textAlign="center"
           alignSelf="center"
           flexWrap="wrap"
-          padding="$1"
           borderLeftWidth={i === 0 ? 0 : 2}
           als="stretch"
           {...text}

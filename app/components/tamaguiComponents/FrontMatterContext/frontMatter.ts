@@ -1,4 +1,4 @@
-export type FrontMatter = {
+export interface FrontMatter {
   title: string;
   description?: string;
   name?: string;
@@ -14,4 +14,4 @@ export type FrontMatter = {
   image?: string;
   component?: string;
   package?: string;
-};
+}
