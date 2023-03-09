@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, TableCell, TableFrame, TableCol } from './index';
+import { Table, TableCell, TableFrame, TableCol, Code } from './index';
 import { YStack, Text } from 'tamagui';
 
 export default {
@@ -13,10 +13,10 @@ export const table = () => (
     <Text>This is coming from table from MDXComponents</Text>
   </Table>
 );
-export const Code = () => (
-  <code className="className">
+export const code = () => (
+  <Code className="className">
     <Text>This is coming from code from MDXComponents</Text>
-  </code>
+  </Code>
 );
 export const tableCell = () => <TableCell>This is coming from TableCell from MDXComponents</TableCell>;
 export const wholeTable = () => {
