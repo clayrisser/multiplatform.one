@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useTableStore } from '../hooks';
 import type { XStackProps, TextProps, YStackProps } from 'tamagui';
 import { YStack, XStack, Paragraph } from 'tamagui';
-import { Platform } from 'react-native';
 
 export interface RowsDataProps {
   rows: any[][];
@@ -23,7 +22,7 @@ export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
   ]);
 
   const [filteredRow, setFilteredRow] = useState(rows);
-  let handelLayout: any;
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       const rowsWidthArray: any[] = [];
@@ -31,13 +30,7 @@ export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
       for (let i = 0; i < filteredRow.length; i++) {
         const rowWidthArray: any[] = [];
         for (let j = 0; j < filteredRow[i].length; j++) {
-          let rowWidth;
-
-          Platform.OS === 'web'
-            ? (rowWidth = document.getElementById(`text${i}${j}`)?.clientWidth)
-            : (handelLayout = (e) => {
-                rowWidth = e.nativeEvent.layout.width;
-              });
+          const rowWidth = document.getElementById(`text${i}${j}`)?.clientWidth;
 
           rowWidthArray.push(rowWidth);
         }
@@ -80,7 +73,6 @@ export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
                   // overflow="hidden"
                   // whiteSpace="nowrap"
                   // textOverflow="ellipsis"
-                  onLayout={handelLayout}
                   minWidth={eachColumnWidth !== null ? eachColumnWidth[j] + 0 : 0}
                   maxWidth={300}
                   id={`text${i}${j}`}
