@@ -13,11 +13,11 @@ export const table = () => (
     <Text>This is coming from table from MDXComponents</Text>
   </Table>
 );
-export const Code = () => (
-  <code className="className">
-    <Text>This is coming from code from MDXComponents</Text>
-  </code>
-);
+// export const code = () => (
+//   <Code className="className">
+//     <Text>This is coming from code from MDXComponents</Text>
+//   </Code>
+// );
 export const tableCell = () => <TableCell>This is coming from TableCell from MDXComponents</TableCell>;
 export const wholeTable = () => {
   return (

@@ -73,7 +73,7 @@ export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
                   // overflow="hidden"
                   // whiteSpace="nowrap"
                   // textOverflow="ellipsis"
-                  minWidth={eachColumnWidth !== null ? eachColumnWidth[j] + 4 : 0}
+                  minWidth={eachColumnWidth !== null ? eachColumnWidth[j] + 0 : 0}
                   maxWidth={300}
                   id={`text${i}${j}`}
                   hoverStyle={{}}

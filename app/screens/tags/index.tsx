@@ -1,3 +1,4 @@
+import React from 'react';
 import { SimpleAlertDialog, SimpleDialog, SimplePopover, SimpleSheet, SimpleTooltip } from '../../../ui/src/panels';
 import { YStack, Button, XStack, Label, Input, Dialog, Popover, Text, Theme } from 'tamagui';
 

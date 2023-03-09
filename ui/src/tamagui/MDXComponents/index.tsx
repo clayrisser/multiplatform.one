@@ -75,7 +75,7 @@ export const Table = ({ heading, children, ...props }) => {
   );
 };
 
-export const code = (props) => {
+export const Code = (props) => {
   const { hero, line, scrollable, className, children, id, showLineNumbers, collapsible, ...rest } = props;
   if (!className) {
     return <CodeInline>{unwrapText(children)}</CodeInline>;
