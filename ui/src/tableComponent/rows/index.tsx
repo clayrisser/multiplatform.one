@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTableStore } from '../hooks';
-
 import type { XStackProps, TextProps, YStackProps } from 'tamagui';
 import { YStack, XStack, Paragraph } from 'tamagui';
 
@@ -15,36 +14,47 @@ export type RowsProps = { xStack?: XStackProps } & { text?: TextProps } & {
 
 export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
   const { rows, emptyValue } = props;
-  const [columnsLength, setRowsWidths, rowsWidths] = useTableStore((state: any) => [
+  const [columnsLength, setRowsWidths, rowsWidths, eachColumnWidth] = useTableStore((state: any) => [
     state.columnsLength,
     state.setRowsWidths,
     state.rowsWidths,
+    state.eachColumnWidth,
   ]);
 
-  const filteredRow = rows.map((row) => {
-    if (columnsLength < row.length) {
-      return [...row];
-    } else {
-      const diff = columnsLength - row.length;
-      const emptyCells = Array.from({ length: diff }).fill(emptyValue || '');
-      return [...row, ...emptyCells];
-    }
-  });
+  const [filteredRow, setFilteredRow] = useState(rows);
 
   useEffect(() => {
-    const rowsWidthArray: any[] = [];
-    for (let i = 0; i < filteredRow.length; i++) {
-      const rowWidthArray: any[] = [];
-      for (let j = 0; j < filteredRow[i].length; j++) {
-        const rowWidth = document.getElementById(`text${i}${j}`)?.clientWidth;
-        rowWidthArray.push(rowWidth);
-      }
-      rowsWidthArray.push(rowWidthArray);
-    }
-    setRowsWidths(rowsWidthArray);
-  }, [setRowsWidths]);
+    const timeoutId = setTimeout(() => {
+      const rowsWidthArray: any[] = [];
 
-  console.log('rowsWidths', rowsWidths);
+      for (let i = 0; i < filteredRow.length; i++) {
+        const rowWidthArray: any[] = [];
+        for (let j = 0; j < filteredRow[i].length; j++) {
+          const rowWidth = document.getElementById(`text${i}${j}`)?.clientWidth;
+
+          rowWidthArray.push(rowWidth);
+        }
+        rowsWidthArray.push(rowWidthArray);
+      }
+      setRowsWidths(rowsWidthArray);
+    }, 1000);
+
+    return () => clearTimeout(timeoutId);
+  }, [filteredRow, setRowsWidths]);
+
+  useEffect(() => {
+    setFilteredRow(
+      rows.map((row) => {
+        if (columnsLength < row.length) {
+          return [...row];
+        } else {
+          const diff = columnsLength - row.length;
+          const emptyCells = Array.from({ length: diff }).fill(emptyValue || '');
+          return [...row, ...emptyCells];
+        }
+      }),
+    );
+  }, [rows, columnsLength, emptyValue]);
 
   return (
     <YStack {...yStack}>
@@ -60,15 +70,16 @@ export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
             {row.map((cell: any, j: number) => {
               return (
                 <Paragraph
-                  overflow="hidden"
-                  whiteSpace="nowrap"
-                  textOverflow="ellipsis"
+                  // overflow="hidden"
+                  // whiteSpace="nowrap"
+                  // textOverflow="ellipsis"
+                  minWidth={eachColumnWidth !== null ? eachColumnWidth[j] + 4 : 0}
+                  maxWidth={300}
                   id={`text${i}${j}`}
                   hoverStyle={{}}
                   textAlign="center"
                   alignSelf="center"
                   flexWrap="wrap"
-                  padding="$1"
                   key={j}
                   borderLeftWidth={j === 0 ? 0 : 2}
                   als="stretch"
