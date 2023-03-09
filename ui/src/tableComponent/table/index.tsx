@@ -37,7 +37,7 @@ export const Table = ({ yStack, ...props }: TableProps) => {
   console.log('eachColumnWidth', eachColumnWidth);
 
   return (
-    <YStack jc="center">
+    <YStack>
       <ScrollView horizontal={true} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
         <YStack borderWidth="$1" {...yStack}>
           {children}
