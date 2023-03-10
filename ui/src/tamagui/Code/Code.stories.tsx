@@ -16,7 +16,7 @@ export const main = () => {
         <Text>Hello World </Text>
       </Code>
       <Text>
-        this is the data from <CodeInline>CodeInLine Component from tamagui </CodeInline>
+        this is the data from<CodeInline>CodeInLine Component from tamagui</CodeInline>
       </Text>
     </YStack>
   );
