@@ -14,7 +14,7 @@ export type RowsProps = { xStack?: XStackProps } & { text?: TextProps } & {
 
 export const Rows = ({ xStack, text, yStack, ...props }: RowsProps) => {
   const { rows, emptyValue } = props;
-  const [columnsLength, setRowsWidths, rowsWidths, eachColumnWidth] = useTableStore((state: any) => [
+  const [columnsLength, setRowsWidths, eachColumnWidth] = useTableStore((state: any) => [
     state.columnsLength,
     state.setRowsWidths,
     state.rowsWidths,
