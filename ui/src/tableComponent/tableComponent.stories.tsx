@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Header, Row, Rows } from '.';
+import { Table, Header, Rows } from '.';
 
 export default {
   title: 'Screens/TableComponent',

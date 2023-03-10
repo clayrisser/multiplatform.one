@@ -28,7 +28,7 @@ export const TamaguiLogo = forwardRef<any, LogoProps>(
 
 export const LogoWords = memo(({ downscale = 1, animated }: { downscale?: number; animated?: boolean }) => {
   const Tint = useTint();
-  const { tintIndex: index, tint } = Tint;
+  const { tintIndex: index } = Tint;
   const tints = Tint.tints.map((t) => `var(--${t}9)`);
   const [hovered, setHovered] = useState(false);
   const [mounted, setMounted] = useState<'start' | 'animate' | 'done'>('start');

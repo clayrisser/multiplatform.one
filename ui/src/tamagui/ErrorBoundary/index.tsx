@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { YStack, Button, Text } from 'tamagui';
 
 export class ErrorBoundary extends Component<any> {
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 

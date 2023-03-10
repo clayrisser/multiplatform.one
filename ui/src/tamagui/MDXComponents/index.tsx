@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 // import { ThemeTint } from '../../hooks/useTint';
-import { Link } from '@tamagui/lucide-icons';
+// import { Link } from '@tamagui/lucide-icons';
 // import { NextLink } from '../NextLink';
 import React from 'react';
 // import { ScrollView } from 'react-native';

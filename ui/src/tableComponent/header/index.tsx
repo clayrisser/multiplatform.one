@@ -12,7 +12,7 @@ export type HeaderProps = { xStack?: XStackProps } & { text?: TextProps } & Head
 export const Header = ({ xStack, text, ...props }: HeaderProps) => {
   const columnsLength: number = props.columns.length;
 
-  const [setColumnsLength, setHeaderColumnsWidth, headerColumnsWidth, eachColumnWidth] = useTableStore((state: any) => [
+  const [setColumnsLength, setHeaderColumnsWidth, eachColumnWidth] = useTableStore((state: any) => [
     state.setColumnsLength,
     state.setHeaderColumnsWidth,
     state.headerColumnsWidth,

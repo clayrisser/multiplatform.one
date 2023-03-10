@@ -1,4 +1,3 @@
-import React from 'react';
 import type { MutableRefObject } from 'react';
 import { useEffect, useState } from 'react';
 import { isWeb, useEvent } from 'tamagui';
