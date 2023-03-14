@@ -9,8 +9,6 @@ const useCounterStore = create((set, get: any) => ({
 }));
 
 export function Counter() {
-  // const { count, increment, decrement } = useCounterStore();
-
   const counter: any = useCounterStore();
 
   return (

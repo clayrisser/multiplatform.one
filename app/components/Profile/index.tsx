@@ -1,4 +1,5 @@
 import React from 'react';
+import { YStack, Text } from 'tamagui';
 import { create } from 'zustand';
 
 export const useStore = create(() => ({
@@ -9,9 +10,9 @@ export const useStore = create(() => ({
 export function Profile1() {
   const { name, age } = useStore();
   return (
-    <div>
-      <h1>Name: {name}</h1>
-      <h2>Age: {age}</h2>
-    </div>
+    <YStack>
+      <Text>Name: {name}</Text>
+      <Text>Age: {age}</Text>
+    </YStack>
   );
 }
