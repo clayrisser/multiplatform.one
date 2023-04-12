@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 12-04-2023 18:04:35
+ * Last Modified: 12-04-2023 18:16:49
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -158,6 +158,10 @@ export default class KeycloakService {
 
   async getAccessToken(): Promise<Token | undefined> {
     return (await this.getGrant())?.access_token as Token;
+  }
+
+  async getRefreshToken(): Promise<Token | undefined> {
+    return (await this.getGrant())?.refresh_token as Token;
   }
 
   async getRoles(): Promise<string[] | undefined> {

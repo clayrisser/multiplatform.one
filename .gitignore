@@ -5,6 +5,7 @@
 /lib
 tsconfig.tsbuildinfo
 yarn.lock
+/null
 
 # nodejs
 *.log
