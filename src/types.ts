@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 12-12-2022 10:03:46
+ * Last Modified: 12-04-2023 16:20:54
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -221,7 +221,7 @@ export class GrantProperties {
   token_type?: string;
 }
 
-export class GrantTokensOptions {
+export class SmartGrantOptions {
   @ApiProperty()
   password?: string;
 
@@ -248,25 +248,34 @@ export class GrantTokensOptions {
 
   @ApiProperty()
   codeVerifier?: string;
+
+  @ApiProperty()
+  sessionId?: string;
+
+  @ApiProperty()
+  sessionHost?: string;
 }
 
-export class PasswordGrantOptions {
+export class DirectGrantOptions {
+  @ApiProperty()
+  username!: string;
+
   @ApiProperty()
   password!: string;
 
   @ApiProperty()
-  scope?: string | string[];
+  clientId?: string;
 
   @ApiProperty()
-  username!: string;
+  scope?: string | string[];
 }
 
 export class ClientCredentialsGrantOptions {
   @ApiProperty()
-  clientId!: string;
+  clientId?: string;
 
   @ApiProperty()
-  clientSecret!: string;
+  clientSecret?: string;
 
   @ApiProperty()
   scope?: string | string[];
@@ -275,6 +284,9 @@ export class ClientCredentialsGrantOptions {
 export class RefreshTokenGrantOptions {
   @ApiProperty()
   refreshToken!: string;
+
+  @ApiProperty()
+  clientId?: string;
 }
 
 export class AuthorizationCodeGrantOptions {
@@ -282,7 +294,19 @@ export class AuthorizationCodeGrantOptions {
   code!: string;
 
   @ApiProperty()
-  redirectUri!: string;
+  redirectUri?: string;
+
+  @ApiProperty()
+  sessionId?: string;
+
+  @ApiProperty()
+  sessionHost?: string;
+
+  @ApiProperty()
+  codeVerifier?: string;
+
+  @ApiProperty()
+  clientId?: string;
 }
 
 export class RefreshTokenGrant {
