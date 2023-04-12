@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-11-2022 07:59:51
+ * Last Modified: 12-04-2023 18:06:51
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -34,7 +34,7 @@ export default class KeycloakMiddleware implements NestMiddleware {
 
   async use(_req: Request, _res: Response, next: NextFunction) {
     try {
-      await this.keycloakService.init();
+      await this.keycloakService.getGrant();
       return next();
     } catch (err) {
       return next(err);
