@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 21-11-2022 05:03:37
+ * Last Modified: 12-04-2023 14:55:40
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -38,7 +38,6 @@ const KeycloakProvider: FactoryProvider<Keycloak> = {
   useFactory: (options: KeycloakOptions) => {
     const { clientSecret, clientId, realm } = options;
     const keycloak: Keycloak & { accessDenied: any } = new KeycloakConnect({ store: new session.MemoryStore() }, {
-      bearerOnly: true,
       clientId,
       realm,
       serverUrl: options.baseUrl,
