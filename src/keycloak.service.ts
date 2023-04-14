@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 12-04-2023 18:16:49
+ * Last Modified: 14-04-2023 19:45:14
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -489,13 +489,16 @@ export default class KeycloakService {
     }
     this._userInfo = undefined;
     this._grant = grant;
-    const aclRoles = await this.getACLRoles();
-    if (aclRoles && this.req.user) {
-      this.req.user.roles = aclRoles;
-    }
     this._accessToken = grant.access_token as Token;
     if (grant.refresh_token) {
       this._refreshToken = grant.refresh_token as Token;
+    }
+    if (!this.req.kauth) this.req.kauth = {};
+    this.req.kauth.grant = grant;
+    this.req.kauth.keycloak = this;
+    const aclRoles = await this.getACLRoles();
+    if (aclRoles && this.req.user) {
+      this.req.user.roles = aclRoles;
     }
   }
 
@@ -506,6 +509,9 @@ export default class KeycloakService {
     this._refreshToken = undefined;
     this._userInfo = undefined;
     delete this.req.kauth;
+    if (this.req.user) {
+      delete this.req.user.roles;
+    }
   }
 
   private async clearSession() {

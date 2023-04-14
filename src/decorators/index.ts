@@ -4,7 +4,7 @@
  * File Created: 15-07-2021 22:24:44
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 06-11-2022 04:33:21
+ * Last Modified: 14-04-2023 19:39:19
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -25,6 +25,7 @@
 export * from './authorizationCallback.decorator';
 export * from './authorized.decorator';
 export * from './injectGrant.decorator';
+export * from './injectRefreshToken.decorator';
 export * from './injectRoles.decorator';
 export * from './injectScopes.decorator';
 export * from './injectUserId.decorator';

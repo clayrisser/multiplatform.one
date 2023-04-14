@@ -4,7 +4,7 @@
  * File Created: 05-11-2022 12:16:14
  * Author: Clay Risser
  * -----
- * Last Modified: 06-11-2022 04:38:50
+ * Last Modified: 14-04-2023 19:37:03
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,6 +22,7 @@
  * limitations under the License.
  */
 
+import type Token from 'keycloak-connect/middleware/auth-utils/token';
 import type { ExecutionContext } from '@nestjs/common';
 import { createParamDecorator } from '@risserlabs/typegraphql-nestjs';
 import { getReq } from '../util';
@@ -29,7 +30,8 @@ import { getReq } from '../util';
 export function InjectUsername() {
   return createParamDecorator((_data?: unknown, ctx?: ExecutionContext, resolverData?: any) => {
     const req = getReq(ctx || resolverData?.context);
-    if (!req?.kauth?.userInfo?.preferredUsername) return;
-    return req.kauth.userInfo.preferredUsername;
+    if (!req?.kauth?.grant?.access_token) return;
+    const accessToken = req.kauth.grant.access_token as Token;
+    return accessToken.content?.preferred_username;
   });
 }
