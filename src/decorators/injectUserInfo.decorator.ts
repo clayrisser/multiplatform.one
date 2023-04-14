@@ -4,7 +4,7 @@
  * File Created: 05-11-2022 12:16:14
  * Author: Clay Risser
  * -----
- * Last Modified: 06-11-2022 04:38:54
+ * Last Modified: 14-04-2023 19:48:24
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -29,7 +29,8 @@ import { getReq } from '../util';
 export function InjectUserInfo() {
   return createParamDecorator((_data?: unknown, ctx?: ExecutionContext, resolverData?: any) => {
     const req = getReq(ctx || resolverData?.context);
-    if (!req?.kauth?.userInfo) return;
-    return req.kauth.userInfo;
+    if (!req?.kauth?.keycloak) return;
+    const { keycloak } = req.kauth;
+    return keycloak.getUserInfo();
   });
 }

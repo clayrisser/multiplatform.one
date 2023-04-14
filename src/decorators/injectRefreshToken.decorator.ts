@@ -1,10 +1,10 @@
 /**
- * File: /src/decorators/injectUserId.decorator.ts
+ * File: /src/decorators/injectRefreshToken.decorator.ts
  * Project: @risserlabs/nestjs-keycloak
  * File Created: 05-11-2022 12:16:14
  * Author: Clay Risser
  * -----
- * Last Modified: 14-04-2023 19:36:50
+ * Last Modified: 14-04-2023 19:38:59
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -27,11 +27,11 @@ import type { ExecutionContext } from '@nestjs/common';
 import { createParamDecorator } from '@risserlabs/typegraphql-nestjs';
 import { getReq } from '../util';
 
-export function InjectUserId() {
+export function InjectRefreshToken() {
   return createParamDecorator((_data?: unknown, ctx?: ExecutionContext, resolverData?: any) => {
     const req = getReq(ctx || resolverData?.context);
-    if (!req?.kauth?.grant?.access_token) return;
-    const accessToken = req.kauth.grant.access_token as Token;
-    return accessToken.content?.sub;
+    if (!req?.kauth?.grant?.refresh_token) return;
+    const refreshToken = req.kauth.grant.refresh_token as Token;
+    return refreshToken.token;
   });
 }

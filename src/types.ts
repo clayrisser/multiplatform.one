@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 12-04-2023 16:20:54
+ * Last Modified: 14-04-2023 19:43:42
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -106,8 +106,9 @@ export type ACLUser = UserInfo & {
 
 export interface Kauth {
   grant?: Grant;
-  userInfo?: UserInfo;
+  keycloak?: KeycloakService;
   options?: KeycloakOptions;
+  userInfo?: UserInfo;
 }
 
 export interface GraphqlCtx {
