@@ -1,6 +1,6 @@
 {
   "name": "@risserlabs/nestjs-keycloak",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "nestjs module for authenticating keycloak",
   "sideEffects": false,
   "keywords": [
