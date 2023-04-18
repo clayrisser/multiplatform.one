@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 14-04-2023 19:45:14
+ * Last Modified: 17-04-2023 22:42:10
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -65,7 +65,7 @@ export default class KeycloakService {
     private readonly createKeycloakAdmin?: () => Promise<KcAdminClient | void>,
   ) {
     this.options = {
-      enforceIssuedByClient: false,
+      ensureFreshness: true,
       ...options,
     };
     this.req = getReq(reqOrExecutionContext);
@@ -555,7 +555,7 @@ export default class KeycloakService {
         access_token: accessToken.token,
         // refresh_token is actually a string even though keycloak-connect
         // thinks it is a Token
-        ...(refreshToken ? { refresh_token: refreshToken.token } : {}),
+        ...(this.options.ensureFreshness && refreshToken ? { refresh_token: refreshToken.token } : {}),
         // refresh_token is actually a number even though keycloak-connect
         // thinks it is a string
         ...(accessToken.content?.exp ? { expires_in: accessToken.content.exp } : {}),
@@ -566,7 +566,7 @@ export default class KeycloakService {
 
   private async validateGrant(grant: Grant): Promise<Grant | undefined> {
     // @ts-ignore isGrantRefreshable is private
-    if (this.keycloak.grantManager.isGrantRefreshable(grant)) {
+    if (this.options.ensureFreshness && this.keycloak.grantManager.isGrantRefreshable(grant)) {
       await this.keycloak.grantManager.ensureFreshness(grant);
     }
     return await this.keycloak.grantManager.validateGrant(grant);
