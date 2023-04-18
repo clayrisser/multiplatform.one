@@ -58,6 +58,9 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
   const LoadingComponent = loadingComponent || (() => <>{debug ? 'authenticating' : null}</>);
   const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
   const authConfig = useAuthConfig();
+  const [idToken, setIdToken] = useState<string | boolean>(
+    ('idToken' in query && (query.idToken?.toString() || true)) || authState.idToken || false,
+  );
   const [token, setToken] = useState<string | boolean>(
     ('token' in query && (query.token?.toString() || true)) || authState.token || false,
   );
@@ -66,7 +69,7 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
   );
 
   useEffect(() => {
-    if (token !== true && refreshToken !== true) return;
+    if (token !== true && refreshToken !== true && idToken !== true) return;
     if (debug) logger.debug('post message', { type: 'LOADED' });
     (authConfig.messageHandlerKeys || []).forEach((key: string) => {
       window?.webkit?.messageHandlers?.[key]?.postMessage(JSON.stringify({ type: 'LOADED' }));
@@ -92,11 +95,41 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
         setToken(message.payload);
       }
     };
-    if (debug)
+    if (debug) {
       logger.debug('listening for message', {
         type: 'TOKEN',
         payload: '<some_token>',
       });
+    }
+    window.addEventListener('message', messageCallback);
+    return () => {
+      window.removeEventListener('message', messageCallback);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (idToken !== true) return;
+    const messageCallback = (e: MessageEvent<any>) => {
+      let data = e?.data;
+      if (typeof data === 'string') {
+        try {
+          data = JSON.parse(data);
+        } catch (err) {}
+      }
+      if (debug) logger.debug('received message', data);
+      const message: MessageSchema = data;
+      if (!message.type) return;
+      if (message.type.toUpperCase() === 'ID_TOKEN' && message.payload) {
+        if (debug) logger.debug('setting id token', message.payload);
+        setIdToken(message.payload);
+      }
+    };
+    if (debug) {
+      logger.debug('listening for message', {
+        type: 'ID_TOKEN',
+        payload: '<some_id_token>',
+      });
+    }
     window.addEventListener('message', messageCallback);
     return () => {
       window.removeEventListener('message', messageCallback);
@@ -120,11 +153,12 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
         setRefreshToken(message.payload);
       }
     };
-    if (debug)
+    if (debug) {
       logger.debug('listening for message', {
         type: 'REFRESH_TOKEN',
         payload: '<some_refresh_token>',
       });
+    }
     window.addEventListener('message', messageCallback);
     return () => {
       window.removeEventListener('message', messageCallback);
@@ -147,6 +181,7 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
       ...defaultKeycloakInitOptions,
       ...keycloakInitOptions,
     };
+    if (idToken && typeof idToken === 'string') initOptions.idToken = idToken;
     if (token && typeof token === 'string') {
       initOptions.token = token;
       if (refreshToken && typeof refreshToken === 'string') initOptions.refreshToken = refreshToken;
@@ -154,7 +189,7 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
       initOptions.onLoad = undefined;
     }
     return initOptions;
-  }, [keycloakInitOptions, token, refreshToken]);
+  }, [keycloakInitOptions, token, refreshToken, idToken]);
 
   if (token === true || refreshToken === true) return <LoadingComponent />;
   if (cookies && authConfig.ssr) {

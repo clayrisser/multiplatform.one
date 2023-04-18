@@ -36,20 +36,33 @@ const logger = console;
 
 export const AfterAuth: FC<AfterAuthProps> = ({ children }: AfterAuthProps) => {
   const authConfig = useAuthConfig();
-  const { token, refreshToken, authenticated } = useKeycloak();
+  const { token, refreshToken, authenticated, idToken } = useKeycloak();
   const authState = useAuthState();
 
   useEffect(() => {
     if (!authenticated) return;
     if (token) {
       authState.setToken(token);
+      if (idToken) authState.setIdToken(idToken);
       if (authConfig.ensureFreshness && refreshToken) authState.setRefreshToken(refreshToken);
     }
-  }, [token, refreshToken]);
+  }, [token, refreshToken, idToken]);
 
-  if (authConfig.debug) {
-    logger.debug('authenticated', authenticated);
-    logger.debug('token', token);
-  }
+  useEffect(() => {
+    if (authConfig.debug && authState.token) logger.debug('token', authState.token);
+  }, [authState.token]);
+
+  useEffect(() => {
+    if (authConfig.debug && authState.idToken) logger.debug('idToken', authState.idToken);
+  }, [authState.idToken]);
+
+  useEffect(() => {
+    if (authConfig.debug && authState.refreshToken) logger.debug(authState.refreshToken);
+  }, [authState.refreshToken]);
+
+  useEffect(() => {
+    if (authConfig.debug) logger.debug('authenticated', authenticated);
+  }, [authenticated]);
+
   return <>{children}</>;
 };

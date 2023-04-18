@@ -4,7 +4,7 @@
  * File Created: 22-11-2022 17:40:53
  * Author: Clay Risser
  * -----
- * Last Modified: 24-02-2023 06:26:51
+ * Last Modified: 18-04-2023 00:27:22
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -27,8 +27,9 @@ import { createStateStore } from 'multiplatform.one/zustand';
 const { useStore } = createStateStore(
   'auth',
   {
-    token: '',
+    idToken: '',
     refreshToken: '',
+    token: '',
   },
   undefined,
   { persist: true },

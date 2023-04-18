@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 14:10:44
  * Author: Clay Risser
  * -----
- * Last Modified: 17-04-2023 19:14:28
+ * Last Modified: 18-04-2023 00:28:11
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -27,6 +27,7 @@ export * from './useKeycloak';
 
 export interface IKeycloak {
   authenticated?: boolean;
+  idToken?: string;
   realmAccess?: KeycloakRoles;
   refreshToken?: string;
   refreshTokenParsed?: KeycloakTokenParsed;
