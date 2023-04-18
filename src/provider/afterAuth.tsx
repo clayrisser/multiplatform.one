@@ -43,7 +43,7 @@ export const AfterAuth: FC<AfterAuthProps> = ({ children }: AfterAuthProps) => {
     if (!authenticated) return;
     if (token) {
       authState.setToken(token);
-      if (refreshToken) authState.setRefreshToken(refreshToken);
+      if (authConfig.ensureFreshness && refreshToken) authState.setRefreshToken(refreshToken);
     }
   }, [token, refreshToken]);
 
