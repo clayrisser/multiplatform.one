@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 14-04-2023 19:43:42
+ * Last Modified: 17-04-2023 22:37:48
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -49,7 +49,7 @@ export interface KeycloakOptions {
   clientId: string;
   clientSecret: string;
   debug?: boolean;
-  enforceIssuedByClient?: boolean;
+  ensureFreshness?: boolean;
   realm: string;
   register?: RegisterOptions | boolean;
   strict?: boolean;
