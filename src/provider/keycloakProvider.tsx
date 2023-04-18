@@ -69,6 +69,7 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
       (('refreshToken' in query && (query.refreshToken?.toString() || true)) || authState.refreshToken)) ||
       false,
   );
+  const explicitToken = 'idToken' in query || 'token' in query || 'refreshToken' in query;
 
   useEffect(() => {
     if (token !== true && refreshToken !== true && idToken !== true) return;
@@ -183,12 +184,14 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
       ...defaultKeycloakInitOptions,
       ...keycloakInitOptions,
     };
-    if (idToken && typeof idToken === 'string') initOptions.idToken = idToken;
     if (token && typeof token === 'string') {
       initOptions.token = token;
+      if (idToken && typeof idToken === 'string') initOptions.idToken = idToken;
       if (refreshToken && typeof refreshToken === 'string') initOptions.refreshToken = refreshToken;
-      initOptions.checkLoginIframe = false;
-      initOptions.onLoad = undefined;
+      if (explicitToken) {
+        initOptions.checkLoginIframe = false;
+        initOptions.onLoad = undefined;
+      }
     }
     return initOptions;
   }, [keycloakInitOptions, token, refreshToken, idToken]);
