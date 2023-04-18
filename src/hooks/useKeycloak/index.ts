@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 14:10:44
  * Author: Clay Risser
  * -----
- * Last Modified: 28-11-2022 14:56:28
+ * Last Modified: 17-04-2023 19:14:28
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -33,7 +33,15 @@ export interface IKeycloak {
   resourceAccess?: KeycloakResourceAccess;
   subject?: string;
   token?: string;
-  tokenParsed?: KeycloakTokenParsed;
+  tokenParsed?: ITokenParsed;
   login: () => Promise<unknown> | unknown;
   logout: () => Promise<unknown> | unknown;
+}
+
+export interface ITokenParsed extends KeycloakTokenParsed {
+  'allowed-origins'?: string[];
+  email_verified?: boolean;
+  preferred_username?: string;
+  scope?: string;
+  sid?: string;
 }
