@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/keycloak",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "keycloak client for multiplatform.one ecosystem",
   "main": "dist/lib",
   "module": "dist/esm",

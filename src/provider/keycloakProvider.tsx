@@ -65,7 +65,9 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
     ('token' in query && (query.token?.toString() || true)) || authState.token || false,
   );
   const [refreshToken, setRefreshToken] = useState<string | boolean>(
-    ('refreshToken' in query && (query.refreshToken?.toString() || true)) || authState.refreshToken || false,
+    (authConfig.ensureFreshness &&
+      (('refreshToken' in query && (query.refreshToken?.toString() || true)) || authState.refreshToken)) ||
+      false,
   );
 
   useEffect(() => {
