@@ -50,7 +50,7 @@ export function DataTable({
                   ai="center"
                   jc="center"
                   textAlign="center"
-                  numberOfLines={3}
+                  // numberOfLines={3}
                   size="$4"
                   width={200}
                 >

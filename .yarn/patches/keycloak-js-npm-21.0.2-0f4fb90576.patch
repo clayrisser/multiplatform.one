@@ -1,5 +1,5 @@
 diff --git a/dist/keycloak.js b/dist/keycloak.js
-index 1aca015084716eb59a2e5d6f43e2d2f96b62f012..d730a98e6898d18b87074cf78d556320fc043aa6 100644
+index 1aca015084716eb59a2e5d6f43e2d2f96b62f012..8058d5c314d8d3dd426489289548673650e09851 100644
 --- a/dist/keycloak.js
 +++ b/dist/keycloak.js
 @@ -925,7 +925,7 @@
@@ -16,21 +16,8 @@ index 1aca015084716eb59a2e5d6f43e2d2f96b62f012..d730a98e6898d18b87074cf78d556320
  	                        });
  	                    } else {
 -	                        kc.updateToken(-1).then(function() {
-+	                        if (initOptions.refreshToken) {
-+	                            kc.updateToken(-1).then(function() {
-+	                                kc.onAuthSuccess && kc.onAuthSuccess();
-+	                                initPromise.setSuccess();
-+	                            }).catch(function(error) {
-+	                                kc.onAuthError && kc.onAuthError();
-+	                                if (initOptions.onLoad) {
-+	                                    onLoad();
-+	                                } else {
-+	                                    initPromise.setError(error);
-+	                                }
-+	                            });
-+	                        } else {
- 	                            kc.onAuthSuccess && kc.onAuthSuccess();
- 	                            initPromise.setSuccess();
+-	                            kc.onAuthSuccess && kc.onAuthSuccess();
+-	                            initPromise.setSuccess();
 -	                        }).catch(function(error) {
 -	                            kc.onAuthError && kc.onAuthError();
 -	                            if (initOptions.onLoad) {
@@ -39,12 +26,27 @@ index 1aca015084716eb59a2e5d6f43e2d2f96b62f012..d730a98e6898d18b87074cf78d556320
 -	                                initPromise.setError(error);
 -	                            }
 -	                        });
-+	                        }
++	                    	if (initOptions.refreshToken) {
++								kc.updateToken(-1).then(function() {
++									kc.onAuthSuccess && kc.onAuthSuccess();
++									initPromise.setSuccess();
++								}).catch(function(error) {
++									kc.onAuthError && kc.onAuthError();
++									if (initOptions.onLoad) {
++										onLoad();
++									} else {
++										initPromise.setError(error);
++									}
++								});
++							} else {
++								kc.onAuthSuccess && kc.onAuthSuccess();
++								initPromise.setSuccess();
++							}
  	                    }
  	                } else if (initOptions.onLoad) {
  	                    onLoad();
 diff --git a/dist/keycloak.mjs b/dist/keycloak.mjs
-index 9e07a9f0d0c56d0a55c30cd058d78eba2dd492c3..9eb86d6ca9a708027f224b29e42ab0a239bf1057 100644
+index 9e07a9f0d0c56d0a55c30cd058d78eba2dd492c3..c5407461579fa1275f0936bdd182e7452c51b2cd 100644
 --- a/dist/keycloak.mjs
 +++ b/dist/keycloak.mjs
 @@ -257,7 +257,7 @@ function Keycloak (config) {
@@ -61,7 +63,17 @@ index 9e07a9f0d0c56d0a55c30cd058d78eba2dd492c3..9eb86d6ca9a708027f224b29e42ab0a2
                          });
                      } else {
 -                        kc.updateToken(-1).then(function() {
-+                        if (initOptions.refreshToken) {
+-                            kc.onAuthSuccess && kc.onAuthSuccess();
+-                            initPromise.setSuccess();
+-                        }).catch(function(error) {
+-                            kc.onAuthError && kc.onAuthError();
+-                            if (initOptions.onLoad) {
+-                                onLoad();
+-                            } else {
+-                                initPromise.setError(error);
+-                            }
+-                        });
++	                    if (initOptions.refreshToken) {
 +                            kc.updateToken(-1).then(function() {
 +                                kc.onAuthSuccess && kc.onAuthSuccess();
 +                                initPromise.setSuccess();
@@ -74,16 +86,8 @@ index 9e07a9f0d0c56d0a55c30cd058d78eba2dd492c3..9eb86d6ca9a708027f224b29e42ab0a2
 +                                }
 +                            });
 +                        } else {
-                             kc.onAuthSuccess && kc.onAuthSuccess();
-                             initPromise.setSuccess();
--                        }).catch(function(error) {
--                            kc.onAuthError && kc.onAuthError();
--                            if (initOptions.onLoad) {
--                                onLoad();
--                            } else {
--                                initPromise.setError(error);
--                            }
--                        });
++ 	                        kc.onAuthSuccess && kc.onAuthSuccess();
++ 	                        initPromise.setSuccess();
 +                        }
                      }
                  } else if (initOptions.onLoad) {

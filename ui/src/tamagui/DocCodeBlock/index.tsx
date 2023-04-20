@@ -69,12 +69,21 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               right: '$7',
             }}
           >
-            <Button accessibilityLabel="Show or hide code" size="$2" onPress={() => setIsCollapsed((x) => !x)}>
+            <Button
+              //  accessibilityLabel="Show or hide code"
+              size="$2"
+              onPress={() => setIsCollapsed((x) => !x)}
+            >
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>
 
             <TooltipSimple label="Toggle tint on/off">
-              <Button accessibilityLabel="Toggle tint on/off" size="$2" onPress={toggleTinted} icon={Paintbrush} />
+              <Button
+                // accessibilityLabel="Toggle tint on/off"
+                size="$2"
+                onPress={toggleTinted}
+                icon={Paintbrush}
+              />
             </TooltipSimple>
           </XStack>
         )}

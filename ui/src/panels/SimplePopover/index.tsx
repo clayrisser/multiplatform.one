@@ -45,8 +45,7 @@ export function SimplePopover({
         elevate
         {...contentStyle}
       >
-        <Popover.Arrow bw={1} boc="$borderColor" {...arrowStyle} />
-
+        {/* <Popover.Arrow bw={1} boc="$borderColor" {...arrowStyle} /> */}
         <YStack>{element}</YStack>
       </Popover.Content>
     </Popover>

@@ -43,7 +43,7 @@ export function CompleteTable({
         borderRadius={borderRadius ? borderRadius : '$0'}
         backgroundColor={backgroundColor ?? backgroundColor}
       >
-        <XGroup borderRadius={0} backgroundColor="$backgroundStrong" {...xStackProps}>
+        {/* <XGroup borderRadius={0} backgroundColor="$backgroundStrong" {...xStackProps}>
           {tableMetaData
             ? Array.from({ length: maxLength }, (_, i) => tableMetaData[i] || null).map((item, index) => {
                 return (
@@ -59,34 +59,33 @@ export function CompleteTable({
                 );
               })
             : null}
-        </XGroup>
+        </XGroup> */}
         {rows
           ?.map((innerArray) => {
             return Array.from({ length: maxLength }, (_, i) => innerArray[i] || null);
           })
           .map((row, index) => {
-            return (
-              <XGroup
-                key={index}
-                borderRadius="$0"
-                {...xStackProps}
-                hoverStyle={{ scale: 1.02, backgroundColor: '$backgroundHover', borderRadius: '$0' }}
-              >
-                {row?.map((item, index) => {
-                  return (
-                    <Cell
-                      key={index}
-                      height={cellHeight}
-                      width={cellWidth}
-                      borderWidth={borderWidth ?? borderWidth}
-                      {...props}
-                    >
-                      {item}
-                    </Cell>
-                  );
-                })}
-              </XGroup>
-            );
+            return null;
+            // <XGroup
+            //   key={index}
+            //   borderRadius="$0"
+            //   {...xStackProps}
+            //   hoverStyle={{ scale: 1.02, backgroundColor: '$backgroundHover', borderRadius: '$0' }}
+            // >
+            //   {row?.map((item, index) => {
+            //     return (
+            //       <Cell
+            //         key={index}
+            //         height={cellHeight}
+            //         width={cellWidth}
+            //         borderWidth={borderWidth ?? borderWidth}
+            //         {...props}
+            //       >
+            //         {item}
+            //       </Cell>
+            //     );
+            //   })}
+            // </XGroup>
           })}
       </YGroup>
     </YStack>

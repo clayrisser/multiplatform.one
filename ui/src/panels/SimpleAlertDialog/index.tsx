@@ -54,8 +54,8 @@ export function SimpleAlertDialog({
           {...contentStyle}
         >
           <YStack space>
-            <AlertDialog.Title {...titleStyle}>{title ?? title}</AlertDialog.Title>
-            <AlertDialog.Description {...descriptionStyle}>{description ?? description}</AlertDialog.Description>
+            {/* <AlertDialog.Title {...titleStyle}>{title ?? title}</AlertDialog.Title>
+            <AlertDialog.Description {...descriptionStyle}>{description ?? description}</AlertDialog.Description> */}
             <XStack space="$3" jc="flex-end">
               <AlertDialog.Cancel asChild>
                 <Button>{cancel || 'cancel'}</Button>

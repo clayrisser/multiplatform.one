@@ -10,7 +10,7 @@ import { YStack, Image } from 'tamagui';
 import { useAssets } from '../../hooks/useAssets';
 import { useMemo } from 'react';
 
-export type SimpleImageProps = Omit<ImageProps, 'src' | 'width' | 'height'> & {
+export type SimpleImageProps = Omit<ImageProps, 'src' | 'width' | 'height' | 'source'> & {
   src?: ImageURISource | string;
   width?: string | number;
   height?: string | number;
@@ -73,7 +73,7 @@ export function SimpleImage({ src, svg, width, height, resizeMode, aspectRatio, 
   if (!MultiPlatform.isWeb && isSvg) {
     return (
       <SvgUri
-        {...(imageProps as SvgUriProps)}
+        {...(imageProps as Partial<SvgUriProps>)}
         width={Number.isFinite(width) ? width : Number.isFinite(height) ? undefined : '100%'}
         height={height}
         preserveAspectRatio={preserveAspectRatio}
@@ -91,7 +91,7 @@ export function SimpleImage({ src, svg, width, height, resizeMode, aspectRatio, 
       height={height}
       aspectRatio={aspectRatio}
       resizeMode={resizeMode}
-      src={uri}
+      source={{ uri }}
     />
   );
 }
