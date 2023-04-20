@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/keycloak",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "keycloak client for multiplatform.one ecosystem",
   "main": "dist/lib",
   "module": "dist/esm",
@@ -64,7 +64,7 @@
     "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-navigation/native": "^6.1.6",
     "@types/eslint": "^8.37.0",
-    "@types/jest": "^29.5.0",
+    "@types/jest": "^29.5.1",
     "@types/lodash.camelcase": "^4.3.7",
     "@types/lodash.startcase": "^4.4.7",
     "@types/react": "18.0.37",
@@ -84,7 +84,7 @@
     "jest-sonar-reporter": "^2.0.0",
     "keycloak-js": "21.0.2",
     "lockfile-lint": "^4.10.1",
-    "multiplatform.one": "^0.5.21",
+    "multiplatform.one": "^0.5.22",
     "next": "^13.3.0",
     "prettier": "^2.8.7",
     "react": "^18.2.0",
@@ -124,7 +124,6 @@
   },
   "resolutions": {
     "expo-keycloak-auth@1.0.14": "patch:expo-keycloak-auth@npm%3A1.0.14#./.yarn/patches/expo-keycloak-auth-npm-1.0.14-78201597ce.patch",
-    "keycloak-js@21.0.0": "patch:keycloak-js@npm%3A21.0.0#./.yarn/patches/keycloak-js-npm-21.0.0-1387a3b112.patch",
     "keycloak-js@21.0.2": "patch:keycloak-js@npm%3A21.0.2#./.yarn/patches/keycloak-js-npm-21.0.2-0f4fb90576.patch"
   },
   "prettier": "eslint-config-alloy/.prettierrc.js"
