@@ -1,10 +1,10 @@
 /**
- * File: /src/multiplatformBase.ts
+ * File: /src/multiplatform/multiplatformBase.ts
  * Project: multiplatform.one
  * File Created: 09-11-2022 09:50:38
  * Author: Clay Risser
  * -----
- * Last Modified: 28-01-2023 13:01:49
+ * Last Modified: 20-04-2023 18:00:55
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -36,7 +36,7 @@ export class MultiPlatformBase {
   static isIos = false;
   static isNative = false;
   static isNext = false;
-  static isRSC = false;
+  static isRSC: string | undefined;
   static isServer = false;
   static isStatic = false;
   static isStorybook = isWindowDefined && typeof window.__STORYBOOK_ADDONS === 'object';
