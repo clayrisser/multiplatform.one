@@ -1,6 +1,6 @@
 {
   "name": "multiplatform.one",
-  "version": "0.5.21",
+  "version": "0.5.22",
   "description": "multiplatform.one ecosystem",
   "main": "dist/lib",
   "module": "dist/esm",
@@ -78,24 +78,24 @@
     "recoil-persist": "^4.2.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-flow": "^7.18.6",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-flow": "^7.21.4",
     "@babel/preset-react": "^7.18.6",
-    "@babel/preset-typescript": "^7.21.0",
+    "@babel/preset-typescript": "^7.21.4",
     "@storybook/react": "^6.5.16",
     "@storybook/react-native": "^5.3.27",
-    "@tamagui/constants": "^1.5.17",
-    "@types/eslint": "^8.21.1",
-    "@types/jest": "^29.4.0",
-    "@types/react": "18.0.25",
-    "@types/react-native": "0.70.7",
+    "@tamagui/constants": "^1.15.23",
+    "@types/eslint": "^8.37.0",
+    "@types/jest": "^29.5.1",
+    "@types/react": "18.0.37",
+    "@types/react-native": "0.71.6",
     "@types/storybook__react-native": "^5.2.1",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "babel-plugin-fully-specified": "^1.3.0",
     "browserslist": "^4.21.5",
-    "cspell": "^6.26.3",
-    "esbuild": "^0.17.10",
+    "cspell": "^6.31.1",
+    "esbuild": "^0.17.17",
     "esbuild-plugin-babel": "^0.2.3",
     "eslint": "^8.34.0",
     "eslint-config-alloy": "^4.9.0",
@@ -108,13 +108,13 @@
     "lockfile-lint": "^4.10.1",
     "next": "^13.2.1",
     "next-i18next": "^13.1.5",
-    "prettier": "^2.8.4",
+    "prettier": "^2.8.7",
     "react": "^18.2.0",
     "react-i18next": "^12.2.0",
     "react-native": "0.70.6",
     "react-native-recoil-persist": "^0.0.6",
     "recoil-persist": "^4.2.0",
-    "typescript": "^4.9.5"
+    "typescript": "^5.0.4"
   },
   "packageManager": "yarn@3.3.0",
   "engines": {
@@ -142,7 +142,7 @@
   "prettier": "eslint-config-alloy/.prettierrc.js",
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
-    "zustand": "^4.3.3",
+    "zustand": "^4.3.7",
     "zustand-tools": "^0.0.7"
   }
 }
