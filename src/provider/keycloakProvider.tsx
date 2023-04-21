@@ -58,6 +58,7 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
   const LoadingComponent = loadingComponent || (() => <>{debug ? 'authenticating' : null}</>);
   const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
   const authConfig = useAuthConfig();
+  // TODO: only use from authState if not expired
   const [idToken, setIdToken] = useState<string | boolean>(
     ('idToken' in query && (query.idToken?.toString() || true)) || authState.idToken || false,
   );
