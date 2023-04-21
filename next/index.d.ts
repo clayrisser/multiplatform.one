@@ -1,10 +1,10 @@
 /**
  * File: /next/index.d.ts
  * Project: multiplatform.one
- * File Created: 26-01-2023 09:18:06
+ * File Created: 10-04-2023 18:15:11
  * Author: Clay Risser
  * -----
- * Last Modified: 21-02-2023 15:11:49
+ * Last Modified: 21-04-2023 16:09:42
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,18 +22,57 @@
  * limitations under the License.
  */
 
-import type { SSRConfig } from 'next-i18next';
 import type { GetStaticPaths } from 'next';
-export declare function getBaseStaticProps(locale: any, namespacesRequired?: string[]): Promise<SSRConfig>;
-export declare function createGetStaticProps(namespacesRequired?: string[]): ({ locale }: { locale: any }) => Promise<{
-  props: SSRConfig;
+import type { SSRConfig, UserConfig } from 'next-i18next';
+
+export declare function getBaseProps(locale: any, namespacesRequired?: string[]): Promise<SSRConfig>;
+
+export declare function createGetProps(
+  namespacesRequired?: string[],
+  props?: Record<string, any>,
+): ({ locale }: { locale: any }) => Promise<{
+  props: {
+    _nextI18Next?:
+      | {
+          initialI18nStore: any;
+          initialLocale: string;
+          ns: string[];
+          userConfig: UserConfig | null;
+        }
+      | undefined;
+  };
 }>;
+
 export declare function createGetStaticPaths(paths?: string[]): GetStaticPaths<{
   slug: string;
 }>;
+
 export declare const getStaticPaths: GetStaticPaths<{
   slug: string;
 }>;
+
 export declare const getStaticProps: ({ locale }: { locale: any }) => Promise<{
-  props: SSRConfig;
+  props: {
+    _nextI18Next?:
+      | {
+          initialI18nStore: any;
+          initialLocale: string;
+          ns: string[];
+          userConfig: UserConfig | null;
+        }
+      | undefined;
+  };
+}>;
+
+export declare const getInitialProps: ({ locale }: { locale: any }) => Promise<{
+  props: {
+    _nextI18Next?:
+      | {
+          initialI18nStore: any;
+          initialLocale: string;
+          ns: string[];
+          userConfig: UserConfig | null;
+        }
+      | undefined;
+  };
 }>;
