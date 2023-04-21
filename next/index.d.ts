@@ -4,7 +4,7 @@
  * File Created: 10-04-2023 18:15:11
  * Author: Clay Risser
  * -----
- * Last Modified: 21-04-2023 16:09:42
+ * Last Modified: 21-04-2023 16:40:38
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -43,6 +43,10 @@ export declare function createGetProps(
   };
 }>;
 
+export declare function createGetInitialProps(props?: Record<string, any>): () => Promise<{
+  props: Record<string, any>;
+}>;
+
 export declare function createGetStaticPaths(paths?: string[]): GetStaticPaths<{
   slug: string;
 }>;
@@ -64,7 +68,11 @@ export declare const getStaticProps: ({ locale }: { locale: any }) => Promise<{
   };
 }>;
 
-export declare const getInitialProps: ({ locale }: { locale: any }) => Promise<{
+export declare const getInitialProps: () => Promise<{
+  props: Record<string, any>;
+}>;
+
+export declare const getServerSideProps: ({ locale }: { locale: any }) => Promise<{
   props: {
     _nextI18Next?:
       | {

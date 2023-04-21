@@ -4,7 +4,7 @@
  * File Created: 26-01-2023 08:48:52
  * Author: Clay Risser
  * -----
- * Last Modified: 21-04-2023 15:42:55
+ * Last Modified: 21-04-2023 16:38:07
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -24,12 +24,13 @@
 
 import type { GetStaticPaths } from 'next';
 import { MultiPlatform } from '../multiplatform';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export async function getBaseProps(locale: any, namespacesRequired: string[] = []) {
-  return MultiPlatform.isNext && !MultiPlatform.isStatic
-    ? await serverSideTranslations(locale, ['common', ...namespacesRequired])
-    : {};
+  if (MultiPlatform.isNext && MultiPlatform.isServer && !MultiPlatform.isStatic) {
+    const { serverSideTranslations } = await import('next-i18next/serverSideTranslations');
+    return serverSideTranslations(locale, ['common', ...namespacesRequired]);
+  }
+  return {};
 }
 
 export function createGetProps(namespacesRequired: string[] = [], props: Record<string, any> = {}) {
@@ -39,6 +40,10 @@ export function createGetProps(namespacesRequired: string[] = [], props: Record<
       ...props,
     },
   });
+}
+
+export function createGetInitialProps(props: Record<string, any> = {}) {
+  return async () => ({ props });
 }
 
 export function createGetStaticPaths(paths: string[] = []): GetStaticPaths<{ slug: string }> {
@@ -52,4 +57,6 @@ export const getStaticPaths = createGetStaticPaths();
 
 export const getStaticProps = createGetProps();
 
-export const getInitialProps = createGetProps();
+export const getInitialProps = createGetInitialProps();
+
+export const getServerSideProps = createGetProps();

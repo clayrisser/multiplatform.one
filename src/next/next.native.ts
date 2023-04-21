@@ -1,10 +1,10 @@
 /**
  * File: /src/next/next.native.ts
  * Project: multiplatform.one
- * File Created: 26-01-2023 08:49:11
+ * File Created: 10-04-2023 18:15:11
  * Author: Clay Risser
  * -----
- * Last Modified: 21-04-2023 16:04:26
+ * Last Modified: 21-04-2023 16:38:54
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,11 +22,13 @@
  * limitations under the License.
  */
 
+import type { GetStaticPaths } from 'next';
+
 export async function getBaseProps(_locale: any, _namespacesRequired: string[] = []) {
   return {};
 }
 
-export async function createGetProps(namespacesRequired: string[] = [], props: Record<string, any> = {}) {
+export function createGetProps(namespacesRequired: string[] = [], props: Record<string, any> = {}) {
   return async ({ locale }: { locale: any }) => ({
     props: {
       ...(await getBaseProps(locale, namespacesRequired)),
@@ -35,7 +37,11 @@ export async function createGetProps(namespacesRequired: string[] = [], props: R
   });
 }
 
-export async function createGetStaticPaths(paths: string[] = []) {
+export function createGetInitialProps(props: Record<string, any> = {}) {
+  return async () => ({ props });
+}
+
+export function createGetStaticPaths(paths: string[] = []): GetStaticPaths<{ slug: string }> {
   return async () => ({
     paths,
     fallback: 'blocking',
@@ -46,4 +52,6 @@ export const getStaticPaths = createGetStaticPaths();
 
 export const getStaticProps = createGetProps();
 
-export const getInitialProps = createGetProps();
+export const getInitialProps = createGetInitialProps();
+
+export const getServerSideProps = createGetProps();
