@@ -1,10 +1,10 @@
 /**
- * File: /src/next/index.native.ts
+ * File: /src/next/next.native.ts
  * Project: multiplatform.one
  * File Created: 26-01-2023 08:49:11
  * Author: Clay Risser
  * -----
- * Last Modified: 26-01-2023 08:59:57
+ * Last Modified: 21-04-2023 16:04:26
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,13 +22,16 @@
  * limitations under the License.
  */
 
-export async function getBaseStaticProps(_locale: any, _namespacesRequired: string[] = []) {
+export async function getBaseProps(_locale: any, _namespacesRequired: string[] = []) {
   return {};
 }
 
-export async function createGetStaticProps(namespacesRequired: string[] = []) {
+export async function createGetProps(namespacesRequired: string[] = [], props: Record<string, any> = {}) {
   return async ({ locale }: { locale: any }) => ({
-    props: await getBaseStaticProps(locale, namespacesRequired),
+    props: {
+      ...(await getBaseProps(locale, namespacesRequired)),
+      ...props,
+    },
   });
 }
 
@@ -41,4 +44,6 @@ export async function createGetStaticPaths(paths: string[] = []) {
 
 export const getStaticPaths = createGetStaticPaths();
 
-export const getStaticProps = createGetStaticProps();
+export const getStaticProps = createGetProps();
+
+export const getInitialProps = createGetProps();
