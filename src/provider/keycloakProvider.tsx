@@ -65,6 +65,7 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
   const [token, setToken] = useState<string | boolean>(
     ('token' in query && (query.token?.toString() || true)) || authState.token || false,
   );
+  // TODO: automatically disable refresh grant if refresh token is not present
   const [refreshToken, setRefreshToken] = useState<string | boolean>(
     (authConfig.ensureFreshness &&
       (('refreshToken' in query && (query.refreshToken?.toString() || true)) || authState.refreshToken)) ||
