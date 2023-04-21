@@ -4,7 +4,7 @@
  * File Created: 01-02-2023 09:10:54
  * Author: Clay Risser
  * -----
- * Last Modified: 21-02-2023 15:10:57
+ * Last Modified: 21-04-2023 15:55:46
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -51,7 +51,7 @@ export function createStateStore<State extends InitStateType, Actions extends Ac
   initState: State,
   actions?: Actions,
   options: CreateOptions<State, Actions> = {},
-) {
+): ReturnType<typeof createSimple> {
   const store = createSimple(initState, {
     actions,
     middlewares: [
