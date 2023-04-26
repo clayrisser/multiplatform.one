@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 14:10:25
  * Author: Clay Risser
  * -----
- * Last Modified: 24-02-2023 06:29:25
+ * Last Modified: 24-04-2023 17:50:55
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -26,7 +26,7 @@ import atob from 'core-js-pure/stable/atob';
 import escape from 'core-js-pure/stable/escape';
 import type { AuthRequestPromptOptions, AuthSessionResult } from 'expo-auth-session';
 import type { IKeycloak } from './index';
-import type { KeycloakResourceAccess, KeycloakRoles, KeycloakTokenParsed } from 'keycloak-js';
+import type { KeycloakResourceAccess, KeycloakRoles, KeycloakTokenParsed } from '@bitspur/keycloak-js';
 import { MultiPlatform } from 'multiplatform.one';
 import { useKeycloak as useExpoKeycloak } from 'expo-keycloak-auth';
 

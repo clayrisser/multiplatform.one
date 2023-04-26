@@ -1,6 +1,7 @@
 # app
 /debug.json
 /dist
+/null
 
 # mkpm
 .mkpm/*

@@ -22,14 +22,14 @@
  * limitations under the License.
  */
 
-import Keycloak from 'keycloak-js';
+import Keycloak from '@bitspur/keycloak-js';
 import React, { useMemo, useEffect, useState } from 'react';
-import type { FC, ReactNode, ComponentType } from 'react';
-import type { KeycloakInitOptions } from 'keycloak-js';
+import type { KeycloakInitOptions } from '@bitspur/keycloak-js';
+import type { ReactNode, ComponentType } from 'react';
 import { AfterAuth } from './afterAuth';
 import { MultiPlatform } from 'multiplatform.one';
-import { ReactKeycloakProvider } from '@react-keycloak/web';
-import { SSRKeycloakProvider, SSRCookies } from '@react-keycloak/ssr';
+import { ReactKeycloakProvider } from '@bitspur/react-keycloak-web';
+import { SSRKeycloakProvider, SSRCookies } from '@bitspur/react-keycloak-ssr';
 import { useAuthConfig } from '../hooks/useAuthConfig';
 import { useAuthState } from '../state';
 import { useRouter } from 'next/router';
@@ -46,29 +46,28 @@ export interface KeycloakProviderProps {
 
 const logger = console;
 
-export const KeycloakProvider: FC<KeycloakProviderProps> = ({
+export function KeycloakProvider({
   children,
   cookies,
   debug,
   keycloakConfig,
   keycloakInitOptions,
   loadingComponent,
-}: KeycloakProviderProps) => {
+}: KeycloakProviderProps) {
   const authState = useAuthState();
   const LoadingComponent = loadingComponent || (() => <>{debug ? 'authenticating' : null}</>);
   const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
   const authConfig = useAuthConfig();
-  // TODO: only use from authState if not expired
   const [idToken, setIdToken] = useState<string | boolean>(
-    ('idToken' in query && (query.idToken?.toString() || true)) || authState.idToken || false,
+    ('idToken' in query && (query.idToken?.toString() || true)) || (authConfig.persist && authState.idToken) || false,
   );
   const [token, setToken] = useState<string | boolean>(
-    ('token' in query && (query.token?.toString() || true)) || authState.token || false,
+    ('token' in query && (query.token?.toString() || true)) || (authConfig.persist && authState.token) || false,
   );
-  // TODO: automatically disable refresh grant if refresh token is not present
   const [refreshToken, setRefreshToken] = useState<string | boolean>(
     (authConfig.ensureFreshness &&
-      (('refreshToken' in query && (query.refreshToken?.toString() || true)) || authState.refreshToken)) ||
+      (('refreshToken' in query && (query.refreshToken?.toString() || true)) ||
+        (authConfig.persist && authState.refreshToken))) ||
       false,
   );
   const explicitToken = 'idToken' in query || 'token' in query || 'refreshToken' in query;
@@ -186,6 +185,7 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
       ...defaultKeycloakInitOptions,
       ...keycloakInitOptions,
     };
+    if (debug) initOptions.enableLogging = true;
     if (token && typeof token === 'string') {
       initOptions.token = token;
       if (idToken && typeof idToken === 'string') initOptions.idToken = idToken;
@@ -198,7 +198,7 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
     return initOptions;
   }, [keycloakInitOptions, token, refreshToken, idToken]);
 
-  if (token === true || refreshToken === true) return <LoadingComponent />;
+  if (token === true || idToken === true || refreshToken === true) return <LoadingComponent />;
   if (cookies && authConfig.ssr) {
     return (
       // @ts-ignore
@@ -222,7 +222,7 @@ export const KeycloakProvider: FC<KeycloakProviderProps> = ({
       <AfterAuth>{children}</AfterAuth>
     </ReactKeycloakProvider>
   );
-};
+}
 
 export interface KeycloakConfig {
   clientId: string;

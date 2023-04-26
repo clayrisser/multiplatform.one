@@ -22,9 +22,11 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { ComponentType, FC, ReactNode } from 'react';
+import React, { useEffect } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 import { useLogin, useKeycloak } from './hooks';
+import { useAuthState } from './state';
+import { useAuthConfig } from './hooks/useAuthConfig';
 
 export interface AuthenticatedProps {
   children: ReactNode;
@@ -33,16 +35,26 @@ export interface AuthenticatedProps {
   loginRoute?: string;
 }
 
-export const Authenticated: FC<AuthenticatedProps> = (props: AuthenticatedProps) => {
+export function Authenticated({ children, disabled, loginRoute, loggedOutComponent }: AuthenticatedProps) {
+  const authConfig = useAuthConfig();
+  const authState = useAuthState();
+  const login = useLogin(loginRoute);
   const { authenticated } = useKeycloak();
-  const login = useLogin(props.loginRoute);
-  if (!props.disabled && !authenticated) {
-    if (authenticated === false) login();
-    const LoggedOutComponent = props.loggedOutComponent || (() => null);
-    return <LoggedOutComponent />;
-  }
-  return <>{props.children}</>;
-};
+
+  useEffect(() => {
+    if (authenticated !== false) return;
+    if (authConfig.persist) {
+      authState.setIdToken('');
+      authState.setRefreshToken('');
+      authState.setToken('');
+    }
+    login();
+  }, [authenticated]);
+
+  if (disabled || authenticated) return <>{children}</>;
+  const LoggedOutComponent = loggedOutComponent || (() => null);
+  return <LoggedOutComponent />;
+}
 
 export function withAuthenticated<P extends object>(Component: ComponentType<P>) {
   return (props: P) => (

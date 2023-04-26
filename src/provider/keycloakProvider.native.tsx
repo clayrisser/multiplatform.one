@@ -24,7 +24,7 @@
 
 import React from 'react';
 import type { FC } from 'react';
-import type { KeycloakConfig } from 'keycloak-js';
+import type { KeycloakConfig } from '@bitspur/keycloak-js';
 import type { KeycloakProviderProps } from './keycloakProvider';
 import { AfterAuth } from './afterAuth';
 import { KeycloakProvider as ExpoKeycloakProvider } from 'expo-keycloak-auth';

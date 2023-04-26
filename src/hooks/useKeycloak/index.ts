@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 14:10:44
  * Author: Clay Risser
  * -----
- * Last Modified: 18-04-2023 00:28:11
+ * Last Modified: 24-04-2023 17:50:36
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-import type { KeycloakResourceAccess, KeycloakRoles, KeycloakTokenParsed } from 'keycloak-js';
+import type { KeycloakResourceAccess, KeycloakRoles, KeycloakTokenParsed } from '@bitspur/keycloak-js';
 export * from './useKeycloak';
 
 export interface IKeycloak {

@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 06:04:59
  * Author: Clay Risser
  * -----
- * Last Modified: 18-04-2023 04:08:56
+ * Last Modified: 25-04-2023 23:18:16
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,24 +22,23 @@
  * limitations under the License.
  */
 
-import type Keycloak from 'keycloak-js';
+import type Keycloak from '@bitspur/keycloak-js';
 import type { IKeycloak } from './index';
 import { MultiPlatform } from 'multiplatform.one';
 import { useAuthConfig } from '../useAuthConfig';
-import { useKeycloak as useReactKeycloak } from '@react-keycloak/web';
-import { useKeycloak as useSsrKeycloak } from '@react-keycloak/ssr';
+import { useKeycloak as useReactKeycloak } from '@bitspur/react-keycloak-web';
+import { useKeycloak as useSsrKeycloak } from '@bitspur/react-keycloak-ssr';
 
 export function useKeycloak() {
   const authConfig = useAuthConfig();
   if (MultiPlatform.isStorybook) return { authenticated: true } as IKeycloak;
   if (MultiPlatform.isNext && authConfig.ssr) {
     const { keycloak: ssrKeycloak, initialized } = useSsrKeycloak();
-    const keycloak = { ...ssrKeycloak } as Keycloak;
+    const keycloak = (ssrKeycloak || {}) as Keycloak;
     if (!initialized) keycloak.authenticated = undefined;
     return keycloak as IKeycloak;
   }
-  const { keycloak: reactKeycloak, initialized } = useReactKeycloak();
-  const keycloak = { ...reactKeycloak } as Keycloak;
+  const { keycloak, initialized } = useReactKeycloak();
   if (!initialized) keycloak.authenticated = undefined;
   return keycloak as IKeycloak;
 }

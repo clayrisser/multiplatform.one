@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 09:21:15
  * Author: Clay Risser
  * -----
- * Last Modified: 17-04-2023 22:55:41
+ * Last Modified: 25-04-2023 23:08:17
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -26,6 +26,7 @@ import { createContext } from 'react';
 
 export const defaultAuthConfig: AuthConfig = {
   ensureFreshness: true,
+  persist: true,
   ssr: true,
 };
 
@@ -36,5 +37,6 @@ export interface AuthConfig {
   ensureFreshness?: boolean;
   loginRoute?: string;
   messageHandlerKeys?: string[];
+  persist?: boolean;
   ssr?: boolean;
 }
