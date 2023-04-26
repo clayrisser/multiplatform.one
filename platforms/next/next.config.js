@@ -1,3 +1,7 @@
+process.env.IGNORE_TS_CONFIG_PATHS = 'true';
+process.env.TAMAGUI_TARGET = 'web';
+process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = '1';
+
 const privateConfig = require('app/config/private');
 const publicConfig = require('app/config/public');
 const tamaguiModules = require('./tamaguiModules');
@@ -9,10 +13,6 @@ const { i18n } = require('./next-i18next.config');
 const { join } = require('path');
 const { supportedLocales, defaultLocale, defaultNamespace } = require('app/i18n/config');
 const { withTamagui } = require('@tamagui/next-plugin');
-
-process.env.IGNORE_TS_CONFIG_PATHS = 'true';
-process.env.TAMAGUI_TARGET = 'web';
-process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = '1';
 
 const sharedConfig = { ...publicConfig, ...privateConfig };
 const static = process.env.NEXT_STATIC === '1';

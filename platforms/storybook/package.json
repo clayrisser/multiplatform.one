@@ -34,9 +34,9 @@
   },
   "devDependencies": {
     "@loki/target-chrome-core": "0.31.0",
-    "@types/node": "^18.15.12",
-    "@types/react": "^18.0.37",
-    "loki": "^0.31.0",
+    "@types/node": "^18.16.1",
+    "@types/react": "^18.2.0",
+    "loki": "^0.31.1",
     "typescript": "^5.0.4"
   },
   "loki": {

@@ -1,6 +1,6 @@
 import React from 'react';
 import type { KeycloakConfig, AuthConfig } from '@multiplatform.one/keycloak';
-import type { KeycloakInitOptions } from 'keycloak-js';
+import type { KeycloakInitOptions } from '@bitspur/keycloak-js';
 import type { ProviderProps } from './types';
 import { AuthProvider } from '@multiplatform.one/keycloak';
 import { config } from 'app/config';
