@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:43:59
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 12-04-2023 18:07:26
+ * Last Modified: 01-05-2023 02:26:51
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -74,7 +74,7 @@ export class AuthGuard implements CanActivate {
         HttpStatus.UNAUTHORIZED,
       );
     }
-    const username = (await keycloakService.getUserInfo())?.preferredUsername;
+    const username = await keycloakService.getUsername();
     if (!username) return false;
     const resource = this.getResource(context);
     this.logger.verbose(
