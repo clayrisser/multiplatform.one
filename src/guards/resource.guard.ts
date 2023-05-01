@@ -4,7 +4,7 @@
  * File Created: 14-07-2021 11:39:50
  * Author: Clay Risser <email@clayrisser.com>
  * -----
- * Last Modified: 25-10-2022 15:15:16
+ * Last Modified: 01-05-2023 02:27:27
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021
@@ -60,7 +60,7 @@ export class ResourceGuard implements CanActivate {
     if (!resource) return true;
     const scopes = this.getScopes(context);
     if (!scopes.length) return true;
-    const username = (await keycloakService.getUserInfo())?.preferredUsername;
+    const username = await keycloakService.getUsername();
     if (!username) return false;
     this.logger.verbose(`protecting resource '${resource}' with scopes [ ${scopes.join(', ')} ]`);
     const permissions = scopes.map((scope) => `${resource}:${scope}`);
