@@ -1,9 +1,9 @@
 export MKPM_PACKAGES_DEFAULT := \
-	dotenv=0.0.12 \
-	envcache=0.1.0 \
-	gnu=0.0.3 \
+	yarn=0.0.5 \
 	mkchain=0.1.1 \
-	yarn=0.0.5
+	gnu=0.0.3 \
+	envcache=0.1.0 \
+	dotenv=0.0.12
 
 export MKPM_REPO_DEFAULT := \
 	https://gitlab.com/risserlabs/community/mkpm-stable.git
