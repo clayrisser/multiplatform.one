@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/ui",
-  "version": "0.0.42",
+  "version": "0.0.44",
   "sideEffects": [
     "*.css"
   ],
@@ -13,12 +13,12 @@
   "types": "types/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js",
       "types": "./types/index.d.ts"
     },
     "./src/tamagui.config": {
-      "import": "./dist/esm/tamagui.config.mjs",
+      "import": "./dist/esm/tamagui.config.js",
       "require": "./dist/cjs/tamagui.config.js",
       "types": "./types/tamagui.config.d.ts"
     }
