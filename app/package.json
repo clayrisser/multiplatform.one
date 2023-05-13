@@ -7,10 +7,10 @@
     "*.css"
   ],
   "dependencies": {
-    "@bitspur/keycloak-js": "21.1.0-3",
+    "@bitspur/keycloak-js": "21.1.1",
     "@docsearch/react": "^3.3.3",
     "@github/mini-throttle": "^2.1.0",
-    "@multiplatform.one/keycloak": "^0.2.10",
+    "@multiplatform.one/keycloak": "^0.2.14",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "@tamagui/animations-react-native": "^1.27.3",
