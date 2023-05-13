@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 06:04:59
  * Author: Clay Risser
  * -----
- * Last Modified: 25-04-2023 23:18:16
+ * Last Modified: 13-05-2023 08:16:27
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,7 +22,6 @@
  * limitations under the License.
  */
 
-import type Keycloak from '@bitspur/keycloak-js';
 import type { IKeycloak } from './index';
 import { MultiPlatform } from 'multiplatform.one';
 import { useAuthConfig } from '../useAuthConfig';
@@ -33,12 +32,15 @@ export function useKeycloak() {
   const authConfig = useAuthConfig();
   if (MultiPlatform.isStorybook) return { authenticated: true } as IKeycloak;
   if (MultiPlatform.isNext && authConfig.ssr) {
-    const { keycloak: ssrKeycloak, initialized } = useSsrKeycloak();
-    const keycloak = (ssrKeycloak || {}) as Keycloak;
-    if (!initialized) keycloak.authenticated = undefined;
-    return keycloak as IKeycloak;
+    const { keycloak, initialized } = useSsrKeycloak();
+    return {
+      ...keycloak,
+      authenticated: initialized ? keycloak?.authenticated : undefined,
+    } as IKeycloak;
   }
   const { keycloak, initialized } = useReactKeycloak();
-  if (!initialized) keycloak.authenticated = undefined;
-  return keycloak as IKeycloak;
+  return {
+    ...keycloak,
+    authenticated: initialized ? keycloak.authenticated : undefined,
+  } as IKeycloak;
 }
