@@ -4,7 +4,7 @@
  * File Created: 22-11-2022 17:40:53
  * Author: Clay Risser
  * -----
- * Last Modified: 18-04-2023 00:27:22
+ * Last Modified: 13-05-2023 03:59:54
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -23,6 +23,8 @@
  */
 
 import { createStateStore } from 'multiplatform.one/zustand';
+// @ts-ignore
+import { config } from 'app/config';
 
 const { useStore } = createStateStore(
   'auth',
@@ -32,7 +34,7 @@ const { useStore } = createStateStore(
     token: '',
   },
   undefined,
-  { persist: true },
+  { persist: config.get('KEYCLOAK_PERSIST') === '1' },
 );
 
 export function useAuthState() {
