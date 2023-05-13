@@ -23,7 +23,8 @@
  */
 
 import Keycloak from '@bitspur/keycloak-js';
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState, useCallback } from 'react';
+import type { AuthClientEvent, AuthClientError, AuthClientTokens } from '@bitspur/react-keycloak-core';
 import type { KeycloakInitOptions } from '@bitspur/keycloak-js';
 import type { ReactNode, ComponentType } from 'react';
 import { AfterAuth } from './afterAuth';
@@ -42,6 +43,8 @@ export interface KeycloakProviderProps {
   keycloakConfig: KeycloakConfig;
   keycloakInitOptions?: KeycloakInitOptions;
   loadingComponent?: ComponentType;
+  onEvent?: (eventType: AuthClientEvent, error?: AuthClientError) => void;
+  onTokens?: (tokens: AuthClientTokens) => void;
 }
 
 const logger = console;
@@ -53,6 +56,8 @@ export function KeycloakProvider({
   keycloakConfig,
   keycloakInitOptions,
   loadingComponent,
+  onEvent,
+  onTokens,
 }: KeycloakProviderProps) {
   const authState = useAuthState();
   const LoadingComponent = loadingComponent || (() => <>{debug ? 'authenticating' : null}</>);
@@ -169,6 +174,15 @@ export function KeycloakProvider({
     };
   }, []);
 
+  const handleEvent = useCallback((eventType: AuthClientEvent, error?: AuthClientError) => {
+    if (error) {
+      const err: Error & { errorDescription?: string } = new Error(error.error);
+      err.errorDescription = error.error_description;
+      throw err;
+    }
+    if (onEvent) onEvent(eventType, error);
+  }, []);
+
   const keycloak = useMemo(
     () =>
       typeof window !== 'undefined' &&
@@ -203,14 +217,16 @@ export function KeycloakProvider({
     return (
       // @ts-ignore
       <SSRKeycloakProvider
-        initOptions={initOptions}
-        keycloakConfig={{
-          url: keycloakConfig.baseUrl,
-          realm: keycloakConfig.realm,
-          clientId: keycloakConfig.clientId,
-        }}
-        persistor={SSRCookies(cookies)}
         LoadingComponent={<LoadingComponent />}
+        initOptions={initOptions}
+        onEvent={handleEvent}
+        onTokens={onTokens}
+        persistor={SSRCookies(cookies)}
+        keycloakConfig={{
+          clientId: keycloakConfig.clientId,
+          realm: keycloakConfig.realm,
+          url: keycloakConfig.baseUrl,
+        }}
       >
         <AfterAuth>{children}</AfterAuth>
       </SSRKeycloakProvider>
@@ -218,7 +234,13 @@ export function KeycloakProvider({
   }
   if (!keycloak) return <>{children}</>;
   return (
-    <ReactKeycloakProvider initOptions={initOptions} authClient={keycloak} LoadingComponent={<LoadingComponent />}>
+    <ReactKeycloakProvider
+      LoadingComponent={<LoadingComponent />}
+      authClient={keycloak}
+      initOptions={initOptions}
+      onEvent={handleEvent}
+      onTokens={onTokens}
+    >
       <AfterAuth>{children}</AfterAuth>
     </ReactKeycloakProvider>
   );
