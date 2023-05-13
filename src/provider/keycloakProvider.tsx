@@ -176,6 +176,7 @@ export function KeycloakProvider({
 
   const handleEvent = useCallback((eventType: AuthClientEvent, error?: AuthClientError) => {
     if (error) {
+      if (typeof error === 'string') throw new Error(error);
       const err: Error & { errorDescription?: string } = new Error(error.error);
       err.errorDescription = error.error_description;
       throw err;
