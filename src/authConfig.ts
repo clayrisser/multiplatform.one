@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 09:21:15
  * Author: Clay Risser
  * -----
- * Last Modified: 25-04-2023 23:08:17
+ * Last Modified: 14-05-2023 01:22:15
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -26,8 +26,8 @@ import { createContext } from 'react';
 
 export const defaultAuthConfig: AuthConfig = {
   ensureFreshness: true,
-  persist: true,
-  ssr: true,
+  persist: false,
+  ssr: false,
 };
 
 export const AuthConfigContext = createContext<AuthConfig>(defaultAuthConfig);

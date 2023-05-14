@@ -25,7 +25,7 @@
 import Keycloak from '@bitspur/keycloak-js';
 import React, { useMemo, useEffect, useState, useCallback } from 'react';
 import type { AuthClientEvent, AuthClientError, AuthClientTokens } from '@bitspur/react-keycloak-core';
-import type { KeycloakInitOptions } from '@bitspur/keycloak-js';
+import type { KeycloakInitOptions, KeycloakConfig } from '@bitspur/keycloak-js';
 import type { ReactNode, ComponentType } from 'react';
 import { AfterAuth } from './afterAuth';
 import { MultiPlatform } from 'multiplatform.one';
@@ -38,8 +38,6 @@ import { useRouter } from 'next/router';
 export interface KeycloakProviderProps {
   children: ReactNode;
   cookies?: unknown;
-  debug?: boolean;
-  disabled?: boolean;
   keycloakConfig: KeycloakConfig;
   keycloakInitOptions?: KeycloakInitOptions;
   loadingComponent?: ComponentType;
@@ -52,27 +50,25 @@ const logger = console;
 export function KeycloakProvider({
   children,
   cookies,
-  debug,
   keycloakConfig,
   keycloakInitOptions,
   loadingComponent,
   onEvent,
   onTokens,
 }: KeycloakProviderProps) {
+  const { debug, ensureFreshness, persist, messageHandlerKeys, ssr } = useAuthConfig();
   const authState = useAuthState();
   const LoadingComponent = loadingComponent || (() => <>{debug ? 'authenticating' : null}</>);
   const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
-  const authConfig = useAuthConfig();
   const [idToken, setIdToken] = useState<string | boolean>(
-    ('idToken' in query && (query.idToken?.toString() || true)) || (authConfig.persist && authState.idToken) || false,
+    ('idToken' in query && (query.idToken?.toString() || true)) || (persist && authState.idToken) || false,
   );
   const [token, setToken] = useState<string | boolean>(
-    ('token' in query && (query.token?.toString() || true)) || (authConfig.persist && authState.token) || false,
+    ('token' in query && (query.token?.toString() || true)) || (persist && authState.token) || false,
   );
   const [refreshToken, setRefreshToken] = useState<string | boolean>(
-    (authConfig.ensureFreshness &&
-      (('refreshToken' in query && (query.refreshToken?.toString() || true)) ||
-        (authConfig.persist && authState.refreshToken))) ||
+    (ensureFreshness &&
+      (('refreshToken' in query && (query.refreshToken?.toString() || true)) || (persist && authState.refreshToken))) ||
       false,
   );
   const explicitToken = 'idToken' in query || 'token' in query || 'refreshToken' in query;
@@ -80,7 +76,7 @@ export function KeycloakProvider({
   useEffect(() => {
     if (token !== true && refreshToken !== true && idToken !== true) return;
     if (debug) logger.debug('post message', { type: 'LOADED' });
-    (authConfig.messageHandlerKeys || []).forEach((key: string) => {
+    (messageHandlerKeys || []).forEach((key: string) => {
       window?.webkit?.messageHandlers?.[key]?.postMessage(JSON.stringify({ type: 'LOADED' }));
     });
     window?.ReactNativeWebView?.postMessage(JSON.stringify({ type: 'LOADED' }));
@@ -188,7 +184,7 @@ export function KeycloakProvider({
     () =>
       typeof window !== 'undefined' &&
       new Keycloak({
-        url: keycloakConfig.baseUrl,
+        url: keycloakConfig.url,
         realm: keycloakConfig.realm,
         clientId: keycloakConfig.clientId,
       }),
@@ -214,11 +210,13 @@ export function KeycloakProvider({
   }, [keycloakInitOptions, token, refreshToken, idToken]);
 
   if (token === true || idToken === true || refreshToken === true) return <LoadingComponent />;
-  if (cookies && authConfig.ssr) {
+  if (cookies && ssr) {
     return (
       // @ts-ignore
       <SSRKeycloakProvider
         LoadingComponent={<LoadingComponent />}
+        // keycloak-js already handles refreshing tokens
+        autoRefreshToken={false}
         initOptions={initOptions}
         onEvent={handleEvent}
         onTokens={onTokens}
@@ -226,7 +224,7 @@ export function KeycloakProvider({
         keycloakConfig={{
           clientId: keycloakConfig.clientId,
           realm: keycloakConfig.realm,
-          url: keycloakConfig.baseUrl,
+          url: keycloakConfig.url,
         }}
       >
         <AfterAuth>{children}</AfterAuth>
@@ -238,6 +236,8 @@ export function KeycloakProvider({
     <ReactKeycloakProvider
       LoadingComponent={<LoadingComponent />}
       authClient={keycloak}
+      // keycloak-js already handles refreshing tokens
+      autoRefreshToken={false}
       initOptions={initOptions}
       onEvent={handleEvent}
       onTokens={onTokens}
@@ -247,11 +247,14 @@ export function KeycloakProvider({
   );
 }
 
-export interface KeycloakConfig {
-  clientId: string;
-  realm: string;
-  scheme?: string;
-  baseUrl: string;
+export function isTokenValid(token: string) {
+  try {
+    const { exp } = JSON.parse(Buffer.from(token.split('.')?.[1] || '', 'base64').toString() || '{}');
+    return Math.floor(Date.now() / 1000) <= exp;
+  } catch (err) {
+    if (err instanceof SyntaxError) return false;
+    throw err;
+  }
 }
 
 export const defaultKeycloakInitOptions: KeycloakInitOptions = {

@@ -32,7 +32,7 @@ import { KeycloakProvider as ExpoKeycloakProvider } from 'expo-keycloak-auth';
 export const KeycloakProvider: FC<KeycloakProviderProps> = ({ children, keycloakConfig }: KeycloakProviderProps) => {
   const clonedKeycloakConfig = {
     ...(keycloakConfig as Omit<KeycloakConfig, 'baseUrl'>),
-    url: keycloakConfig.baseUrl,
+    url: keycloakConfig.url,
   };
   // @ts-ignore
   delete keycloakConfig.baseUrl;

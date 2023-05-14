@@ -57,7 +57,7 @@ export const AfterAuth: FC<AfterAuthProps> = ({ children }: AfterAuthProps) => {
   }, [authState.idToken]);
 
   useEffect(() => {
-    if (authConfig.debug && authState.refreshToken) logger.debug(authState.refreshToken);
+    if (authConfig.debug && authState.refreshToken) logger.debug('refreshToken', authState.refreshToken);
   }, [authState.refreshToken]);
 
   useEffect(() => {

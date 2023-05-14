@@ -23,30 +23,83 @@
  */
 
 import React, { useMemo } from 'react';
+import type { AuthClientEvent, AuthClientError, AuthClientTokens } from '@bitspur/react-keycloak-core';
 import type { AuthConfig } from '../authConfig';
-import type { FC } from 'react';
-import type { KeycloakProviderProps } from './keycloakProvider';
+import type { FC, ComponentType, ReactNode } from 'react';
+import type { KeycloakConfig, KeycloakInitOptions } from '@bitspur/keycloak-js';
 import { AuthConfigContext, defaultAuthConfig } from '../authConfig';
 import { KeycloakProvider } from './keycloakProvider';
+// @ts-ignore
+import { config } from 'app/config';
 
-export interface AuthProviderProps extends KeycloakProviderProps {
-  authConfig?: Partial<AuthConfig>;
+export interface AuthProviderProps
+  extends Partial<Omit<AuthConfig, 'persist'>>,
+    Omit<KeycloakConfig, 'url'>,
+    KeycloakInitOptions {
+  children: ReactNode;
+  cookies?: unknown;
+  disabled?: boolean;
+  baseUrl?: string;
+  loadingComponent?: ComponentType;
+  onEvent?: (eventType: AuthClientEvent, error?: AuthClientError) => void;
+  onTokens?: (tokens: AuthClientTokens) => void;
 }
 
-export const AuthProvider: FC<AuthProviderProps> = (props: AuthProviderProps) => {
-  const { authConfig, debug } = props;
-  const authConfigValue = useMemo(
+const persist = config.get('KEYCLOAK_PERSIST') === '1';
+
+export const AuthProvider: FC<AuthProviderProps> = ({
+  // keycloak config
+  realm,
+  clientId,
+  baseUrl,
+  // auth config
+  debug,
+  ensureFreshness,
+  loginRoute,
+  messageHandlerKeys,
+  ssr,
+  // props
+  children,
+  cookies,
+  disabled,
+  loadingComponent,
+  onEvent,
+  onTokens,
+  ...keycloakInitOptions
+}: AuthProviderProps) => {
+  const authConfig = useMemo(
     () => ({
       ...defaultAuthConfig,
-      ...authConfig,
-      debug: !!debug,
+      debug,
+      ensureFreshness,
+      loginRoute,
+      messageHandlerKeys,
+      persist,
+      ssr,
     }),
-    [],
+    [debug, ensureFreshness, loginRoute, messageHandlerKeys, persist, ssr],
   );
 
+  if (disabled) {
+    return <AuthConfigContext.Provider value={authConfig}>{children}</AuthConfigContext.Provider>;
+  }
+
   return (
-    <AuthConfigContext.Provider value={authConfigValue}>
-      <KeycloakProvider {...props} />
+    <AuthConfigContext.Provider value={authConfig}>
+      <KeycloakProvider
+        cookies={cookies}
+        keycloakConfig={{
+          realm,
+          clientId,
+          url: baseUrl,
+        }}
+        keycloakInitOptions={keycloakInitOptions}
+        loadingComponent={loadingComponent}
+        onEvent={onEvent}
+        onTokens={onTokens}
+      >
+        {children}
+      </KeycloakProvider>
     </AuthConfigContext.Provider>
   );
 };
