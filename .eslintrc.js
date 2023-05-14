@@ -4,7 +4,7 @@
  * File Created: 25-11-2022 10:12:12
  * Author: Clay Risser
  * -----
- * Last Modified: 21-02-2023 15:09:29
+ * Last Modified: 14-05-2023 02:59:18
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -51,7 +51,7 @@ module.exports = {
     '@typescript-eslint/lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
     '@typescript-eslint/consistent-type-imports': 'error',
     'max-lines': ['error', 500],
-    'max-lines-per-function': ['warn', 200],
+    'max-lines-per-function': ['warn', 300],
     'no-empty-function': ['warn', { allow: ['constructors'] }],
     'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
     complexity: ['error', 50],

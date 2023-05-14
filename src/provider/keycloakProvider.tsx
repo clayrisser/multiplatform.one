@@ -84,6 +84,12 @@ export function KeycloakProvider({
   }, []);
 
   useEffect(() => {
+    if (typeof idToken === 'string' && !isTokenValid(idToken)) setIdToken(false);
+    if (typeof refreshToken === 'string' && !isTokenValid(refreshToken)) setRefreshToken(false);
+    if (typeof token === 'string' && !isTokenValid(token)) setToken(false);
+  }, [idToken, token, refreshToken]);
+
+  useEffect(() => {
     if (token !== true) return;
     const messageCallback = (e: MessageEvent<any>) => {
       let data = e?.data;
