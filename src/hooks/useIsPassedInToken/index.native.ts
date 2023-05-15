@@ -1,13 +1,13 @@
 /**
- * File: /src/hooks/index.ts
- * Project: app
- * File Created: 08-11-2022 06:34:56
+ * File: /src/hooks/useIsPassedInToken/index.native.ts
+ * Project: @multiplatform.one/keycloak
+ * File Created: 15-05-2023 01:54:48
  * Author: Clay Risser
  * -----
- * Last Modified: 15-05-2023 01:58:05
+ * Last Modified: 15-05-2023 01:55:27
  * Modified By: Clay Risser
  * -----
- * Risser Labs LLC (c) Copyright 2021 - 2022
+ * Risser Labs LLC (c) Copyright 2022 - 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,4 @@
  * limitations under the License.
  */
 
-export * from './useCurrentRouteName';
-export * from './useIsPassedInToken';
-export * from './useKeycloak';
-export * from './useLogin';
+export const useIsPassedInToken = () => false;

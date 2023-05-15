@@ -33,6 +33,7 @@ import { ReactKeycloakProvider } from '@bitspur/react-keycloak-web';
 import { SSRKeycloakProvider, SSRCookies } from '@bitspur/react-keycloak-ssr';
 import { useAuthConfig } from '../hooks/useAuthConfig';
 import { useAuthState } from '../state';
+import { useIsPassedInToken } from '../hooks';
 import { useRouter } from 'next/router';
 
 export interface KeycloakProviderProps {
@@ -80,7 +81,7 @@ export function KeycloakProvider({
       refreshToken,
     ),
   );
-  const explicitToken = 'idToken' in query || 'token' in query || 'refreshToken' in query;
+  const isPassedInToken = useIsPassedInToken();
 
   useEffect(() => {
     if (token !== true && refreshToken !== true && idToken !== true) return;
@@ -210,7 +211,7 @@ export function KeycloakProvider({
       initOptions.token = token;
       if (idToken && typeof idToken === 'string') initOptions.idToken = idToken;
       if (refreshToken && typeof refreshToken === 'string') initOptions.refreshToken = refreshToken;
-      if (explicitToken) {
+      if (isPassedInToken) {
         initOptions.checkLoginIframe = false;
         initOptions.onLoad = undefined;
       }

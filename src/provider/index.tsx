@@ -29,6 +29,7 @@ import type { FC, ComponentType, ReactNode } from 'react';
 import type { KeycloakConfig, KeycloakInitOptions } from '@bitspur/keycloak-js';
 import { AuthConfigContext, defaultAuthConfig } from '../authConfig';
 import { KeycloakProvider } from './keycloakProvider';
+import { useIsPassedInToken } from '../hooks';
 // @ts-ignore
 import { config } from 'app/config';
 
@@ -67,6 +68,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
   onTokens,
   ...keycloakInitOptions
 }: AuthProviderProps) => {
+  const isPassedInToken = useIsPassedInToken();
   const authConfig = useMemo(
     () => ({
       ...defaultAuthConfig,
@@ -74,7 +76,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
       ensureFreshness,
       loginRoute,
       messageHandlerKeys,
-      persist: ssr ? false : persist,
+      persist: ssr || isPassedInToken ? false : persist,
       ssr,
     }),
     [debug, ensureFreshness, loginRoute, messageHandlerKeys, persist, ssr],
