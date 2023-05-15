@@ -102,7 +102,7 @@ export function KeycloakProvider({
           data = JSON.parse(data);
         } catch (err) {}
       }
-      if (debug) logger.debug('received message', data);
+      if (debug) logger.debug('received message', JSON.stringify(data));
       const message: MessageSchema = data;
       if (!message.type) return;
       if (message.type.toUpperCase() === 'REFRESH_TOKEN' && message.payload) {
@@ -131,7 +131,7 @@ export function KeycloakProvider({
           data = JSON.parse(data);
         } catch (err) {}
       }
-      if (debug) logger.debug('received message', data);
+      if (debug) logger.debug('received message', JSON.stringify(data));
       const message: MessageSchema = data;
       if (!message.type) return;
       if (message.type.toUpperCase() === 'TOKEN' && message.payload) {
@@ -160,7 +160,7 @@ export function KeycloakProvider({
           data = JSON.parse(data);
         } catch (err) {}
       }
-      if (debug) logger.debug('received message', data);
+      if (debug) logger.debug('received message', JSON.stringify(data));
       const message: MessageSchema = data;
       if (!message.type) return;
       if (message.type.toUpperCase() === 'ID_TOKEN' && message.payload) {
@@ -198,7 +198,7 @@ export function KeycloakProvider({
         realm: keycloakConfig.realm,
         clientId: keycloakConfig.clientId,
       }),
-    [],
+    [keycloakInitOptions, token, refreshToken, idToken],
   );
 
   const initOptions = useMemo(() => {
@@ -213,6 +213,7 @@ export function KeycloakProvider({
       if (refreshToken && typeof refreshToken === 'string') initOptions.refreshToken = refreshToken;
       if (isPassedInToken) {
         initOptions.checkLoginIframe = false;
+        initOptions.flow = 'implicit';
         initOptions.onLoad = undefined;
       }
     }
@@ -220,7 +221,7 @@ export function KeycloakProvider({
   }, [keycloakInitOptions, token, refreshToken, idToken]);
 
   if (token === true || idToken === true || refreshToken === true) return <LoadingComponent />;
-  if (cookies && ssr) {
+  if (!isPassedInToken && cookies && ssr) {
     return (
       // @ts-ignore
       <SSRKeycloakProvider
