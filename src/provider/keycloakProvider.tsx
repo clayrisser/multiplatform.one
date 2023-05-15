@@ -60,16 +60,25 @@ export function KeycloakProvider({
   const authState = useAuthState();
   const LoadingComponent = loadingComponent || (() => <>{debug ? 'authenticating' : null}</>);
   const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
+  const [refreshToken, setRefreshToken] = useState<string | boolean>(
+    validToken(
+      (ensureFreshness &&
+        (('refreshToken' in query && (query.refreshToken?.toString() || true)) ||
+          (persist && authState.refreshToken))) ||
+        false,
+    ),
+  );
   const [idToken, setIdToken] = useState<string | boolean>(
-    ('idToken' in query && (query.idToken?.toString() || true)) || (persist && authState.idToken) || false,
+    validToken(
+      ('idToken' in query && (query.idToken?.toString() || true)) || (persist && authState.idToken) || false,
+      refreshToken,
+    ),
   );
   const [token, setToken] = useState<string | boolean>(
-    ('token' in query && (query.token?.toString() || true)) || (persist && authState.token) || false,
-  );
-  const [refreshToken, setRefreshToken] = useState<string | boolean>(
-    (ensureFreshness &&
-      (('refreshToken' in query && (query.refreshToken?.toString() || true)) || (persist && authState.refreshToken))) ||
-      false,
+    validToken(
+      ('token' in query && (query.token?.toString() || true)) || (persist && authState.token) || false,
+      refreshToken,
+    ),
   );
   const explicitToken = 'idToken' in query || 'token' in query || 'refreshToken' in query;
 
@@ -84,15 +93,38 @@ export function KeycloakProvider({
   }, []);
 
   useEffect(() => {
-    if (typeof idToken === 'string' && !isTokenValid(idToken)) setIdToken(false);
-    if (typeof refreshToken === 'string' && !isTokenValid(refreshToken)) setRefreshToken(false);
-    if (typeof token === 'string' && !isTokenValid(token)) setToken(false);
-  }, [idToken, token, refreshToken]);
+    if (refreshToken !== true) return;
+    const messageCallback = (e: MessageEvent<any>) => {
+      let data = e?.data || null;
+      if (typeof data === 'string') {
+        try {
+          data = JSON.parse(data);
+        } catch (err) {}
+      }
+      if (debug) logger.debug('received message', data);
+      const message: MessageSchema = data;
+      if (!message.type) return;
+      if (message.type.toUpperCase() === 'REFRESH_TOKEN' && message.payload) {
+        if (debug) logger.debug('setting refresh token', message.payload);
+        setRefreshToken(validToken(message.payload));
+      }
+    };
+    if (debug) {
+      logger.debug('listening for message', {
+        type: 'REFRESH_TOKEN',
+        payload: '<some_refresh_token>',
+      });
+    }
+    window.addEventListener('message', messageCallback);
+    return () => {
+      window.removeEventListener('message', messageCallback);
+    };
+  }, []);
 
   useEffect(() => {
     if (token !== true) return;
     const messageCallback = (e: MessageEvent<any>) => {
-      let data = e?.data;
+      let data = e?.data || null;
       if (typeof data === 'string') {
         try {
           data = JSON.parse(data);
@@ -103,7 +135,7 @@ export function KeycloakProvider({
       if (!message.type) return;
       if (message.type.toUpperCase() === 'TOKEN' && message.payload) {
         if (debug) logger.debug('setting token', message.payload);
-        setToken(message.payload);
+        setToken(validToken(message.payload, refreshToken));
       }
     };
     if (debug) {
@@ -121,7 +153,7 @@ export function KeycloakProvider({
   useEffect(() => {
     if (idToken !== true) return;
     const messageCallback = (e: MessageEvent<any>) => {
-      let data = e?.data;
+      let data = e?.data || null;
       if (typeof data === 'string') {
         try {
           data = JSON.parse(data);
@@ -132,42 +164,13 @@ export function KeycloakProvider({
       if (!message.type) return;
       if (message.type.toUpperCase() === 'ID_TOKEN' && message.payload) {
         if (debug) logger.debug('setting id token', message.payload);
-        setIdToken(message.payload);
+        setIdToken(validToken(message.payload, refreshToken));
       }
     };
     if (debug) {
       logger.debug('listening for message', {
         type: 'ID_TOKEN',
         payload: '<some_id_token>',
-      });
-    }
-    window.addEventListener('message', messageCallback);
-    return () => {
-      window.removeEventListener('message', messageCallback);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (refreshToken !== true) return;
-    const messageCallback = (e: MessageEvent<any>) => {
-      let data = e?.data;
-      if (typeof data === 'string') {
-        try {
-          data = JSON.parse(data);
-        } catch (err) {}
-      }
-      if (debug) logger.debug('received message', data);
-      const message: MessageSchema = data;
-      if (!message.type) return;
-      if (message.type.toUpperCase() === 'REFRESH_TOKEN' && message.payload) {
-        if (debug) logger.debug('setting refresh token', message.payload);
-        setRefreshToken(message.payload);
-      }
-    };
-    if (debug) {
-      logger.debug('listening for message', {
-        type: 'REFRESH_TOKEN',
-        payload: '<some_refresh_token>',
       });
     }
     window.addEventListener('message', messageCallback);
@@ -253,7 +256,16 @@ export function KeycloakProvider({
   );
 }
 
-export function isTokenValid(token: string) {
+function validToken(token: string | boolean, refreshToken?: string | boolean) {
+  if (typeof token !== 'string') return token;
+  if (refreshToken) {
+    if (refreshToken === true || isTokenValid(refreshToken)) return token;
+    return false;
+  }
+  return isTokenValid(token) ? token : false;
+}
+
+function isTokenValid(token: string) {
   try {
     const { exp } = JSON.parse(Buffer.from(token.split('.')?.[1] || '', 'base64').toString() || '{}');
     return Math.floor(Date.now() / 1000) <= exp;

@@ -74,7 +74,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
       ensureFreshness,
       loginRoute,
       messageHandlerKeys,
-      persist,
+      persist: ssr ? false : persist,
       ssr,
     }),
     [debug, ensureFreshness, loginRoute, messageHandlerKeys, persist, ssr],
