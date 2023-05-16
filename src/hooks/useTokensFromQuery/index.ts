@@ -1,10 +1,10 @@
 /**
- * File: /src/hooks/useIsPassedInToken/index.ts
+ * File: /src/hooks/useTokensFromQuery/index.ts
  * Project: @multiplatform.one/keycloak
  * File Created: 15-05-2023 01:54:44
  * Author: Clay Risser
  * -----
- * Last Modified: 15-05-2023 01:56:30
+ * Last Modified: 16-05-2023 07:40:41
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -25,7 +25,7 @@
 import { MultiPlatform } from 'multiplatform.one';
 import { useRouter } from 'next/router';
 
-export function useIsPassedInToken() {
+export function useTokensFromQuery() {
   const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
   return 'idToken' in query || 'token' in query || 'refreshToken' in query;
 }

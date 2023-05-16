@@ -36,8 +36,8 @@ const logger = console;
 
 export const AfterAuth: FC<AfterAuthProps> = ({ children }: AfterAuthProps) => {
   const authConfig = useAuthConfig();
-  const { token, refreshToken, authenticated, idToken } = useKeycloak();
   const authState = useAuthState();
+  const { token, refreshToken, authenticated, idToken } = useKeycloak();
 
   useEffect(() => {
     if (!authenticated) return;

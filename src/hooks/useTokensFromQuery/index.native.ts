@@ -1,10 +1,10 @@
 /**
- * File: /src/hooks/useIsPassedInToken/index.native.ts
+ * File: /src/hooks/useTokensFromQuery/index.native.ts
  * Project: @multiplatform.one/keycloak
  * File Created: 15-05-2023 01:54:48
  * Author: Clay Risser
  * -----
- * Last Modified: 15-05-2023 01:55:27
+ * Last Modified: 16-05-2023 07:40:46
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,4 +22,4 @@
  * limitations under the License.
  */
 
-export const useIsPassedInToken = () => false;
+export const useTokensFromQuery = () => false;

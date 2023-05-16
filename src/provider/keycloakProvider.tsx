@@ -33,8 +33,9 @@ import { ReactKeycloakProvider } from '@bitspur/react-keycloak-web';
 import { SSRKeycloakProvider, SSRCookies } from '@bitspur/react-keycloak-ssr';
 import { useAuthConfig } from '../hooks/useAuthConfig';
 import { useAuthState } from '../state';
-import { useIsPassedInToken } from '../hooks';
+import { useTokensFromQuery } from '../hooks';
 import { useRouter } from 'next/router';
+import { validToken } from '../util';
 
 export interface KeycloakProviderProps {
   children: ReactNode;
@@ -81,11 +82,11 @@ export function KeycloakProvider({
       refreshToken,
     ),
   );
-  const isPassedInToken = useIsPassedInToken();
+  const tokensFromQuery = useTokensFromQuery();
 
   useEffect(() => {
     if (token !== true && refreshToken !== true && idToken !== true) return;
-    if (debug) logger.debug('post message', { type: 'LOADED' });
+    if (debug) logger.debug('post message', JSON.stringify({ type: 'LOADED' }));
     (messageHandlerKeys || []).forEach((key: string) => {
       window?.webkit?.messageHandlers?.[key]?.postMessage(JSON.stringify({ type: 'LOADED' }));
     });
@@ -108,13 +109,17 @@ export function KeycloakProvider({
       if (message.type.toUpperCase() === 'REFRESH_TOKEN' && message.payload) {
         if (debug) logger.debug('setting refresh token', message.payload);
         setRefreshToken(validToken(message.payload));
+        window.removeEventListener('message', messageCallback);
       }
     };
     if (debug) {
-      logger.debug('listening for message', {
-        type: 'REFRESH_TOKEN',
-        payload: '<some_refresh_token>',
-      });
+      logger.debug(
+        'listening for message',
+        JSON.stringify({
+          type: 'REFRESH_TOKEN',
+          payload: '<some_refresh_token>',
+        }),
+      );
     }
     window.addEventListener('message', messageCallback);
     return () => {
@@ -137,13 +142,17 @@ export function KeycloakProvider({
       if (message.type.toUpperCase() === 'TOKEN' && message.payload) {
         if (debug) logger.debug('setting token', message.payload);
         setToken(validToken(message.payload, refreshToken));
+        window.removeEventListener('message', messageCallback);
       }
     };
     if (debug) {
-      logger.debug('listening for message', {
-        type: 'TOKEN',
-        payload: '<some_token>',
-      });
+      logger.debug(
+        'listening for message',
+        JSON.stringify({
+          type: 'TOKEN',
+          payload: '<some_token>',
+        }),
+      );
     }
     window.addEventListener('message', messageCallback);
     return () => {
@@ -166,13 +175,17 @@ export function KeycloakProvider({
       if (message.type.toUpperCase() === 'ID_TOKEN' && message.payload) {
         if (debug) logger.debug('setting id token', message.payload);
         setIdToken(validToken(message.payload, refreshToken));
+        window.removeEventListener('message', messageCallback);
       }
     };
     if (debug) {
-      logger.debug('listening for message', {
-        type: 'ID_TOKEN',
-        payload: '<some_id_token>',
-      });
+      logger.debug(
+        'listening for message',
+        JSON.stringify({
+          type: 'ID_TOKEN',
+          payload: '<some_id_token>',
+        }),
+      );
     }
     window.addEventListener('message', messageCallback);
     return () => {
@@ -211,7 +224,7 @@ export function KeycloakProvider({
       initOptions.token = token;
       if (idToken && typeof idToken === 'string') initOptions.idToken = idToken;
       if (refreshToken && typeof refreshToken === 'string') initOptions.refreshToken = refreshToken;
-      if (isPassedInToken) {
+      if (tokensFromQuery) {
         initOptions.checkLoginIframe = false;
         initOptions.flow = 'implicit';
         initOptions.onLoad = undefined;
@@ -221,7 +234,7 @@ export function KeycloakProvider({
   }, [keycloakInitOptions, token, refreshToken, idToken]);
 
   if (token === true || idToken === true || refreshToken === true) return <LoadingComponent />;
-  if (!isPassedInToken && cookies && ssr) {
+  if (cookies && ssr) {
     return (
       // @ts-ignore
       <SSRKeycloakProvider
@@ -256,25 +269,6 @@ export function KeycloakProvider({
       <AfterAuth>{children}</AfterAuth>
     </ReactKeycloakProvider>
   );
-}
-
-function validToken(token: string | boolean, refreshToken?: string | boolean) {
-  if (typeof token !== 'string') return token;
-  if (refreshToken) {
-    if (refreshToken === true || isTokenValid(refreshToken)) return token;
-    return false;
-  }
-  return isTokenValid(token) ? token : false;
-}
-
-function isTokenValid(token: string) {
-  try {
-    const { exp } = JSON.parse(Buffer.from(token.split('.')?.[1] || '', 'base64').toString() || '{}');
-    return Math.floor(Date.now() / 1000) <= exp;
-  } catch (err) {
-    if (err instanceof SyntaxError) return false;
-    throw err;
-  }
 }
 
 export const defaultKeycloakInitOptions: KeycloakInitOptions = {

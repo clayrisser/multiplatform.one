@@ -1,13 +1,13 @@
 /**
- * File: /src/hooks/index.ts
- * Project: app
- * File Created: 08-11-2022 06:34:56
+ * File: /src/hooks/useTokensFromState.ts
+ * Project: @multiplatform.one/keycloak
+ * File Created: 16-05-2023 06:29:02
  * Author: Clay Risser
  * -----
- * Last Modified: 16-05-2023 07:40:57
+ * Last Modified: 16-05-2023 07:40:36
  * Modified By: Clay Risser
  * -----
- * Risser Labs LLC (c) Copyright 2021 - 2022
+ * Risser Labs LLC (c) Copyright 2022 - 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,10 @@
  * limitations under the License.
  */
 
-export * from './useCurrentRouteName';
-export * from './useKeycloak';
-export * from './useLogin';
-export * from './useTokensFromQuery';
-export * from './useTokensFromState';
+import { useAuthState } from '../state';
+import { validToken } from '../util';
+
+export function useTokensFromState() {
+  const authState = useAuthState();
+  return !!validToken(authState.token, authState.refreshToken);
+}
