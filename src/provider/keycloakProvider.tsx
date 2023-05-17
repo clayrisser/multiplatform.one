@@ -228,6 +228,7 @@ export function KeycloakProvider({
         initOptions.checkLoginIframe = false;
         initOptions.flow = 'implicit';
         initOptions.onLoad = undefined;
+        initOptions.timeSkew = 0;
       }
     }
     return initOptions;
