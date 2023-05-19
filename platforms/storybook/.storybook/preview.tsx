@@ -3,7 +3,7 @@ import '@tamagui/font-inter/css/400.css';
 import '@tamagui/font-inter/css/700.css';
 import 'raf/polyfill';
 import React, { useEffect } from 'react';
-import config from '../tamagui.config';
+import tamaguiConfig from '../tamagui.config';
 import type { Preview } from '@storybook/react';
 import type { PropsWithChildren } from 'react';
 import type { ThemeName } from 'tamagui';
@@ -104,7 +104,7 @@ function Provider({ children }: PropsWithChildren) {
     themeState.setRoot(darkMode ? 'dark' : 'light');
   }, [darkMode, themeState.setRoot]);
   return (
-    <GlobalProvider tamaguiConfig={config} defaultTheme={themeState.root}>
+    <GlobalProvider tamaguiConfig={tamaguiConfig} defaultTheme={themeState.root}>
       {children}
     </GlobalProvider>
   );
