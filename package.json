@@ -25,8 +25,7 @@
     "react-refresh": "^0.14.0",
     "react-native-svg": "13.4.0",
     "react-native-web": "~0.18.10",
-    "expo-keycloak-auth@1.0.14": "patch:expo-keycloak-auth@npm%3A1.0.14#./.yarn/patches/expo-keycloak-auth-npm-1.0.14-78201597ce.patch",
-    "keycloak-js@21.0.2": "patch:keycloak-js@npm%3A21.0.2#./.yarn/patches/keycloak-js-npm-21.0.2-0f4fb90576.patch"
+    "expo-keycloak-auth@1.0.14": "patch:expo-keycloak-auth@npm%3A1.0.14#./.yarn/patches/expo-keycloak-auth-npm-1.0.14-78201597ce.patch"
   },
   "tamaguiModules": [
     "@multiplatform.one/ui"

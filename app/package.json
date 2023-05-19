@@ -7,7 +7,7 @@
     "*.css"
   ],
   "dependencies": {
-    "@bitspur/keycloak-js": "21.1.1",
+    "@bitspur/keycloak-js": "^21.1.2",
     "@docsearch/react": "^3.3.3",
     "@github/mini-throttle": "^2.1.0",
     "@multiplatform.one/keycloak": "^0.3.13",
