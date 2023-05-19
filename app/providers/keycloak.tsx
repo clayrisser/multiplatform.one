@@ -1,27 +1,14 @@
 import React from 'react';
-import type { KeycloakConfig, AuthConfig } from '@multiplatform.one/keycloak';
-import type { KeycloakInitOptions } from '@bitspur/keycloak-js';
-import type { ProviderProps } from './types';
+import type { AuthProviderProps } from '@multiplatform.one/keycloak';
 import { AuthProvider } from '@multiplatform.one/keycloak';
 import { config } from 'app/config';
 
-export interface KeycloakProviderProps extends ProviderProps {
-  authConfig?: AuthConfig;
-  cookies?: unknown;
-  keycloak?: KeycloakConfig;
-  keycloakInitOptions?: KeycloakInitOptions;
-}
+export interface KeycloakProviderProps extends AuthProviderProps {}
 
-export function KeycloakProvider({ children, ...props }: KeycloakProviderProps) {
-  if (config.get('KEYCLOAK_ENABLED') !== '1' || !props.keycloak) return <>{children}</>;
+export function KeycloakProvider({ children, debug, ssr, ...props }: KeycloakProviderProps) {
+  if (config.get('KEYCLOAK_ENABLED') !== '1') return <>{children}</>;
   return (
-    <AuthProvider
-      authConfig={props.authConfig}
-      cookies={props.cookies}
-      debug={config.get('DEBUG') === '1'}
-      keycloakConfig={props.keycloak}
-      keycloakInitOptions={props.keycloakInitOptions}
-    >
+    <AuthProvider {...props} debug={typeof debug !== 'undefined' ? debug : config.get('DEBUG') === '1'}>
       {children}
     </AuthProvider>
   );

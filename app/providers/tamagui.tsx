@@ -5,7 +5,8 @@ import type { TamaguiProviderProps as OriginalTamaguiProviderProps } from 'tamag
 import { TamaguiProvider as OriginalTamaguiProvider, Theme } from 'tamagui';
 import { useThemeState } from 'app/state/theme';
 
-export type TamaguiProviderProps = Omit<OriginalTamaguiProviderProps, 'config'>;
+export type TamaguiProviderProps = Omit<OriginalTamaguiProviderProps, 'config'> &
+  Partial<Pick<OriginalTamaguiProviderProps, 'config'>>;
 
 export function TamaguiProvider({ children, ...props }: TamaguiProviderProps) {
   const themeState = useThemeState();
@@ -16,7 +17,7 @@ export function TamaguiProvider({ children, ...props }: TamaguiProviderProps) {
   }
 
   return (
-    <OriginalTamaguiProvider disableInjectCSS={false} config={config} defaultTheme={themeState.root} {...props}>
+    <OriginalTamaguiProvider config={config} defaultTheme={themeState.root} disableInjectCSS={false} {...props}>
       {renderSubTheme(children)}
     </OriginalTamaguiProvider>
   );

@@ -1,10 +1,10 @@
-import { Button, Paragraph, YStack } from 'tamagui';
-import { ChevronLeft } from '@tamagui/lucide-icons';
 import React from 'react';
+import { Button, Paragraph, YStack } from '@multiplatform.one/ui';
+import { ChevronLeft } from '@tamagui/lucide-icons';
 import { createParam } from 'solito';
 import { useLink } from 'solito/link';
-import { withDefaultLayout } from 'app/layouts/Default';
 import { useTranslation } from 'multiplatform.one';
+import { withDefaultLayout } from 'app/layouts/Default';
 
 const { useParam } = createParam<{ id: string }>();
 

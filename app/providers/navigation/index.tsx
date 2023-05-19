@@ -1,4 +1,4 @@
 import React from 'react';
-import type { ReactElement } from 'react';
+import type { PropsWithChildren } from 'react';
 
-export const NavigationProvider = ({ children }: { children: ReactElement }) => <>{children}</>;
+export const NavigationProvider = ({ children }: PropsWithChildren) => <>{children}</>;

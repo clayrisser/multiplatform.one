@@ -38,13 +38,13 @@
     "@tamagui/react-native-media-driver": "^1.28.2",
     "@tamagui/shorthands": "^1.28.2",
     "@tamagui/theme-base": "^1.28.2",
-    "expo-asset": "^8.9.1",
+    "expo-asset": "^8.9.2",
     "fast-xml-parser": "^4.2.2",
-    "immer": "^10.0.1",
+    "immer": "^10.0.2",
     "react-hook-form": "^7.43.9",
     "react-native-svg": "13.9.0",
     "tamagui": "^1.28.2",
-    "zustand": "^4.3.7"
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "@tamagui/build": "^1.28.2"

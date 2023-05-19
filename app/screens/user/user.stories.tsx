@@ -1,3 +1,4 @@
+import React from 'react';
 import UserScreen from './index';
 
 export default {

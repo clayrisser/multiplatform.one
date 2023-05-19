@@ -42,12 +42,12 @@ const plugins = [
 
 module.exports = function (phase) {
   if (phase === PHASE_DEVELOPMENT_SERVER) {
-    plugins.push(
-      withBundleAnalyzer({
-        enabled: sharedConfig.DEBUG === '1',
-        openAnalyzer: false,
-      }),
-    );
+    // plugins.push(
+    //   withBundleAnalyzer({
+    //     enabled: sharedConfig.DEBUG === '1',
+    //     openAnalyzer: false,
+    //   }),
+    // );
   }
   /** @type {import('next').NextConfig} */
   let nextConfig = {
@@ -70,7 +70,6 @@ module.exports = function (phase) {
       scrollRestoration: true,
       legacyBrowsers: false,
       esmExternals: true,
-      fullySpecified: false,
     },
     publicRuntimeConfig: {
       ...publicConfig,

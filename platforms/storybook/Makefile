@@ -9,7 +9,7 @@ include $(MKPM)/yarn
 include ../../shared.mk
 
 NODE_HEAP ?= 8192
-export START_STORYBOOK ?= $(NODE) --max-old-space-size=$(NODE_HEAP) $(call yarn_binary,start-storybook)
+export STORYBOOK ?= $(NODE) --max-old-space-size=$(NODE_HEAP) $(call yarn_binary,storybook)
 
 ACTIONS += install ##
 $(ACTION)/install: $(PROJECT_ROOT)/package.json package.json
@@ -46,14 +46,14 @@ BUILD_TARGETS := storybook-static/index.html
 storybook-static/index.html:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(BUILD_STORYBOOK)
+	@$(STORYBOOK) build
 	@$(call done,build)
 
 PORT ?= 6006
 .PHONY: start +start
 start: | ~install +start ##
 +start:
-	@TAMAGUI_TARGET=web $(START_STORYBOOK) -p $(PORT) -s ./public
+	@TAMAGUI_TARGET=web $(STORYBOOK) dev -p $(PORT) -s ./public
 
 .PHONY: vr-update
 vr-update: ~build ##

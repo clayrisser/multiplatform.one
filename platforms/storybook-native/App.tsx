@@ -2,6 +2,7 @@ import './.storybook/storybook.requires';
 import 'expo-dev-client';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
+import tamaguiConfig from './tamagui.config';
 import { GlobalProvider } from 'app/providers';
 import { Platform, View, StatusBar as RNStatusBar } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
@@ -44,7 +45,7 @@ export default function App() {
 
   if (Platform.OS === 'android') {
     return (
-      <GlobalProvider>
+      <GlobalProvider tamaguiConfig={tamaguiConfig}>
         <StatusBar />
         <View style={{ height: RNStatusBar.currentHeight }} />
         {render()}

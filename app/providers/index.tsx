@@ -1,40 +1,37 @@
 import React from 'react';
 import type { KeycloakProviderProps } from './keycloak';
 import type { ProviderProps } from './types';
-import type { TamaguiProviderProps } from 'tamagui';
+import type { TamaguiInternalConfig, TamaguiProviderProps } from '@multiplatform/ui';
 import { KeycloakProvider } from './keycloak';
 import { NavigationProvider } from './navigation';
-import { StateProvider } from './state';
 import { TamaguiProvider } from './tamagui';
 
+export type GlobalProviderKeycloak = Omit<KeycloakProviderProps, 'disabled' | 'cookies' | 'children'>;
+
 export type GlobalProviderProps = ProviderProps &
-  KeycloakProviderProps &
   Omit<TamaguiProviderProps, 'config'> & {
+    cookies?: unknown;
+    keycloak?: GlobalProviderKeycloak;
     noNavigation?: boolean;
     strict?: boolean;
-    disableStateProvider?: boolean;
+    tamaguiConfig?: TamaguiInternalConfig;
   };
 
-export function GlobalProvider({ children, ...props }: GlobalProviderProps) {
+export function GlobalProvider({ children, keycloak, cookies, tamaguiConfig, ...props }: GlobalProviderProps) {
+  if (keycloak) {
+    children = (
+      <KeycloakProvider cookies={cookies} {...keycloak}>
+        {children}
+      </KeycloakProvider>
+    );
+  }
   return (
-    <StateProvider disable={props.disableStateProvider}>
-      <TamaguiProvider {...props}>
-        <NavigationProvider>
-          <KeycloakProvider
-            authConfig={props.authConfig}
-            cookies={props.cookies}
-            keycloak={props.keycloak}
-            keycloakInitOptions={props.keycloakInitOptions}
-          >
-            {children}
-          </KeycloakProvider>
-        </NavigationProvider>
-      </TamaguiProvider>
-    </StateProvider>
+    <TamaguiProvider config={tamaguiConfig} {...props}>
+      <NavigationProvider>{children}</NavigationProvider>
+    </TamaguiProvider>
   );
 }
 
 export * from './navigation';
-export * from './state';
 export * from './tamagui';
 export * from './types';

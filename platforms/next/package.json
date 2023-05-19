@@ -3,23 +3,23 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@next/bundle-analyzer": "^13.3.1",
+    "@next/bundle-analyzer": "^13.4.3",
     "@tamagui/next-plugin": "^1.28.2",
     "@tamagui/next-theme": "^1.28.2",
     "cookie": "^0.5.0",
-    "next": "^13.2.3",
+    "next": "^13.4.3",
     "next-i18next": "^13.2.2",
     "next-images": "^1.8.5",
     "raf": "^3.4.1",
-    "react": "18.1.0",
-    "react-dom": "18.1.0",
-    "react-native": "0.70.5",
-    "react-native-web": "~0.18.11",
-    "react-native-web-lite": "^1.16.3"
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.71.8",
+    "react-native-web": "~0.19.4",
+    "react-native-web-lite": "^1.28.2"
   },
   "devDependencies": {
     "@types/cookie": "^0.5.1",
-    "@types/node": "^18.16.1"
+    "@types/node": "~18.16.13"
   },
   "transpileModules": [
     "@multiplatform.one/keycloak",

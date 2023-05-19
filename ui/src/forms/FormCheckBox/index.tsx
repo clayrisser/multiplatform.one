@@ -117,7 +117,6 @@ export function FormCheckBox({
                   <CheckIcon color={iconColor} />
                 </Checkbox.Indicator>
               </Checkbox>
-
               <Label size={checkBoxElement.size} htmlFor={id} {...LabelStyle}>
                 {checkBoxElement.label || checkBoxElement.value}
               </Label>

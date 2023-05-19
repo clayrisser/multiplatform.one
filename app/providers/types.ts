@@ -1,5 +1,3 @@
-import type { ReactElement, ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 
-export interface ProviderProps {
-  children: ReactNode & ReactElement;
-}
+export type ProviderProps = PropsWithChildren;

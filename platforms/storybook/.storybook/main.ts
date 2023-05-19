@@ -1,8 +1,11 @@
 import path from 'path';
-import transpileModules from '../transpileModules';
 import publicConfig from 'app/config/public';
+import tamaguiModules from '../tamaguiModules';
+import transpileModules from '../transpileModules';
+import type { StorybookConfig } from '@storybook/nextjs';
 
-const config = {
+// import publicConfig from 'app/config/public';
+const config: StorybookConfig = {
   stories: [
     '../../../app/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../../ui/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
@@ -11,25 +14,19 @@ const config = {
   addons: [
     '@etchteam/storybook-addon-status',
     '@storybook/addon-a11y',
-    '@storybook/addon-ie11',
     '@storybook/addon-links',
     '@storybook/addon-notes',
     '@storybook/addon-storyshots',
     '@storybook/addon-storysource',
     'addon-screen-reader',
     'storybook-addon-breakpoints',
-    'storybook-addon-grid',
     'storybook-addon-paddings',
-    'storybook-addon-themes',
     'storybook-color-picker',
     'storybook-dark-mode',
     'storybook-mobile',
-    {
-      name: 'storybook-addon-next',
-      options: {
-        nextConfigPath: path.resolve(__dirname, '../../next/next.config.js'),
-      },
-    },
+    // TODO: wait for plugins to work on v7
+    // 'storybook-addon-themes',
+    // 'storybook-addon-grid',
     {
       name: '@storybook/addon-react-native-web',
       options: {
@@ -50,56 +47,70 @@ const config = {
     },
   ],
   core: {
-    builder: 'webpack5',
+    disableTelemetry: true,
   },
-  framework: '@storybook/react',
+  framework: {
+    name: '@storybook/nextjs',
+    options: {},
+  },
   features: {
     buildStoriesJson: false,
-    postcss: false,
     storyStoreV7: false,
   },
+  docs: {
+    autodocs: false,
+  },
+  env: (config) => ({
+    ...config,
+    TAMAGUI_TARGET: 'web',
+    ...(publicConfig as Record<string, string>),
+  }),
   typescript: {
     check: false,
     checkOptions: {},
     reactDocgen: 'react-docgen-typescript',
+    skipBabel: false,
     reactDocgenTypescriptOptions: {
-      allowSyntheticDefaultImports: false,
-      esModuleInterop: false,
+      propFilter: (prop) => (prop.parent ? !/node_modules\/(?!tamagui)/.test(prop.parent.fileName) : true),
       shouldExtractLiteralValuesFromEnum: true,
       shouldRemoveUndefinedFromOptional: true,
-      propFilter: (prop) => (prop.parent ? !/node_modules\/(?!tamagui)/.test(prop.parent.fileName) : true),
     },
   },
   webpackFinal: async (config) => ({
     ...config,
     resolve: {
       ...config.resolve,
+      alias: {
+        ...(config.resolve?.alias || {}),
+        zlib: require.resolve('browserify-zlib'),
+        stream: require.resolve('stream-browserify'),
+      },
       fallback: {
         ...(config.resolve?.fallback || []),
         fs: false,
-        stream: false,
         os: false,
         util: false,
       },
     },
-    cache: { ...config.cache, type: 'memory' },
     module: {
       ...config.module,
       rules: [
-        ...config.module.rules,
-        {
-          test: /\.(js|mjs|jsx)$/,
-          resolve: {
-            fullySpecified: false,
+        ...(config.module?.rules || [
+          {
+            loader: 'tamagui-loader',
+            options: {
+              components: tamaguiModules,
+              config: path.resolve(__dirname, '../tamagui.config.ts'),
+              exclude: /node_modules/,
+            },
           },
-        },
+        ]),
       ],
     },
   }),
-  env: (config) => ({
+  babelDefault: (config, _options) => ({
     ...config,
-    TAMAGUI_TARGET: 'web',
-    ...publicConfig,
+    presets: [...(config.presets || []), '@babel/preset-typescript'],
   }),
 };
 export default config;

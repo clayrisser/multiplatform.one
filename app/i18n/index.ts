@@ -1,7 +1,7 @@
 import 'intl-pluralrules';
-import type { Resource, ResourceKey } from 'i18next';
 import i18n from 'i18next';
 import locales from './locales';
+import type { Resource, ResourceKey } from 'i18next';
 import { MultiPlatform } from 'multiplatform.one';
 import { defaultNamespace, defaultLocale, supportedLocales } from './config';
 import { initReactI18next } from 'react-i18next';

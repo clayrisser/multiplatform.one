@@ -51,15 +51,16 @@ const bodyFont = createInterFont(
 
 export const config = createTamagui({
   animations,
+  disableSSR: false,
+  shorthands,
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
-  shorthands,
+  themes,
+  tokens,
   fonts: {
     heading: headingFont,
     body: bodyFont,
   },
-  themes,
-  tokens,
   media: createMedia({
     xs: { maxWidth: 660 },
     sm: { maxWidth: 800 },

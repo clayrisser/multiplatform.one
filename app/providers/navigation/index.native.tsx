@@ -1,5 +1,5 @@
 import * as Linking from 'expo-linking';
-import React, { useMemo } from 'react';
+import React from 'react';
 import config from 'app/tamagui.config';
 import type { ProviderProps } from '../types';
 import type { Theme } from '@react-navigation/native';
