@@ -1,7 +1,7 @@
 import { BenchmarkChart } from './BenchmarkChart';
 import { BenchmarkChartNative } from './BenchmarkChartNative';
 import { BenchmarkChartWeb } from './BenchmarkChartWeb';
-import { Card } from './Card';
+import { Card as TCard } from './Card';
 import { CheckCircle } from './CheckCircle';
 import { Code } from './Code';
 import { DataTable } from './DataTable';
@@ -30,7 +30,6 @@ export {
   BenchmarkChart,
   BenchmarkChartNative,
   BenchmarkChartWeb,
-  Card,
   CheckCircle,
   Code,
   DataTable,
@@ -52,6 +51,7 @@ export {
   Preview,
   PropsTable,
   SubTitle,
+  TCard,
   Table,
   TableCell,
   TableCol,
