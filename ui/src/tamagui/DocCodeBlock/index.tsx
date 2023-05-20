@@ -3,7 +3,7 @@ import { Button, Spacer, TooltipSimple, XStack, YStack } from 'tamagui';
 import { CheckCircle, Clipboard, Paintbrush } from '@tamagui/lucide-icons';
 import { Code } from '../Code';
 import { ErrorBoundary } from '../ErrorBoundary';
-import { LinearGradient } from 'tamagui/linear-gradient';
+import { LinearGradient } from '@tamagui/linear-gradient';
 import { Pre } from '../Pre';
 import { ScrollView } from 'react-native';
 import { toggleTinted } from '../../utils/setTinted';
