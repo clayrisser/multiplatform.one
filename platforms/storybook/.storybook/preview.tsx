@@ -9,7 +9,7 @@ import type { PropsWithChildren } from 'react';
 import type { ThemeName } from 'tamagui';
 import { DebugLayout } from '@multiplatform.one/ui';
 import { GlobalProvider } from 'app/providers';
-import { getThemes } from 'tamagui';
+// import { getThemes } from 'tamagui';
 import { supportedLocales, defaultLocale, i18nInit } from 'app/i18n';
 import { themes as storybookThemes } from '@storybook/theming';
 import { useDarkMode } from 'storybook-dark-mode';
@@ -46,7 +46,8 @@ const preview: Preview = {
       default: 'purple',
       clearable: false,
       list: DebugLayout.defaultProps.subThemeNames.map((name) => {
-        const themes = getThemes();
+        const themes = [];
+        // const themes = getThemes();
         return {
           name,
           color: (themes[name] || themes[`light_${name}`] || themes[`dark_${name}`])?.backgroundFocus?.val,
@@ -103,6 +104,7 @@ function Provider({ children }: PropsWithChildren) {
   useEffect(() => {
     themeState.setRoot(darkMode ? 'dark' : 'light');
   }, [darkMode, themeState.setRoot]);
+  console.log('tamaguiConfig', tamaguiConfig);
   return (
     <GlobalProvider tamaguiConfig={tamaguiConfig} defaultTheme={themeState.root}>
       {children}
