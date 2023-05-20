@@ -1,6 +1,5 @@
 import React from 'react';
-import type { SheetProps } from '@tamagui/sheet/types/types';
-import type { SizeTokens } from 'tamagui';
+import type { SizeTokens, SheetProps } from 'tamagui';
 import { Button, XStack, YStack } from 'tamagui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { Sheet } from '@tamagui/sheet';

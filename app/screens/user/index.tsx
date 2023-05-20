@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Paragraph, YStack } from 'tamagui';
 import { ChevronLeft } from '@tamagui/lucide-icons';
+import { Code } from '@multiplatform.one/ui';
 import { createParam } from 'solito';
 import { useLink } from 'solito/link';
 import { useTranslation } from 'multiplatform.one';
@@ -19,6 +20,7 @@ function UserScreen() {
       <Button {...linkProps} icon={ChevronLeft}>
         {t('screens.user.goHome')}
       </Button>
+      <Code>const hello = &quot;world&quot;!</Code>
     </YStack>
   );
 }

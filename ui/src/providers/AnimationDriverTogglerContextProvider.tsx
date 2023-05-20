@@ -1,6 +1,7 @@
-import React, { PropsWithChildren } from 'react';
-import type { AnimationDriver } from '@tamagui/web/types';
-import { TamaguiInternalConfig } from 'tamagui';
+import React from 'react';
+import type { AnimationDriver } from '@tamagui/web';
+import type { PropsWithChildren } from 'react';
+import type { TamaguiInternalConfig } from 'tamagui';
 import { createAnimations as createAnimationsCss } from '@tamagui/animations-css';
 import { createContext, useMemo, useState } from 'react';
 
@@ -40,6 +41,7 @@ export const AnimationDriverTogglerContextProvider = ({
   }, [driverName]);
 
   return (
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <AnimationDriverTogglerContext.Provider value={{ driverName, nextDriver, setDriverName, driver }}>
       {children}
     </AnimationDriverTogglerContext.Provider>

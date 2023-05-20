@@ -10,8 +10,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer');
 const withImages = require('next-images');
 const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
 const { i18n } = require('./next-i18next.config');
-const { join } = require('path');
 const { supportedLocales, defaultLocale, defaultNamespace } = require('app/i18n/config');
+const { withExpo } = require('@expo/next-adapter');
 const { withTamagui } = require('@tamagui/next-plugin');
 
 const sharedConfig = { ...publicConfig, ...privateConfig };
@@ -29,25 +29,24 @@ const plugins = [
     importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,
     disableExtraction,
-    // experiment - reduced bundle size react-native-web
     useReactNativeWebLite: false,
-    shouldExtract: (path) => {
-      if (path.includes(join('packages', 'app'))) {
-        return true;
-      }
-    },
+    // shouldExtract: (filePath) => {
+    //   if (filePath.includes('node_modules')) return false;
+    //   return /^\/app\//.test(filePath.substring(path.resolve(__dirname, '../..').length));
+    // },
     excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
   }),
+  withExpo,
 ];
 
 module.exports = function (phase) {
   if (phase === PHASE_DEVELOPMENT_SERVER) {
-    // plugins.push(
-    //   withBundleAnalyzer({
-    //     enabled: sharedConfig.DEBUG === '1',
-    //     openAnalyzer: false,
-    //   }),
-    // );
+    plugins.push(
+      withBundleAnalyzer({
+        enabled: sharedConfig.BUNDLE_ANALYZER === '1',
+        openAnalyzer: false,
+      }),
+    );
   }
   /** @type {import('next').NextConfig} */
   let nextConfig = {
@@ -66,10 +65,10 @@ module.exports = function (phase) {
     },
     transpilePackages: transpileModules,
     experimental: {
-      // optimizeCss: true,
-      scrollRestoration: true,
+      esmExternals: 'loose',
       legacyBrowsers: false,
-      esmExternals: true,
+      optimizeCss: phase !== PHASE_DEVELOPMENT_SERVER,
+      scrollRestoration: true,
     },
     publicRuntimeConfig: {
       ...publicConfig,

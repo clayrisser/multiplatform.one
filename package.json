@@ -35,6 +35,7 @@
   "transpileModules": [
     "expo-asset",
     "expo-constants",
+    "expo-linear-gradient",
     "expo-linking",
     "expo-modules-core",
     "react-native-recoil-persist",
