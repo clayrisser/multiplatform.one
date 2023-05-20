@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Paragraph, YStack } from '@multiplatform.one/ui';
+import { Button, Paragraph, YStack } from 'tamagui';
 import { ChevronLeft } from '@tamagui/lucide-icons';
 import { createParam } from 'solito';
 import { useLink } from 'solito/link';

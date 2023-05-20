@@ -17,7 +17,12 @@ export function TamaguiProvider({ children, ...props }: TamaguiProviderProps) {
   }
 
   return (
-    <OriginalTamaguiProvider config={config} defaultTheme={themeState.root} disableInjectCSS={false} {...props}>
+    <OriginalTamaguiProvider
+      defaultTheme={themeState.root}
+      disableInjectCSS={false}
+      {...props}
+      config={config || props.config}
+    >
       {renderSubTheme(children)}
     </OriginalTamaguiProvider>
   );

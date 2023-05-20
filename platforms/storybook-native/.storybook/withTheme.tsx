@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import addons, { makeDecorator } from '@storybook/addons';
-import { useThemeState } from 'app/state/theme';
+import type { ColorScheme } from 'app/state/theme';
 import type { ThemeName } from 'tamagui';
+import { useThemeState } from 'app/state/theme';
 
 const UPDATE_BACKGROUND = 'storybook-addon-background:update';
 
@@ -32,7 +33,7 @@ export const withTheme = makeDecorator({
 
     useEffect(() => {
       if (!themeName) return;
-      themeState.setRoot(themeName);
+      themeState.setRoot(themeName as ColorScheme);
     }, [themeName, themeState.setRoot]);
 
     return <>{getStory(context)}</>;

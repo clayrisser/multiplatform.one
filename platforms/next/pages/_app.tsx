@@ -5,7 +5,9 @@ import 'raf/polyfill';
 import Head from 'next/head';
 import React, { startTransition, useEffect, useMemo } from 'react';
 import cookie from 'cookie';
+import tamaguiConfig from '../tamagui.config';
 import type { AppContext } from 'next/app';
+import type { ColorScheme } from 'app/state/theme';
 import type { GlobalProviderKeycloak } from 'app/providers';
 import type { NextIncomingMessage } from 'next/dist/server/request-meta';
 import type { ReactNode } from 'react';
@@ -63,7 +65,7 @@ function Provider({ children, ...props }: { children: ReactNode; cookies: unknow
     <NextThemeProvider
       onChangeTheme={(theme) => {
         startTransition(() => {
-          setRootTheme(theme);
+          setRootTheme(theme as ColorScheme);
         });
       }}
       forcedTheme={rootTheme}
@@ -73,8 +75,8 @@ function Provider({ children, ...props }: { children: ReactNode; cookies: unknow
         defaultTheme={rootTheme}
         disableInjectCSS
         disableRootThemeClass
-        disableStateProvider
         keycloak={keycloak}
+        tamaguiConfig={tamaguiConfig}
       >
         {children}
       </GlobalProvider>

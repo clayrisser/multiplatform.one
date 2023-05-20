@@ -1,7 +1,7 @@
 import React from 'react';
 import type { KeycloakProviderProps } from './keycloak';
 import type { ProviderProps } from './types';
-import type { TamaguiInternalConfig, TamaguiProviderProps } from '@multiplatform/ui';
+import type { TamaguiInternalConfig, TamaguiProviderProps } from 'tamagui';
 import { KeycloakProvider } from './keycloak';
 import { NavigationProvider } from './navigation';
 import { TamaguiProvider } from './tamagui';

@@ -14,8 +14,9 @@ module.exports = {
     node: true,
   },
   globals: {
-    NodeJS: true,
     JSX: true,
+    NodeJS: true,
+    __DEV__: true,
   },
   settings: {
     react: {

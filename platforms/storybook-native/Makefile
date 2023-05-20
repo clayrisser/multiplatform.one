@@ -9,6 +9,7 @@ include $(MKPM)/yarn
 include ../../shared.mk
 
 export SB_RN_GET_STORIES ?= $(call yarn_binary,sb-rn-get-stories)
+export STORYBOOK_ENABLED=true
 
 ACTIONS += install ##
 $(ACTION)/install: $(PROJECT_ROOT)/package.json package.json
@@ -24,6 +25,9 @@ ACTIONS += generate~install ##
 	@$(call reset,generate)
 $(ACTION)/generate: .storybook/storybook.requires.js $(call git_deps,\.([jt]sx?)$$)
 	@$(SB_RN_GET_STORIES) --config-path $(CURDIR)/.storybook
+	$(SED) -i \
+		's|import { argsEnhancers } from "@storybook/addon-actions/dist/modern/preset/addArgs";|const argsEnhancers=[]|g' \
+		.storybook/storybook.requires.js
 	@$(call done,generate)
 
 ACTIONS += format~generate ##

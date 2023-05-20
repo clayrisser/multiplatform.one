@@ -12,6 +12,8 @@ import { config } from 'app/config';
 // @ts-ignore
 import { useThemeState } from 'app/state/theme';
 
+type ColorScheme = 'dark' | 'light';
+
 export interface DebugLayoutProps<DebugViewProps> {
   children: ReactNode;
   debugView?: ComponentType<DebugViewProps>;
@@ -37,7 +39,7 @@ export function DebugLayout<DebugViewProps>({
   }
 
   function handleRootThemeChange(rootTheme: ThemeName) {
-    themeState.setRoot(rootTheme);
+    themeState.setRoot(rootTheme as ColorScheme);
   }
 
   function renderSubThemeItems() {

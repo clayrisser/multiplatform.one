@@ -1,5 +1,5 @@
 import React from 'react';
-import { H1 } from '@multiplatform.one/ui';
+import { H1 } from 'tamagui';
 
 export interface Hello {
   world: string;

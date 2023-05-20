@@ -27,8 +27,10 @@ export function useThemeState() {
 }
 
 export interface ThemeState {
-  root: ThemeName;
+  root: ColorScheme;
   sub: ThemeName;
 }
 
 export type ThemeActions = Actions<ThemeState, {}>;
+
+export type ColorScheme = 'dark' | 'light';
