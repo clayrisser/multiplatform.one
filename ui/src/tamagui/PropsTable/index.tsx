@@ -1,14 +1,14 @@
 import React from 'react';
-import { H3, H4, ListItem, Paragraph, Separator, XStack, YStack, styled } from 'tamagui';
+import { H3, H4, ListItem, Paragraph, Separator, XStack, YStack } from 'tamagui';
 import { Code } from '../Code';
 
-export type PropDef = {
+export interface PropDef {
   name: string;
   required?: boolean;
   default?: string | boolean;
   type: string;
   description?: string;
-};
+}
 
 export function PropsTable({
   title = 'Props',
@@ -73,7 +73,7 @@ export function PropsTable({
                   {type}
                 </Paragraph>
                 <XStack ai="center">
-                  {Boolean(defaultValue) ? (
+                  {defaultValue ? (
                     <>
                       <Paragraph o={0.5} size="$2">
                         Default:&nbsp;

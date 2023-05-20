@@ -34,7 +34,6 @@ export function DataTable({
             <H3 size="$3">{title}</H3>
           </XStack>
         )}
-
         {rows.map((items, i) => (
           <ListItem key={i} p={0}>
             <XStack ai="center" pos="relative" py="$3" px="$4" $sm={{ flexDirection: 'column' }}>

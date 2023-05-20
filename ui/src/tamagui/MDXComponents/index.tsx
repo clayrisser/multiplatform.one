@@ -38,34 +38,11 @@ import {
   Spacer,
   Text,
   Theme,
-  ThemeableStack,
   TooltipSimple,
   XStack,
   YStack,
   styled,
 } from 'tamagui';
-
-export const TableFrame = styled(ThemeableStack, {
-  bordered: true,
-  br: '$4',
-  ov: 'hidden',
-  my: '$4',
-});
-
-export const Table = ({ heading, children, ...props }) => {
-  return (
-    <TableFrame className="no-scrollbar" overflow={'scroll' as any} {...props}>
-      {!!heading && (
-        <TableCell size="$4" bc="$color1" fow="500" color="$color9">
-          {heading}
-        </TableCell>
-      )}
-      <XStack minWidth="100%" ai="stretch">
-        {children}
-      </XStack>
-    </TableFrame>
-  );
-};
 
 const code = (props) => {
   const { hero, line, scrollable, className, children, id, showLineNumbers, collapsible, ...rest } = props;
@@ -87,42 +64,6 @@ const code = (props) => {
   );
 };
 
-export const TableCell = styled(Paragraph, {
-  bbw: 1,
-  bbc: '$borderColor',
-  fd: 'row',
-  ai: 'center',
-  pos: 'relative',
-  f: 1,
-  jc: 'center',
-  ta: 'center',
-  h: '$4',
-  p: '$2',
-  px: '$3',
-  size: '$5',
-  ellipse: true,
-  variants: {
-    head: {
-      true: {
-        bc: '$color1',
-      },
-    },
-    highlight: {
-      true: {
-        bc: '$yellow2',
-      },
-    },
-  } as const,
-});
-
-export const TableCol = styled(ThemeableStack, {
-  brw: 1,
-  brc: '$borderColor',
-  f: 1,
-  mr: -1,
-  fd: 'column',
-});
-
 export const TableHighlight = styled(YStack, {
   fullscreen: true,
   bc: '$yellow1',
@@ -134,10 +75,7 @@ export const components = {
       {props.children}
     </YStack>
   ),
-  Table,
-  TableCell,
   TableHighlight,
-  TableCol,
   Spacer,
   ScrollView,
   Features,

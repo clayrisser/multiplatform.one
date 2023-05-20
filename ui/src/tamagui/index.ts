@@ -22,7 +22,7 @@ import { Pre } from './Pre';
 import { Preview } from './Preview';
 import { PropsTable } from './PropsTable';
 import { SubTitle } from './SubTitle';
-import { TableFrame, Table, TableCell, TableCol, TableHighlight, components, LinkHeading } from './MDXComponents';
+import { TableHighlight, components, LinkHeading } from './MDXComponents';
 import { TamaguiCard } from './TamaguiCard';
 import { UL } from './Ul';
 
@@ -52,10 +52,6 @@ export {
   PropsTable,
   SubTitle,
   TCard,
-  Table,
-  TableCell,
-  TableCol,
-  TableFrame,
   TableHighlight,
   TamaguiCard,
   UL,

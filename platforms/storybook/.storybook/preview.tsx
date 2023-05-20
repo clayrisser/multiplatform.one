@@ -104,7 +104,6 @@ function Provider({ children }: PropsWithChildren) {
   useEffect(() => {
     themeState.setRoot(darkMode ? 'dark' : 'light');
   }, [darkMode, themeState.setRoot]);
-  console.log('tamaguiConfig', tamaguiConfig);
   return (
     <GlobalProvider tamaguiConfig={tamaguiConfig} defaultTheme={themeState.root}>
       {children}
