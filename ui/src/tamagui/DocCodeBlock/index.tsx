@@ -1,45 +1,46 @@
-import React from 'react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import { Button, Spacer, TooltipSimple, XStack, YStack } from 'tamagui';
 import { CheckCircle, Clipboard, Paintbrush } from '@tamagui/lucide-icons';
-import { forwardRef, useEffect, useRef, useState } from 'react';
-import { ScrollView } from 'react-native';
-import { Button, TooltipSimple, XStack, YStack } from 'tamagui';
-import { toggleTinted } from '../../hooks/setTinted';
-import { useClipboard } from '../../hooks/useClipboard';
 import { Code } from '../Code';
 import { ErrorBoundary } from '../ErrorBoundary';
+import { LinearGradient } from 'tamagui/linear-gradient';
 import { Pre } from '../Pre';
+import { ScrollView } from 'react-native';
+import { toggleTinted } from '../../utils/setTinted';
+import { useClipboard } from '../../hooks/useClipboard';
 
 export const DocCodeBlock = forwardRef((props: any, ref) => {
   const {
     className,
     children,
     id,
-    showLineNumbers = false,
     isHero = false,
-    isCollapsible = false,
     isHighlightingLines,
+    showLineNumbers: showLineNumbersIn,
+    disableCopy,
+    size,
+    ...rest
   } = props;
-  const [isCollapsed, setIsCollapsed] = useState(isHero || isCollapsible);
+  const lines = Array.isArray(children) ? children.length : 0;
+  const isCollapsible = isHero || props.isCollapsible;
+  const [isCollapsed, setIsCollapsed] = useState(isCollapsible);
+  const isLong = lines > 22;
+  const [isCutoff, setIsCutoff] = useState(isLong && !isCollapsible);
   const [code, setCode] = useState(undefined);
   const preRef = useRef<any>(null);
   const { hasCopied, onCopy } = useClipboard(code);
-  // const frontmatter = useContext(FrontmatterContext)
+  const showLineNumbers = showLineNumbersIn ?? (lines > 10 ? true : false);
 
   useEffect(() => {
     try {
       if (preRef.current) {
         const codeElement = preRef.current.querySelector('code');
         if (codeElement) {
-          // remove double line breaks
           const code = codeElement.innerText.replace(/\n{3,}/g, '\n');
           setCode(code);
-        } else {
-          // not collapsible
         }
       }
-    } catch {
-      // ok
-    }
+    } catch {}
   }, [preRef]);
 
   return (
@@ -64,40 +65,52 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             alignItems="center"
             justifyContent="flex-end"
             top={-70}
-            right="$6"
+            r="$6"
             $gtMd={{
-              right: '$7',
+              r: '$7',
             }}
           >
-            <Button
-              //  accessibilityLabel="Show or hide code"
-              size="$2"
-              onPress={() => setIsCollapsed((x) => !x)}
-            >
+            <Button accessibilityLabel="Show or hide code" size="$2" onPress={() => setIsCollapsed((x) => !x)}>
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>
-
             <TooltipSimple label="Toggle tint on/off">
-              <Button
-                // accessibilityLabel="Toggle tint on/off"
-                size="$2"
-                onPress={toggleTinted}
-                icon={Paintbrush}
-              />
+              <Button accessibilityLabel="Toggle tint on/off" size="$2" onPress={toggleTinted} icon={Paintbrush} />
             </TooltipSimple>
           </XStack>
         )}
-
         {(!isCollapsed || !isCollapsible) && (
-          <YStack position="relative">
+          <YStack
+            position="relative"
+            {...(isCutoff && {
+              maxHeight: 400,
+              ov: 'hidden',
+              br: '$4',
+            })}
+          >
+            {isCutoff && (
+              <LinearGradient
+                pos="absolute"
+                b={0}
+                l={0}
+                r={0}
+                height={200}
+                colors={['$backgroundTransparent', '$background']}
+                zi={1000}
+              >
+                <Spacer f={1} />
+                <Button onPress={() => setIsCutoff(!isCutoff)} als="center">
+                  Show more
+                </Button>
+                <Spacer size="$4" />
+              </LinearGradient>
+            )}
             <Pre
               ref={preRef}
               data-invert-line-highlight={isHighlightingLines}
               data-line-numbers={showLineNumbers}
               className={className}
-              padding={0}
-              marginBottom={0}
-              // @ts-ignore
+              p={0}
+              mb={0}
               id={id}
             >
               <ScrollView
@@ -106,26 +119,36 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 horizontal
                 showsHorizontalScrollIndicator={false}
               >
-                <Code padding="$4" backgroundColor="transparent" f={1} className={className}>
+                <Code
+                  p="$4"
+                  backgroundColor="transparent"
+                  f={1}
+                  className={className}
+                  size={size ?? '$5'}
+                  lineHeight={size ?? '$5'}
+                  {...rest}
+                >
                   {children}
                 </Code>
               </ScrollView>
             </Pre>
-            <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
-              <Button
-                aria-label="Copy code to clipboard"
-                position="absolute"
-                size="$2"
-                top="$3"
-                right="$3"
-                display="inline-flex"
-                icon={hasCopied ? CheckCircle : Clipboard}
-                onPress={onCopy}
-                $xs={{
-                  display: 'none',
-                }}
-              />
-            </TooltipSimple>
+            {!disableCopy && (
+              <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
+                <Button
+                  aria-label="Copy code to clipboard"
+                  position="absolute"
+                  size="$2"
+                  top="$3"
+                  right="$3"
+                  display="inline-flex"
+                  icon={hasCopied ? CheckCircle : Clipboard}
+                  onPress={onCopy}
+                  $xs={{
+                    display: 'none',
+                  }}
+                />
+              </TooltipSimple>
+            )}
           </YStack>
         )}
       </ErrorBoundary>

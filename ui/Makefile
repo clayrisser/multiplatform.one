@@ -45,6 +45,7 @@ BUILD_TARGETS := dist/cjs/index.js
 dist/cjs/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
+	@$(RM) -rf types
 	@$(TAMAGUI_BUILD)
 	@$(call done,build)
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Paragraph, XStack, styled } from 'tamagui';
-
-import { unwrapText } from '../unwrapText';
+import { unwrapText } from '../../utils/unwrapText';
 
 export const Notice = ({ children, theme = 'yellow', disableUnwrap, ...props }: any) => {
   return (

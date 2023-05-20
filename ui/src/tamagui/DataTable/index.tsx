@@ -1,6 +1,5 @@
 import React from 'react';
 import { H3, H4, ListItem, ScrollView, XStack, YStack } from 'tamagui';
-// import { PropDef } from 'ui/src//tamagui/PropsTable';
 
 export function DataTable({
   title = '',
@@ -42,7 +41,7 @@ export function DataTable({
               {items.map((item) => (
                 <H4
                   color="$color"
-                  fow="800"
+                  fow="700"
                   key={item}
                   maw={100}
                   fontFamily="$mono"
@@ -50,7 +49,6 @@ export function DataTable({
                   ai="center"
                   jc="center"
                   textAlign="center"
-                  // numberOfLines={3}
                   size="$4"
                   width={200}
                 >

@@ -9,6 +9,7 @@ import { create } from 'zustand';
 type SimpleSheetProps = SheetProps & { sheetElement?: React.ReactNode } & { modal?: boolean } & {
   buttonSize?: SizeTokens | undefined;
 };
+
 type ComponentProps = SheetProps & { innerSheetElement?: React.ReactNode } & {
   innerSheetButtonSize?: SizeTokens | undefined;
 };
@@ -18,6 +19,7 @@ interface State {
   open: boolean;
   innerOpen: boolean;
 }
+
 interface Action {
   setPosition: (position: number) => void;
   setOpen: (open: boolean) => void;
@@ -48,7 +50,6 @@ export const SimpleSheet = ({
       <XStack space>
         <Button onPress={() => setOpen(true)}>{children}</Button>
       </XStack>
-
       <Sheet
         forceRemoveScrollEnabled={open}
         modal={modal || false}

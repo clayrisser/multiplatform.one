@@ -34,7 +34,7 @@ export function SelectSimple({
           <Select.Sheet.Overlay />
         </Select.Sheet>
       </Select.Adapt>
-      <Select.Content zIndex={99999}>
+      <Select.Content zIndex={200000}>
         <Select.Viewport>{children}</Select.Viewport>
       </Select.Content>
     </Select>

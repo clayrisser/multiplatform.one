@@ -1,23 +1,24 @@
-import React from 'react';
-import { Component } from 'react';
-import { YStack, Button, Text } from 'tamagui';
+import React, { Component } from 'react';
+import { YStack, H2, Button } from 'tamagui';
+
+const logger = console;
 
 export class ErrorBoundary extends Component<any> {
-  static getDerivedStateFromError() {
+  static getDerivedStateFromError(_err: Error) {
     return { hasError: true };
   }
 
   state = { hasError: false };
 
-  componentDidCatch(error, errorInfo) {
-    console.log({ error, errorInfo });
+  componentDidCatch(err: Error, errorInfo: any) {
+    logger.info({ error: err, errorInfo });
   }
 
   render() {
     if (this.state.hasError) {
       return (
         <YStack>
-          <Text>Oops, there is an error!</Text>
+          <H2>Oops, there is an error!</H2>
           <Button onPress={() => this.setState({ hasError: false })}>Try again?</Button>
         </YStack>
       );

@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-import { Adapt, Popover, PopoverProps, YStack, PopoverContentProps, AdaptProps, PopoverArrowProps } from 'tamagui';
+import type { PopoverProps, PopoverContentProps, AdaptProps, PopoverArrowProps } from 'tamagui';
+import { Adapt, Popover, YStack } from 'tamagui';
 import React from 'react';
 
 type SimplePopoverProps = PopoverProps & { element: React.ReactNode } & { contentStyle?: PopoverContentProps } & {
@@ -17,7 +17,6 @@ export function SimplePopover({
   return (
     <Popover size="$5" {...props}>
       <Popover.Trigger asChild>{children}</Popover.Trigger>
-
       <Adapt when="sm" platform="web" {...adaptStyle}>
         <Popover.Sheet modal dismissOnSnapToBottom>
           <Popover.Sheet.Frame padding="$4">

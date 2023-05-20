@@ -1,13 +1,13 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-import React, { ReactNode } from 'react';
-import {
-  AlertDialogTriggerProps,
+import React from 'react';
+import type { ReactNode } from 'react';
+import { AlertDialog, Button, XStack, YStack } from 'tamagui';
+import type {
+  AlertDialogContentProps,
+  AlertDialogDescriptionProps,
   AlertDialogProps,
   AlertDialogTitleProps,
-  AlertDialogDescriptionProps,
-  AlertDialogContentProps,
+  AlertDialogTriggerProps,
 } from 'tamagui';
-import { AlertDialog, Button, XStack, YStack } from 'tamagui';
 
 export type AlterDialogSimpleProps = AlertDialogTriggerProps &
   AlertDialogProps & { placeholder?: ReactNode } & { title?: ReactNode } & { cancel?: string } & { accept?: string } & {
@@ -30,7 +30,6 @@ export function SimpleAlertDialog({
   return (
     <AlertDialog native {...triggerProps}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
-
       <AlertDialog.Portal>
         <AlertDialog.Overlay key="overlay" animation="quick" o={0.5} enterStyle={{ o: 0 }} exitStyle={{ o: 0 }} />
         <AlertDialog.Content
@@ -54,8 +53,6 @@ export function SimpleAlertDialog({
           {...contentStyle}
         >
           <YStack space>
-            {/* <AlertDialog.Title {...titleStyle}>{title ?? title}</AlertDialog.Title>
-            <AlertDialog.Description {...descriptionStyle}>{description ?? description}</AlertDialog.Description> */}
             <XStack space="$3" jc="flex-end">
               <AlertDialog.Cancel asChild>
                 <Button>{cancel || 'cancel'}</Button>
