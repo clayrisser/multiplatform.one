@@ -31,8 +31,6 @@
   "files": [
     "dist",
     "src",
-    "tamagui.d.ts",
-    "tamagui.js",
     "types"
   ],
   "repository": {
