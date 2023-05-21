@@ -4,7 +4,7 @@
  * File Created: 01-02-2023 09:10:54
  * Author: Clay Risser
  * -----
- * Last Modified: 21-04-2023 15:55:46
+ * Last Modified: 21-05-2023 09:17:01
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -24,9 +24,10 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { InitStateType } from 'zustand-tools/dist/types';
-import type { StateCreator, StoreApi } from 'zustand';
-import { createSimple } from 'zustand-tools';
 import type { PersistOptions, DevtoolsOptions } from 'zustand/middleware';
+import type { StateCreator, StoreApi } from 'zustand';
+import { MultiPlatform } from './index';
+import { createSimple } from 'zustand-tools';
 import { devtools, persist, createJSONStorage } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
@@ -55,7 +56,7 @@ export function createStateStore<State extends InitStateType, Actions extends Ac
   const store = createSimple(initState, {
     actions,
     middlewares: [
-      ...(options.devtools === false
+      ...(options.devtools === false || MultiPlatform.isServer || MultiPlatform.isTest
         ? []
         : ([
             (initializer) =>

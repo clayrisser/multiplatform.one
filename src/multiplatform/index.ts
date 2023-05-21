@@ -4,7 +4,7 @@
  * File Created: 09-11-2022 08:59:08
  * Author: Clay Risser
  * -----
- * Last Modified: 23-02-2023 07:33:04
+ * Last Modified: 21-05-2023 09:16:45
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -30,14 +30,15 @@ import { isChrome, isClient, isWindowDefined, isRSC, isServer, isWeb, isWebTouch
 export class MultiPlatform extends MultiPlatformBase {
   static isChrome = isChrome;
   static isClient = isClient;
+  static isElectronMain = isWindowDefined && (window as any).versions?.electron;
+  static isElectronRender = isWindowDefined && (window as any).process?.type === 'renderer';
   static isFirefox = isWindowDefined && window?.navigator?.userAgent?.toLowerCase().indexOf('firefox') > -1;
   static isWeb = Platform.OS === 'web' && isWeb;
   static isNext = MultiPlatform.isWeb && (!isWindowDefined || typeof window.__NEXT_DATA__ === 'object');
   static isRSC = isRSC;
   static isServer = isServer;
   static isStatic = MultiPlatform.isNext && (getConfig ? getConfig() : {})?.publicRuntimeConfig?.NEXT_STATIC === '1';
-  static isElectronRender = isWindowDefined && (window as any).process?.type === 'renderer';
-  static isElectronMain = isWindowDefined && (window as any).versions?.electron;
+  static isTest = process?.env?.NODE_ENV === 'test' || process?.env?.JEST_WORKER_ID !== undefined;
   static isWebTouchable = isWebTouchable;
   static isElectron =
     MultiPlatform.isElectronRender ||
