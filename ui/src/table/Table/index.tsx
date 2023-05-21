@@ -1,9 +1,8 @@
 import React from 'react';
 import { TableCell } from '../TableCell';
-import { styled, XStack, ThemeableStack, createStyledContext, withStaticProperties } from 'tamagui';
 import { TableCol } from '../TableCol';
-
-export const TableContext = createStyledContext({});
+import { TableContext } from '../TableContext';
+import { styled, XStack, ThemeableStack, withStaticProperties } from 'tamagui';
 
 const StyledTableFrame = styled(ThemeableStack, {
   name: 'Table',
@@ -16,7 +15,7 @@ const StyledTableFrame = styled(ThemeableStack, {
 
 const TableFrame = ({ heading, children, ...props }) => {
   return (
-    <StyledTableFrame className="no-scrollbar" overflow={'scroll' as any} {...props}>
+    <StyledTableFrame overflow={'scroll' as any} {...props}>
       {!!heading && (
         <TableCell size="$4" bc="$color1" fow="500" color="$color9">
           {heading}

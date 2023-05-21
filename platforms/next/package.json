@@ -15,7 +15,7 @@
     "react-dom": "18.2.0",
     "react-native": "0.71.8",
     "react-native-web": "~0.19.4",
-    "react-native-web-lite": "^1.28.2"
+    "react-native-web-lite": "^1.29.1"
   },
   "devDependencies": {
     "@expo/next-adapter": "^5.0.2",

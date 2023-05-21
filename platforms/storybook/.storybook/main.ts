@@ -59,7 +59,7 @@ const config: StorybookConfig = {
     storyStoreV7: false,
   },
   docs: {
-    autodocs: false,
+    autodocs: 'tag',
   },
   env: (config) => ({
     ...config,

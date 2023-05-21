@@ -1,5 +1,6 @@
 import * as jsxRuntime from 'react/jsx-runtime';
 import type { ComponentType } from 'react';
+import type { Components } from '@mdx-js/react/lib';
 import { useState, useEffect } from 'react';
 
 export function useEvaluateMdx(code?: string, options?: Record<string, any>) {
@@ -17,7 +18,7 @@ function evaluateMdx(code: string, options?: Record<string, any>) {
   return run(code, {
     ...jsxRuntime,
     ...options,
-  }).default as ComponentType<{ components?: Record<string, any> }>;
+  }).default as ComponentType<{ components?: Components }>;
 }
 
 const AsyncFunction = Object.getPrototypeOf(run).constructor;

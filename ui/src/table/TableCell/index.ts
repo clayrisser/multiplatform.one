@@ -1,4 +1,4 @@
-import { TableContext } from '../Table';
+import { TableContext } from '../TableContext';
 import { styled, Paragraph } from 'tamagui';
 
 export const TableCell = styled(Paragraph, {

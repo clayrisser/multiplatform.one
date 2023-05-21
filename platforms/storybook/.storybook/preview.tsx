@@ -1,6 +1,7 @@
 import '@tamagui/core/reset.css';
 import '@tamagui/font-inter/css/400.css';
 import '@tamagui/font-inter/css/700.css';
+import '@multiplatform.one/ui/css/code-highlight.css';
 import 'raf/polyfill';
 import React, { useEffect } from 'react';
 import tamaguiConfig from '../tamagui.config';
@@ -13,7 +14,9 @@ import { GlobalProvider } from 'app/providers';
 import { supportedLocales, defaultLocale, i18nInit } from 'app/i18n';
 import { themes as storybookThemes } from '@storybook/theming';
 import { useDarkMode } from 'storybook-dark-mode';
+import { mdxComponents } from '@multiplatform.one/ui';
 import { useThemeState } from 'app/state/theme';
+import { MDXProvider } from '@mdx-js/react';
 // import { useLocale } from 'multiplatform.one';
 // import { withThemes } from 'storybook-addon-themes/react';
 
@@ -46,7 +49,7 @@ const preview: Preview = {
       default: 'purple',
       clearable: false,
       list: DebugLayout.defaultProps.subThemeNames.map((name) => {
-        const themes = [];
+        const themes: any[] = [];
         // const themes = getThemes();
         return {
           name,
@@ -97,6 +100,12 @@ const preview: Preview = {
     },
   },
 };
+
+export const DocsContainer = (props) => (
+  <MDXProvider components={mdxComponents}>
+    <DocsContainer {...props} />
+  </MDXProvider>
+);
 
 function Provider({ children }: PropsWithChildren) {
   const darkMode = useDarkMode();

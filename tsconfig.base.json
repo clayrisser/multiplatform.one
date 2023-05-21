@@ -11,7 +11,7 @@
     "jsx": "react",
     "lib": ["es2021", "dom", "esnext"],
     "module": "ESNext",
-    "moduleResolution": "node16",
+    "moduleResolution": "node",
     "noEmitOnError": false,
     "noImplicitAny": false,
     "noImplicitReturns": false,

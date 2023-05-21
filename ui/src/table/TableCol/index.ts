@@ -1,4 +1,4 @@
-import { TableContext } from '../Table';
+import { TableContext } from '../TableContext';
 import { styled, ThemeableStack } from 'tamagui';
 
 export const TableCol = styled(ThemeableStack, {

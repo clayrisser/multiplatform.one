@@ -12,13 +12,42 @@ export function useCompileMdx(
 
   useEffect(() => {
     (async () => {
-      const { compile } = await import('@mdx-js/mdx');
-      const { default: grayMatter } = await import('gray-matter');
+      const [
+        { compile },
+        { default: grayMatter },
+        { default: rehypeAutolinkHeadings },
+        { default: rehypeSlug },
+        { default: remarkFrontmatter },
+        { default: remarkMdxFrontmatter },
+        { rehypeHighlightCode },
+        { rehypeMetaAttributes },
+      ] = await Promise.all([
+        import('@mdx-js/mdx'),
+        import('gray-matter'),
+        import('rehype-autolink-headings'),
+        import('rehype-slug'),
+        import('remark-frontmatter'),
+        import('remark-mdx-frontmatter'),
+        import('../util/rehypeHighlightCode'),
+        import('../util/rehypeMetaAttributes'),
+      ]);
       const { value } = await compile(source, {
         ...options,
         development: false,
         outputFormat: 'function-body',
         useDynamicImport: true,
+        remarkPlugins: [
+          ...(options?.remarkPlugins || []),
+          [remarkMdxFrontmatter, { name: 'frontmatter' }],
+          remarkFrontmatter,
+        ],
+        rehypePlugins: [
+          ...(options?.rehypePlugins || []),
+          rehypeAutolinkHeadings,
+          rehypeHighlightCode,
+          rehypeMetaAttributes,
+          rehypeSlug,
+        ],
       });
       setCode(value.toString());
       setFrontmatter(grayMatter(source));
