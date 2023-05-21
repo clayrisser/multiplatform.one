@@ -76,6 +76,10 @@ build: ui/build
 .PHONY: publish
 publish: ui/publish
 
+.PHONY: count
+count:
+	@$(CLOC) $(shell ($(GIT) ls-files && ($(GIT) lfs ls-files | $(CUT) -d' ' -f3)) | $(SORT) | $(UNIQ) -u)
+
 CACHE_ENVS += \
 
 -include $(call actions)
