@@ -4,9 +4,9 @@ import type { PropsWithChildren } from 'react';
 import { BenchmarkChart } from '../BenchmarkChart';
 import { BenchmarkChartNative } from '../BenchmarkChartNative';
 import { BenchmarkChartWeb } from '../BenchmarkChartWeb';
-import { Code, CodeInline } from '../Code';
+import { Code, CodeInline } from '../../code/Code';
 import { DataTable } from '../DataTable';
-import { DocCodeBlock } from '../DocCodeBlock';
+import { DocCodeBlock } from '../../code/DocCodeBlock';
 import { ExternalIcon } from '../ExternalIcon';
 import { Features } from '../Features';
 import { HR } from '../HR';
@@ -21,6 +21,7 @@ import { Preview } from '../Preview';
 import { PropsTable } from '../PropsTable';
 import { ScrollView } from 'react-native';
 import { SubTitle } from '../SubTitle';
+import { Table, TableCell, TableCol } from '../../table';
 import { TamaguiCard } from '../TamaguiCard';
 import { ThemeTint } from '@tamagui/logo';
 import { UL } from '../Ul';
@@ -75,30 +76,33 @@ export const components = {
       {props.children}
     </YStack>
   ),
-  TableHighlight,
-  Spacer,
-  ScrollView,
-  Features,
-  Text,
-  Paragraph,
-  OffsetBox,
-  YStack,
-  XStack,
-  Theme,
   BenchmarkChart,
-  Separator,
-  Code,
-  HeroContainer,
   BenchmarkChartNative,
   BenchmarkChartWeb,
-  TooltipSimple,
-  Highlights,
-  ThemeTint,
-  PropsTable,
+  Code,
   DataTable,
   Description: SubTitle,
-  UL,
+  Features,
+  HeroContainer,
+  Highlights,
   LI,
+  OffsetBox,
+  Paragraph,
+  PropsTable,
+  ScrollView,
+  Separator,
+  Spacer,
+  Table,
+  TableCell,
+  TableCol,
+  TableHighlight,
+  Text,
+  Theme,
+  ThemeTint,
+  TooltipSimple,
+  UL,
+  XStack,
+  YStack,
   TLDR: (props) => {
     return (
       <YStack

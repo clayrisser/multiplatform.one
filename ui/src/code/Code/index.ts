@@ -1,3 +1,4 @@
+import type { GetProps } from 'tamagui';
 import { Paragraph, styled } from 'tamagui';
 
 export const Code = styled(Paragraph, {
@@ -10,7 +11,6 @@ export const Code = styled(Paragraph, {
   whiteSpace: 'pre',
   padding: '$1',
   borderRadius: '$4',
-
   variants: {
     colored: {
       true: {
@@ -32,3 +32,7 @@ export const CodeInline = styled(Paragraph, {
   fontSize: '85%',
   p: '$1.5',
 });
+
+export type CodeProps = GetProps<typeof Code>;
+
+export type CodeInlineProps = GetProps<typeof CodeInline>;

@@ -2,7 +2,7 @@ import React from 'react';
 import type { TamaguiInternalConfig } from 'tamagui';
 import { AnimationDriverProvider, Switch, Theme, TooltipSimple, XStack, YStack, styled } from 'tamagui';
 import { AnimationDriverTogglerContextProvider } from '../../providers/AnimationDriverTogglerContextProvider';
-import { ErrorBoundary } from '../ErrorBoundary';
+import { ErrorBoundary } from '../../ErrorBoundary';
 import { ThemeTint } from '@tamagui/logo';
 import { Timer, Waves } from '@tamagui/lucide-icons';
 import { useAnimationDriverToggler } from '../../hooks/useAnimationDriverToggle';

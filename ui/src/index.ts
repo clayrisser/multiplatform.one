@@ -1,3 +1,4 @@
+export * from './ErrorBoundary';
 export * from './forms';
 export * from './helpers';
 export * from './hooks';

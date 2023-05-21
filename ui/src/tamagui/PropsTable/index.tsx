@@ -1,6 +1,6 @@
 import React from 'react';
 import { H3, H4, ListItem, Paragraph, Separator, XStack, YStack } from 'tamagui';
-import { Code } from '../Code';
+import { Code } from '../../code/Code';
 
 export interface PropDef {
   name: string;
