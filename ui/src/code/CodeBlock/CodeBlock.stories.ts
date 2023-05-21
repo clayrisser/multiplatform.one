@@ -11,6 +11,11 @@ const meta: Meta = {
 
 export const main: StoryObj<typeof CodeBlock> = {
   args: {
+    bg: '$color3',
+    disableCopy: false,
+    isCollapsible: false,
+    isHighlightingLines: true,
+    showLineNumbers: false,
     children: `
 const hello = 'world';
 

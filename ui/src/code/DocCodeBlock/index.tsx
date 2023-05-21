@@ -1,43 +1,40 @@
-import React, { useEffect, useRef, useState } from 'react';
-import type { CodeProps } from '../Code';
+import React, { useEffect, useRef, useState, useContext } from 'react';
+import type { CodeBlockContextValue } from '../CodeBlockContext';
 import { Button, Spacer, TooltipSimple, XStack, YStack, getTokens } from 'tamagui';
 import { CheckCircle, Clipboard } from '@tamagui/lucide-icons';
 import { Code } from '../Code';
+import { CodeBlockContext } from '../CodeBlockContext';
 import { ErrorBoundary } from '../../ErrorBoundary';
 import { LinearGradient } from '@tamagui/linear-gradient';
 import { Pre } from '../Pre';
 import { ScrollView } from 'react-native';
 import { useClipboard } from '../../hooks/useClipboard';
 
-export interface DocCodeBlockProps extends CodeProps {
+export interface DocCodeBlockProps extends CodeBlockContextValue {
   className?: string;
-  disableCopy?: boolean;
   id?: string;
-  isCollapsible?: boolean;
-  isHero?: boolean;
-  isHighlightingLines?: boolean;
-  showLineNumbers?: boolean;
 }
 
-export function DocCodeBlock({
-  children,
-  className,
-  disableCopy,
-  id,
-  isCollapsible,
-  isHighlightingLines,
-  showLineNumbers: propShowLineNumbers,
-  size,
-  ...props
-}: DocCodeBlockProps) {
+export function DocCodeBlock(props: DocCodeBlockProps) {
+  const {
+    children,
+    className,
+    disableCopy,
+    id,
+    isCollapsible,
+    isHighlightingLines,
+    showLineNumbers: propShowLineNumbers,
+    size,
+    ...codeProps
+  } = { ...useContext(CodeBlockContext), ...props };
   const lines = Array.isArray(children) ? children.length : 0;
+  const showLineNumbers = propShowLineNumbers ?? (lines > 10 ? true : false);
   const [isCollapsed, setIsCollapsed] = useState(isCollapsible);
   const isLong = lines > 22;
   const [isCutoff, setIsCutoff] = useState(isLong && !isCollapsible);
   const [code, setCode] = useState(undefined);
   const preRef = useRef<any>(null);
   const { hasCopied, onCopy } = useClipboard(code);
-  const showLineNumbers = propShowLineNumbers ?? (lines > 10 ? true : false);
   const tokens = getTokens();
 
   useEffect(() => {
@@ -103,7 +100,7 @@ export function DocCodeBlock({
                   className={className}
                   size={size ?? '$5'}
                   lineHeight={tokens.space[size || '$5']}
-                  {...props}
+                  {...codeProps}
                 >
                   {children}
                 </Code>

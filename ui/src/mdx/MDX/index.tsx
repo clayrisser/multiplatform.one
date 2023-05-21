@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Components } from '@mdx-js/react/lib';
+import type { DebugProp } from '@tamagui/web';
 import { mdxComponents } from '../components';
 import { useCompileAndEvaluateMdx } from '../hooks';
 import { useMDXComponents } from '@mdx-js/react';
@@ -7,7 +8,7 @@ import { useMDXComponents } from '@mdx-js/react';
 export interface MDXProps {
   children: string;
   components?: Components;
-  debug?: boolean;
+  debug?: DebugProp;
 }
 
 const logger = console;
