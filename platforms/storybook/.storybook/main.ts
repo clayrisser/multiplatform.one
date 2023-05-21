@@ -3,6 +3,7 @@ import publicConfig from 'app/config/public';
 import tamaguiModules from '../tamaguiModules';
 import transpileModules from '../transpileModules';
 import type { StorybookConfig } from '@storybook/nextjs';
+import webpack from 'webpack';
 
 // import publicConfig from 'app/config/public';
 const config: StorybookConfig = {
@@ -82,8 +83,9 @@ const config: StorybookConfig = {
       ...config.resolve,
       alias: {
         ...(config.resolve?.alias || {}),
-        zlib: require.resolve('browserify-zlib'),
+        buffer: require.resolve('buffer/'),
         stream: require.resolve('stream-browserify'),
+        zlib: require.resolve('browserify-zlib'),
       },
       fallback: {
         ...(config.resolve?.fallback || []),
@@ -107,6 +109,12 @@ const config: StorybookConfig = {
         ]),
       ],
     },
+    plugins: [
+      ...(config.plugins || []),
+      new webpack.ProvidePlugin({
+        Buffer: ['buffer', 'Buffer'],
+      }),
+    ],
   }),
   babelDefault: (config, _options) => ({
     ...config,

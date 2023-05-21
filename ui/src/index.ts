@@ -1,4 +1,5 @@
 export * from './ErrorBoundary';
+export * from './code';
 export * from './forms';
 export * from './helpers';
 export * from './hooks';
@@ -6,4 +7,4 @@ export * from './images';
 export * from './layouts';
 export * from './panels';
 export * from './table';
-export * from './tamagui';
+export * from './mdx';

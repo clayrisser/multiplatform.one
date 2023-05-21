@@ -1,6 +1,7 @@
 import React from 'react';
 import { DocCodeBlock } from './index';
 import type { Meta, StoryObj } from '@storybook/react';
+import { XStack, Text } from 'tamagui';
 
 const meta: Meta = {
   title: 'code/DocCodeBlock',
@@ -17,194 +18,108 @@ export const main: StoryObj<typeof DocCodeBlock> = {
   },
   render: (args) => (
     <DocCodeBlock {...args}>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
-      <>
-        const hello = &quot;world&quot;
-        <br />
-      </>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
+      <XStack>
+        <Text>const hello = &quot;world&quot;</Text>
+      </XStack>
     </DocCodeBlock>
   ),
 };

@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import type { CodeProps } from '../Code';
 import type { ComponentProps } from 'react';
-import { Button, Spacer, TooltipSimple, XStack, YStack } from 'tamagui';
+import { Button, Spacer, TooltipSimple, XStack, YStack, getTokens } from 'tamagui';
 import { CheckCircle, Clipboard } from '@tamagui/lucide-icons';
 import { Code } from '../Code';
 import { ErrorBoundary } from '../../ErrorBoundary';
@@ -43,6 +43,7 @@ export const DocCodeBlock = forwardRef(
     const preRef = useRef<any>(null);
     const { hasCopied, onCopy } = useClipboard(code);
     const showLineNumbers = propShowLineNumbers ?? (lines > 10 ? true : false);
+    const tokens = getTokens();
 
     useEffect(() => {
       try {
@@ -117,7 +118,7 @@ export const DocCodeBlock = forwardRef(
                     f={1}
                     className={className}
                     size={size ?? '$5'}
-                    lineHeight={size ?? '$5'}
+                    lineHeight={tokens.size[size || '$5']}
                     {...props}
                   >
                     {children}
@@ -131,7 +132,6 @@ export const DocCodeBlock = forwardRef(
                   <Button
                     aria-label="Copy code to clipboard"
                     size="$2"
-                    display="inline-flex"
                     icon={hasCopied ? CheckCircle : Clipboard}
                     onPress={onCopy}
                     $xs={{

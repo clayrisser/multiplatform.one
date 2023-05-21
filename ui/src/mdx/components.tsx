@@ -1,31 +1,31 @@
 import React from 'react';
 import type { ImageProps, ParagraphProps, XStackProps, YStackProps } from 'tamagui';
 import type { PropsWithChildren } from 'react';
-import { BenchmarkChart } from '../BenchmarkChart';
-import { BenchmarkChartNative } from '../BenchmarkChartNative';
-import { BenchmarkChartWeb } from '../BenchmarkChartWeb';
-import { Code, CodeInline } from '../../code/Code';
-import { DataTable } from '../DataTable';
-import { DocCodeBlock } from '../../code/DocCodeBlock';
-import { ExternalIcon } from '../ExternalIcon';
-import { Features } from '../Features';
-import { HR } from '../HR';
-import { HeroContainer } from '../HeroContainer';
-import { Highlights } from '../Highlights';
-import { LI } from '../LI';
+import { BenchmarkChart } from './BenchmarkChart';
+import { BenchmarkChartNative } from './BenchmarkChartNative';
+import { BenchmarkChartWeb } from './BenchmarkChartWeb';
+import { Code, CodeInline } from '../code/Code';
+import { DataTable } from './DataTable';
+import { DocCodeBlock } from '../code/DocCodeBlock';
+import { ExternalIcon } from './ExternalIcon';
+import { Features } from './Features';
+import { HR } from './HR';
+import { HeroContainer } from './HeroContainer';
+import { Highlights } from './Highlights';
+import { LI } from './LI';
 import { Link } from '@tamagui/lucide-icons';
-import { NextLink } from '../NextLink';
-import { Notice } from '../Notice';
-import { OffsetBox } from '../OffsetBox';
-import { Preview } from '../Preview';
-import { PropsTable } from '../PropsTable';
+import { NextLink } from './NextLink';
+import { Notice } from './Notice';
+import { OffsetBox } from './OffsetBox';
+import { Preview } from './Preview';
+import { PropsTable } from './PropsTable';
 import { ScrollView } from 'react-native';
-import { SubTitle } from '../SubTitle';
-import { Table, TableCell, TableCol } from '../../table';
-import { TamaguiCard } from '../TamaguiCard';
+import { SubTitle } from './SubTitle';
+import { Table, TableCell, TableCol } from '../table';
+import { TamaguiCard } from './TamaguiCard';
 import { ThemeTint } from '@tamagui/logo';
-import { UL } from '../Ul';
-import { unwrapText } from '../../utils/unwrapText';
+import { UL } from './UL';
+import { unwrapText } from '../utils/unwrapText';
 import {
   Button,
   H1,
@@ -308,3 +308,5 @@ const getNonTextChildren = (children) => {
     return x;
   }).flat();
 };
+
+export type Components = typeof components & Record<string, any>;
