@@ -1,5 +1,5 @@
 import React from 'react';
-import { H1 } from 'tamagui';
+import { H1 } from 'ui';
 
 export interface Hello {
   world: string;

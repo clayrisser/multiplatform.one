@@ -1,4 +1,4 @@
-import { Text } from 'tamagui';
+import { Text } from 'ui';
 
 export default {
   title: 'Welcome',
