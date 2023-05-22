@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
-import type { CodeBlockContextValue } from '../CodeBlockContext';
+import type { MDXCodeBlockContextValue } from '../../mdx/MDXCodeBlock/MDXCodeBlockContext';
 import type { MDXProps } from '../../mdx/MDX';
-import { CodeBlockContext } from '../CodeBlockContext';
 import { MDX } from '../../mdx/MDX';
+import { MDXCodeBlockContext } from '../../mdx/MDXCodeBlock/MDXCodeBlockContext';
 
-export interface CodeBlockProps extends Omit<MDXProps, 'children'>, CodeBlockContextValue {
+export interface CodeBlockProps extends Omit<MDXProps, 'children'>, MDXCodeBlockContextValue {
   children?: string;
   language?: string;
 }
@@ -18,10 +18,10 @@ ${children?.trim()}
   );
   const value = useMemo(() => ({ ...props, debug }), [props, debug]);
   return (
-    <CodeBlockContext.Provider value={value}>
+    <MDXCodeBlockContext.Provider value={value}>
       <MDX components={components} debug={debug}>
         {mdxString}
       </MDX>
-    </CodeBlockContext.Provider>
+    </MDXCodeBlockContext.Provider>
   );
 }

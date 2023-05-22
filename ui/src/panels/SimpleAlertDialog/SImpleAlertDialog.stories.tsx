@@ -1,6 +1,7 @@
 import React from 'react';
 import { SimpleAlertDialog } from './index';
-import { Meta } from '@storybook/react';
+import type { Meta } from '@storybook/react';
+import { Text } from 'tamagui';
 
 const meta: Meta = {
   title: 'panels/SimpleAlertDialog',
@@ -16,7 +17,7 @@ export const main = () => (
     accept="Delete"
     // asChild={true}
   >
-    Hellooo
+    <Text>Click here</Text>
   </SimpleAlertDialog>
 );
 export default meta;

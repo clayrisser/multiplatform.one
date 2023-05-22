@@ -9,4 +9,4 @@ export default {
   },
 };
 
-export const main = () => <RadioSimple />;
+export const main = () => <RadioSimple>Hello world</RadioSimple>;
