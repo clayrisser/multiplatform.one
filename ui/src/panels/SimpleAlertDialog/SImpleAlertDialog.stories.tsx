@@ -1,6 +1,6 @@
 import React from 'react';
 import { SimpleAlertDialog } from './index';
-import { Meta } from '@storybook/react';
+import type { Meta } from '@storybook/react';
 
 const meta: Meta = {
   title: 'panels/SimpleAlertDialog',
