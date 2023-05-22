@@ -2,13 +2,13 @@ import React from 'react';
 import type { Components } from '@mdx-js/react/lib';
 import type { XStackProps } from 'tamagui';
 import { CodeInline } from '../code/Code';
-import { DocCodeBlock } from '../code/DocCodeBlock';
 import { ExternalIcon } from './ExternalIcon';
 import { H1, H2, H3, H4, H5, H6, Paragraph, Text, XStack, YStack, styled } from 'tamagui';
 import { HR } from './HR';
 import { LI } from './LI';
 import { Link as IconLink } from '@tamagui/lucide-icons';
 import { Link } from 'solito/link';
+import { MDXCodeBlock } from './MDXCodeBlock';
 import { Platform } from 'react-native';
 import { UL } from './UL';
 import { unwrapText } from '../utils/unwrapText';
@@ -19,14 +19,14 @@ const code = ({ hero, line, scrollable, className, children, id, showLineNumbers
   console.log('line', line);
   return (
     <YStack mt="$3">
-      <DocCodeBlock
+      <MDXCodeBlock
         className={className}
         isHighlightingLines={line !== undefined}
         showLineNumbers={showLineNumbers !== undefined}
         {...sanitizeProps(props)}
       >
         {children}
-      </DocCodeBlock>
+      </MDXCodeBlock>
     </YStack>
   );
 };

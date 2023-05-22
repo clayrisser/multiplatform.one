@@ -1,3 +1,3 @@
 export * from './Code';
-export * from './DocCodeBlock';
+export * from '../mdx/MDXCodeBlock';
 export * from './Pre';

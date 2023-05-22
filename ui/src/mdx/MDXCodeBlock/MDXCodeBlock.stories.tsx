@@ -1,23 +1,23 @@
 import React from 'react';
-import { DocCodeBlock } from './index';
 import type { Meta, StoryObj } from '@storybook/react';
+import { MDXCodeBlock } from './index';
 import { XStack, Text } from 'tamagui';
 
 const meta: Meta = {
-  title: 'code/DocCodeBlock',
-  component: DocCodeBlock,
+  title: 'code/MDXCodeBlock',
+  component: MDXCodeBlock,
   parameters: {
     status: { type: 'beta' },
   },
 };
 
-export const main: StoryObj<typeof DocCodeBlock> = {
+export const main: StoryObj<typeof MDXCodeBlock> = {
   args: {
     isCollapsible: false,
     bg: '$color3',
   },
   render: (args) => (
-    <DocCodeBlock {...args}>
+    <MDXCodeBlock {...args}>
       <XStack>
         <Text>const hello = &quot;world&quot;</Text>
       </XStack>
@@ -120,7 +120,7 @@ export const main: StoryObj<typeof DocCodeBlock> = {
       <XStack>
         <Text>const hello = &quot;world&quot;</Text>
       </XStack>
-    </DocCodeBlock>
+    </MDXCodeBlock>
   ),
 };
 

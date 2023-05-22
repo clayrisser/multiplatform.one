@@ -1,21 +1,21 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
-import type { CodeBlockContextValue } from '../CodeBlockContext';
+import type { MDXCodeBlockContextValue } from './MDXCodeBlockContext';
 import { Button, Spacer, TooltipSimple, XStack, YStack, getTokens } from 'tamagui';
 import { CheckCircle, Clipboard } from '@tamagui/lucide-icons';
-import { Code } from '../Code';
-import { CodeBlockContext } from '../CodeBlockContext';
+import { Code } from '../../code/Code';
 import { ErrorBoundary } from '../../ErrorBoundary';
 import { LinearGradient } from '@tamagui/linear-gradient';
-import { Pre } from '../Pre';
+import { MDXCodeBlockContext } from './MDXCodeBlockContext';
+import { Pre } from '../../code/Pre';
 import { ScrollView } from 'react-native';
 import { useClipboard } from '../../hooks/useClipboard';
 
-export interface DocCodeBlockProps extends CodeBlockContextValue {
+export interface MDXCodeBlockProps extends MDXCodeBlockContextValue {
   className?: string;
   id?: string;
 }
 
-export function DocCodeBlock(props: DocCodeBlockProps) {
+export function MDXCodeBlock(props: MDXCodeBlockProps) {
   const {
     children,
     className,
@@ -26,7 +26,7 @@ export function DocCodeBlock(props: DocCodeBlockProps) {
     showLineNumbers: propShowLineNumbers,
     size,
     ...codeProps
-  } = { ...useContext(CodeBlockContext), ...props };
+  } = { ...useContext(MDXCodeBlockContext), ...props };
   const lines = Array.isArray(children) ? children.length : 0;
   const showLineNumbers = propShowLineNumbers ?? (lines > 10 ? true : false);
   const [isCollapsed, setIsCollapsed] = useState(isCollapsible);
