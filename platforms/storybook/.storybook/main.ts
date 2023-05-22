@@ -120,6 +120,7 @@ const config: StorybookConfig = {
   babelDefault: (config, _options) => ({
     ...config,
     presets: [...(config.presets || []), '@babel/preset-typescript'],
+    plugins: ['react-native-reanimated/plugin'],
   }),
 };
 export default config;

@@ -11,7 +11,8 @@ const meta: Meta = {
 
 export const main: StoryObj<typeof CodeBlock> = {
   args: {
-    bg: '$color3',
+    bg: '$color2',
+    debug: true,
     disableCopy: false,
     isCollapsible: false,
     isHighlightingLines: true,

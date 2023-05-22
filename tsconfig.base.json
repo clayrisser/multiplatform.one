@@ -8,7 +8,7 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "incremental": true,
-    "jsx": "react",
+    "jsx": "preserve",
     "lib": ["es2021", "dom", "esnext"],
     "module": "ESNext",
     "moduleResolution": "node",

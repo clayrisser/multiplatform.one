@@ -4,7 +4,7 @@ import { MDXCodeBlock } from './index';
 import { XStack, Text } from 'tamagui';
 
 const meta: Meta = {
-  title: 'code/MDXCodeBlock',
+  title: 'mdx/MDXCodeBlock',
   component: MDXCodeBlock,
   parameters: {
     status: { type: 'beta' },

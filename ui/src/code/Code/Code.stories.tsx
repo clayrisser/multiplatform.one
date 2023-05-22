@@ -11,7 +11,8 @@ const meta: Meta = {
 
 export const main: StoryObj<typeof Code> = {
   args: {
-    children: 'const hello = "world"',
+    children: `const hello = "world"
+const hello = "world"`,
   },
 };
 

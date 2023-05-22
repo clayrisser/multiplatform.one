@@ -2,8 +2,7 @@ import React from 'react';
 import type { Components } from '@mdx-js/react/lib';
 import type { XStackProps } from 'tamagui';
 import { CodeInline } from '../code/Code';
-import { ExternalIcon } from './ExternalIcon';
-import { H1, H2, H3, H4, H5, H6, Paragraph, Text, XStack, YStack, styled } from 'tamagui';
+import { H1, H2, H3, H4, H5, H6, Paragraph, XStack, Text, YStack, styled } from 'tamagui';
 import { HR } from './HR';
 import { LI } from './LI';
 import { Link as IconLink } from '@tamagui/lucide-icons';
@@ -15,8 +14,6 @@ import { unwrapText } from '../utils/unwrapText';
 
 const code = ({ hero, line, scrollable, className, children, id, showLineNumbers, collapsible, ...props }) => {
   if (!className) return <CodeInline>{unwrapText(children)}</CodeInline>;
-  console.log('showLineNumbers', showLineNumbers);
-  console.log('line', line);
   return (
     <YStack mt="$3">
       <MDXCodeBlock
@@ -56,14 +53,14 @@ export const mdxComponents: Components = {
       <Link href={href}>
         <Paragraph fontSize="inherit" display="inline" cursor="pointer" {...sanitizeProps(props)}>
           {children}
-          {typeof href === 'string' && href.startsWith('http') ? (
+          {/* {typeof href === 'string' && href.startsWith('http') ? (
             <>
               <Text>&nbsp;</Text>
               <Text fontSize="inherit" display="inline-flex" y={2} ml={-1}>
                 <ExternalIcon />
               </Text>
             </>
-          ) : null}
+          ) : null} */}
         </Paragraph>
       </Link>
     );
@@ -110,6 +107,18 @@ export const mdxComponents: Components = {
       </Paragraph>
     </YStack>
   ),
+  ...(Platform.OS === 'web'
+    ? {}
+    : {
+        div: (props) => <Text {...sanitizeProps(props)} />,
+        span: (props: any) => {
+          let color: string | undefined;
+          if (/^token punctuation/g.test(props?.className || '')) {
+            color = '$red10';
+          }
+          return <Text color={color} {...sanitizeProps(props)} />;
+        },
+      }),
 };
 
 const LinkHeading = ({ id, children, ...props }: { id?: string } & XStackProps) => (

@@ -94,12 +94,12 @@ export function MDXCodeBlock(props: MDXCodeBlockProps) {
                 showsHorizontalScrollIndicator={false}
               >
                 <Code
-                  p="$4"
                   backgroundColor="transparent"
-                  f={1}
                   className={className}
-                  size={size ?? '$5'}
+                  f={1}
                   lineHeight={tokens.space[size || '$5']}
+                  p="$4"
+                  size={size ?? '$5'}
                   {...codeProps}
                 >
                   {children}

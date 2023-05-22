@@ -12,6 +12,14 @@ const meta: Meta = {
 const mdxSource = `
 # Hello
 
+> I am a blockquote
+
+# H1
+## H2
+#### H4
+
+[example.com](https://example.com)
+
 \`\`\`tsx
 const hello = "world";
 const hello = "world";
