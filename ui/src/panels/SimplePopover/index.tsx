@@ -16,7 +16,9 @@ export function SimplePopover({
 }: SimplePopoverProps) {
   return (
     <Popover size="$5" {...props}>
-      <Popover.Trigger asChild>{children}</Popover.Trigger>
+      <Popover.Trigger cursor="pointer" asChild>
+        {children}
+      </Popover.Trigger>
       <Adapt when="sm" platform="web" {...adaptStyle}>
         <Popover.Sheet modal dismissOnSnapToBottom>
           <Popover.Sheet.Frame padding="$4">
@@ -45,7 +47,7 @@ export function SimplePopover({
         {...contentStyle}
       >
         {/* <Popover.Arrow bw={1} boc="$borderColor" {...arrowStyle} /> */}
-        <YStack>{element}</YStack>
+        <YStack cursor="pointer">{element}</YStack>
       </Popover.Content>
     </Popover>
   );

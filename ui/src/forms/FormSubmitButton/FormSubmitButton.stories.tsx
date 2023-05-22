@@ -1,5 +1,8 @@
+/* eslint-disable no-empty-function */
 import React from 'react';
+import { SimpleForm } from '../SimpleForm';
 import { FormSubmitButton } from './index';
+import { Text } from 'tamagui';
 
 export default {
   title: 'forms/FormSubmitButton',
@@ -9,4 +12,8 @@ export default {
   },
 };
 
-export const main = () => <FormSubmitButton />;
+export const main = () => (
+  <SimpleForm>
+    <FormSubmitButton onSubmit={() => console.log('Form submitted')}>Click here</FormSubmitButton>
+  </SimpleForm>
+);
