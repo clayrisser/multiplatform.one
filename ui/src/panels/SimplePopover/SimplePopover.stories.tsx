@@ -8,5 +8,6 @@ const meta: Meta = {
   parameters: { status: { type: 'beta' } },
 };
 
-export const main = () => <SimplePopover element={undefined} />;
+// eslint-disable-next-line spellcheck/spell-checker
+export const main = () => <SimplePopover element={<div>Hello</div>}>Hello world</SimplePopover>;
 export default meta;
