@@ -3,8 +3,9 @@
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
     "paths": {
-      "@multiplatform/ui/*": ["./ui/*"],
-      "app/*": ["./app/*"]
+      "@multiplatform.one/components": ["./packages/components/*"],
+      "app/*": ["./app/*"],
+      "ui/*": ["./ui/*"]
     }
   },
   "extends": "./tsconfig.base"

@@ -1,6 +1,6 @@
 import React from 'react';
-import { SvgUri } from '@multiplatform.one/ui/src/images/SvgUri';
-import { useAssets } from '@multiplatform.one/ui/src/hooks';
+import { SvgUri } from '@multiplatform.one/components/src/images/SvgUri';
+import { useAssets } from '@multiplatform.one/components/src/hooks';
 
 export default {
   title: 'images/SvgUri',

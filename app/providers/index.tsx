@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import type { KeycloakProviderProps } from './keycloak';
 import type { ProviderProps } from './types';
 import type { ReactNode } from 'react';
-import type { TamaguiInternalConfig, TamaguiProviderProps } from 'tamagui';
+import type { TamaguiInternalConfig, TamaguiProviderProps } from 'ui';
 import { KeycloakProvider } from './keycloak';
 import { NavigationProvider } from './navigation';
 import { TamaguiProvider } from './tamagui';

@@ -9,7 +9,8 @@ import webpack from 'webpack';
 const config: StorybookConfig = {
   stories: [
     '../../../app/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-    '../../../ui/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '../../../packages/*/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '../../../ui/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../stories/**/*.stories.@(js|jsx|ts|tsx|mdx)',
   ],
   addons: [

@@ -1,4 +1,4 @@
-import '@multiplatform.one/ui/css/code-highlight.css';
+import '@multiplatform.one/components/css/code-highlight.css';
 import '@tamagui/core/reset.css';
 import '@tamagui/font-inter/css/400.css';
 import '@tamagui/font-inter/css/700.css';

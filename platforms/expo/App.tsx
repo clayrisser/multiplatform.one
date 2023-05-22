@@ -15,10 +15,6 @@ import { i18nInit } from 'app/i18n';
 import { useFonts } from 'expo-font';
 // import AppConfig from './app.config';
 
-global.Buffer = global.Buffer || require('buffer').Buffer;
-
-console.log('LOADED BUFFER');
-
 i18nInit();
 const logger = console;
 SplashScreen.preventAutoHideAsync().catch(logger.error);

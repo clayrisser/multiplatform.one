@@ -1,5 +1,5 @@
 import React from 'react';
-import { createWithDebugLayout } from '@multiplatform.one/ui';
+import { createWithDebugLayout } from 'ui';
 
 function DebugView() {
   return <>{}</>;

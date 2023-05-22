@@ -53,7 +53,7 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 
 EXPO_PORT ?= 8081
 .PHONY: start +start
-start: | ~generate +start ##
+start: | +generate +start ##
 +start:
 	@$(EXPO) start -c -p $(EXPO_PORT) $(ARGS)
 
@@ -63,12 +63,12 @@ start@web: | ~install +start@web ##
 	@$(EXPO) start -c -p $(EXPO_PORT) --web $(ARGS)
 
 .PHONY: start@android +start@android
-start@android: | ~generate +start@android ##
+start@android: | +generate +start@android ##
 +start@android:
 	@$(EXPO) start -c -p $(EXPO_PORT) --android $(ARGS)
 
 .PHONY: start@ios +start@ios
-start@ios: | ~generate start@ios ##
+start@ios: | +generate start@ios ##
 +start@ios:
 	@$(EXPO) start -c -p $(EXPO_PORT) --ios $(ARGS)
 

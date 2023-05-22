@@ -1,0 +1,92 @@
+{
+  "name": "@multiplatform.one/components",
+  "version": "0.2.0",
+  "sideEffects": [
+    "*.css"
+  ],
+  "description": "multiplatform.one ui components",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "react-native": "src/index.ts",
+  "source": "src/index.ts",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./types/index.d.ts"
+    },
+    "./src/tamagui.config": {
+      "import": "./dist/esm/tamagui.config.js",
+      "require": "./dist/cjs/tamagui.config.js",
+      "types": "./types/tamagui.config.d.ts"
+    },
+    "./tamagui": {
+      "import": "./dist/esm/tamagui",
+      "require": "./dist/cjs/tamagui",
+      "types": "./types/tamagui"
+    },
+    "./css/code-highlight.css": {
+      "import": "./css/code-highlight.css",
+      "require": "./css/code-highlight.css"
+    }
+  },
+  "files": [
+    "css",
+    "dist",
+    "src",
+    "types"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/risserlabs/multiplatform.one/keycloak"
+  },
+  "dependencies": {
+    "@mdx-js/mdx": "^2.3.0",
+    "@mdx-js/react": "^2.3.0",
+    "@tamagui/font-inter": "^1.29.3",
+    "@tamagui/logo": "^1.29.3",
+    "@tamagui/react-native-media-driver": "^1.29.3",
+    "@tamagui/shorthands": "^1.29.3",
+    "@tamagui/themes": "^1.29.3",
+    "expo-asset": "^8.9.2",
+    "fast-xml-parser": "^4.2.2",
+    "gray-matter": "^4.0.3",
+    "hast-util-to-html": "^8.0.4",
+    "immer": "^10.0.2",
+    "parse-numeric-range": "^1.3.0",
+    "react-hook-form": "^7.43.9",
+    "react-native-svg": "13.9.0",
+    "refractor": "^4.8.1",
+    "rehype-autolink-headings": "^6.1.1",
+    "rehype-parse": "^8.0.4",
+    "rehype-slug": "^5.1.0",
+    "remark-frontmatter": "^4.0.1",
+    "remark-mdx-frontmatter": "^3.0.0",
+    "tamagui": "^1.29.3",
+    "unist-util-visit": "^4.1.2"
+  },
+  "peerDependencies": {
+    "moti": "^0.25.3",
+    "react-native-reanimated": "2.14.4",
+    "solito": "^3.2.6"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.29.3",
+    "moti": "^0.25.3",
+    "react-native-reanimated": "2.14.4",
+    "solito": "^3.2.6",
+    "ui": "*"
+  },
+  "jest": {
+    "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
+    "verbose": true,
+    "testPathIgnorePatterns": []
+  },
+  "jestSonar": {
+    "reportPath": ".mkpm/.tmp/reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
+  }
+}

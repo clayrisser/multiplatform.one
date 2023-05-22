@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack } from 'tamagui';
+import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { useLink } from 'solito/link';
 import { useTranslation } from 'multiplatform.one';

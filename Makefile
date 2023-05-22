@@ -71,10 +71,10 @@ storybook/docker/%:
 	@$(MAKE) -sC platforms/storybook/docker $(subst storybook/docker/,,$@) ARGS=$(ARGS)
 
 .PHONY: build
-build: ui/build
+build: components/build
 
 .PHONY: publish
-publish: ui/publish
+publish: components/publish
 
 .PHONY: count
 count:
