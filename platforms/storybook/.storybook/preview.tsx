@@ -57,7 +57,6 @@ const preview: Preview = {
         };
       }),
       Decorator: (props: PropsWithChildren & { theme: { name: ThemeName } }) => {
-        console.log('T', props.theme);
         const themeState = useThemeState();
         useEffect(() => {
           themeState.setSub(props.theme.name);

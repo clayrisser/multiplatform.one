@@ -1,3 +1,4 @@
+import './polyfill';
 import 'expo-dev-client';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';

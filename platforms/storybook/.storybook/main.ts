@@ -91,6 +91,7 @@ const config: StorybookConfig = {
         ...(config.resolve?.fallback || []),
         fs: false,
         os: false,
+        path: false,
         util: false,
       },
     },

@@ -17,6 +17,7 @@ config.resolver.nodeModulesPaths = [
 ];
 config.resolver.extraNodeModules = {
   ...config.resolver.extraNodeModules,
+  buffer: require.resolve('buffer/'),
   fs: require.resolve('browserify-fs'),
   path: require.resolve('path-browserify'),
   stream: require.resolve('readable-stream'),
