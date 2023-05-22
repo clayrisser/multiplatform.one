@@ -10,7 +10,7 @@ const StyledSelectTrigger = styled(Select.Trigger, {
 export type SelectSimpleProps = SelectTriggerProps &
   Pick<SelectProps, 'onOpenChange' | 'onValueChange' | 'id' | 'value'> & { placeholder?: ReactNode };
 
-export function SelectSimple({
+export function RadioSimple({
   children,
   placeholder,
   onOpenChange,

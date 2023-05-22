@@ -34,7 +34,15 @@ export function FormSlider({
         <Slider.Track>
           <Slider.TrackActive />
         </Slider.Track>
-        <Slider.Thumb bordered circular elevate index={0} aria-describedby="my-tooltip" position="absolute" />
+        <Slider.Thumb
+          bordered
+          circular
+          elevate
+          index={0}
+          aria-describedby="my-tooltip"
+          position="absolute"
+          style={{ height: 10, width: 10 }}
+        />
       </Slider>
     );
   }
