@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from 'tamagui';
 import { UL } from './index';
 
 export default {
@@ -7,4 +8,8 @@ export default {
   parameters: { status: { type: 'beta' } },
 };
 
-export const main = () => <UL />;
+export const main = () => (
+  <UL>
+    <Text>Hello world</Text>
+  </UL>
+);
