@@ -12,6 +12,7 @@
     "src"
   ],
   "dependencies": {
+    "@fontsource/silkscreen": "^5.0.1",
     "@multiplatform.one/components": "*",
     "@tamagui/animations-css": "^1.29.3",
     "@tamagui/animations-moti": "^1.29.3",

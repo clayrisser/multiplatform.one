@@ -18,14 +18,17 @@
     "react-native-web-lite": "^1.29.3"
   },
   "devDependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.21.5",
     "@expo/next-adapter": "^5.0.2",
     "@types/cookie": "^0.5.1",
-    "@types/node": "~18.16.14"
+    "@types/node": "~18.16.14",
+    "next-fonts": "^1.5.1"
   },
   "transpileModules": [
     "@multiplatform.one/components",
     "@multiplatform.one/keycloak",
     "app",
+    "estree-util-build-jsx",
     "multiplatform.one",
     "ui"
   ],

@@ -12,6 +12,6 @@ export default {
 
 export const main = () => (
   <SimpleForm>
-    <FormSubmitButton onSubmit={() => console.log('Form submitted')}>Click here</FormSubmitButton>
+    <FormSubmitButton>Click here</FormSubmitButton>
   </SimpleForm>
 );

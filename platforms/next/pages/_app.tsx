@@ -1,7 +1,5 @@
 import '@multiplatform.one/components/css/code-highlight.css';
 import '@tamagui/core/reset.css';
-import '@tamagui/font-inter/css/400.css';
-import '@tamagui/font-inter/css/700.css';
 import 'raf/polyfill';
 import Head from 'next/head';
 import React, { startTransition, useEffect, useMemo } from 'react';
@@ -17,11 +15,11 @@ import { GlobalProvider } from 'app/providers';
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
 import { appWithTranslation } from 'next-i18next';
 import { config } from 'app/config';
+import { importFonts } from 'app/fonts';
 import { useThemeState } from 'app/state/theme';
 
 const automaticStaticOptimization = config.get('NEXT_AUTOMATIC_STATIC_OPTIMIZATION') === '1';
 const nextStatic = config.get('NEXT_STATIC') === '1';
-if (nextStatic) import('app/i18n').then(({ i18nInit }) => i18nInit());
 const keycloak: GlobalProviderKeycloak = {
   baseUrl: config.get('KEYCLOAK_BASE_URL')!,
   clientId: config.get('KEYCLOAK_CLIENT_ID')!,
@@ -29,6 +27,8 @@ const keycloak: GlobalProviderKeycloak = {
   realm: config.get('KEYCLOAK_REALM')!,
   ssr: config.get('KEYCLOAK_SSR') === '1',
 };
+importFonts();
+if (nextStatic) import('app/i18n').then(({ i18nInit }) => i18nInit());
 
 export interface AppProps extends SolitoAppProps {
   cookies?: unknown;

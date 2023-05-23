@@ -7,6 +7,7 @@
     "*.css"
   ],
   "dependencies": {
+    "@expo-google-fonts/silkscreen": "^0.2.3",
     "@multiplatform.one/keycloak": "^0.3.14",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
@@ -22,7 +23,7 @@
     "i18next": "^22.5.0",
     "immer": "^10.0.2",
     "intl-pluralrules": "^2.0.0",
-    "multiplatform.one": "^0.5.37",
+    "multiplatform.one": "^0.5.39",
     "react-i18next": "^12.3.1",
     "react-native-svg": "13.9.0",
     "solito": "^3.2.6",
