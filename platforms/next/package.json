@@ -23,10 +23,11 @@
     "@types/node": "~18.16.14"
   },
   "transpileModules": [
-    "@multiplatform.one/keycloak",
     "@multiplatform.one/components",
+    "@multiplatform.one/keycloak",
     "app",
-    "multiplatform.one"
+    "multiplatform.one",
+    "ui"
   ],
   "jest": {
     "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",

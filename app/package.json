@@ -22,7 +22,7 @@
     "i18next": "^22.5.0",
     "immer": "^10.0.2",
     "intl-pluralrules": "^2.0.0",
-    "multiplatform.one": "^0.5.35",
+    "multiplatform.one": "^0.5.37",
     "react-i18next": "^12.3.1",
     "react-native-svg": "13.9.0",
     "solito": "^3.2.6",
