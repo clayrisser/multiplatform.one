@@ -12,13 +12,11 @@
     "src"
   ],
   "dependencies": {
-    "@fontsource/silkscreen": "^5.0.1",
     "@multiplatform.one/components": "*",
     "@tamagui/animations-css": "^1.29.3",
     "@tamagui/animations-moti": "^1.29.3",
     "@tamagui/animations-react-native": "^1.29.3",
     "@tamagui/animations-reanimated": "^1.29.3",
-    "@tamagui/font-inter": "^1.29.3",
     "@tamagui/react-native-media-driver": "^1.29.3",
     "@tamagui/shorthands": "^1.29.3",
     "@tamagui/themes": "^1.29.3",
