@@ -57,7 +57,7 @@ export function FormCheckBox({
         <XStack
           space={CheckBoxElementSizing?.space || '$3'}
           height={CheckBoxElementSizing?.height}
-          width={CheckBoxElementSizing?.width || '300'}
+          width={CheckBoxElementSizing?.width || 300}
         >
           <Checkbox
             id={id}
