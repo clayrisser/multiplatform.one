@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormCheckBox } from './index';
+import { Text } from 'tamagui';
 
 export default {
   title: 'forms/FormCheckBox',
@@ -9,6 +10,6 @@ export default {
 
 export const main = () => (
   <FormCheckBox name="checkbox" label="checkbox" checkBoxElement={{ label: 'checkbox', value: 'checkbox' }}>
-    Hello this is from FormCheckBox
+    <Text>Hello this is from FormCheckBox</Text>
   </FormCheckBox>
 );
