@@ -1,7 +1,7 @@
 import React from 'react';
 import { SimpleAlertDialog } from './index';
 import type { Meta } from '@storybook/react';
-import { Text } from 'tamagui';
+import { Button } from 'tamagui';
 
 const meta: Meta = {
   title: 'panels/SimpleAlertDialog',
@@ -29,10 +29,10 @@ export const main = () => (
     title="Are you sure?"
     description="This action cannot be undone"
     cancel="Cancel"
-    accept="Delete"
+    accept="Yes, Delete"
     onAccept={() => alert('accepted')}
   >
-    <Text>Click here</Text>
+    <Button>Get Alert</Button>
   </SimpleAlertDialog>
 );
 export default meta;

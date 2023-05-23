@@ -2,9 +2,12 @@ import type { PopoverProps, PopoverContentProps, AdaptProps, PopoverArrowProps }
 import { Adapt, Popover, YStack } from 'tamagui';
 import React from 'react';
 
-type SimplePopoverProps = PopoverProps & { element: React.ReactNode } & { contentStyle?: PopoverContentProps } & {
+type SimplePopoverProps = PopoverProps & {
   adaptStyle?: AdaptProps;
-} & { arrowStyle?: PopoverArrowProps };
+  contentStyle?: PopoverContentProps;
+  arrowStyle?: PopoverArrowProps;
+  element: React.ReactNode;
+};
 
 export function SimplePopover({
   children,
@@ -15,7 +18,7 @@ export function SimplePopover({
   ...props
 }: SimplePopoverProps) {
   return (
-    <Popover size="$5" {...props}>
+    <Popover size="$5" allowFlip {...props}>
       <Popover.Trigger cursor="pointer" asChild>
         {children}
       </Popover.Trigger>
@@ -46,7 +49,7 @@ export function SimplePopover({
         elevate
         {...contentStyle}
       >
-        {/* <Popover.Arrow bw={1} boc="$borderColor" {...arrowStyle} /> */}
+        <Popover.Arrow bw={1} boc="$borderColor" {...arrowStyle} />
         <YStack cursor="pointer">{element}</YStack>
       </Popover.Content>
     </Popover>
