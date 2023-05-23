@@ -24,10 +24,7 @@
     "intl-pluralrules": "^2.0.0",
     "multiplatform.one": "^0.5.35",
     "react-i18next": "^12.3.1",
-    "react-native-recoil-persist": "^0.0.6",
     "react-native-svg": "13.9.0",
-    "recoil": "^0.7.7",
-    "recoil-persist": "^4.2.0",
     "solito": "^3.2.6",
     "tamagui": "^1.29.3",
     "zustand": "^4.3.8"
