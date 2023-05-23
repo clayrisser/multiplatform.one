@@ -4,7 +4,7 @@
  * File Created: 28-01-2023 11:29:31
  * Author: Clay Risser
  * -----
- * Last Modified: 23-05-2023 06:57:07
+ * Last Modified: 23-02-2023 07:35:56
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,35 +22,30 @@
  * limitations under the License.
  */
 
-import type { i18n as I18N } from 'i18next';
+import i18n from 'i18next';
 import { MultiPlatform } from '../../multiplatform';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router.js';
 
-export function useLocale(): [string | undefined, (locale: string) => void] {
+export function useLocale(): [string, (locale: string) => void] {
   const nextRouter = MultiPlatform.isNext && !MultiPlatform.isStatic ? useRouter() : null;
-  const [locale, setLocale] = useState<string>();
-  const [i18n, setI18n] = useState<I18N>();
-
-  useEffect(() => {
-    import('i18next').then(({ default: i18n }) => {
-      setLocale(nextRouter?.locale || i18n?.language || 'en');
-      if (nextRouter) return;
-      setI18n(i18n);
-      function handleLanguageChanged(lng: string) {
-        setLocale(lng);
-      }
-      i18n.on('languageChanged', handleLanguageChanged);
-      return () => {
-        i18n.off('languageChanged', handleLanguageChanged);
-      };
-    });
-  }, []);
+  const [locale, setLocale] = useState(nextRouter?.locale || i18n?.language || 'en');
 
   useEffect(() => {
     if (!nextRouter?.locale) return;
     setLocale(nextRouter.locale);
   }, [nextRouter?.locale]);
+
+  useEffect(() => {
+    if (nextRouter) return;
+    function handleLanguageChanged(lng: string) {
+      setLocale(lng);
+    }
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
 
   let changeLocale = (locale: string) => {
     i18n?.changeLanguage(locale);
