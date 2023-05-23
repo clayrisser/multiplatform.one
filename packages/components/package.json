@@ -17,11 +17,6 @@
       "require": "./dist/cjs/index.js",
       "types": "./types/index.d.ts"
     },
-    "./src/tamagui.config": {
-      "import": "./dist/esm/tamagui.config.js",
-      "require": "./dist/cjs/tamagui.config.js",
-      "types": "./types/tamagui.config.d.ts"
-    },
     "./tamagui": {
       "import": "./dist/esm/tamagui",
       "require": "./dist/cjs/tamagui",
