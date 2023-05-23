@@ -5,7 +5,6 @@ import transpileModules from '../transpileModules';
 import type { StorybookConfig } from '@storybook/nextjs';
 import webpack from 'webpack';
 
-// import publicConfig from 'app/config/public';
 const config: StorybookConfig = {
   stories: [
     '../../../app/**/*.stories.@(js|jsx|ts|tsx|mdx)',
@@ -26,9 +25,6 @@ const config: StorybookConfig = {
     'storybook-color-picker',
     'storybook-dark-mode',
     'storybook-mobile',
-    // TODO: wait for plugins to work on v7
-    // 'storybook-addon-themes',
-    // 'storybook-addon-grid',
     {
       name: '@storybook/addon-react-native-web',
       options: {
@@ -41,12 +37,13 @@ const config: StorybookConfig = {
       options: {
         actions: true,
         backgrounds: false,
-        controls: true,
         docs: true,
         toolbars: true,
         viewport: true,
+        controls: true,
       },
     },
+    '@storybook/addon-styling',
   ],
   core: {
     disableTelemetry: true,
