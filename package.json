@@ -1,6 +1,6 @@
 {
   "name": "multiplatform.one",
-  "version": "0.5.35",
+  "version": "0.5.36",
   "description": "multiplatform.one ecosystem",
   "main": "dist/lib",
   "module": "dist/esm",
