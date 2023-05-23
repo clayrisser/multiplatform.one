@@ -32,7 +32,7 @@ const config: StorybookConfig = {
     {
       name: '@storybook/addon-react-native-web',
       options: {
-        babelPlugins: [],
+        babelPlugins: ['react-native-reanimated/plugin'],
         modulesToTranspile: transpileModules,
       },
     },

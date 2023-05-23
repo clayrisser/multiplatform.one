@@ -16,6 +16,7 @@ export function TamaguiProvider({ children, ...props }: TamaguiProviderProps) {
     return <Theme name={themeState.sub}>{children}</Theme>;
   }
 
+  if (!themeState.root) return renderSubTheme(children);
   return (
     <OriginalTamaguiProvider
       defaultTheme={themeState.root}

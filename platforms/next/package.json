@@ -20,11 +20,11 @@
   "devDependencies": {
     "@expo/next-adapter": "^5.0.2",
     "@types/cookie": "^0.5.1",
-    "@types/node": "~18.16.13"
+    "@types/node": "~18.16.14"
   },
   "transpileModules": [
     "@multiplatform.one/keycloak",
-    "@multiplatform.one/ui",
+    "@multiplatform.one/components",
     "app",
     "multiplatform.one"
   ],

@@ -18,6 +18,8 @@ import { useThemeState } from 'app/state/theme';
 // import { getThemes } from 'tamagui';
 // import { useLocale } from 'multiplatform.one';
 // import { withThemes } from 'storybook-addon-themes/react';
+// import { themes } from '@tamagui/themes';
+// console.log('themes', themes);
 
 i18nInit();
 
