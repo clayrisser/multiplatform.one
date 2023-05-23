@@ -4,7 +4,7 @@
  * File Created: 09-11-2022 08:55:55
  * Author: Clay Risser
  * -----
- * Last Modified: 22-05-2023 12:54:55
+ * Last Modified: 23-05-2023 14:26:23
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -27,5 +27,6 @@ import { MultiPlatform } from './multiplatform';
 export { MultiPlatform };
 
 export * from './config';
+export * from './font';
 export * from './helpers';
 export * from './hooks';
