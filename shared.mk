@@ -26,6 +26,5 @@ CACHE_ENVS += \
 	EXPO \
 	JEST \
 	LOKI \
-	PRETTIER \
 	TSC \
 	WATCHMAN
