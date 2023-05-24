@@ -1,7 +1,5 @@
 import '@multiplatform.one/components/css/code-highlight.css';
 import '@tamagui/core/reset.css';
-import '@tamagui/font-inter/css/400.css';
-import '@tamagui/font-inter/css/700.css';
 import 'raf/polyfill';
 import React, { useEffect } from 'react';
 import tamaguiConfig from '../tamagui.config';
@@ -11,14 +9,15 @@ import type { ThemeName } from 'ui';
 import { DebugLayout, mdxComponents } from 'ui';
 import { GlobalProvider } from 'app/providers';
 import { MDXProvider } from '@mdx-js/react';
-import { supportedLocales, defaultLocale, i18nInit } from 'app/i18n';
+import { importFonts } from 'app/fonts';
+import { supportedLocales, defaultLocale, i18nInit, i18n } from 'app/i18n';
 import { themes as storybookThemes } from '@storybook/theming';
 import { useDarkMode } from 'storybook-dark-mode';
 import { useThemeState } from 'app/state/theme';
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
-// import { useLocale } from 'multiplatform.one';
 
 i18nInit();
+importFonts();
 
 const preview: Preview = {
   parameters: {
@@ -59,10 +58,8 @@ const preview: Preview = {
       Provider,
     }),
     (Story, { globals }) => {
-      // const [, setLocale] = useLocale();
       useEffect(() => {
-        // TODO: fix
-        // setLocale(globals.locale);
+        i18n.changeLanguage(globals.locale);
       }, [globals.locale]);
       return <Story />;
     },

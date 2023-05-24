@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/components",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "sideEffects": [
     "*.css"
   ],
@@ -16,11 +16,6 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js",
       "types": "./types/index.d.ts"
-    },
-    "./src/tamagui.config": {
-      "import": "./dist/esm/tamagui.config.js",
-      "require": "./dist/cjs/tamagui.config.js",
-      "types": "./types/tamagui.config.d.ts"
     },
     "./tamagui": {
       "import": "./dist/esm/tamagui",
@@ -45,11 +40,11 @@
   "dependencies": {
     "@mdx-js/mdx": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
-    "@tamagui/font-inter": "^1.29.3",
-    "@tamagui/logo": "^1.29.3",
-    "@tamagui/react-native-media-driver": "^1.29.3",
-    "@tamagui/shorthands": "^1.29.3",
-    "@tamagui/themes": "^1.29.3",
+    "@tamagui/font-inter": "^1.29.4",
+    "@tamagui/logo": "^1.29.4",
+    "@tamagui/react-native-media-driver": "^1.29.4",
+    "@tamagui/shorthands": "^1.29.4",
+    "@tamagui/themes": "^1.29.4",
     "expo-asset": "^8.9.2",
     "fast-xml-parser": "^4.2.2",
     "gray-matter": "^4.0.3",
@@ -64,7 +59,7 @@
     "rehype-slug": "^5.1.0",
     "remark-frontmatter": "^4.0.1",
     "remark-mdx-frontmatter": "^3.0.0",
-    "tamagui": "^1.29.3",
+    "tamagui": "^1.29.4",
     "unist-util-visit": "^4.1.2"
   },
   "peerDependencies": {
@@ -73,7 +68,7 @@
     "solito": "^3.2.6"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.29.3",
+    "@tamagui/build": "^1.29.4",
     "moti": "^0.25.3",
     "react-native-reanimated": "2.14.4",
     "solito": "^3.2.6",

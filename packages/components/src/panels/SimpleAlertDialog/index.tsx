@@ -10,11 +10,19 @@ import type {
 } from 'tamagui';
 
 export type AlterDialogSimpleProps = AlertDialogTriggerProps &
-  AlertDialogProps & { placeholder?: ReactNode } & { title?: ReactNode } & { cancel?: string } & { accept?: string } & {
+  AlertDialogProps & {
+    accept?: string;
+    placeholder?: ReactNode;
+    cancel?: string;
+    title?: ReactNode;
     description: ReactNode;
-  } & { titleStyle?: AlertDialogTitleProps } & {
+    open?: boolean;
+    titleStyle?: AlertDialogTitleProps;
     descriptionStyle?: AlertDialogDescriptionProps;
-  } & { contentStyle?: AlertDialogContentProps };
+    contentStyle?: AlertDialogContentProps;
+    onOpenChange?: (open: boolean) => void;
+    onAccept?: () => void;
+  };
 
 export function SimpleAlertDialog({
   children,
@@ -25,11 +33,22 @@ export function SimpleAlertDialog({
   titleStyle,
   contentStyle,
   descriptionStyle,
+  open,
   ...triggerProps
 }: AlterDialogSimpleProps) {
+  const [isOpen, setIsOpen] = React.useState(open);
+
   return (
-    <AlertDialog native {...triggerProps}>
-      <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
+    <AlertDialog
+      native
+      {...triggerProps}
+      open={isOpen}
+      onOpenChange={(e) => {
+        if (triggerProps.onOpenChange) triggerProps.onOpenChange(e);
+        else setIsOpen(!isOpen);
+      }}
+    >
+      {typeof open === 'undefined' ? <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger> : null}
       <AlertDialog.Portal>
         <AlertDialog.Overlay key="overlay" animation="quick" o={0.5} enterStyle={{ o: 0 }} exitStyle={{ o: 0 }} />
         <AlertDialog.Content
@@ -53,11 +72,13 @@ export function SimpleAlertDialog({
           {...contentStyle}
         >
           <YStack space>
+            {title && <AlertDialog.Title>{title}</AlertDialog.Title>}
+            {description && <AlertDialog.Description>{description}</AlertDialog.Description>}
             <XStack space="$3" jc="flex-end">
               <AlertDialog.Cancel asChild>
                 <Button>{cancel || 'cancel'}</Button>
               </AlertDialog.Cancel>
-              <AlertDialog.Action asChild>
+              <AlertDialog.Action asChild onPress={triggerProps.onAccept}>
                 <Button theme="active">{accept || 'accept'}</Button>
               </AlertDialog.Action>
             </XStack>
