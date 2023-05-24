@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/keycloak",
-  "version": "0.3.14",
+  "version": "0.3.15",
   "description": "keycloak client for multiplatform.one ecosystem",
   "main": "dist/lib",
   "module": "dist/esm",
@@ -81,8 +81,8 @@
     "expo-keycloak-auth": "1.0.14",
     "jest": "^29.5.0",
     "jest-sonar-reporter": "^2.0.0",
-    "lockfile-lint": "^4.10.1",
-    "multiplatform.one": "^0.5.35",
+    "lockfile-lint": "^4.10.4",
+    "multiplatform.one": "^0.5.40",
     "next": "^13.4.3",
     "prettier": "^2.8.8",
     "react": "^18.2.0",
@@ -118,7 +118,7 @@
     "@bitspur/react-keycloak-ssr": "^4.0.10",
     "@bitspur/react-keycloak-web": "^4.0.10",
     "core-js-pure": "^3.30.2",
-    "expo-auth-session": "^4.0.3",
+    "expo-auth-session": "^4.1.0",
     "solito": "^3.2.6"
   },
   "resolutions": {

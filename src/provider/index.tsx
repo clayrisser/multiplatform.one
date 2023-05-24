@@ -35,7 +35,7 @@ import { config } from 'app/config';
 
 export interface AuthProviderProps
   extends Partial<Omit<AuthConfig, 'persist'>>,
-    Omit<KeycloakConfig, 'url'>,
+    Partial<Omit<KeycloakConfig, 'url'>>,
     KeycloakInitOptions {
   children: ReactNode;
   cookies?: unknown;
@@ -92,8 +92,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({
       <KeycloakProvider
         cookies={cookies}
         keycloakConfig={{
-          realm,
-          clientId,
+          realm: realm || 'main',
+          clientId: clientId || 'app',
           url: baseUrl,
         }}
         keycloakInitOptions={keycloakInitOptions}
