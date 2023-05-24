@@ -16,7 +16,9 @@ export function SimpleTooltip({
 }: SimpleToolTipProps & { Icon?: any }) {
   return (
     <Tooltip {...props}>
-      <Tooltip.Trigger>{children}</Tooltip.Trigger>
+      <Tooltip.Trigger cursor="pointer" ai="center">
+        {children}
+      </Tooltip.Trigger>
       <Theme inverse {...themeStyle}>
         <Tooltip.Content
           enterStyle={{ x: 0, y: -5, o: 0, scale: 0.9 }}
