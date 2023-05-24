@@ -1,6 +1,6 @@
 import React from 'react';
 import { SimplePopover } from './index';
-import { Text, YStack } from 'tamagui';
+import { Text, YStack, Button } from 'tamagui';
 import type { Meta } from '@storybook/react';
 
 const meta: Meta = {
@@ -9,16 +9,16 @@ const meta: Meta = {
   parameters: { status: { type: 'beta' } },
 };
 
-// eslint-disable-next-line spellcheck/spell-checker
 export const main = () => (
   <SimplePopover
     element={
       <YStack>
-        <Text>Content from popover</Text>
+        <Text>popover content</Text>
       </YStack>
     }
+    arrowStyle={{ bc: '$backgroundStrong' }}
   >
-    <Text>Click here to check popover</Text>
+    <Button>Click here to get a Popover</Button>
   </SimplePopover>
 );
 export default meta;

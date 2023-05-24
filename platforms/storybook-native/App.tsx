@@ -10,21 +10,22 @@ import { GlobalProvider } from 'app/providers';
 import { Platform, View, StatusBar as RNStatusBar } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { fonts } from 'app/fonts';
 import { getStorybookUI } from '@storybook/react-native';
 import { i18nInit } from 'app/i18n';
+import { importFonts } from 'app/fonts';
 import { useFonts } from 'expo-font';
 
-i18nInit();
 const Stack = createNativeStackNavigator();
+const fonts = importFonts();
 const logger = console;
-SplashScreen.preventAutoHideAsync().catch(logger.error);
 const StorybookUI = getStorybookUI({
   initialSelection: {
     kind: 'welcome',
     name: 'welcome',
   },
 });
+SplashScreen.preventAutoHideAsync().catch(logger.error);
+i18nInit();
 
 export default function App() {
   const [fontsLoaded] = useFonts(fonts);

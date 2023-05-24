@@ -10,14 +10,14 @@ import { NativeNavigation } from 'app/navigation/native';
 import { Platform, View, StatusBar as RNStatusBar } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { config } from 'app/config';
-import { fonts } from 'app/fonts';
 import { i18nInit } from 'app/i18n';
+import { importFonts } from 'app/fonts';
 import { useFonts } from 'expo-font';
-// import AppConfig from './app.config';
 
-i18nInit();
+const fonts = importFonts();
 const logger = console;
 SplashScreen.preventAutoHideAsync().catch(logger.error);
+i18nInit();
 
 export default function App() {
   const [fontsLoaded] = useFonts(fonts);
@@ -46,8 +46,6 @@ export default function App() {
         baseUrl: config.get('KEYCLOAK_BASE_URL')!,
         clientId: config.get('KEYCLOAK_CLIENT_ID')!,
         realm: config.get('KEYCLOAK_REALM')!,
-        // TODO: add scheme support
-        // scheme: AppConfig.expo.scheme,
       }}
     >
       <View style={{ flex: 1 }}>
