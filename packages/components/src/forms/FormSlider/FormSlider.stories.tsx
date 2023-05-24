@@ -9,4 +9,4 @@ export default {
   },
 };
 
-export const main = () => <FormSlider name="FormSlider" size={20} />;
+export const main = () => <FormSlider name="FormSlider" />;

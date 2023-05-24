@@ -1,6 +1,7 @@
 import React from 'react';
 import { SimpleForm } from '../SimpleForm';
 import { FormSubmitButton } from './index';
+import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'forms/FormSubmitButton',
@@ -12,6 +13,6 @@ export default {
 
 export const main = () => (
   <SimpleForm>
-    <FormSubmitButton onSubmit={() => console.log('Form submitted')}>Click here</FormSubmitButton>
+    <FormSubmitButton onPress={action('onClick')}>Click here</FormSubmitButton>
   </SimpleForm>
 );
