@@ -30,7 +30,7 @@ export function isText(children: unknown) {
   return typeof children === 'string';
 }
 
-export function createWithLayout<LayoutProps, Props extends JSX.IntrinsicAttributes>(
+export function createWithLayout<LayoutProps, Props>(
   Layout: ComponentType<LayoutProps>,
   extraLayouts: WithLayout<any>[] = [],
   layoutProps?: Omit<LayoutProps, 'children'>,
@@ -39,7 +39,7 @@ export function createWithLayout<LayoutProps, Props extends JSX.IntrinsicAttribu
     return flattenLayouts(
       (props: Props) => (
         <Layout {...(layoutProps as LayoutProps)}>
-          <Component {...props} />
+          <Component {...(props as any)} />
         </Layout>
       ),
       extraLayouts,
