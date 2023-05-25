@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 06:04:59
  * Author: Clay Risser
  * -----
- * Last Modified: 15-05-2023 18:10:07
+ * Last Modified: 25-05-2023 17:10:05
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -41,6 +41,6 @@ export function useKeycloak() {
   const { keycloak, initialized } = useReactKeycloak();
   return {
     ...keycloak,
-    authenticated: initialized ? keycloak.authenticated : undefined,
+    authenticated: initialized ? keycloak?.authenticated : undefined,
   } as IKeycloak;
 }
