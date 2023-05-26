@@ -73,12 +73,22 @@ export const AuthProvider: FC<AuthProviderProps> = ({
   const authConfig = useMemo(
     () => ({
       ...defaultAuthConfig,
-      debug,
-      ensureFreshness,
-      loginRoute,
-      messageHandlerKeys,
-      persist: !tokensFromState && !tokensFromQuery && cookies && ssr ? false : persist,
-      ssr: !tokensFromState && !tokensFromQuery && cookies ? ssr : false,
+      ...(typeof debug !== 'undefined' ? { debug } : {}),
+      ...(typeof ensureFreshness !== 'undefined' ? { ensureFreshness } : {}),
+      ...(typeof loginRoute !== 'undefined' ? { loginRoute } : {}),
+      ...(typeof messageHandlerKeys !== 'undefined' ? { messageHandlerKeys } : {}),
+      persist:
+        !tokensFromState && !tokensFromQuery && cookies && ssr
+          ? false
+          : typeof persist !== 'undefined'
+          ? persist
+          : defaultAuthConfig.persist,
+      ssr:
+        !tokensFromState && !tokensFromQuery && cookies
+          ? typeof ssr !== 'undefined'
+            ? ssr
+            : defaultAuthConfig.ssr
+          : false,
     }),
     [debug, ensureFreshness, loginRoute, messageHandlerKeys, persist, ssr],
   );
