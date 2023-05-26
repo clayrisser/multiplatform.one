@@ -256,7 +256,7 @@ export function KeycloakProvider({
       </SSRKeycloakProvider>
     );
   }
-  if (!keycloak) return <>{children}</>;
+  if (!keycloak) return <LoadingComponent />;
   return (
     <ReactKeycloakProvider
       LoadingComponent={<LoadingComponent />}
