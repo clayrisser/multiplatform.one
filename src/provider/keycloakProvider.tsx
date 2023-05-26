@@ -223,7 +223,7 @@ export function KeycloakProvider({
       if (idToken && typeof idToken === 'string') initOptions.idToken = idToken;
       if (refreshToken && typeof refreshToken === 'string') initOptions.refreshToken = refreshToken;
     }
-    if (window.self !== window.top) {
+    if (window.self !== window.top || (token && !refreshToken)) {
       initOptions.checkLoginIframe = false;
       initOptions.flow = 'implicit';
       initOptions.onLoad = undefined;
