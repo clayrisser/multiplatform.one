@@ -54,7 +54,7 @@ export function Authenticated({ children, disabled, loginRoute, loggedOutCompone
   }, [authenticated]);
 
   if (disabled || authenticated) return <>{children}</>;
-  const LoggedOutComponent = loggedOutComponent || (() => <>{authState.debug ? 'not authenticated' : null}</>);
+  const LoggedOutComponent = loggedOutComponent || (() => <>{authConfig.debug ? 'not authenticated' : null}</>);
   return <LoggedOutComponent />;
 }
 
