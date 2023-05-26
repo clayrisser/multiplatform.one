@@ -224,12 +224,12 @@ export function KeycloakProvider({
       initOptions.token = token;
       if (idToken && typeof idToken === 'string') initOptions.idToken = idToken;
       if (refreshToken && typeof refreshToken === 'string') initOptions.refreshToken = refreshToken;
-      if (tokensFromQuery) {
-        initOptions.checkLoginIframe = false;
-        initOptions.flow = 'implicit';
-        initOptions.onLoad = undefined;
-        initOptions.timeSkew = 0;
-      }
+    }
+    if (tokensFromQuery) {
+      initOptions.checkLoginIframe = false;
+      initOptions.flow = 'implicit';
+      initOptions.onLoad = undefined;
+      initOptions.timeSkew = 0;
     }
     return initOptions;
   }, [keycloakInitOptions, token, refreshToken, idToken]);
