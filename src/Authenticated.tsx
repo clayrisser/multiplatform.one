@@ -50,7 +50,7 @@ export function Authenticated({ children, disabled, loginRoute, loggedOutCompone
       authState.setRefreshToken('');
       authState.setToken('');
     }
-    if (typeof window !== 'undefined' && !tokensFromQuery && !tokensFromState) login();
+    if (typeof window !== 'undefined' && !tokensFromQuery && !tokensFromState && window.self === window.top) login();
   }, [authenticated]);
 
   if (disabled || authenticated) return <>{children}</>;
