@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 06:34:56
  * Author: Clay Risser
  * -----
- * Last Modified: 16-05-2023 07:40:57
+ * Last Modified: 26-05-2023 07:00:31
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -22,6 +22,7 @@
  * limitations under the License.
  */
 
+export * from './useAuthConfig';
 export * from './useCurrentRouteName';
 export * from './useKeycloak';
 export * from './useLogin';

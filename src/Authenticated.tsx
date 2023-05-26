@@ -26,7 +26,7 @@ import React, { useEffect } from 'react';
 import type { ComponentType, ReactNode } from 'react';
 import { useLogin, useKeycloak } from './hooks';
 import { useAuthState } from './state';
-import { useAuthConfig } from './hooks/useAuthConfig';
+import { useAuthConfig, useTokensFromQuery, useTokensFromState } from './hooks';
 
 export interface AuthenticatedProps {
   children: ReactNode;
@@ -39,6 +39,8 @@ export function Authenticated({ children, disabled, loginRoute, loggedOutCompone
   const authConfig = useAuthConfig();
   const authState = useAuthState();
   const login = useLogin(loginRoute);
+  const tokensFromQuery = useTokensFromQuery();
+  const tokensFromState = useTokensFromState();
   const { authenticated } = useKeycloak();
 
   useEffect(() => {
@@ -48,7 +50,7 @@ export function Authenticated({ children, disabled, loginRoute, loggedOutCompone
       authState.setRefreshToken('');
       authState.setToken('');
     }
-    login();
+    if (typeof window !== 'undefined' && !tokensFromQuery && !tokensFromState) login();
   }, [authenticated]);
 
   if (disabled || authenticated) return <>{children}</>;
