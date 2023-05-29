@@ -13,7 +13,7 @@ const StyledTableFrame = styled(ThemeableStack, {
   my: '$4',
 });
 
-const TableFrame = ({ heading, children, ...props }) => {
+export const TableFrame = ({ heading, children, ...props }) => {
   return (
     <StyledTableFrame overflow={'scroll' as any} {...props}>
       {!!heading && (

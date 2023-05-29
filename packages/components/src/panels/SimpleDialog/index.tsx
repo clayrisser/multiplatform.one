@@ -56,8 +56,8 @@ export function SimpleDialog({
           <Dialog.Description {...descriptionStyle}>{description ?? description}</Dialog.Description>
           {element}
           <Unspaced>
-            <Dialog.Close asChild>
-              <Button pos="absolute" t="$3" r="$3" size="$2" circular icon={X} />
+            <Dialog.Close asChild space>
+              <Button pos="absolute" t="$3" r="$3" size="$2" circular space icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

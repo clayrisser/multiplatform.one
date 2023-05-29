@@ -58,7 +58,8 @@ export function FormCheckBox({
           style={{ alignItems: 'center' }}
           space={CheckBoxElementSizing?.space || '$3'}
           height={CheckBoxElementSizing?.height}
-          width={CheckBoxElementSizing?.width || 300}
+          width={CheckBoxElementSizing?.width || '300'}
+          ai="center"
         >
           <Checkbox
             id={id}
