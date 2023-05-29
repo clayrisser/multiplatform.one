@@ -53,8 +53,9 @@ export function FormCheckBox({
   const id = useId();
   if (!formContext) {
     return (
-      <YStack>
+      <YStack space>
         <XStack
+          style={{ alignItems: 'center' }}
           space={CheckBoxElementSizing?.space || '$3'}
           height={CheckBoxElementSizing?.height}
           width={CheckBoxElementSizing?.width || 300}
