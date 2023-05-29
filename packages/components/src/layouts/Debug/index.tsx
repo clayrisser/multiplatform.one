@@ -4,9 +4,7 @@ import type { ThemeName } from 'tamagui';
 import type { WithLayout } from 'multiplatform.one';
 import { Select, YStack, ZStack, XStack, Adapt, Popover, Circle } from 'tamagui';
 import { SelectSimple } from '../../forms/SelectSimple';
-import { createWithLayout } from 'multiplatform.one';
-import { useLocale } from 'multiplatform.one';
-import { useSupportedLocales } from 'multiplatform.one';
+import { createWithLayout, useLocale, useSupportedLocales } from 'multiplatform.one';
 // @ts-ignore
 import { config } from 'app/config';
 // @ts-ignore

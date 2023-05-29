@@ -15,7 +15,9 @@ function HomeScreen() {
     <YStack f={1} jc="center" ai="center" p="$4" space>
       <YStack space="$4" maw={600}>
         <H1 ta="center">{t('screens.home.welcome')}</H1>
-        <Paragraph ta="center">{t('screens.home.message')}</Paragraph>
+        <Paragraph fontFamily="$silkscreen" ta="center">
+          {t('screens.home.message')}
+        </Paragraph>
         <Separator />
         <Paragraph ta="center">
           <Anchor color="$color12" href="https://multiplatform.one" target="_blank">

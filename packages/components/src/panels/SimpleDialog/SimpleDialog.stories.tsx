@@ -1,7 +1,7 @@
 import React from 'react';
-import { SimpleDialog } from './index';
 import type { Meta } from '@storybook/react';
-import { Text, YStack, Button } from 'tamagui';
+import { SimpleDialog } from './index';
+import { YStack, Button, Text } from 'tamagui';
 
 const meta: Meta = {
   title: 'panels/SimpleDialog',
@@ -19,7 +19,8 @@ export const main = () => (
     }
     title="Edit profile"
   >
-    <Button>open DialogBox</Button>
+    <Button>open Dialog</Button>
   </SimpleDialog>
 );
+
 export default meta;

@@ -3,10 +3,13 @@ import type { DialogProps, DialogTitleProps, DialogDescriptionProps, DialogConte
 import { Adapt, Button, Dialog, Sheet, Unspaced } from 'tamagui';
 import { X } from '@tamagui/lucide-icons';
 
-type SimpleDialogProps = DialogProps & { element: React.ReactNode } & { title: React.ReactNode } & {
+type SimpleDialogProps = DialogProps & {
   description?: React.ReactNode;
-} & { titleStyle?: DialogTitleProps } & { descriptionStyle?: DialogDescriptionProps } & {
+  titleStyle?: DialogTitleProps;
+  descriptionStyle?: DialogDescriptionProps;
   contentStyle?: DialogContentProps;
+  title?: React.ReactNode;
+  element: React.ReactNode;
 };
 
 export function SimpleDialog({

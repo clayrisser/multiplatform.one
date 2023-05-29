@@ -20,7 +20,7 @@ export const main = () => (
     }
     // themeStyle={{ color: 'red' }}
   >
-    Tool Tip
+    <Text>Tool Tip</Text>
   </SimpleTooltip>
 );
 export default meta;

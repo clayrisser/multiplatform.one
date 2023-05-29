@@ -1,7 +1,5 @@
 import '@multiplatform.one/components/css/code-highlight.css';
 import '@tamagui/core/reset.css';
-import '@tamagui/font-inter/css/400.css';
-import '@tamagui/font-inter/css/700.css';
 import 'raf/polyfill';
 import React, { useEffect } from 'react';
 import tamaguiConfig from '../tamagui.config';
@@ -11,22 +9,22 @@ import type { ThemeName } from 'ui';
 import { DebugLayout, mdxComponents } from 'ui';
 import { GlobalProvider } from 'app/providers';
 import { MDXProvider } from '@mdx-js/react';
-import { supportedLocales, defaultLocale, i18nInit } from 'app/i18n';
+import { importFonts } from 'app/fonts';
+import { supportedLocales, defaultLocale, i18nInit, i18n } from 'app/i18n';
 import { themes as storybookThemes } from '@storybook/theming';
 import { useDarkMode } from 'storybook-dark-mode';
 import { useThemeState } from 'app/state/theme';
-// import { getThemes } from 'tamagui';
-// import { useLocale } from 'multiplatform.one';
-// import { withThemes } from 'storybook-addon-themes/react';
-// import { themes } from '@tamagui/themes';
-// console.log('themes', themes);
+import { withThemeFromJSXProvider } from '@storybook/addon-styling';
 
 i18nInit();
+importFonts();
 
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
+      expanded: true,
+      hideNoControlsWarning: true,
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/,
@@ -46,40 +44,24 @@ const preview: Preview = {
       { name: 'light', value: 'white', default: true },
       { name: 'dark', value: '#262626' },
     ],
-    themes: {
-      default: 'purple',
-      clearable: false,
-      list: DebugLayout.defaultProps.subThemeNames.map((name) => {
-        const themes: any[] = [];
-        // const themes = getThemes();
-        return {
-          name,
-          color: (themes[name] || themes[`light_${name}`] || themes[`dark_${name}`])?.backgroundFocus?.val,
-        };
-      }),
-      Decorator: (props: PropsWithChildren & { theme: { name: ThemeName } }) => {
-        const themeState = useThemeState();
-        useEffect(() => {
-          themeState.setSub(props.theme.name);
-        }, [props.theme.name, themeState.setSub]);
-        return <>{props.children}</>;
-      },
-    },
   },
 
   decorators: [
-    // withThemes,
+    withThemeFromJSXProvider({
+      themes: {
+        ...DebugLayout.defaultProps.subThemeNames.reduce((themes, name) => {
+          themes[name] = { name };
+          return themes;
+        }, {}),
+      },
+      defaultTheme: 'blue',
+      Provider,
+    }),
     (Story, { globals }) => {
-      // const [, setLocale] = useLocale();
       useEffect(() => {
-        // TODO: fix
-        // setLocale(globals.locale);
+        i18n.changeLanguage(globals.locale);
       }, [globals.locale]);
-      return (
-        <Provider>
-          <Story />
-        </Provider>
-      );
+      return <Story />;
     },
   ],
 
@@ -107,17 +89,21 @@ export const DocsContainer = (props) => (
   </MDXProvider>
 );
 
-function Provider({ children }: PropsWithChildren) {
+function Provider({ children, theme }: PropsWithChildren & { theme: StylingTheme }) {
   const darkMode = useDarkMode();
   const themeState = useThemeState();
   useEffect(() => {
     themeState.setRoot(darkMode ? 'dark' : 'light');
   }, [darkMode, themeState.setRoot]);
   return (
-    <GlobalProvider tamaguiConfig={tamaguiConfig} defaultTheme={themeState.root}>
+    <GlobalProvider tamaguiConfig={tamaguiConfig} defaultTheme={themeState.root} defaultSubTheme={theme.name}>
       {children}
     </GlobalProvider>
   );
+}
+
+interface StylingTheme {
+  name: ThemeName;
 }
 
 export default preview;
