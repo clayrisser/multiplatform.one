@@ -29,7 +29,9 @@ export function FormSwitch({
   if (!formContext) {
     return (
       <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
-        <Switch {...switchProps} />
+        <Switch {...switchProps}>
+          <Switch.Thumb {...ThumbStyle} />
+        </Switch>
       </FormField>
     );
   }

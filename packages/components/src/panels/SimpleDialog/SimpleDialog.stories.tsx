@@ -13,10 +13,11 @@ export const main = () => (
   <SimpleDialog
     element={
       <YStack>
-        <Text>Check</Text>
+        <Text>This is a txt to check the spacing...!</Text>
+        <Text>May i come in ?</Text>
       </YStack>
     }
-    title="Check"
+    title="Edit profile"
   >
     <Button>open DialogBox</Button>
   </SimpleDialog>
