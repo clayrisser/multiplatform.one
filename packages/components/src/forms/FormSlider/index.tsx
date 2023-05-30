@@ -30,7 +30,7 @@ export function FormSlider({
   const id = useId();
   if (!formContext) {
     return (
-      <Slider defaultValue={defaultValue} {...switchProps}>
+      <Slider>
         <Slider.Track>
           <Slider.TrackActive />
         </Slider.Track>
@@ -42,6 +42,7 @@ export function FormSlider({
           aria-describedby="my-tooltip"
           position="absolute"
           style={{ height: 10, width: 10 }}
+          size={24}
         />
       </Slider>
     );

@@ -37,7 +37,7 @@ export function SimpleTooltip({
           ]}
         >
           <Tooltip.Arrow />
-          <Paragraph size="$2" lineHeight="$1" {...paragraphStyle}>
+          <Paragraph ai="center" size="$2" lineHeight="$1" {...paragraphStyle}>
             {element}
           </Paragraph>
         </Tooltip.Content>
