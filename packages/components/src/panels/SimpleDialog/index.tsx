@@ -10,6 +10,8 @@ type SimpleDialogProps = DialogProps & {
   contentStyle?: DialogContentProps;
   title?: React.ReactNode;
   element: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open) => void;
 };
 
 export function SimpleDialog({
@@ -20,11 +22,21 @@ export function SimpleDialog({
   titleStyle,
   descriptionStyle,
   contentStyle,
+  open,
   ...props
 }: SimpleDialogProps) {
+  const [isOpen, setIsOpen] = React.useState(open);
   return (
-    <Dialog modal {...props}>
-      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
+    <Dialog
+      modal
+      {...props}
+      open={isOpen}
+      onOpenChange={(e) => {
+        if (props.onOpenChange) props.onOpenChange(e);
+        else setIsOpen(!isOpen);
+      }}
+    >
+      {typeof open === 'undefined' ? <Dialog.Trigger asChild>{children}</Dialog.Trigger> : null}
       <Adapt when="sm" platform="touch">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" space>

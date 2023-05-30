@@ -11,6 +11,7 @@ const meta: Meta = {
 
 export const main = () => (
   <SimpleDialog
+    open={true}
     element={
       <YStack space>
         <Input placeholder="Enter your first name" />
@@ -21,8 +22,22 @@ export const main = () => (
       </YStack>
     }
     title="Fill the details"
+  />
+);
+
+export const WithButton = () => (
+  <SimpleDialog
+    element={
+      <YStack space>
+        <Input placeholder="Enter your first name" />
+        <Input placeholder="Enter your last name" />
+        <Dialog.Close>
+          <Button>Submit</Button>
+        </Dialog.Close>
+      </YStack>
+    }
   >
-    <Button>open Dialog</Button>
+    <Button>open dialogBox</Button>
   </SimpleDialog>
 );
 
