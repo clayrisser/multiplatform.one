@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 06:04:59
  * Author: Clay Risser
  * -----
- * Last Modified: 25-05-2023 17:10:05
+ * Last Modified: 31-05-2023 12:49:27
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -30,17 +30,25 @@ import { useKeycloak as useSsrKeycloak } from '@bitspur/react-keycloak-ssr';
 
 export function useKeycloak() {
   const authConfig = useAuthConfig();
-  if (MultiPlatform.isStorybook) return { authenticated: true } as IKeycloak;
+  if (MultiPlatform.isStorybook) {
+    return { authenticated: true, username: 'storybook', email: 'storybook@example.com', userId: '0' } as IKeycloak;
+  }
   if (MultiPlatform.isNext && authConfig.ssr) {
     const { keycloak, initialized } = useSsrKeycloak();
     return {
       ...keycloak,
       authenticated: initialized ? keycloak?.authenticated : undefined,
+      email: keycloak?.tokenParsed?.email,
+      userId: keycloak?.tokenParsed?.sub,
+      username: keycloak?.tokenParsed?.preferred_username,
     } as IKeycloak;
   }
   const { keycloak, initialized } = useReactKeycloak();
   return {
     ...keycloak,
     authenticated: initialized ? keycloak?.authenticated : undefined,
+    email: keycloak?.tokenParsed?.email,
+    userId: keycloak?.tokenParsed?.sub,
+    username: keycloak?.tokenParsed?.preferred_username,
   } as IKeycloak;
 }

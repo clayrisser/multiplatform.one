@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 14:10:44
  * Author: Clay Risser
  * -----
- * Last Modified: 24-04-2023 17:50:36
+ * Last Modified: 31-05-2023 12:41:37
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -35,6 +35,9 @@ export interface IKeycloak {
   subject?: string;
   token?: string;
   tokenParsed?: ITokenParsed;
+  email?: string;
+  username?: string;
+  userId?: string;
   login: () => Promise<unknown> | unknown;
   logout: () => Promise<unknown> | unknown;
 }
