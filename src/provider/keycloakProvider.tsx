@@ -220,6 +220,7 @@ export function KeycloakProvider({
     if (debug) initOptions.enableLogging = true;
     if (token && typeof token === 'string') {
       initOptions.token = token;
+      initOptions.timeSkew = 0;
       if (idToken && typeof idToken === 'string') initOptions.idToken = idToken;
       if (refreshToken && typeof refreshToken === 'string') initOptions.refreshToken = refreshToken;
     }
@@ -227,7 +228,6 @@ export function KeycloakProvider({
       initOptions.checkLoginIframe = false;
       initOptions.flow = 'implicit';
       initOptions.onLoad = undefined;
-      initOptions.timeSkew = 0;
     }
     return initOptions;
   }, [keycloakInitOptions, token, refreshToken, idToken]);
@@ -238,8 +238,7 @@ export function KeycloakProvider({
       // @ts-ignore
       <SSRKeycloakProvider
         LoadingComponent={<LoadingComponent />}
-        // keycloak-js already handles refreshing tokens
-        autoRefreshToken={false}
+        autoRefreshToken={initOptions.checkLoginIframe}
         initOptions={initOptions}
         onEvent={handleEvent}
         onTokens={onTokens}
@@ -259,8 +258,7 @@ export function KeycloakProvider({
     <ReactKeycloakProvider
       LoadingComponent={<LoadingComponent />}
       authClient={keycloak}
-      // keycloak-js already handles refreshing tokens
-      autoRefreshToken={false}
+      autoRefreshToken={initOptions.checkLoginIframe}
       initOptions={initOptions}
       onEvent={handleEvent}
       onTokens={onTokens}
