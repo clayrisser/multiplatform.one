@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 06:04:59
  * Author: Clay Risser
  * -----
- * Last Modified: 31-05-2023 12:49:27
+ * Last Modified: 01-06-2023 14:02:40
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -31,24 +31,79 @@ import { useKeycloak as useSsrKeycloak } from '@bitspur/react-keycloak-ssr';
 export function useKeycloak() {
   const authConfig = useAuthConfig();
   if (MultiPlatform.isStorybook) {
-    return { authenticated: true, username: 'storybook', email: 'storybook@example.com', userId: '0' } as IKeycloak;
+    return new Keycloak(
+      {
+        email: 'storybook@example.com',
+        login: async () => undefined,
+        logout: async () => undefined,
+        subject: '0',
+        username: 'storybook',
+      },
+      true,
+    );
   }
   if (MultiPlatform.isNext && authConfig.ssr) {
     const { keycloak, initialized } = useSsrKeycloak();
-    return {
-      ...keycloak,
-      authenticated: initialized ? keycloak?.authenticated : undefined,
-      email: keycloak?.tokenParsed?.email,
-      userId: keycloak?.tokenParsed?.sub,
-      username: keycloak?.tokenParsed?.preferred_username,
-    } as IKeycloak;
+    return new Keycloak(keycloak, initialized);
   }
   const { keycloak, initialized } = useReactKeycloak();
-  return {
-    ...keycloak,
-    authenticated: initialized ? keycloak?.authenticated : undefined,
-    email: keycloak?.tokenParsed?.email,
-    userId: keycloak?.tokenParsed?.sub,
-    username: keycloak?.tokenParsed?.preferred_username,
-  } as IKeycloak;
+  return new Keycloak(keycloak, initialized);
+}
+
+export class Keycloak implements IKeycloak {
+  authenticated?: boolean;
+
+  constructor(private readonly keycloak: IKeycloak | undefined, initialized: boolean) {
+    this.authenticated = initialized ? keycloak?.authenticated : undefined;
+  }
+
+  get idToken() {
+    return this.keycloak?.idToken;
+  }
+
+  get realmAccess() {
+    return this.keycloak?.realmAccess;
+  }
+
+  get refreshToken() {
+    return this.keycloak?.refreshToken;
+  }
+
+  get refreshTokenParsed() {
+    return this.keycloak?.refreshTokenParsed;
+  }
+
+  get resourceAccess() {
+    return this.keycloak?.resourceAccess;
+  }
+
+  get subject() {
+    return this.keycloak?.subject;
+  }
+
+  get token() {
+    return this.keycloak?.token;
+  }
+
+  get tokenParsed() {
+    return this.keycloak?.tokenParsed;
+  }
+
+  get email() {
+    return this.keycloak?.tokenParsed?.email;
+  }
+
+  get username() {
+    return this.keycloak?.tokenParsed?.preferred_username;
+  }
+
+  async login() {
+    if (!this.keycloak) return;
+    return this.keycloak.login();
+  }
+
+  async logout() {
+    if (!this.keycloak) return;
+    return this.keycloak.logout();
+  }
 }

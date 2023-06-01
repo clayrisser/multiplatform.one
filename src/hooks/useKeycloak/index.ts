@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 14:10:44
  * Author: Clay Risser
  * -----
- * Last Modified: 31-05-2023 12:41:37
+ * Last Modified: 01-06-2023 13:55:42
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -37,9 +37,8 @@ export interface IKeycloak {
   tokenParsed?: ITokenParsed;
   email?: string;
   username?: string;
-  userId?: string;
-  login: () => Promise<unknown> | unknown;
-  logout: () => Promise<unknown> | unknown;
+  login: () => Promise<unknown>;
+  logout: () => Promise<unknown>;
 }
 
 export interface ITokenParsed extends KeycloakTokenParsed {
