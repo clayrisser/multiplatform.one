@@ -4,7 +4,7 @@
  * File Created: 08-11-2022 14:10:25
  * Author: Clay Risser
  * -----
- * Last Modified: 24-04-2023 17:50:55
+ * Last Modified: 01-06-2023 14:04:46
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2021 - 2022
@@ -50,13 +50,13 @@ export class ExpoKeycloak implements IKeycloak {
 
   resourceAccess?: KeycloakResourceAccess;
 
-  login: () => Promise<unknown> | unknown;
+  login: () => Promise<unknown>;
 
   constructor(
     ready: boolean,
     isLoggedIn: boolean | undefined,
     login: (options?: AuthRequestPromptOptions) => Promise<AuthSessionResult | undefined>,
-    public logout: () => unknown,
+    public logout: () => Promise<unknown>,
     public token?: string,
     public refreshToken?: string,
   ) {
