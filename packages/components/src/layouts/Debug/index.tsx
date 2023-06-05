@@ -2,7 +2,7 @@ import React from 'react';
 import type { ComponentType, ReactNode } from 'react';
 import type { ThemeName } from 'tamagui';
 import type { WithLayout } from 'multiplatform.one';
-import { Select, ZStack, XStack, Adapt, Popover, Circle } from 'tamagui';
+import { Select, YStack, XStack, Adapt, Popover, Circle } from 'tamagui';
 import { SelectSimple } from '../../forms/SelectSimple';
 import { createWithLayout, useLocale, useSupportedLocales } from 'multiplatform.one';
 // @ts-ignore
@@ -128,10 +128,10 @@ export function DebugLayout<DebugViewProps>({
 
   if (config.get('DEBUG') !== '1') return <>{children}</>;
   return (
-    <ZStack fullscreen>
-      {children}
+    <>
+      <YStack fullscreen>{children}</YStack>
       {renderDebug()}
-    </ZStack>
+    </>
   );
 }
 
