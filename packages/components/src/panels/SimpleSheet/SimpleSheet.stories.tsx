@@ -10,5 +10,5 @@ const meta: Meta = {
   parameters: { status: { type: 'beta' } },
 };
 
-export const main = () => <SimpleSheet modal />;
+export const main = () => <SimpleSheet modal>Click to test simpleSHeet</SimpleSheet>;
 export default meta;

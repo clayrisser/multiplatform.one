@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta } from '@storybook/react';
 import { SimpleDialog } from './index';
-import { YStack, Button, Input, Dialog } from 'tamagui';
+import { YStack, Button, Text, Input, Dialog } from 'tamagui';
 
 const meta: Meta = {
   title: 'panels/SimpleDialog',
@@ -10,6 +10,19 @@ const meta: Meta = {
 };
 
 export const main = () => (
+  <SimpleDialog
+    open={true}
+    element={
+      <YStack>
+        <Text>This is a txt to check the spacing...!</Text>
+        <Text>May i come in ?</Text>
+      </YStack>
+    }
+    title="Fill the details"
+  />
+);
+
+export const WithButton = () => (
   <SimpleDialog
     element={
       <YStack space>
@@ -20,9 +33,8 @@ export const main = () => (
         </Dialog.Close>
       </YStack>
     }
-    title="Fill the details"
   >
-    <Button>open Dialog</Button>
+    <Button>open dialogBox</Button>
   </SimpleDialog>
 );
 
