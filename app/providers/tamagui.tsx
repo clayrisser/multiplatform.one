@@ -1,6 +1,5 @@
 import React from 'react';
 import config from '../tamagui.config';
-import type { ReactNode } from 'react';
 import type { TamaguiProviderProps as OriginalTamaguiProviderProps, ThemeName } from 'ui';
 import { TamaguiProvider as OriginalTamaguiProvider, Theme } from 'ui';
 import { useThemeState } from 'app/state/theme';
@@ -12,22 +11,17 @@ export type TamaguiProviderProps = Omit<OriginalTamaguiProviderProps, 'config'> 
 
 export function TamaguiProvider({ children, ...props }: TamaguiProviderProps) {
   const themeState = useThemeState();
-  const subTheme = props.defaultSubTheme || themeState.sub;
+  const defaultTheme = props.defaultTheme || themeState.root;
+  const subTheme = props.defaultSubTheme || themeState.sub || 'gray';
 
-  function renderSubTheme(children: ReactNode) {
-    if (!subTheme) return <>{children}</>;
-    return <Theme name={subTheme}>{children}</Theme>;
-  }
-
-  if (!themeState.root) return renderSubTheme(children);
   return (
     <OriginalTamaguiProvider
-      defaultTheme={themeState.root}
+      defaultTheme={defaultTheme}
       disableInjectCSS={false}
       {...props}
       config={config || props.config}
     >
-      {renderSubTheme(children)}
+      <Theme name={subTheme}>{children}</Theme>
     </OriginalTamaguiProvider>
   );
 }

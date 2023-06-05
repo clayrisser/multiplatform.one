@@ -1,4 +1,5 @@
 import React from 'react';
+import { YStack } from 'ui';
 import type { ReactNode } from 'react';
 import { createWithLayout } from 'multiplatform.one';
 import { withDebugLayout } from './Debug';
@@ -8,7 +9,7 @@ export interface DefaultLayoutProps {
 }
 
 export function DefaultLayout({ children }: DefaultLayoutProps) {
-  return <>{children}</>;
+  return <YStack fullscreen>{children}</YStack>;
 }
 
 export const withDefaultLayout = createWithLayout(DefaultLayout, [withDebugLayout]);

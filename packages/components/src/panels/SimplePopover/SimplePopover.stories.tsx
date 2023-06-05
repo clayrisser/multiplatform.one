@@ -10,15 +10,10 @@ const meta: Meta = {
 };
 
 export const main = () => (
-  <SimplePopover
-    element={
-      <YStack>
-        <Text>popover content</Text>
-      </YStack>
-    }
-    arrowStyle={{ bc: '$backgroundStrong' }}
-  >
-    <Button>Click here to get a Popover</Button>
+  <SimplePopover trigger={<Button>Click here to get a Popover</Button>}>
+    <YStack>
+      <Text>popover content</Text>
+    </YStack>
   </SimplePopover>
 );
 export default meta;

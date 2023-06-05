@@ -1,28 +1,19 @@
-import type { PopoverProps, PopoverContentProps, AdaptProps, PopoverArrowProps } from 'tamagui';
-import { Adapt, Popover, YStack } from 'tamagui';
+import type { PopoverProps, PopoverContentProps, PopoverArrowProps } from 'tamagui';
+import { Adapt, Popover } from 'tamagui';
 import React from 'react';
+import type { ReactNode } from 'react';
 
-type SimplePopoverProps = PopoverProps & {
-  adaptStyle?: AdaptProps;
+export type SimplePopoverProps = PopoverProps & {
   contentStyle?: PopoverContentProps;
   arrowStyle?: PopoverArrowProps;
-  element: React.ReactNode;
+  trigger: ReactNode;
 };
 
-export function SimplePopover({
-  children,
-  element,
-  contentStyle,
-  adaptStyle,
-  arrowStyle,
-  ...props
-}: SimplePopoverProps) {
+export function SimplePopover({ children, trigger, contentStyle, arrowStyle, ...props }: SimplePopoverProps) {
   return (
     <Popover size="$5" allowFlip {...props}>
-      <Popover.Trigger cursor="pointer" asChild>
-        {children}
-      </Popover.Trigger>
-      <Adapt when="sm" platform="web" {...adaptStyle}>
+      <Popover.Trigger asChild>{trigger}</Popover.Trigger>
+      <Adapt when="sm" platform="touch">
         <Popover.Sheet modal dismissOnSnapToBottom>
           <Popover.Sheet.Frame padding="$4">
             <Adapt.Contents />
@@ -31,15 +22,15 @@ export function SimplePopover({
         </Popover.Sheet>
       </Adapt>
       <Popover.Content
-        bw={1}
-        boc="$borderColor"
-        enterStyle={{ x: 10, y: -10, o: 0, scale: 0.1 }}
-        exitStyle={{ x: 10, y: 10, o: 0, scale: 0.2 }}
+        borderWidth={1}
+        borderColor="$borderColor"
+        enterStyle={{ x: 0, y: -10, opacity: 0 }}
+        exitStyle={{ x: 0, y: -10, opacity: 0 }}
         x={0}
         y={0}
-        o={1}
+        opacity={1}
         animation={[
-          'bouncy',
+          'quick',
           {
             opacity: {
               overshootClamping: true,
@@ -49,8 +40,8 @@ export function SimplePopover({
         elevate
         {...contentStyle}
       >
-        <Popover.Arrow bw={1} boc="$borderColor" {...arrowStyle} />
-        <YStack cursor="pointer">{element}</YStack>
+        <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+        {children}
       </Popover.Content>
     </Popover>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import type { ComponentType, ReactNode } from 'react';
 import type { ThemeName } from 'tamagui';
 import type { WithLayout } from 'multiplatform.one';
-import { Select, YStack, ZStack, XStack, Adapt, Popover, Circle } from 'tamagui';
+import { Select, ZStack, XStack, Adapt, Popover, Circle } from 'tamagui';
 import { SelectSimple } from '../../forms/SelectSimple';
 import { createWithLayout, useLocale, useSupportedLocales } from 'multiplatform.one';
 // @ts-ignore
@@ -17,6 +17,7 @@ export interface DebugLayoutProps<DebugViewProps> {
   debugView?: ComponentType<DebugViewProps>;
   debugViewProps?: DebugViewProps;
   rootThemeNames?: string[];
+  size?: number;
   subThemeNames?: string[];
 }
 
@@ -25,6 +26,7 @@ export function DebugLayout<DebugViewProps>({
   debugView,
   debugViewProps,
   rootThemeNames,
+  size,
   subThemeNames,
 }: DebugLayoutProps<DebugViewProps>) {
   const DebugView = debugView;
@@ -72,10 +74,10 @@ export function DebugLayout<DebugViewProps>({
 
   function renderDebug() {
     return (
-      <XStack space padding="$4" zIndex={9999}>
+      <XStack space m="$4" width={size} height={size}>
         <Popover placement="right" size="$5">
           <Popover.Trigger>
-            <Circle cursor="pointer" backgroundColor="$color9" width={8} height={8} />
+            <Circle cursor="pointer" backgroundColor="$color9" width={size} height={size} />
           </Popover.Trigger>
           <Adapt>
             <Popover.Sheet modal dismissOnSnapToBottom>
@@ -124,19 +126,18 @@ export function DebugLayout<DebugViewProps>({
     );
   }
 
-  if (config.get('DEBUG') !== '1') {
-    return <>{children}</>;
-  }
+  if (config.get('DEBUG') !== '1') return <>{children}</>;
   return (
     <ZStack fullscreen>
+      {children}
       {renderDebug()}
-      <YStack fullscreen>{children}</YStack>
     </ZStack>
   );
 }
 
 DebugLayout.defaultProps = {
   rootThemeNames: ['light', 'dark'],
+  size: 12,
   subThemeNames: ['blue', 'gray', 'green', 'orange', 'pink', 'purple', 'red', 'yellow'],
 };
 

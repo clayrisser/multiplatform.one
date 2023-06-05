@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text } from 'tamagui';
+import { Button } from 'ui';
+import { action } from '@storybook/addon-actions';
 import { withDebugLayout } from './index';
 
 export default {
@@ -9,5 +10,5 @@ export default {
   },
 };
 
-const Main = withDebugLayout(() => <Text>Hello, world!</Text>);
+const Main = withDebugLayout(() => <Button onPress={action('onPress')}>Hello, world!</Button>);
 export const main = () => <Main />;

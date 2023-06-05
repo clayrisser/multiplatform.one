@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Meta } from '@storybook/react';
+import { Button, Input, Dialog, YStack } from 'tamagui';
 import { SimpleDialog } from './index';
-import { YStack, Button, Text, Input, Dialog } from 'tamagui';
+import { action } from '@storybook/addon-actions';
 
 const meta: Meta = {
   title: 'panels/SimpleDialog',
@@ -10,32 +11,40 @@ const meta: Meta = {
 };
 
 export const main = () => (
-  <SimpleDialog
-    open={true}
-    element={
-      <YStack>
-        <Text>This is a txt to check the spacing...!</Text>
-        <Text>May i come in ?</Text>
-      </YStack>
-    }
-    title="Fill the details"
-  />
+  <SimpleDialog onOpenChange={action('onOpenChange')} trigger={<Button>Press Me</Button>} title="Fill the details">
+    <Input placeholder="Enter your first name" />
+    <Input placeholder="Enter your last name" />
+    <Dialog.Close>
+      <Button>Submit</Button>
+    </Dialog.Close>
+  </SimpleDialog>
 );
 
-export const WithButton = () => (
-  <SimpleDialog
-    element={
-      <YStack space>
+function OpenWithFunction() {
+  const [open, setOpen] = useState(false);
+
+  function handlePress() {
+    setOpen((open) => !open);
+  }
+
+  function handleOpenChange(open) {
+    action('onOpenChange')();
+    setOpen(open);
+  }
+
+  return (
+    <YStack ai="flex-start">
+      <Button onPress={handlePress}>Press Me</Button>
+      <SimpleDialog open={open} onOpenChange={handleOpenChange} title="Fill the details">
         <Input placeholder="Enter your first name" />
         <Input placeholder="Enter your last name" />
         <Dialog.Close>
           <Button>Submit</Button>
         </Dialog.Close>
-      </YStack>
-    }
-  >
-    <Button>open dialogBox</Button>
-  </SimpleDialog>
-);
+      </SimpleDialog>
+    </YStack>
+  );
+}
+export const openWithFunction = () => <OpenWithFunction />;
 
 export default meta;

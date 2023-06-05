@@ -93,8 +93,13 @@ function Provider({ children, theme }: PropsWithChildren & { theme: StylingTheme
   const darkMode = useDarkMode();
   const themeState = useThemeState();
   useEffect(() => {
+    if (typeof darkMode === 'undefined') return;
     themeState.setRoot(darkMode ? 'dark' : 'light');
   }, [darkMode, themeState.setRoot]);
+  useEffect(() => {
+    if (typeof theme.name === 'undefined') return;
+    themeState.setSub(theme.name);
+  }, [theme.name, themeState.setSub]);
   return (
     <GlobalProvider tamaguiConfig={tamaguiConfig} defaultTheme={themeState.root} defaultSubTheme={theme.name}>
       {children}

@@ -1,42 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { DialogProps, DialogTitleProps, DialogDescriptionProps, DialogContentProps } from 'tamagui';
+import type { ReactNode } from 'react';
 import { Adapt, Button, Dialog, Sheet, Unspaced } from 'tamagui';
 import { X } from '@tamagui/lucide-icons';
 
-type SimpleDialogProps = DialogProps & {
-  description?: React.ReactNode;
-  titleStyle?: DialogTitleProps;
-  descriptionStyle?: DialogDescriptionProps;
+export type SimpleDialogProps = DialogProps & {
   contentStyle?: DialogContentProps;
-  title?: React.ReactNode;
-  element: React.ReactNode;
+  description?: ReactNode;
+  descriptionStyle?: DialogDescriptionProps;
   open?: boolean;
-  onOpenChange?: (open) => void;
+  title?: ReactNode;
+  titleStyle?: DialogTitleProps;
+  trigger?: ReactNode;
+  onOpenChange?: (open: boolean) => void;
 };
 
 export function SimpleDialog({
   children,
-  element,
-  title,
-  description,
-  titleStyle,
-  descriptionStyle,
   contentStyle,
-  open,
+  description,
+  descriptionStyle,
+  title,
+  titleStyle,
+  trigger,
   ...props
 }: SimpleDialogProps) {
-  const [isOpen, setIsOpen] = React.useState(open);
+  const [open, setOpen] = React.useState(props.open);
+
+  useEffect(() => {
+    if (typeof props.open === 'undefined' || props.open === open) return;
+    setOpen(props.open);
+  }, [props.open]);
+
   return (
     <Dialog
       modal
       {...props}
-      open={isOpen}
-      onOpenChange={(e) => {
-        if (props.onOpenChange) props.onOpenChange(e);
-        else setIsOpen(!isOpen);
+      open={open}
+      onOpenChange={(open) => {
+        setOpen(open);
+        if (props.onOpenChange) props.onOpenChange(open);
       }}
     >
-      {typeof open === 'undefined' ? <Dialog.Trigger asChild>{children}</Dialog.Trigger> : null}
+      {trigger && <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>}
       <Adapt when="sm" platform="touch">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" space>
@@ -64,9 +70,9 @@ export function SimpleDialog({
           space
           {...contentStyle}
         >
-          <Dialog.Title {...titleStyle}>{title}</Dialog.Title>
-          <Dialog.Description {...descriptionStyle}>{description ?? description}</Dialog.Description>
-          {element}
+          {title && <Dialog.Title {...titleStyle}>{title}</Dialog.Title>}
+          {description && <Dialog.Description {...descriptionStyle}>{description}</Dialog.Description>}
+          {children}
           <Unspaced>
             <Dialog.Close asChild space>
               <Button pos="absolute" t="$3" r="$3" size="$2" circular space icon={X} />

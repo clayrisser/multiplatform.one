@@ -4,11 +4,11 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
-    "@babel/runtime": "^7.21.5",
+    "@babel/runtime": "^7.22.3",
     "@react-native-async-storage/async-storage": "1.18.1",
     "@react-native-community/datetimepicker": "6.7.3",
     "@react-native-community/slider": "4.4.2",
-    "@storybook/addon-actions": "^7.0.17",
+    "@storybook/addon-actions": "^7.0.18",
     "@storybook/addon-ondevice-actions": "6.5.3",
     "@storybook/addon-ondevice-backgrounds": "6.5.3",
     "@storybook/addon-ondevice-controls": "6.5.3",
@@ -18,7 +18,7 @@
     "browserify-fs": "^1.0.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
-    "expo": "^48.0.17",
+    "expo": "^48.0.19",
     "expo-constants": "~14.2.1",
     "expo-dev-client": "~2.2.1",
     "expo-font": "~11.1.1",
@@ -37,7 +37,7 @@
     "readable-stream": "^4.4.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.8",
+    "@babel/core": "^7.22.1",
     "@expo/metro-config": "^0.7.1",
     "@tamagui/babel-plugin": "^1.30.21",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
