@@ -130,9 +130,7 @@ export function DebugLayout<DebugViewProps>({
   return (
     <YStack fullscreen>
       {children}
-      <YStack position="absolute" h="100%" w="100%">
-        {renderDebug()}
-      </YStack>
+      <YStack position="absolute">{renderDebug()}</YStack>
     </YStack>
   );
 }
