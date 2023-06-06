@@ -128,10 +128,10 @@ export function DebugLayout<DebugViewProps>({
 
   if (config.get('DEBUG') !== '1') return <>{children}</>;
   return (
-    <>
-      <YStack fullscreen>{children}</YStack>
-      {renderDebug()}
-    </>
+    <YStack h="100%">
+      <YStack h="100%">{children}</YStack>
+      <YStack position="absolute">{renderDebug()}</YStack>
+    </YStack>
   );
 }
 

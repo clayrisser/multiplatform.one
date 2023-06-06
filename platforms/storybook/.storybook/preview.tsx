@@ -9,6 +9,7 @@ import type { ThemeName } from 'ui';
 import { DebugLayout, mdxComponents } from 'ui';
 import { GlobalProvider } from 'app/providers';
 import { MDXProvider } from '@mdx-js/react';
+import { YStack } from 'ui';
 import { importFonts } from 'app/fonts';
 import { supportedLocales, defaultLocale, i18nInit, i18n } from 'app/i18n';
 import { themes as storybookThemes } from '@storybook/theming';
@@ -102,7 +103,7 @@ function Provider({ children, theme }: PropsWithChildren & { theme: StylingTheme
   }, [theme.name, themeState.setSub]);
   return (
     <GlobalProvider tamaguiConfig={tamaguiConfig} defaultTheme={themeState.root} defaultSubTheme={theme.name}>
-      {children}
+      <YStack fullscreen>{children}</YStack>
     </GlobalProvider>
   );
 }
