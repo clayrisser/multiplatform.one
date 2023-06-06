@@ -84,6 +84,7 @@ export function SimpleImage({ src, svg, width, height, resizeMode, aspectRatio, 
   }
   return (
     <Image
+      zIndex={undefined}
       {...imageProps}
       // @ts-ignore
       width={width}
