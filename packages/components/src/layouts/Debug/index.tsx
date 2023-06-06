@@ -130,7 +130,9 @@ export function DebugLayout<DebugViewProps>({
   return (
     <YStack h="100%">
       <YStack h="100%">{children}</YStack>
-      <YStack position="absolute">{renderDebug()}</YStack>
+      <YStack position="absolute" h="100%" w="100%">
+        {renderDebug()}
+      </YStack>
     </YStack>
   );
 }
