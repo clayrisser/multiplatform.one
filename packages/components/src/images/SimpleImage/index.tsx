@@ -7,17 +7,29 @@ import { Platform, Image as RNImage } from 'react-native';
 import { SvgUri } from '../SvgUri';
 import { XMLParser } from 'fast-xml-parser';
 import { YStack, Image } from 'tamagui';
+import { getTokens } from 'tamagui';
 import { useAssets } from '../../hooks/useAssets';
 import { useMemo } from 'react';
 
-export type SimpleImageProps = Omit<ImageProps, 'src' | 'width' | 'height' | 'source'> & {
+export type SimpleImageProps = Omit<ImageProps, 'src' | 'source'> & {
   src?: ImageURISource | string;
-  width?: string | number;
-  height?: string | number;
   svg?: boolean;
 };
 
-export function SimpleImage({ src, svg, width, height, resizeMode, aspectRatio, ...imageProps }: SimpleImageProps) {
+export function SimpleImage({
+  aspectRatio,
+  h,
+  height,
+  resizeMode,
+  src,
+  svg,
+  w,
+  width,
+  ...imageProps
+}: SimpleImageProps) {
+  const tokens = getTokens();
+  height = tokens.size[(height || h) as string]?.val || height || h;
+  width = tokens.size[(width || w) as string]?.val || width || w;
   const preserveAspectRatio = useMemo(() => getPreserveAspectRatio(resizeMode), [resizeMode]);
   let source: string | number | ImageURISource | undefined = src;
   if ((typeof src === 'object' && typeof (src as ImageURISource).uri === 'undefined') || typeof src === 'number') {
@@ -74,8 +86,8 @@ export function SimpleImage({ src, svg, width, height, resizeMode, aspectRatio, 
     return (
       <SvgUri
         {...(imageProps as Partial<SvgUriProps>)}
-        width={Number.isFinite(width) ? width : Number.isFinite(height) ? undefined : '100%'}
-        height={height}
+        width={Number.isFinite(width) ? (width as number) : Number.isFinite(height) ? undefined : '100%'}
+        height={height as number}
         preserveAspectRatio={preserveAspectRatio}
         aspectRatio={aspectRatio}
         uri={uri}
