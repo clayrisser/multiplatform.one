@@ -3,8 +3,10 @@ import { SimpleForm } from './index';
 import { FormInput } from '../FormInput';
 import { FormSelectSimple } from '../FormSelectSimple';
 import { FormSubmitButton } from '../FormSubmitButton';
+
 import { Select } from 'tamagui';
 import { action } from '@storybook/addon-actions';
+import { FormSwitch, FormTextArea, FormRadioGroup } from 'ui/src';
 
 export default {
   title: 'forms/SimpleForm',
@@ -41,6 +43,18 @@ export const main = () => (
         <Select.ItemText>Violet</Select.ItemText>
       </Select.Item>
     </FormSelectSimple>
+    <FormTextArea name="bio" label="Bio" />
+    <FormSwitch name="isAwesome" label="Is Awesome" />
+    <FormRadioGroup
+      radioElements={[
+        { label: 'male', value: 'male' },
+        { label: 'female', value: 'female' },
+      ]}
+      name="Gender"
+      label="Gender"
+      horizontal
+      spacingProps={{ space: true }}
+    />
     <FormSubmitButton onSubmit={action('onSubmit')}>Submit</FormSubmitButton>
   </SimpleForm>
 );
