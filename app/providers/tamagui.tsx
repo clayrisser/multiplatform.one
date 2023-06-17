@@ -3,6 +3,7 @@ import config from '../tamagui.config';
 import type { TamaguiProviderProps as OriginalTamaguiProviderProps, ThemeName } from 'ui';
 import { TamaguiProvider as OriginalTamaguiProvider, Theme } from 'ui';
 import { useThemeState } from 'app/state/theme';
+import { ToastProvider } from '@tamagui/toast';
 
 export type TamaguiProviderProps = Omit<OriginalTamaguiProviderProps, 'config'> &
   Partial<Pick<OriginalTamaguiProviderProps, 'config'>> & {
@@ -21,7 +22,9 @@ export function TamaguiProvider({ children, ...props }: TamaguiProviderProps) {
       {...props}
       config={config || props.config}
     >
-      <Theme name={subTheme}>{children}</Theme>
+      <Theme name={subTheme}>
+        <ToastProvider>{children}</ToastProvider>
+      </Theme>
     </OriginalTamaguiProvider>
   );
 }

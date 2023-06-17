@@ -51,5 +51,8 @@
     "solito"
   ],
   "packageManager": "yarn@3.3.1",
-  "prettier": "eslint-config-alloy/.prettierrc.js"
+  "prettier": "eslint-config-alloy/.prettierrc.js",
+  "dependencies": {
+    "@tamagui/toast": "^1.33.5"
+  }
 }
