@@ -1,6 +1,6 @@
 {
   "name": "multiplatform.one",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "multiplatform.one ecosystem",
   "main": "dist/lib",
   "module": "dist/esm",
@@ -25,9 +25,9 @@
       "types": "./dist/lib/recoil/index.d.ts"
     },
     "./zustand": {
-      "import": "./dist/esm/zustand.mjs",
-      "require": "./dist/lib/zustand.js",
-      "types": "./dist/lib/zustand.d.ts"
+      "import": "./dist/esm/zustand/index.mjs",
+      "require": "./dist/lib/zustand/index.js",
+      "types": "./dist/lib/zustand/index.d.ts"
     }
   },
   "author": "Risser Labs LLC",
