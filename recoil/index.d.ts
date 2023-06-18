@@ -4,7 +4,7 @@
  * File Created: 01-02-2023 14:09:52
  * Author: Clay Risser
  * -----
- * Last Modified: 01-02-2023 14:13:36
+ * Last Modified: 18-06-2023 17:43:17
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,6 +22,4 @@
  * limitations under the License.
  */
 
-import type { AtomEffect } from 'recoil-persist/dist';
-
-export declare const persistAtom: AtomEffect<any>;
+export * from '../dist/lib/recoil';

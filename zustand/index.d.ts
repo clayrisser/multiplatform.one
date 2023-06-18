@@ -4,7 +4,7 @@
  * File Created: 12-05-2023 12:32:35
  * Author: Clay Risser
  * -----
- * Last Modified: 18-06-2023 17:08:31
+ * Last Modified: 18-06-2023 17:43:01
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,25 +22,4 @@
  * limitations under the License.
  */
 
-import type { ActionsType, CreateOptions } from '../dist/lib/zustand/types';
-import type { CrossStorageClientOptions } from 'cross-storage';
-import type { InitStateType } from 'zustand-tools/dist/types';
-import type { createSimple } from 'zustand-tools';
-export declare function createStateStore<State extends InitStateType, Actions extends ActionsType<State>>(
-  name: string,
-  initState: State,
-  actions?: Actions,
-  options?: CreateOptions<State, Actions>,
-): ReturnType<typeof createSimple>;
-export declare function setDefaultCrossStorage(hubUrl: string, options?: Partial<CrossStorageClientOptions>): void;
-declare global {
-  interface Window {
-    _defaultCrossStorage?: Partial<
-      CrossStorageClientOptions & {
-        hubUrl: string;
-      }
-    >;
-  }
-}
-export type * from '../dist/lib/zustand/types';
-export * from '../dist/lib/zustand/crossStorage';
+export * from '../dist/lib/zustand';

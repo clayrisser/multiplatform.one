@@ -4,7 +4,7 @@
  * File Created: 10-04-2023 18:15:11
  * Author: Clay Risser
  * -----
- * Last Modified: 21-04-2023 16:40:38
+ * Last Modified: 18-06-2023 17:43:39
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,65 +22,4 @@
  * limitations under the License.
  */
 
-import type { GetStaticPaths } from 'next';
-import type { SSRConfig, UserConfig } from 'next-i18next';
-
-export declare function getBaseProps(locale: any, namespacesRequired?: string[]): Promise<SSRConfig>;
-
-export declare function createGetProps(
-  namespacesRequired?: string[],
-  props?: Record<string, any>,
-): ({ locale }: { locale: any }) => Promise<{
-  props: {
-    _nextI18Next?:
-      | {
-          initialI18nStore: any;
-          initialLocale: string;
-          ns: string[];
-          userConfig: UserConfig | null;
-        }
-      | undefined;
-  };
-}>;
-
-export declare function createGetInitialProps(props?: Record<string, any>): () => Promise<{
-  props: Record<string, any>;
-}>;
-
-export declare function createGetStaticPaths(paths?: string[]): GetStaticPaths<{
-  slug: string;
-}>;
-
-export declare const getStaticPaths: GetStaticPaths<{
-  slug: string;
-}>;
-
-export declare const getStaticProps: ({ locale }: { locale: any }) => Promise<{
-  props: {
-    _nextI18Next?:
-      | {
-          initialI18nStore: any;
-          initialLocale: string;
-          ns: string[];
-          userConfig: UserConfig | null;
-        }
-      | undefined;
-  };
-}>;
-
-export declare const getInitialProps: () => Promise<{
-  props: Record<string, any>;
-}>;
-
-export declare const getServerSideProps: ({ locale }: { locale: any }) => Promise<{
-  props: {
-    _nextI18Next?:
-      | {
-          initialI18nStore: any;
-          initialLocale: string;
-          ns: string[];
-          userConfig: UserConfig | null;
-        }
-      | undefined;
-  };
-}>;
+export * from '../dist/lib/next';

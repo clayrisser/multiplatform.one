@@ -4,7 +4,7 @@
  * File Created: 18-06-2023 15:37:00
  * Author: Clay Risser
  * -----
- * Last Modified: 18-06-2023 16:42:09
+ * Last Modified: 18-06-2023 17:37:24
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -33,8 +33,8 @@ import type {
   MultiGetCallback,
 } from '@react-native-async-storage/async-storage/lib/typescript/types';
 
-export function createAsyncCrossStorage(hubUrl: string, options?: CrossStorageClientOptions) {
-  const storage = new CrossStorageClient(hubUrl, options || {});
+export function createAsyncCrossStorage({ hubUrl, onConnect, ...options }: CreateAsyncCrossStorageOptions) {
+  const storage = new CrossStorageClient(hubUrl, options);
   const connection: CrossStorageConnection = {
     onConnectCallbacks: [],
     onErrorCallbacks: [],
@@ -49,6 +49,7 @@ export function createAsyncCrossStorage(hubUrl: string, options?: CrossStorageCl
         callback?.();
       }
       connection.onErrorCallbacks = [];
+      if (onConnect) onConnect();
     })
     .catch((err) => {
       while (connection.onErrorCallbacks.length) {
@@ -147,4 +148,9 @@ export interface CrossStorageConnection {
   onConnectCallbacks: Function[];
   onErrorCallbacks: ((err: Error) => void)[];
   connected: boolean;
+}
+
+export interface CreateAsyncCrossStorageOptions extends CrossStorageClientOptions {
+  hubUrl: string;
+  onConnect?: () => void;
 }

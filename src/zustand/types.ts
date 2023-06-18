@@ -4,7 +4,7 @@
  * File Created: 18-06-2023 16:32:58
  * Author: Clay Risser
  * -----
- * Last Modified: 18-06-2023 16:34:12
+ * Last Modified: 18-06-2023 17:38:02
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -22,17 +22,17 @@
  * limitations under the License.
  */
 
-import type { CrossStorageClientOptions } from 'cross-storage';
 import type { InitStateType } from 'zustand-tools/dist/types';
 import type { PersistOptions, DevtoolsOptions } from 'zustand/middleware';
 import type { StateCreator, StoreApi } from 'zustand';
+import type { CreateAsyncCrossStorageOptions } from './crossStorage';
 
 export type MiddlewareOptionType<State extends InitStateType> = (
   initializer: StateCreator<State>,
 ) => StateCreator<State, any, any>;
 
 export interface CreateOptions<State extends InitStateType, Actions extends ActionsType<State>> {
-  crossStorage?: Partial<CrossStorageClientOptions & { hubUrl: string }>;
+  crossStorage?: CreateAsyncCrossStorageOptions;
   devtools?: boolean | DevtoolsOptions;
   middlewares?: MiddlewareOptionType<State & ReturnType<Actions>>[];
   persist?: boolean | Partial<PersistOptions<State>>;

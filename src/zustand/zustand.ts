@@ -1,10 +1,10 @@
 /**
- * File: /src/zustand/index.ts
+ * File: /src/zustand/zustand.ts
  * Project: multiplatform.one
  * File Created: 01-02-2023 09:10:54
  * Author: Clay Risser
  * -----
- * Last Modified: 18-06-2023 16:49:31
+ * Last Modified: 18-06-2023 17:39:53
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -44,6 +44,7 @@ export function createStateStore<State extends InitStateType, Actions extends Ac
     ...(typeof window !== 'undefined' && window._defaultCrossStorage),
     ...options.crossStorage,
   };
+  const hubUrl = crossStorage?.hubUrl;
   const store = createSimple(initState, {
     actions,
     middlewares: [
@@ -66,9 +67,9 @@ export function createStateStore<State extends InitStateType, Actions extends Ac
                 storage: createJSONStorage(() =>
                   typeof window !== 'undefined' &&
                   window?.self !== window?.top &&
-                  typeof crossStorage.hubUrl !== 'undefined' &&
-                  crossStorage.hubUrl
-                    ? createAsyncCrossStorage(crossStorage.hubUrl, crossStorage)
+                  typeof hubUrl !== 'undefined' &&
+                  hubUrl
+                    ? createAsyncCrossStorage({ ...crossStorage, hubUrl })
                     : AsyncStorage,
                 ),
                 ...((typeof options.persist === 'object' ? options.persist : {}) as Partial<PersistOptions<any>>),
