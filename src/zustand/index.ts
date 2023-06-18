@@ -1,10 +1,10 @@
 /**
- * File: /src/zustand.ts
+ * File: /src/zustand/index.ts
  * Project: multiplatform.one
  * File Created: 01-02-2023 09:10:54
  * Author: Clay Risser
  * -----
- * Last Modified: 22-05-2023 12:54:46
+ * Last Modified: 18-06-2023 16:49:31
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -23,30 +23,16 @@
  */
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import type { ActionsType, CreateOptions, MiddlewareOptionType } from './types';
+import type { CrossStorageClientOptions } from 'cross-storage';
 import type { InitStateType } from 'zustand-tools/dist/types';
-import type { PersistOptions, DevtoolsOptions } from 'zustand/middleware';
-import type { StateCreator, StoreApi } from 'zustand';
+import type { PersistOptions } from 'zustand/middleware';
+import { createAsyncCrossStorage } from './crossStorage';
 import { createSimple } from 'zustand-tools';
 import { devtools, persist, createJSONStorage } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 const g: any = typeof window === 'undefined' ? global : window;
-
-type MiddlewareOptionType<State extends InitStateType> = (
-  initializer: StateCreator<State>,
-) => StateCreator<State, any, any>;
-
-interface CreateOptions<State extends InitStateType, Actions extends ActionsType<State>> {
-  middlewares?: MiddlewareOptionType<State & ReturnType<Actions>>[];
-  persist?: boolean | Partial<PersistOptions<State>>;
-  devtools?: boolean | DevtoolsOptions;
-}
-
-type ActionsType<State, Return = Record<string, Function>> = (
-  setState: StoreApi<State>['setState'],
-  getState: StoreApi<State>['getState'],
-  store: StoreApi<State>,
-) => Return;
 
 export function createStateStore<State extends InitStateType, Actions extends ActionsType<State>>(
   name: string,
@@ -54,6 +40,10 @@ export function createStateStore<State extends InitStateType, Actions extends Ac
   actions?: Actions,
   options: CreateOptions<State, Actions> = {},
 ): ReturnType<typeof createSimple> {
+  const crossStorage = {
+    ...(typeof window !== 'undefined' && window._defaultCrossStorage),
+    ...options.crossStorage,
+  };
   const store = createSimple(initState, {
     actions,
     middlewares: [
@@ -73,7 +63,14 @@ export function createStateStore<State extends InitStateType, Actions extends Ac
             (initializer) =>
               persist(initializer, {
                 name,
-                storage: createJSONStorage(() => AsyncStorage),
+                storage: createJSONStorage(() =>
+                  typeof window !== 'undefined' &&
+                  window?.self !== window?.top &&
+                  typeof crossStorage.hubUrl !== 'undefined' &&
+                  crossStorage.hubUrl
+                    ? createAsyncCrossStorage(crossStorage.hubUrl, crossStorage)
+                    : AsyncStorage,
+                ),
                 ...((typeof options.persist === 'object' ? options.persist : {}) as Partial<PersistOptions<any>>),
               }),
           ] as MiddlewareOptionType<State & ReturnType<Actions>>[])
@@ -84,4 +81,19 @@ export function createStateStore<State extends InitStateType, Actions extends Ac
   return store;
 }
 
-export type Actions<State extends InitStateType, Actions> = ActionsType<State, Actions>;
+export function setDefaultCrossStorage(hubUrl: string, options?: Partial<CrossStorageClientOptions>) {
+  if (typeof window === 'undefined') return;
+  window._defaultCrossStorage = {
+    hubUrl,
+    ...options,
+  };
+}
+
+declare global {
+  interface Window {
+    _defaultCrossStorage?: Partial<CrossStorageClientOptions & { hubUrl: string }>;
+  }
+}
+
+export type * from './types';
+export * from './crossStorage';
