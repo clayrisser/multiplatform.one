@@ -4,7 +4,7 @@
  * File Created: 01-02-2023 09:10:54
  * Author: Clay Risser
  * -----
- * Last Modified: 18-06-2023 17:39:53
+ * Last Modified: 19-06-2023 17:09:10
  * Modified By: Clay Risser
  * -----
  * Risser Labs LLC (c) Copyright 2022 - 2023
@@ -24,9 +24,10 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { ActionsType, CreateOptions, MiddlewareOptionType } from './types';
+import type { CreateSimpleHooksType, InitStateType } from 'zustand-tools/dist/types';
 import type { CrossStorageClientOptions } from 'cross-storage';
-import type { InitStateType } from 'zustand-tools/dist/types';
 import type { PersistOptions } from 'zustand/middleware';
+import type { StoreApi, UseBoundStore } from 'zustand';
 import { createAsyncCrossStorage } from './crossStorage';
 import { createSimple } from 'zustand-tools';
 import { devtools, persist, createJSONStorage } from 'zustand/middleware';
@@ -39,7 +40,20 @@ export function createStateStore<State extends InitStateType, Actions extends Ac
   initState: State,
   actions?: Actions,
   options: CreateOptions<State, Actions> = {},
-): ReturnType<typeof createSimple> {
+): {
+  useStore: UseBoundStore<
+    StoreApi<
+      State & {
+        [Property in keyof State as `set${Capitalize<string & Property>}`]: (value: State[Property]) => void;
+      } & ReturnType<Actions>
+    >
+  >;
+  hooks: {
+    useAllData: () => {
+      [k: string]: any;
+    };
+  } & CreateSimpleHooksType<State>;
+} {
   const crossStorage = {
     ...(typeof window !== 'undefined' && window._defaultCrossStorage),
     ...options.crossStorage,
