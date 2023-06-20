@@ -1,23 +1,24 @@
+import type { PropsWithChildren } from 'react';
 import React, { useMemo } from 'react';
-import type { TabsProps, TabsContentProps, TabsTabProps, TabsListProps } from 'tamagui';
+import type { TabsProps, TabsContentProps, TabsTabProps, TabsListProps, ThemeValueFallback, SizeTokens } from 'tamagui';
 import { SizableText } from 'tamagui';
 import { Separator } from 'tamagui';
 import { Tabs } from 'tamagui';
 
-export type SimpleTabsProps = TabsProps;
+export type SimpleTabsProps = Omit<TabsProps, 'defaultValue'> & { fullScreen?: boolean } & { defaultRoute?: string };
 
-export type ContentProps = TabsContentProps & { route: string };
+export type ContentProps = Omit<TabsContentProps, 'value'> & { route: string };
 
-export type TabProps = TabsTabProps & { path: string };
+export type TabProps = Omit<TabsTabProps, 'value'> & { path: string };
 
 export type ListProps = TabsListProps & { fullHeight?: boolean };
 
-interface SimpleTabsContextProps {
+interface SimpleTabsContextProps extends PropsWithChildren {
   orientation: 'horizontal' | 'vertical' | undefined;
-  width: number | string | undefined;
+  width: SizeTokens | ThemeValueFallback | undefined;
 }
 
-interface TabListContextProps {
+interface TabListContextProps extends PropsWithChildren {
   fullHeight: boolean;
 }
 
@@ -25,22 +26,28 @@ const SimpleTabsContext = React.createContext<SimpleTabsContextProps | null>(nul
 
 const TabsListContext = React.createContext<TabListContextProps | null>(null);
 
-export function SimpleTabs({ width, height, orientation = 'horizontal', ...props }: SimpleTabsProps) {
+export function SimpleTabs({
+  width,
+  height,
+  fullScreen,
+  defaultRoute,
+  orientation = 'horizontal',
+  ...props
+}: SimpleTabsProps) {
   const contextValue = useMemo(() => ({ orientation, width }), [orientation, width]);
 
   return (
     <SimpleTabsContext.Provider value={contextValue}>
       <Tabs
-        defaultValue={props.defaultValue ?? ''}
-        orientation={orientation ?? 'horizontal'}
-        flexDirection={orientation === 'vertical' ? 'row' : 'column'}
-        width={width ?? 300}
-        height={height ?? 150}
         borderRadius="$4"
         borderWidth="$0.25"
         overflow="hidden"
         borderColor="$borderColor"
+        flexDirection={orientation === 'vertical' ? 'row' : 'column'}
+        defaultValue={defaultRoute}
         {...props}
+        width={fullScreen ? '100%' : width ?? 300}
+        height={fullScreen ? '100%' : height ?? 150}
       >
         {props.children}
       </Tabs>
@@ -61,8 +68,8 @@ export function TabsList({ fullHeight = false, ...props }: ListProps) {
         disablePassBorderRadius={orientation === 'horizontal' ? 'bottom' : 'end'}
         aria-label="Manage your account"
         flex={0}
-        {...props}
         style={orientation === 'vertical' ? { display: 'flex', flexDirection: 'column' } : {}}
+        {...props}
       >
         {props.children}
       </Tabs.List>

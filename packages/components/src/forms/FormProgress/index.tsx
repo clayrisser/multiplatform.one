@@ -50,7 +50,7 @@ export function FormProgress({
       control={control}
       rules={rules}
       defaultValue={defaultValue}
-      render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
+      render={({ field: { value }, fieldState: { error } }) => (
         <FormField
           id={id}
           error={!!error}
@@ -62,18 +62,10 @@ export function FormProgress({
           <Progress
             mt={vertical ? 86 : undefined}
             ml={vertical ? -80 : undefined}
-            rotate={vertical ? '90deg' : undefined}
+            rotate={vertical ? '270deg' : undefined}
             {...progressProps}
             size={propSize}
             value={value ?? 0}
-            onBlur={(e) => {
-              onBlur();
-              if (progressProps.onBlur) progressProps.onBlur(e);
-            }}
-            onChange={(e) => {
-              onChange(e);
-              if (progressProps.onChange) progressProps.onChange(e);
-            }}
           />
         </FormField>
       )}

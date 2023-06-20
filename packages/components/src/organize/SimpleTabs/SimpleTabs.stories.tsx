@@ -1,6 +1,6 @@
 import React from 'react';
 import { SimpleTabs, TabContent, TabsList, Tab } from './index';
-import { H5, Separator, SizableText } from 'tamagui';
+import { H5, SizableText } from 'tamagui';
 
 export default {
   title: 'organize/SimpleTabs',
@@ -13,7 +13,7 @@ export default {
 };
 
 export const horizontalTabs = () => (
-  <SimpleTabs defaultValue="about" orientation="horizontal" width="100%" height="100%">
+  <SimpleTabs defaultRoute="contact" fullScreen>
     <TabsList>
       <Tab path="home">Home</Tab>
       <Tab path="about">About</Tab>
@@ -38,7 +38,7 @@ export const horizontalTabs = () => (
 );
 
 export const verticalTabs = () => (
-  <SimpleTabs defaultValue="about" orientation="vertical" width="100%" height="100%">
+  <SimpleTabs defaultRoute="about" orientation="vertical" width="100%" height="100%">
     <TabsList fullHeight={false}>
       <Tab path="home">Home</Tab>
       <Tab path="about">About</Tab>

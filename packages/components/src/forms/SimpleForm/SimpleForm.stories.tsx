@@ -3,10 +3,11 @@ import { SimpleForm } from './index';
 import { FormInput } from '../FormInput';
 import { FormSelectSimple } from '../FormSelectSimple';
 import { FormSubmitButton } from '../FormSubmitButton';
-
+import { FormTextArea } from '../FormTextArea';
+import { FormSwitch } from '../FormSwitch';
+import { FormRadioGroup } from '../FormRadioGroup';
 import { Select } from 'tamagui';
 import { action } from '@storybook/addon-actions';
-import { FormSwitch, FormTextArea, FormRadioGroup } from 'ui/src';
 
 export default {
   title: 'forms/SimpleForm',
