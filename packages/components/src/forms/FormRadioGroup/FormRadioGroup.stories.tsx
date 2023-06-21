@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormRadioGroup } from './index';
+import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'forms/FormRadioGroup',
@@ -18,5 +19,6 @@ export const main = () => (
       { label: 'option 2', value: 'option2' },
       { label: 'option 3', value: 'option3' },
     ]}
+    onValueChange={action('onValueChange')}
   />
 );

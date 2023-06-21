@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormCheckBox } from './index';
-import { Text } from 'tamagui';
+import { YStack } from 'tamagui';
+import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'forms/FormCheckBox',
@@ -9,7 +10,26 @@ export default {
 };
 
 export const main = () => (
-  <FormCheckBox name="checkbox" label="checkbox" checkBoxElement={{ label: 'checkbox', value: 'checkbox' }}>
-    <Text>Hello this is from FormCheckBox</Text>
-  </FormCheckBox>
+  <YStack>
+    <FormCheckBox
+      name="checkbox"
+      checkBoxElement={{ label: 'mango', value: 'mango' }}
+      onCheckedChange={action('onCheckedChange')}
+    />
+    <FormCheckBox
+      name="checkbox"
+      checkBoxElement={{ label: 'orange', value: 'orange' }}
+      onCheckedChange={action('onCheckedChange')}
+    />
+    <FormCheckBox
+      name="checkbox"
+      checkBoxElement={{ label: 'banana', value: 'banana' }}
+      onCheckedChange={action('onCheckedChange')}
+    />
+    <FormCheckBox
+      name="checkbox"
+      checkBoxElement={{ label: 'lemon', value: 'lemon' }}
+      onCheckedChange={action('onCheckedChange')}
+    />
+  </YStack>
 );
