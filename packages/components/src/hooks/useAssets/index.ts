@@ -1,31 +1,11 @@
-import type { Asset } from './types';
+import type { StaticImageData } from 'next/dist/client/image';
 
-export function useAssets(modules: any | any[]): (Asset | undefined)[] {
-  const modulesArr = (Array.isArray(modules) ? modules : [modules]).map((module: any) => {
-    if (typeof module.default !== 'undefined' && module.__esModule === true) return module.default;
-    return module;
-  });
-  return modulesArr.map((module: WebModule) =>
-    typeof module === 'string'
-      ? {
-          uri: module,
-        }
-      : {
-          uri: module.src,
-          height: module.height,
-          blurDataURL: module.blurDataURL,
-          width: module.width,
-        },
+export function useAssets(modules: any | any[]): (StaticImageData | undefined)[] {
+  const modulesArr: (StaticImageData | undefined)[] = (Array.isArray(modules) ? modules : [modules]).map(
+    (module: any) => {
+      if (typeof module.default !== 'undefined') return module.default;
+      return module;
+    },
   );
+  return modulesArr;
 }
-
-type WebModule =
-  | string
-  | {
-      blurDataURL?: string;
-      height?: 850;
-      src: string;
-      width?: 1024;
-    };
-
-export type { Asset };

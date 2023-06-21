@@ -2,6 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { useAssets } from '../../hooks';
 import { SimpleImage } from './index';
+import { YStack } from 'tamagui';
 
 export default {
   title: 'images/SimpleImage',
@@ -53,3 +54,28 @@ function WithRequire() {
   );
 }
 export const withRequire = () => <WithRequire />;
+
+export const withYStack = () => (
+  <YStack>
+    <YStack width="50%" height={200} bg="red" />
+    <YStack width="50%" height={200} bg="blue" />
+    <SimpleImage
+      bg="green"
+      height={200}
+      resizeMode="stretch"
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Inukshuk_Park_05.jpg/500px-Inukshuk_Park_05.jpg"
+      width="50%"
+    />
+  </YStack>
+);
+
+export const withTamagui = () => (
+  <YStack>
+    <SimpleImage
+      bg="$green9"
+      h="$19"
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Inukshuk_Park_05.jpg/500px-Inukshuk_Park_05.jpg"
+      w="100%"
+    />
+  </YStack>
+);

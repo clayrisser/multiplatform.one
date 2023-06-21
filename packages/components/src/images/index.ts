@@ -1,2 +1,2 @@
-export * from './SimpleImage';
+export * from './SimpleImage/_index';
 export * from './Svg';

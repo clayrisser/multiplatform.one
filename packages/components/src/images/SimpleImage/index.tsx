@@ -1,174 +1,133 @@
-import React, { useEffect, useState } from 'react';
-import type { ImageProps, YStackProps } from 'tamagui';
-import type { ImageURISource, ImageResizeMode } from 'react-native';
-import type { SvgUriProps } from '../SvgUri';
-import { MultiPlatform } from 'multiplatform.one';
-import { Platform, Image as RNImage } from 'react-native';
-import { SvgUri } from '../SvgUri';
-import { XMLParser } from 'fast-xml-parser';
-import { YStack, Image } from 'tamagui';
-import { getTokens } from 'tamagui';
+import React, { useMemo, forwardRef } from 'react';
+import type { ComponentProps, Ref } from 'react';
+import type { Image } from 'expo-image';
+import type { SolitoImageProps } from 'solito/build/image/image.types';
+import type { StackProps } from 'tamagui';
+import type { StaticImageData } from 'next/dist/client/image';
+import { SolitoImage } from 'solito/image';
+import { Stack, styled } from 'tamagui';
 import { useAssets } from '../../hooks/useAssets';
-import { useMemo } from 'react';
 
-export type SimpleImageProps = Omit<ImageProps, 'src' | 'source'> & {
-  src?: ImageURISource | string;
-  svg?: boolean;
-};
+type Props = Omit<SolitoImageProps, 'height' | 'width' | 'src' | 'fill' | 'style' | 'alt'> &
+  Omit<StackProps, 'height' | 'width'> & {
+    alt?: string;
+    height?: number | string;
+    src?: StaticImport | string | number;
+    width?: number | string;
+  };
 
-export function SimpleImage({
-  aspectRatio,
-  h,
-  height,
-  resizeMode,
-  src,
-  svg,
-  w,
-  width,
-  ...imageProps
-}: SimpleImageProps) {
-  const tokens = getTokens();
-  height = tokens.size[(height || h) as string]?.val || height || h;
-  width = tokens.size[(width || w) as string]?.val || width || w;
-  const preserveAspectRatio = useMemo(() => getPreserveAspectRatio(resizeMode), [resizeMode]);
-  let source: string | number | ImageURISource | undefined = src;
-  if ((typeof src === 'object' && typeof (src as ImageURISource).uri === 'undefined') || typeof src === 'number') {
-    [source] = useAssets(src);
-  }
-  const [imageAspectRatio, setImageAspectRatio] = useState(
-    typeof source === 'object' && source.width && source.height ? source.width / source.height : undefined,
-  );
-  if (!Number.isFinite(aspectRatio)) aspectRatio = imageAspectRatio;
-  const uri = typeof source === 'object' ? source.uri : source;
-  const origin = uri?.replace(/\?.+/g, '');
-  // fixes bug on web where width is calculated differently than on native
-  if (
-    Platform.OS === 'web' &&
-    typeof aspectRatio === 'number' &&
-    typeof height === 'number' &&
-    Number.isFinite(height) &&
-    (!Number.isFinite(width) || width === 'auto')
-  ) {
-    width = height * aspectRatio;
-  }
-  if (Number.isFinite(height) && Number.isFinite(width)) aspectRatio = undefined;
-  const isSvg =
-    svg ||
-    (((src as any)?.type === 'svg' || origin?.substring(origin.length - 4) === '.svg') && typeof svg === 'undefined');
+export const SimpleImage = styled(
+  forwardRef<Image, Props>(
+    (
+      {
+        alt,
+        blurDataURL,
+        contentFit,
+        contentPosition,
+        crossOrigin,
+        height,
+        loader,
+        loading,
+        onLayout,
+        onLoadingComplete,
+        placeholder,
+        priority,
+        quality,
+        aspectRatio,
+        referrerPolicy,
+        resizeMode,
+        sizes,
+        src,
+        unoptimized,
+        width,
+        ...props
+      }: Props,
+      ref: Ref<Image>,
+    ) => {
+      console.log('R', props);
+      let asset: StaticImageData | undefined;
+      if (typeof src === 'number') [asset] = useAssets([src]);
+      const staticImageData = useMemo(() => {
+        if (typeof src === 'string') return;
+        if (typeof src === 'number') return asset;
+        return (src as { default?: StaticImageData })?.default || (src as StaticImageData);
+      }, [asset, src]);
 
-  useEffect(() => {
-    if (Platform.OS !== 'web' && isSvg) {
-      (async () => {
-        const meta = await getSvgMeta(uri);
-        const height = Number.isFinite(meta.height) ? meta.height : meta.viewBox?.[3];
-        const width = Number.isFinite(meta.width) ? meta.width : meta.viewBox?.[2];
-        if (
-          typeof height === 'number' &&
-          Number.isFinite(height) &&
-          typeof width === 'number' &&
-          Number.isFinite(width)
-        ) {
-          setImageAspectRatio(width / height);
+      const mAspectRatio = useMemo(() => {
+        if (typeof aspectRatio === 'string') {
+          const [width, height] = aspectRatio.split(':');
+          return parseInt(width, 10) / parseInt(height, 10);
         }
-      })();
-    } else if (typeof uri !== 'number' && uri /* && calculateHeight */) {
-      RNImage.getSize(uri, (width: number, height: number) => {
-        const ratio = width / height;
-        if (Number.isFinite(ratio)) setImageAspectRatio(ratio);
-      });
-    }
-  }, [uri]);
+        return aspectRatio;
+      }, [aspectRatio]);
 
-  if (!uri) {
-    return <YStack {...(imageProps as YStackProps)} width={width} height={height} aspectRatio={aspectRatio} />;
-  }
-  if (!MultiPlatform.isWeb && isSvg) {
-    return (
-      <SvgUri
-        {...(imageProps as Partial<SvgUriProps>)}
-        width={Number.isFinite(width) ? (width as number) : Number.isFinite(height) ? undefined : '100%'}
-        height={height as number}
-        preserveAspectRatio={preserveAspectRatio}
-        aspectRatio={aspectRatio}
-        uri={uri}
-      />
-    );
-  }
-  return (
-    <Image
-      zIndex={undefined}
-      {...imageProps}
-      // @ts-ignore
-      width={width}
-      // @ts-ignore
-      height={height}
-      aspectRatio={aspectRatio}
-      resizeMode={resizeMode}
-      source={{ uri }}
-    />
-  );
+      const solitoHeight = useMemo(() => {
+        if (typeof height === 'string') return;
+        if (typeof height === 'number') return height;
+        const w = typeof width === 'number' ? width : staticImageData?.width;
+        if (typeof w === 'number' && typeof mAspectRatio === 'number') return w / mAspectRatio;
+        return staticImageData?.height;
+      }, [mAspectRatio, staticImageData?.width, staticImageData?.height, width, height]);
+
+      console.log('solitoHeight', solitoHeight, height, props.h);
+
+      const solitoWidth = useMemo(() => {
+        if (typeof width === 'string') return;
+        if (typeof width === 'number') return width;
+        const h = typeof height === 'number' ? height : staticImageData?.height;
+        if (typeof h === 'number' && typeof mAspectRatio === 'number') return h * mAspectRatio;
+        return staticImageData?.width;
+      }, [mAspectRatio, staticImageData?.width, staticImageData?.height, width, height]);
+
+      const fill = useMemo(() => {
+        if (typeof solitoWidth === 'undefined' || typeof solitoHeight === 'undefined') {
+          return true;
+        }
+        return false;
+      }, [solitoWidth, solitoHeight]);
+
+      return (
+        <Stack {...props} aspectRatio={aspectRatio} width={width} height={height}>
+          {src && (
+            <SolitoImage
+              alt={alt || ''}
+              blurDataURL={blurDataURL}
+              contentFit={contentFit}
+              contentPosition={contentPosition}
+              crossOrigin={crossOrigin}
+              fill={fill}
+              height={fill ? undefined : solitoHeight}
+              loader={loader}
+              loading={loading}
+              onLayout={onLayout}
+              onLoadingComplete={onLoadingComplete}
+              placeholder={placeholder}
+              priority={priority}
+              quality={quality}
+              ref={ref}
+              referrerPolicy={referrerPolicy}
+              resizeMode={resizeMode}
+              sizes={sizes}
+              src={src as any}
+              unoptimized={unoptimized}
+              width={fill ? undefined : solitoWidth}
+            />
+          )}
+        </Stack>
+      );
+    },
+  ),
+  undefined,
+  {
+    acceptsClassName: true,
+    neverFlatten: true,
+  },
+);
+
+export interface StaticRequire {
+  default: StaticImageData;
 }
 
-SimpleImage.defaultProps = {
-  resizeMode: 'cover',
-};
+export type StaticImport = StaticRequire | StaticImageData;
 
-function getPreserveAspectRatio(resizeMode?: ImageResizeMode): string {
-  switch (resizeMode) {
-    case 'stretch': {
-      return 'none';
-    }
-    case 'contain': {
-      return 'xMidYMid meet';
-    }
-  }
-  return 'xMidYMid slice';
-}
-
-const logger = console;
-const parser = new XMLParser({
-  ignoreAttributes: false,
-  attributeNamePrefix: '@_',
-  allowBooleanAttributes: true,
-});
-
-async function getSvgMeta(uri?: string | number) {
-  const meta: SvgMeta = {};
-  if (Platform.OS === 'web' || typeof uri === 'number' || !uri) return meta;
-  const res = await fetch(uri);
-  try {
-    const xml = parser.parse(await res.text());
-    const width = parseInt(xml?.svg?.['@_width'], 10);
-    const height = parseInt(xml?.svg?.['@_height'], 10);
-    const viewBox = xml?.svg?.['@_viewBox']
-      ?.toString()
-      .split(' ')
-      .reduce(
-        (viewBox: SvgViewBox | undefined, itemStr: string, i: number) => {
-          if (!viewBox) return {};
-          const itemNum = parseInt(itemStr, 10);
-          if (!Number.isFinite(itemNum)) return {};
-          viewBox[i] = itemNum;
-          return viewBox;
-        },
-        [0, 0, 0, 0],
-      ) as SvgViewBox;
-    if (typeof width === 'number' && Number.isFinite(width)) meta.width = width;
-    if (typeof height === 'number' && Number.isFinite(height)) meta.height = height;
-    if (viewBox) meta.viewBox = viewBox;
-    return meta;
-  } catch (err) {
-    logger.error(err);
-  }
-  return meta;
-}
-
-type Width = number;
-type Height = number;
-export type SvgViewBox = [number, number, Width, Height];
-
-export interface SvgMeta {
-  height?: number;
-  viewBox?: SvgViewBox;
-  width?: number;
-}
+export type SimpleImageProps = ComponentProps<typeof SimpleImage>;
