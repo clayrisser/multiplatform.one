@@ -72,5 +72,3 @@ export function createStateStore<State extends InitStateType, Actions extends Ac
 export function setDefaultCrossStorage(_hubUrl: string, _options?: Partial<CrossStorageClientOptions>) {
   return;
 }
-
-export type * from './types';

@@ -1,3 +1,4 @@
+import React from 'react';
 import type { ComponentType } from 'react';
 
 const isPerformanceNow = typeof performance !== 'undefined' && performance.now;

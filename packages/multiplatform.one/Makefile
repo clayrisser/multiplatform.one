@@ -20,8 +20,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include mkpm.mk
+include ../../mkpm.mk
 ifneq (,$(MKPM_READY))
+DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
 include $(MKPM)/mkchain
 include $(MKPM)/yarn
@@ -69,6 +70,7 @@ BUILD_TARGET := dist/lib/index.js
 dist/lib/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
+	@$(RM) -rf dist
 	@$(NODE) esbuild.config.mjs
 	@$(TSC) -p tsconfig.build.json -d
 	@$(call done,build)
