@@ -20,8 +20,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include mkpm.mk
+include ../../mkpm.mk
 ifneq (,$(MKPM_READY))
+DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
 include $(MKPM)/mkchain
 include $(MKPM)/yarn
