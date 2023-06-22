@@ -6,7 +6,7 @@ include $(MKPM)/envcache
 include $(MKPM)/mkchain
 include $(MKPM)/dotenv
 include $(MKPM)/yarn
-include ../../shared.mk
+include $(PROJECT_ROOT)/shared.mk
 
 export TAMAGUI_BUILD ?= $(call yarn_binary,tamagui-build)
 

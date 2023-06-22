@@ -22,4 +22,4 @@
  * limitations under the License.
  */
 
-export * from '../dist/lib/recoil';
+export * from '../lib/recoil';

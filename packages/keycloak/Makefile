@@ -28,6 +28,7 @@ include $(MKPM)/mkchain
 include $(MKPM)/yarn
 include $(MKPM)/envcache
 include $(MKPM)/dotenv
+include $(PROJECT_ROOT)/shared.mk
 
 export CLOC ?= cloc
 export CSPELL ?= $(call yarn_binary,cspell)

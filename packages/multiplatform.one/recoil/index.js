@@ -22,4 +22,4 @@
  * limitations under the License.
  */
 
-module.exports = require('../dist/lib/recoil');
+module.exports = require('../lib/recoil.js');

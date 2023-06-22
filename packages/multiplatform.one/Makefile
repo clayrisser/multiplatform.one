@@ -28,13 +28,7 @@ include $(MKPM)/mkchain
 include $(MKPM)/yarn
 include $(MKPM)/envcache
 include $(MKPM)/dotenv
-
-export CLOC ?= cloc
-export CSPELL ?= $(call yarn_binary,cspell)
-export ESLINT ?= $(call yarn_binary,eslint)
-export JEST ?= $(call yarn_binary,jest)
-export PRETTIER ?= $(call yarn_binary,prettier)
-export TSC ?= $(call yarn_binary,tsc)
+include $(PROJECT_ROOT)/shared.mk
 
 export NPM_AUTH_TOKEN ?= $(shell $(CAT) $(HOME)/.docker/config.json | \
 	$(JQ) -r '.auths["registry.gitlab.com"].auth' | $(BASE64_NOWRAP) -d | $(CUT) -d':' -f2)
@@ -70,9 +64,7 @@ BUILD_TARGET := dist/lib/index.js
 dist/lib/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(RM) -rf dist
-	@$(NODE) esbuild.config.mjs
-	@$(TSC) -p tsconfig.build.json -d
+	@$(TSUP)
 	@$(call done,build)
 
 # .PHONY: start +start

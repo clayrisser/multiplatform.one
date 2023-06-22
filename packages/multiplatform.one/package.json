@@ -2,32 +2,31 @@
   "name": "multiplatform.one",
   "version": "0.7.0",
   "description": "multiplatform.one ecosystem",
-  "main": "dist/lib",
-  "module": "dist/esm",
-  "module:jsx": "dist/jsx",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
   "react-native": "src/index.ts",
   "source": "src/index.ts",
-  "types": "dist/lib/index.d.ts",
+  "types": "lib/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/lib/index.js",
-      "types": "./dist/lib/index.d.ts"
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
     },
     "./next": {
-      "import": "./dist/esm/next/index.mjs",
-      "require": "./dist/lib/next/index.js",
-      "types": "./dist/lib/next/index.d.ts"
+      "import": "./lib/next/index.mjs",
+      "require": "./lib/next/index.js",
+      "types": "./lib/next/index.d.ts"
     },
     "./recoil": {
-      "import": "./dist/esm/recoil/index.mjs",
-      "require": "./dist/lib/recoil/index.js",
-      "types": "./dist/lib/recoil/index.d.ts"
+      "import": "./lib/recoil/index.mjs",
+      "require": "./lib/recoil/index.js",
+      "types": "./lib/recoil/index.d.ts"
     },
     "./zustand": {
-      "import": "./dist/esm/zustand/index.mjs",
-      "require": "./dist/lib/zustand/index.js",
-      "types": "./dist/lib/zustand/index.d.ts"
+      "import": "./lib/zustand/index.mjs",
+      "require": "./lib/zustand/index.js",
+      "types": "./lib/zustand/index.d.ts"
     }
   },
   "author": "Risser Labs LLC",
@@ -41,6 +40,7 @@
   "license": "Apache-2.0",
   "files": [
     "dist",
+    "index.d.ts",
     "next",
     "recoil",
     "src",

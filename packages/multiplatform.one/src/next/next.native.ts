@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-import type { GetStaticPaths } from 'next';
+import type { GetStaticPaths } from 'next/types';
 
 export async function getBaseProps(_locale: any, _namespacesRequired: string[] = []) {
   return {};

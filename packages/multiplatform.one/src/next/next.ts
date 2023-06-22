@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-import type { GetStaticPaths } from 'next';
+import type { GetStaticPaths } from 'next/types';
 import { MultiPlatform } from '../multiplatform';
 
 export async function getBaseProps(locale: any, namespacesRequired: string[] = []) {

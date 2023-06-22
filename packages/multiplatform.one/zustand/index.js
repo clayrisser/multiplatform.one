@@ -22,4 +22,4 @@
  * limitations under the License.
  */
 
-module.exports = require('../dist/lib/zustand');
+module.exports = require('../lib/zustand.js');

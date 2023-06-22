@@ -22,10 +22,10 @@
  * limitations under the License.
  */
 
+import type { CreateAsyncCrossStorageOptions } from './crossStorage';
 import type { InitStateType } from 'zustand-tools/dist/types';
 import type { PersistOptions, DevtoolsOptions } from 'zustand/middleware';
-import type { StateCreator, StoreApi } from 'zustand';
-import type { CreateAsyncCrossStorageOptions } from './crossStorage';
+import type { StateCreator, StoreApi } from 'zustand/vanilla';
 
 export type MiddlewareOptionType<State extends InitStateType> = (
   initializer: StateCreator<State>,

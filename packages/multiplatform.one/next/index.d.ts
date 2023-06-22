@@ -22,4 +22,4 @@
  * limitations under the License.
  */
 
-export * from '../dist/lib/next';
+export * from '../lib/next';

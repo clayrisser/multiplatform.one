@@ -22,4 +22,4 @@
  * limitations under the License.
  */
 
-module.exports = require('../dist/lib/next');
+module.exports = require('../lib/next.js');
