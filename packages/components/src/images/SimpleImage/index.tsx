@@ -55,12 +55,13 @@ const SimpleImageComponent = forwardRef<Image, Props>(
     }, [asset, src]);
 
     const mAspectRatio = useMemo(() => {
-      if (typeof aspectRatio === 'string') {
-        const [width, height] = aspectRatio.split(':');
+      const sAspectRatio = aspectRatio || style.aspectRatio;
+      if (typeof sAspectRatio === 'string') {
+        const [width, height] = sAspectRatio.split(':');
         return parseInt(width, 10) / parseInt(height, 10);
       }
-      return aspectRatio;
-    }, [aspectRatio]);
+      return sAspectRatio;
+    }, [aspectRatio, style.aspectRatio]);
 
     const solitoHeight = useMemo(() => {
       if (typeof height === 'string') return;
@@ -75,7 +76,7 @@ const SimpleImageComponent = forwardRef<Image, Props>(
           : staticImageData?.width;
       if (typeof w === 'number' && typeof mAspectRatio === 'number') return w / mAspectRatio;
       return staticImageData?.height;
-    }, [mAspectRatio, staticImageData?.width, staticImageData?.height, width, height]);
+    }, [mAspectRatio, staticImageData?.width, staticImageData?.height, style.width, style.height, width, height]);
 
     const solitoWidth = useMemo(() => {
       if (typeof width === 'string') return;
@@ -90,7 +91,7 @@ const SimpleImageComponent = forwardRef<Image, Props>(
           : staticImageData?.height;
       if (typeof h === 'number' && typeof mAspectRatio === 'number') return h * mAspectRatio;
       return staticImageData?.width;
-    }, [mAspectRatio, staticImageData?.width, staticImageData?.height, width, height]);
+    }, [mAspectRatio, staticImageData?.width, staticImageData?.height, style.width, style.height, width, height]);
 
     const fill = useMemo(() => {
       if (typeof solitoWidth === 'undefined' || typeof solitoHeight === 'undefined') {
