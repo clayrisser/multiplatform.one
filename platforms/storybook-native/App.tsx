@@ -56,5 +56,5 @@ export default function App() {
       </GlobalProvider>
     );
   }
-  return <GlobalProvider>{render()}</GlobalProvider>;
+  return <GlobalProvider tamaguiConfig={tamaguiConfig}>{render()}</GlobalProvider>;
 }

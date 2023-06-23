@@ -1,10 +1,12 @@
-import type { GenericTamaguiConfig } from 'tamagui';
-import { MultiPlatform, createDefaultFont } from 'multiplatform.one';
+import { createDefaultFont } from 'multiplatform.one';
 import { createInterFont } from '@tamagui/font-inter';
 
-export const fonts: GenericTamaguiConfig['fonts'] = {
+export const fonts = {
+  rockSalt: createDefaultFont({
+    family: 'Rock Salt',
+  }),
   silkscreen: createDefaultFont({
-    family: MultiPlatform.isWeb ? 'Silkscreen, Fira Code, Monaco, Consolas, Ubuntu Mono, monospace' : 'Silkscreen',
+    family: 'Silkscreen',
   }),
   heading: createInterFont({
     size: {
@@ -48,4 +50,4 @@ export const fonts: GenericTamaguiConfig['fonts'] = {
       sizeLineHeight: (size) => Math.round(size * 1.1 + (size > 20 ? 10 : 10)),
     },
   ),
-};
+} as const;

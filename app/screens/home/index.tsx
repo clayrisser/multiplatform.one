@@ -20,7 +20,7 @@ function HomeScreen() {
         </Paragraph>
         <Separator />
         <Paragraph ta="center">
-          <Anchor color="$color12" href="https://multiplatform.one" target="_blank">
+          <Anchor fontFamily="$rockSalt" color="$color12" href="https://multiplatform.one" target="_blank">
             multiplatform.one
           </Anchor>
         </Paragraph>

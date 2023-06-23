@@ -6,7 +6,9 @@
     "*.css"
   ],
   "dependencies": {
+    "@expo-google-fonts/rock-salt": "^0.2.3",
     "@expo-google-fonts/silkscreen": "^0.2.3",
+    "@fontsource/rock-salt": "^5.0.3",
     "@fontsource/silkscreen": "^5.0.3",
     "@multiplatform.one/keycloak": "workspace:^",
     "@react-navigation/native": "^6.1.7",
@@ -43,6 +45,5 @@
     "reportPath": ".mkpm/.tmp/reports",
     "reportFile": "test-report.xml",
     "indent": 4
-  },
-  "version": null
+  }
 }

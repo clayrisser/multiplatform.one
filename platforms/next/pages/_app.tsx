@@ -1,7 +1,10 @@
+import '../global.css';
 import '@multiplatform.one/components/css/code-highlight.css';
 import '@tamagui/core/reset.css';
 import 'raf/polyfill';
+import * as Sentry from '@sentry/react';
 import Head from 'next/head';
+import { setDefaultCrossStorage } from 'multiplatform.one/zustand';
 import React, { startTransition, useEffect, useMemo } from 'react';
 import cookie from 'cookie';
 import tamaguiConfig from '../tamagui.config';
@@ -18,6 +21,15 @@ import { config } from 'app/config';
 import { importFonts } from 'app/fonts';
 import { useThemeState } from 'app/state/theme';
 
+const sentryDsn = config.get('SENTRY_DSN');
+if (sentryDsn) {
+  Sentry.init({
+    dsn: sentryDsn,
+  });
+}
+
+const crossStorageHubUrl = config.get('CROSS_STORAGE_HUB_URL');
+if (crossStorageHubUrl) setDefaultCrossStorage(crossStorageHubUrl);
 const automaticStaticOptimization = config.get('NEXT_AUTOMATIC_STATIC_OPTIMIZATION') === '1';
 const nextStatic = config.get('NEXT_STATIC') === '1';
 const keycloak: GlobalProviderKeycloak = {

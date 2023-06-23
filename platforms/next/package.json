@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "@next/bundle-analyzer": "^13.4.7",
+    "@sentry/react": "^7.56.0",
     "@tamagui/next-plugin": "^1.35.8",
     "@tamagui/next-theme": "^1.35.8",
     "cookie": "^0.5.0",
@@ -13,13 +14,13 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.8",
-    "react-native-web": "~0.18.12",
+    "react-native-web": "~0.18.10",
     "react-native-web-lite": "^1.35.8"
   },
   "devDependencies": {
     "@expo/next-adapter": "^5.0.2",
     "@types/cookie": "^0.5.1",
-    "@types/node": "~18.16.14"
+    "@types/node": "~18.16.15"
   },
   "transpileModules": [
     "@multiplatform.one/components",

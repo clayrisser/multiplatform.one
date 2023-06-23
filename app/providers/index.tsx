@@ -1,7 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { Suspense } from 'react';
 import type { KeycloakProviderProps } from './keycloak';
 import type { ProviderProps } from './types';
-import type { ReactNode } from 'react';
 import type { TamaguiInternalConfig } from 'ui';
 import type { TamaguiProviderProps } from './tamagui';
 import { KeycloakProvider } from './keycloak';
@@ -18,22 +17,14 @@ export type GlobalProviderProps = ProviderProps &
   };
 
 export function GlobalProvider({ children, keycloak, cookies, tamaguiConfig, ...props }: GlobalProviderProps) {
-  const renderKeycloakProvider = useCallback(
-    (children: ReactNode) =>
-      keycloak ? (
-        <KeycloakProvider disabled={!!keycloak} cookies={cookies} {...keycloak}>
-          <>{children}</>
-        </KeycloakProvider>
-      ) : (
-        <>{children}</>
-      ),
-    [keycloak, cookies, children],
-  );
-
-  return renderKeycloakProvider(
-    <TamaguiProvider config={tamaguiConfig} {...props}>
-      <NavigationProvider>{children}</NavigationProvider>
-    </TamaguiProvider>,
+  return (
+    <KeycloakProvider disabled={!keycloak} cookies={cookies} {...keycloak}>
+      <TamaguiProvider config={tamaguiConfig} {...props}>
+        <Suspense>
+          <NavigationProvider>{children}</NavigationProvider>
+        </Suspense>
+      </TamaguiProvider>
+    </KeycloakProvider>
   );
 }
 

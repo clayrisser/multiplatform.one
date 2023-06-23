@@ -25,7 +25,7 @@
   "resolutions": {
     "@storybook/types": "^7.0.15",
     "@types/react": "^18.2.7",
-    "@types/react-native": "^0.72.1",
+    "@types/react-native": "^0.72.2",
     "estree-util-build-jsx": "2.2.0",
     "estree-walker": "2.0.2",
     "is-reference": "1.2.1",
@@ -36,12 +36,10 @@
     "react-native-svg": "13.4.0",
     "react-native-web": "~0.18.10",
     "react-refresh": "^0.14.0",
-    "zustand": "^4.3.8",
     "expo-keycloak-auth@1.0.14": "patch:expo-keycloak-auth@npm%3A1.0.14#./.yarn/patches/expo-keycloak-auth-npm-1.0.14-78201597ce.patch"
   },
   "tamaguiModules": [
     "@multiplatform.one/components",
-    "solito",
     "ui"
   ],
   "transpileModules": [
@@ -52,7 +50,8 @@
     "expo-modules-core",
     "react-native-recoil-persist",
     "react-native-svg",
-    "react-native-web"
+    "react-native-web",
+    "solito"
   ],
   "packageManager": "yarn@3.3.1",
   "prettier": "eslint-config-alloy/.prettierrc.js",

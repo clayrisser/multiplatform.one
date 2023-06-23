@@ -5,6 +5,8 @@ module.exports = {
   KEYCLOAK_ENABLED: process.env.KEYCLOAK_ENABLED,
   KEYCLOAK_REALM: process.env.KEYCLOAK_REALM,
   KEYCLOAK_SSR: process.env.KEYCLOAK_SSR,
+  CROSS_STORAGE_HUB_URL: process.env.CROSS_STORAGE_HUB_URL,
+  SENTRY_DSN: process.env.SENTRY_DSN,
 };
 
 delete process.env.DEBUG;
