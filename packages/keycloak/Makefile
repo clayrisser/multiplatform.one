@@ -71,8 +71,7 @@ BUILD_TARGET := dist/lib/index.js
 dist/lib/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(NODE) esbuild.config.mjs
-	@$(TSC) -p tsconfig.build.json -d
+	@$(TSUP)
 	@$(call done,build)
 
 # .PHONY: start +start

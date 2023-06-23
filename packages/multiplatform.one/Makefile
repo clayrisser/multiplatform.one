@@ -78,8 +78,10 @@ coverage: | ~lint +coverage
 +coverage:
 	@$(JEST) --coverage --collectCoverageFrom='$(COLLECT_COVERAGE_FROM)' $(ARGS)
 
-.PHONY: prepare
-prepare: ;
+.PHONY: prepack
+prepack:
+	@echo PREPARING
+	@exit 1
 
 .PHONY: upgrade
 upgrade:

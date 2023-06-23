@@ -1,9 +1,35 @@
 {
-  "extends": "../../tsconfig.base",
   "compilerOptions": {
-    "rootDir": ".",
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
     "composite": true,
-    "esModuleInterop": true
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "lib": ["es2021", "dom", "esnext"],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "noEmitOnError": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveConstEnums": true,
+    "preserveSymlinks": true,
+    "removeComments": false,
+    "resolveJsonModule": true,
+    "rootDir": ".",
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "strictNullChecks": true,
+    "types": ["node", "jest"],
+    "useUnknownInCatchVariables": false
   },
-  "references": []
+  "exclude": ["_"],
+  "typeAcquisition": {
+    "enable": true
+  }
 }

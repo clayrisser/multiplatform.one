@@ -3,6 +3,7 @@
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
+    "composite": true,
     "downlevelIteration": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -24,7 +25,7 @@
     "skipLibCheck": true,
     "sourceMap": false,
     "strictNullChecks": true,
-    "types": ["node"],
+    "types": ["node", "jest"],
     "useUnknownInCatchVariables": false
   },
   "exclude": ["_"],

@@ -2,17 +2,16 @@
   "name": "@multiplatform.one/keycloak",
   "version": "0.3.33",
   "description": "keycloak client for multiplatform.one ecosystem",
-  "main": "dist/lib",
-  "module": "dist/esm",
-  "module:jsx": "dist/jsx",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
   "react-native": "src/index.ts",
   "source": "src/index.ts",
-  "types": "dist/lib/index.d.ts",
+  "types": "lib/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/lib/index.js",
-      "types": "./dist/lib/index.d.ts"
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
     }
   },
   "author": "Risser Labs LLC",
@@ -33,18 +32,6 @@
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/risserlabs/multiplatform.one/keycloak"
-  },
-  "scripts": {
-    "build": "make -s build",
-    "clean": "make -s clean",
-    "coverage": "make -s coverage",
-    "format": "make -s format",
-    "lint": "make -s lint",
-    "prepare": "make -s prepare",
-    "purge": "make -s purge",
-    "spellcheck": "make -s spellcheck",
-    "start": "make -s start",
-    "test": "make -s test"
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
@@ -90,19 +77,21 @@
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   },
-  "packageManager": "yarn@3.3.0",
   "engines": {
     "node": ">=6.0.0"
   },
   "eslintIgnore": [
-    "dist"
+    "dist",
+    "lib"
   ],
   "jest": {
     "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
     "testEnvironment": "node",
+    "preset": "ts-jest",
     "verbose": true,
     "testPathIgnorePatterns": [
-      "<rootDir>/dist/"
+      "<rootDir>/dist/",
+      "<rootDir>/lib/"
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/tests/_setup.ts"

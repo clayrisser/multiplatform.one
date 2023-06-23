@@ -71,8 +71,7 @@ storybook/docker/%:
 	@$(MAKE) -sC platforms/storybook/docker $(subst storybook/docker/,,$@) ARGS=$(ARGS)
 
 .PHONY: build
-build: $(patsubst %,%/build,$(shell $(LS) packages))
-	@echo $^
+build: | $(patsubst %,%/+build,$(shell $(LS) packages))
 
 .PHONY: publish
 publish: components/publish
