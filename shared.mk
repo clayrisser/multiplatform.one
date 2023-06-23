@@ -32,3 +32,5 @@ CACHE_ENVS += \
 	TSC \
 	TSUP \
 	WATCHMAN
+
+export TAMAGUI_IGNORE_BUNDLE_ERRORS := solito/image,solito/link
