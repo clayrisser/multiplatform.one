@@ -2,6 +2,7 @@ export BABEL ?= $(call yarn_binary,babel)
 export BABEL_NODE ?= $(call yarn_binary,babel-node)
 export BROWSERSLIST_BINARY ?= $(call yarn_binary,browserslist)
 export BUILD_STORYBOOK ?= $(call yarn_binary,build-storybook)
+export CHANGESET ?= $(call yarn_binary,changeset)
 export CLOC ?= cloc
 export CSPELL ?= $(call yarn_binary,cspell)
 export ESLINT ?= $(call yarn_binary,eslint)
@@ -21,6 +22,7 @@ CACHE_ENVS += \
 	BABEL \
 	BABEL_NODE \
 	BROWSERSLIST_BINARY \
+	CHANGESET \
 	CLOC \
 	CSPELL \
 	ESLINT \

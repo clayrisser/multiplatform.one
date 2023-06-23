@@ -13,5 +13,4 @@ export default defineConfig({
   skipNodeModulesBundle: true,
   splitting: true,
   target: 'es5',
-  tsconfig: 'tsconfig.build.json',
 });

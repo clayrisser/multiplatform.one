@@ -8,6 +8,7 @@
     "ui"
   ],
   "devDependencies": {
+    "@changesets/cli": "^2.26.1",
     "@swc/core": "^1.3.66",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.60.0",

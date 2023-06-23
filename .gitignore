@@ -1,5 +1,6 @@
 # app
 .env
+/.changeset/*.md
 /null
 
 # node

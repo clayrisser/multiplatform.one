@@ -74,7 +74,7 @@
     "moti": "^0.25.3",
     "react-native-reanimated": "2.14.4",
     "solito": "^3.2.9",
-    "ui": "*"
+    "ui": "workspace:^"
   },
   "jest": {
     "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",

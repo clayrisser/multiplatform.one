@@ -1,0 +1,9 @@
+{
+  "access": "public",
+  "baseBranch": "main",
+  "changelog": false,
+  "commit": false,
+  "ignore": [],
+  "linked": [],
+  "updateInternalDependencies": "patch"
+}
