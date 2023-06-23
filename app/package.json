@@ -19,6 +19,7 @@
     "@tamagui/font-munro": "^1.35.8",
     "@tamagui/font-silkscreen": "^1.35.8",
     "@tamagui/lucide-icons": "^1.35.8",
+    "@tamagui/toast": "^1.35.8",
     "expo-keycloak-auth": "^1.0.14",
     "expo-linking": "^4.1.0",
     "expo-random": "^13.2.0",
@@ -33,7 +34,7 @@
     "zustand": "^4.3.8"
   },
   "devDependencies": {
-    "@types/react": "^18.2.13",
+    "@types/react": "^18.2.14",
     "@types/react-native": "^0.72.2"
   },
   "jest": {

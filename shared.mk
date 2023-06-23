@@ -10,10 +10,10 @@ export EXPO ?= $(call yarn_binary,expo)
 export GM ?= command gm
 export JEST ?= $(call yarn_binary,jest)
 export LOKI ?= $(call yarn_binary,loki)
-export PRETTIER := $(call yarn_binary,prettier)
 export TSC ?= $(call yarn_binary,tsc)
 export TSUP ?= $(call yarn_binary,tsup)
 export WATCHMAN ?= watchman
+export PRETTIER := $(call yarn_binary,prettier)
 
 export NPM_AUTH_TOKEN ?= $(shell $(CAT) $(HOME)/.docker/config.json 2>$(NULL) | \
 	$(JQ) -r '.auths["registry.gitlab.com"].auth' | $(BASE64_NOWRAP) -d | $(CUT) -d':' -f2)
