@@ -1,6 +1,6 @@
 {
   "name": "multiplatform.one",
-  "version": "0.7.0",
+  "version": "0.7.2",
   "description": "multiplatform.one ecosystem",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -41,6 +41,7 @@
   "files": [
     "dist",
     "index.d.ts",
+    "lib",
     "next",
     "recoil",
     "src",

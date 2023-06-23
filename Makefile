@@ -20,30 +20,30 @@ $(ACTION)/install: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.j
 	@$(call done,install)
 	@$(MAKE) build
 
-ACTIONS += format~install ##
+ACTIONS += format ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 	@$(call workspace_foreach,format,$(ARGS))
 	@$(call done,format)
 
-ACTIONS += spellcheck~format ##
+ACTIONS += spellcheck ##
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 	@$(call workspace_foreach,spellcheck,$(ARGS))
 	@$(call done,spellcheck)
 
-ACTIONS += lint~spellcheck ##
+ACTIONS += lint ##
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 	@$(call workspace_foreach,lint,$(ARGS))
 	@$(call done,lint)
 
-ACTIONS += test~lint ##
+ACTIONS += test ##
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	@$(call workspace_foreach,test,$(ARGS))
 	@$(call done,test)
 
-ACTIONS += build~test ##
+ACTIONS += build ##
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@for p in $(PACKAGES); do \
-		$(MAKE) -sC packages/$$p +build ARGS=$(ARGS); \
+		$(MAKE) -sC packages/$$p build ARGS=$(ARGS); \
 	done
 	@$(call done,build)
 
