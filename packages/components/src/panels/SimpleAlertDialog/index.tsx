@@ -7,6 +7,7 @@ import type {
   AlertDialogProps,
   AlertDialogTitleProps,
   AlertDialogTriggerProps,
+  ButtonProps,
 } from 'tamagui';
 
 export type AlterDialogSimpleProps = AlertDialogTriggerProps &
@@ -22,7 +23,7 @@ export type AlterDialogSimpleProps = AlertDialogTriggerProps &
     contentStyle?: AlertDialogContentProps;
     onOpenChange?: (open: boolean) => void;
     onAccept?: () => void;
-  };
+  } & { buttonStyle?: ButtonProps } & { customContent?: JSX.Element | undefined };
 
 export function SimpleAlertDialog({
   children,
@@ -34,6 +35,8 @@ export function SimpleAlertDialog({
   contentStyle,
   descriptionStyle,
   open,
+  buttonStyle,
+  customContent,
   ...triggerProps
 }: AlterDialogSimpleProps) {
   const [isOpen, setIsOpen] = React.useState(open);
@@ -71,18 +74,24 @@ export function SimpleAlertDialog({
           y={0}
           {...contentStyle}
         >
-          <YStack space>
-            {title && <AlertDialog.Title>{title}</AlertDialog.Title>}
-            {description && <AlertDialog.Description>{description}</AlertDialog.Description>}
-            <XStack space="$3" jc="flex-end">
-              <AlertDialog.Cancel asChild>
-                <Button>{cancel || 'cancel'}</Button>
-              </AlertDialog.Cancel>
-              <AlertDialog.Action asChild onPress={triggerProps.onAccept}>
-                <Button theme="active">{accept || 'accept'}</Button>
-              </AlertDialog.Action>
-            </XStack>
-          </YStack>
+          {customContent ? (
+            customContent
+          ) : (
+            <YStack space>
+              {title && <AlertDialog.Title>{title}</AlertDialog.Title>}
+              {description && <AlertDialog.Description>{description}</AlertDialog.Description>}
+              <XStack space="$3" jc="flex-end">
+                <AlertDialog.Cancel asChild>
+                  <Button {...buttonStyle}>{cancel || 'cancel'}</Button>
+                </AlertDialog.Cancel>
+                <AlertDialog.Action asChild onPress={triggerProps.onAccept}>
+                  <Button theme="active" {...buttonStyle}>
+                    {accept || 'accept'}
+                  </Button>
+                </AlertDialog.Action>
+              </XStack>
+            </YStack>
+          )}
         </AlertDialog.Content>
       </AlertDialog.Portal>
     </AlertDialog>

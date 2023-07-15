@@ -29,7 +29,6 @@ export function FormProgress({
   const id = useId();
   const propSize = typeof size === 'number' ? (`$${size}` as SizeTokens) : (size as SizeTokens);
   if (!formContext) {
-    console.log('FormProgress', progressProps);
     return (
       <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
         <Progress
