@@ -20,7 +20,7 @@ export const main = () => (
 function Open() {
   return (
     <SimplePopover
-      trigger={<Button>hove on it to get Popover</Button>}
+      trigger={<Button>hover on it to get Popover</Button>}
       triggerOnHover
       arrow={false}
       triggerStyle={{ als: 'center', ai: 'center' }}
