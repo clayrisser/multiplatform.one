@@ -1,21 +1,57 @@
-import type { PopoverProps, PopoverContentProps, PopoverArrowProps, YStackProps } from 'tamagui';
-import { Adapt, Popover } from 'tamagui';
+import type {
+  PopoverProps,
+  PopoverContentProps,
+  PopoverArrowProps,
+  YStackProps,
+  TamaguiElement,
+  StackProps,
+} from 'tamagui';
+import { Adapt, Popover, PopperAnchor, View, getState, useComposedRefs, usePopoverContext } from 'tamagui';
 import React from 'react';
 import type { ReactNode } from 'react';
 import { YStack } from 'tamagui';
 
-export type SimplePopoverProps = PopoverProps & {
+export interface PopoverCustomProps {
   contentStyle?: PopoverContentProps;
   arrowStyle?: PopoverArrowProps;
   triggerStyle?: YStackProps;
-  trigger?: ReactNode;
   triggerOnHover?: boolean;
   arrow?: boolean;
-};
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
+}
+
+export interface PopoverTriggerProps {
+  trigger: ReactNode;
+}
+
+export interface PopoverOpen {
+  triggerElement: ReactNode;
+}
+
+export type ExclusiveTriggerProps = PopoverTriggerProps | PopoverOpen;
+
+export type SimplePopoverProps = PopoverProps & PopoverCustomProps & ExclusiveTriggerProps;
+
+export const SimplePopoverTrigger = React.forwardRef<TamaguiElement, StackProps>((props: StackProps, forwardedRef) => {
+  const context = usePopoverContext();
+  const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
+
+  const trigger = (
+    <View
+      aria-haspopup="dialog"
+      aria-expanded={context.open}
+      data-state={getState(context.open)}
+      {...props}
+      ref={composedTriggerRef}
+    />
+  );
+
+  return context.hasCustomAnchor ? trigger : <PopperAnchor asChild>{trigger}</PopperAnchor>;
+});
 
 export function SimplePopover({
   children,
-  trigger,
   contentStyle,
   triggerStyle,
   arrowStyle,
@@ -24,19 +60,25 @@ export function SimplePopover({
   ...props
 }: SimplePopoverProps) {
   const [open, setOpen] = React.useState(false);
+  const trigger = 'trigger' in props;
+
   return (
     <Popover size="$5" allowFlip open={open} onOpenChange={setOpen} {...props}>
-      {trigger && (
+      {trigger && props.trigger && (
         <Popover.Trigger asChild>
           {triggerOnHover ? (
             <YStack onHoverIn={() => setOpen(true)} onHoverOut={() => setOpen(false)} {...triggerStyle}>
-              {trigger}
+              {props.trigger}
             </YStack>
           ) : (
-            trigger
+            props.trigger
           )}
         </Popover.Trigger>
       )}
+      {!trigger && 'triggerElement' in props && 'open' in props && (
+        <SimplePopoverTrigger asChild>{props.triggerElement}</SimplePopoverTrigger>
+      )}
+
       <Adapt when="sm" platform="touch">
         <Popover.Sheet modal dismissOnSnapToBottom>
           <Popover.Sheet.Frame padding="$4" onMouseEnter={() => setOpen(true)}>
