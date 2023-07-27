@@ -1,7 +1,7 @@
 import React from 'react';
 import { SimpleInput } from '.';
 import { YStack } from 'tamagui';
-import { Key } from '@tamagui/lucide-icons';
+import { Key, Eye } from '@tamagui/lucide-icons';
 
 export default {
   title: 'components/SimpleInput',
@@ -18,7 +18,7 @@ export const password = () => (
 export const iconBefore = () => <SimpleInput password width={800} height={50} iconBefore={Key} />;
 
 export const iconAfter = () => (
-  <SimpleInput width={250} height={50} iconAfter={Key} placeholder="icon after input box" />
+  <SimpleInput width={250} height={50} iconAfter={Eye} placeholder="icon after input box" />
 );
 
 export const circular = () => <SimpleInput placeholder="icon after input box" circular />;
