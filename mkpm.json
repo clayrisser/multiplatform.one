@@ -1,0 +1,21 @@
+{
+  "name": "multiplatform.one",
+  "version": "0.1.0",
+  "description": "Multiplatform One",
+  "author": "Clay Risser <clayrisser@gmail.com>",
+  "repo": "git@gitlab.com:bitspur/mkpm/packages.git",
+  "source": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one.git",
+  "packages": {
+    "default": {
+      "yarn": "0.2.0",
+      "mkchain": "0.1.4",
+      "gnu": "0.1.0",
+      "dotenv": "0.0.14",
+      "docker": "0.2.0",
+      "envcache": "0.3.0"
+    }
+  },
+  "repos": {
+    "default": "https://gitlab.com/bitspur/mkpm/packages.git"
+  }
+}
