@@ -17,6 +17,14 @@ export const main = () => (
   </SimplePopover>
 );
 
+export const closeOnHoverOut = () => (
+  <SimplePopover trigger={<Button>click here</Button>} closeOnHoverOut>
+    <YStack>
+      <Text>popover content will close on hoverOut</Text>
+    </YStack>
+  </SimplePopover>
+);
+
 function Open() {
   return (
     <SimplePopover
