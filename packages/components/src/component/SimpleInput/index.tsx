@@ -53,17 +53,29 @@ export function SimpleInput({
 }: SimpleInputProps) {
   const [show, setShow] = React.useState(false);
   const [inputValue, setInputValue] = React.useState<string | undefined>(value ?? '');
-  const displayValue = inputValue && password && !show ? '*'.repeat(inputValue.length) : inputValue;
   const [borderWidth, setBorderWidth] = React.useState(0);
+  const [secureTextEntry, setSecureTextEntry] = React.useState(password);
   const totalIcons = (iconBefore ? 1 : 0) + (iconAfter || password ? 1 : 0);
   const inputValuePadding = iconBefore ? 0 : 24;
-  const iconPercentage = totalIcons === 1 ? '20%' : totalIcons === 2 ? '10%' : undefined;
-  const inputPercentage = iconPercentage ? '80%' : '100%';
+  const iconPercentage = totalIcons === 1 ? '10%' : totalIcons === 2 ? '5%' : undefined;
+  const inputPercentage = iconPercentage ? '90%' : '100%';
 
   React.useEffect(() => {
     if (!inputValue) return;
     if (onChangeText) onChangeText(inputValue);
   }, [inputValue]);
+
+  React.useEffect(() => {
+    if (!password) return;
+    if (show) {
+      setSecureTextEntry(!!false);
+      return;
+    }
+    if (!show && password) {
+      setSecureTextEntry(!!true);
+      return;
+    }
+  }, [password, show]);
 
   function handleValueChange(text: string) {
     setInputValue(text);
@@ -112,9 +124,10 @@ export function SimpleInput({
           paddingLeft={inputValuePadding}
           paddingRight={inputValuePadding}
           unstyled
-          value={displayValue}
+          value={inputValue}
           borderWidth={0}
           paddingHorizontal={paddingHorizontal}
+          secureTextEntry={secureTextEntry}
         />
         {!!password && (
           <Button
