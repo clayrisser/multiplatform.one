@@ -1,7 +1,7 @@
 import type { ButtonProps, ColorTokens, InputProps, SizeTokens, ThemeTokens, XStackProps } from 'tamagui';
 import { Button, Input, XGroup, XStack } from 'tamagui';
 import { Eye, EyeOff } from '@tamagui/lucide-icons';
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { SvgProps } from 'react-native-svg';
 
 export interface BaseIconProps {
@@ -24,6 +24,7 @@ interface CustomProps {
   iconsAsButton?: boolean;
   iconBeforeAsButton?: boolean;
   iconAfterAsButton?: boolean;
+  passwordWithoutIcon?: boolean;
 }
 
 type IconProps = SvgProps & BaseIconProps;
@@ -47,25 +48,26 @@ export function SimpleInput({
   iconAfterAsButton,
   iconBeforeAsButton,
   iconsAsButton,
-  onChangeText,
+  passwordWithoutIcon,
   paddingHorizontal,
+  onChangeText,
   ...props
 }: SimpleInputProps) {
   const [show, setShow] = React.useState(false);
   const [inputValue, setInputValue] = React.useState<string | undefined>(value ?? '');
-  const [borderWidth, setBorderWidth] = React.useState(0);
+  const [borderWidth, setBorderWidth] = React.useState(1);
   const [secureTextEntry, setSecureTextEntry] = React.useState(password);
-  const totalIcons = (iconBefore ? 1 : 0) + (iconAfter || password ? 1 : 0);
+  const totalIcons = (iconBefore ? 1 : 0) + (iconAfter || (password && !passwordWithoutIcon) ? 1 : 0);
   const inputValuePadding = iconBefore ? 0 : 24;
-  const iconPercentage = totalIcons === 1 ? '10%' : totalIcons === 2 ? '5%' : undefined;
-  const inputPercentage = iconPercentage ? '90%' : '100%';
+  const iconPercentage = totalIcons === 1 ? '20%' : totalIcons === 2 ? '10%' : undefined;
+  const inputPercentage = iconPercentage ? '80%' : '100%';
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!inputValue) return;
     if (onChangeText) onChangeText(inputValue);
   }, [inputValue]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!password) return;
     if (show) {
       setSecureTextEntry(!!false);
@@ -107,15 +109,16 @@ export function SimpleInput({
           />
         )}
         <Input
+          onChangeText={handleValueChange}
+          value={inputValue}
           {...props}
           size={size}
-          onChangeText={handleValueChange}
           onFocus={(e) => {
             setBorderWidth(2);
             props.onFocus?.(e);
           }}
           onBlur={(e) => {
-            setBorderWidth(0);
+            setBorderWidth(1);
             props.onBlur?.(e);
           }}
           height="100%"
@@ -124,12 +127,11 @@ export function SimpleInput({
           paddingLeft={inputValuePadding}
           paddingRight={inputValuePadding}
           unstyled
-          value={inputValue}
           borderWidth={0}
           paddingHorizontal={paddingHorizontal}
           secureTextEntry={secureTextEntry}
         />
-        {!!password && (
+        {!!password && !passwordWithoutIcon && (
           <Button
             icon={show ? Eye : EyeOff}
             scaleIcon={iconPasswordScale}
@@ -138,6 +140,7 @@ export function SimpleInput({
             width={iconPercentage}
             onPress={(e) => {
               setShow((prev) => !prev);
+              setBorderWidth(2);
               props.onPress?.(e);
             }}
             jc="center"
@@ -145,7 +148,7 @@ export function SimpleInput({
             padding={0}
           />
         )}
-        {!!iconAfter && !password && (
+        {!!iconAfter && (!password || passwordWithoutIcon) && (
           <Button
             icon={iconAfter}
             {...iconStyle}
