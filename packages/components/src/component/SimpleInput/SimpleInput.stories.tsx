@@ -11,7 +11,7 @@ export default {
 
 export const password = () => (
   <YStack justifyContent="center" alignItems="center">
-    <SimpleInput password size="$3" iconAfter={Key} />
+    <SimpleInput password size="$3" iconAfter={Key} passwordWithoutIcon />
   </YStack>
 );
 
@@ -21,4 +21,6 @@ export const iconAfter = () => (
   <SimpleInput width={250} height={50} iconAfter={Eye} placeholder="icon after input box" />
 );
 
-export const circular = () => <SimpleInput placeholder="icon after input box" circular />;
+export const circular = () => <SimpleInput placeholder="icon after input box" circular password />;
+
+export const passwordWithoutIcon = () => <SimpleInput password passwordWithoutIcon />;

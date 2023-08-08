@@ -1,11 +1,11 @@
 {
   "packages": {
     "default": {
-      "gnu": "0.1.0",
-      "dotenv": "0.0.14",
       "docker": "0.2.0",
-      "mkchain": "0.1.4",
+      "dotenv": "0.0.14",
       "envcache": "0.3.0",
+      "gnu": "0.1.0",
+      "mkchain": "0.1.4",
       "yarn": "0.2.0"
     }
   },

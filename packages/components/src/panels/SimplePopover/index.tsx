@@ -16,6 +16,7 @@ export interface PopoverCustomProps {
   arrowStyle?: PopoverArrowProps;
   triggerStyle?: YStackProps;
   triggerOnHover?: boolean;
+  closeOnHoverOut?: boolean;
   arrow?: boolean;
   open?: boolean;
   setOpen?: (open: boolean) => void;
@@ -57,6 +58,7 @@ export function SimplePopover({
   arrowStyle,
   arrow = true,
   triggerOnHover,
+  closeOnHoverOut,
   ...props
 }: SimplePopoverProps) {
   const [open, setOpen] = React.useState(false);
@@ -109,7 +111,7 @@ export function SimplePopover({
         }
         elevate
         onHoverIn={triggerOnHover ? () => setOpen(true) : undefined}
-        onHoverOut={triggerOnHover ? () => setOpen(false) : undefined}
+        onHoverOut={triggerOnHover || closeOnHoverOut ? () => setOpen(false) : undefined}
         zi={9999999999}
         {...contentStyle}
       >

@@ -17,6 +17,14 @@ export const main = () => (
   </SimplePopover>
 );
 
+export const closeOnHoverOut = () => (
+  <SimplePopover trigger={<Button>click here</Button>} closeOnHoverOut>
+    <YStack>
+      <Text>popover content will close on hoverOut</Text>
+    </YStack>
+  </SimplePopover>
+);
+
 function Open() {
   return (
     <SimplePopover
@@ -34,7 +42,7 @@ function Open() {
   );
 }
 
-export const open = () => (
+export const openOnHover = () => (
   <XStack jc="space-around">
     <Open />
     <Open />
@@ -54,7 +62,7 @@ const OnCondition = (props) => {
   );
 };
 
-export const onCondition = (args) => <OnCondition {...args} />;
+export const openOnChangingTheCondition = (args) => <OnCondition {...args} />;
 
 const ConditionalPopover = () => {
   const [open, setOpen] = useState(false);
@@ -84,6 +92,6 @@ const ConditionalPopover = () => {
   );
 };
 
-export const conditionalPopover = (args) => <ConditionalPopover {...args} />;
+export const openOnAnyCondition = (args) => <ConditionalPopover {...args} />;
 
 export default meta;
