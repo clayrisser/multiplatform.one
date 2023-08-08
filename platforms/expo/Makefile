@@ -1,5 +1,4 @@
-include ../../mkpm.mk
-ifneq (,$(MKPM_READY))
+include $(MKPM)/mkpm
 DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
 include $(MKPM)/envcache
@@ -72,5 +71,3 @@ clean: ##
 CACHE_ENVS += \
 
 -include $(call actions)
-
-endif

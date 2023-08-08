@@ -1,5 +1,4 @@
-include ../../mkpm.mk
-ifneq (,$(MKPM_READY))
+include $(MKPM)/mkpm
 DEFAULT_ENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
 include $(MKPM)/envcache
@@ -74,5 +73,3 @@ docker/%:
 CACHE_ENVS += \
 
 -include $(call actions)
-
-endif

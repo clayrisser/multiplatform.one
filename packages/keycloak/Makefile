@@ -20,8 +20,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include ../../mkpm.mk
-ifneq (,$(MKPM_READY))
+
+include $(MKPM)/mkpm
 DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
 include $(MKPM)/mkchain
@@ -125,5 +125,3 @@ export CACHE_ENVS += \
 	JEST \
 	PRETTIER \
 	TSC
-
-endif

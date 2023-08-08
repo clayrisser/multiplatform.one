@@ -224,5 +224,8 @@
     "yoda",
     "zlib",
     "zustand"
-  ]
+  ],
+  "files.associations": {
+    "Mkpmfile": "makefile"
+  }
 }

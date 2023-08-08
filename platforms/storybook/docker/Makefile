@@ -1,5 +1,4 @@
-include ../../../mkpm.mk
-ifneq (,$(MKPM_READY))
+include $(MKPM)/mkpm
 include $(MKPM)/gnu
 DEFAULT_ENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/dotenv
@@ -11,5 +10,3 @@ export CONTEXT := $(PROJECT_ROOT)
 export REGISTRY := registry.gitlab.com/risserlabs/multiplatform.one
 
 -include $(MKPM)/docker
-
-endif

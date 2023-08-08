@@ -1,8 +1,7 @@
-.mkpm/.bootstrap.mk filter=lfs diff=lfs merge=lfs -text
-.mkpm/.cache.tar.gz filter=lfs diff=lfs merge=lfs -text
 .yarn/cache/** filter=lfs diff=lfs merge=lfs -text
 .yarn/plugins/** filter=lfs diff=lfs merge=lfs -text
 .yarn/releases/** filter=lfs diff=lfs merge=lfs -text
 platforms/storybook/.loki/reference filter=lfs diff=lfs merge=lfs -text
 platforms/storybook/.loki/reference/**/* filter=lfs diff=lfs merge=lfs -text
 yarn.lock filter=lfs diff=lfs merge=lfs -text
+.mkpm/cache.tar.gz filter=lfs diff=lfs merge=lfs -text
