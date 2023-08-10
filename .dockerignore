@@ -35,11 +35,8 @@ yarn-error.log*
 !.yarn/sdks
 !.yarn/versions
 
-# mkpm
-.mkpm/*
-**/.mkpm/*
-!/.mkpm/.cache.tar.gz
-!/.mkpm/.bootstrap.mk
-
 # docker
 .git
+
+# mkpm
+.mkpm/mkpm
