@@ -40,29 +40,29 @@
   "dependencies": {
     "@mdx-js/mdx": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
-    "@tamagui/font-inter": "^1.35.8",
-    "@tamagui/logo": "^1.35.8",
-    "@tamagui/react-native-media-driver": "^1.35.8",
-    "@tamagui/shorthands": "^1.35.8",
-    "@tamagui/themes": "^1.35.8",
+    "@tamagui/font-inter": "^1.52.1",
+    "@tamagui/logo": "^1.52.1",
+    "@tamagui/react-native-media-driver": "^1.52.1",
+    "@tamagui/shorthands": "^1.52.1",
+    "@tamagui/themes": "^1.52.1",
     "burnt": "^0.11.7",
-    "expo-asset": "^8.10.0",
-    "expo-image": "^1.3.0",
-    "fast-xml-parser": "^4.2.5",
+    "expo-asset": "^8.11.0",
+    "expo-image": "^1.4.1",
+    "fast-xml-parser": "^4.2.7",
     "gray-matter": "^4.0.3",
-    "hast-util-to-html": "^8.0.4",
+    "hast-util-to-html": "8.0.4",
     "immer": "^10.0.2",
     "parse-numeric-range": "^1.3.0",
-    "react-hook-form": "^7.45.0",
-    "react-native-svg": "13.9.0",
+    "react-hook-form": "^7.45.4",
+    "react-native-svg": "13.11.0",
     "refractor": "^4.8.1",
     "rehype-autolink-headings": "^6.1.1",
     "rehype-parse": "^8.0.4",
     "rehype-slug": "^5.1.0",
     "remark-frontmatter": "^4.0.1",
     "remark-mdx-frontmatter": "^3.0.0",
-    "tamagui": "^1.35.8",
-    "unist-util-visit": "^4.1.2"
+    "tamagui": "^1.52.1",
+    "unist-util-visit": "^5.0.0"
   },
   "peerDependencies": {
     "moti": "^0.25.3",
@@ -70,10 +70,10 @@
     "solito": "^3.2.6"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.35.8",
-    "moti": "^0.25.3",
-    "react-native-reanimated": "2.14.4",
-    "solito": "^3.2.9",
+    "@tamagui/build": "^1.52.1",
+    "moti": "^0.26.0",
+    "react-native-reanimated": "3.4.2",
+    "solito": "^4.0.1",
     "ui": "workspace:^"
   },
   "jest": {
@@ -82,7 +82,7 @@
     "testPathIgnorePatterns": []
   },
   "jestSonar": {
-    "reportPath": ".mkpm/.tmp/reports",
+    "reportPath": "node_modules",
     "reportFile": "test-report.xml",
     "indent": 4
   }

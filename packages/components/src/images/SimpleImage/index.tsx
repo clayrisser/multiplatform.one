@@ -3,7 +3,7 @@ import type { ComponentProps, Ref } from 'react';
 import type { Image } from 'expo-image';
 import type { SolitoImageProps } from 'solito/build/image/image.types';
 import type { StackProps } from 'tamagui';
-import type { StaticImageData } from 'next/dist/client/image';
+import type { StaticImageData } from 'next/image';
 import { SolitoImage } from 'solito/image';
 import { Stack, createComponent } from 'tamagui';
 import { StyleSheet } from 'react-native';
@@ -132,13 +132,10 @@ const SimpleImageComponent = forwardRef<Image, Props>(
   },
 );
 
-export const SimpleImage = createComponent<ComponentProps<typeof SimpleImageComponent>>(
-  {
-    Component: SimpleImageComponent as any,
-    acceptsClassName: true,
-  },
-  SimpleImageComponent,
-);
+export const SimpleImage = createComponent<ComponentProps<typeof SimpleImageComponent>>({
+  Component: SimpleImageComponent as any,
+  acceptsClassName: true,
+});
 
 export interface StaticRequire {
   default: StaticImageData;

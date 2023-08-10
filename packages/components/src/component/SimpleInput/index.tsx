@@ -89,6 +89,7 @@ export function SimpleInput({
       <XGroup
         {...props}
         height={size}
+        // @ts-ignore
         borderRadius={circular ? 9999999 : props.borderRadius || size}
         borderWidth={borderWidth}
         borderColor="$backgroundFocus"
