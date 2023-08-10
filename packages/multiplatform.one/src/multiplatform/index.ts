@@ -25,7 +25,7 @@
 import getConfig from 'next/config.js';
 import { MultiPlatformBase } from './multiplatformBase';
 import { Platform } from 'react-native';
-import { isChrome, isClient, isWindowDefined, isRSC, isServer, isWeb, isWebTouchable } from '@tamagui/constants';
+import { isChrome, isClient, isWindowDefined, isServer, isWeb, isWebTouchable } from '@tamagui/constants';
 
 export class MultiPlatform extends MultiPlatformBase {
   static isChrome = isChrome;
@@ -35,7 +35,6 @@ export class MultiPlatform extends MultiPlatformBase {
   static isFirefox = isWindowDefined && window?.navigator?.userAgent?.toLowerCase().indexOf('firefox') > -1;
   static isWeb = Platform.OS === 'web' && isWeb;
   static isNext = MultiPlatform.isWeb && (!isWindowDefined || typeof window.__NEXT_DATA__ === 'object');
-  static isRSC = isRSC;
   static isServer = isServer;
   static isStatic = MultiPlatform.isNext && (getConfig ? getConfig() : {})?.publicRuntimeConfig?.NEXT_STATIC === '1';
   static isTest = process?.env?.NODE_ENV === 'test' || process?.env?.JEST_WORKER_ID !== undefined;

@@ -1,5 +1,5 @@
 import type { Asset } from 'expo-asset';
-import type { StaticImageData } from 'next/dist/client/image';
+import type { StaticImageData } from 'next/image';
 import { useAssets as expoUseAssets } from 'expo-asset';
 
 const logger = console;

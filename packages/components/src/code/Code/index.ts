@@ -6,9 +6,11 @@ export const Code = styled(Paragraph, {
   name: 'Code',
   borderRadius: '$4',
   cursor: 'inherit',
+  // @ts-ignore
   fontFamily: Platform.OS === 'web' ? '$mono' : undefined,
   lineHeight: 18,
   padding: '$1',
+  // @ts-ignore
   size: '$3',
   tag: 'code',
   whiteSpace: 'pre',
@@ -28,7 +30,9 @@ export const CodeInline = styled(Paragraph, {
   borderRadius: '$3',
   color: '$colorHover',
   cursor: 'inherit',
+  // @ts-ignore
   fontFamily: Platform.OS === 'web' ? '$mono' : undefined,
+  // @ts-ignore
   fontSize: '85%',
   padding: '$1.5',
   tag: 'code',

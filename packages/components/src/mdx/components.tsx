@@ -51,6 +51,7 @@ export const mdxComponents: Components = {
   a: ({ href = '', children, ...props }) => {
     return (
       <Link href={href}>
+        {/* @ts-ignore */}
         <Paragraph fontSize="inherit" display="inline" cursor="pointer" {...sanitizeProps(props)}>
           {children}
           {/* {typeof href === 'string' && href.startsWith('http') ? (
@@ -67,6 +68,7 @@ export const mdxComponents: Components = {
   },
   hr: (props) => <HR {...sanitizeProps(props)} />,
   ul: ({ children }) => (
+    // @ts-ignore
     <UL marginVertical="$4">{React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}</UL>
   ),
   ol: (props) => <YStack {...sanitizeProps(props)} marginBottom="$3" />,
@@ -75,6 +77,7 @@ export const mdxComponents: Components = {
       {props.children}
     </LI>
   ),
+  // @ts-ignore
   strong: (props) => <Paragraph fontSize="inherit" {...sanitizeProps(props)} fontWeight="700" />,
   img: ({ ...props }) => (
     <YStack marginVertical="$6">
@@ -98,6 +101,7 @@ export const mdxComponents: Components = {
         fontFamily="$silkscreen"
         fontWeight="300"
         lineHeight="$9"
+        // @ts-ignore
         letterSpacing="$0"
         opacity={0.65}
         size="$8"

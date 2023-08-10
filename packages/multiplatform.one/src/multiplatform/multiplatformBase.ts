@@ -36,7 +36,6 @@ export class MultiPlatformBase {
   static isIos = false;
   static isNative = false;
   static isNext = false;
-  static isRSC: string | undefined;
   static isServer = false;
   static isStatic = false;
   static isStorybook = isWindowDefined && typeof window.__STORYBOOK_ADDONS === 'object';

@@ -1,4 +1,4 @@
-import type { StaticImageData } from 'next/dist/client/image';
+import type { StaticImageData } from 'next/image';
 
 export function useAssets(modules: any | any[]): (StaticImageData | undefined)[] {
   const modulesArr: (StaticImageData | undefined)[] = (Array.isArray(modules) ? modules : [modules]).map(
