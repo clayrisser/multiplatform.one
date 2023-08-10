@@ -5,3 +5,6 @@ THUMBS_DB
 dist/
 node_modules/
 types/
+
+# mkpm
+.mkpm/mkpm
