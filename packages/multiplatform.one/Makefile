@@ -1,26 +1,3 @@
-# File: /Makefile
-# Project: auto-contrast
-# File Created: 02-03-2022 02:40:13
-# Author: Clay Risser
-# -----
-# Last Modified: 24-02-2023 06:42:11
-# Modified By: Clay Risser
-# -----
-# Risser Labs LLC (c) Copyright 2022
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-
 include $(MKPM)/mkpm
 DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
@@ -36,7 +13,7 @@ export NPM_AUTH_TOKEN ?= $(shell $(CAT) $(HOME)/.docker/config.json | \
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
-	@$(MAKE) -C $(PROJECT_ROOT) -f $(PROJECT_ROOT)/Mkpmfile \~deps DEPS_ARGS=$(DEPS_ARGS)
+	@$(MAKE) -sC $(PROJECT_ROOT) -f $(PROJECT_ROOT)/Mkpmfile \~deps DEPS_ARGS=$(DEPS_ARGS)
 else
 	@$(YARN) workspaces focus $(DEPS_ARGS)
 endif
@@ -49,7 +26,7 @@ $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 
 ACTIONS += spellcheck~format ##
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	-@$(call cspell,$?,$(ARGS))
+	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
 	@$(call done,$@)
 
 ACTIONS += lint~spellcheck ##

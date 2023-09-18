@@ -7,10 +7,10 @@ include $(MKPM)/dotenv
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
-ACTIONS += install ##
-$(ACTION)/install: $(PROJECT_ROOT)/package.json package.json
+ACTIONS += deps ##
+$(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
-	@$(MAKE) -C $(PROJECT_ROOT) \~deps ARGS=$(ARGS)
+	@$(MAKE) -sC $(PROJECT_ROOT) \~deps ARGS=$(ARGS)
 else
 	@$(YARN) workspaces focus $(ARGS)
 endif
@@ -24,7 +24,7 @@ $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 
 ACTIONS += spellcheck~format ##
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	-@$(call cspell,$?,$(ARGS))
+	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
 	@$(call done,$@)
 
 ACTIONS += lint~spellcheck ##

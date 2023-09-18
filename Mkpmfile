@@ -17,7 +17,7 @@ ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
 	@$(YARN) install $(ARGS)
 	@$(call done,$@)
-	@$(MAKE) -f $(PROJECT_ROOT)/Mkpmfile build
+	@$(MAKE) -sf $(PROJECT_ROOT)/Mkpmfile build
 
 ACTIONS += format ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
