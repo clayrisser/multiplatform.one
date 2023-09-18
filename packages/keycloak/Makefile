@@ -43,7 +43,7 @@ export NPM_AUTH_TOKEN ?= $(shell $(CAT) $(HOME)/.docker/config.json | \
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
-	@$(MAKE) -C $(PROJECT_ROOT) -f $(PROJECT_ROOT)/Mkpmfile \~deps DEPS_ARGS=$(DEPS_ARGS)
+	@$(MAKE) -sC $(PROJECT_ROOT) -f $(PROJECT_ROOT)/Mkpmfile \~deps DEPS_ARGS=$(DEPS_ARGS)
 else
 	@$(YARN) workspaces focus $(DEPS_ARGS)
 endif
@@ -56,7 +56,7 @@ $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 
 ACTIONS += spellcheck~format ##
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	-@$(call cspell,$?,$(ARGS))
+	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
 	@$(call done,$@)
 
 ACTIONS += lint~spellcheck ##
