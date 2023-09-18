@@ -2,40 +2,40 @@ include $(MKPM)/mkpm
 DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
 include $(MKPM)/envcache
-include $(MKPM)/mkchain
+include $(MKPM)/chain
 include $(MKPM)/dotenv
 include $(MKPM)/yarn
-include ../shared.mk
+include $(PROJECT_ROOT)/shared.mk
 
 ACTIONS += install ##
 $(ACTION)/install: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
-	@$(MAKE) -C $(PROJECT_ROOT) \~install ARGS=$(ARGS)
+	@$(MAKE) -C $(PROJECT_ROOT) \~deps ARGS=$(ARGS)
 else
 	@$(YARN) workspaces focus $(ARGS)
 endif
-	@$(call done,install)
+	@$(call done,$@)
 
-ACTIONS += format~install ##
+ACTIONS += format~deps ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 #	-@$(call eslint_format,$?)
 	-@$(call prettier,$?,$(ARGS))
-	@$(call done,format)
+	@$(call done,$@)
 
 ACTIONS += spellcheck~format ##
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 	-@$(call cspell,$?,$(ARGS))
-	@$(call done,spellcheck)
+	@$(call done,$@)
 
 ACTIONS += lint~spellcheck ##
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call eslint,$?,$(ARGS))
-	@$(call done,lint)
+	@$(call done,$@)
 
 ACTIONS += test~lint ##
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call jest,$?,$(ARGS))
-	@$(call done,test)
+	@$(call done,$@)
 
 .PHONY: clean
 clean: ##
@@ -49,4 +49,4 @@ clean: ##
 
 CACHE_ENVS += \
 
--include $(call actions)
+-include $(call chain)

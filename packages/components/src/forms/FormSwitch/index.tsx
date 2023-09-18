@@ -1,15 +1,18 @@
 import React, { useId } from 'react';
-import type { SwitchProps, SwitchThumbProps } from 'tamagui';
-import { Switch } from 'tamagui';
+import type { ComponentProps } from 'react';
 import type { FormControllerProps } from '../types';
 import type { FormFieldProps } from '../FormField';
+import type { SwitchProps } from 'tamagui';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormField } from '../FormField';
+import { Switch } from 'tamagui';
 
 export type FormSwitchProps = SwitchProps &
   FormControllerProps & {
     fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> & { ThumbStyle?: SwitchThumbProps };
+  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> & {
+    thumbStyle?: ComponentProps<typeof Switch.Thumb>;
+  };
 
 export function FormSwitch({
   control,
@@ -21,7 +24,7 @@ export function FormSwitch({
   name,
   required,
   rules,
-  ThumbStyle,
+  thumbStyle,
   ...switchProps
 }: FormSwitchProps) {
   const formContext = useFormContext();
@@ -30,7 +33,7 @@ export function FormSwitch({
     return (
       <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
         <Switch {...switchProps}>
-          <Switch.Thumb {...ThumbStyle} />
+          <Switch.Thumb {...(thumbStyle as any)} />
         </Switch>
       </FormField>
     );
@@ -63,7 +66,7 @@ export function FormSwitch({
               if (switchProps.onPress) switchProps.onPress(e);
             }}
           >
-            <Switch.Thumb {...ThumbStyle} />
+            <Switch.Thumb {...(thumbStyle as any)} />
           </Switch>
         </FormField>
       )}

@@ -2,42 +2,42 @@ include $(MKPM)/mkpm
 DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
 include $(MKPM)/envcache
-include $(MKPM)/mkchain
+include $(MKPM)/chain
 include $(MKPM)/dotenv
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
 export TAMAGUI_BUILD ?= $(call yarn_binary,tamagui-build)
 
-ACTIONS += install ##
-$(ACTION)/install: $(PROJECT_ROOT)/package.json package.json
+ACTIONS += deps ##
+$(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
-	@$(MAKE) -C $(PROJECT_ROOT) \~install ARGS=$(ARGS)
+	@$(MAKE) -C $(PROJECT_ROOT) -f $(PROJECT_ROOT)/Mkpmfile \~deps DEPS_ARGS=$(DEPS_ARGS)
 else
-	@$(YARN) workspaces focus $(ARGS)
+	@$(YARN) workspaces focus $(DEPS_ARGS)
 endif
-	@$(call done,install)
+	@$(call done,$@)
 
-ACTIONS += format~install ##
+ACTIONS += format~deps ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 #	-@$(call eslint_format,$?)
 	-@$(call prettier,$?,$(ARGS))
-	@$(call done,format)
+	@$(call done,$@)
 
 ACTIONS += spellcheck~format ##
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 	-@$(call cspell,$?,$(ARGS))
-	@$(call done,spellcheck)
+	@$(call done,$@)
 
 ACTIONS += lint~spellcheck ##
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call eslint,$?,$(ARGS))
-	@$(call done,lint)
+	@$(call done,$@)
 
 ACTIONS += test~lint ##
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call jest,$?,$(ARGS))
-	@$(call done,test)
+	@$(call done,$@)
 
 ACTIONS += build~test
 BUILD_TARGETS := dist/cjs/index.js
@@ -46,7 +46,7 @@ dist/cjs/index.js:
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(RM) -rf types
 	@$(TAMAGUI_BUILD)
-	@$(call done,build)
+	@$(call done,$@)
 
 .PHONY: clean
 clean: ##
@@ -64,4 +64,4 @@ publish:
 
 CACHE_ENVS += \
 
--include $(call actions)
+-include $(call chain)

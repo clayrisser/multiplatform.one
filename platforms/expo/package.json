@@ -3,7 +3,7 @@
   "main": "index.js",
   "private": true,
   "dependencies": {
-    "@babel/runtime": "^7.22.10",
+    "@babel/runtime": "^7.22.15",
     "babel-plugin-module-resolver": "^5.0.0",
     "browserify-fs": "^1.0.0",
     "browserify-zlib": "^0.2.0",
@@ -27,10 +27,10 @@
     "readable-stream": "^4.4.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.10",
+    "@babel/core": "^7.22.20",
     "@babel/plugin-proposal-private-methods": "^7.18.6",
     "@expo/metro-config": "^0.10.7",
-    "@tamagui/babel-plugin": "^1.52.1",
+    "@tamagui/babel-plugin": "^1.68.1",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "metro-minify-terser": "^0.78.0",
     "typescript": "^4.9.5"

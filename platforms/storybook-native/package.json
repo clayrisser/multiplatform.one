@@ -3,11 +3,11 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
-    "@babel/runtime": "^7.22.10",
+    "@babel/runtime": "^7.22.15",
     "@react-native-async-storage/async-storage": "1.19.1",
     "@react-native-community/datetimepicker": "7.4.1",
     "@react-native-community/slider": "4.4.2",
-    "@storybook/addon-actions": "^7.2.2",
+    "@storybook/addon-actions": "^7.4.2",
     "@storybook/addon-ondevice-actions": "6.5.6",
     "@storybook/addon-ondevice-backgrounds": "6.5.6",
     "@storybook/addon-ondevice-controls": "6.5.6",
@@ -36,10 +36,10 @@
     "readable-stream": "^4.4.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.10",
+    "@babel/core": "^7.22.20",
     "@babel/plugin-proposal-private-methods": "^7.18.6",
     "@expo/metro-config": "^0.10.7",
-    "@tamagui/babel-plugin": "^1.52.1",
+    "@tamagui/babel-plugin": "^1.68.1",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "metro-minify-terser": "^0.78.0",
     "typescript": "^4.9.5"

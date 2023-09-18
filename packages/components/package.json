@@ -40,11 +40,11 @@
   "dependencies": {
     "@mdx-js/mdx": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
-    "@tamagui/font-inter": "^1.52.1",
-    "@tamagui/logo": "^1.52.1",
-    "@tamagui/react-native-media-driver": "^1.52.1",
-    "@tamagui/shorthands": "^1.52.1",
-    "@tamagui/themes": "^1.52.1",
+    "@tamagui/font-inter": "^1.68.1",
+    "@tamagui/logo": "^1.68.1",
+    "@tamagui/react-native-media-driver": "^1.68.1",
+    "@tamagui/shorthands": "^1.68.1",
+    "@tamagui/themes": "^1.68.1",
     "burnt": "^0.11.7",
     "expo-asset": "^8.11.0",
     "expo-image": "^1.4.1",
@@ -61,7 +61,7 @@
     "rehype-slug": "^5.1.0",
     "remark-frontmatter": "^4.0.1",
     "remark-mdx-frontmatter": "^3.0.0",
-    "tamagui": "^1.52.1",
+    "tamagui": "^1.68.1",
     "unist-util-visit": "^5.0.0"
   },
   "peerDependencies": {
@@ -70,7 +70,7 @@
     "solito": "^3.2.6"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.52.1",
+    "@tamagui/build": "^1.68.1",
     "moti": "^0.26.0",
     "react-native-reanimated": "3.4.2",
     "solito": "^4.0.1",
