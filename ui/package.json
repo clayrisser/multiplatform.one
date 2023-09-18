@@ -20,7 +20,7 @@
     "@tamagui/shorthands": "^1.68.1",
     "@tamagui/themes": "^1.68.1",
     "moti": "^0.26.0",
-    "react-native-reanimated": "3.4.2",
+    "react-native-reanimated": "3.5.2",
     "solito": "^4.0.1",
     "tamagui": "^1.68.1",
     "zustand": "^4.4.1",
