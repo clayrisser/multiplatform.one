@@ -1,3 +1,22 @@
+# File: /Mkpmfile
+# Project: root
+# File Created: 19-09-2023 06:04:27
+# Author: Clay Risser
+# -----
+# BitSpur (c) Copyright 2021 - 2023
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 MONOREPO := 1
 
 include $(MKPM)/mkpm
@@ -10,28 +29,35 @@ include $(PROJECT_ROOT)/shared.mk
 
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
-	@$(YARN) install $(ARGS)
+	@$(YARN) install $(DEPS_ARGS)
 	@$(call done,$@)
+	@$(MAKE) -sf Mkpmfile +build
 
 ACTIONS += format ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
-	@$(call workspace_foreach,format,$(ARGS))
+	@$(call workspace_foreach,format,$(FORMAT_ARGS))
 	@$(call done,$@)
 
 ACTIONS += spellcheck ##
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	@$(call workspace_foreach,spellcheck,$(ARGS))
+	@$(call workspace_foreach,spellcheck,$(SPELLCHECK_ARGS))
 	@$(call done,$@)
 
 ACTIONS += lint ##
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
-	@$(call workspace_foreach,lint,$(ARGS))
+	@$(call workspace_foreach,lint,$(LINT_ARGS))
 	@$(call done,$@)
 
 ACTIONS += test ##
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
-	@$(call workspace_foreach,test,$(ARGS))
+	@$(call workspace_foreach,test,$(TEST_ARGS))
 	@$(call done,$@)
+
+.PHONY: build +build
+build:
+	@for t in $(patsubst %,%/build,$(shell ls packages) ui); do \
+		$(MAKE) -sf Mkpmfile $$t; \
+	done
 
 .PHONY: upgrade
 upgrade: ##
@@ -39,7 +65,7 @@ upgrade: ##
 
 .PHONY: clean
 clean: ##
-	@$(call workspace_foreach,clean,$(ARGS))
+	@$(call workspace_foreach,clean,$(CLEAN_ARGS))
 	-@$(MKCACHE_CLEAN)
 	-@$(JEST) --clearCache $(NOFAIL)
 	-@$(WATCHMAN) watch-del-all $(NOFAIL)

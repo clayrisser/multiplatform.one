@@ -1,32 +1,32 @@
-/**
- * File: /src/index.ts
- * Project: nestjs-axios-logger
- * File Created: 17-07-2021 22:16:57
- * Author: BitSpur <info@risserlabs.com>
- * -----
- * Last Modified: 04-11-2022 11:00:58
- * Modified By: BitSpur <info@risserlabs.com>
- * -----
- * BitSpur (c) Copyright 2021
+/*
+ *  File: /src/index.ts
+ *  Project: @multiplatform.one/nestjs-axios-logger
+ *  File Created: 19-09-2023 05:24:50
+ *  Author: Clay Risser
+ *  -----
+ *  BitSpur (c) Copyright 2021 - 2023
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 
-import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError } from 'axios';
 import httpStatus from 'http-status';
-import { DynamicModule, ForwardReference, Global, Inject, Logger, Module, OnModuleInit, Type } from '@nestjs/common';
+import type { AxiosLoggerAsyncOptions, AxiosLoggerOptions } from './types';
+import type { InternalAxiosRequestConfig, AxiosResponse } from 'axios';
+import type { DynamicModule, ForwardReference, OnModuleInit, Type } from '@nestjs/common';
+import { AXIOS_LOGGER_OPTIONS } from './types';
+import { Global, Inject, Logger, Module } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { AXIOS_LOGGER_OPTIONS, AxiosLoggerAsyncOptions, AxiosLoggerOptions } from './types';
 
 // force idempotence (like c/c++ `#pragma once`) if module loaded more than once
 let registeredAxiosInterceptors = false;
@@ -103,7 +103,7 @@ export class AxiosLoggerModule implements OnModuleInit {
     if (!registeredAxiosInterceptors) {
       const logger = new Logger(HttpService.name);
       axios.interceptors.request.use(
-        (request: AxiosRequestConfig) => requestLogger(request, this.options, logger),
+        (request: InternalAxiosRequestConfig) => requestLogger(request, this.options, logger),
         (error: AxiosError<any>) => errorLogger(error, this.options, logger),
       );
       axios.interceptors.response.use(
@@ -115,7 +115,7 @@ export class AxiosLoggerModule implements OnModuleInit {
   }
 }
 
-function requestLogger(request: AxiosRequestConfig, options: AxiosLoggerOptions, logger: Logger) {
+function requestLogger(request: InternalAxiosRequestConfig, options: AxiosLoggerOptions, logger: Logger) {
   if ((request as any).silent) return request;
   let message = `[Request]${options.method ? ` ${request.method?.toUpperCase()}` : ''}${
     options.url ? ` ${request.url}` : ''

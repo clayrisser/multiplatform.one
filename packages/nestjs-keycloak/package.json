@@ -14,11 +14,16 @@
   "license": "Apache-2.0",
   "author": "BitSpur <support@risserlabs.com> (https://risserlabs.com)",
   "main": "lib/index.js",
-  "module": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "module": "lib/index.mjs",
+  "react-native": "src/index.ts",
   "source": "src/index.ts",
+  "types": "lib/index.d.ts",
   "exports": {
-    ".": "./lib/index.js"
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    }
   },
   "files": [
     "lib",
