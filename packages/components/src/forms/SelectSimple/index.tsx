@@ -8,19 +8,20 @@ const StyledSelectTrigger = styled(Select.Trigger, {
 });
 
 export type SelectSimpleProps = SelectTriggerProps &
-  Pick<SelectProps, 'onOpenChange' | 'onValueChange' | 'id' | 'value'> & { placeholder?: ReactNode };
+  Pick<SelectProps, 'onOpenChange' | 'onValueChange' | 'id' | 'value' | 'defaultValue'> & { placeholder?: ReactNode };
 
 export function SelectSimple({
   children,
   placeholder,
   onOpenChange,
   onValueChange,
+  defaultValue,
   value,
   id,
   ...triggerProps
 }: SelectSimpleProps) {
   return (
-    <Select id={id} onOpenChange={onOpenChange} onValueChange={onValueChange} value={value}>
+    <Select id={id} onOpenChange={onOpenChange} onValueChange={onValueChange} value={value} defaultValue={defaultValue}>
       <StyledSelectTrigger {...triggerProps}>
         <Select.Value placeholder={placeholder} />
       </StyledSelectTrigger>
