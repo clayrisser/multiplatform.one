@@ -2,14 +2,13 @@
   "name": "example",
   "private": true,
   "workspaces": [
+    "api",
     "app",
     "packages/*",
     "platforms/*",
     "ui"
   ],
   "devDependencies": {
-    "@changesets/cli": "^2.26.2",
-    "@swc/core": "^1.3.86",
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.49.0",
@@ -19,8 +18,7 @@
     "jest": "^29.7.0",
     "jest-sonar-reporter": "^2.0.0",
     "prettier": "^3.0.3",
-    "tsup": "^7.2.0",
-    "typescript": "~5.2.2"
+    "typescript": "^5.2.2"
   },
   "resolutions": {
     "@storybook/types": "^7.0.15",
@@ -56,6 +54,8 @@
   "packageManager": "yarn@3.6.1",
   "prettier": "eslint-config-alloy/.prettierrc.js",
   "dependencies": {
-    "@tamagui/toast": "^1.68.2"
+    "@bitspur/typegraphql-nestjs": "^0.6.1",
+    "@turbo/gen": "^1.10.14",
+    "turbo": "^1.10.14"
   }
 }

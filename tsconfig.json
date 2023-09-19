@@ -2,6 +2,7 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
+    "tsBuildInfoFile": "node_modules/.tsbuildinfo",
     "paths": {
       "@multiplatform.one/components": ["./packages/components/*"],
       "app/*": ["./app/*"],
