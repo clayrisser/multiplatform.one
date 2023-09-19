@@ -26,7 +26,7 @@ import {
   UserCrudResolver as UserResolver,
   applyModelsEnhanceMap,
   applyResolversEnhanceMap,
-} from '@generated/type-graphql';
+} from '@generated/type-graphql-nestjs';
 
 applyResolversEnhanceMap({
   User: {

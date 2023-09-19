@@ -1,7 +1,7 @@
 /*
  *  File: /tsup.config.ts
- *  Project: @multiplatform.one/nestjs-keycloak-typegraphql
- *  File Created: 18-09-2023 16:01:55
+ *  Project: @multiplatform.one/nestjs-keycloak
+ *  File Created: 19-09-2023 07:07:18
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -20,6 +20,7 @@
  */
 
 import { defineConfig } from 'tsup';
+import transpileModules from './transpileModules';
 
 export default defineConfig({
   bundle: true,
@@ -32,6 +33,7 @@ export default defineConfig({
   outDir: 'lib',
   publicDir: './public',
   skipNodeModulesBundle: true,
+  noExternal: transpileModules,
   splitting: true,
   target: 'es5',
 });

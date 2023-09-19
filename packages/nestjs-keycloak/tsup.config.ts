@@ -20,6 +20,7 @@
  */
 
 import { defineConfig } from 'tsup';
+import transpileModules from './transpileModules';
 
 export default defineConfig({
   bundle: true,
@@ -32,6 +33,7 @@ export default defineConfig({
   outDir: 'lib',
   publicDir: './public',
   skipNodeModulesBundle: true,
+  noExternal: transpileModules,
   splitting: true,
   target: 'es5',
 });

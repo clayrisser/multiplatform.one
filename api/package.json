@@ -133,6 +133,7 @@
     "@babel/preset-env": "^7.22.20",
     "@babel/preset-typescript": "^7.22.15",
     "@babel/register": "^7.22.15",
+    "@multiplatform.one/typegraphql-prisma-nestjs-keycloak": "^0.2700.0",
     "@nestjs/cli": "^10.1.17",
     "@nestjs/schematics": "^10.0.2",
     "@nestjs/testing": "^10.2.5",
@@ -203,7 +204,7 @@
     "indent": 4
   },
   "prisma": {
-    "seed": "make -s +seed"
+    "seed": "node dist/seed.js"
   },
   "nodemonConfig": {
     "watch": [

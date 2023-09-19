@@ -1,7 +1,7 @@
 /*
- *  File: /tsup.config.ts
- *  Project: @multiplatform.one/nestjs-keycloak
- *  File Created: 19-09-2023 07:07:18
+ *  File: /transpileModules.js
+ *  Project: @multiplatform.one/prisma-scripts
+ *  File Created: 19-09-2023 14:08:50
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,21 +19,6 @@
  *  limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
-import transpileModules from './transpileModules';
-
-export default defineConfig({
-  bundle: true,
-  clean: true,
-  dts: true,
-  entry: ['src/**/*.ts?(x)'],
-  entryPoints: ['src/index.ts'],
-  format: ['cjs', 'esm'],
-  minify: false,
-  outDir: 'lib',
-  publicDir: './public',
-  skipNodeModulesBundle: true,
-  noExternal: transpileModules,
-  splitting: true,
-  target: 'es5',
-});
+const logger = console;
+module.exports = [...new Set([...(require('./package.json').transpileModules || [])])];
+logger.debug('transpileModules:', module.exports.join(', '));
