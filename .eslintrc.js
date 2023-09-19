@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const cspell = JSON.parse(fs.readFileSync(path.resolve(__dirname, '.vscode/settings.json')).toString())['cSpell.words'];
+const cspell = fs.readFileSync(path.resolve(__dirname, 'project-words.txt')).toString().split('\n');
 
 module.exports = {
   extends: ['alloy', 'alloy/typescript', 'alloy/react'],

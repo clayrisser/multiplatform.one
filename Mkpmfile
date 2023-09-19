@@ -4,7 +4,7 @@ include $(MKPM)/mkpm
 include $(MKPM)/gnu
 include $(MKPM)/envcache
 include $(MKPM)/dotenv
-include $(MKPM)/mkchain
+include $(MKPM)/chain
 include $(MKPM)/yarn
 include shared.mk
 
@@ -13,38 +13,38 @@ PACKAGES := \
 	keycloak \
 	components
 
-ACTIONS += install ##
-$(ACTION)/install: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
+ACTIONS += deps ##
+$(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
 	@$(YARN) install $(ARGS)
-	@$(call done,install)
-	@$(MAKE) build
+	@$(call done,$@)
+	@$(MAKE) -sf $(PROJECT_ROOT)/Mkpmfile build
 
 ACTIONS += format ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 	@$(call workspace_foreach,format,$(ARGS))
-	@$(call done,format)
+	@$(call done,$@)
 
 ACTIONS += spellcheck ##
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 	@$(call workspace_foreach,spellcheck,$(ARGS))
-	@$(call done,spellcheck)
+	@$(call done,$@)
 
 ACTIONS += lint ##
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 	@$(call workspace_foreach,lint,$(ARGS))
-	@$(call done,lint)
+	@$(call done,$@)
 
 ACTIONS += test ##
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	@$(call workspace_foreach,test,$(ARGS))
-	@$(call done,test)
+	@$(call done,$@)
 
 ACTIONS += build ##
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@for p in $(PACKAGES); do \
 		$(MAKE) -sC packages/$$p build ARGS=$(ARGS); \
 	done
-	@$(call done,build)
+	@$(call done,$@)
 
 .PHONY: upgrade
 upgrade: ##
@@ -93,4 +93,4 @@ count:
 
 CACHE_ENVS += \
 
--include $(call actions)
+-include $(call chain)
