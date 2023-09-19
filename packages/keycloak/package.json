@@ -93,7 +93,7 @@
     "@bitspur/react-keycloak-ssr": "^4.0.14",
     "@bitspur/react-keycloak-web": "^4.0.14",
     "core-js-pure": "^3.32.2",
-    "expo-auth-session": "^5.2.0",
+    "expo-auth-session": "^5.2.1",
     "solito": "^4.0.1"
   }
 }

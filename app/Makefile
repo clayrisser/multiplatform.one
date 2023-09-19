@@ -1,3 +1,22 @@
+# File: /Makefile
+# Project: app
+# File Created: 17-09-2023 13:11:26
+# Author: Clay Risser
+# -----
+# BitSpur (c) Copyright 2021 - 2023
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 include $(MKPM)/mkpm
 DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
@@ -10,16 +29,16 @@ include $(PROJECT_ROOT)/shared.mk
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
-	@$(MAKE) -sC $(PROJECT_ROOT) \~deps ARGS=$(ARGS)
+	@$(MAKE) -C $(PROJECT_ROOT) -f $(PROJECT_ROOT)/Mkpmfile \~deps DEPS_ARGS=$(DEPS_ARGS)
 else
-	@$(YARN) workspaces focus $(ARGS)
+	@$(YARN) workspaces focus $(DEPS_ARGS)
 endif
 	@$(call done,$@)
 
 ACTIONS += format~deps ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 #	-@$(call eslint_format,$?)
-	-@$(call prettier,$?,$(ARGS))
+	-@$(call prettier,$?,$(FORMAT_ARGS))
 	@$(call done,$@)
 
 ACTIONS += spellcheck~format ##
@@ -29,12 +48,12 @@ $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 
 ACTIONS += lint~spellcheck ##
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
-	-@$(call eslint,$?,$(ARGS))
+	-@$(call eslint,$?,$(LINT_ARGS))
 	@$(call done,$@)
 
 ACTIONS += test~lint ##
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
-	-@$(call jest,$?,$(ARGS))
+	-@$(call jest,$?,$(TEST_ARGS))
 	@$(call done,$@)
 
 .PHONY: clean

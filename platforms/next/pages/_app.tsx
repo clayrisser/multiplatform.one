@@ -1,4 +1,3 @@
-// import '../global.css';
 import '@multiplatform.one/components/css/code-highlight.css';
 import '@tamagui/core/reset.css';
 import 'raf/polyfill';

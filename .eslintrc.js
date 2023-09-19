@@ -14,6 +14,7 @@ module.exports = {
     node: true,
   },
   globals: {
+    ErrorUtils: true,
     JSX: true,
     NodeJS: true,
     __DEV__: true,
