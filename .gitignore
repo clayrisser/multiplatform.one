@@ -20,7 +20,7 @@
 .vercel
 .yarn/*
 /build
-/node_modules
+node_modules/
 /out/
 THUMBS_DB
 graphql.config.*
