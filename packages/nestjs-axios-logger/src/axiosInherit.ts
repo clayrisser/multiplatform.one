@@ -2,12 +2,12 @@
  * File: /src/axiosInherit.ts
  * Project: nestjs-axios-logger
  * File Created: 23-10-2022 06:54:32
- * Author: Risser Labs LLC <info@risserlabs.com>
+ * Author: BitSpur <info@risserlabs.com>
  * -----
  * Last Modified: 23-10-2022 06:59:14
- * Modified By: Risser Labs LLC <info@risserlabs.com>
+ * Modified By: BitSpur <info@risserlabs.com>
  * -----
- * Risser Labs LLC (c) Copyright 2021 - 2022
+ * BitSpur (c) Copyright 2021 - 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

@@ -1,5 +1,5 @@
 {
-  "name": "@bitspur/nestjs-keycloak",
+  "name": "@multiplatform.one/nestjs-keycloak",
   "version": "3.0.4",
   "description": "nestjs module for authenticating keycloak",
   "sideEffects": false,
@@ -12,7 +12,7 @@
     "email": "support@risserlabs.com"
   },
   "license": "Apache-2.0",
-  "author": "Risser Labs LLC <support@risserlabs.com> (https://risserlabs.com)",
+  "author": "BitSpur <support@risserlabs.com> (https://risserlabs.com)",
   "main": "lib/index.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -26,8 +26,8 @@
   ],
   "repository": "https://gitlab.com/risserlabs/nestjs/nestjs-keycloak",
   "dependencies": {
-    "@bitspur/typegraphql-nestjs": "workspace:^",
     "@keycloak/keycloak-admin-client": "^22.0.3",
+    "@multiplatform.one/typegraphql-nestjs": "workspace:^",
     "axios": "^1.5.0",
     "class-validator": "^0.14.0",
     "core-js": "^3.32.2",

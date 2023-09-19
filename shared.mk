@@ -29,7 +29,6 @@ export EXPO ?= $(call yarn_binary,expo)
 export GM ?= command gm
 export JEST ?= $(call yarn_binary,jest)
 export LOKI ?= $(call yarn_binary,loki)
-export PRETTIER := $(call yarn_binary,prettier)
 export TSC ?= $(call yarn_binary,tsc)
 export TSUP ?= $(call yarn_binary,tsup)
 export WATCHMAN ?= watchman

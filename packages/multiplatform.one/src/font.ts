@@ -7,7 +7,7 @@
  * Last Modified: 23-05-2023 14:35:17
  * Modified By: Clay Risser
  * -----
- * Risser Labs LLC (c) Copyright 2022 - 2023
+ * BitSpur (c) Copyright 2022 - 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

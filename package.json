@@ -1,5 +1,5 @@
 {
-  "name": "example",
+  "name": "root",
   "private": true,
   "workspaces": [
     "api",
@@ -54,7 +54,7 @@
   "packageManager": "yarn@3.6.1",
   "prettier": "eslint-config-alloy/.prettierrc.js",
   "dependencies": {
-    "@bitspur/typegraphql-nestjs": "^0.6.1",
+    "@multiplatform.one/typegraphql-nestjs": "workspace:^",
     "@turbo/gen": "^1.10.14",
     "turbo": "^1.10.14"
   }

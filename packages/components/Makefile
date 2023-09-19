@@ -1,5 +1,4 @@
 include $(MKPM)/mkpm
-DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
 include $(MKPM)/envcache
 include $(MKPM)/chain
