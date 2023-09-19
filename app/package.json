@@ -21,7 +21,7 @@
     "@tamagui/lucide-icons": "^1.68.2",
     "@tamagui/toast": "^1.68.2",
     "expo-keycloak-auth": "^1.0.14",
-    "expo-linking": "^6.0.0",
+    "expo-linking": "^6.1.0",
     "expo-random": "^13.4.0",
     "i18next": "^23.5.1",
     "immer": "^10.0.2",
