@@ -1,30 +1,27 @@
-/**
- * File: /src/types.ts
- * Project: nestjs-axios-logger
- * File Created: 17-07-2021 22:36:56
- * Author: BitSpur <info@risserlabs.com>
- * -----
- * Last Modified: 24-10-2022 06:15:30
- * Modified By: BitSpur <info@risserlabs.com>
- * -----
- * BitSpur (c) Copyright 2021
+/*
+ *  File: /src/types.ts
+ *  Project: @multiplatform.one/nestjs-axios-logger
+ *  File Created: 19-09-2023 05:24:50
+ *  Author: Clay Risser
+ *  -----
+ *  BitSpur (c) Copyright 2021 - 2023
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { LogLevel } from '@nestjs/common';
-import { ModuleMetadata } from '@nestjs/common/interfaces';
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { LogLevel } from '@nestjs/common';
+import type { ModuleMetadata } from '@nestjs/common/interfaces';
 
 export interface AxiosLoggerOptions {
   data?: boolean;

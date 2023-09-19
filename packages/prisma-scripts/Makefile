@@ -1,12 +1,9 @@
 # File: /Makefile
-# Project: nestjs-axios-logger
-# File Created: 23-10-2022 05:07:14
-# Author: BitSpur <info@risserlabs.com>
+# Project: @multiplatform.one/nestjs-keycloak
+# File Created: 19-09-2023 07:07:12
+# Author: Clay Risser
 # -----
-# Last Modified: 04-11-2022 06:35:27
-# Modified By: Clay Risser
-# -----
-# BitSpur (c) Copyright 2021 - 2022
+# BitSpur (c) Copyright 2021 - 2023
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,15 +23,7 @@ include $(MKPM)/chain
 include $(MKPM)/yarn
 include $(MKPM)/envcache
 include $(MKPM)/dotenv
-
-export CSPELL ?= $(call yarn_binary,cspell)
-export ESLINT ?= $(call yarn_binary,eslint)
-export JEST ?= $(call yarn_binary,jest)
-export PRETTIER ?= $(call yarn_binary,prettier)
-export TSC ?= $(call yarn_binary,tsc)
-
-export NPM_AUTH_TOKEN ?= $(shell $(CAT) $(HOME)/.docker/config.json 2>$(NULL) | \
-	$(JQ) -r '.auths["registry.gitlab.com"].auth' | $(BASE64_NOWRAP) -d | $(CUT) -d':' -f2)
+include $(PROJECT_ROOT)/shared.mk
 
 ACTIONS += deps
 $(ACTION)/deps: package.json
@@ -56,21 +45,18 @@ $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call eslint,$?,$(ARGS))
 	@$(call done,$@)
 
-ACTIONS += test~lint ##
-$(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
-	-@$(MKDIR) -p node_modules/.tmp
-	-@$(call jest,$?,$(ARGS))
-	@$(call done,$@)
+# ACTIONS += test~lint ##
+# $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
+# 	-@$(MKDIR) -p node_modules/.tmp
+# 	-@$(call jest,$?,$(ARGS))
+# 	@$(call done,$@)
 
-ACTIONS += build~test ##
+ACTIONS += build~lint ##
 BUILD_TARGET := lib/index.js
 lib/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(WEBPACK)
-	@$(BABEL) --env-name esm src -d lib --extensions '.js,.jsx,.ts,.tsx' --source-maps
-	@$(ECHO) '{"type": "module"}' > lib/package.json
-	@$(TSC) -p tsconfig.build.json -d
+	@$(TSUP)
 	@$(call done,$@)
 
 COLLECT_COVERAGE_FROM := ["src/**/*.{js,jsx,ts,tsx}"]

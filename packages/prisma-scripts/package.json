@@ -19,15 +19,18 @@
   "license": "Apache-2.0",
   "author": "BitSpur <support@risserlabs.com> (https://risserlabs.com)",
   "main": "lib/index.js",
-  "module": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "module": "lib/index.mjs",
+  "react-native": "src/index.ts",
   "source": "src/index.ts",
+  "types": "lib/index.d.ts",
   "exports": {
-    ".": "./lib/index.js"
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    }
   },
   "files": [
-    "bin",
-    "dist",
     "lib",
     "src"
   ],
@@ -36,25 +39,8 @@
     "url": "https://gitlab.com/risserlabs/nestjs/prisma-scripts"
   },
   "bin": {
-    "generate-prisma": "bin/generate.js",
-    "wait-for-postgres": "bin/waitForPostgres.js"
-  },
-  "scripts": {
-    "build": "make -s build",
-    "clean": "make -s clean",
-    "coverage": "make -s coverage",
-    "format": "make -s format",
-    "inc": "make -s inc",
-    "lint": "make -s lint",
-    "make": "make",
-    "prepare": "make -s prepare",
-    "purge": "make -s purge",
-    "report": "make -s report",
-    "spellcheck": "make -s spellcheck",
-    "start": "make -s start",
-    "test": "make -s test",
-    "test:ui": "make test-ui",
-    "test:watch": "make -s test-watch"
+    "generate-prisma": "lib/bin/generate.js",
+    "wait-for-postgres": "lib/bin/waitForPostgres.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.22.15",
@@ -66,7 +52,7 @@
     "ora": "^7.0.1"
   },
   "peerDependencies": {
-    "prisma": "^3.9.1"
+    "prisma": "^5.3.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.15",
