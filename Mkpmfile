@@ -76,6 +76,10 @@ gen/%:
 gen:
 	@npx turbo generate
 
+.PHONY: count
+count:
+	@$(CLOC) $(shell ($(GIT) ls-files && ($(GIT) lfs ls-files | $(CUT) -d' ' -f3)) | $(SORT) | $(UNIQ) -u)
+
 CACHE_ENVS += \
 
 -include $(call chain)

@@ -1,36 +1,32 @@
-/**
- * File: /src/types.ts
- * Project: nestjs-keycloak
- * File Created: 14-07-2021 11:43:59
- * Author: Clay Risser <email@clayrisser.com>
- * -----
- * Last Modified: 17-04-2023 22:37:48
- * Modified By: Clay Risser
- * -----
- * Risser Labs LLC (c) Copyright 2021
+/*
+ *  File: /src/types.ts
+ *  Project: @multiplatform.one/nestjs-keycloak
+ *  File Created: 19-09-2023 04:38:30
+ *  Author: Clay Risser
+ *  -----
+ *  BitSpur (c) Copyright 2021 - 2023
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 
-import type Token from 'keycloak-connect/middleware/auth-utils/token';
+import type KeycloakService from './keycloak.service';
 import type { Grant } from 'keycloak-connect';
 import type { ModuleMetadata } from '@nestjs/common/interfaces';
 import type { Reflector } from '@nestjs/core';
 import type { Request, Response } from 'express';
 import type { RequiredActionAlias } from '@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation';
-import type { ResourceAccess } from 'keycloak-connect/middleware/auth-utils/token';
+import type { ResourceAccess } from './token';
 import { ApiProperty } from '@nestjs/swagger';
-import type KeycloakService from './keycloak.service';
 
 export interface HashMap<T = any> {
   [key: string]: T;
@@ -185,7 +181,7 @@ export class TokenContent {
   typ?: string;
 }
 
-export class TokenProperties {
+export class Token {
   @ApiProperty()
   clientId!: string;
 
@@ -207,13 +203,13 @@ export class TokenProperties {
 
 export class GrantProperties {
   @ApiProperty()
-  access_token?: TokenProperties;
+  access_token?: Token;
 
   @ApiProperty()
-  refresh_token?: TokenProperties;
+  refresh_token?: Token;
 
   @ApiProperty()
-  id_token?: TokenProperties;
+  id_token?: Token;
 
   @ApiProperty()
   expires_in?: string;

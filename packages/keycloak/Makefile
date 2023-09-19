@@ -6,7 +6,7 @@
 # Last Modified: 24-02-2023 06:42:35
 # Modified By: Clay Risser
 # -----
-# Risser Labs LLC (c) Copyright 2022
+# BitSpur (c) Copyright 2022
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@
 
 
 include $(MKPM)/mkpm
-DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
 include $(MKPM)/chain
 include $(MKPM)/yarn
@@ -30,7 +29,6 @@ include $(MKPM)/envcache
 include $(MKPM)/dotenv
 include $(PROJECT_ROOT)/shared.mk
 
-export CLOC ?= cloc
 export CSPELL ?= $(call yarn_binary,cspell)
 export ESLINT ?= $(call yarn_binary,eslint)
 export JEST ?= $(call yarn_binary,jest)
@@ -84,41 +82,11 @@ coverage: | ~lint +coverage
 +coverage:
 	@$(JEST) --coverage --collectCoverageFrom='$(COLLECT_COVERAGE_FROM)' $(ARGS)
 
-.PHONY: prepare
-prepare: ;
-
-.PHONY: upgrade
-upgrade:
-	@$(YARN) upgrade-interactive
-
-.PHONY: inc
-inc:
-	@$(NPM) version patch --git=false $(NOFAIL)
-
-.PHONY: count
-count:
-	@$(CLOC) $(shell $(GIT) ls-files)
-
-.PHONY: publish +publish
-publish: | ~build +publish ##
-+publish:
-	@$(NPM) publish --access=public
-
-.PHONY: clean
-clean: ##
-	-@$(MKCACHE_CLEAN)
-	-@$(JEST) --clearCache $(NOFAIL)
-	-@$(GIT) clean -fXd \
-		$(MKPM_GIT_CLEAN_FLAGS) \
-		$(YARN_GIT_CLEAN_FLAGS) \
-		$(NOFAIL)
-
 -include $(call chain)
 
 export CACHE_ENVS += \
 	BABEL \
 	BABEL_NODE \
-	CLOC \
 	CSPELL \
 	ESLINT \
 	JEST \

@@ -35,8 +35,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/risserlabs/multiplatform.one/keycloak"
+    "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one.git"
   },
+  "license": "Apache-2.0",
   "dependencies": {
     "@mdx-js/mdx": "^2.3.0",
     "@mdx-js/react": "^2.3.0",

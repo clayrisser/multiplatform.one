@@ -1,25 +1,22 @@
-/**
- * File: /src/keycloakRegister.service.ts
- * Project: nestjs-keycloak
- * File Created: 14-07-2021 11:43:59
- * Author: Clay Risser <email@clayrisser.com>
- * -----
- * Last Modified: 21-11-2022 05:02:31
- * Modified By: Clay Risser
- * -----
- * Risser Labs LLC (c) Copyright 2021
+/*
+ *  File: /src/keycloakRegister.service.ts
+ *  Project: @multiplatform.one/nestjs-keycloak
+ *  File Created: 19-09-2023 04:38:30
+ *  Author: Clay Risser
+ *  -----
+ *  BitSpur (c) Copyright 2021 - 2023
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 
 import KcAdminClient from '@keycloak/keycloak-admin-client';
@@ -32,15 +29,15 @@ import type { AuthorizationCallback } from './decorators/authorizationCallback.d
 import type { AxiosError } from 'axios';
 import type { HashMap, KeycloakOptions, RegisterOptions } from './types';
 import type { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
-import { HttpService } from '@nestjs/axios';
-import { Reflector } from '@nestjs/core';
 import { AUTHORIZATION_CALLBACK } from './decorators/authorizationCallback.decorator';
 import { AUTHORIZED } from './decorators/authorized.decorator';
 import { DiscoveryService } from '@nestjs/core';
+import { HttpService } from '@nestjs/axios';
 import { KEYCLOAK_OPTIONS } from './types';
 import { Logger, Inject, Injectable } from '@nestjs/common';
 import { PATH_METADATA } from '@nestjs/common/constants';
 import { RESOURCE } from './decorators/resource.decorator';
+import { Reflector } from '@nestjs/core';
 import { SCOPES } from './decorators/scopes.decorator';
 
 const privateGlobalRegistrationMap: GlobalRegistrationMap = {};
@@ -66,6 +63,16 @@ export default class KeycloakRegisterService {
 
   private keycloakAdmin: KcAdminClient;
 
+  private _idsFromClientIds: HashMap<string> = {};
+
+  private _providers: any[] | undefined;
+
+  private _roles: string[] | undefined;
+
+  private _authorizationCallbacks: AuthorizationCallback[] | undefined;
+
+  private _defaultAuthorizationCallback: AuthorizationCallback | undefined;
+
   constructor(
     @Inject(KEYCLOAK_OPTIONS) private readonly options: KeycloakOptions,
     @Inject(DiscoveryService) private readonly discoveryService: DiscoveryService,
@@ -78,16 +85,6 @@ export default class KeycloakRegisterService {
       ...(typeof this.options.register === 'boolean' ? {} : this.options.register || {}),
     };
   }
-
-  private _idsFromClientIds: HashMap<string> = {};
-
-  private _providers: any[] | undefined;
-
-  private _roles: string[] | undefined;
-
-  private _authorizationCallbacks: AuthorizationCallback[] | undefined;
-
-  private _defaultAuthorizationCallback: AuthorizationCallback | undefined;
 
   private get defaultAuthorizationCallback(): AuthorizationCallback | undefined {
     if (this._defaultAuthorizationCallback) {
@@ -483,7 +480,6 @@ function getMethods(obj: any): ((...args: any[]) => any)[] {
   let current = obj;
   do {
     Object.getOwnPropertyNames(current).map((propertyName) => propertyNames.add(propertyName));
-    // eslint-disable-next-line no-cond-assign
   } while ((current = Object.getPrototypeOf(current)));
   return [...propertyNames]
     .filter((propertyName: string) => typeof obj[propertyName] === 'function')

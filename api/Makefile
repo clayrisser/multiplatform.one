@@ -93,10 +93,6 @@ upgrade:
 inc:
 	@$(NPM) version patch --git=false $(NOFAIL)
 
-.PHONY: count
-count:
-	@$(CLOC) $(shell $(GIT) ls-files)
-
 .PHONY: docker/%
 docker/%:
 	@$(MAKE) -sC docker $(subst docker/,,$@)

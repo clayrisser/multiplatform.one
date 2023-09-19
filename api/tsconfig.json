@@ -22,7 +22,7 @@
     "strict": true,
     "target": "ES5",
     "paths": {
-      "app/*": ["src/*"]
+      "@/*": ["src/*"]
     },
     "lib": ["DOM", "DOM.Iterable", "ES2021", "ScriptHost", "WebWorker", "WebWorker.ImportScripts", "Webworker.Iterable"]
   },

@@ -6,7 +6,7 @@
 # Last Modified: 11-05-2023 10:19:42
 # Modified By: Clay Risser
 # -----
-# Risser Labs LLC (c) Copyright 2021
+# BitSpur (c) Copyright 2021
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -436,7 +436,7 @@ ifeq ($(call columns,lt,62),1)
 	@$(ECHO)
 	@$(ECHO) "$(LIGHTBLUE)MKPM$(NOCOLOR)"
 	@$(ECHO)
-	@$(ECHO) 'Risser Labs LLC (c) Copyright 2021 - 2022'
+	@$(ECHO) 'BitSpur (c) Copyright 2021 - 2022'
 	@$(ECHO)
 else
 	@$(ECHO)
@@ -451,7 +451,7 @@ else
 	@$(ECHO) '                               88'
 	@$(ECHO) '                               88'"$(NOCOLOR)"
 	@$(ECHO)
-	@$(ECHO) 'Risser Labs LLC (c) Copyright 2022'
+	@$(ECHO) 'BitSpur (c) Copyright 2022'
 	@$(ECHO)
 endif
 endif
