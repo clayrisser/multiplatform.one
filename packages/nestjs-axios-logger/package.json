@@ -1,5 +1,5 @@
 {
-  "name": "nestjs-axios-logger",
+  "name": "@bitspur/nestjs-axios-logger",
   "version": "0.1.13",
   "description": "nestjs axios http module logging",
   "sideEffects": false,

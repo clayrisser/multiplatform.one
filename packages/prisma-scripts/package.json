@@ -1,5 +1,5 @@
 {
-  "name": "@risserlabs/prisma-scripts",
+  "name": "@bitspur/prisma-scripts",
   "version": "0.5.12",
   "description": "scripts for managing prisma orm",
   "sideEffects": false,

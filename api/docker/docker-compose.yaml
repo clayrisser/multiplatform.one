@@ -1,0 +1,174 @@
+version: '3.7'
+
+services:
+  dev:
+    container_name: dev
+    image: busybox
+    command: tail -f /dev/null
+    depends_on:
+      - dev-core
+      - grafana
+      - loki
+      - prometheus
+      - promtail
+      - tempo
+
+  dev-core:
+    container_name: dev-core
+    image: busybox
+    command: tail -f /dev/null
+    depends_on:
+      - keycloak
+      - postgres
+      - redis
+
+  app:
+    container_name: ${NAME}
+    image: ${IMAGE}:latest
+    user: 0:0
+    ports:
+      - 5000:5000
+      - 8081:8081
+    volumes:
+      - ./data/logs:/var/logs
+    environment:
+      DEBUG: '1'
+      GRAPHQL_PLAYGROUND: '1'
+      LOG_FILE_NAME: /var/logs/app.log
+      OTEL_EXPORTER_JAEGER_ENDPOINT: http://tempo:14268/api/traces
+      OTEL_SERVICE_NAME: app
+      SWAGGER: '1'
+    depends_on:
+      - keycloak
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:12
+    container_name: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DATABASE: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6.0.4
+    container_name: redis
+    restart: always
+    command: redis-server --appendonly yes
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/data
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:19.0.3
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - ./realm-export.json:/tmp/realm-export.json:ro
+      - ./providers:/opt/keycloak/providers
+    entrypoint:
+      - sh
+      - -c
+      - |
+        /opt/keycloak/bin/kc.sh build
+        IMPORT_FLAG_FILE=/opt/keycloak/imported.flag
+        if [ "$${KEYCLOAK_IMPORT}" != "" ]; then
+          if [ ! -f "$$IMPORT_FLAG_FILE" ]; then
+            /opt/keycloak/bin/kc.sh import --file "$$KEYCLOAK_IMPORT"
+            touch "$$IMPORT_FLAG_FILE"
+          fi
+        fi
+        /opt/keycloak/bin/kc.sh start-dev
+    environment:
+      KEYCLOAK_IMPORT: /tmp/realm-export.json
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: P@ssw0rd
+
+  tempo:
+    image: grafana/tempo:1.5.0
+    user: 0:0
+    command: ['-config.file=/etc/tempo.yaml']
+    volumes:
+      - ./tempo.yaml:/etc/tempo.yaml
+      - tempo:/tmp/tempo
+    ports:
+      - '14268:14268'
+      - '14250'
+      - '55680'
+      - '6831/udp'
+      - '6832/udp'
+
+  loki:
+    user: 0:0
+    image: grafana/loki:2.6.1
+    command: -config.file=/etc/loki/loki-local.yaml
+    ports:
+      - 3100:3100
+    environment:
+      - JAEGER_AGENT_HOST=tempo
+      - JAEGER_ENDPOINT=http://tempo:14268/api/traces
+      - JAEGER_SAMPLER_PARAM=1
+      - JAEGER_SAMPLER_TYPE=const
+    volumes:
+      - ./loki.yaml:/etc/loki/loki-local.yaml
+      - loki:/tmp/loki
+
+  promtail:
+    user: 0:0
+    image: grafana/promtail:2.2.1
+    command: -config.file=/etc/promtail/promtail-local.yaml
+    volumes:
+      - ./promtail.yaml:/etc/promtail/promtail-local.yaml
+      - ./data/logs:/app/logs
+    depends_on:
+      - loki
+
+  prometheus:
+    user: 0:0
+    image: prom/prometheus:latest
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus.yaml
+    entrypoint:
+      - /bin/prometheus
+      - --config.file=/etc/prometheus.yaml
+    ports:
+      - '9090:9090'
+
+  grafana:
+    user: 0:0
+    image: grafana/grafana:9.1.1-ubuntu
+    volumes:
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/dashboards-provisioning:/etc/grafana/provisioning/dashboards
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - '3000:3000'
+    depends_on:
+      - prometheus
+      - tempo
+      - loki
+
+volumes:
+  postgres:
+    name: postgres-${NAME}
+  redis:
+    name: redis-${NAME}
+  tempo:
+    name: tempo-${NAME}
+  loki:
+    name: loki-${NAME}

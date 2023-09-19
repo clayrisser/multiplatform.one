@@ -1,0 +1,31 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "corejs": 3,
+        "loose": false,
+        "modules": "cjs",
+        "spec": true,
+        "useBuiltIns": "usage"
+      }
+    ],
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    "babel-plugin-macros",
+    "babel-plugin-transform-typescript-metadata",
+    "@babel/plugin-transform-runtime",
+    ["@babel/plugin-proposal-decorators", { "version": "legacy", "loose": false }],
+    ["@babel/plugin-proposal-class-properties", { "loose": false }],
+    [
+      "babel-plugin-module-resolver",
+      {
+        "root": ["."],
+        "alias": {
+          "app": "./src"
+        }
+      }
+    ]
+  ]
+}

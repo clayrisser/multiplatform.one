@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Oauth2 Redirect</title>
+  </head>
+  <body>
+    <div>redirecting . . .</div>
+    <script>
+      window.location = '<%= swaggerBasePath %>?' + window.location.hash.substr(1);
+    </script>
+  </body>
+</html>

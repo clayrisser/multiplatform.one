@@ -6,18 +6,12 @@ include $(MKPM)/envcache
 include $(MKPM)/dotenv
 include $(MKPM)/chain
 include $(MKPM)/yarn
-include shared.mk
-
-PACKAGES := \
-	multiplatform.one \
-	keycloak \
-	components
+include $(PROJECT_ROOT)/shared.mk
 
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
 	@$(YARN) install $(ARGS)
 	@$(call done,$@)
-	@$(MAKE) -sf $(PROJECT_ROOT)/Mkpmfile build
 
 ACTIONS += format ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
@@ -37,13 +31,6 @@ $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 ACTIONS += test ##
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	@$(call workspace_foreach,test,$(ARGS))
-	@$(call done,$@)
-
-ACTIONS += build ##
-$(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@for p in $(PACKAGES); do \
-		$(MAKE) -sC packages/$$p build ARGS=$(ARGS); \
-	done
 	@$(call done,$@)
 
 .PHONY: upgrade
@@ -81,15 +68,13 @@ next/docker/%:
 storybook/docker/%:
 	@$(MAKE) -sC platforms/storybook/docker $(subst storybook/docker/,,$@) ARGS=$(ARGS)
 
-.PHONY: publish
-publish: build
-	@$(CHANGESET)
-	@$(CHANGESET) version
-	@$(CHANGESET) publish
+.PHONY: gen/%
+gen/%:
+	@npx turbo generate $(subst  gen/,,$@)
 
-.PHONY: count
-count:
-	@$(CLOC) $(shell ($(GIT) ls-files && ($(GIT) lfs ls-files | $(CUT) -d' ' -f3)) | $(SORT) | $(UNIQ) -u)
+.PHONY: gen
+gen:
+	@npx turbo generate
 
 CACHE_ENVS += \
 
