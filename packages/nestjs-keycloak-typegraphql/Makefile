@@ -1,12 +1,9 @@
 # File: /Makefile
-# Project: nestjs-axios-logger
-# File Created: 23-10-2022 05:07:14
-# Author: BitSpur <info@risserlabs.com>
+# Project: @multiplatform.one/nestjs-keycloak-typegraphql
+# File Created: 19-09-2023 06:49:05
+# Author: Clay Risser
 # -----
-#Last Modified: Tu-09-2023 07:06:34
-#Modified By: clayrisser
-# -----
-# BitSpur (c) Copyright 2021 - 2022
+# BitSpur (c) Copyright 2021 - 2023
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

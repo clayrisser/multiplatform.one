@@ -23,9 +23,9 @@ import pkg from '../../package.json';
 import type { INestApplication } from '@nestjs/common';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import type { OpenAPIObject } from '@nestjs/swagger';
-import type { SofaOpenApi } from 'app/modules/core/sofa';
+import type { SofaOpenApi } from '@/modules/core/sofa';
 import { ConfigService } from '@nestjs/config';
-import { SOFA_OPEN_API } from 'app/modules/core/sofa';
+import { SOFA_OPEN_API } from '@/modules/core/sofa';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 export async function registerSwagger(app: NestExpressApplication, sofa: INestApplication) {

@@ -19,7 +19,7 @@
  *  limitations under the License.
  */
 
-import type { ErrorHandler, Method, SofaConfig } from '@risserlabs/sofa-api';
+import type { ErrorHandler, HTTPMethod, SofaConfig } from '@multiplatform.one/sofa-api';
 import type { FactoryProvider } from '@nestjs/common';
 import type { OperationDefinitionNode, GraphQLSchema } from 'graphql';
 import { ConfigService } from '@nestjs/config';
@@ -39,7 +39,18 @@ export const SofaConfigProvider: FactoryProvider<Promise<SofaConfig>> = {
       basePath: config.get('SOFA_BASE_PATH') || '/sofa',
       method: {},
       name: {},
-      calculateMethod(method: Method, kind: Kind, { name }: OperationDefinitionNode) {
+      openAPI: {
+        schema,
+        info: {
+          description: '',
+          title: 'sofa',
+          version: '0.0.1',
+        },
+      },
+      swaggerUI: {
+        endpoint: false,
+      },
+      calculateMethod(method: HTTPMethod, kind: Kind, { name }: OperationDefinitionNode) {
         switch (kind) {
           case 'query': {
             return 'GET';

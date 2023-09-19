@@ -1,7 +1,7 @@
 /*
  *  File: /src/decorators/guards.decorator.ts
- *  Project: @bitspur/nestjs-keycloak-typegraphql
- *  File Created: 18-09-2023 15:06:59
+ *  Project: @multiplatform.one/nestjs-keycloak-typegraphql
+ *  File Created: 19-09-2023 04:17:05
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,14 +19,14 @@
  *  limitations under the License.
  */
 
-import type { NextFn, ResolverData } from 'type-graphql';
-import { DecorateAll } from '@risserlabs/typegraphql-nestjs';
-import { applyDecorators } from '@nestjs/common';
-import { createMethodDecorator } from 'type-graphql';
 import RegisterClass from './registerClass.decorator';
 import RegisterHandler from './registerHandler.decorator';
 import type { GraphqlCtx } from '../types';
+import type { NextFn, ResolverData } from 'type-graphql';
+import { DecorateAll } from '@multiplatform.one/typegraphql-nestjs';
+import { applyDecorators } from '@nestjs/common';
 import { combineMiddlewares } from '../deferMiddleware';
+import { createMethodDecorator } from 'type-graphql';
 
 export default function Guards(): ClassDecorator {
   return applyDecorators(

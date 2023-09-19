@@ -19,10 +19,10 @@
  *  limitations under the License.
  */
 
-import type { GraphqlCtx } from 'app/types';
+import type { GraphqlCtx } from '@/types';
 import type { LoginRequestDto } from './auth.dto';
-import { Authorized, Resource } from '@risserlabs/nestjs-keycloak';
-import { GrantProperties, Resolver, UserInfo } from '@risserlabs/nestjs-keycloak-typegraphql';
+import { Authorized, Resource } from '@multiplatform.one/nestjs-keycloak';
+import { GrantProperties, Resolver, UserInfo } from '@multiplatform.one/nestjs-keycloak-typegraphql';
 import { Logger } from '@nestjs/common';
 import { LoginResponseDto } from './auth.dto';
 import { Query, Ctx, ObjectType, Args } from 'type-graphql';
@@ -34,12 +34,16 @@ export class AuthResolver {
 
   @Query((_returns) => LoginResponseDto, { nullable: true })
   async login(@Ctx() ctx: GraphqlCtx, @Args() args: LoginRequestDto): Promise<LoginResponseDto | null> {
-    const tokens = await ctx.keycloakService?.passwordGrant(args);
-    if (!tokens) return null;
+    const grant = await ctx.keycloakService?.directGrant({
+      password: args.password || '',
+      scope: args.scope,
+      username: args.username || '',
+    });
+    if (!grant) return null;
     const userInfo = (await ctx.keycloakService?.getUserInfo())!;
     return {
-      accessToken: tokens.accessToken?.token || '',
-      refreshToken: tokens.refreshToken?.token || '',
+      accessToken: (grant.access_token as any)?.token || '',
+      refreshToken: (grant.refresh_token as any)?.token || '',
       userInfo,
     };
   }

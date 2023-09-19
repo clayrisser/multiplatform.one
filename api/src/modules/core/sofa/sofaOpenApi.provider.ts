@@ -19,14 +19,13 @@
  *  limitations under the License.
  */
 
-import pkg from 'app/../package.json';
+import pkg from '@/../package.json';
 import type { FactoryProvider } from '@nestjs/common';
 import type { GraphQLSchema } from 'graphql';
 import type { OpenAPIV3 } from 'openapi-types';
-import type { RouteInfo } from '@risserlabs/sofa-api';
-import type { SofaConfig } from '@risserlabs/sofa-api';
+import type { SofaConfig, RouteInfo } from '@multiplatform.one/sofa-api';
 import { ConfigService } from '@nestjs/config';
-import { OpenAPI, createRouter, createSofa } from '@risserlabs/sofa-api';
+import { OpenAPI, createRouter, createSofa } from '@multiplatform.one/sofa-api';
 import { SOFA_CONFIG } from './sofaConfig.provider';
 import { SOFA_GRAPHQL_SCHEMA } from './types';
 
@@ -44,12 +43,12 @@ export const SofaOpenApiProvider: FactoryProvider<Promise<SofaOpenApi>> = {
         version: pkg.version,
       },
     });
-    const clonedSofaConfig = { ...sofaConfig };
-    clonedSofaConfig.onRoute = (info: RouteInfo) => {
-      openApi.addRoute(info, { basePath: config.get('SOFA_BASE_PATH') || '/sofa' });
-    };
-    createRouter(createSofa(clonedSofaConfig));
-    delete sofaConfig.onRoute;
+    // const clonedSofaConfig = { ...sofaConfig };
+    // clonedSofaConfig.onRoute = (info: RouteInfo) => {
+    //   openApi.addRoute(info, { basePath: config.get('SOFA_BASE_PATH') || '/sofa' });
+    // };
+    // createRouter(createSofa(clonedSofaConfig));
+    // delete sofaConfig.onRoute;
     return openApi;
   },
 };

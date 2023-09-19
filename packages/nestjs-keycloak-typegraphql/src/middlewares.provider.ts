@@ -1,7 +1,7 @@
 /*
  *  File: /src/middlewares.provider.ts
- *  Project: @bitspur/nestjs-keycloak-typegraphql
- *  File Created: 18-09-2023 15:06:59
+ *  Project: @multiplatform.one/nestjs-keycloak-typegraphql
+ *  File Created: 19-09-2023 04:17:05
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -20,9 +20,9 @@
  */
 
 import type { FactoryProvider } from '@nestjs/common';
+import type { GraphqlCtx } from './types';
 import type { MiddlewareFn, NextFn, ResolverData } from 'type-graphql';
 import { AUTH_GUARD } from './authGuard.provider';
-import type { GraphqlCtx } from './types';
 import { RESOURCE_GUARD } from './resourceGuard.provider';
 
 export const MIDDLEWARES = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_MIDDLEWARES';

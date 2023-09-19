@@ -1,30 +1,27 @@
-/**
- * File: /src/modules/user/user.resolver.ts
- * Project: app
- * File Created: 16-10-2022 02:15:42
- * Author: Clay Risser
- * -----
- * Last Modified: 26-10-2022 13:39:26
- * Modified By: Clay Risser
- * -----
- * BitSpur (c) Copyright 2021 - 2022
+/*
+ *  File: /src/modules/user/user.resolver.ts
+ *  Project: api
+ *  File Created: 19-09-2023 06:04:27
+ *  Author: Clay Risser
+ *  -----
+ *  BitSpur (c) Copyright 2021 - 2023
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 
-import { Authorized } from '@risserlabs/nestjs-keycloak';
+import { Authorized } from '@multiplatform.one/nestjs-keycloak';
 import { CacheScope } from 'apollo-server-types';
-import { CacheControl } from 'app/modules/core/typegraphql';
+import { CacheControl } from '@/modules/core/typegraphql';
 import {
   UserCrudResolver as UserResolver,
   applyModelsEnhanceMap,

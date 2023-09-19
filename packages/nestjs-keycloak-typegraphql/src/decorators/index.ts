@@ -1,7 +1,7 @@
 /*
  *  File: /src/decorators/index.ts
- *  Project: @bitspur/nestjs-keycloak-typegraphql
- *  File Created: 18-09-2023 15:06:59
+ *  Project: @multiplatform.one/nestjs-keycloak-typegraphql
+ *  File Created: 19-09-2023 04:17:05
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -22,7 +22,7 @@
 import Guards from './guards.decorator';
 import RegisterClass from './registerClass.decorator';
 import RegisterHandler from './registerHandler.decorator';
-import { Resolver } from './resolver.decorator';
 import { OnlyOwner } from './onlyOwner.decorator';
+import { Resolver } from './resolver.decorator';
 
 export { RegisterClass, RegisterHandler, Resolver, Guards, OnlyOwner };

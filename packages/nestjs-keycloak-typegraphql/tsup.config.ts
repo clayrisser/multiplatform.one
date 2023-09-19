@@ -1,6 +1,6 @@
 /*
  *  File: /tsup.config.ts
- *  Project: @risserlabs/nestjs-keycloak-typegraphql
+ *  Project: @multiplatform.one/nestjs-keycloak-typegraphql
  *  File Created: 18-09-2023 16:01:55
  *  Author: Clay Risser
  *  -----

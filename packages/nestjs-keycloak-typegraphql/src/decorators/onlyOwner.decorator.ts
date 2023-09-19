@@ -1,7 +1,7 @@
 /*
  *  File: /src/decorators/onlyOwner.decorator.ts
- *  Project: @bitspur/nestjs-keycloak-typegraphql
- *  File Created: 18-09-2023 15:06:59
+ *  Project: @multiplatform.one/nestjs-keycloak-typegraphql
+ *  File Created: 19-09-2023 04:17:05
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,11 +19,11 @@
  *  limitations under the License.
  */
 
+import type { GraphqlCtx } from '../types';
 import type { ResolverData, NextFn } from 'type-graphql';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { createMethodDecorator } from 'type-graphql';
-import { isOwner } from '@risserlabs/nestjs-keycloak';
-import type { GraphqlCtx } from '../types';
+import { isOwner } from '@multiplatform.one/nestjs-keycloak';
 
 export function OnlyOwner(
   resultUserIdPath: string | string[] = 'userId',
