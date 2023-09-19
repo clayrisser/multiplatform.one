@@ -1,7 +1,7 @@
 /*
  *  File: /src/decorators/resolver.decorator.ts
- *  Project: @bitspur/nestjs-keycloak-typegraphql
- *  File Created: 18-09-2023 15:06:59
+ *  Project: @multiplatform.one/nestjs-keycloak-typegraphql
+ *  File Created: 19-09-2023 04:17:05
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,11 +19,11 @@
  *  limitations under the License.
  */
 
+import Guards from './guards.decorator';
 import type { ClassType } from 'type-graphql';
+import type { ClassTypeResolver, AbstractClassOptions } from 'type-graphql/dist/decorators/types';
 import { Resolver as TypeGraphqlResolver } from 'type-graphql';
 import { applyDecorators } from '@nestjs/common';
-import type { ClassTypeResolver, AbstractClassOptions } from 'type-graphql/dist/decorators/types';
-import Guards from './guards.decorator';
 
 export function Resolver(options?: AbstractClassOptions): ClassDecorator;
 export function Resolver(

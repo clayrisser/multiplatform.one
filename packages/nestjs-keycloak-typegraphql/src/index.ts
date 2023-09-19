@@ -33,8 +33,6 @@ import { KEYCLOAK_TYPEGRAPHQL_OPTIONS } from './types';
 @Global()
 @Module({})
 export default class KeycloakModule {
-  private readonly logger = new Logger(KeycloakModule.name);
-
   private static imports = [HttpModule];
 
   public static register(options: KeycloakTypegraphqlOptions): DynamicModule {
@@ -98,6 +96,8 @@ export default class KeycloakModule {
       useFactory: asyncOptions.useFactory,
     };
   }
+
+  private readonly logger = new Logger(KeycloakModule.name);
 }
 
 export { AuthCheckerProvider, ResourceGuardProvider, WrapContextProvider };

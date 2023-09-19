@@ -19,8 +19,8 @@
  *  limitations under the License.
  */
 
-import otelSDK from 'app/tracing';
-import { start } from 'app/bootstrap';
+import otelSDK from '@/tracing';
+import { start } from '@/bootstrap';
 
 (async () => {
   otelSDK.start();

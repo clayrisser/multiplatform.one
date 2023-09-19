@@ -1,12 +1,9 @@
 # File: /Makefile
-# Project: auto-contrast
-# File Created: 02-03-2022 02:40:13
+# Project: @multiplatform.one/keycloak
+# File Created: 19-09-2023 03:52:55
 # Author: Clay Risser
 # -----
-# Last Modified: 24-02-2023 06:42:35
-# Modified By: Clay Risser
-# -----
-# BitSpur (c) Copyright 2022
+# BitSpur (c) Copyright 2021 - 2023
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +16,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 
 include $(MKPM)/mkpm
 include $(MKPM)/gnu

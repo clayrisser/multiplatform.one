@@ -1,7 +1,7 @@
 /*
  *  File: /src/decorators/registerClass.decorator.ts
- *  Project: @bitspur/nestjs-keycloak-typegraphql
- *  File Created: 18-09-2023 15:06:59
+ *  Project: @multiplatform.one/nestjs-keycloak-typegraphql
+ *  File Created: 19-09-2023 04:17:05
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,12 +19,12 @@
  *  limitations under the License.
  */
 
-import type { ResolverData, NextFn } from 'type-graphql';
-import { DecorateAll } from '@risserlabs/typegraphql-nestjs';
-import { createMethodDecorator } from 'type-graphql';
 import type { GraphqlCtx } from '../types';
+import type { ResolverData, NextFn } from 'type-graphql';
+import { DecorateAll } from '@multiplatform.one/typegraphql-nestjs';
+import { createMethodDecorator } from 'type-graphql';
 
-export default function RegisterClass(target: any): void | Function {
+export default function RegisterClass(target: any): undefined | Function {
   if (!target.prototype) return undefined;
   return DecorateAll(
     createMethodDecorator(({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
@@ -32,5 +32,5 @@ export default function RegisterClass(target: any): void | Function {
       context.typegraphqlMeta.getClass = () => target;
       return next();
     }),
-  )(target);
+  )(target) as undefined | Function;
 }

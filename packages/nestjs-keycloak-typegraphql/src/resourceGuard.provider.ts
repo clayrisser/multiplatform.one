@@ -1,7 +1,7 @@
 /*
  *  File: /src/resourceGuard.provider.ts
- *  Project: @bitspur/nestjs-keycloak-typegraphql
- *  File Created: 18-09-2023 15:06:59
+ *  Project: @multiplatform.one/nestjs-keycloak-typegraphql
+ *  File Created: 19-09-2023 04:17:05
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -23,11 +23,11 @@ import deferMiddleware from './deferMiddleware';
 import type { FactoryProvider, Type } from '@nestjs/common';
 import type { GraphqlCtx } from './types';
 import type { Keycloak } from 'keycloak-connect';
-import type { KeycloakOptions } from '@risserlabs/nestjs-keycloak';
+import type { KeycloakOptions } from '@multiplatform.one/nestjs-keycloak';
 import type { MiddlewareFn, NextFn, ResolverData } from 'type-graphql';
 import { HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { KEYCLOAK, KEYCLOAK_OPTIONS, KeycloakService, RESOURCE, SCOPES } from '@risserlabs/nestjs-keycloak';
+import { KEYCLOAK, KEYCLOAK_OPTIONS, KeycloakService, RESOURCE, SCOPES } from '@multiplatform.one/nestjs-keycloak';
 import { Reflector } from '@nestjs/core';
 
 const logger = new Logger('ResourceGuard');

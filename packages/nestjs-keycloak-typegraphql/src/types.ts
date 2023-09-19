@@ -1,7 +1,7 @@
 /*
  *  File: /src/types.ts
- *  Project: @bitspur/nestjs-keycloak-typegraphql
- *  File Created: 18-09-2023 15:06:59
+ *  Project: @multiplatform.one/nestjs-keycloak-typegraphql
+ *  File Created: 19-09-2023 04:17:05
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -21,7 +21,7 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 import type { KeycloakContext } from 'keycloak-connect-graphql';
-import type { KeycloakService, KeycloakRequest } from '@risserlabs/nestjs-keycloak';
+import type { KeycloakService, KeycloakRequest } from '@multiplatform.one/nestjs-keycloak';
 import type { ModuleMetadata } from '@nestjs/common/interfaces';
 // import { RequiredActionAlias } from '@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation';
 import type { MiddlewareFn } from 'type-graphql';

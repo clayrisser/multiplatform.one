@@ -1,10 +1,11 @@
 import type {
-  PopoverProps,
-  PopoverContentProps,
   PopoverArrowProps,
-  YStackProps,
-  TamaguiElement,
+  PopoverContentProps,
+  PopoverProps,
+  PopoverTriggerProps,
   StackProps,
+  TamaguiElement,
+  YStackProps,
 } from 'tamagui';
 import { Adapt, Popover, PopperAnchor, View, getState, useComposedRefs, usePopoverContext } from 'tamagui';
 import React from 'react';
@@ -20,10 +21,6 @@ export interface PopoverCustomProps {
   arrow?: boolean;
   open?: boolean;
   setOpen?: (open: boolean) => void;
-}
-
-export interface PopoverTriggerProps {
-  trigger: ReactNode;
 }
 
 export interface PopoverOpen {
@@ -66,17 +63,19 @@ export function SimplePopover({
 
   return (
     <Popover size="$5" allowFlip open={open} onOpenChange={setOpen} {...props}>
-      {trigger && props.trigger && (
-        <Popover.Trigger asChild>
-          {triggerOnHover ? (
-            <YStack onHoverIn={() => setOpen(true)} onHoverOut={() => setOpen(false)} {...triggerStyle}>
-              {props.trigger}
-            </YStack>
-          ) : (
-            props.trigger
-          )}
-        </Popover.Trigger>
-      )}
+      {trigger &&
+        props.trigger &&
+        ((
+          <Popover.Trigger asChild>
+            {triggerOnHover ? (
+              <YStack onHoverIn={() => setOpen(true)} onHoverOut={() => setOpen(false)} {...triggerStyle}>
+                {props.trigger}
+              </YStack>
+            ) : (
+              props.trigger
+            )}
+          </Popover.Trigger>
+        ) as any)}
       {!trigger && 'triggerElement' in props && 'open' in props && (
         <SimplePopoverTrigger asChild>{props.triggerElement}</SimplePopoverTrigger>
       )}

@@ -1,12 +1,9 @@
-# File: /bootstrap.mk
-# Project: mkpm
-# File Created: 04-12-2021 02:15:12
+# File: /.mkpm/.bootstrap.mk
+# Project: @multiplatform.one/keycloak
+# File Created: 10-08-2023 11:00:40
 # Author: Clay Risser
 # -----
-# Last Modified: 11-05-2023 10:19:42
-# Modified By: Clay Risser
-# -----
-# BitSpur (c) Copyright 2021
+# BitSpur (c) Copyright 2021 - 2023
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

@@ -1,7 +1,7 @@
 /*
  *  File: /src/authGuard.provider.ts
- *  Project: @bitspur/nestjs-keycloak-typegraphql
- *  File Created: 18-09-2023 15:06:59
+ *  Project: @multiplatform.one/nestjs-keycloak-typegraphql
+ *  File Created: 19-09-2023 04:17:05
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,16 +19,23 @@
  *  limitations under the License.
  */
 
-import { HttpService } from '@nestjs/axios';
-import type { Keycloak } from 'keycloak-connect';
-import type { MiddlewareFn, NextFn, ResolverData } from 'type-graphql';
-import { Reflector } from '@nestjs/core';
-import type { FactoryProvider, Type } from '@nestjs/common';
-import { HttpException, HttpStatus, Logger } from '@nestjs/common';
-import type { KeycloakOptions } from '@risserlabs/nestjs-keycloak';
-import { AUTHORIZED, KEYCLOAK, KEYCLOAK_OPTIONS, KeycloakService, PUBLIC, RESOURCE } from '@risserlabs/nestjs-keycloak';
 import deferMiddleware from './deferMiddleware';
+import type { FactoryProvider, Type } from '@nestjs/common';
 import type { GraphqlCtx } from './types';
+import type { Keycloak } from 'keycloak-connect';
+import type { KeycloakOptions } from '@multiplatform.one/nestjs-keycloak';
+import type { MiddlewareFn, NextFn, ResolverData } from 'type-graphql';
+import { HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { Reflector } from '@nestjs/core';
+import {
+  AUTHORIZED,
+  KEYCLOAK,
+  KEYCLOAK_OPTIONS,
+  KeycloakService,
+  PUBLIC,
+  RESOURCE,
+} from '@multiplatform.one/nestjs-keycloak';
 
 const logger = new Logger('AuthGuard');
 export const AUTH_GUARD = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_AUTH_GUARD';
@@ -45,7 +52,7 @@ const AuthGuardProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>> = {
       return reflector.get<string>(RESOURCE, classTarget);
     }
 
-    function getRoles(context: GraphqlCtx): (string | string[])[] | void {
+    function getRoles(context: GraphqlCtx): (string | string[])[] | undefined {
       const { getClass, getHandler } = context.typegraphqlMeta || {};
       let classTarget: Type<any> | null = null;
       let handlerTarget: Function | null = null;

@@ -19,10 +19,10 @@
  *  limitations under the License.
  */
 
-import type { GrantProperties, KeycloakService, UserInfo } from '@risserlabs/nestjs-keycloak';
+import type { GrantProperties, KeycloakService, UserInfo } from '@multiplatform.one/nestjs-keycloak';
 import type { LoginResponseDto } from './auth.dto';
 import { ApiBody } from '@nestjs/swagger';
-import { Authorized, Resource } from '@risserlabs/nestjs-keycloak';
+import { Authorized, Resource } from '@multiplatform.one/nestjs-keycloak';
 import { Logger, Controller, Post, Body, Get } from '@nestjs/common';
 import { LoginRequestDto } from './auth.dto';
 
@@ -35,39 +35,43 @@ export class AuthController {
 
   @Post('login')
   @ApiBody({ type: LoginRequestDto })
-  async postLogin(@Body() body: LoginRequestDto): Promise<LoginResponseDto | null> {
-    const tokens = await this.keycloakService.passwordGrant(body);
-    if (!tokens) return null;
+  async postLogin(@Body() body: LoginRequestDto): Promise<LoginResponseDto | undefined> {
+    const grant = await this.keycloakService.directGrant({
+      password: body.password || '',
+      scope: body.scope,
+      username: body.username || '',
+    });
+    if (!grant) return;
     const userInfo = await this.keycloakService.getUserInfo();
-    if (!userInfo) return null;
+    if (!userInfo) return;
     return {
-      accessToken: tokens.accessToken?.token || '',
-      refreshToken: tokens.refreshToken?.token || '',
+      accessToken: (grant.access_token as any)?.token || '',
+      refreshToken: (grant.refresh_token as any)?.token || '',
       userInfo,
     };
   }
 
   @Authorized()
   @Get('grant')
-  async getGrant(): Promise<GrantProperties | null> {
+  async getGrant(): Promise<GrantProperties | undefined> {
     return (await this.keycloakService.getGrant()) as GrantProperties;
   }
 
   @Authorized()
   @Get('userinfo')
-  async getUserInfo(): Promise<UserInfo | null> {
+  async getUserInfo(): Promise<UserInfo | undefined> {
     return this.keycloakService.getUserInfo();
   }
 
   @Authorized()
   @Get('username')
-  async getUsername(): Promise<string | null> {
+  async getUsername(): Promise<string | undefined> {
     return this.keycloakService.getUsername();
   }
 
   @Authorized()
   @Get('userid')
-  async getUserid(): Promise<string | null> {
+  async getUserid(): Promise<string | undefined> {
     return this.keycloakService.getUserId();
   }
 

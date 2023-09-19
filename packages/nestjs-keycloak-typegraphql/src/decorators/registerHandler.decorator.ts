@@ -1,7 +1,7 @@
 /*
  *  File: /src/decorators/registerHandler.decorator.ts
- *  Project: @bitspur/nestjs-keycloak-typegraphql
- *  File Created: 18-09-2023 15:06:59
+ *  Project: @multiplatform.one/nestjs-keycloak-typegraphql
+ *  File Created: 19-09-2023 04:17:05
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,19 +19,19 @@
  *  limitations under the License.
  */
 
+import type { GraphqlCtx } from '../types';
 import type { ResolverData, NextFn } from 'type-graphql';
 import { createMethodDecorator } from 'type-graphql';
-import type { GraphqlCtx } from '../types';
 
 export default function RegisterHandler(
   target: any,
   propertyKey: string | symbol,
   descriptor: TypedPropertyDescriptor<any>,
-): void | TypedPropertyDescriptor<any> {
+): undefined | TypedPropertyDescriptor<any> {
   if (target.prototype) return undefined;
   return createMethodDecorator(({ context }: ResolverData<GraphqlCtx>, next: NextFn) => {
     if (!context.typegraphqlMeta) context.typegraphqlMeta = {};
     context.typegraphqlMeta.getHandler = () => descriptor.value;
     return next();
-  })(target, propertyKey, descriptor);
+  })(target, propertyKey, descriptor) as undefined | TypedPropertyDescriptor<any>;
 }

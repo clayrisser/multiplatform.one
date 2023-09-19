@@ -1,7 +1,7 @@
 /*
  *  File: /src/authChecker.provider.ts
- *  Project: @bitspur/nestjs-keycloak-typegraphql
- *  File Created: 18-09-2023 15:06:59
+ *  Project: @multiplatform.one/nestjs-keycloak-typegraphql
+ *  File Created: 19-09-2023 04:17:05
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -20,14 +20,14 @@
  */
 
 import type { AuthChecker, ResolverData } from 'type-graphql';
-import { HttpService } from '@nestjs/axios';
-import type { Keycloak } from 'keycloak-connect';
 import type { FactoryProvider } from '@nestjs/common';
+import type { GraphqlCtx } from './types';
+import type { Keycloak } from 'keycloak-connect';
+import type { KeycloakOptions } from '@multiplatform.one/nestjs-keycloak';
+import { HttpService } from '@nestjs/axios';
+import { KEYCLOAK, KEYCLOAK_OPTIONS, KeycloakService, PUBLIC, RESOURCE } from '@multiplatform.one/nestjs-keycloak';
 import { Logger } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import type { KeycloakOptions } from '@risserlabs/nestjs-keycloak';
-import { KEYCLOAK, KEYCLOAK_OPTIONS, KeycloakService, PUBLIC, RESOURCE } from '@risserlabs/nestjs-keycloak';
-import type { GraphqlCtx } from './types';
 
 const logger = new Logger('AuthChecker');
 export const AUTH_CHECKER = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_AUTH_CHECKER';
