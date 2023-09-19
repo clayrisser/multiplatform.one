@@ -2,6 +2,7 @@
 .env
 /.changeset/*.md
 /null
+debug.json
 
 # node
 **/.expo/*

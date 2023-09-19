@@ -29,7 +29,7 @@
       "types": "./lib/zustand/index.d.ts"
     }
   },
-  "author": "Risser Labs LLC",
+  "author": "BitSpur",
   "sideEffects": false,
   "keywords": [
     "multiplatform",

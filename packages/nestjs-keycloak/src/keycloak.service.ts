@@ -1,28 +1,25 @@
-/**
- * File: /src/keycloak.service.ts
- * Project: nestjs-keycloak
- * File Created: 14-07-2021 11:43:59
- * Author: Clay Risser <email@clayrisser.com>
- * -----
- * Last Modified: 17-04-2023 22:42:10
- * Modified By: Clay Risser
- * -----
- * Risser Labs LLC (c) Copyright 2021
+/*
+ *  File: /src/keycloak.service.ts
+ *  Project: @multiplatform.one/nestjs-keycloak
+ *  File Created: 19-09-2023 08:04:04
+ *  Author: Clay Risser
+ *  -----
+ *  BitSpur (c) Copyright 2021 - 2023
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 
-import Token from 'keycloak-connect/middleware/auth-utils/token';
+import Token from './token';
 import qs from 'qs';
 import type KcAdminClient from '@keycloak/keycloak-admin-client';
 import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
@@ -30,11 +27,11 @@ import type { AxiosError } from 'axios';
 import type { ExecutionContext } from '@nestjs/common';
 import type { Grant, Keycloak } from 'keycloak-connect';
 import type { Request, NextFunction, Response } from 'express';
+import { CREATE_KEYCLOAK_ADMIN } from './createKeycloakAdmin.provider';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Inject, Scope, Logger } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
-import { CREATE_KEYCLOAK_ADMIN } from './createKeycloakAdmin.provider';
 import { KEYCLOAK } from './keycloak.provider';
+import { REQUEST } from '@nestjs/core';
 import { getReq } from './util';
 import type {
   AuthorizationCodeGrantOptions,
@@ -51,27 +48,11 @@ import { KEYCLOAK_OPTIONS } from './types';
 
 @Injectable({ scope: Scope.REQUEST })
 export default class KeycloakService {
+  req: KeycloakRequest<Request>;
+
   private options: KeycloakOptions;
 
   private logger = new Logger(KeycloakService.name);
-
-  constructor(
-    @Inject(KEYCLOAK_OPTIONS) options: KeycloakOptions,
-    @Inject(KEYCLOAK) private readonly keycloak: Keycloak,
-    @Inject(HttpService) private readonly httpService: HttpService,
-    @Inject(REQUEST)
-    reqOrExecutionContext: KeycloakRequest<Request> | ExecutionContext | GraphqlCtx,
-    @Inject(CREATE_KEYCLOAK_ADMIN)
-    private readonly createKeycloakAdmin?: () => Promise<KcAdminClient | void>,
-  ) {
-    this.options = {
-      ensureFreshness: true,
-      ...options,
-    };
-    this.req = getReq(reqOrExecutionContext);
-  }
-
-  req: KeycloakRequest<Request>;
 
   private _bearerToken: Token | undefined;
 
@@ -82,6 +63,22 @@ export default class KeycloakService {
   private _userInfo: UserInfo | undefined;
 
   private _grant: Grant | undefined;
+
+  constructor(
+    @Inject(KEYCLOAK_OPTIONS) options: KeycloakOptions,
+    @Inject(KEYCLOAK) private readonly keycloak: Keycloak,
+    @Inject(HttpService) private readonly httpService: HttpService,
+    @Inject(REQUEST)
+    reqOrExecutionContext: KeycloakRequest<Request> | ExecutionContext | GraphqlCtx,
+    @Inject(CREATE_KEYCLOAK_ADMIN)
+    private readonly createKeycloakAdmin?: () => Promise<KcAdminClient | undefined>,
+  ) {
+    this.options = {
+      ensureFreshness: true,
+      ...options,
+    };
+    this.req = getReq(reqOrExecutionContext);
+  }
 
   get clientId(): string {
     return (this.keycloak.grantManager as any).clientId;

@@ -1,49 +1,42 @@
-/**
- * File: /src/index.ts
- * Project: nestjs-keycloak
- * File Created: 14-07-2021 11:43:59
- * Author: Clay Risser <email@clayrisser.com>
- * -----
- * Last Modified: 06-11-2022 22:49:33
- * Modified By: Clay Risser
- * -----
- * Risser Labs LLC (c) Copyright 2021
+/*
+ *  File: /src/index.ts
+ *  Project: @multiplatform.one/nestjs-keycloak
+ *  File Created: 19-09-2023 04:38:30
+ *  Author: Clay Risser
+ *  -----
+ *  BitSpur (c) Copyright 2021 - 2023
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 
-import { DiscoveryModule, APP_GUARD } from '@nestjs/core';
-import { HttpModule } from '@nestjs/axios';
-import type { DynamicModule, MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/common';
-import { Global, Logger, Module, RequestMethod } from '@nestjs/common';
 import CreateKeycloakAdminProvider from './createKeycloakAdmin.provider';
 import KeycloakMiddleware from './keycloak.middleware';
 import KeycloakProvider from './keycloak.provider';
 import KeycloakRegisterService from './keycloakRegister.service';
 import KeycloakService from './keycloak.service';
-import { AuthGuard, ResourceGuard } from './guards';
+import type { DynamicModule, MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/common';
 import type { KeycloakOptions, KeycloakAsyncOptions } from './types';
+import { AuthGuard, ResourceGuard } from './guards';
+import { DiscoveryModule, APP_GUARD } from '@nestjs/core';
+import { Global, Logger, Module, RequestMethod } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import { KEYCLOAK_OPTIONS } from './types';
 import { KeycloakAdminProvider } from './keycloakAdmin.provider';
 
 @Global()
 @Module({})
 export default class KeycloakModule implements OnModuleInit, NestModule {
-  private readonly logger = new Logger(KeycloakModule.name);
-
   private static imports = [HttpModule, DiscoveryModule];
-
-  constructor(private readonly keycloakRegisterService: KeycloakRegisterService) {}
 
   public static register(options: KeycloakOptions): DynamicModule {
     return {
@@ -122,6 +115,10 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
       useFactory: asyncOptions.useFactory,
     };
   }
+
+  private readonly logger = new Logger(KeycloakModule.name);
+
+  constructor(private readonly keycloakRegisterService: KeycloakRegisterService) {}
 
   async onModuleInit() {
     await this.keycloakRegisterService.register();
