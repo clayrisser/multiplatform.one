@@ -20,7 +20,6 @@
   "author": "BitSpur <support@risserlabs.com> (https://risserlabs.com)",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
-  "react-native": "src/index.ts",
   "source": "src/index.ts",
   "types": "lib/index.d.ts",
   "exports": {
@@ -31,6 +30,7 @@
     }
   },
   "files": [
+    "bin",
     "lib",
     "src"
   ],
@@ -39,8 +39,8 @@
     "url": "https://gitlab.com/risserlabs/nestjs/prisma-scripts"
   },
   "bin": {
-    "generate-prisma": "lib/bin/generate.js",
-    "wait-for-postgres": "lib/bin/waitForPostgres.js"
+    "generate-prisma": "bin/generate.js",
+    "wait-for-postgres": "bin/waitForPostgres.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.22.15",
@@ -78,7 +78,14 @@
     "tsup": "^7.2.0",
     "typescript": "^5.2.2"
   },
-  "transpileModules": [],
+  "transpileModules": [
+    "#ansi-styles",
+    "#supports-color",
+    "chalk",
+    "execa",
+    "ora",
+    "stdin-discarder"
+  ],
   "engines": {
     "node": ">=6.0.0"
   },

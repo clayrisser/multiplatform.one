@@ -26,7 +26,7 @@ export default defineConfig({
   clean: true,
   dts: false,
   entry: ['seed.ts'],
-  format: ['esm'],
+  format: ['cjs'],
   minify: false,
   outDir: 'dist',
   skipNodeModulesBundle: true,

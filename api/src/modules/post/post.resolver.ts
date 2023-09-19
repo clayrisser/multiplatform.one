@@ -26,7 +26,7 @@ import {
   PostCrudResolver as PostResolver,
   applyModelsEnhanceMap,
   applyResolversEnhanceMap,
-} from '@generated/type-graphql';
+} from '@generated/type-graphql-nestjs';
 
 applyResolversEnhanceMap({
   Post: {
