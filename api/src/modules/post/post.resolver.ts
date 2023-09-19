@@ -19,9 +19,9 @@
  *  limitations under the License.
  */
 
-import { Authorized } from '@risserlabs/nestjs-keycloak';
+import { Authorized } from '@multiplatform.one/nestjs-keycloak';
 import { CacheScope } from 'apollo-server-types';
-import { CacheControl } from 'app/modules/core/typegraphql';
+import { CacheControl } from '@/modules/core/typegraphql';
 import {
   PostCrudResolver as PostResolver,
   applyModelsEnhanceMap,

@@ -1,7 +1,7 @@
 /*
  *  File: /src/bootstrap/sofa.ts
  *  Project: api
- *  File Created: 18-09-2023 08:18:09
+ *  File Created: 19-09-2023 06:04:27
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -24,7 +24,12 @@ import type { INestApplication } from '@nestjs/common';
 import type { Maybe } from 'graphql/jsutils/Maybe';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import type { PromiseOrValue } from 'graphql/jsutils/PromiseOrValue';
-import type { SofaConfig } from '@risserlabs/sofa-api';
+import type { SofaConfig } from '@multiplatform.one/sofa-api';
+import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
+import { SofaModule, SOFA_CONFIG } from '@/modules/core/sofa';
+import { getApolloServer } from '@nestjs/apollo';
+import { useSofa } from '@multiplatform.one/sofa-api';
 import type {
   DocumentNode,
   ExecutionArgs,
@@ -33,11 +38,6 @@ import type {
   GraphQLSchema,
   GraphQLTypeResolver,
 } from 'graphql';
-import { ConfigService } from '@nestjs/config';
-import { NestFactory } from '@nestjs/core';
-import { SofaModule, SOFA_CONFIG } from 'app/modules/core/sofa';
-import { getApolloServer } from '@nestjs/apollo';
-import { useSofa } from '@risserlabs/sofa-api';
 
 export async function registerSofa(app: NestExpressApplication, schema: GraphQLSchema): Promise<INestApplication> {
   const sofa = await NestFactory.create(SofaModule.register(schema));

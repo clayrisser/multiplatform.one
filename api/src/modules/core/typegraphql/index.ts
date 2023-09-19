@@ -23,16 +23,16 @@ import ResponseCachePlugin from 'apollo-server-plugin-response-cache';
 import type { ApolloServerPluginLandingPageGraphQLPlaygroundOptions } from 'apollo-server-core';
 import type { DynamicModule, ForwardReference, Type } from '@nestjs/common';
 import type { GraphQLRequestContext } from 'apollo-server-types';
-import type { GraphqlCtx } from 'app/types';
+import type { GraphqlCtx } from '@/types';
 import type { MiddlewareFn } from 'type-graphql';
 import type { RedisClient } from 'apollo-server-cache-redis';
 import { ApolloDriver } from '@nestjs/apollo';
 import { BaseRedisCache } from 'apollo-server-cache-redis';
 import { ConfigService } from '@nestjs/config';
-import { MIDDLEWARES, WRAP_CONTEXT } from '@risserlabs/nestjs-keycloak-typegraphql';
-import { PrismaService } from 'app/modules/core/prisma';
+import { MIDDLEWARES, WRAP_CONTEXT } from '@multiplatform.one/nestjs-keycloak-typegraphql';
+import { PrismaService } from '@/modules/core/prisma';
 import { RedisService } from '@liaoliaots/nestjs-redis';
-import { TypeGraphQLModule } from '@risserlabs/typegraphql-nestjs';
+import { TypeGraphQLModule } from '@multiplatform.one/typegraphql-nestjs';
 
 export function createTypeGraphqlModule(
   imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],

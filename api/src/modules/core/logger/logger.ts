@@ -19,7 +19,6 @@
  *  limitations under the License.
  */
 
-import type { Logger } from 'pino';
 import Pino, { destination, multistream } from 'pino';
 import chalk from 'chalk';
 import httpStatus from 'http-status';
@@ -27,11 +26,12 @@ import path from 'path';
 import pretty from 'pino-pretty';
 import type { ConfigService } from '@nestjs/config';
 import type { IncomingMessage, ServerResponse } from 'http';
+import type { Logger } from 'pino';
+import type { LoggerModuleOptions } from './index';
 import type { Options as PinoHttpOptions } from 'pino-http';
 import type { Request, Response } from 'express';
 import { randomUUID } from 'node:crypto';
 import { trace, context } from '@opentelemetry/api';
-import type { LoggerModuleOptions } from './index';
 
 export function createPinoHttp(config: ConfigService, options: LoggerModuleOptions): PinoHttpOptions {
   return {

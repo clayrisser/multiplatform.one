@@ -19,10 +19,10 @@
  *  limitations under the License.
  */
 
-import type { ErrorHandler } from '@risserlabs/sofa-api';
+import type { ErrorHandler } from '@multiplatform.one/sofa-api';
 import type { FactoryProvider } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
-import { Response } from '@whatwg-node/fetch';
+import { Response } from 'fets';
 
 const logger = new Logger('SofaErrorHandler');
 

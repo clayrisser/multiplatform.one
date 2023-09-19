@@ -1,12 +1,9 @@
 # File: /prisma/Makefile
-# Project: example-nestjs
-# File Created: 06-12-2021 08:30:36
-# Author: Clay Risser <email@clayrisser.com>
+# Project: api
+# File Created: 19-09-2023 06:04:27
+# Author: Clay Risser
 # -----
-#Last Modified: Mo-09-2023 12:00:41
-#Modified By: Clay Risser
-# -----
-# BitSpur (c) Copyright 2021 - 2022
+# BitSpur (c) Copyright 2021 - 2023
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

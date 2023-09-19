@@ -64,6 +64,7 @@ ctx
 dast
 dat
 datetimepicker
+dedupe
 defs
 devtool
 devtools
@@ -88,6 +89,7 @@ etchteam
 execa
 fam
 favicon
+fets
 figcaption
 fira
 firefox
@@ -140,6 +142,7 @@ metatype
 michał
 middlewares
 mih
+milli
 minifier
 minify
 miw
@@ -151,6 +154,7 @@ monospace
 moti
 multiline
 multiplatform
+multistream
 namespace
 namespaces
 natively
@@ -189,6 +193,7 @@ postgresql
 pragma
 pressability
 pressable
+prettifiers
 prisma
 psql
 rani
@@ -231,6 +236,7 @@ sso
 ssr
 startcase
 stdenv
+stderr
 stdout
 stonger
 storyshots
@@ -274,6 +280,8 @@ unselectable
 unshift
 unspaced
 uri
+userid
+userinfo
 ussel
 utf
 uuidv4
@@ -287,7 +295,6 @@ wcag
 webkit
 webpack
 webpack5
-whatwg
 workspace
 xmas
 xml

@@ -1,7 +1,7 @@
 /*
  *  File: /src/deferMiddleware.ts
- *  Project: @bitspur/nestjs-keycloak-typegraphql
- *  File Created: 18-09-2023 15:06:59
+ *  Project: @multiplatform.one/nestjs-keycloak-typegraphql
+ *  File Created: 19-09-2023 04:17:05
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023

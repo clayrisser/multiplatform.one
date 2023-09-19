@@ -19,10 +19,10 @@
  *  limitations under the License.
  */
 
-import { Module } from '@nestjs/common';
-import { HttpModule } from '@nestjs/axios';
 import { AuthController } from './auth.controller';
 import { AuthResolver } from './auth.resolver';
+import { HttpModule } from '@nestjs/axios';
+import { Module } from '@nestjs/common';
 
 @Module({
   controllers: [AuthController],

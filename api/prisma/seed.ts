@@ -19,7 +19,7 @@
  *  limitations under the License.
  */
 
-import { seedDb } from '@risserlabs/prisma-scripts';
+import { seedDb } from '@multiplatform.one/prisma-scripts';
 import dotenv from 'dotenv';
 import path from 'path';
 

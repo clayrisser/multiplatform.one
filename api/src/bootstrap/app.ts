@@ -1,7 +1,7 @@
 /*
  *  File: /src/bootstrap/app.ts
  *  Project: api
- *  File Created: 18-09-2023 08:18:09
+ *  File Created: 19-09-2023 06:04:27
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -24,8 +24,8 @@ import dotenv from 'dotenv';
 import path from 'path';
 import type { NestApplicationOptions } from '@nestjs/common';
 import type { NestExpressApplication } from '@nestjs/platform-express';
-import type { RegisterAppModuleConfig } from 'app/app.module';
-import { AppModule } from 'app/app.module';
+import type { RegisterAppModuleConfig } from '@/app.module';
+import { AppModule } from '@/app.module';
 import { ConfigService } from '@nestjs/config';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { GraphQLSchemaHost } from '@nestjs/graphql';

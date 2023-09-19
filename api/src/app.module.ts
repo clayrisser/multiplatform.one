@@ -1,7 +1,7 @@
 /*
  *  File: /src/app.module.ts
  *  Project: api
- *  File Created: 18-09-2023 08:18:09
+ *  File Created: 19-09-2023 06:04:27
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,19 +19,19 @@
  *  limitations under the License.
  */
 
-import KeycloakModule from '@risserlabs/nestjs-keycloak';
-import KeycloakTypegraphql from '@risserlabs/nestjs-keycloak-typegraphql';
-import coreModules from 'app/modules/core';
-import modules from 'app/modules';
+import KeycloakModule from '@multiplatform.one/nestjs-keycloak';
+import KeycloakTypegraphql from '@multiplatform.one/nestjs-keycloak-typegraphql';
+import coreModules from '@/modules/core';
+import modules from '@/modules';
 import path from 'path';
 import type { DynamicModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 import { Module, Global } from '@nestjs/common';
 import { OpenTelemetryModule } from 'nestjs-otel';
-import { PrismaModule } from 'app/modules/core/prisma';
+import { PrismaModule } from '@/modules/core/prisma';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
-import { createTypeGraphqlModule } from 'app/modules/core/typegraphql';
+import { createTypeGraphqlModule } from '@/modules/core/typegraphql';
 
 @Global()
 @Module({})

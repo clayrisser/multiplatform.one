@@ -1,13 +1,10 @@
 /**
- * File: /auth/provider/afterAuth.tsx
- * Project: app
- * File Created: 22-11-2022 17:49:58
+ * File: /src/provider/afterAuth.tsx
+ * Project: @multiplatform.one/keycloak
+ * File Created: 22-06-2023 10:07:56
  * Author: Clay Risser
  * -----
- * Last Modified: 22-11-2022 18:00:39
- * Modified By: Clay Risser
- * -----
- * BitSpur (c) Copyright 2021 - 2022
+ * BitSpur (c) Copyright 2021 - 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

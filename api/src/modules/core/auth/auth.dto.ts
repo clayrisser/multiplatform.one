@@ -21,7 +21,7 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 import { ArgsType, Field, ObjectType } from 'type-graphql';
-import { UserInfo } from '@risserlabs/nestjs-keycloak-typegraphql';
+import { UserInfo } from '@multiplatform.one/nestjs-keycloak-typegraphql';
 
 @ArgsType()
 export class LoginRequestDto {
