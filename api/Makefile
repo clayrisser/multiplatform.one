@@ -47,7 +47,7 @@ $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 ACTIONS += generate~spellcheck ##
 $(ACTION)/generate: $(call git_deps,\.([jt]sx?)$$)
 	@$(MAKE) -s prisma/generate
-	@$(ECHO) '{"name":"@generated/type-graphql"}' > $(PROJECT_ROOT)/node_modules/@generated/type-graphql/package.json
+	@$(ECHO) '{"name":"@generated/type-graphql-nestjs"}' > $(CURDIR)/node_modules/@generated/type-graphql-nestjs/package.json
 	@$(MKDIR) -p docker/data/logs
 	@$(TOUCH) docker/data/logs/app.log
 	@$(call done,$@)

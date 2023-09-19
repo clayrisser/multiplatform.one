@@ -31,7 +31,7 @@ ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
 	@$(YARN) install $(DEPS_ARGS)
 	@$(call done,$@)
-	@$(MAKE) -sf Mkpmfile +build
+#	@$(MAKE) -sf Mkpmfile +build
 
 ACTIONS += format ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
@@ -53,9 +53,18 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	@$(call workspace_foreach,test,$(TEST_ARGS))
 	@$(call done,$@)
 
+PACKAGES := \
+	multiplatform.one \
+	prisma-scripts \
+	nestjs-axios-logger \
+	typegraphql-nestjs \
+	nestjs-keycloak \
+	nestjs-keycloak-typegraphql \
+	keycloak \
+	components
 .PHONY: build +build
-build:
-	@for t in $(patsubst %,%/build,$(shell ls packages) ui); do \
+build +build:
+	@for t in $(patsubst %,%/$@,$(PACKAGES)); do \
 		$(MAKE) -sf Mkpmfile $$t; \
 	done
 

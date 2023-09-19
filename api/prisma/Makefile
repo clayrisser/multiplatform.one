@@ -22,6 +22,6 @@ include $(MKPM)/gnu
 DOTENV := $(PROJECT_ROOT)/.env
 include $(MKPM)/dotenv
 include $(MKPM)/yarn
-include $(PROJECT_ROOT)/shared.mk
+include ../shared.mk
 
 include $(MKPM)/prisma

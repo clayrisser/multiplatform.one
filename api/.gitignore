@@ -37,7 +37,7 @@ yarn-error.log*
 /.dockerignore
 /.env
 /debug.json
-/dist
+dist/
 /es
 /lib
 /tsconfig.build.tsbuildinfo

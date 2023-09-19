@@ -61,8 +61,10 @@ coreutils
 cors
 cspell
 ctx
+cuid
 dast
 dat
+datasource
 datetimepicker
 dedupe
 defs
@@ -70,6 +72,7 @@ devtool
 devtools
 dharmendra
 disableable
+discarder
 docgen
 docsearch
 dotenv
@@ -211,6 +214,7 @@ renderer
 req
 resize
 resizing
+resolvers
 responder
 rhf
 risser
