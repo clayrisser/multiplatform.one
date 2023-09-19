@@ -10,11 +10,16 @@
   ],
   "description": "typegraphql in nestjs",
   "main": "lib/index.js",
-  "module": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "module": "lib/index.mjs",
+  "react-native": "src/index.ts",
   "source": "src/index.ts",
+  "types": "lib/index.d.ts",
   "exports": {
-    ".": "./lib/index.js"
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    }
   },
   "files": [
     "lib",
@@ -38,13 +43,13 @@
     "node": ">= 16.0"
   },
   "peerDependencies": {
-    "@apollo/gateway": "^2.4.8",
-    "@apollo/subgraph": "^2.4.8",
-    "@nestjs/common": "^10.0.5",
-    "@nestjs/core": "^10.0.5",
-    "@nestjs/graphql": "^12.0.7",
+    "@apollo/gateway": "^2.5.5",
+    "@apollo/subgraph": "^2.5.5",
+    "@nestjs/common": "^10.2.5",
+    "@nestjs/core": "^10.2.5",
+    "@nestjs/graphql": "^12.0.9",
     "graphql-tag": "^2.12.6",
-    "type-graphql": "2.0.0-beta.2"
+    "type-graphql": "2.0.0-beta.3"
   },
   "dependencies": {
     "typegraphql-nestjs": "^0.6.0"
@@ -55,6 +60,9 @@
     "@nestjs/common": "^10.2.5",
     "@nestjs/core": "^10.2.5",
     "@nestjs/graphql": "^12.0.9",
+    "graphql-tag": "^2.12.6",
+    "tsup": "^7.2.0",
+    "type-graphql": "2.0.0-beta.3",
     "typescript": "^5.2.2"
   }
 }

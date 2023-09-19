@@ -9,22 +9,19 @@
     "incremental": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "module": "CommonJS",
+    "module": "ES2022",
     "moduleResolution": "Node",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedParameters": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "target": "ES5",
-    "paths": {
-      "~/*": ["./src/*"],
-      "~tests/*": ["./tests/*"]
-    },
     "lib": ["DOM", "DOM.Iterable", "ES2022", "ScriptHost", "WebWorker", "WebWorker.ImportScripts", "Webworker.Iterable"]
   },
-  "include": ["src", ".eslintrc.js", "tests"]
+  "include": ["src", "tests"]
 }

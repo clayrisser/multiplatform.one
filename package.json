@@ -21,20 +21,22 @@
     "typescript": "^5.2.2"
   },
   "resolutions": {
+    "@keycloak/keycloak-admin-client": "^19.0.3",
     "@storybook/types": "^7.0.15",
     "@types/react": "^18.2.7",
     "@types/react-native": "^0.72.2",
     "estree-util-build-jsx": "2.2.0",
     "estree-walker": "2.0.2",
+    "expo-keycloak-auth@1.0.14": "patch:expo-keycloak-auth@npm%3A1.0.14#./.yarn/patches/expo-keycloak-auth-npm-1.0.14-78201597ce.patch",
     "is-reference": "1.2.1",
+    "pino": "^8.7.0",
     "prettier": "^2.8.8",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.8",
     "react-native-svg": "13.4.0",
     "react-native-web": "~0.18.10",
-    "react-refresh": "^0.14.0",
-    "expo-keycloak-auth@1.0.14": "patch:expo-keycloak-auth@npm%3A1.0.14#./.yarn/patches/expo-keycloak-auth-npm-1.0.14-78201597ce.patch"
+    "react-refresh": "^0.14.0"
   },
   "tamaguiModules": [
     "@multiplatform.one/components",

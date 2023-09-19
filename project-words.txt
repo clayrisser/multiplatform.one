@@ -8,6 +8,7 @@ alice
 allowlist
 als
 apiv
+argv
 arial
 ast
 audi
@@ -84,6 +85,7 @@ envcache
 esm
 estree
 etchteam
+execa
 fam
 favicon
 figcaption
@@ -111,6 +113,7 @@ hsl
 hsla
 iat
 ico
+idempotence
 identifier
 iframe
 immer
@@ -167,6 +170,7 @@ openapi
 openid
 opentelemetry
 opentracing
+ora
 otel
 otf
 outdir
@@ -180,9 +184,13 @@ pkce
 pluralrules
 plusplus
 pos
+postgres
+postgresql
+pragma
 pressability
 pressable
 prisma
+psql
 rani
 readdir
 readonly
@@ -217,10 +225,13 @@ shof
 sid
 solito
 sponsorships
+sqlite
+sslmode
 sso
 ssr
 startcase
 stdenv
+stdout
 stonger
 storyshots
 storysource

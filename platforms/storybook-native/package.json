@@ -41,7 +41,7 @@
     "@expo/metro-config": "^0.10.7",
     "@tamagui/babel-plugin": "^1.68.2",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
-    "metro-minify-terser": "^0.79.0",
+    "metro-minify-terser": "^0.79.1",
     "typescript": "^5.2.2"
   },
   "jest": {
