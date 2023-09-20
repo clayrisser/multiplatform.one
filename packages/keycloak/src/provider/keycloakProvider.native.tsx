@@ -1,13 +1,10 @@
 /**
- * File: /auth/provider/keycloakProvider.native.tsx
- * Project: app
- * File Created: 08-11-2022 03:12:37
+ * File: /src/provider/keycloakProvider.native.tsx
+ * Project: @multiplatform.one/keycloak
+ * File Created: 22-06-2023 10:07:56
  * Author: Clay Risser
  * -----
- * Last Modified: 22-11-2022 17:52:31
- * Modified By: Clay Risser
- * -----
- * Risser Labs LLC (c) Copyright 2021 - 2022
+ * BitSpur (c) Copyright 2021 - 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

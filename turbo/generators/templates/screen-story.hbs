@@ -1,0 +1,10 @@
+import React from 'react';
+import {{ pascalCase screenName }} from '.';
+
+export default{
+    title:'Screens{{path}}/{{ pascalCase screenName }}',
+    component: {{ pascalCase screenName }},
+    parameters: {status: {type: 'beta'} }
+}
+
+export const main = ()=> <{{ pascalCase screenName }} />
