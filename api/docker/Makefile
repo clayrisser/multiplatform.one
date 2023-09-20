@@ -29,4 +29,4 @@ export DOCKER_COMPOSE ?= docker-compose
 export CONTEXT := ..
 export REGISTRY := registry.gitlab.com/risserlabs/community
 
--include $(MKPM)/docker
+include $(MKPM)/docker
