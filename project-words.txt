@@ -286,6 +286,7 @@ unspaced
 uri
 userid
 userinfo
+usr
 ussel
 utf
 uuidv4
