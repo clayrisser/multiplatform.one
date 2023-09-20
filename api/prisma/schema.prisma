@@ -1,12 +1,12 @@
 generator client {
   provider        = "prisma-client-js"
-  output          = "../node_modules/.prisma/client"
   binaryTargets   = ["native"]
   previewFeatures = ["tracing"]
 }
 
 generator typegraphql {
-  provider = "../../node_modules/.bin/typegraphql-prisma-nestjs-keycloak"
+  provider           = "typegraphql-prisma-nestjs-keycloak"
+  emitTranspiledCode = false
 }
 
 datasource db {
