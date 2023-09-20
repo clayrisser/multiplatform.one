@@ -94,11 +94,11 @@ inc:
 
 .PHONY: docker/%
 docker/%:
-	@$(MAKE) -sC docker $(subst docker/,,$@)
+	@$(MAKE) -sC docker $*
 
 .PHONY: prisma/%
 prisma/%:
-	@$(MAKE) -sC prisma $(subst prisma/,,$@)
+	@$(MAKE) -sC prisma $*
 
 .PHONY: clean
 clean: docker/down ##
