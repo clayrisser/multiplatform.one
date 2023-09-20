@@ -1,62 +1,81 @@
+# File: /Makefile
+# Project: @platform/expo
+# File Created: 17-09-2023 13:11:26
+# Author: Clay Risser
+# -----
+# BitSpur (c) Copyright 2021 - 2023
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 include $(MKPM)/mkpm
 DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
 include $(MKPM)/envcache
-include $(MKPM)/mkchain
+include $(MKPM)/chain
 include $(MKPM)/dotenv
 include $(MKPM)/yarn
-include ../../shared.mk
+include $(PROJECT_ROOT)/shared.mk
 
-ACTIONS += install ##
-$(ACTION)/install: $(PROJECT_ROOT)/package.json package.json
+ACTIONS += deps ##
+$(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
-	@$(MAKE) -C $(PROJECT_ROOT) \~install ARGS=$(ARGS)
+	@$(MAKE) -C $(PROJECT_ROOT) -f $(PROJECT_ROOT)/Mkpmfile \~deps DEPS_ARGS=$(DEPS_ARGS)
 else
-	@$(YARN) workspaces focus $(ARGS)
+	@$(YARN) workspaces focus $(DEPS_ARGS)
 endif
-	@$(call done,install)
+	@$(call done,$@)
 
-ACTIONS += format~install ##
+ACTIONS += format~deps ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 #	-@$(call eslint_format,$?)
-	-@$(call prettier,$?,$(ARGS))
-	@$(call done,format)
+	-@$(call prettier,$?,$(FORMAT_ARGS))
+	@$(call done,$@)
 
 ACTIONS += spellcheck~format ##
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	-@$(call cspell,$?,$(ARGS))
-	@$(call done,spellcheck)
+	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
+	@$(call done,$@)
 
 ACTIONS += lint~spellcheck ##
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
-	-@$(call eslint,$?,$(ARGS))
-	@$(call done,lint)
+	-@$(call eslint,$?,$(LINT_ARGS))
+	@$(call done,$@)
 
 ACTIONS += test~lint ##
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
-	-@$(call jest,$?,$(ARGS))
-	@$(call done,test)
+	-@$(call jest,$?,$(TEST_ARGS))
+	@$(call done,$@)
 
 EXPO_PORT ?= 8081
-.PHONY: start +start
-start: | ~install +start ##
-+start:
-	@$(EXPO) start -c -p $(EXPO_PORT) $(ARGS)
+.PHONY: dev +dev
+dev: | ~deps +dev ##
++dev:
+	@$(EXPO) start -c -p $(EXPO_PORT) $(DEV_ARGS)
 
-.PHONY: start@web +start@web
-start@web: | ~install +start@web ##
-+start@web:
-	@$(EXPO) start -c -p $(EXPO_PORT) --web $(ARGS)
+.PHONY: dev@web +dev@web
+dev@web: | ~deps +dev@web ##
++dev@web:
+	@$(EXPO) start -c -p $(EXPO_PORT) --web
 
-.PHONY: start@android +start@android
-start@android: | ~install +start@android ##
-+start@android:
-	@$(EXPO) start -c -p $(EXPO_PORT) --android $(ARGS)
+.PHONY: dev@android +dev@android
+dev@android: | ~deps +dev@android ##
++dev@android:
+	@$(EXPO) start -c -p $(EXPO_PORT) --android
 
-.PHONY: start@ios +start@ios
-start@ios: | ~install start@ios ##
-+start@ios:
-	@$(EXPO) start -c -p $(EXPO_PORT) --ios $(ARGS)
+.PHONY: dev@ios +dev@ios
+dev@ios: | ~deps dev@ios ##
++dev@ios:
+	@$(EXPO) start -c -p $(EXPO_PORT) --ios
 
 .PHONY: clean
 clean: ##
@@ -70,4 +89,4 @@ clean: ##
 
 CACHE_ENVS += \
 
--include $(call actions)
+-include $(call chain)

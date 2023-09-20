@@ -1,50 +1,72 @@
+# File: /Mkpmfile
+# Project: root
+# File Created: 19-09-2023 06:04:27
+# Author: Clay Risser
+# -----
+# BitSpur (c) Copyright 2021 - 2023
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 MONOREPO := 1
 
 include $(MKPM)/mkpm
 include $(MKPM)/gnu
 include $(MKPM)/envcache
 include $(MKPM)/dotenv
-include $(MKPM)/mkchain
+include $(MKPM)/chain
 include $(MKPM)/yarn
-include shared.mk
+include $(PROJECT_ROOT)/shared.mk
 
-PACKAGES := \
-	multiplatform.one \
-	keycloak \
-	components
-
-ACTIONS += install ##
-$(ACTION)/install: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
-	@$(YARN) install $(ARGS)
-	@$(call done,install)
-	@$(MAKE) build
+ACTIONS += deps ##
+$(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
+	@$(YARN) install $(DEPS_ARGS)
+	@$(call done,$@)
+#	@$(MAKE) -sf Mkpmfile +build
 
 ACTIONS += format ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
-	@$(call workspace_foreach,format,$(ARGS))
-	@$(call done,format)
+	@$(call workspace_foreach,format,$(FORMAT_ARGS))
+	@$(call done,$@)
 
 ACTIONS += spellcheck ##
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	@$(call workspace_foreach,spellcheck,$(ARGS))
-	@$(call done,spellcheck)
+	@$(call workspace_foreach,spellcheck,$(SPELLCHECK_ARGS))
+	@$(call done,$@)
 
 ACTIONS += lint ##
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
-	@$(call workspace_foreach,lint,$(ARGS))
-	@$(call done,lint)
+	@$(call workspace_foreach,lint,$(LINT_ARGS))
+	@$(call done,$@)
 
 ACTIONS += test ##
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
-	@$(call workspace_foreach,test,$(ARGS))
-	@$(call done,test)
+	@$(call workspace_foreach,test,$(TEST_ARGS))
+	@$(call done,$@)
 
-ACTIONS += build ##
-$(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@for p in $(PACKAGES); do \
-		$(MAKE) -sC packages/$$p build ARGS=$(ARGS); \
+PACKAGES := \
+	multiplatform.one \
+	prisma-scripts \
+	nestjs-axios-logger \
+	typegraphql-nestjs \
+	nestjs-keycloak \
+	nestjs-keycloak-typegraphql \
+	keycloak \
+	components
+.PHONY: build +build
+build +build:
+	@for t in $(patsubst %,%/$@,$(PACKAGES)); do \
+		$(MAKE) -sf Mkpmfile $$t; \
 	done
-	@$(call done,build)
 
 .PHONY: upgrade
 upgrade: ##
@@ -52,7 +74,7 @@ upgrade: ##
 
 .PHONY: clean
 clean: ##
-	@$(call workspace_foreach,clean,$(ARGS))
+	@$(call workspace_foreach,clean,$(CLEAN_ARGS))
 	-@$(MKCACHE_CLEAN)
 	-@$(JEST) --clearCache $(NOFAIL)
 	-@$(WATCHMAN) watch-del-all $(NOFAIL)
@@ -81,11 +103,13 @@ next/docker/%:
 storybook/docker/%:
 	@$(MAKE) -sC platforms/storybook/docker $(subst storybook/docker/,,$@) ARGS=$(ARGS)
 
-.PHONY: publish
-publish: build
-	@$(CHANGESET)
-	@$(CHANGESET) version
-	@$(CHANGESET) publish
+.PHONY: gen/%
+gen/%:
+	@npx turbo generate $(subst  gen/,,$@)
+
+.PHONY: gen
+gen:
+	@npx turbo generate
 
 .PHONY: count
 count:
@@ -93,4 +117,4 @@ count:
 
 CACHE_ENVS += \
 
--include $(call actions)
+-include $(call chain)
