@@ -1,13 +1,10 @@
 /**
- * File: /auth/Authenticated.tsx
- * Project: app
- * File Created: 08-11-2022 05:58:23
+ * File: /src/Authenticated.tsx
+ * Project: @multiplatform.one/keycloak
+ * File Created: 22-06-2023 10:07:56
  * Author: Clay Risser
  * -----
- * Last Modified: 22-11-2022 06:26:38
- * Modified By: Clay Risser
- * -----
- * Risser Labs LLC (c) Copyright 2021 - 2022
+ * BitSpur (c) Copyright 2021 - 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

@@ -1,0 +1,105 @@
+{
+  "name": "@multiplatform.one/nestjs-axios-logger",
+  "version": "0.1.13",
+  "description": "nestjs axios http module logging",
+  "sideEffects": false,
+  "keywords": [
+    "nestjs-axios-logger",
+    "axios",
+    "logger",
+    "log",
+    "interceptor",
+    "nestjs",
+    "http",
+    "module"
+  ],
+  "homepage": "https://multiplatform.one",
+  "bugs": {
+    "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues",
+    "email": "info@bitspur.com"
+  },
+  "author": {
+    "name": "BitSpur",
+    "email": "info@bitspur.com",
+    "url": "https://bitspur.com"
+  },
+  "contributors": [
+    {
+      "name": "Clay Risser",
+      "email": "email@clayrisser.com",
+      "url": "https://clayrisser.com"
+    }
+  ],
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "react-native": "src/index.ts",
+  "source": "src/index.ts",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    },
+    "./axiosInherit": {
+      "import": "./lib/axiosInherit.mjs",
+      "require": "./lib/axiosInherit.js",
+      "types": "./lib/axiosInherit.d.ts"
+    }
+  },
+  "license": "Apache-2.0",
+  "files": [
+    "esm",
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/risserlabs/community/nestjs-axios-logger"
+  },
+  "dependencies": {
+    "axios-logger": "^2.7.0",
+    "core-js": "^3.32.2",
+    "http-status": "^1.7.0"
+  },
+  "peerDependencies": {
+    "@nestjs/axios": "^0.0.4",
+    "@nestjs/common": "^8.2.4",
+    "axios": "^1.5.0"
+  },
+  "devDependencies": {
+    "@nestjs/axios": "^3.0.0",
+    "@nestjs/common": "^10.2.5",
+    "@types/jest": "^29.5.5",
+    "axios": "^1.5.0",
+    "cspell": "^7.3.6",
+    "jest": "^29.7.0",
+    "jest-sonar-reporter": "^2.0.0",
+    "prettier": "^3.0.3",
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "eslintIgnore": [
+    "lib"
+  ],
+  "jest": {
+    "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
+    "testEnvironment": "node",
+    "verbose": true,
+    "testPathIgnorePatterns": [
+      "<rootDir>/esm/",
+      "<rootDir>/lib/"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/_setup.ts"
+    ]
+  },
+  "jestSonar": {
+    "reportPath": "node_modules/.tmp/reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
+  }
+}

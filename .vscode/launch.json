@@ -5,19 +5,19 @@
       "name": "start storybook",
       "type": "node-terminal",
       "request": "launch",
-      "command": "make -s storybook/start"
+      "command": "./mkpm storybook/dev"
     },
     {
       "name": "start storybook native",
       "type": "node-terminal",
       "request": "launch",
-      "command": "make -s storybook-native/start"
+      "command": "./mkpm storybook-native/dev"
     },
     {
       "name": "start next platform",
       "type": "node-terminal",
       "request": "launch",
-      "command": "make -s next/start",
+      "command": "./mkpm next/dev",
       "serverReadyAction": {
         "pattern": "started server on .+, url: (https?://.+)",
         "uriFormat": "%s",
@@ -28,7 +28,7 @@
       "name": "start expo platform",
       "type": "node-terminal",
       "request": "launch",
-      "command": "make -s expo/start"
+      "command": "./mkpm expo/dev"
     }
   ]
 }
