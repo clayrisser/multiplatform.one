@@ -19,6 +19,7 @@
  *  limitations under the License.
  */
 
+import 'reflect-metadata';
 import otelSDK from '@/tracing';
 import { start } from '@/bootstrap';
 

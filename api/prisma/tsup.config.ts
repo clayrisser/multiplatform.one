@@ -29,7 +29,8 @@ export default defineConfig({
   format: ['cjs'],
   minify: false,
   outDir: 'dist',
+  shims: true,
   skipNodeModulesBundle: true,
   splitting: true,
-  target: 'es5',
+  target: 'es6',
 });

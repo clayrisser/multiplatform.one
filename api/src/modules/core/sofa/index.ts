@@ -19,10 +19,10 @@
  *  limitations under the License.
  */
 
-import type { DynamicModule } from '@nestjs/common';
-import type { GraphQLSchema } from 'graphql';
 import { ConfigModule } from '@nestjs/config';
+import { DynamicModule } from '@nestjs/common';
 import { Global, Module } from '@nestjs/common';
+import { GraphQLSchema } from 'graphql';
 import { SOFA_GRAPHQL_SCHEMA } from './types';
 import { SofaConfigProvider } from './sofaConfig.provider';
 import { SofaErrorHandlerProvider } from './sofaErrorHandler.provider';

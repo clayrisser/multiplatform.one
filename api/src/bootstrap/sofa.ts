@@ -19,18 +19,18 @@
  *  limitations under the License.
  */
 
-import type { ApolloServerBase } from 'apollo-server-core';
-import type { INestApplication } from '@nestjs/common';
-import type { Maybe } from 'graphql/jsutils/Maybe';
-import type { NestExpressApplication } from '@nestjs/platform-express';
-import type { PromiseOrValue } from 'graphql/jsutils/PromiseOrValue';
-import type { SofaConfig } from '@multiplatform.one/sofa-api';
+import { ApolloServer, BaseContext } from '@apollo/server';
 import { ConfigService } from '@nestjs/config';
+import { INestApplication } from '@nestjs/common';
+import { Maybe } from 'graphql/jsutils/Maybe';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { NestFactory } from '@nestjs/core';
+import { PromiseOrValue } from 'graphql/jsutils/PromiseOrValue';
+import { SofaConfig } from '@multiplatform.one/sofa-api';
 import { SofaModule, SOFA_CONFIG } from '@/modules/core/sofa';
 import { getApolloServer } from '@nestjs/apollo';
 import { useSofa } from '@multiplatform.one/sofa-api';
-import type {
+import {
   DocumentNode,
   ExecutionArgs,
   ExecutionResult,
@@ -47,7 +47,7 @@ export async function registerSofa(app: NestExpressApplication, schema: GraphQLS
   return sofa;
 }
 
-export function createSofaExecute(getApolloServer: () => ApolloServerBase) {
+export function createSofaExecute(getApolloServer: () => ApolloServer<BaseContext>) {
   function execute(args: ExecutionArgs): PromiseOrValue<ExecutionResult>;
   function execute(
     schema: GraphQLSchema,
@@ -83,7 +83,7 @@ export function createSofaExecute(getApolloServer: () => ApolloServerBase) {
         query: document,
         variables,
       },
-      { req },
+      { contextValue },
     )) as ExecutionResult;
   }
   return execute;

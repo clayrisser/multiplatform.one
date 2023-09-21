@@ -20,7 +20,7 @@
  */
 
 import { Controller, Get } from '@nestjs/common';
-import type { HttpService } from '@nestjs/axios';
+import { HttpService } from '@nestjs/axios';
 
 @Controller('rockets')
 export class RocketController {

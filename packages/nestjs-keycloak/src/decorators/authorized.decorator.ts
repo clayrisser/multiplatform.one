@@ -19,19 +19,16 @@
  *  limitations under the License.
  */
 
-import random from 'random';
-import { RENDER_METADATA } from '@nestjs/common/constants';
-import type { Request, Response } from 'express';
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
-import { Catch, HttpException, Inject, SetMetadata, UseFilters, applyDecorators } from '@nestjs/common';
 import type { KeycloakRequest, KeycloakOptions } from '../types';
+import type { Request, Response } from 'express';
+import { Catch, HttpException, Inject, SetMetadata, UseFilters, applyDecorators } from '@nestjs/common';
 import { KEYCLOAK_OPTIONS } from '../types';
+import { RENDER_METADATA } from '@nestjs/common/constants';
 import { getBaseUrl } from './authorizationCallback.decorator';
 import { getGlobalRegistrationMap } from '../keycloakRegister.service';
 
 export const AUTHORIZED = 'KEYCLOAK_AUTHORIZED';
-
-const randomUniform = random.uniform();
 
 export const Authorized = (...roles: (string | string[])[]) => {
   return applyDecorators(SetMetadata(AUTHORIZED, roles || []), UseFilters(UnauthorizedFilter));
@@ -58,7 +55,7 @@ export class UnauthorizedFilter implements ExceptionFilter {
           redirect_uri: `${callbackEndpoint}?destination_uri=${encodeURIComponent(`${baseUrl}${req.originalUrl}`)}`,
           response_type: 'code',
           scope: 'openid',
-          state: randomUniform().toString().substr(2, 8),
+          state: Math.random().toString(36).substring(2, 10),
         }).toString()}`,
       );
     }

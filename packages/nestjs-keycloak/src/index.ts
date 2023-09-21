@@ -28,7 +28,7 @@ import type { DynamicModule, MiddlewareConsumer, NestModule, OnModuleInit } from
 import type { KeycloakOptions, KeycloakAsyncOptions } from './types';
 import { AuthGuard, ResourceGuard } from './guards';
 import { DiscoveryModule, APP_GUARD } from '@nestjs/core';
-import { Global, Logger, Module, RequestMethod } from '@nestjs/common';
+import { Global, Inject, Logger, Module, RequestMethod } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { KEYCLOAK_OPTIONS } from './types';
 import { KeycloakAdminProvider } from './keycloakAdmin.provider';
@@ -118,7 +118,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
 
   private readonly logger = new Logger(KeycloakModule.name);
 
-  constructor(private readonly keycloakRegisterService: KeycloakRegisterService) {}
+  constructor(@Inject(KeycloakRegisterService) private readonly keycloakRegisterService: KeycloakRegisterService) {}
 
   async onModuleInit() {
     await this.keycloakRegisterService.register();

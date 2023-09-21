@@ -19,11 +19,11 @@
  *  limitations under the License.
  */
 
-import type { GraphqlCtx } from '@/types';
-import type { LoginRequestDto } from './auth.dto';
 import { Authorized, Resource } from '@multiplatform.one/nestjs-keycloak';
 import { GrantProperties, Resolver, UserInfo } from '@multiplatform.one/nestjs-keycloak-typegraphql';
+import type { GraphqlCtx } from '@/types';
 import { Logger } from '@nestjs/common';
+import { LoginRequestDto } from './auth.dto';
 import { LoginResponseDto } from './auth.dto';
 import { Query, Ctx, ObjectType, Args } from 'type-graphql';
 

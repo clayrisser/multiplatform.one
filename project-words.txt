@@ -1,4 +1,5 @@
 1aji48u
+aaguids
 acl
 acr
 aint
@@ -7,16 +8,20 @@ alg
 alice
 allowlist
 als
+anatine
 apiv
 argv
 arial
 ast
 audi
+autheticator
+authnstatement
 autodocs
 autolink
 axios
 azp
 babelrc
+backchannel
 bbc
 bblr
 bbrr
@@ -48,9 +53,11 @@ camelcase
 cancelable
 checkbox
 chromeandroid
+ciba
 cjs
 clayrisser
 clearable
+clientregistration
 cloc
 codebase
 comment
@@ -86,6 +93,7 @@ ejs
 enum
 enums
 envcache
+esbuild
 esm
 estree
 etchteam
@@ -102,6 +110,7 @@ fos
 fost
 fow
 freakout
+frontchannel
 frontmatter
 func
 globals
@@ -129,6 +138,7 @@ jsx
 jti
 kauth
 keycloak
+keyinfo
 labelled
 labelledby
 lang
@@ -143,6 +153,7 @@ mdx
 menlo
 metatype
 michał
+microprofile
 middlewares
 mih
 milli
@@ -153,11 +164,14 @@ mjs
 mkchain
 mkpm
 modularize
+modulz
 monospace
 moti
 multiline
 multiplatform
 multistream
+multivalued
+nameformat
 namespace
 namespaces
 natively
@@ -166,13 +180,16 @@ nestjs
 nextjs
 nixpkgs
 noreferrer
+nosniff
 noto
 nowrap
 nullable
 num
 numberify
 oauth2
+oidc
 ondevice
+onetimeuse
 openapi
 openid
 opentelemetry
@@ -183,6 +200,7 @@ otf
 outdir
 paddings
 papooch
+passwordless
 pathname
 persistor
 pino
@@ -202,9 +220,12 @@ psql
 rani
 readdir
 readonly
+reauthentication
 rebased
+recaptcha
 rect
 redeclare
+redirector
 redis
 refactor
 refractor
@@ -220,6 +241,7 @@ rhf
 risser
 risserlabs
 roboto
+sameorigin
 sast
 sbmodern
 schemas
@@ -233,6 +255,7 @@ shar
 shof
 sid
 solito
+spnego
 sponsorships
 sqlite
 sslmode
@@ -286,6 +309,7 @@ unspaced
 uri
 userid
 userinfo
+usermodel
 usr
 ussel
 utf
@@ -300,6 +324,7 @@ wcag
 webkit
 webpack
 webpack5
+wienert
 workspace
 xmas
 xml

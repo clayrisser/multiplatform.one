@@ -19,8 +19,8 @@
  *  limitations under the License.
  */
 
-import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 import { UserResolver } from './user.resolver';
 
 describe('UserResolver', () => {

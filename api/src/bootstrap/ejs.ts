@@ -20,7 +20,7 @@
  */
 
 import path from 'path';
-import type { NestExpressApplication } from '@nestjs/platform-express';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 export async function registerEjs(app: NestExpressApplication) {
   app.useStaticAssets(path.resolve(process.cwd(), 'public'));
