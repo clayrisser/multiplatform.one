@@ -54,10 +54,5 @@
     "solito"
   ],
   "packageManager": "yarn@3.6.1",
-  "prettier": "eslint-config-alloy/.prettierrc.js",
-  "dependencies": {
-    "@multiplatform.one/typegraphql-nestjs": "workspace:^",
-    "@turbo/gen": "^1.10.14",
-    "turbo": "^1.10.14"
-  }
+  "prettier": "eslint-config-alloy/.prettierrc.js"
 }

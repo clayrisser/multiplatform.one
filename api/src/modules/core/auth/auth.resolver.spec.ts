@@ -19,9 +19,9 @@
  *  limitations under the License.
  */
 
-import type { TestingModule } from '@nestjs/testing';
-import { Test } from '@nestjs/testing';
 import { AuthResolver } from './auth.resolver';
+import { Test } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 
 describe('AuthResolver', () => {
   let resolver: AuthResolver;

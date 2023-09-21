@@ -24,8 +24,8 @@ import KeycloakTypegraphql from '@multiplatform.one/nestjs-keycloak-typegraphql'
 import coreModules from '@/modules/core';
 import modules from '@/modules';
 import path from 'path';
-import type { DynamicModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { DynamicModule } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { Module, Global } from '@nestjs/common';
 import { OpenTelemetryModule } from 'nestjs-otel';

@@ -19,7 +19,7 @@
  *  limitations under the License.
  */
 
-import type { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { Controller, Get, HttpException, HttpStatus, Render } from '@nestjs/common';
 
 @Controller()

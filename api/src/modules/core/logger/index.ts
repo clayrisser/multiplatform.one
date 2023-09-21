@@ -1,7 +1,7 @@
 /*
  *  File: /src/modules/core/logger/index.ts
  *  Project: api
- *  File Created: 19-09-2023 06:04:27
+ *  File Created: 20-09-2023 11:15:20
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,11 +19,11 @@
  *  limitations under the License.
  */
 
-import type { DynamicModule } from '@nestjs/common/interfaces';
-import type { IncomingMessage, ServerResponse } from 'http';
 import { AxiosLoggerModule } from 'nestjs-axios-logger';
 import { ConfigService } from '@nestjs/config';
+import { DynamicModule } from '@nestjs/common/interfaces';
 import { Global, Module, RequestMethod } from '@nestjs/common';
+import { IncomingMessage, ServerResponse } from 'http';
 import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
 import { createPinoHttp } from './logger';
 

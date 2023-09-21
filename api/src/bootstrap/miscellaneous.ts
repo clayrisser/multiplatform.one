@@ -19,8 +19,8 @@
  *  limitations under the License.
  */
 
-import type { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 export async function registerMiscellaneous(app: NestExpressApplication) {
   if (app.get(ConfigService).get('DEBUG') === '1') {

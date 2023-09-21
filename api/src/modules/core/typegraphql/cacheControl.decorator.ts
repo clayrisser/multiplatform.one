@@ -19,7 +19,7 @@
  *  limitations under the License.
  */
 
-import type { CacheHint } from 'apollo-server-types';
+import { CacheHint } from 'apollo-server-types';
 import { Directive } from 'type-graphql';
 
 export function CacheControl({ maxAge, scope }: CacheHint) {

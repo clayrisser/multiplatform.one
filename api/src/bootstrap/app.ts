@@ -22,14 +22,14 @@
 import 'nestjs-axios-logger/axiosInherit';
 import dotenv from 'dotenv';
 import path from 'path';
-import type { NestApplicationOptions } from '@nestjs/common';
-import type { NestExpressApplication } from '@nestjs/platform-express';
-import type { RegisterAppModuleConfig } from '@/app.module';
 import { AppModule } from '@/app.module';
 import { ConfigService } from '@nestjs/config';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { GraphQLSchemaHost } from '@nestjs/graphql';
+import { NestApplicationOptions } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { NestFactory } from '@nestjs/core';
+import { RegisterAppModuleConfig } from '@/app.module';
 import { ValidationPipe, Logger } from '@nestjs/common';
 import { logLevels, registerEjs, registerLogger, registerMiscellaneous, registerSofa, registerSwagger } from './index';
 
@@ -66,7 +66,8 @@ export async function appListen(app: NestExpressApplication) {
     .listen(port, '0.0.0.0', () => {
       logger.log(`listening on port ${port}`);
     })
-    .catch(logger.error);
+    .catch(console.error);
+  // .catch(logger.error);
   if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => app.close());
@@ -86,7 +87,7 @@ export async function start() {
       registerKeycloak: true,
     },
   });
-  await registerLogger(app);
+  // await registerLogger(app);
   const sofa = await registerSofa(app, schema);
   await registerEjs(app);
   await registerSwagger(app, sofa);

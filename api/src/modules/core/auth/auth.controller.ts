@@ -19,12 +19,12 @@
  *  limitations under the License.
  */
 
-import type { GrantProperties, KeycloakService, UserInfo } from '@multiplatform.one/nestjs-keycloak';
-import type { LoginResponseDto } from './auth.dto';
 import { ApiBody } from '@nestjs/swagger';
 import { Authorized, Resource } from '@multiplatform.one/nestjs-keycloak';
+import { GrantProperties, KeycloakService, UserInfo } from '@multiplatform.one/nestjs-keycloak';
 import { Logger, Controller, Post, Body, Get } from '@nestjs/common';
 import { LoginRequestDto } from './auth.dto';
+import { LoginResponseDto } from './auth.dto';
 
 @Resource('auth')
 @Controller('auth')

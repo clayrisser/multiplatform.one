@@ -19,9 +19,9 @@
  *  limitations under the License.
  */
 
-import type { LogLevel } from '@nestjs/common';
-import type { NestExpressApplication } from '@nestjs/platform-express';
+import { LogLevel } from '@nestjs/common';
 import { Logger as PinoLogger } from 'nestjs-pino';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 const { env } = process;
 

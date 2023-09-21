@@ -19,9 +19,9 @@
  *  limitations under the License.
  */
 
-import KcAdminClient from '@keycloak/keycloak-admin-client';
 import difference from 'lodash.difference';
 import type ClientRepresentation from '@keycloak/keycloak-admin-client/lib/defs/clientRepresentation';
+import type IKcAdminClient from '@keycloak/keycloak-admin-client';
 import type ResourceRepresentation from '@keycloak/keycloak-admin-client/lib/defs/resourceRepresentation';
 import type RoleRepresentation from '@keycloak/keycloak-admin-client/lib/defs/roleRepresentation';
 import type ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation';
@@ -61,7 +61,7 @@ export default class KeycloakRegisterService {
 
   private registerOptions: RegisterOptions;
 
-  private keycloakAdmin: KcAdminClient;
+  private keycloakAdmin: IKcAdminClient | undefined;
 
   private _idsFromClientIds: HashMap<string> = {};
 
@@ -79,7 +79,6 @@ export default class KeycloakRegisterService {
     @Inject(Reflector) private readonly reflector: Reflector,
     @Inject(HttpService) private readonly httpService: HttpService,
   ) {
-    this.keycloakAdmin = new KcAdminClient({ baseUrl: options.baseUrl });
     this.registerOptions = {
       roles: [],
       ...(typeof this.options.register === 'boolean' ? {} : this.options.register || {}),
@@ -225,6 +224,10 @@ export default class KeycloakRegisterService {
   }
 
   private async initializeKeycloakAdmin() {
+    // eslint-disable-next-line no-eval
+    const KcAdminClient = (await (0, eval)("import('@keycloak/keycloak-admin-client')"))
+      .default as typeof IKcAdminClient;
+    if (!this.keycloakAdmin) this.keycloakAdmin = new KcAdminClient({ baseUrl: this.options.baseUrl });
     await this.keycloakAdmin.auth({
       clientId: this.options.adminClientId || 'admin-cli',
       grantType: 'password',
@@ -242,7 +245,7 @@ export default class KeycloakRegisterService {
       id: await this.getIdFromClientId(this.options.clientId),
     });
     if (!client) {
-      throw new Error(`client ${this.options.clientId} does not exist`);
+      throw new Error(`client ${this.options.clientId} does not exist in the ${this.options.realm} realm`);
     }
     return client;
   }
@@ -328,7 +331,7 @@ export default class KeycloakRegisterService {
     }
     const idFromClientId = (await this.keycloakAdmin!.clients.find({ clientId }))?.[0]?.id;
     if (!idFromClientId) {
-      throw new Error(`could not find id from clientId '${clientId}'`);
+      throw new Error(`client ${this.options.clientId} does not exist in the ${this.options.realm} realm`);
     }
     this._idsFromClientIds[clientId] = idFromClientId;
     return idFromClientId;

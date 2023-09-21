@@ -19,8 +19,8 @@
  *  limitations under the License.
  */
 
-import type { ErrorHandler } from '@multiplatform.one/sofa-api';
-import type { FactoryProvider } from '@nestjs/common';
+import { ErrorHandler } from '@multiplatform.one/sofa-api';
+import { FactoryProvider } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { Response } from 'fets';
 
