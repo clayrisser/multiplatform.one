@@ -19,36 +19,29 @@
  *  limitations under the License.
  */
 
-import { ApiProperty } from '@nestjs/swagger';
 import { ArgsType, Field, ObjectType } from 'type-graphql';
 import { UserInfo } from '@multiplatform.one/nestjs-keycloak-typegraphql';
 
 @ArgsType()
 export class LoginRequestDto {
-  @ApiProperty()
   @Field((_type) => String, { nullable: true })
   password?: string;
 
-  @ApiProperty()
   @Field((_type) => [String], { nullable: true })
   scope?: string[];
 
-  @ApiProperty()
   @Field((_type) => String, { nullable: true })
   username?: string;
 }
 
 @ObjectType()
 export class LoginResponseDto {
-  @ApiProperty()
   @Field((_type) => String)
   accessToken!: string;
 
-  @ApiProperty()
   @Field((_type) => String)
   refreshToken!: string;
 
-  @ApiProperty()
   @Field((_type) => UserInfo)
   userInfo!: UserInfo;
 }

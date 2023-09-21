@@ -20,14 +20,14 @@
  */
 
 import pkg from '@/../package.json';
-import type { FactoryProvider } from '@nestjs/common';
-import type { GraphQLSchema } from 'graphql';
-import type { OpenAPIV3 } from 'openapi-types';
-import type { SofaConfig, RouteInfo } from '@multiplatform.one/sofa-api';
 import { ConfigService } from '@nestjs/config';
+import { FactoryProvider } from '@nestjs/common';
+import { GraphQLSchema } from 'graphql';
 import { OpenAPI, createRouter, createSofa } from '@multiplatform.one/sofa-api';
+import { OpenAPIV3 } from 'openapi-types';
 import { SOFA_CONFIG } from './sofaConfig.provider';
 import { SOFA_GRAPHQL_SCHEMA } from './types';
+import { SofaConfig, RouteInfo } from '@multiplatform.one/sofa-api';
 
 export const SOFA_OPEN_API = 'SOFA_OPEN_API';
 

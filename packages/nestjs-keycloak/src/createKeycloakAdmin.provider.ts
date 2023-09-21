@@ -19,18 +19,21 @@
  *  limitations under the License.
  */
 
-import KcAdminClient from '@keycloak/keycloak-admin-client';
+import type IKcAdminClient from '@keycloak/keycloak-admin-client';
 import type { FactoryProvider } from '@nestjs/common';
 import type { KeycloakOptions } from './types';
 import { KEYCLOAK_OPTIONS } from './types';
 
 export const CREATE_KEYCLOAK_ADMIN = 'CREATE_KEYCLOAK_ADMIN';
 
-const CreateKeycloakAdminProvider: FactoryProvider<() => Promise<KcAdminClient | undefined>> = {
+const CreateKeycloakAdminProvider: FactoryProvider<() => Promise<IKcAdminClient | undefined>> = {
   provide: CREATE_KEYCLOAK_ADMIN,
   inject: [KEYCLOAK_OPTIONS],
   useFactory: (options: KeycloakOptions) => async () => {
     if (!options.adminUsername || !options.adminPassword) return undefined;
+    // eslint-disable-next-line no-eval
+    const KcAdminClient = (await (0, eval)("import('@keycloak/keycloak-admin-client')"))
+      .default as typeof IKcAdminClient;
     const keycloakAdmin = new KcAdminClient({
       baseUrl: options.baseUrl,
     });

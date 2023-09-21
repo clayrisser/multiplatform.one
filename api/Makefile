@@ -25,6 +25,8 @@ include $(MKPM)/chain
 include $(MKPM)/yarn
 include shared.mk
 
+NEST := $(call yarn_binary,nest)
+
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
@@ -67,13 +69,13 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 
 ACTIONS += build~test ##
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(WEBPACK) --progress
+	@$(TSUP)
 	@$(call done,$@)
 
 .PHONY: dev +dev
 dev: | ~deps prisma/dev +generate docker/dev-d +dev ##
 +dev:
-	@$(NODEMON) --exec "$(WEBPACK) --progress && $(NODE) dist/main.js $(DEV_ARGS)"
+	@$(NODEMON) --exec "$(TSUP) && $(NODE) dist/main.js $(DEV_ARGS)"
 
 COLLECT_COVERAGE_FROM := ["src/**/*.{js,jsx,ts,tsx}"]
 .PHONY: coverage +coverage

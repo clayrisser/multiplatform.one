@@ -21,18 +21,10 @@
 
 import Guards from './guards.decorator';
 import type { ClassType } from 'type-graphql';
-import type { ClassTypeResolver, AbstractClassOptions } from 'type-graphql/dist/decorators/types';
+import type { ClassTypeResolver } from 'type-graphql/build/typings/decorators/types';
 import { Resolver as TypeGraphqlResolver } from 'type-graphql';
 import { applyDecorators } from '@nestjs/common';
 
-export function Resolver(options?: AbstractClassOptions): ClassDecorator;
-export function Resolver(
-  typeFuncOrObjectType: ClassTypeResolver | ClassType,
-  options?: AbstractClassOptions,
-): ClassDecorator;
-export function Resolver(
-  objectTypeOrTypeFuncOrMaybeOptions?: any,
-  maybeOptions?: AbstractClassOptions,
-): ClassDecorator {
-  return applyDecorators(Guards(), TypeGraphqlResolver(objectTypeOrTypeFuncOrMaybeOptions, maybeOptions));
+export function Resolver(typeFuncOrObjectType?: ClassTypeResolver | ClassType): ClassDecorator {
+  return applyDecorators(Guards(), TypeGraphqlResolver(typeFuncOrObjectType as ClassType));
 }

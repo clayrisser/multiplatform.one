@@ -31,7 +31,6 @@ ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
 	@$(YARN) install $(DEPS_ARGS)
 	@$(call done,$@)
-#	@$(MAKE) -sf Mkpmfile +build
 
 ACTIONS += format ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
@@ -97,15 +96,23 @@ help: $(MKCHAIN_HELP)
 
 .PHONY: next/docker/%
 next/docker/%:
-	@$(MAKE) -sC platforms/next/docker $(subst next/docker/,,$@) ARGS=$(ARGS)
+	@$(MAKE) -sC platforms/next/docker $*
 
 .PHONY: storybook/docker/%
 storybook/docker/%:
-	@$(MAKE) -sC platforms/storybook/docker $(subst storybook/docker/,,$@) ARGS=$(ARGS)
+	@$(MAKE) -sC platforms/storybook/docker $*
+
+.PHONY: api/docker/%
+api/docker/%:
+	@$(MAKE) -sC api/docker $*
 
 .PHONY: gen/%
 gen/%:
 	@npx turbo generate $(subst  gen/,,$@)
+
+.PHONY: api/%
+api/%:
+	@$(MAKE) -sC api $*
 
 .PHONY: gen
 gen:

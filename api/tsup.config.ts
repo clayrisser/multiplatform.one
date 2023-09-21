@@ -1,7 +1,7 @@
 /*
- *  File: /src/main.ts
- *  Project: api
- *  File Created: 18-09-2023 08:18:09
+ *  File: /tsup.config.ts
+ *  Project: @multiplatform.one/nestjs-keycloak
+ *  File Created: 19-09-2023 07:07:18
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,11 +19,22 @@
  *  limitations under the License.
  */
 
-import 'reflect-metadata';
-import otelSDK from '@/tracing';
-import { start } from '@/bootstrap';
+import { defineConfig } from 'tsup';
+import transpileModules from './transpileModules';
 
-(async () => {
-  otelSDK.start();
-  await start();
-})();
+export default defineConfig({
+  bundle: true,
+  clean: true,
+  dts: false,
+  entry: ['src/**/*.ts?(x)'],
+  entryPoints: ['src/index.ts'],
+  format: ['cjs'],
+  minify: false,
+  noExternal: transpileModules,
+  outDir: 'dist',
+  publicDir: './public',
+  shims: true,
+  skipNodeModulesBundle: true,
+  splitting: true,
+  target: 'es2022',
+});

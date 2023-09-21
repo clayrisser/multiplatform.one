@@ -19,8 +19,8 @@
  *  limitations under the License.
  */
 
-import type { OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
+import { OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()

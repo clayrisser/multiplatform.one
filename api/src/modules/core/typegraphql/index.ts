@@ -20,17 +20,16 @@
  */
 
 import ResponseCachePlugin from 'apollo-server-plugin-response-cache';
-import type { ApolloServerPluginLandingPageGraphQLPlaygroundOptions } from 'apollo-server-core';
-import type { DynamicModule, ForwardReference, Type } from '@nestjs/common';
-import type { GraphQLRequestContext } from 'apollo-server-types';
-import type { GraphqlCtx } from '@/types';
-import type { MiddlewareFn } from 'type-graphql';
-import type { RedisClient } from 'apollo-server-cache-redis';
 import { ApolloDriver } from '@nestjs/apollo';
 import { BaseRedisCache } from 'apollo-server-cache-redis';
 import { ConfigService } from '@nestjs/config';
+import { DynamicModule, ForwardReference, Type } from '@nestjs/common';
+import { GraphQLRequestContext } from 'apollo-server-types';
+import { GraphqlCtx } from '@/types';
 import { MIDDLEWARES, WRAP_CONTEXT } from '@multiplatform.one/nestjs-keycloak-typegraphql';
+import { MiddlewareFn } from 'type-graphql';
 import { PrismaService } from '@/modules/core/prisma';
+import { RedisClient } from 'apollo-server-cache-redis';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import { TypeGraphQLModule } from '@multiplatform.one/typegraphql-nestjs';
 
@@ -107,3 +106,5 @@ export function createTypeGraphqlModule(
 }
 
 export * from './cacheControl.decorator';
+
+type ApolloServerPluginLandingPageGraphQLPlaygroundOptions = any;

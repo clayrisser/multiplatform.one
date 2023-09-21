@@ -19,8 +19,8 @@
  *  limitations under the License.
  */
 
-import type { GraphqlCtx as NestJSGraphqlCtx } from '@multiplatform.one/nestjs-keycloak-typegraphql';
-import type { PrismaService } from '@/modules/core/prisma';
+import { GraphqlCtx as NestJSGraphqlCtx } from '@multiplatform.one/nestjs-keycloak-typegraphql';
+import { PrismaService } from '@/modules/core/prisma';
 
 export interface GraphqlCtx extends NestJSGraphqlCtx {
   prisma: PrismaService;

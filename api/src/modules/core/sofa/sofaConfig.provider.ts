@@ -19,10 +19,10 @@
  *  limitations under the License.
  */
 
-import type { ErrorHandler, HTTPMethod, SofaConfig } from '@multiplatform.one/sofa-api';
-import type { FactoryProvider } from '@nestjs/common';
-import type { OperationDefinitionNode, GraphQLSchema } from 'graphql';
 import { ConfigService } from '@nestjs/config';
+import { ErrorHandler, HTTPMethod, SofaConfig } from '@multiplatform.one/sofa-api';
+import { FactoryProvider } from '@nestjs/common';
+import { OperationDefinitionNode, GraphQLSchema } from 'graphql';
 import { SOFA_ERROR_HANDLER } from './sofaErrorHandler.provider';
 import { SOFA_GRAPHQL_SCHEMA } from './types';
 

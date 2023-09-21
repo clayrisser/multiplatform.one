@@ -2,19 +2,19 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "start storybook",
+      "name": "storybook dev",
       "type": "node-terminal",
       "request": "launch",
       "command": "./mkpm storybook/dev"
     },
     {
-      "name": "start storybook native",
+      "name": "storybook native dev",
       "type": "node-terminal",
       "request": "launch",
       "command": "./mkpm storybook-native/dev"
     },
     {
-      "name": "start next platform",
+      "name": "next platform dev",
       "type": "node-terminal",
       "request": "launch",
       "command": "./mkpm next/dev",
@@ -25,7 +25,13 @@
       }
     },
     {
-      "name": "start expo platform",
+      "name": "expo platform dev",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "./mkpm expo/dev"
+    },
+    {
+      "name": "api dev",
       "type": "node-terminal",
       "request": "launch",
       "command": "./mkpm expo/dev"

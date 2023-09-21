@@ -19,9 +19,9 @@
  *  limitations under the License.
  */
 
-import type { TestingModule } from '@nestjs/testing';
-import { Test } from '@nestjs/testing';
 import { PostController } from './post.controller';
+import { Test } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 
 describe('PostController', () => {
   let controller: PostController;
