@@ -34,7 +34,7 @@
       "name": "api dev",
       "type": "node-terminal",
       "request": "launch",
-      "command": "./mkpm expo/dev"
+      "command": "./mkpm api/dev"
     }
   ]
 }
