@@ -1,3 +1,24 @@
+/**
+ * File: /src/panels/SimpleDialog/index.tsx
+ * Project: @multiplatform.one/components
+ * File Created: 13-10-2023 09:40:26
+ * Author: Lalit rajak
+ * -----
+ * BitSpur (c) Copyright 2021 - 2023
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React, { useEffect } from 'react';
 import type { DialogProps, DialogTitleProps, DialogDescriptionProps, DialogContentProps } from 'tamagui';
 import type { ReactNode } from 'react';
@@ -13,6 +34,7 @@ export type SimpleDialogProps = DialogProps & {
   titleStyle?: DialogTitleProps;
   trigger?: ReactNode;
   onOpenChange?: (open: boolean) => void;
+  withoutCloseButton?: boolean;
 };
 
 export function SimpleDialog({
@@ -23,6 +45,7 @@ export function SimpleDialog({
   title,
   titleStyle,
   trigger,
+  withoutCloseButton,
   ...props
 }: SimpleDialogProps) {
   const [open, setOpen] = React.useState(props.open);
@@ -73,11 +96,13 @@ export function SimpleDialog({
           {title && <Dialog.Title {...titleStyle}>{title}</Dialog.Title>}
           {description && <Dialog.Description {...descriptionStyle}>{description}</Dialog.Description>}
           {children}
-          <Unspaced>
-            <Dialog.Close asChild space>
-              <Button pos="absolute" t="$3" r="$3" size="$2" circular space icon={X} />
-            </Dialog.Close>
-          </Unspaced>
+          {!withoutCloseButton && (
+            <Unspaced>
+              <Dialog.Close asChild space>
+                <Button pos="absolute" t="$3" r="$3" size="$2" circular space icon={X} />
+              </Dialog.Close>
+            </Unspaced>
+          )}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
