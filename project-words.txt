@@ -146,6 +146,7 @@ liaoliaots
 linejoin
 lucide
 lytek
+lalit
 mah
 makefiles
 matchers
@@ -232,6 +233,7 @@ refractor
 refreshable
 rehype
 renderer
+rajak
 req
 resize
 resizing
