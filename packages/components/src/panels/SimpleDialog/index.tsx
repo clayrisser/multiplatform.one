@@ -88,8 +88,8 @@ export function SimpleDialog({
               },
             },
           ]}
-          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
-          exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+          enterStyle={{ x: 0, y: -150, opacity: 0, scale: 0.4 }}
+          exitStyle={{ x: 0, y: -150, opacity: 0, scale: 0.4 }}
           space
           {...contentStyle}
         >
