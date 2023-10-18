@@ -42,7 +42,7 @@ export type SimpleDialogProps = DialogProps & {
   titleStyle?: DialogTitleProps;
   trigger?: ReactNode;
   withoutCloseButton?: boolean;
-  overlayStyle: DialogOverlayProps;
+  overlayStyle?: DialogOverlayProps;
   onOpenChange?: (open: boolean) => void;
 };
 

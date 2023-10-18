@@ -24,6 +24,7 @@ import type { Meta } from '@storybook/react';
 import { Button, Input, Dialog, YStack } from 'tamagui';
 import { SimpleDialog } from './index';
 import { action } from '@storybook/addon-actions';
+import { Text } from 'tamagui';
 
 const meta: Meta = {
   title: 'panels/SimpleDialog',
@@ -84,6 +85,28 @@ export const customPosition = (args) => (
   >
     <YStack width={800} height={400}>
       <Input placeholder="search" />
+    </YStack>
+  </SimpleDialog>
+);
+
+export const sideSheet = (args) => (
+  <SimpleDialog
+    trigger={<Button>open side dialog</Button>}
+    portalStyle={{ jc: 'flex-start', ai: 'flex-end' }}
+    contentStyle={{
+      enterStyle: { x: 100, opacity: 0 },
+      exitStyle: { y: 0, opacity: 0 },
+      animation: 'lazy',
+      height: '100%',
+    }}
+    withoutCloseButton
+    {...args}
+  >
+    <YStack>
+      <Text>home</Text>
+      <Text>about</Text>
+      <Text>contact</Text>
+      <Text>help</Text>
     </YStack>
   </SimpleDialog>
 );
