@@ -20,7 +20,14 @@
  */
 
 import React, { useEffect } from 'react';
-import type { DialogProps, DialogTitleProps, DialogDescriptionProps, DialogContentProps } from 'tamagui';
+import type {
+  DialogProps,
+  DialogTitleProps,
+  DialogDescriptionProps,
+  DialogContentProps,
+  DialogPortalProps,
+  DialogOverlayProps,
+} from 'tamagui';
 import type { ReactNode } from 'react';
 import { Adapt, Button, Dialog, Sheet, Unspaced } from 'tamagui';
 import { X } from '@tamagui/lucide-icons';
@@ -29,12 +36,14 @@ export type SimpleDialogProps = DialogProps & {
   contentStyle?: DialogContentProps;
   description?: ReactNode;
   descriptionStyle?: DialogDescriptionProps;
+  portalStyle?: DialogPortalProps;
   open?: boolean;
   title?: ReactNode;
   titleStyle?: DialogTitleProps;
   trigger?: ReactNode;
-  onOpenChange?: (open: boolean) => void;
   withoutCloseButton?: boolean;
+  overlayStyle: DialogOverlayProps;
+  onOpenChange?: (open: boolean) => void;
 };
 
 export function SimpleDialog({
@@ -45,7 +54,9 @@ export function SimpleDialog({
   title,
   titleStyle,
   trigger,
+  portalStyle,
   withoutCloseButton,
+  overlayStyle,
   ...props
 }: SimpleDialogProps) {
   const [open, setOpen] = React.useState(props.open);
@@ -74,8 +85,15 @@ export function SimpleDialog({
           <Sheet.Overlay />
         </Sheet>
       </Adapt>
-      <Dialog.Portal>
-        <Dialog.Overlay key="overlay" animation="bouncy" o={0.5} enterStyle={{ o: 0 }} exitStyle={{ o: 0 }} />
+      <Dialog.Portal {...portalStyle}>
+        <Dialog.Overlay
+          key="overlay"
+          animation="bouncy"
+          o={0.5}
+          enterStyle={{ o: 0 }}
+          exitStyle={{ o: 0 }}
+          {...overlayStyle}
+        />
         <Dialog.Content
           bordered
           elevate

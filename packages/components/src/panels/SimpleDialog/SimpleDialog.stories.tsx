@@ -74,3 +74,16 @@ function OpenWithFunction() {
 export const openWithFunction = () => <OpenWithFunction />;
 
 export default meta;
+
+export const customPosition = (args) => (
+  <SimpleDialog
+    {...args}
+    trigger={<Button>open Dialog</Button>}
+    withoutCloseButton
+    portalStyle={{ jc: 'flex-start', paddingTop: 10 }}
+  >
+    <YStack width={800} height={400}>
+      <Input placeholder="search" />
+    </YStack>
+  </SimpleDialog>
+);
