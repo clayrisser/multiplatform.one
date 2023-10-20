@@ -30,7 +30,7 @@ type CarouselProps = YStackProps & {
   defaultSlide?: number;
 };
 
-export function Carousel({
+export function SimpleCarousel({
   children,
   speed = 3000,
   showCenterIndicator = true,

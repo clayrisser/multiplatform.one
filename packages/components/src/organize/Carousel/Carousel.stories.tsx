@@ -18,13 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Carousel } from './index';
+import { SimpleCarousel } from './index';
 import React from 'react';
 import { SimpleImage } from '../../images/SimpleImage';
 
 export default {
-  title: 'simple/Carousel',
-  component: Carousel,
+  title: 'organize/SimpleCarousel',
+  component: SimpleCarousel,
   parameters: {
     status: {
       type: 'beta',
@@ -36,10 +36,10 @@ const mail = require('../../../assets/mail.png');
 const pentagon = require('../../../assets/pentagon.svg');
 
 export const Main = () => (
-  <Carousel speed={5000} defaultSlide={4}>
+  <SimpleCarousel speed={5000} defaultSlide={4}>
     <SimpleImage src={mail} height={300} resizeMode="cover" />
     <SimpleImage src={pentagon} height={300} resizeMode="cover" />
     <SimpleImage src={mail} height={300} resizeMode="cover" />
     <SimpleImage src={pentagon} height={300} resizeMode="cover" />
-  </Carousel>
+  </SimpleCarousel>
 );
