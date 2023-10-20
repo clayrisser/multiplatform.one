@@ -24,7 +24,7 @@ import { AccordionItem, SimpleAccordion } from './index';
 import { YStack, Text } from 'tamagui';
 
 export default {
-  title: 'components/SimpleAccordion',
+  title: 'organize/SimpleAccordion',
   component: SimpleAccordion,
   parameters: {
     status: { type: 'beta' },

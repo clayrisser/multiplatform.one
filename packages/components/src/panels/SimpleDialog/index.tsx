@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import type {
   DialogProps,
   DialogTitleProps,
@@ -64,7 +64,6 @@ export function SimpleDialog({
   ...props
 }: SimpleDialogProps) {
   const [open, setOpen] = React.useState(props.open);
-  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof props.open === 'undefined' || props.open === open) return;
@@ -85,7 +84,7 @@ export function SimpleDialog({
       <Adapt when="sm" platform="touch">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" space>
-            <Adapt.Contents ref={contentRef} />
+            <Adapt.Contents />
           </Sheet.Frame>
           <Sheet.Overlay />
         </Sheet>
@@ -131,7 +130,6 @@ export function SimpleDialog({
             height: '100%',
           })}
           {...contentStyle}
-          ref={contentRef}
         >
           {title && <Dialog.Title {...titleStyle}>{title}</Dialog.Title>}
           {description && <Dialog.Description {...descriptionStyle}>{description}</Dialog.Description>}
