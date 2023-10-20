@@ -1,5 +1,5 @@
 /**
- * File: /src/simple/SimpleInput/SimpleInput.stories.tsx
+ * File: /src/organize/SimpleInput/SimpleInput.stories.tsx
  * Project: @multiplatform.one/components
  * File Created: 13-10-2023 09:40:26
  * Author: Lalit rajak
@@ -25,7 +25,7 @@ import { YStack } from 'tamagui';
 import { Key, Eye } from '@tamagui/lucide-icons';
 
 export default {
-  title: 'simple/SimpleInput',
+  title: 'organize/SimpleInput',
   component: SimpleInput,
   parameters: { status: { type: 'beta' } },
 };

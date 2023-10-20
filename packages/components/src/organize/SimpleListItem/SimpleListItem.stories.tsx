@@ -1,5 +1,5 @@
 /**
- * File: /src/simple/SimpleListItem/SimpleListItem.stories.tsx
+ * File: /src/organize/SimpleListItem/SimpleListItem.stories.tsx
  * Project: @multiplatform.one/components
  * File Created: 16-10-2023 14:55:52
  * Author: Lalit rajak
@@ -25,7 +25,7 @@ import { ChevronRight, Star } from '@tamagui/lucide-icons';
 import { Label, Separator, Switch, XStack, YStack } from 'tamagui';
 
 export default {
-  title: 'simple/SimpleListItem',
+  title: 'organize/SimpleListItem',
   component: SimpleList,
   parameters: {
     status: { type: 'beta' },

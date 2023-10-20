@@ -1,23 +1,35 @@
+/**
+ * File: /src/panels/SimpleTooltip/index.tsx
+ * Project: @multiplatform.one/components
+ * File Created: 18-10-2023 15:23:17
+ * Author: Lalit rajak
+ * -----
+ * BitSpur (c) Copyright 2021 - 2023
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React from 'react';
-import type { TooltipProps, ThemeProps, ParagraphProps } from 'tamagui';
-import { Paragraph, Theme, Tooltip } from 'tamagui';
+import type { TooltipProps, ThemeProps } from 'tamagui';
+import { Theme, Tooltip } from 'tamagui';
 
-type SimpleToolTipProps = TooltipProps & { element: React.ReactNode } & { themeStyle?: ThemeProps } & {
-  paragraphStyle?: ParagraphProps;
-};
+type SimpleToolTipProps = TooltipProps & { trigger: React.ReactNode; themeStyle?: ThemeProps };
 
-export function SimpleTooltip({
-  Icon,
-  children,
-  element,
-  themeStyle,
-  paragraphStyle,
-  ...props
-}: SimpleToolTipProps & { Icon?: any }) {
+export function SimpleTooltip({ Icon, children, themeStyle, trigger, ...props }: SimpleToolTipProps & { Icon?: any }) {
   return (
     <Tooltip {...props}>
-      <Tooltip.Trigger cursor="pointer" ai="center">
-        {children}
+      <Tooltip.Trigger cursor="pointer" ai="center" jc="center">
+        {trigger}
       </Tooltip.Trigger>
       <Theme inverse {...themeStyle}>
         <Tooltip.Content
@@ -37,9 +49,7 @@ export function SimpleTooltip({
           ]}
         >
           <Tooltip.Arrow />
-          <Paragraph ai="center" size="$2" lineHeight="$1" {...paragraphStyle}>
-            {element}
-          </Paragraph>
+          {children}
         </Tooltip.Content>
       </Theme>
     </Tooltip>
