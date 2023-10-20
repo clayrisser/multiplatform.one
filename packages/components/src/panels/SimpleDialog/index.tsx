@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import type {
   DialogProps,
   DialogTitleProps,
@@ -44,6 +44,8 @@ export type SimpleDialogProps = DialogProps & {
   withoutCloseButton?: boolean;
   overlayStyle?: DialogOverlayProps;
   onOpenChange?: (open: boolean) => void;
+  asLeftSideSheet?: boolean;
+  asRightSideSheet?: boolean;
 };
 
 export function SimpleDialog({
@@ -57,9 +59,12 @@ export function SimpleDialog({
   portalStyle,
   withoutCloseButton,
   overlayStyle,
+  asLeftSideSheet,
+  asRightSideSheet,
   ...props
 }: SimpleDialogProps) {
   const [open, setOpen] = React.useState(props.open);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof props.open === 'undefined' || props.open === open) return;
@@ -80,12 +85,16 @@ export function SimpleDialog({
       <Adapt when="sm" platform="touch">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" space>
-            <Adapt.Contents />
+            <Adapt.Contents ref={contentRef} />
           </Sheet.Frame>
           <Sheet.Overlay />
         </Sheet>
       </Adapt>
-      <Dialog.Portal {...portalStyle}>
+      <Dialog.Portal
+        {...(asRightSideSheet && { jc: 'flex-start', ai: 'flex-end' })}
+        {...(asLeftSideSheet && { jc: 'flex-start', ai: 'flex-start' })}
+        {...portalStyle}
+      >
         <Dialog.Overlay
           key="overlay"
           animation="bouncy"
@@ -109,7 +118,20 @@ export function SimpleDialog({
           enterStyle={{ x: 0, y: -150, opacity: 0, scale: 0.4 }}
           exitStyle={{ x: 0, y: -150, opacity: 0, scale: 0.4 }}
           space
+          {...(asRightSideSheet && {
+            enterStyle: { x: 100, opacity: 0 },
+            exitStyle: { y: 0, opacity: 0 },
+            height: '100%',
+          })}
+          {...(asLeftSideSheet && {
+            enterStyle: { x: 100, opacity: 0 },
+
+            exitStyle: { x: -100, opacity: 0 },
+            animation: 'bouncy',
+            height: '100%',
+          })}
           {...contentStyle}
+          ref={contentRef}
         >
           {title && <Dialog.Title {...titleStyle}>{title}</Dialog.Title>}
           {description && <Dialog.Description {...descriptionStyle}>{description}</Dialog.Description>}
