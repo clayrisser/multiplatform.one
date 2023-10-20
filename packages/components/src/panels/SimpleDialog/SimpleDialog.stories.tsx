@@ -89,20 +89,20 @@ export const customPosition = (args) => (
   </SimpleDialog>
 );
 
-export const sideSheet = (args) => (
-  <SimpleDialog
-    trigger={<Button>open side dialog</Button>}
-    portalStyle={{ jc: 'flex-start', ai: 'flex-end' }}
-    contentStyle={{
-      enterStyle: { x: 100, opacity: 0 },
-      exitStyle: { y: 0, opacity: 0 },
-      animation: 'lazy',
-      height: '100%',
-    }}
-    withoutCloseButton
-    {...args}
-  >
-    <YStack>
+export const rightSideDialog = (args) => (
+  <SimpleDialog trigger={<Button>open side dialog</Button>} asRightSideSheet withoutCloseButton {...args}>
+    <YStack width={400}>
+      <Text>home</Text>
+      <Text>about</Text>
+      <Text>contact</Text>
+      <Text>help</Text>
+    </YStack>
+  </SimpleDialog>
+);
+
+export const leftSideDialog = (args) => (
+  <SimpleDialog trigger={<Button>open side dialog</Button>} asLeftSideSheet withoutCloseButton {...args}>
+    <YStack width={300}>
       <Text>home</Text>
       <Text>about</Text>
       <Text>contact</Text>
