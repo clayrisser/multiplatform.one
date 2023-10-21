@@ -1,5 +1,5 @@
 /**
- * File: /src/organize/Carousel/index.tsx
+ * File: /src/organize/SimpleCarousel/index.tsx
  * Project: @multiplatform.one/components
  * File Created: 17-10-2023 14:46:38
  * Author: Lalit rajak
@@ -21,6 +21,8 @@
 import type { YStackProps } from 'tamagui';
 import { Stack, Text, XStack, YStack } from 'tamagui';
 import React, { useEffect, useState, useRef } from 'react';
+import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons';
+import type { IconProps } from '@tamagui/helpers-icon';
 
 type CarouselProps = YStackProps & {
   children: React.ReactNode;
@@ -28,6 +30,7 @@ type CarouselProps = YStackProps & {
   showCenterIndicator?: boolean;
   showSideArrows?: boolean;
   defaultSlide?: number;
+  sideArrowStyle?: IconProps;
 };
 
 export function SimpleCarousel({
@@ -36,6 +39,7 @@ export function SimpleCarousel({
   showCenterIndicator = true,
   showSideArrows = true,
   defaultSlide,
+  sideArrowStyle,
   ...props
 }: CarouselProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -76,8 +80,8 @@ export function SimpleCarousel({
           justifyContent="center"
           alignItems="center"
         >
-          <Text fontSize={30} marginLeft="$4" selectable={false} cursor="pointer" col="gray" onPress={handlePressPrev}>
-            {'<<'}
+          <Text onPress={handlePressPrev} cur="pointer">
+            <ChevronLeft color="gray" size="$4" {...sideArrowStyle} />
           </Text>
         </YStack>
         <YStack
@@ -88,8 +92,8 @@ export function SimpleCarousel({
           alignItems="center"
           right={0}
         >
-          <Text fontSize={30} marginRight="$4" selectable={false} cursor="pointer" col="gray" onPress={handlePressNext}>
-            {'>>'}
+          <Text onPress={handlePressNext} cur="pointer">
+            <ChevronRight color="gray" size="$4" {...sideArrowStyle} />
           </Text>
         </YStack>
       </>
