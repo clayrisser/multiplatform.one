@@ -1,5 +1,5 @@
 /**
- * File: /src/organize/Carousel/Carousel.stories.tsx
+ * File: /src/organize/SimpleCarousel/Carousel.stories.tsx
  * Project: @multiplatform.one/components
  * File Created: 17-10-2023 14:47:51
  * Author: Lalit rajak
