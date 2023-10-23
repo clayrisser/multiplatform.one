@@ -1,31 +1,46 @@
+/**
+ * File: /src/forms/FormRadioGroup/index.tsx
+ * Project: @multiplatform.one/components
+ * File Created: 18-10-2023 15:23:17
+ * Author: Lalit rajak
+ * -----
+ * BitSpur (c) Copyright 2021 - 2023
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React, { useId } from 'react';
 import type { FormControllerProps } from '../types';
 import type { FormFieldProps } from '../FormField';
-import type { SizeTokens, RadioGroupProps, LabelProps } from 'tamagui';
+import type { SizeTokens, RadioGroupProps, YStackProps } from 'tamagui';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormField } from '../FormField';
-import { Label, RadioGroup, XStack, YStack } from 'tamagui';
+import { RadioGroup, XStack, YStack } from 'tamagui';
 
 export type FormRadioGroupProps = RadioGroupProps &
   FormControllerProps & {
     fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> & { horizontal?: boolean } & {
-    labelStyle?: LabelProps;
+  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> & {
+    horizontal?: boolean;
+    contentStyle: YStackProps;
   };
 
 export interface FormRadioProps {
-  label: string;
+  children?: React.ReactNode;
   value: string;
   size?: SizeTokens;
   disabled?: boolean;
   id?: string;
-}
-
-export interface spacingProps {
-  space?: any;
-  justifyContent?: any;
-  alignItems?: any;
-  alignSelf?: any;
 }
 
 export function FormRadioGroup({
@@ -40,28 +55,17 @@ export function FormRadioGroup({
   required,
   horizontal,
   rules,
-  labelStyle,
-  spacingProps,
+  contentStyle,
   ...radioProps
-}: FormRadioGroupProps & { radioElements: FormRadioProps[] } & { spacingProps?: spacingProps }) {
+}: FormRadioGroupProps) {
   const formContext = useFormContext();
   const id = useId();
   if (!formContext) {
     return (
       <RadioGroup name={name} {...radioProps}>
-        {horizontal ? (
-          <XStack {...spacingProps}>
-            {radioProps.radioElements.map((item) => (
-              <FormRadio {...item} key={item.value} />
-            ))}
-          </XStack>
-        ) : (
-          <YStack {...spacingProps}>
-            {radioProps.radioElements.map((item) => (
-              <FormRadio {...item} key={item.value} />
-            ))}
-          </YStack>
-        )}
+        <YStack display="flex" flexDirection={horizontal ? 'row' : 'column'} {...contentStyle}>
+          {children}
+        </YStack>
       </RadioGroup>
     );
   }
@@ -89,19 +93,9 @@ export function FormRadioGroup({
               if (radioProps.onValueChange) radioProps.onValueChange(e);
             }}
           >
-            {horizontal ? (
-              <XStack {...spacingProps}>
-                {radioProps.radioElements.map((item) => (
-                  <FormRadio {...item} key={item.value} {...labelStyle} />
-                ))}
-              </XStack>
-            ) : (
-              <YStack {...spacingProps}>
-                {radioProps.radioElements.map((item) => (
-                  <FormRadio {...item} key={item.value} {...labelStyle} />
-                ))}
-              </YStack>
-            )}
+            <YStack display="flex" flexDirection={horizontal ? 'row' : 'column'} {...contentStyle}>
+              {children}
+            </YStack>
           </RadioGroup>
         </FormField>
       )}
@@ -109,15 +103,13 @@ export function FormRadioGroup({
   );
 }
 
-export function FormRadio({ label, value, size, disabled, id, ...labelStyle }: FormRadioProps) {
+export function FormRadio({ children, value, size, disabled, id, ...props }: FormRadioProps) {
   return (
     <XStack alignItems="center" space="$1">
-      <RadioGroup.Item value={value} id={id} size={size}>
+      <RadioGroup.Item value={value} id={id} size={size || '$4'} {...props}>
         <RadioGroup.Indicator disabled={disabled} />
       </RadioGroup.Item>
-      <Label size={size} htmlFor={id} {...labelStyle}>
-        {label}
-      </Label>
+      {children}
     </XStack>
   );
 }
