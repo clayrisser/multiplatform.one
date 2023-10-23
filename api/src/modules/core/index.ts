@@ -20,15 +20,17 @@
  */
 
 import { AuthModule } from './auth';
+import { ExceptionModule } from './exception';
 import { LoggerModule } from './logger';
 import { PrismaModule } from './prisma';
 import { SofaModule } from './sofa';
 import { SwaggerModule } from './swagger';
 
 export default [
+  ExceptionModule,
   LoggerModule.register({ color: true, strings: ['clientId'] }),
-  SofaModule,
   AuthModule,
   PrismaModule,
+  SofaModule,
   SwaggerModule,
 ];
