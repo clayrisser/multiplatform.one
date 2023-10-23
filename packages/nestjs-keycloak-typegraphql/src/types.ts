@@ -20,7 +20,7 @@
  */
 
 import { ApiProperty } from '@nestjs/swagger';
-import type { KeycloakContext } from 'keycloak-connect-graphql';
+import type { KeycloakContext } from '@dbateman/keycloak-connect-graphql';
 import type { KeycloakService, KeycloakRequest } from '@multiplatform.one/nestjs-keycloak';
 import type { ModuleMetadata } from '@nestjs/common/interfaces';
 // import { RequiredActionAlias } from '@keycloak/keycloak-admin-client/lib/defs/requiredActionProviderRepresentation';

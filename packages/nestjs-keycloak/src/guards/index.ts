@@ -20,4 +20,5 @@
  */
 
 export * from './auth.guard';
+export * from './private.guard';
 export * from './resource.guard';

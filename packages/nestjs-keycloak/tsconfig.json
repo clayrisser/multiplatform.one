@@ -15,12 +15,12 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedParameters": true,
-    "tsBuildInfoFile": ".tsbuildinfo",
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "target": "ES2022",
+    "tsBuildInfoFile": ".tsbuildinfo",
     "lib": ["DOM", "DOM.Iterable", "ES2022", "ScriptHost", "WebWorker", "WebWorker.ImportScripts", "Webworker.Iterable"]
   },
   "include": ["src", "tests"]
