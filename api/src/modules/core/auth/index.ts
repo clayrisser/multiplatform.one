@@ -26,9 +26,13 @@ import { Module } from '@nestjs/common';
 
 @Module({
   controllers: [AuthController],
-  exports: [AuthResolver],
+  exports: [
+    // AuthResolver
+  ],
   imports: [HttpModule],
-  providers: [AuthResolver],
+  providers: [
+    // AuthResolver
+  ],
 })
 export class AuthModule {}
 

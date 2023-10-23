@@ -1,7 +1,7 @@
 /*
- *  File: /tsup.config.ts
- *  Project: @multiplatform.one/nestjs-keycloak
- *  File Created: 19-09-2023 07:07:18
+ *  File: /src/modules/core/exception/index.ts
+ *  Project: api
+ *  File Created: 16-10-2023 07:15:57
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,23 +19,21 @@
  *  limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
-import transpileModules from './transpileModules';
+import { Global, Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ErrorInterceptor } from './error.interceptor';
 
-export default defineConfig({
-  bundle: true,
-  clean: true,
-  dts: false,
-  entry: ['src/**/*.ts?(x)'],
-  entryPoints: ['src/index.ts'],
-  format: ['cjs'],
-  minify: false,
-  noExternal: transpileModules,
-  outDir: 'dist',
-  publicDir: './public',
-  shims: true,
-  skipNodeModulesBundle: true,
-  splitting: true,
-  target: 'es2022',
-  sourcemap: true,
-});
+@Global()
+@Module({
+  providers: [
+    ErrorInterceptor,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ErrorInterceptor,
+    },
+  ],
+  exports: [ErrorInterceptor],
+})
+export class ExceptionModule {}
+
+export * from './error.interceptor';
