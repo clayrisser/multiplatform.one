@@ -21,6 +21,7 @@
 
 export * from './authorizationCallback.decorator';
 export * from './authorized.decorator';
+export * from './authorizedOrPrivate.decorator';
 export * from './injectGrant.decorator';
 export * from './injectRefreshToken.decorator';
 export * from './injectRoles.decorator';
@@ -29,6 +30,7 @@ export * from './injectUserId.decorator';
 export * from './injectUserInfo.decorator';
 export * from './injectUsername.decorator';
 export * from './onlyOwner.decorator';
+export * from './private.decorator';
 export * from './public.decorator';
 export * from './redirectUnauthorized.decorator';
 export * from './resource.decorator';

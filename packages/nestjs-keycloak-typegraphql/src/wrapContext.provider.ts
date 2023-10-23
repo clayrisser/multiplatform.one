@@ -25,7 +25,7 @@ import type { Keycloak } from 'keycloak-connect';
 import type { KeycloakOptions } from '@multiplatform.one/nestjs-keycloak';
 import { HttpService } from '@nestjs/axios';
 import { KEYCLOAK, KEYCLOAK_OPTIONS, KeycloakService } from '@multiplatform.one/nestjs-keycloak';
-import { KeycloakContext } from 'keycloak-connect-graphql';
+import { KeycloakContext } from '@dbateman/keycloak-connect-graphql';
 
 export const WRAP_CONTEXT = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_WRAP_CONTEXT';
 

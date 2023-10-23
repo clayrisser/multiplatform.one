@@ -70,6 +70,10 @@ export class AppModule {
             clientId: config.get('KEYCLOAK_CLIENT_ID') || '',
             clientSecret: config.get('KEYCLOAK_CLIENT_SECRET') || '',
             realm: config.get('KEYCLOAK_REALM') || '',
+            xApiKey: config.get('X_API_KEY'),
+            privatePort: Number.isFinite(Number(config.get('PRIVATE_PORT')))
+              ? Number(config.get('PRIVATE_PORT'))
+              : 5001,
             register: registerKeycloak
               ? {
                   resources: {},

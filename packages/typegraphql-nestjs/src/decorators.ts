@@ -24,8 +24,7 @@ import { createParamDecorator as nestjsCreateParamDecorator } from '@nestjs/comm
 
 let typeGraphqlCreateParamDecorator: any;
 try {
-  // eslint-disable-next-line global-require
-  ({ typeGraphqlCreateParamDecorator } = require('type-graphql'));
+  typeGraphqlCreateParamDecorator = require('type-graphql').createParamDecorator;
 } catch (err) {
   // void
 }

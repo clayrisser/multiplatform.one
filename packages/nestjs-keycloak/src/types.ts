@@ -46,9 +46,11 @@ export interface KeycloakOptions {
   clientSecret: string;
   debug?: boolean;
   ensureFreshness?: boolean;
+  privatePort?: number;
   realm: string;
   register?: RegisterOptions | boolean;
   strict?: boolean;
+  xApiKey?: string;
 }
 
 export interface KeycloakAsyncOptions extends Pick<ModuleMetadata, 'imports'> {

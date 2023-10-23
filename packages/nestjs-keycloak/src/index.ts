@@ -26,7 +26,7 @@ import KeycloakRegisterService from './keycloakRegister.service';
 import KeycloakService from './keycloak.service';
 import type { DynamicModule, MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/common';
 import type { KeycloakOptions, KeycloakAsyncOptions } from './types';
-import { AuthGuard, ResourceGuard } from './guards';
+import { AuthGuard, ResourceGuard, PrivateGuard } from './guards';
 import { DiscoveryModule, APP_GUARD } from '@nestjs/core';
 import { Global, Inject, Logger, Module, RequestMethod } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
@@ -52,6 +52,10 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
         {
           provide: KEYCLOAK_OPTIONS,
           useValue: options,
+        },
+        {
+          provide: APP_GUARD,
+          useClass: PrivateGuard,
         },
         {
           provide: APP_GUARD,
@@ -85,6 +89,10 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
         KeycloakProvider,
         KeycloakRegisterService,
         KeycloakService,
+        {
+          provide: APP_GUARD,
+          useClass: PrivateGuard,
+        },
         {
           provide: APP_GUARD,
           useClass: AuthGuard,

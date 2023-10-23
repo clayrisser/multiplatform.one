@@ -21,7 +21,7 @@
 
 import type { FactoryProvider } from '@nestjs/common';
 import type { GraphqlCtx } from './types';
-import type { MiddlewareFn, NextFn, ResolverData } from 'type-graphql';
+import type { MiddlewareFn } from 'type-graphql';
 import { AUTH_GUARD } from './authGuard.provider';
 import { RESOURCE_GUARD } from './resourceGuard.provider';
 
@@ -30,14 +30,7 @@ export const MIDDLEWARES = 'NESTJS_KEYCLOAK_TYPEGRAPHQL_MIDDLEWARES';
 const MiddlewaresProvider: FactoryProvider<MiddlewareFn<GraphqlCtx>[]> = {
   provide: MIDDLEWARES,
   inject: [RESOURCE_GUARD, AUTH_GUARD],
-  useFactory: (ResourceGuard: MiddlewareFn, AuthGuard: MiddlewareFn) => [
-    (data: ResolverData, next: NextFn) => {
-      return ResourceGuard(data, next);
-    },
-    (data: ResolverData, next: NextFn) => {
-      return AuthGuard(data, next);
-    },
-  ],
+  useFactory: (ResourceGuard: MiddlewareFn, AuthGuard: MiddlewareFn) => [ResourceGuard, AuthGuard],
 };
 
 export default MiddlewaresProvider;

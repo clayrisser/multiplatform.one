@@ -22,11 +22,13 @@
 import KeycloakService from '../keycloak.service';
 import httpStatus from 'http-status';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
-import type { KeycloakRequest, RedirectMeta } from '../types';
+import type { KeycloakOptions } from '../types';
 import type { Request, Response } from 'express';
+import { AUTHORIZED_OR_PRIVATE } from '../decorators/authorizedOrPrivate.decorator';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Inject } from '@nestjs/common';
 import { Injectable, Logger, Scope } from '@nestjs/common';
+import { KEYCLOAK_OPTIONS, type KeycloakRequest, type RedirectMeta } from '../types';
 import { REDIRECT_UNAUTHORIZED } from '../decorators/redirectUnauthorized.decorator';
 import { RENDER_METADATA } from '@nestjs/common/constants';
 import { RESOURCE, AUTHORIZED, PUBLIC } from '../decorators';
@@ -39,14 +41,24 @@ export class AuthGuard implements CanActivate {
   constructor(
     @Inject(Reflector) private readonly reflector: Reflector,
     @Inject(KeycloakService) private readonly keycloakService: KeycloakService,
+    @Inject(KEYCLOAK_OPTIONS) private readonly keycloakOptions: KeycloakOptions,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const { keycloakService } = this;
     const isPublic = this.getIsPublic(context);
     const roles = this.getRoles(context);
     if (isPublic || typeof roles === 'undefined') return true;
-    const { keycloakService } = this;
+    const authorizedOrPrivate = this.getIsAuthorizedOrPrivate(context);
     const req = context.switchToHttp().getRequest<KeycloakRequest<Request>>();
+    if (authorizedOrPrivate && (this.keycloakOptions.privatePort || this.keycloakOptions.xApiKey)) {
+      if (
+        req.socket.localPort === this.keycloakOptions.privatePort ||
+        (this.keycloakOptions.xApiKey && req.headers['x-api-key'] === this.keycloakOptions.xApiKey)
+      ) {
+        return true;
+      }
+    }
     const res = context.switchToHttp().getResponse<Response>();
     if (req?.session && req.cookies && !req.cookies?.redirect_from) {
       // adds defer flags to req object
@@ -105,6 +117,10 @@ export class AuthGuard implements CanActivate {
 
   private getIsPublic(context: ExecutionContext): boolean {
     return !!this.reflector.get<boolean>(PUBLIC, context.getHandler());
+  }
+
+  private getIsAuthorizedOrPrivate(context: ExecutionContext): boolean {
+    return this.reflector.get<boolean>(AUTHORIZED_OR_PRIVATE, context.getHandler());
   }
 
   private getResource(context: ExecutionContext) {

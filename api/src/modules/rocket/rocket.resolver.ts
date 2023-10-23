@@ -21,19 +21,31 @@
 
 import type { GraphqlCtx } from '@/types';
 import { Query, Ctx, ObjectType, Field } from 'type-graphql';
+import { Authorized, InjectUsername } from '@multiplatform.one/nestjs-keycloak';
 import { Resolver } from '@multiplatform.one/nestjs-keycloak-typegraphql';
-import { Resource } from '@multiplatform.one/nestjs-keycloak';
 
-@Resource('rockets')
+@Authorized()
 @Resolver()
 export class RocketResolver {
+  @Query(() => String, { nullable: true })
+  async username(@InjectUsername() username: string) {
+    return username;
+  }
+
   @Query(() => String)
   async hello(@Ctx() _ctx: GraphqlCtx): Promise<string> {
     return 'world';
   }
 
   @Query(() => FooBar)
-  async foo(@Ctx() _ctx: GraphqlCtx): Promise<FooBar> {
+  async foo(@Ctx() ctx: GraphqlCtx): Promise<FooBar> {
+    console.log(
+      'ctx',
+      Object.entries(ctx).reduce((acc: Record<string, string>, [key, value]) => {
+        acc[key] = typeof value;
+        return acc;
+      }, {}),
+    );
     return {
       hello: 'abc',
       world: '123',
