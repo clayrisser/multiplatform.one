@@ -73,6 +73,7 @@ dast
 dat
 datasource
 datetimepicker
+dbateman
 dedupe
 defs
 devtool
@@ -141,12 +142,12 @@ keycloak
 keyinfo
 labelled
 labelledby
+lalit
 lang
 liaoliaots
 linejoin
 lucide
 lytek
-lalit
 mah
 makefiles
 matchers
@@ -218,6 +219,7 @@ pressable
 prettifiers
 prisma
 psql
+rajak
 rani
 readdir
 readonly
@@ -233,7 +235,6 @@ refractor
 refreshable
 rehype
 renderer
-rajak
 req
 resize
 resizing

@@ -21,13 +21,25 @@
 
 import { Controller, Get } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
+import { InjectUsername, Private } from '@multiplatform.one/nestjs-keycloak';
 
 @Controller('rockets')
 export class RocketController {
   constructor(private readonly http: HttpService) {}
 
+  @Get('username')
+  getUsername(@InjectUsername() username: string) {
+    return username;
+  }
+
   @Get()
   async getRockets() {
     return (await this.http.axiosRef.get('https://api.spacex.land/rest/rockets')).data;
+  }
+
+  @Private()
+  @Get('hello')
+  async getHello() {
+    return { hello: 'world' };
   }
 }

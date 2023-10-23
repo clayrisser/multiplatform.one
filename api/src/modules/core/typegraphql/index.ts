@@ -31,8 +31,7 @@ import { MiddlewareFn } from 'type-graphql';
 import { PrismaService } from '@/modules/core/prisma';
 import { RedisClient } from 'apollo-server-cache-redis';
 import { RedisService } from '@liaoliaots/nestjs-redis';
-import { TypeGraphQLModule } from '@multiplatform.one/typegraphql-nestjs';
-import { KeycloakService } from '@multiplatform.one/nestjs-keycloak';
+import { TypeGraphQLModule } from 'typegraphql-nestjs';
 
 export function createTypeGraphqlModule(
   imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
@@ -40,14 +39,13 @@ export function createTypeGraphqlModule(
   return TypeGraphQLModule.forRootAsync({
     driver: ApolloDriver,
     imports: [...imports],
-    inject: [RedisService, ConfigService, PrismaService, MIDDLEWARES, WRAP_CONTEXT, KeycloakService],
+    inject: [RedisService, ConfigService, PrismaService, MIDDLEWARES, WRAP_CONTEXT],
     useFactory: (
       redisService: RedisService,
       configService: ConfigService,
       prismaService: PrismaService,
       middlewares: MiddlewareFn[],
       wrapContext: (context: Record<string, unknown>) => GraphqlCtx,
-      keycloakService: KeycloakService,
     ): any => {
       const logger = new Logger('TypeGraphqlModule');
       const headers = {};
@@ -62,11 +60,9 @@ export function createTypeGraphqlModule(
         cors: configService.get('CORS') === '1',
         debug: configService.get('DEBUG') === '1',
         context: (context: Record<string, unknown>) => {
-          const { req } = context;
           return wrapContext({
-            req,
+            ...context,
             prisma: prismaService,
-            keycloakService,
           });
         },
         dateScalarMode: 'timestamp',
@@ -97,9 +93,9 @@ export function createTypeGraphqlModule(
           ...(Number(configService.get('ENABLE_CACHING'))
             ? [
                 ResponseCachePlugin({
-                  sessionId: async (_: GraphQLRequestContext<Record<string, any>>) => {
+                  sessionId: async ({ contextValue: ctx }: GraphQLRequestContext & { contextValue: GraphqlCtx }) => {
                     try {
-                      return (await keycloakService?.getUserId()) || null;
+                      return (await ctx.keycloakService?.getUserId()) || null;
                     } catch (err) {
                       logger.error(err);
                       return null;

@@ -1,7 +1,7 @@
 /*
- *  File: /src/guards/index.ts
- *  Project: @multiplatform.one/nestjs-keycloak
- *  File Created: 19-09-2023 04:38:30
+ *  File: /src/decorators/private.decorator.ts
+ *  Project: api
+ *  File Created: 23-10-2023 05:42:04
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,6 +19,10 @@
  *  limitations under the License.
  */
 
-export * from './auth.guard';
-export * from './private.guard';
-export * from './resource.guard';
+import { SetMetadata } from '@nestjs/common';
+
+export const PRIVATE = 'KEYCLOAK_PRIVATE';
+
+export const Private = () => {
+  return SetMetadata(PRIVATE, true);
+};

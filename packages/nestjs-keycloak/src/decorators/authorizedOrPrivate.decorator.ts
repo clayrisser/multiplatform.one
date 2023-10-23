@@ -1,5 +1,5 @@
 /*
- *  File: /src/guards/index.ts
+ *  File: /src/decorators/authorizedOrPrivate.decorator.ts
  *  Project: @multiplatform.one/nestjs-keycloak
  *  File Created: 19-09-2023 04:38:30
  *  Author: Clay Risser
@@ -19,6 +19,11 @@
  *  limitations under the License.
  */
 
-export * from './auth.guard';
-export * from './private.guard';
-export * from './resource.guard';
+import { Authorized } from './authorized.decorator';
+import { SetMetadata, applyDecorators } from '@nestjs/common';
+
+export const AUTHORIZED_OR_PRIVATE = 'KEYCLOAK_AUTHORIZED_OR_PRIVATE';
+
+export const AuthorizedOrPrivate = (...roles: (string | string[])[]) => {
+  return applyDecorators(SetMetadata(AUTHORIZED_OR_PRIVATE, true), Authorized(...roles));
+};
