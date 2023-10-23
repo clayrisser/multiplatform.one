@@ -25,7 +25,9 @@ import { UserResolver } from './user.resolver';
 import { UserController } from './user.controller';
 
 @Module({
-  providers: [UserResolver],
+  providers: [
+    // UserResolver
+  ],
   controllers: [UserController],
   imports: [HttpModule.register({})],
 })

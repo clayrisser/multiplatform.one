@@ -23,7 +23,7 @@ import ResponseCachePlugin from 'apollo-server-plugin-response-cache';
 import { ApolloDriver } from '@nestjs/apollo';
 import { BaseRedisCache } from 'apollo-server-cache-redis';
 import { ConfigService } from '@nestjs/config';
-import { DynamicModule, ForwardReference, Type } from '@nestjs/common';
+import { DynamicModule, ForwardReference, Logger, Type } from '@nestjs/common';
 import { GraphQLRequestContext } from 'apollo-server-types';
 import { GraphqlCtx } from '@/types';
 import { MIDDLEWARES, WRAP_CONTEXT } from '@multiplatform.one/nestjs-keycloak-typegraphql';
@@ -32,6 +32,7 @@ import { PrismaService } from '@/modules/core/prisma';
 import { RedisClient } from 'apollo-server-cache-redis';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import { TypeGraphQLModule } from '@multiplatform.one/typegraphql-nestjs';
+import { KeycloakService } from '@multiplatform.one/nestjs-keycloak';
 
 export function createTypeGraphqlModule(
   imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
@@ -39,14 +40,16 @@ export function createTypeGraphqlModule(
   return TypeGraphQLModule.forRootAsync({
     driver: ApolloDriver,
     imports: [...imports],
-    inject: [RedisService, ConfigService, PrismaService, MIDDLEWARES, WRAP_CONTEXT],
+    inject: [RedisService, ConfigService, PrismaService, MIDDLEWARES, WRAP_CONTEXT, KeycloakService],
     useFactory: (
       redisService: RedisService,
       configService: ConfigService,
       prismaService: PrismaService,
       middlewares: MiddlewareFn[],
       wrapContext: (context: Record<string, unknown>) => GraphqlCtx,
+      keycloakService: KeycloakService,
     ): any => {
+      const logger = new Logger('TypeGraphqlModule');
       const headers = {};
       const playgroundConfig: ApolloServerPluginLandingPageGraphQLPlaygroundOptions = {
         settings: {
@@ -63,6 +66,7 @@ export function createTypeGraphqlModule(
           return wrapContext({
             req,
             prisma: prismaService,
+            keycloakService,
           });
         },
         dateScalarMode: 'timestamp',
@@ -93,8 +97,13 @@ export function createTypeGraphqlModule(
           ...(Number(configService.get('ENABLE_CACHING'))
             ? [
                 ResponseCachePlugin({
-                  sessionId: async ({ context }: GraphQLRequestContext<Record<string, any>>) => {
-                    return context.keycloakService?.getUserId();
+                  sessionId: async (_: GraphQLRequestContext<Record<string, any>>) => {
+                    try {
+                      return (await keycloakService?.getUserId()) || null;
+                    } catch (err) {
+                      logger.error(err);
+                      return null;
+                    }
                   },
                 }),
               ]

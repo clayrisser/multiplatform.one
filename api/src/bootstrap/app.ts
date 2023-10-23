@@ -21,11 +21,14 @@
 
 import 'nestjs-axios-logger/axiosInherit';
 import dotenv from 'dotenv';
+import express from 'express';
+import http from 'http';
 import path from 'path';
 import { AppModule } from '@/app.module';
 import { ConfigService } from '@nestjs/config';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { GraphQLSchemaHost } from '@nestjs/graphql';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 import { NestApplicationOptions } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { NestFactory } from '@nestjs/core';
@@ -37,37 +40,35 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 const logger = new Logger('Bootstrap');
 let app: NestExpressApplication;
+const server = express();
 const bootstrappedEvents: BootstrapEventHandler[] = [];
-let port: number | null = null;
 
-export async function createApp(config: CreateAppConfig = {}): Promise<NestExpressApplication> {
+export async function createApp(isServer = false): Promise<NestExpressApplication> {
   const app = await NestFactory.create<NestExpressApplication>(
-    AppModule.register({ registerKeycloak: !!config.appModule?.registerKeycloak }),
-    new ExpressAdapter(),
+    AppModule.register({ registerKeycloak: isServer }),
+    new ExpressAdapter(isServer ? server : undefined),
     {
       bodyParser: true,
+      bufferLogs: false,
       logger: logLevels,
-      ...(config.nest || {}),
     },
   );
-  const configService = app.get(ConfigService);
+  const config = app.get(ConfigService);
   app.enableShutdownHooks();
   app.useGlobalPipes(new ValidationPipe());
-  if (configService.get('CORS') === '1') {
-    app.enableCors({ origin: configService.get('CORS_ORIGIN') || '*' });
+  if (config.get('CORS') === '1') {
+    app.enableCors({ origin: config.get('CORS_ORIGIN') || '*' });
   }
   return app;
 }
 
 export async function appListen(app: NestExpressApplication) {
-  const configService = app.get(ConfigService);
-  if (!port) port = Number(configService.get('PORT') || 5000);
-  await app
-    .listen(port, '0.0.0.0', () => {
-      logger.log(`listening on port ${port}`);
-    })
-    .catch(console.error);
-  // .catch(logger.error);
+  const config = app.get(ConfigService);
+  const privatePort = Number(config.get('PRIVATE_PORT') || 5001);
+  const publicPort = Number(config.get('PUBLIC_PORT') || 5000);
+  app.useWebSocketAdapter(new IoAdapter(app));
+  app.listen(publicPort, '0.0.0.0', () => logger.log(`public listening on port ${publicPort}`)).catch(logger.error);
+  await httpListen(server, privatePort, () => logger.log(`private listening on port ${privatePort}`));
   if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => app.close());
@@ -79,15 +80,8 @@ export async function start() {
   await app.init();
   const { schema } = app.get(GraphQLSchemaHost);
   await app.close();
-  app = await createApp({
-    nest: {
-      bufferLogs: false,
-    },
-    appModule: {
-      registerKeycloak: true,
-    },
-  });
-  // await registerLogger(app);
+  app = await createApp(true);
+  await registerLogger(app);
   const sofa = await registerSofa(app, schema);
   await registerEjs(app);
   await registerSwagger(app, sofa);
@@ -116,6 +110,15 @@ async function emitBootstrapped(app: NestExpressApplication) {
   bootstrappedEvents.splice(0, bootstrappedEvents.length);
   await new Promise((r) => setTimeout(r, 1000, null));
   clonedBootstrappedEvents.forEach((eventHandler: BootstrapEventHandler) => eventHandler(app));
+}
+
+async function httpListen(server: http.RequestListener, port: number, cb: () => void) {
+  return new Promise((resolve, reject) => {
+    const httpServer = http.createServer(server);
+    httpServer.on('error', (err: Error) => reject(err));
+    httpServer.on('close', () => resolve(undefined));
+    httpServer.listen(port, () => cb());
+  });
 }
 
 declare const module: any;

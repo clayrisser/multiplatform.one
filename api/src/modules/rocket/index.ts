@@ -22,9 +22,11 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { RocketController } from './rocket.controller';
+import { RocketResolver } from './rocket.resolver';
 
 @Module({
   controllers: [RocketController],
   imports: [HttpModule.register({})],
+  providers: [RocketResolver],
 })
 export class RocketModule {}
