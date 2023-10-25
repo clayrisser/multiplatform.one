@@ -56,7 +56,7 @@ PACKAGES := \
 	multiplatform.one \
 	prisma-scripts \
 	nestjs-axios-logger \
-	typegraphql-nestjs \
+	typegraphql-nestjs-decorators \
 	nestjs-keycloak \
 	nestjs-keycloak-typegraphql \
 	keycloak \

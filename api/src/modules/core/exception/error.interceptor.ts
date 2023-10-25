@@ -36,7 +36,7 @@ import {
 
 @Injectable()
 export class ErrorInterceptor implements NestInterceptor {
-  private logger = new Logger(ErrorInterceptor.name);
+  private logger = new Logger('ErrorInterceptor');
 
   constructor(private readonly config: ConfigService) {}
 

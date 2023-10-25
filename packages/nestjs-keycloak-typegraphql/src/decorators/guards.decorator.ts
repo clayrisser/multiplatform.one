@@ -23,7 +23,7 @@ import RegisterClass from './registerClass.decorator';
 import RegisterHandler from './registerHandler.decorator';
 import type { GraphqlCtx } from '../types';
 import type { NextFn, ResolverData } from 'type-graphql';
-import { DecorateAll } from '@multiplatform.one/typegraphql-nestjs';
+import { DecorateAll } from '@multiplatform.one/typegraphql-nestjs-decorators';
 import { applyDecorators } from '@nestjs/common';
 import { combineMiddlewares } from '../deferMiddleware';
 import { createMethodDecorator } from 'type-graphql';

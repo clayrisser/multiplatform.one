@@ -19,5 +19,4 @@
  *  limitations under the License.
  */
 export * from './decorators';
-export * from 'typegraphql-nestjs';
 export * from './decorators/index';

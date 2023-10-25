@@ -1,8 +1,8 @@
 /*
- *  File: /src/decorators/property.decorators.ts
- *  Project: @multiplatform.one/typegraphql-nestjs
- *  File Created: 25-10-2023 15:23:52
- *  Author: Lalit rajak
+ *  File: /src/decorators/dto.decorator.ts
+ *  Project: @multiplatform.one/typegraphql-nestjs-decorators
+ *  File Created: 25-10-2023 14:05:37
+ *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
  *
@@ -18,12 +18,19 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { Field } from 'type-graphql';
-import { ApiProperty } from '@nestjs/swagger';
 
-export function Property(options?: any) {
-  return (target: any, propertyKey: string) => {
-    Field()(target, propertyKey);
-    ApiProperty(options)(target, propertyKey);
-  };
+import { applyClassDecorators } from '../decorators';
+import type { ObjectType as TObjectType, ObjectTypeOptions } from 'type-graphql';
+
+let ObjectType: typeof TObjectType | undefined;
+try {
+  ObjectType = require('type-graphql').ObjectType;
+} catch (err) {
+  // void
 }
+
+export function DTO(options?: DTOOptions) {
+  return applyClassDecorators(...(ObjectType ? [ObjectType(options || {})] : []));
+}
+
+export interface DTOOptions extends ObjectTypeOptions {}

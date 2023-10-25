@@ -30,7 +30,7 @@ import { Query, Ctx, ObjectType, Args } from 'type-graphql';
 @Resource('auth')
 @Resolver((_of) => Auth)
 export class AuthResolver {
-  private readonly logger = new Logger(AuthResolver.name);
+  private readonly logger = new Logger('AuthResolver');
 
   @Query((_returns) => LoginResponseDto, { nullable: true })
   async login(@Ctx() ctx: GraphqlCtx, @Args() args: LoginRequestDto): Promise<LoginResponseDto | null> {
@@ -86,6 +86,6 @@ export class AuthResolver {
 }
 
 @ObjectType({
-  isAbstract: true,
+  // isAbstract: true,
 })
 export class Auth {}
