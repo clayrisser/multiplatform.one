@@ -62,7 +62,7 @@
     "jest-sonar-reporter": "^2.0.0",
     "majestic": "^1.8.1",
     "prettier": "^3.0.3",
-    "prisma": "~5.4.2",
+    "prisma": "~5.5.1",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2"
   },

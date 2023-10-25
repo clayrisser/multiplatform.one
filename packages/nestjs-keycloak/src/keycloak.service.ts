@@ -52,7 +52,7 @@ export default class KeycloakService {
 
   private options: KeycloakOptions;
 
-  private logger = new Logger(KeycloakService.name);
+  private logger = new Logger('KeycloakService');
 
   private _bearerToken: Token | undefined;
 

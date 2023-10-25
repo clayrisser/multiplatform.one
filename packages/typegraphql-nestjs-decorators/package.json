@@ -1,5 +1,5 @@
 {
-  "name": "@multiplatform.one/typegraphql-nestjs",
+  "name": "@multiplatform.one/typegraphql-nestjs-decorators",
   "version": "0.6.0",
   "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
   "contributors": [
@@ -52,6 +52,8 @@
     "type-graphql": "2.0.0-beta.3"
   },
   "dependencies": {
+    "@nestjs/swagger": "^7.1.14",
+    "rxjs": "^7.8.1",
     "typegraphql-nestjs": "^0.6.0"
   },
   "devDependencies": {

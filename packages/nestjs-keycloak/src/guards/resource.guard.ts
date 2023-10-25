@@ -34,7 +34,7 @@ import { RESOURCE, SCOPES } from '../decorators';
 
 @Injectable()
 export class ResourceGuard implements CanActivate {
-  logger = new Logger(ResourceGuard.name);
+  logger = new Logger('ResourceGuard');
 
   constructor(
     @Inject(KEYCLOAK_OPTIONS) private options: KeycloakOptions,

@@ -30,7 +30,7 @@ import { Reflector } from '@nestjs/core';
 
 @Injectable({ scope: Scope.REQUEST })
 export class PrivateGuard implements CanActivate {
-  logger = new Logger(PrivateGuard.name);
+  logger = new Logger('PrivateGuard');
 
   constructor(
     @Inject(Reflector) private readonly reflector: Reflector,

@@ -36,7 +36,7 @@ import { Reflector } from '@nestjs/core';
 
 @Injectable({ scope: Scope.REQUEST })
 export class AuthGuard implements CanActivate {
-  logger = new Logger(AuthGuard.name);
+  logger = new Logger('AuthGuard');
 
   constructor(
     @Inject(Reflector) private readonly reflector: Reflector,
