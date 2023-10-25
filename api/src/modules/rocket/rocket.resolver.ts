@@ -23,6 +23,8 @@ import type { GraphqlCtx } from '@/types';
 import { Query, Ctx, ObjectType, Field } from 'type-graphql';
 import { Authorized, InjectUsername } from '@multiplatform.one/nestjs-keycloak';
 import { Resolver } from '@multiplatform.one/nestjs-keycloak-typegraphql';
+import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
+import { Property } from '@multiplatform.one/typegraphql-nestjs';
 
 @Authorized()
 @Resolver()
@@ -32,9 +34,9 @@ export class RocketResolver {
     return username;
   }
 
-  @Query(() => String)
-  async hello(@Ctx() _ctx: GraphqlCtx): Promise<string> {
-    return 'world';
+  @Query(() => String, { nullable: true })
+  async hello(@Ctx() _ctx: GraphqlCtx): Promise<string | null> {
+    return null;
   }
 
   @Query(() => FooBar)
@@ -55,9 +57,8 @@ export class RocketResolver {
 
 @ObjectType()
 class FooBar {
-  @Field({
-    nullable: true,
-  })
+  @Property({ nullable: true })
+  // @Field({})
   hello!: String;
 
   @Field({

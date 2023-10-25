@@ -1,8 +1,8 @@
 /*
- *  File: /src/index.ts
+ *  File: /src/decorators/property.decorators.ts
  *  Project: @multiplatform.one/typegraphql-nestjs
- *  File Created: 19-09-2023 03:47:23
- *  Author: Clay Risser
+ *  File Created: 25-10-2023 15:23:52
+ *  Author: Lalit rajak
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
  *
@@ -18,6 +18,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-export * from './decorators';
-export * from 'typegraphql-nestjs';
-export * from './decorators/index';
+import { Field } from 'type-graphql';
+import { ApiProperty } from '@nestjs/swagger';
+
+export function Property(options?: any) {
+  return (target: any, propertyKey: string) => {
+    Field()(target, propertyKey);
+    ApiProperty(options)(target, propertyKey);
+  };
+}

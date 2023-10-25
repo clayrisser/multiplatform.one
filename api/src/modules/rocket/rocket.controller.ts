@@ -19,9 +19,15 @@
  *  limitations under the License.
  */
 
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { InjectUsername, Private } from '@multiplatform.one/nestjs-keycloak';
+import { Property } from '@multiplatform.one/typegraphql-nestjs';
+
+class User {
+  @Property({ title: 'id', description: 'The id of the user.' })
+  id!: string;
+}
 
 @Controller('rockets')
 export class RocketController {
@@ -35,6 +41,11 @@ export class RocketController {
   @Get()
   async getRockets() {
     return (await this.http.axiosRef.get('https://api.spacex.land/rest/rockets')).data;
+  }
+
+  @Post('user')
+  async getUser(@Body() body: User) {
+    return body;
   }
 
   @Private()
