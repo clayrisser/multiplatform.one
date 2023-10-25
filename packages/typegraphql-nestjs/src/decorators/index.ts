@@ -1,8 +1,8 @@
 /*
- *  File: /src/index.ts
+ *  File: /src/decorators/index.ts
  *  Project: @multiplatform.one/typegraphql-nestjs
- *  File Created: 19-09-2023 03:47:23
- *  Author: Clay Risser
+ *  File Created: 25-10-2023 15:25:22
+ *  Author: Lalit rajak
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
  *
@@ -18,6 +18,5 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-export * from './decorators';
-export * from 'typegraphql-nestjs';
-export * from './decorators/index';
+
+export * from './property.decorators';
