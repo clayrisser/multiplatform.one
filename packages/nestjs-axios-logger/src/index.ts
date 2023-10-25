@@ -101,7 +101,7 @@ export class AxiosLoggerModule implements OnModuleInit {
 
   onModuleInit() {
     if (!registeredAxiosInterceptors) {
-      const logger = new Logger(HttpService.name);
+      const logger = new Logger('HttpService');
       axios.interceptors.request.use(
         (request: InternalAxiosRequestConfig) => requestLogger(request, this.options, logger),
         (error: AxiosError<any>) => errorLogger(error, this.options, logger),

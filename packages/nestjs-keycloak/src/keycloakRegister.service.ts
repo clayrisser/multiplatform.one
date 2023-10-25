@@ -57,7 +57,7 @@ let registeredKeycloak = false;
 
 @Injectable()
 export default class KeycloakRegisterService {
-  private logger = new Logger(KeycloakRegisterService.name);
+  private logger = new Logger('KeycloakRegisterService');
 
   private registerOptions: RegisterOptions;
 

@@ -29,7 +29,7 @@ import { LoginResponseDto } from './auth.dto';
 @Resource('auth')
 @Controller('auth')
 export class AuthController {
-  private readonly logger = new Logger(AuthController.name);
+  private readonly logger = new Logger('AuthController');
 
   constructor(private readonly keycloakService: KeycloakService) {}
 

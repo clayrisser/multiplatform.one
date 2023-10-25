@@ -50,7 +50,7 @@ interface CustomProps {
 
 type IconProps = SvgProps & BaseIconProps;
 
-export type SimpleInputProps = InputProps & CustomProps & XStackProps;
+export type SimpleInputProps = Omit<InputProps & CustomProps & XStackProps, 'ref'>;
 
 export function SimpleInput({
   value,

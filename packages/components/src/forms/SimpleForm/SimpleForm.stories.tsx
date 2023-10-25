@@ -1,3 +1,24 @@
+/**
+ * File: /src/forms/SimpleForm/SimpleForm.stories.tsx
+ * Project: @multiplatform.one/components
+ * File Created: 17-09-2023 13:57:00
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2023
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React from 'react';
 import { SimpleForm } from './index';
 import { FormInput } from '../FormInput';
@@ -5,7 +26,7 @@ import { FormSelectSimple } from '../FormSelectSimple';
 import { FormSubmitButton } from '../FormSubmitButton';
 import { FormTextArea } from '../FormTextArea';
 import { FormSwitch } from '../FormSwitch';
-import { FormRadioGroup } from '../FormRadioGroup';
+// import { FormRadioGroup } from '../FormRadioGroup';
 import { Select } from 'tamagui';
 import { action } from '@storybook/addon-actions';
 
@@ -46,7 +67,8 @@ export const main = () => (
     </FormSelectSimple>
     <FormTextArea name="bio" label="Bio" />
     <FormSwitch name="isAwesome" label="Is Awesome" />
-    <FormRadioGroup
+    {/* TODO: fix type error below */}
+    {/* <FormRadioGroup
       radioElements={[
         { label: 'male', value: 'male' },
         { label: 'female', value: 'female' },
@@ -55,7 +77,7 @@ export const main = () => (
       label="Gender"
       horizontal
       spacingProps={{ space: true }}
-    />
+    /> */}
     <FormSubmitButton onSubmit={action('onSubmit')}>Submit</FormSubmitButton>
   </SimpleForm>
 );

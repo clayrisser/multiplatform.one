@@ -21,7 +21,7 @@
 
 import type { GraphqlCtx } from '../types';
 import type { ResolverData, NextFn } from 'type-graphql';
-import { DecorateAll } from '@multiplatform.one/typegraphql-nestjs';
+import { DecorateAll } from '@multiplatform.one/typegraphql-nestjs-decorators';
 import { createMethodDecorator } from 'type-graphql';
 
 export default function RegisterClass(target: any): undefined | Function {

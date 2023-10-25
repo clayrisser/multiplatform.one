@@ -132,7 +132,7 @@ export function SimpleCarousel({
     <YStack overflow="hidden">
       <XStack
         transform={[{ translateX: -currentSlide * (carouselRef.current?.clientWidth || 1) }]}
-        transitionDuration="transform 0.5s ease"
+        // TODO: transitionDuration="transform 0.5s ease"
         width="100%"
         animation="lazy"
         {...props}

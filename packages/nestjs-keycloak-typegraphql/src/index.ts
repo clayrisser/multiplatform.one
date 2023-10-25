@@ -97,7 +97,7 @@ export default class KeycloakModule {
     };
   }
 
-  private readonly logger = new Logger(KeycloakModule.name);
+  private readonly logger = new Logger('KeycloakModule');
 }
 
 export { AuthCheckerProvider, ResourceGuardProvider, WrapContextProvider };

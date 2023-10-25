@@ -24,7 +24,7 @@ import { Query, Ctx, ObjectType, Field } from 'type-graphql';
 import { Authorized, InjectUsername } from '@multiplatform.one/nestjs-keycloak';
 import { Resolver } from '@multiplatform.one/nestjs-keycloak-typegraphql';
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
-import { Property } from '@multiplatform.one/typegraphql-nestjs';
+import { Property } from '@multiplatform.one/typegraphql-nestjs-decorators';
 
 @Authorized()
 @Resolver()

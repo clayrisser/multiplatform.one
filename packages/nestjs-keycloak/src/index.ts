@@ -124,7 +124,7 @@ export default class KeycloakModule implements OnModuleInit, NestModule {
     };
   }
 
-  private readonly logger = new Logger(KeycloakModule.name);
+  private readonly logger = new Logger('KeycloakModule');
 
   constructor(@Inject(KeycloakRegisterService) private readonly keycloakRegisterService: KeycloakRegisterService) {}
 

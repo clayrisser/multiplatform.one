@@ -21,7 +21,7 @@
 
 import type Token from '../token';
 import type { ExecutionContext } from '@nestjs/common';
-import { createParamDecorator } from '@multiplatform.one/typegraphql-nestjs';
+import { createParamDecorator } from '@multiplatform.one/typegraphql-nestjs-decorators';
 import { getReq } from '../util';
 
 export function InjectUserId() {
