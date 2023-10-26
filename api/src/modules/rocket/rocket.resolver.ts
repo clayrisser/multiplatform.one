@@ -57,7 +57,7 @@ export class RocketResolver {
 
 @DTO()
 class FooBar {
-  @Property({}, { nullable: true })
+  @Property({}, { required: true }, { nullable: true })
   hello!: String;
 
   @Property({}, { nullable: true })
