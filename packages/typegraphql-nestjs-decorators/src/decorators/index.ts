@@ -20,3 +20,4 @@
  */
 
 export * from './property.decorators';
+export * from './dto.decorator';

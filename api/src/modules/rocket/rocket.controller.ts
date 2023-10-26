@@ -22,10 +22,11 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { InjectUsername, Private } from '@multiplatform.one/nestjs-keycloak';
-import { Property } from '@multiplatform.one/typegraphql-nestjs-decorators';
+import { DTO, Property } from '@multiplatform.one/typegraphql-nestjs-decorators';
 
+@DTO()
 class User {
-  @Property({ title: 'id', description: 'The id of the user.' })
+  @Property({}, { title: 'id', description: 'The id of the user.' })
   id!: string;
 }
 

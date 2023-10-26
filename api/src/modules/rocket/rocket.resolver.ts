@@ -24,7 +24,7 @@ import { Query, Ctx, ObjectType, Field } from 'type-graphql';
 import { Authorized, InjectUsername } from '@multiplatform.one/nestjs-keycloak';
 import { Resolver } from '@multiplatform.one/nestjs-keycloak-typegraphql';
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
-import { Property } from '@multiplatform.one/typegraphql-nestjs-decorators';
+import { DTO, Property } from '@multiplatform.one/typegraphql-nestjs-decorators';
 
 @Authorized()
 @Resolver()
@@ -55,14 +55,11 @@ export class RocketResolver {
   }
 }
 
-@ObjectType()
+@DTO()
 class FooBar {
-  @Property({ nullable: true })
-  // @Field({})
+  @Property({}, { nullable: true })
   hello!: String;
 
-  @Field({
-    nullable: true,
-  })
+  @Property({}, { nullable: true })
   world!: String;
 }
