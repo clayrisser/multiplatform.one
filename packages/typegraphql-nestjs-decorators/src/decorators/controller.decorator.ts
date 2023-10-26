@@ -1,8 +1,8 @@
 /*
- *  File: /src/decorators/index.ts
- *  Project: @multiplatform.one/typegraphql-nestjs
- *  File Created: 25-10-2023 15:25:22
- *  Author: Lalit rajak
+ *  File: /src/decorators/controller.decorator.ts
+ *  Project: @multiplatform.one/typegraphql-nestjs-decorators
+ *  File Created: 26-10-2023 14:57:54
+ *  Author: dharmendra
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
  *
@@ -18,6 +18,15 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-export * from './controller.decorator';
-export * from './property.decorators';
-export * from './dto.decorator';
+
+import { Controller } from '@nestjs/common';
+import { Resolver } from 'type-graphql';
+import { applyClassDecorators } from '../decorators';
+
+export interface ApiControllerOptions {
+  path?: string;
+}
+
+export const ApiController = (path?: string) => {
+  return applyClassDecorators(Controller(path !== undefined ? path : ''), Resolver());
+};
