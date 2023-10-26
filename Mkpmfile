@@ -118,6 +118,10 @@ api/%:
 gen:
 	@npx turbo generate
 
+.PHONY: kill/%
+kill/%:
+	@fuser -k $(subst kill/,,$@)/tcp || echo "No process to kill on port $(subst kill/,,$@)"
+
 .PHONY: count
 count:
 	@$(CLOC) $(shell ($(GIT) ls-files && ($(GIT) lfs ls-files | $(CUT) -d' ' -f3)) | $(SORT) | $(UNIQ) -u)

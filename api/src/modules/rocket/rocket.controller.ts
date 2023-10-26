@@ -22,7 +22,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { InjectUsername, Private } from '@multiplatform.one/nestjs-keycloak';
-import { DTO, Property } from '@multiplatform.one/typegraphql-nestjs-decorators';
+import { ApiController, DTO, Property } from '@multiplatform.one/typegraphql-nestjs-decorators';
 
 @DTO()
 class User {
@@ -30,7 +30,7 @@ class User {
   id!: string;
 }
 
-@Controller('rockets')
+@ApiController('rockets')
 export class RocketController {
   constructor(private readonly http: HttpService) {}
 

@@ -24,10 +24,10 @@ import { Query, Ctx, ObjectType, Field } from 'type-graphql';
 import { Authorized, InjectUsername } from '@multiplatform.one/nestjs-keycloak';
 import { Resolver } from '@multiplatform.one/nestjs-keycloak-typegraphql';
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
-import { DTO, Property } from '@multiplatform.one/typegraphql-nestjs-decorators';
+import { DTO, Property, ApiController } from '@multiplatform.one/typegraphql-nestjs-decorators';
 
 @Authorized()
-@Resolver()
+@ApiController()
 export class RocketResolver {
   @Query(() => String, { nullable: true })
   async username(@InjectUsername() username: string) {
