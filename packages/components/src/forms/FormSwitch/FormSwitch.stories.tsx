@@ -40,6 +40,8 @@ export const main = () => (
       name="exampleSwitch"
       helperText="This is an example switch"
       defaultValue={false}
+      onCheckedChange={action('onChange')}
+      onPress={action('onPress')}
     />
     <FormSubmitButton onSubmit={action('onSubmit')}>Submit</FormSubmitButton>
   </SimpleForm>
