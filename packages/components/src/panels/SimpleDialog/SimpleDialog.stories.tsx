@@ -90,7 +90,14 @@ export const customPosition = (args) => (
 );
 
 export const rightSideDialog = (args) => (
-  <SimpleDialog trigger={<Button>open side dialog</Button>} asRightSideSheet withoutCloseButton {...args}>
+  <SimpleDialog
+    trigger={<Button>open side dialog</Button>}
+    asRightSideSheet
+    withoutCloseButton
+    transitionWidth={400}
+    contentStyle={{ animation: 'quick' }}
+    {...args}
+  >
     <YStack width={400}>
       <Text>home</Text>
       <Text>about</Text>
@@ -101,7 +108,14 @@ export const rightSideDialog = (args) => (
 );
 
 export const leftSideDialog = (args) => (
-  <SimpleDialog trigger={<Button>open side dialog</Button>} asLeftSideSheet withoutCloseButton {...args}>
+  <SimpleDialog
+    trigger={<Button>open side dialog</Button>}
+    asLeftSideSheet
+    withoutCloseButton
+    transitionWidth={300}
+    contentStyle={{ animation: 'lazy' }}
+    {...args}
+  >
     <YStack width={300}>
       <Text>home</Text>
       <Text>about</Text>

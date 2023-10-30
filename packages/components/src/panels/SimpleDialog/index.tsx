@@ -27,6 +27,7 @@ import type {
   DialogContentProps,
   DialogPortalProps,
   DialogOverlayProps,
+  SizeTokens,
 } from 'tamagui';
 import type { ReactNode } from 'react';
 import { Adapt, Button, Dialog, Sheet, Unspaced } from 'tamagui';
@@ -46,6 +47,7 @@ export type SimpleDialogProps = DialogProps & {
   onOpenChange?: (open: boolean) => void;
   asLeftSideSheet?: boolean;
   asRightSideSheet?: boolean;
+  transitionWidth?: number | SizeTokens | undefined;
 };
 
 export function SimpleDialog({
@@ -61,6 +63,7 @@ export function SimpleDialog({
   overlayStyle,
   asLeftSideSheet,
   asRightSideSheet,
+  transitionWidth,
   ...props
 }: SimpleDialogProps) {
   const [open, setOpen] = React.useState(props.open);
@@ -118,16 +121,19 @@ export function SimpleDialog({
           exitStyle={{ x: 0, y: -150, opacity: 0, scale: 0.4 }}
           space
           {...(asRightSideSheet && {
-            enterStyle: { x: 100, opacity: 0 },
-            exitStyle: { y: 0, opacity: 0 },
-            height: '100%',
+            enterStyle: { x: transitionWidth || 200, opacity: 0 },
+            exitStyle: { x: transitionWidth || 200, opacity: 0 },
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
           })}
           {...(asLeftSideSheet && {
-            enterStyle: { x: 100, opacity: 0 },
-
-            exitStyle: { x: -100, opacity: 0 },
+            enterStyle: { x: -(transitionWidth || 100), opacity: 0 },
+            exitStyle: { x: -(transitionWidth || 100), opacity: 0 },
             animation: 'bouncy',
-            height: '100%',
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
           })}
           {...contentStyle}
         >
