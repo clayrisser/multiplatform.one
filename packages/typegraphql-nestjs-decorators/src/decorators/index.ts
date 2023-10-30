@@ -18,6 +18,5 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-export * from './controller.decorator';
 export * from './property.decorators';
 export * from './dto.decorator';
