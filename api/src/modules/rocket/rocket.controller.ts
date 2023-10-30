@@ -23,6 +23,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { InjectUsername, Private } from '@multiplatform.one/nestjs-keycloak';
 import { DTO, Property } from '@multiplatform.one/typegraphql-nestjs-decorators';
+import { FooBar } from './rocket.resolver';
 
 @DTO()
 class User {
@@ -53,5 +54,15 @@ export class RocketController {
   @Get('hello')
   async getHello() {
     return { hello: 'world' };
+  }
+
+  @Get('foo')
+  async getFoo(): Promise<FooBar> {
+    return { hello: 'abc', world: '123' };
+  }
+
+  @Post('foo')
+  async postFoo(@Body() body: FooBar): Promise<FooBar> {
+    return body;
   }
 }
