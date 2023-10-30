@@ -34,16 +34,29 @@ try {
 export function Property(
   options?: PropertyOptions,
   apiPropertyOptions?: ApiPropertyOptions,
-  fieldOptions?: FieldOptions,
+  fieldOptions?: FieldOptions & { returnType?: () => any },
 ) {
-  const { optional } = {
-    ...options,
+  const { optional, description, defaultValue } = {
     optional: false,
+    ...options,
   };
+
+  const { returnType, ...actualFieldOptions } = fieldOptions || {};
   return applyPropertyDecorators(
-    ...(Field ? [Field({ nullable: !!optional, ...fieldOptions })] : []),
+    ...(Field
+      ? [
+          Field(returnType, {
+            nullable: !!optional,
+            description,
+            defaultValue,
+            ...actualFieldOptions,
+          }),
+        ]
+      : []),
     ApiProperty({
       required: !optional,
+      default: defaultValue,
+      description,
       ...apiPropertyOptions,
     }),
   );
@@ -51,4 +64,7 @@ export function Property(
 
 export interface PropertyOptions {
   optional?: boolean;
+  description?: string;
+  defaultValue?: any;
+  name?: string;
 }

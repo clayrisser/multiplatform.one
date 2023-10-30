@@ -20,10 +20,9 @@
  */
 
 import type { GraphqlCtx } from '@/types';
-import { Query, Ctx, ObjectType, Field } from 'type-graphql';
+import { Query, Ctx } from 'type-graphql';
 import { Authorized, InjectUsername } from '@multiplatform.one/nestjs-keycloak';
 import { Resolver } from '@multiplatform.one/nestjs-keycloak-typegraphql';
-import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
 import { DTO, Property } from '@multiplatform.one/typegraphql-nestjs-decorators';
 
 @Authorized()
@@ -49,17 +48,23 @@ export class RocketResolver {
       }, {}),
     );
     return {
-      hello: 'abc',
       world: '123',
     };
   }
 }
 
 @DTO()
-class FooBar {
-  @Property({}, { required: true }, { nullable: true })
-  hello!: String;
+export class FooBar {
+  @Property({ description: 'id' })
+  id?: string;
 
-  @Property({}, { nullable: true })
+  @Property(
+    { optional: true, name: 'hello1' },
+    { deprecated: true },
+    { returnType: () => String, deprecationReason: `hello is deprecated` },
+  )
+  hello?: String;
+
+  @Property()
   world!: String;
 }
