@@ -23,7 +23,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { InjectUsername, Private } from '@multiplatform.one/nestjs-keycloak';
 import { DTO, Property } from '@multiplatform.one/typegraphql-nestjs-decorators';
-import { FooBar } from './rocket.resolver';
+import { FooBar } from './rocket.dto';
 
 @DTO()
 class User {
