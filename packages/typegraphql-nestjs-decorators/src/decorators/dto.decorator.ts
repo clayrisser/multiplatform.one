@@ -20,31 +20,17 @@
  */
 
 import { applyClassDecorators } from '../decorators';
-import type {
-  ObjectType as TObjectType,
-  ObjectTypeOptions,
-  InputType as TInputType,
-  InputTypeOptions,
-} from 'type-graphql';
+import type { ObjectType as TObjectType, ObjectTypeOptions } from 'type-graphql';
 
 let ObjectType: typeof TObjectType | undefined;
-let InputType: typeof TInputType | undefined;
-
 try {
   ObjectType = require('type-graphql').ObjectType;
-  InputType = require('type-graphql').InputType;
 } catch (err) {
   // void
 }
 
-export function DTO(isInputType = false, options?: ObjectTypeOptions | InputTypeOptions) {
-  return function (target: Function) {
-    if (isInputType) {
-      return applyClassDecorators(...(InputType ? [InputType(options || {})] : []))(target);
-    } else {
-      return applyClassDecorators(...(ObjectType ? [ObjectType(options || {})] : []))(target);
-    }
-  };
+export function DTO(options?: DTOOptions) {
+  return applyClassDecorators(...(ObjectType ? [ObjectType(options || {})] : []));
 }
 
-export interface DTOOptions extends ObjectTypeOptions, InputTypeOptions {}
+export interface DTOOptions extends ObjectTypeOptions {}
