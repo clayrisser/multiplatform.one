@@ -20,10 +20,8 @@
  */
 
 import { DTO, Property } from '@multiplatform.one/typegraphql-nestjs-decorators';
-import { ArgsType, InputType, ObjectType } from 'type-graphql';
 
-@InputType()
-@ArgsType()
+@DTO('input-args-type')
 export class EmployeeInput {
   @Property()
   name?: string;
@@ -32,7 +30,7 @@ export class EmployeeInput {
   age?: number;
 }
 
-@ObjectType()
+@DTO()
 export class Employee {
   @Property(undefined, undefined)
   id?: string;
