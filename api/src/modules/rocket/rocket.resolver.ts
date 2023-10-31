@@ -20,11 +20,11 @@
  */
 
 import type { GraphqlCtx } from '@/types';
-import { Query, Ctx, ObjectType, InputType, Mutation, Arg, ID, Field, ArgsType } from 'type-graphql';
+import { Query, Ctx, Mutation, Arg } from 'type-graphql';
 import { Authorized, InjectUsername } from '@multiplatform.one/nestjs-keycloak';
 import { Resolver } from '@multiplatform.one/nestjs-keycloak-typegraphql';
-import { DTO, Property } from '@multiplatform.one/typegraphql-nestjs-decorators';
-import { ApiProperty } from '@nestjs/swagger';
+
+import { Employee, EmployeeInput, FooBar } from './rocket.dto';
 
 @Authorized()
 @Resolver()
@@ -44,10 +44,10 @@ export class RocketResolver {
     @Ctx() _ctx: GraphqlCtx,
     @Arg('data', () => EmployeeInput) data: EmployeeInput,
   ): Promise<Employee> {
-    const emp = new Employee();
-    emp.id = '1';
-    emp.name = data.name;
-    emp.age = data.age;
+    const employee = new Employee();
+    employee.id = '1';
+    employee.name = data.name;
+    employee.age = data.age;
 
     return {
       id: '1',
@@ -69,50 +69,4 @@ export class RocketResolver {
       world: '123',
     };
   }
-}
-
-@InputType()
-class EmployeeInput {
-  @Property()
-  name?: string;
-
-  @Property()
-  age?: number;
-}
-
-@ObjectType()
-class Employee {
-  @Property(undefined, undefined)
-  id?: string;
-
-  @Property()
-  name?: string;
-
-  @Property()
-  age?: number;
-}
-
-@DTO()
-export class FooBar {
-  @Property({ description: 'id' })
-  id?: string;
-
-  @Property(
-    { optional: true, name: 'hello1' },
-    { deprecated: true },
-    { returnType: () => String, deprecationReason: `hello is deprecated` },
-  )
-  hello?: String;
-
-  @Property()
-  world!: String;
-}
-
-@ArgsType()
-class Student {
-  @Field(() => ID)
-  id!: string;
-
-  @Field()
-  name!: string;
 }

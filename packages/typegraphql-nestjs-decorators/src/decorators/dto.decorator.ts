@@ -20,17 +20,56 @@
  */
 
 import { applyClassDecorators } from '../decorators';
-import type { ObjectType as TObjectType, ObjectTypeOptions } from 'type-graphql';
+import type {
+  ObjectType as TObjectType,
+  ObjectTypeOptions,
+  InputType as TInputType,
+  InputTypeOptions,
+  ArgsType as TArgsType,
+} from 'type-graphql';
 
 let ObjectType: typeof TObjectType | undefined;
+let InputType: typeof TInputType | undefined;
+let ArgsType: typeof TArgsType | undefined;
 try {
   ObjectType = require('type-graphql').ObjectType;
+  InputType = require('type-graphql').InputType;
+  ArgsType = require('type-graphql').ArgsType;
 } catch (err) {
   // void
 }
 
-export function DTO(options?: DTOOptions) {
-  return applyClassDecorators(...(ObjectType ? [ObjectType(options || {})] : []));
+export function DTO(type: 'input-type', options?: InputTypeOptions): ClassDecorator;
+export function DTO(type: 'object-type', options?: ObjectTypeOptions): ClassDecorator;
+export function DTO(type: 'args-type'): ClassDecorator;
+export function DTO(options?: ObjectTypeOptions): ClassDecorator;
+
+export function DTO(
+  typeOrOptions?: 'input-type' | 'object-type' | 'args-type' | ObjectTypeOptions,
+  options?: ObjectTypeOptions | InputTypeOptions,
+): ClassDecorator {
+  let actualType: 'input-type' | 'object-type' | 'args-type';
+  let actualOptions: ObjectTypeOptions | InputTypeOptions;
+
+  if (typeof typeOrOptions === 'string') {
+    actualType = typeOrOptions;
+    actualOptions = options || {};
+  } else {
+    actualType = 'object-type';
+    actualOptions = typeOrOptions || {};
+  }
+
+  switch (actualType) {
+    case 'input-type':
+      return applyClassDecorators(...(InputType ? [InputType(actualOptions as InputTypeOptions)] : []));
+    case 'args-type':
+      return applyClassDecorators(...(ArgsType ? [ArgsType()] : []));
+    case 'object-type':
+    default:
+      return applyClassDecorators(...(ObjectType ? [ObjectType(actualOptions as ObjectTypeOptions)] : []));
+  }
 }
 
-export interface DTOOptions extends ObjectTypeOptions {}
+// export interface DTOOptions extends ObjectTypeOptions, InputTypeOptions {
+//   type?: 'input-type' | 'object-type' | 'args-type';
+// }
