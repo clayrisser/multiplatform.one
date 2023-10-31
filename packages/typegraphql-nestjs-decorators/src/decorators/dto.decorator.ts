@@ -39,16 +39,16 @@ try {
   // void
 }
 
-export function DTO(type: 'input-type', options?: InputTypeOptions): ClassDecorator;
+export function DTO(type: 'input-type' | 'input-args-type', options?: InputTypeOptions): ClassDecorator;
 export function DTO(type: 'object-type', options?: ObjectTypeOptions): ClassDecorator;
 export function DTO(type: 'args-type'): ClassDecorator;
 export function DTO(options?: ObjectTypeOptions): ClassDecorator;
 
 export function DTO(
-  typeOrOptions?: 'input-type' | 'object-type' | 'args-type' | ObjectTypeOptions,
+  typeOrOptions?: DecoratorType | ObjectTypeOptions,
   options?: ObjectTypeOptions | InputTypeOptions,
 ): ClassDecorator {
-  let actualType: 'input-type' | 'object-type' | 'args-type';
+  let actualType: DecoratorType;
   let actualOptions: ObjectTypeOptions | InputTypeOptions;
 
   if (typeof typeOrOptions === 'string') {
@@ -62,14 +62,16 @@ export function DTO(
   switch (actualType) {
     case 'input-type':
       return applyClassDecorators(...(InputType ? [InputType(actualOptions as InputTypeOptions)] : []));
+    case 'input-args-type':
+      return applyClassDecorators(
+        ...(ArgsType ? [ArgsType()] : []),
+        ...(InputType ? [InputType(actualOptions as InputTypeOptions)] : []),
+      );
     case 'args-type':
       return applyClassDecorators(...(ArgsType ? [ArgsType()] : []));
-    case 'object-type':
     default:
       return applyClassDecorators(...(ObjectType ? [ObjectType(actualOptions as ObjectTypeOptions)] : []));
   }
 }
 
-// export interface DTOOptions extends ObjectTypeOptions, InputTypeOptions {
-//   type?: 'input-type' | 'object-type' | 'args-type';
-// }
+type DecoratorType = 'input-type' | 'object-type' | 'input-args-type' | 'args-type';
