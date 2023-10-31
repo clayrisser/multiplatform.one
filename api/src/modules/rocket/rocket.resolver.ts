@@ -20,7 +20,7 @@
  */
 
 import type { GraphqlCtx } from '@/types';
-import { Query, Ctx, Mutation, Arg } from 'type-graphql';
+import { Query, Ctx, Mutation, Arg, Args } from 'type-graphql';
 import { Authorized, InjectUsername } from '@multiplatform.one/nestjs-keycloak';
 import { Resolver } from '@multiplatform.one/nestjs-keycloak-typegraphql';
 
@@ -39,11 +39,25 @@ export class RocketResolver {
     return null;
   }
 
+  // @Mutation(() => Employee)
+  // async createEmployee(
+  //   @Ctx() _ctx: GraphqlCtx,
+  //   @Arg('data', () => EmployeeInput) data: EmployeeInput,
+  // ): Promise<Employee> {
+  //   const employee = new Employee();
+  //   employee.id = '1';
+  //   employee.name = data.name;
+  //   employee.age = data.age;
+
+  //   return {
+  //     id: '1',
+  //     name: '123',
+  //     age: 123,
+  //   };
+  // }
+
   @Mutation(() => Employee)
-  async createEmployee(
-    @Ctx() _ctx: GraphqlCtx,
-    @Arg('data', () => EmployeeInput) data: EmployeeInput,
-  ): Promise<Employee> {
+  async createEmployee(@Ctx() _ctx: GraphqlCtx, @Args() data: EmployeeInput): Promise<Employee> {
     const employee = new Employee();
     employee.id = '1';
     employee.name = data.name;
