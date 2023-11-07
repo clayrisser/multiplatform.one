@@ -21,6 +21,8 @@
 
 import type { ApiPropertyOptions } from '@nestjs/swagger';
 import type { Field as TField, FieldOptions } from 'type-graphql';
+import type { MethodAndPropDecorator } from 'type-graphql/build/typings/decorators/types';
+import type { ReturnTypeFunc } from 'type-graphql/build/typings/decorators/types';
 import { ApiProperty } from '@nestjs/swagger';
 import { applyPropertyDecorators } from '../decorators';
 
@@ -31,38 +33,60 @@ try {
   // void
 }
 
-export function Property(
-  options?: PropertyOptions,
+export function Prop(options?: PropOptions): MethodAndPropDecorator;
+export function Prop(
+  returnTypeFunction?: ReturnTypeFunc,
+  options?: PropOptions,
   apiPropertyOptions?: ApiPropertyOptions,
-  fieldOptions?: FieldOptions & { returnType?: () => any },
-) {
+  fieldOptions?: FieldOptions,
+): MethodAndPropDecorator;
+export function Prop(
+  returnTypeFunctionOrOptions?: ReturnTypeFunc | PropOptions,
+  options: PropOptions = {},
+  apiPropertyOptions?: ApiPropertyOptions,
+  fieldOptions?: FieldOptions,
+): PropertyDecorator {
+  let returnTypeFunction: ReturnTypeFunc | undefined;
+  if (typeof returnTypeFunctionOrOptions === 'object') {
+    options = {
+      ...returnTypeFunctionOrOptions,
+      ...options,
+    };
+  } else if (typeof returnTypeFunctionOrOptions === 'function') {
+    returnTypeFunction = returnTypeFunctionOrOptions;
+  }
   const { optional, description, defaultValue } = {
     optional: false,
     ...options,
   };
-
-  const { returnType, ...actualFieldOptions } = fieldOptions || {};
   return applyPropertyDecorators(
-    ...(Field
-      ? [
-          Field(returnType, {
-            nullable: !!optional,
-            description,
-            defaultValue,
-            ...actualFieldOptions,
-          }),
-        ]
-      : []),
     ApiProperty({
       required: !optional,
       default: defaultValue,
       description,
       ...apiPropertyOptions,
     }),
+    ...(Field
+      ? [
+          returnTypeFunction
+            ? Field(returnTypeFunction, {
+                nullable: !!optional,
+                description,
+                defaultValue,
+                ...fieldOptions,
+              })
+            : Field({
+                nullable: !!optional,
+                description,
+                defaultValue,
+                ...fieldOptions,
+              }),
+        ]
+      : []),
   );
 }
 
-export interface PropertyOptions {
+export interface PropOptions {
   optional?: boolean;
   description?: string;
   defaultValue?: any;

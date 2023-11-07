@@ -1,5 +1,5 @@
 /*
- *  File: /src/modules/rocket/rocket.controller.spec.ts
+ *  File: /src/modules/todo/index.ts
  *  Project: api
  *  File Created: 18-09-2023 08:18:09
  *  Author: Clay Risser
@@ -19,22 +19,15 @@
  *  limitations under the License.
  */
 
-import { RocketController } from './rocket.controller';
-import { Test } from '@nestjs/testing';
-import { TestingModule } from '@nestjs/testing';
+import { HttpModule } from '@nestjs/axios';
+import { Module } from '@nestjs/common';
+import { TodoController } from './todo.controller';
+import { TodoResolver } from './todo.resolver';
+import { TodoService } from './todo.service';
 
-describe('RocketController', () => {
-  let controller: RocketController;
-
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [RocketController],
-    }).compile();
-
-    controller = module.get<RocketController>(RocketController);
-  });
-
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-});
+@Module({
+  controllers: [TodoController],
+  imports: [HttpModule.register({})],
+  providers: [TodoService, TodoResolver],
+})
+export class TodoModule {}

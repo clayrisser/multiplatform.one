@@ -21,57 +21,38 @@
 
 import { applyClassDecorators } from '../decorators';
 import type {
+  InputType as TInputType,
   ObjectType as TObjectType,
   ObjectTypeOptions,
-  InputType as TInputType,
   InputTypeOptions,
-  ArgsType as TArgsType,
 } from 'type-graphql';
 
-let ObjectType: typeof TObjectType | undefined;
 let InputType: typeof TInputType | undefined;
-let ArgsType: typeof TArgsType | undefined;
+let ObjectType: typeof TObjectType | undefined;
 try {
-  ObjectType = require('type-graphql').ObjectType;
   InputType = require('type-graphql').InputType;
-  ArgsType = require('type-graphql').ArgsType;
+  ObjectType = require('type-graphql').ObjectType;
 } catch (err) {
   // void
 }
 
-export function DTO(type: 'input-type' | 'input-args-type', options?: InputTypeOptions): ClassDecorator;
-export function DTO(type: 'object-type', options?: ObjectTypeOptions): ClassDecorator;
-export function DTO(type: 'args-type'): ClassDecorator;
 export function DTO(options?: ObjectTypeOptions): ClassDecorator;
-
+export function DTO(name: string, options?: ObjectTypeOptions): ClassDecorator;
 export function DTO(
-  typeOrOptions?: DecoratorType | ObjectTypeOptions,
-  options?: ObjectTypeOptions | InputTypeOptions,
+  optionsOrName?: string | ObjectTypeOptions,
+  options?: ObjectTypeOptions,
+  inputTypeOptions?: InputTypeOptions & { name?: string },
 ): ClassDecorator {
-  let actualType: DecoratorType;
-  let actualOptions: ObjectTypeOptions | InputTypeOptions;
-
-  if (typeof typeOrOptions === 'string') {
-    actualType = typeOrOptions;
-    actualOptions = options || {};
-  } else {
-    actualType = 'object-type';
-    actualOptions = typeOrOptions || {};
-  }
-
-  switch (actualType) {
-    case 'input-type':
-      return applyClassDecorators(...(InputType ? [InputType(actualOptions as InputTypeOptions)] : []));
-    case 'input-args-type':
-      return applyClassDecorators(
-        ...(ArgsType ? [ArgsType()] : []),
-        ...(InputType ? [InputType(actualOptions as InputTypeOptions)] : []),
-      );
-    case 'args-type':
-      return applyClassDecorators(...(ArgsType ? [ArgsType()] : []));
-    default:
-      return applyClassDecorators(...(ObjectType ? [ObjectType(actualOptions as ObjectTypeOptions)] : []));
-  }
+  const inputTypeName =
+    inputTypeOptions?.name || (typeof optionsOrName === 'string' ? `${optionsOrName}Input` : undefined);
+  return applyClassDecorators(
+    ...(ObjectType
+      ? [
+          typeof optionsOrName === 'string'
+            ? ObjectType(optionsOrName, options)
+            : ObjectType(options as ObjectTypeOptions),
+        ]
+      : []),
+    ...(InputType && inputTypeName ? [InputType(inputTypeName)] : []),
+  );
 }
-
-type DecoratorType = 'input-type' | 'object-type' | 'input-args-type' | 'args-type';

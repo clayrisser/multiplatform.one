@@ -1,5 +1,5 @@
 /*
- *  File: /src/modules/rocket/rocket.dto.ts
+ *  File: /src/modules/todo/todo.dto.ts
  *  Project: api
  *  File Created: 31-10-2023 17:27:13
  *  Author: Lalit rajak
@@ -19,41 +19,32 @@
  *  limitations under the License.
  */
 
-import { DTO, Property } from '@multiplatform.one/typegraphql-nestjs-decorators';
+import { DTO, Prop } from '@multiplatform.one/typegraphql-nestjs-decorators';
+import { ArgsType } from 'type-graphql';
 
-@DTO('input-args-type')
-export class EmployeeInput {
-  @Property()
-  name?: string;
+@DTO('TodoList')
+export class TodoList {
+  @Prop()
+  title!: string;
 
-  @Property()
-  age?: number;
+  @Prop(() => [Todo])
+  todos!: Todo[];
 }
 
-@DTO()
-export class Employee {
-  @Property(undefined, undefined)
-  id?: string;
+@DTO('Todo')
+export class Todo {
+  @Prop()
+  name!: string;
 
-  @Property()
-  name?: string;
+  @Prop()
+  done!: boolean;
 
-  @Property()
-  age?: number;
+  @Prop({ optional: true })
+  difficulty?: number;
 }
 
-@DTO()
-export class FooBar {
-  @Property({ description: 'id' })
-  id?: string;
-
-  @Property(
-    { optional: true, name: 'hello1' },
-    { deprecated: true },
-    { returnType: () => String, deprecationReason: `hello is deprecated` },
-  )
-  hello?: String;
-
-  @Property()
-  world!: String;
+@ArgsType()
+export class CreateTodoListArgs {
+  @Prop()
+  title!: string;
 }

@@ -21,6 +21,6 @@
 
 import { PostModule } from './post';
 import { UserModule } from './user';
-import { RocketModule } from './rocket';
+import { TodoModule } from './todo';
 
-export default [UserModule, PostModule, RocketModule];
+export default [UserModule, PostModule, TodoModule];
