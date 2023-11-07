@@ -87,33 +87,41 @@ export function createMethodDecorator<TContext extends object = object>(factory:
 
 export function applyMethodDecorators(...decorators: Array<MethodDecorator>) {
   return ((target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) => {
+    let result: any;
     for (const decorator of decorators) {
-      decorator(target, propertyKey, descriptor);
+      result = decorator(target, propertyKey, descriptor);
     }
+    return result;
   }) as MethodDecorator;
 }
 
 export function applyParamDecorators(...decorators: Array<ParameterDecorator>) {
   return ((target: Object, propertyKey: string | symbol, parameterIndex: number) => {
+    let result: any;
     for (const decorator of decorators) {
-      decorator(target, propertyKey, parameterIndex);
+      result = decorator(target, propertyKey, parameterIndex);
     }
+    return result;
   }) as ParameterDecorator;
 }
 
 export function applyPropertyDecorators(...decorators: Array<PropertyDecorator>) {
   return ((target: Object, propertyKey: string | symbol) => {
+    let result: any;
     for (const decorator of decorators) {
-      decorator(target, propertyKey);
+      result = decorator(target, propertyKey);
     }
+    return result;
   }) as PropertyDecorator;
 }
 
 export function applyClassDecorators(...decorators: Array<ClassDecorator>) {
   return ((target: Function) => {
+    let result: any;
     for (const decorator of decorators) {
-      decorator(target);
+      result = decorator(target);
     }
+    return result;
   }) as ClassDecorator;
 }
 

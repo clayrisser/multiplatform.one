@@ -285,6 +285,7 @@ textgroup
 thead
 themeable
 tldr
+todos
 toggler
 toolbars
 toolshown
