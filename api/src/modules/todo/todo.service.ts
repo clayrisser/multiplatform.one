@@ -55,6 +55,7 @@ export class TodoService {
     const index = todoList.todos.findIndex((todo) => todo.name === todoName);
     if (index !== -1) {
       todoList.todos.splice(index, 1);
+      return true;
     } else {
       throw new Error(`todo '${todoName}' not found in list '${todoListTitle}'`);
     }
