@@ -1,7 +1,7 @@
 {
   "name": "api",
   "description": "nestjs app",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "private": true,
   "dependencies": {
     "@apollo/federation": "^0.38.1",
