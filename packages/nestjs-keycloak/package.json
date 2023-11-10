@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/nestjs-keycloak",
-  "version": "3.0.4",
+  "version": "3.0.6",
   "description": "nestjs module for authenticating keycloak",
   "sideEffects": false,
   "keywords": [

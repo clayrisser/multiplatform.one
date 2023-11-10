@@ -1,7 +1,7 @@
 {
   "name": "@multiplatform.one/nestjs-keycloak-typegraphql",
   "description": "nestjs module for authenticating typegraphql with keycloak",
-  "version": "2.2.0",
+  "version": "2.2.2",
   "sideEffects": false,
   "license": "Apache-2.0",
   "keywords": [
