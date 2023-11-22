@@ -126,6 +126,16 @@ kill/%:
 count:
 	@$(CLOC) $(shell ($(GIT) ls-files && ($(GIT) lfs ls-files | $(CUT) -d' ' -f3)) | $(SORT) | $(UNIQ) -u)
 
+.PHONY: version
+version:
+	@$(CHANGESET)
+	@$(CHANGESET) version
+
+.PHONY: publish +publish
+publish: version ~build +publish
++publish:
+	@$(CHANGESET) publish
+
 CACHE_ENVS += \
 
 -include $(call chain)
