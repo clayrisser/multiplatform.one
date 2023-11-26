@@ -21,7 +21,7 @@
 
 import React, { useState } from 'react';
 import { SimplePopover } from './index';
-import { Text, YStack, XStack, Switch, Input, Label } from 'tamagui';
+import { Text, YStack, XStack, Switch, Input, Label, Button } from 'tamagui';
 import type { Meta } from '@storybook/react';
 
 const meta: Meta = {
@@ -31,9 +31,7 @@ const meta: Meta = {
 };
 
 export const main = () => (
-  <SimplePopover
-  // trigger={<Button>Click here to get a Popover</Button>}
-  >
+  <SimplePopover trigger={<Button>Click here to get a Popover</Button>}>
     <YStack>
       <Text>popover content</Text>
     </YStack>
@@ -41,10 +39,7 @@ export const main = () => (
 );
 
 export const closeOnHoverOut = () => (
-  <SimplePopover
-    // trigger={<Button>click here</Button>}
-    closeOnHoverOut
-  >
+  <SimplePopover trigger={<Button>click here</Button>} closeOnHoverOut>
     <YStack>
       <Text>popover content will close on hoverOut</Text>
     </YStack>
@@ -54,10 +49,11 @@ export const closeOnHoverOut = () => (
 function Open() {
   return (
     <SimplePopover
-      // trigger={<Button>hover on it to get Popover</Button>}
+      trigger={<Button>hover on it to get Popover</Button>}
       triggerOnHover
       arrow={false}
       triggerStyle={{ als: 'center', ai: 'center' }}
+      closeOnHoverOut
     >
       <YStack>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
@@ -81,11 +77,7 @@ const OnCondition = (props) => {
     <YStack space>
       <Label>change the switch to get popover</Label>
       <Switch checked={props.open} onCheckedChange={setOpen} />
-      <SimplePopover
-        open={open}
-        onOpenChange={setOpen}
-        // trigger={<Button>Popup will open here</Button>}
-      >
+      <SimplePopover open={open} onOpenChange={setOpen} trigger={<Button>Popup will open here</Button>}>
         <Text>Conditional popover</Text>
       </SimplePopover>
     </YStack>
@@ -109,7 +101,7 @@ const ConditionalPopover = () => {
       <SimplePopover
         open={open}
         onOpenChange={setOpen}
-        triggerElement={
+        trigger={
           <YStack>
             <Input value={inputVal} onChangeText={handleInput} placeholder="type show to get popup" />
           </YStack>
