@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/nestjs-axios-logger",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "description": "nestjs axios http module logging",
   "sideEffects": false,
   "keywords": [
