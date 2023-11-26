@@ -86,34 +86,4 @@ const OnCondition = (props) => {
 
 export const openOnChangingTheCondition = (args) => <OnCondition {...args} />;
 
-const ConditionalPopover = () => {
-  const [open, setOpen] = useState(false);
-  const [inputVal, setInputVal] = useState('');
-
-  function handleInput(val) {
-    if (val === 'show') setOpen(true);
-    else setOpen(false);
-    setInputVal(val);
-  }
-
-  return (
-    <YStack space>
-      <SimplePopover
-        open={open}
-        onOpenChange={setOpen}
-        trigger={
-          <YStack>
-            <Input value={inputVal} onChangeText={handleInput} placeholder="type show to get popup" />
-          </YStack>
-        }
-        arrow={true}
-      >
-        <Text>Conditional popover</Text>
-      </SimplePopover>
-    </YStack>
-  );
-};
-
-export const openOnAnyCondition = (args) => <ConditionalPopover {...args} />;
-
 export default meta;
