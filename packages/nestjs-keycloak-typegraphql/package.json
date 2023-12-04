@@ -1,7 +1,7 @@
 {
   "name": "@multiplatform.one/nestjs-keycloak-typegraphql",
   "description": "nestjs module for authenticating typegraphql with keycloak",
-  "version": "2.2.8",
+  "version": "2.2.9",
   "sideEffects": false,
   "license": "Apache-2.0",
   "keywords": [
@@ -53,14 +53,14 @@
   "dependencies": {
     "@dbateman/keycloak-connect-graphql": "^16.9.1",
     "@keycloak/keycloak-admin-client": "^22.0.5",
-    "@multiplatform.one/typegraphql-nestjs-decorators": "0.6.8",
+    "@multiplatform.one/typegraphql-nestjs-decorators": "0.6.9",
     "core-js": "^3.33.1",
     "keycloak-connect": "^22.0.5",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13"
   },
   "peerDependencies": {
-    "@multiplatform.one/nestjs-keycloak": "3.0.12",
+    "@multiplatform.one/nestjs-keycloak": "3.0.13",
     "@nestjs/axios": "^0.1.0",
     "@nestjs/common": "^9.1.6",
     "@nestjs/core": "^9.1.6",
@@ -70,7 +70,7 @@
     "type-graphql": "2.0.0-beta.3"
   },
   "devDependencies": {
-    "@multiplatform.one/nestjs-keycloak": "3.0.12",
+    "@multiplatform.one/nestjs-keycloak": "3.0.13",
     "@nestjs/axios": "^3.0.0",
     "@nestjs/common": "^10.2.7",
     "@nestjs/core": "^10.2.7",
