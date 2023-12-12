@@ -53,6 +53,7 @@
   },
   "dependencies": {
     "@nestjs/swagger": "^7.1.14",
+    "eslint": "^8.55.0",
     "rxjs": "^7.8.1",
     "typegraphql-nestjs": "^0.6.0"
   },
@@ -62,8 +63,9 @@
     "@nestjs/common": "^10.2.7",
     "@nestjs/core": "^10.2.7",
     "@nestjs/graphql": "^12.0.9",
+    "@types/eslint": "^8",
     "graphql-tag": "^2.12.6",
-    "tsup": "^7.2.0",
+    "tsup": "^8.0.1",
     "type-graphql": "2.0.0-beta.3",
     "typescript": "^5.2.2"
   }
