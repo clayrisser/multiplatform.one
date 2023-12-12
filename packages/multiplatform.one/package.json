@@ -77,6 +77,7 @@
     "@tamagui/constants": "^1.75.4",
     "@tamagui/web": "^1.75.4",
     "@types/cross-storage": "^0.8.32",
+    "@types/eslint": "^8",
     "@types/jest": "^29.5.6",
     "@types/react": "^18.2.32",
     "@types/react-native": "^0.72.5",
@@ -122,6 +123,8 @@
   },
   "dependencies": {
     "cross-storage": "^1.0.0",
-    "merge-options": "^3.0.4"
+    "eslint": "^8.55.0",
+    "merge-options": "^3.0.4",
+    "tsup": "^8.0.1"
   }
 }
