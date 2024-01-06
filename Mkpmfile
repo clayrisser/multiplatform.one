@@ -17,6 +17,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+.ONESHELL:
+.POSIX:
+.SILENT:
+
 MONOREPO := 1
 
 include $(MKPM)/mkpm
@@ -52,16 +56,12 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	@$(call workspace_foreach,test,$(TEST_ARGS))
 	@$(call done,$@)
 
-PACKAGES := \
-	multiplatform.one \
-	prisma-scripts \
-	keycloak \
-	components
 .PHONY: build +build
 build +build:
-	@for t in $(patsubst %,%/$@,$(PACKAGES)); do \
-		$(MAKE) -sf Mkpmfile $$t; \
-	done
+	@$(MKPM_MAKE) multiplatform.one/$@
+	@$(MKPM_MAKE) prisma-scripts/$@
+	@$(MKPM_MAKE) keycloak/$@
+	@$(MKPM_MAKE) components/$@
 
 .PHONY: upgrade
 upgrade: ##
@@ -84,7 +84,7 @@ purge: clean ##
 
 .PHONY: $(patsubst %,%/%,$(WORKSPACE_NAMES))
 $(patsubst %,%/%,$(WORKSPACE_NAMES)):
-	@$(MAKE) -sC $(call map_workspace,$(@D)) $*
+	@$(MKPM_MAKE) -C $(call map_workspace,$(@D)) $*
 
 HELP = help
 help: $(MKCHAIN_HELP)
@@ -92,15 +92,15 @@ help: $(MKCHAIN_HELP)
 
 .PHONY: next/docker/%
 next/docker/%:
-	@$(MAKE) -sC platforms/next/docker $*
+	@$(MKPM_MAKE) -C platforms/next/docker $*
 
 .PHONY: storybook/docker/%
 storybook/docker/%:
-	@$(MAKE) -sC platforms/storybook/docker $*
+	@$(MKPM_MAKE) -C platforms/storybook/docker $*
 
 .PHONY: api/docker/%
 api/docker/%:
-	@$(MAKE) -sC api/docker $*
+	@$(MKPM_MAKE) -C api/docker $*
 
 .PHONY: gen/%
 gen/%:
@@ -108,7 +108,7 @@ gen/%:
 
 .PHONY: api/%
 api/%:
-	@$(MAKE) -sC api $*
+	@$(MKPM_MAKE) -C api $*
 
 .PHONY: gen
 gen:
