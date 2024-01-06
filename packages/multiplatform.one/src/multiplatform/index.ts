@@ -19,10 +19,13 @@
  *  limitations under the License.
  */
 
-import getConfig from 'next/config.js';
+import nextConfig from 'next/config';
 import { MultiPlatformBase } from './multiplatformBase';
 import { Platform } from 'react-native';
 import { isChrome, isClient, isWindowDefined, isServer, isWeb, isWebTouchable } from '@tamagui/constants';
+
+const getConfig =
+  typeof nextConfig === 'function' ? nextConfig : (nextConfig as { default: typeof nextConfig }).default;
 
 export class MultiPlatform extends MultiPlatformBase {
   static isChrome = isChrome;
@@ -33,9 +36,13 @@ export class MultiPlatform extends MultiPlatformBase {
   static isWeb = Platform.OS === 'web' && isWeb;
   static isNext = MultiPlatform.isWeb && (!isWindowDefined || typeof window.__NEXT_DATA__ === 'object');
   static isServer = isServer;
-  static isStatic = MultiPlatform.isNext && (getConfig ? getConfig() : {})?.publicRuntimeConfig?.NEXT_STATIC === '1';
   static isTest = process?.env?.NODE_ENV === 'test' || process?.env?.JEST_WORKER_ID !== undefined;
   static isWebTouchable = isWebTouchable;
+
+  static isStatic =
+    MultiPlatform.isNext &&
+    (typeof getConfig === 'function' ? getConfig() : {})?.publicRuntimeConfig?.NEXT_STATIC === '1';
+
   static isElectron =
     MultiPlatform.isElectronRender ||
     MultiPlatform.isElectronMain ||

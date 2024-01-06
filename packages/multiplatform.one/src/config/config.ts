@@ -19,9 +19,12 @@
  *  limitations under the License.
  */
 
-import getConfig from 'next/config.js';
+import nextConfig from 'next/config';
 import type { IConfig } from './types';
 import { MultiPlatform } from '../multiplatform';
+
+const getConfig =
+  typeof nextConfig === 'function' ? nextConfig : (nextConfig as { default: typeof nextConfig }).default;
 
 export class Config implements IConfig {
   private _config: Record<string, string | undefined> = {};
