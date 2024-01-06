@@ -55,10 +55,6 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 PACKAGES := \
 	multiplatform.one \
 	prisma-scripts \
-	nestjs-axios-logger \
-	typegraphql-nestjs-decorators \
-	nestjs-keycloak \
-	nestjs-keycloak-typegraphql \
 	keycloak \
 	components
 .PHONY: build +build

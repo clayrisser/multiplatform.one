@@ -44,29 +44,29 @@
     "wait-for-postgres": "bin/waitForPostgres.js"
   },
   "dependencies": {
-    "core-js": "^3.33.1",
+    "core-js": "^3.35.0",
     "dependency-tree": "^10.0.9",
     "dotenv": "^16.3.1",
-    "eslint": "^8.55.0",
+    "eslint": "^8.56.0",
     "execa": "^8.0.1",
-    "fs-extra": "^11.1.1",
+    "fs-extra": "^11.2.0",
     "ora": "^7.0.1"
   },
   "peerDependencies": {
     "prisma": "~5.4.2"
   },
   "devDependencies": {
-    "@types/eslint": "^8",
-    "@types/fs-extra": "^11.0.3",
-    "@types/jest": "^29.5.6",
-    "cspell": "^7.3.8",
+    "@types/eslint": "^8.56.1",
+    "@types/fs-extra": "^11.0.4",
+    "@types/jest": "^29.5.11",
+    "cspell": "^8.3.2",
     "jest": "^29.7.0",
     "jest-sonar-reporter": "^2.0.0",
     "majestic": "^1.8.1",
-    "prettier": "^3.0.3",
-    "prisma": "~5.5.1",
+    "prettier": "^3.1.1",
+    "prisma": "~5.7.1",
     "tsup": "^8.0.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.3"
   },
   "transpileModules": [
     "#ansi-styles",
