@@ -50,7 +50,10 @@ export function useKeycloak() {
 export class Keycloak implements IKeycloak {
   authenticated?: boolean;
 
-  constructor(private readonly keycloak: IKeycloak | undefined, initialized: boolean) {
+  constructor(
+    private readonly keycloak: IKeycloak | undefined,
+    initialized: boolean,
+  ) {
     this.authenticated = initialized ? keycloak?.authenticated : undefined;
   }
 

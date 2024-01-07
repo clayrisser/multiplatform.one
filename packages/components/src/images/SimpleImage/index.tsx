@@ -70,10 +70,10 @@ const SimpleImageComponent = forwardRef<Image, Props>(
         typeof width === 'number'
           ? width
           : typeof style.width !== 'undefined'
-          ? typeof style.width === 'number'
-            ? style.width
-            : undefined
-          : staticImageData?.width;
+            ? typeof style.width === 'number'
+              ? style.width
+              : undefined
+            : staticImageData?.width;
       if (typeof w === 'number' && typeof mAspectRatio === 'number') return w / mAspectRatio;
       return staticImageData?.height;
     }, [mAspectRatio, staticImageData?.width, staticImageData?.height, style.width, style.height, width, height]);
@@ -85,10 +85,10 @@ const SimpleImageComponent = forwardRef<Image, Props>(
         typeof height === 'number'
           ? height
           : typeof style.height !== 'undefined'
-          ? typeof style.height === 'number'
-            ? style.height
-            : undefined
-          : staticImageData?.height;
+            ? typeof style.height === 'number'
+              ? style.height
+              : undefined
+            : staticImageData?.height;
       if (typeof h === 'number' && typeof mAspectRatio === 'number') return h * mAspectRatio;
       return staticImageData?.width;
     }, [mAspectRatio, staticImageData?.width, staticImageData?.height, style.width, style.height, width, height]);

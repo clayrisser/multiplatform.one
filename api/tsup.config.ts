@@ -26,7 +26,7 @@ export default defineConfig({
   bundle: true,
   clean: true,
   dts: false,
-  entry: ['**/*.ts?(x)', '!tsup.config.ts'],
+  entry: ['**/*.ts?(x)', '!tsup.config.ts', '!lib', '!node_modules', '!prisma'],
   entryPoints: ['index.ts'],
   format: ['cjs'],
   minify: false,

@@ -29,12 +29,15 @@ const parse = require('url').parse;
 const path = require('path');
 const resolvers = require('api').resolvers;
 const useServer = require('graphql-ws/lib/use/ws').useServer;
+const yogaServerOptions = require('api').yogaServerOptions;
+const dotenv = require('dotenv');
+dotenv.config();
 
-const port = 3000;
-const hostname = 'localhost';
+const port = Number(process.env.PORT || 3000);
+const hostname = '0.0.0.0';
 
 const app = next({
-  dev: process.env.NODE_ENV !== 'production',
+  dev: process.argv[2] === 'dev',
   hostname,
   port,
 });
@@ -48,6 +51,7 @@ const graphqlEndpoint = '/graphql';
     emitSchemaFile: path.resolve(__dirname, 'schema.graphql'),
   });
   const yoga = createYoga({
+    ...yogaServerOptions,
     graphqlEndpoint,
     graphiql: {
       subscriptionsProtocol: 'WS',

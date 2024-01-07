@@ -21,13 +21,11 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "~0.73.1",
-    "react-native-web": "~0.19.10",
-    "storybook-addon-breakpoints": "^1.0.0",
+    "react-native-web": "~0.18.12",
     "storybook-addon-designs": "^6.3.1",
     "storybook-addon-paddings": "^5.0.0",
     "storybook-color-picker": "^4.0.0",
     "storybook-dark-mode": "^3.0.3",
-    "storybook-mobile": "^1.0.1",
     "stream-browserify": "^3.0.0"
   },
   "devDependencies": {
