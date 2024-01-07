@@ -18,12 +18,14 @@
 # limitations under the License.
 
 include $(MKPM)/mkpm
-DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
 include $(MKPM)/chain
 include $(MKPM)/dotenv
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
+
+export POSTGRES_URL ?= \
+	postgresql://$(POSTGRES_PASSWORD):$(POSTGRES_USER)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=prefer
 
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -78,7 +80,7 @@ clean: ##
 		$(NOFAIL)
 
 .PHONY: prisma/%
-prisma/%:
+prisma/%: ~deps
 	@$(MKPM_MAKE) -C prisma $*
 
 -include $(call chain)
