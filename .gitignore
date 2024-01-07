@@ -22,11 +22,12 @@ debug.json
 .vercel
 .yarn/*
 /build
-node_modules/
 /out/
 THUMBS_DB
 graphql.config.*
+node_modules/
 npm-debug.log*
+package-lock.json
 schema.graphql
 thumbs.db
 turbo-build.log

@@ -51,7 +51,6 @@ export default async function seedDb(entities: Entities, hide: string[] = [], sp
           } catch (err) {
             spinner.fail((err as Error).message || (err as string));
             process.exit(1);
-            return null;
           }
         }),
       );

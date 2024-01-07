@@ -28,4 +28,5 @@ ENTRYPOINT [ "/usr/local/sbin/entrypoint" ]
 EXPOSE 3000
 
 ENV CONTAINER=1 \
-    DEBUG=0
+    DEBUG=0 \
+    NODE_ENV=production
