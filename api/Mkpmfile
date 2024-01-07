@@ -1,9 +1,9 @@
 # File: /Mkpmfile
-# Project: @platform/next
-# File Created: 17-09-2023 13:11:26
+# Project: api
+# File Created: 06-01-2024 23:03:30
 # Author: Clay Risser
 # -----
-# BitSpur (c) Copyright 2021 - 2023
+# BitSpur (c) Copyright 2021 - 2024
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,15 +18,13 @@
 # limitations under the License.
 
 include $(MKPM)/mkpm
-DEFAULT_ENV ?= $(PROJECT_ROOT)/.env
+DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
 include $(MKPM)/envcache
-include $(MKPM)/dotenv
 include $(MKPM)/chain
+include $(MKPM)/dotenv
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
-
-NEXT ?= $(call yarn_binary,next)
 
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -51,28 +49,20 @@ $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 ACTIONS += lint~spellcheck ##
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call eslint,$?,$(LINT_ARGS))
-	@$(call done, $@)
+	@$(call done,$@)
 
 ACTIONS += test~lint ##
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call jest,$?,$(TEST_ARGS))
-	@$(call done, $@)
+	@$(call done,$@)
 
 ACTIONS += build~test ##
+BUILD_TARGET := dist/lib/index.js
+dist/lib/index.js:
+	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(NEXT) build $(BUILD_ARGS)
+	@$(TSUP)
 	@$(call done,$@)
-
-ACTIONS += export~test ##
-$(ACTION)/export: $(call git_deps,\.([jt]sx?)$$)
-	@NEXT_STATIC=1 $(NEXT) build
-	@NEXT_STATIC=1 $(NEXT) export
-	@$(call done,$@)
-
-.PHONY: dev +dev
-dev: | ~deps +dev ##
-+dev:
-	@$(NODE) server.js $(ARGS)
 
 .PHONY: clean
 clean: ##
@@ -83,10 +73,6 @@ clean: ##
 		$(MKPM_GIT_CLEAN_FLAGS) \
 		$(YARN_GIT_CLEAN_FLAGS) \
 		$(NOFAIL)
-
-.PHONY: docker/%
-docker/%:
-	@echo $(MAKE) -sC docker $(subst docker/,,$@) ARGS=$(ARGS)
 
 CACHE_ENVS += \
 

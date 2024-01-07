@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig.base",
+  "compilerOptions": {
+    "emitDecoratorMetadata": true
+  },
+  "include": ["**/*.ts"]
+}
