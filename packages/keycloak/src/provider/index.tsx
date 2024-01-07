@@ -78,8 +78,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({
         !tokensFromState && !tokensFromQuery && cookies && ssr
           ? false
           : typeof persist !== 'undefined'
-          ? persist
-          : defaultAuthConfig.persist,
+            ? persist
+            : defaultAuthConfig.persist,
       ssr:
         !tokensFromState && !tokensFromQuery && cookies
           ? typeof ssr !== 'undefined'

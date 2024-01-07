@@ -20,6 +20,7 @@
 include $(MKPM)/mkpm
 include $(MKPM)/gnu
 include $(MKPM)/chain
+DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/dotenv
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
@@ -36,7 +37,12 @@ else
 endif
 	@$(call done,$@)
 
-ACTIONS += format~deps ##
+ACTIONS += generate~deps ##
+$(ACTION)/generate: $(call git_deps,\.(prisma)$$)
+	@$(MKPM_MAKE) -C prisma generate
+	@$(call done,$@)
+
+ACTIONS += format~generate ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 #	-@$(call eslint_format,$?)
 	-@$(call prettier,$?,$(FORMAT_ARGS))

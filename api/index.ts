@@ -20,6 +20,9 @@
  */
 
 import type { NonEmptyArray } from 'type-graphql';
-import { HelloResolver } from './hello';
+import type { YogaServerOptions } from 'graphql-yoga';
+import { UserCrudResolver } from '@generated/type-graphql';
 
-export const resolvers: NonEmptyArray<Function> | NonEmptyArray<string> = [HelloResolver];
+export const resolvers: NonEmptyArray<Function> | NonEmptyArray<string> = [UserCrudResolver];
+
+export const yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>> = {};

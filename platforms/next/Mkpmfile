@@ -72,8 +72,10 @@ $(ACTION)/export: $(call git_deps,\.([jt]sx?)$$)
 .PHONY: dev +dev
 dev: | ~deps +dev ##
 +dev:
+	@$(MKPM_MAKE) -C ../../api prisma/dev
 	@$(MKPM_MAKE) -C ../../api watch &
-	@$(NODEMON) --exec "$(NODE) server.js $(ARGS)"
+	@$(MKPM_MAKE) -C ../../docker dev-d
+	@$(NODEMON) --exec "$(NODE) server.js dev $(ARGS)"
 
 .PHONY: clean
 clean: ##

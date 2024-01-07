@@ -30,8 +30,8 @@ include $(PROJECT_ROOT)/shared.mk
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
 	@$(YARN) install $(DEPS_ARGS)
-	@$(MAKE) +build
 	@$(call done,$@)
+	@$(MAKE) \~build
 
 ACTIONS += format ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
@@ -53,8 +53,8 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	@$(call workspace_foreach,test,$(TEST_ARGS))
 	@$(call done,$@)
 
-.PHONY: build +build
-build +build:
+.PHONY: build +build ~build
+build +build ~build:
 	@$(MKPM_MAKE) multiplatform.one/$@
 	@$(MKPM_MAKE) prisma-scripts/$@
 	@$(MKPM_MAKE) keycloak/$@

@@ -30,14 +30,13 @@
     "estree-walker": "2.0.2",
     "expo-keycloak-auth@1.0.14": "patch:expo-keycloak-auth@npm%3A1.0.14#./.yarn/patches/expo-keycloak-auth-npm-1.0.14-78201597ce.patch",
     "is-reference": "1.2.1",
-    "prettier": "^2.8.8",
+    "pino": "8.15.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "~0.73.1",
     "react-native-svg": "13.4.0",
-    "react-native-web": "~0.18.10",
-    "react-refresh": "^0.14.0",
-    "pino": "8.15.1"
+    "react-native-web": "~0.18.12",
+    "react-refresh": "^0.14.0"
   },
   "tamaguiModules": [
     "@multiplatform.one/components",

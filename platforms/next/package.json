@@ -20,7 +20,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "~0.73.1",
-    "react-native-web": "~0.19.10",
+    "react-native-web": "~0.18.12",
     "react-native-web-lite": "^1.82.8",
     "reflect-metadata": "^0.2.1",
     "type-graphql": "^1.1.1",
@@ -54,10 +54,11 @@
     "indent": 4
   },
   "nodemonConfig": {
+    "ext": "ts,tsx,js,jsx,mjs,cjs,graphql,html,json,env",
+    "signal": "SIGTERM",
+    "delay": 1000,
     "watch": [
       "../../api/lib"
-    ],
-    "ext": "ts,tsx,js,jsx,mjs,cjs,graphql,html,json,env",
-    "signal": "SIGTERM"
+    ]
   }
 }
