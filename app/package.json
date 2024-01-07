@@ -6,6 +6,7 @@
     "*.css"
   ],
   "dependencies": {
+    "@apollo/client": "^3.8.8",
     "@expo-google-fonts/rock-salt": "^0.2.3",
     "@expo-google-fonts/silkscreen": "^0.2.3",
     "@fontsource/rock-salt": "^5.0.18",
@@ -20,9 +21,11 @@
     "@tamagui/font-silkscreen": "^1.82.8",
     "@tamagui/lucide-icons": "^1.82.8",
     "@tamagui/toast": "^1.82.8",
+    "bufferutil": "^4.0.8",
     "expo-keycloak-auth": "^1.0.14",
     "expo-linking": "^6.2.1",
     "expo-random": "^13.6.0",
+    "graphql": "^16.8.1",
     "i18next": "^23.7.16",
     "immer": "^10.0.3",
     "intl-pluralrules": "^2.0.1",
@@ -30,7 +33,9 @@
     "react-i18next": "^13.5.0",
     "react-native-svg": "14.1.0",
     "solito": "^4.2.0",
+    "subscriptions-transport-ws": "^0.11.0",
     "tamagui": "^1.82.8",
+    "utf-8-validate": "^6.0.3",
     "zustand": "^4.4.7"
   },
   "devDependencies": {

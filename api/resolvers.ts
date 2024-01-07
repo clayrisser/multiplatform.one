@@ -20,7 +20,7 @@
  */
 
 import type { NonEmptyArray } from 'type-graphql';
-import { UserCrudResolver } from '@generated/type-graphql';
+import { UserCrudResolver } from './generated/type-graphql';
 import { HelloResolver } from './hello';
 
 export const resolvers: NonEmptyArray<Function> | NonEmptyArray<string> = [UserCrudResolver, HelloResolver];

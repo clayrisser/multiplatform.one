@@ -10,6 +10,7 @@ allowlist
 als
 anatine
 apiv
+apollo
 argv
 arial
 ast
@@ -60,6 +61,7 @@ clearable
 clientregistration
 cloc
 codebase
+codegen
 comment
 compat
 consolas
@@ -124,6 +126,7 @@ graphicsmagick
 graphiql
 graphql
 helvetica
+hmr
 href
 hsl
 hsla

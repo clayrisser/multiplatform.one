@@ -1,7 +1,7 @@
 {
   "packages": {
     "default": {
-      "chain": "0.2.1",
+      "chain": "0.2.2",
       "docker": "0.3.1",
       "dotenv": "0.1.5",
       "envcache": "0.3.1",

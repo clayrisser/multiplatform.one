@@ -21,7 +21,7 @@
 
 require('reflect-metadata');
 const WebSocketServer = require('ws').Server;
-const buildSchema = require('type-graphql').buildSchema;
+const buildSchema = require('api/buildSchema').buildSchema;
 const createServer = require('http').createServer;
 const createServerOptions = require('api').createServerOptions;
 const createYoga = require('graphql-yoga').createYoga;
@@ -29,16 +29,14 @@ const dotenv = require('dotenv');
 const next = require('next');
 const nodeCleanup = require('node-cleanup');
 const parse = require('url').parse;
-const path = require('path');
-const resolvers = require('api').resolvers;
 const useServer = require('graphql-ws/lib/use/ws').useServer;
 dotenv.config();
 
 const port = Number(process.env.PORT || 3000);
-const hostname = '0.0.0.0';
+const hostname = 'localhost';
 
 const app = next({
-  dev: process.argv[2] === 'dev',
+  dev: process.env.NODE_ENV === 'development',
   hostname,
   port,
 });
@@ -48,11 +46,6 @@ const graphqlEndpoint = '/graphql';
 
 (async () => {
   const serverOptions = await createServerOptions();
-  const schema = await buildSchema({
-    ...serverOptions.buildSchema,
-    resolvers,
-    emitSchemaFile: path.resolve(__dirname, 'schema.graphql'),
-  });
   const yoga = createYoga({
     logging: 'info',
     ...serverOptions.yoga,
@@ -61,7 +54,7 @@ const graphqlEndpoint = '/graphql';
       ...serverOptions.yoga?.graphiql,
       subscriptionsProtocol: 'WS',
     },
-    schema,
+    schema: await buildSchema(serverOptions),
   });
   await app.prepare();
   const handle = app.getRequestHandler();

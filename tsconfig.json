@@ -1,13 +1,14 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig.base",
   "compilerOptions": {
-    "strictNullChecks": true,
-    "noUncheckedIndexedAccess": true,
-    "tsBuildInfoFile": "node_modules/.tsbuildinfo",
+    "tsBuildInfoFile": ".tsbuildinfo",
     "paths": {
       "@multiplatform.one/components": ["./packages/components/*"],
       "app/*": ["./app/*"],
+      "gql/*": ["./gql/*"],
       "ui/*": ["./ui/*"]
     }
   },
-  "extends": "./tsconfig.base"
+  "references": [{ "path": "./gql" }, { "path": "./ui" }, { "path": "./app" }, { "path": "./packages/components" }]
 }

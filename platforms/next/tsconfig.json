@@ -1,29 +1,20 @@
 {
+  "extends": "../../tsconfig.base",
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "baseUrl": ".",
-    "paths": {
-      "react-native": ["react-native-web"]
-    },
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
     "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
+    "target": "ES5",
+    "paths": {
+      "react-native": [
+        "react-native-web"
+      ]
+    },
     "plugins": [
       {
         "name": "next"
       }
-    ]
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "*.js"],
-  "exclude": ["node_modules"]
+    ],
+    "strict": false,
+    "isolatedModules": true
+  }
 }

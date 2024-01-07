@@ -4,6 +4,7 @@
   "workspaces": [
     "api",
     "app",
+    "gql",
     "packages/*",
     "platforms/*",
     "ui"
@@ -54,5 +55,8 @@
     "solito"
   ],
   "packageManager": "yarn@3.6.1",
-  "prettier": "eslint-config-alloy/.prettierrc.js"
+  "prettier": "eslint-config-alloy/.prettierrc.js",
+  "dependencies": {
+    "@apollo/client": "^3.8.8"
+  }
 }

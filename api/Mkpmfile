@@ -35,6 +35,9 @@ endif
 	@$(call done,$@)
 
 ACTIONS += generate~deps ##
+GENERATE_TARGETS := generated/type-graphql/index.ts
+generated/type-graphql/index.ts:
+	@$(call reset,generate)
 $(ACTION)/generate: $(call git_deps,\.(prisma)$$)
 	@$(MKPM_MAKE) -C prisma generate
 	@$(call done,$@)
@@ -61,16 +64,16 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	@$(call done,$@)
 
 ACTIONS += build~test ##
-BUILD_TARGET := dist/lib/index.js
-dist/lib/index.js:
+BUILD_TARGETS := lib/index.js
+lib/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(TSUP)
 	@$(call done,$@)
 
 .PHONY: watch
-watch: ~deps
-	@$(TSUP) --watch '**/*.ts'
+watch: ~generate
+	@$(TSUP) --watch '**/*.ts' $(WATCH_ARGS)
 
 .PHONY: clean
 clean: ##
