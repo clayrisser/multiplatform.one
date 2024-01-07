@@ -73,8 +73,13 @@
     "#supports-color",
     "chalk",
     "execa",
+    "is-interactive",
+    "is-unicode-supported",
+    "log-symbols",
+    "npm-run-path",
     "ora",
-    "stdin-discarder"
+    "stdin-discarder",
+    "strip-final-newline"
   ],
   "engines": {
     "node": ">=6.0.0"

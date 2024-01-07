@@ -1,4 +1,4 @@
-# File: /Makefile
+# File: /Mkpmfile
 # Project: @platform/storybook
 # File Created: 17-09-2023 13:11:26
 # Author: Clay Risser
@@ -20,14 +20,13 @@
 include $(MKPM)/mkpm
 DEFAULT_ENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
-include $(MKPM)/envcache
 include $(MKPM)/dotenv
 include $(MKPM)/chain
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
 NODE_HEAP ?= 8192
-export STORYBOOK ?= $(NODE) --max-old-space-size=$(NODE_HEAP) $(call yarn_binary,storybook)
+STORYBOOK ?= $(NODE) --max-old-space-size=$(NODE_HEAP) $(YARN) storybook
 
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -112,7 +111,5 @@ clean: ##
 
 .PHONY: postinstall
 postinstall: ##
-
-CACHE_ENVS += \
 
 -include $(call chain)

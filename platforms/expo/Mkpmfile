@@ -1,4 +1,4 @@
-# File: /Makefile
+# File: /Mkpmfile
 # Project: @platform/expo
 # File Created: 17-09-2023 13:11:26
 # Author: Clay Risser
@@ -20,7 +20,6 @@
 include $(MKPM)/mkpm
 DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
-include $(MKPM)/envcache
 include $(MKPM)/chain
 include $(MKPM)/dotenv
 include $(MKPM)/yarn
@@ -86,7 +85,5 @@ clean: ##
 		$(MKPM_GIT_CLEAN_FLAGS) \
 		$(YARN_GIT_CLEAN_FLAGS) \
 		$(NOFAIL)
-
-CACHE_ENVS += \
 
 -include $(call chain)
