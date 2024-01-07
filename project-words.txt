@@ -121,6 +121,7 @@ gnumake
 gnused
 gql
 graphicsmagick
+graphiql
 graphql
 helvetica
 href
@@ -146,6 +147,7 @@ lalit
 lang
 liaoliaots
 linejoin
+localhost
 lucide
 lytek
 mah

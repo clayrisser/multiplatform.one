@@ -1,4 +1,4 @@
-# File: /Makefile
+# File: /Mkpmfile
 # Project: @platform/next
 # File Created: 17-09-2023 13:11:26
 # Author: Clay Risser
@@ -26,7 +26,7 @@ include $(MKPM)/chain
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
-export NEXT ?= $(call yarn_binary,next)
+NEXT ?= $(call yarn_binary,next)
 
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -69,11 +69,10 @@ $(ACTION)/export: $(call git_deps,\.([jt]sx?)$$)
 	@NEXT_STATIC=1 $(NEXT) export
 	@$(call done,$@)
 
-PORT ?= 3000
 .PHONY: dev +dev
 dev: | ~deps +dev ##
 +dev:
-	@$(NEXT) dev -p $(PORT) $(ARGS)
+	@$(NODE) server.js $(ARGS)
 
 .PHONY: clean
 clean: ##
