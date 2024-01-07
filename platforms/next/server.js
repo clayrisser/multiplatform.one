@@ -1,5 +1,5 @@
 /*
- *  File: /server.ts
+ *  File: /server.js
  *  Project: @platform/next
  *  File Created: 06-01-2024 22:25:26
  *  Author: Clay Risser
@@ -20,13 +20,13 @@
  */
 
 require('reflect-metadata');
-const next = require('next');
-const path = require('path');
 const WebSocketServer = require('ws').Server;
 const buildSchema = require('type-graphql').buildSchema;
 const createServer = require('http').createServer;
 const createYoga = require('graphql-yoga').createYoga;
+const next = require('next');
 const parse = require('url').parse;
+const path = require('path');
 const resolvers = require('api').resolvers;
 const useServer = require('graphql-ws/lib/use/ws').useServer;
 

@@ -1,6 +1,6 @@
-# File: /shared.mk
-# Project: example
-# File Created: 17-09-2023 13:11:26
+# File: /docker/Mkpmfile
+# Project: root
+# File Created: 10-10-2023 06:39:34
 # Author: Clay Risser
 # -----
 # BitSpur (c) Copyright 2021 - 2024
@@ -17,22 +17,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-BABEL ?= $(YARN) babel
-BABEL_NODE ?= $(YARN) babel-node
-BROWSERSLIST_BINARY ?= $(YARN) browserslist
-BUILD_STORYBOOK ?= $(YARN) build-storybook
-CHANGESET ?= $(YARN) changeset
-CLOC ?= cloc
-CSPELL ?= $(YARN) cspell
-ESLINT ?= $(YARN) eslint
-EXPO ?= $(YARN) expo
-GM ?= command gm
-JEST ?= $(YARN) jest
-LOKI ?= $(YARN) loki
-NODE ?= node
-PRETTIER ?= $(YARN) prettier
-TSC ?= $(YARN) tsc
-TSUP ?= $(YARN) tsup
-WATCHMAN ?= watchman
+include $(MKPM)/mkpm
+include $(MKPM)/gnu
+DEFAULT_ENV ?= $(PROJECT_ROOT)/.env
+include $(MKPM)/dotenv
+include $(PROJECT_ROOT)/shared.mk
 
-export TAMAGUI_IGNORE_BUNDLE_ERRORS := solito/image,solito/link
+export NAME := $(shell $(NODE) -e "console.log(require('$(PROJECT_ROOT)/package.json').name)")-next
+export VERSION := $(shell $(NODE) -e "console.log(require('$(PROJECT_ROOT)/package.json').version)")
+export DOCKER_COMPOSE ?= docker-compose
+export CONTEXT := $(PROJECT_ROOT)
+export REGISTRY := registry.gitlab.com/bitspur/multiplatform.one
+
+-include $(MKPM)/docker
