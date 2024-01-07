@@ -5,7 +5,7 @@ generator client {
 }
 
 generator typegraphql {
-  provider           = "typegraphql-prisma-nestjs-keycloak"
+  provider           = "typegraphql-prisma"
   emitTranspiledCode = false
 }
 

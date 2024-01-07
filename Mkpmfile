@@ -30,6 +30,7 @@ include $(PROJECT_ROOT)/shared.mk
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
 	@$(YARN) install $(DEPS_ARGS)
+	@$(MAKE) +build
 	@$(call done,$@)
 
 ACTIONS += format ##
@@ -96,7 +97,7 @@ docker/%:
 
 .PHONY: prisma/%
 prisma/%:
-	@$(MKPM_MAKE) -C api/prisma $*
+	@$(MKPM_MAKE) -C api prisma/$*
 
 .PHONY: gen/%
 gen/%:
