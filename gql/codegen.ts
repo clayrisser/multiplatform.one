@@ -1,7 +1,7 @@
 /*
- *  File: /resolvers.ts
+ *  File: /codegen.ts
  *  Project: api
- *  File Created: 07-01-2024 08:13:01
+ *  File Created: 07-01-2024 09:02:44
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,8 +19,25 @@
  *  limitations under the License.
  */
 
-import type { NonEmptyArray } from 'type-graphql';
-import { UserCrudResolver } from './generated/type-graphql';
-import { HelloResolver } from './hello';
+import type { CodegenConfig } from '@graphql-codegen/cli';
 
-export const resolvers: NonEmptyArray<Function> | NonEmptyArray<string> = [UserCrudResolver, HelloResolver];
+const config: CodegenConfig = {
+  overwrite: true,
+  schema: './generated/schema.graphql',
+  documents: [
+    '**/*.{ts,tsx}',
+    '../app/**/*.{ts,tsx}',
+    '!../app/node_modules/**/*.{ts,tsx}',
+    '!node_modules/**/*.{ts,tsx}',
+  ],
+  generates: {
+    './generated/gql/': {
+      preset: 'client',
+    },
+    './generated/graphql.schema.json': {
+      plugins: ['introspection'],
+    },
+  },
+};
+
+export default config;

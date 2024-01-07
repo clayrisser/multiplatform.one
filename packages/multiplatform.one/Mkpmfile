@@ -55,7 +55,7 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	@$(call done,$@)
 
 ACTIONS += build~test ##
-BUILD_TARGET := dist/lib/index.js
+BUILD_TARGETS := dist/lib/index.js
 dist/lib/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)

@@ -32,8 +32,7 @@
     "@types/cookie": "^0.6.0",
     "@types/node": "~20.10.6",
     "@types/node-cleanup": "^2.1.5",
-    "@types/ws": "^8.5.10",
-    "nodemon": "^3.0.2"
+    "@types/ws": "^8.5.10"
   },
   "transpileModules": [
     "@multiplatform.one/components",
@@ -54,13 +53,5 @@
     "reportPath": "node_modules",
     "reportFile": "test-report.xml",
     "indent": 4
-  },
-  "nodemonConfig": {
-    "ext": "ts,tsx,js,jsx,mjs,cjs,graphql,html,json,env",
-    "signal": "SIGTERM",
-    "delay": 1000,
-    "watch": [
-      "../../api/lib"
-    ]
   }
 }

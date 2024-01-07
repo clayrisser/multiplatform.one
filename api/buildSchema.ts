@@ -1,7 +1,7 @@
 /*
- *  File: /resolvers.ts
- *  Project: api
- *  File Created: 07-01-2024 08:13:01
+ *  File: /buildSchema.ts
+ *  Project: gql
+ *  File Created: 07-01-2024 14:06:26
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,8 +19,16 @@
  *  limitations under the License.
  */
 
-import type { NonEmptyArray } from 'type-graphql';
-import { UserCrudResolver } from './generated/type-graphql';
-import { HelloResolver } from './hello';
+import path from 'path';
+import type { ServerOptions } from './index';
+import { buildSchema as typeGraphqlBuildSchema } from 'type-graphql';
+import { createServerOptions, resolvers } from './index';
 
-export const resolvers: NonEmptyArray<Function> | NonEmptyArray<string> = [UserCrudResolver, HelloResolver];
+export async function buildSchema(serverOptions?: ServerOptions) {
+  if (!serverOptions) serverOptions = await createServerOptions();
+  return typeGraphqlBuildSchema({
+    ...serverOptions.buildSchema,
+    resolvers,
+    emitSchemaFile: path.resolve(__dirname, '../../gql/generated/schema.graphql'),
+  });
+}

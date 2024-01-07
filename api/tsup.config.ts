@@ -26,8 +26,8 @@ export default defineConfig({
   bundle: true,
   clean: true,
   dts: false,
-  entry: ['**/*.ts?(x)', '!tsup.config.ts', '!lib', '!node_modules', '!prisma'],
-  entryPoints: ['index.ts'],
+  entry: ['**/*.ts?(x)', '!tsup.config.ts', '!lib', '!prisma', '!generated/gql'],
+  entryPoints: ['server.ts'],
   format: ['cjs'],
   minify: false,
   outDir: 'lib',
@@ -35,5 +35,5 @@ export default defineConfig({
   skipNodeModulesBundle: true,
   noExternal: transpileModules,
   splitting: true,
-  target: 'es5',
+  target: 'es2022',
 });

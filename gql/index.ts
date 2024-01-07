@@ -1,7 +1,7 @@
 /*
- *  File: /resolvers.ts
- *  Project: api
- *  File Created: 07-01-2024 08:13:01
+ *  File: /index.ts
+ *  Project: app
+ *  File Created: 07-01-2024 09:37:57
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,8 +19,4 @@
  *  limitations under the License.
  */
 
-import type { NonEmptyArray } from 'type-graphql';
-import { UserCrudResolver } from './generated/type-graphql';
-import { HelloResolver } from './hello';
-
-export const resolvers: NonEmptyArray<Function> | NonEmptyArray<string> = [UserCrudResolver, HelloResolver];
+export * from './generated/gql';

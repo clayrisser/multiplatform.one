@@ -51,7 +51,7 @@ $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 # 	@$(call done,$@)
 
 ACTIONS += build~lint ##
-BUILD_TARGET := lib/index.js
+BUILD_TARGETS := lib/index.js
 lib/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
