@@ -3,6 +3,7 @@
 /.changeset/*.md
 /null
 debug.json
+/.dockerignore
 
 # node
 **/.expo/*

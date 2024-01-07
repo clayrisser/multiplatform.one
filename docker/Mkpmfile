@@ -29,4 +29,4 @@ export DOCKER_COMPOSE ?= docker-compose
 export CONTEXT := $(PROJECT_ROOT)
 export REGISTRY := registry.gitlab.com/bitspur/multiplatform.one
 
--include $(MKPM)/docker
+include $(MKPM)/docker
