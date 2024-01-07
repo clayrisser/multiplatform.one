@@ -19,10 +19,37 @@
  *  limitations under the License.
  */
 
-import type { NonEmptyArray } from 'type-graphql';
+import type { BuildSchemaOptions } from 'type-graphql';
 import type { YogaServerOptions } from 'graphql-yoga';
-import { UserCrudResolver } from '@generated/type-graphql';
+import { PrismaClient } from '@prisma/client';
 
-export const resolvers: NonEmptyArray<Function> | NonEmptyArray<string> = [UserCrudResolver];
+export async function createServerOptions(): Promise<ServerOptions> {
+  const prisma = new PrismaClient();
+  await prisma.$connect();
+  return {
+    buildSchema: {
+      validate: {
+        forbidUnknownValues: false,
+      },
+    },
+    yoga: {
+      context(ctx) {
+        return {
+          ...ctx,
+          prisma,
+        };
+      },
+    },
+    async cleanup() {
+      await prisma.$disconnect();
+    },
+  };
+}
 
-export const yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>> = {};
+export interface ServerOptions {
+  buildSchema?: Partial<BuildSchemaOptions>;
+  cleanup?: () => Promise<void>;
+  yoga?: YogaServerOptions<Record<string, any>, Record<string, any>>;
+}
+
+export * from './resolvers';

@@ -23,14 +23,15 @@ require('reflect-metadata');
 const WebSocketServer = require('ws').Server;
 const buildSchema = require('type-graphql').buildSchema;
 const createServer = require('http').createServer;
+const createServerOptions = require('api').createServerOptions;
 const createYoga = require('graphql-yoga').createYoga;
+const dotenv = require('dotenv');
 const next = require('next');
+const nodeCleanup = require('node-cleanup');
 const parse = require('url').parse;
 const path = require('path');
 const resolvers = require('api').resolvers;
 const useServer = require('graphql-ws/lib/use/ws').useServer;
-const yogaServerOptions = require('api').yogaServerOptions;
-const dotenv = require('dotenv');
 dotenv.config();
 
 const port = Number(process.env.PORT || 3000);
@@ -46,14 +47,18 @@ const logger = console;
 const graphqlEndpoint = '/graphql';
 
 (async () => {
+  const serverOptions = await createServerOptions();
   const schema = await buildSchema({
+    ...serverOptions.buildSchema,
     resolvers,
     emitSchemaFile: path.resolve(__dirname, 'schema.graphql'),
   });
   const yoga = createYoga({
-    ...yogaServerOptions,
+    logging: 'info',
+    ...serverOptions.yoga,
     graphqlEndpoint,
     graphiql: {
+      ...serverOptions.yoga?.graphiql,
       subscriptionsProtocol: 'WS',
     },
     schema,
@@ -108,10 +113,34 @@ const graphqlEndpoint = '/graphql';
     wsServer,
   );
   await new Promise((resolve) => server.listen(port, () => resolve(undefined)));
-  process.on('SIGINT', async () => {
-    server.close();
-    wsServer.close();
-    process.exit();
+  nodeCleanup((_exitCode, signal) => {
+    if (signal) {
+      (async () => {
+        try {
+          await Promise.all([
+            ...(typeof serverOptions.cleanup === 'function' ? [serverOptions.cleanup()] : []),
+            new Promise((resolve, reject) => {
+              server.close((err) => {
+                if (err) return reject(err);
+                return resolve(undefined);
+              });
+            }),
+            new Promise((resolve, reject) => {
+              wsServer.close((err) => {
+                if (err) return reject(err);
+                return resolve(undefined);
+              });
+            }),
+          ]);
+          process.kill(process.pid, signal);
+        } catch (err) {
+          logger.error(err);
+          process.exit(1);
+        }
+      })();
+      nodeCleanup.uninstall();
+      return false;
+    }
   });
   logger.info(`
 > App started!
