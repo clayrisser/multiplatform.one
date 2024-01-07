@@ -1,35 +1,42 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
+    "checkJs": false,
     "downlevelIteration": true,
+    "composite": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "incremental": true,
-    "jsx": "react",
-    "lib": ["es2021", "dom", "esnext"],
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "jsx": "preserve",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
     "noEmitOnError": false,
     "noImplicitAny": false,
     "noImplicitReturns": false,
+    "noUncheckedIndexedAccess": true,
+    "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveConstEnums": true,
     "preserveSymlinks": true,
-    "removeComments": false,
+    "removeComments": true,
     "resolveJsonModule": true,
     "rootDir": ".",
     "skipLibCheck": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "strictNullChecks": true,
+    "target": "ES2022",
     "types": ["node"],
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "lib": ["DOM", "DOM.Iterable", "ES2022", "ScriptHost", "WebWorker", "WebWorker.ImportScripts", "Webworker.Iterable"]
   },
-  "exclude": ["_"],
   "typeAcquisition": {
     "enable": true
-  }
+  },
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json"],
+  "exclude": ["node_modules", "dist", "lib"]
 }

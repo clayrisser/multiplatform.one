@@ -1,6 +1,6 @@
 # File: /Mkpmfile
-# Project: api
-# File Created: 06-01-2024 23:03:30
+# Project: app
+# File Created: 17-09-2023 13:11:26
 # Author: Clay Risser
 # -----
 # BitSpur (c) Copyright 2021 - 2024
@@ -18,12 +18,16 @@
 # limitations under the License.
 
 include $(MKPM)/mkpm
+DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
 include $(MKPM)/chain
-DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/dotenv
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
+
+BUILD_SCHEMA ?= $(NODE) -e "require('reflect-metadata');require('api/buildSchema').buildSchema()"
+GRAPHQL_CODEGEN ?= $(YARN) graphql-codegen
+NODEMON ?= $(YARN) nodemon
 
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -35,12 +39,12 @@ endif
 	@$(call done,$@)
 
 ACTIONS += generate~deps ##
-GENERATE_TARGETS := generated/type-graphql/index.ts
-generated/type-graphql/index.ts:
-	@$(call reset,generate)
-$(ACTION)/generate: $(call git_deps,\.(prisma)$$)
-	@$(MKPM_MAKE) -C prisma generate
+$(ACTION)/generate: $(PROJECT_ROOT)/api/lib/index.js codegen.ts
+	@$(BUILD_SCHEMA)
+	@$(GRAPHQL_CODEGEN) -s --config codegen.ts
 	@$(call done,$@)
+$(PROJECT_ROOT)/api/lib/index.js:
+	@$(MKPM_MAKE) -C ../api ~generate && $(MKPM_MAKE) -C ../api +build
 
 ACTIONS += format~generate ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
@@ -63,17 +67,9 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call jest,$?,$(TEST_ARGS))
 	@$(call done,$@)
 
-ACTIONS += build~test ##
-BUILD_TARGETS := lib/index.js
-lib/index.js:
-	@$(call reset,build)
-$(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(TSUP)
-	@$(call done,$@)
-
 .PHONY: watch
-watch: ~generate
-	@$(TSUP) --watch '**/*.ts' $(WATCH_ARGS)
+watch: ~deps $(PROJECT_ROOT)/api/lib/index.js
+	@$(NODEMON) --exec "$(MKPM_MAKE) +generate"
 
 .PHONY: clean
 clean: ##
@@ -84,9 +80,5 @@ clean: ##
 		$(MKPM_GIT_CLEAN_FLAGS) \
 		$(YARN_GIT_CLEAN_FLAGS) \
 		$(NOFAIL)
-
-.PHONY: prisma/%
-prisma/%: ~deps
-	@$(MKPM_MAKE) -C prisma $*
 
 -include $(call chain)

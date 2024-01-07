@@ -26,7 +26,6 @@ include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
 NEXT ?= $(YARN) next
-NODEMON ?= $(YARN) nodemon
 
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -73,9 +72,11 @@ $(ACTION)/export: $(call git_deps,\.([jt]sx?)$$)
 dev: | ~deps +dev ##
 +dev:
 	@$(MKPM_MAKE) -C ../../api prisma/dev
-	@$(MKPM_MAKE) -C ../../api watch &
+	@$(MKPM_MAKE) -C ../../gql generate
+	@$(MKPM_MAKE) -C ../../gql watch &
 	@$(MKPM_MAKE) -C ../../docker dev-d
-	@$(NODEMON) --exec "$(NODE) server.js dev $(ARGS)"
+	@$(MKPM_MAKE) -C ../../api watch \
+		WATCH_ARGS="--onSuccess 'cd $(CURDIR) && NODE_ENV=development $(NODE) server.js'"
 
 .PHONY: clean
 clean: ##
