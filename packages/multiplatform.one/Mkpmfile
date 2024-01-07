@@ -1,4 +1,4 @@
-# File: /Makefile
+# File: /Mkpmfile
 # Project: multiplatform.one
 # File Created: 19-09-2023 06:49:20
 # Author: Clay Risser
@@ -21,12 +21,8 @@ include $(MKPM)/mkpm
 include $(MKPM)/gnu
 include $(MKPM)/chain
 include $(MKPM)/yarn
-include $(MKPM)/envcache
 include $(MKPM)/dotenv
 include $(PROJECT_ROOT)/shared.mk
-
-export NPM_AUTH_TOKEN ?= $(shell $(CAT) $(HOME)/.docker/config.json | \
-	$(JQ) -r '.auths["registry.gitlab.com"].auth' | $(BASE64_NOWRAP) -d | $(CUT) -d':' -f2)
 
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -104,11 +100,3 @@ clean: ##
 		$(NOFAIL)
 
 -include $(call chain)
-
-export CACHE_ENVS += \
-	CLOC \
-	CSPELL \
-	ESLINT \
-	JEST \
-	PRETTIER \
-	TSC

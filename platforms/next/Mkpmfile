@@ -20,13 +20,13 @@
 include $(MKPM)/mkpm
 DEFAULT_ENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
-include $(MKPM)/envcache
 include $(MKPM)/dotenv
 include $(MKPM)/chain
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
-NEXT ?= $(call yarn_binary,next)
+NEXT ?= $(YARN) next
+NODEMON ?= $(YARN) nodemon
 
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -72,7 +72,8 @@ $(ACTION)/export: $(call git_deps,\.([jt]sx?)$$)
 .PHONY: dev +dev
 dev: | ~deps +dev ##
 +dev:
-	@$(NODE) server.js $(ARGS)
+	@$(MKPM_MAKE) -C ../../api watch &
+	@$(NODEMON) --exec "$(NODE) server.js $(ARGS)"
 
 .PHONY: clean
 clean: ##
@@ -83,11 +84,5 @@ clean: ##
 		$(MKPM_GIT_CLEAN_FLAGS) \
 		$(YARN_GIT_CLEAN_FLAGS) \
 		$(NOFAIL)
-
-.PHONY: docker/%
-docker/%:
-	@echo $(MAKE) -sC docker $(subst docker/,,$@) ARGS=$(ARGS)
-
-CACHE_ENVS += \
 
 -include $(call chain)

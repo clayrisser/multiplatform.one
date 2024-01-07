@@ -1,4 +1,4 @@
-# File: /Makefile
+# File: /Mkpmfile
 # Project: @multiplatform.one/nestjs-keycloak
 # File Created: 19-09-2023 07:07:12
 # Author: Clay Risser
@@ -21,7 +21,6 @@ include $(MKPM)/mkpm
 include $(MKPM)/gnu
 include $(MKPM)/chain
 include $(MKPM)/yarn
-include $(MKPM)/envcache
 include $(MKPM)/dotenv
 include $(PROJECT_ROOT)/shared.mk
 
@@ -66,10 +65,3 @@ coverage: | ~lint +coverage
 	@$(JEST) --coverage --collectCoverageFrom='$(COLLECT_COVERAGE_FROM)' $(ARGS)
 
 -include $(call chain)
-
-export CACHE_ENVS += \
-	CSPELL \
-	ESLINT \
-	JEST \
-	PRETTIER \
-	TSC

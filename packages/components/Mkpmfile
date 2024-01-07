@@ -1,12 +1,30 @@
+# File: /Mkpmfile
+# Project: @multiplatform.one/components
+# File Created: 10-10-2023 06:39:34
+# Author: Clay Risser
+# -----
+# BitSpur (c) Copyright 2021 - 2024
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 include $(MKPM)/mkpm
 include $(MKPM)/gnu
-include $(MKPM)/envcache
 include $(MKPM)/chain
 include $(MKPM)/dotenv
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
-export TAMAGUI_BUILD ?= $(call yarn_binary,tamagui-build)
+TAMAGUI_BUILD ?= $(YARN) tamagui-build
 
 ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -60,7 +78,5 @@ clean: ##
 .PHONY: publish
 publish:
 	@$(NPM) publish
-
-CACHE_ENVS += \
 
 -include $(call chain)

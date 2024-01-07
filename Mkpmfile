@@ -17,10 +17,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-.ONESHELL:
-.POSIX:
-.SILENT:
-
 MONOREPO := 1
 
 include $(MKPM)/mkpm
@@ -90,17 +86,17 @@ HELP = help
 help: $(MKCHAIN_HELP)
 	@$(call workspace_foreach_help,$(MKCHAIN_HELP),$(ARGS))
 
-.PHONY: next/docker/%
-next/docker/%:
-	@$(MKPM_MAKE) -C platforms/next/docker $*
-
 .PHONY: storybook/docker/%
 storybook/docker/%:
 	@$(MKPM_MAKE) -C platforms/storybook/docker $*
 
-.PHONY: api/docker/%
-api/docker/%:
-	@$(MKPM_MAKE) -C api/docker $*
+.PHONY: docker/%
+docker/%:
+	@$(MKPM_MAKE) -C docker $*
+
+.PHONY: prisma/%
+prisma/%:
+	@$(MKPM_MAKE) -C api/prisma $*
 
 .PHONY: gen/%
 gen/%:
@@ -131,7 +127,5 @@ version:
 publish: version ~build +publish
 +publish:
 	@$(CHANGESET) publish
-
-CACHE_ENVS += \
 
 -include $(call chain)

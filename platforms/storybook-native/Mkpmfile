@@ -1,4 +1,4 @@
-# File: /Makefile
+# File: /Mkpmfile
 # Project: @platform/storybook-native
 # File Created: 17-09-2023 13:11:26
 # Author: Clay Risser
@@ -20,13 +20,12 @@
 include $(MKPM)/mkpm
 DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
-include $(MKPM)/envcache
 include $(MKPM)/dotenv
 include $(MKPM)/chain
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
-export SB_RN_GET_STORIES ?= $(call yarn_binary,sb-rn-get-stories)
+SB_RN_GET_STORIES ?= $(YARN) sb-rn-get-stories
 export STORYBOOK_ENABLED=true
 
 ACTIONS += deps ##
@@ -99,7 +98,5 @@ clean: ##
 		$(MKPM_GIT_CLEAN_FLAGS) \
 		$(YARN_GIT_CLEAN_FLAGS) \
 		$(NOFAIL)
-
-CACHE_ENVS += \
 
 -include $(call chain)
