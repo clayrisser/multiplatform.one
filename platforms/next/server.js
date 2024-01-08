@@ -126,6 +126,7 @@ const graphqlEndpoint = '/graphql';
             }),
           ]);
           process.kill(process.pid, signal);
+          process.exit();
         } catch (err) {
           logger.error(err);
           process.exit(1);

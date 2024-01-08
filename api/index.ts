@@ -19,13 +19,13 @@
  *  limitations under the License.
  */
 
-import Container from 'typedi';
-import type { BuildSchemaOptions, ResolverData } from 'type-graphql';
-import type { Ctx } from './types';
-import type { YogaServerOptions } from 'graphql-yoga';
+import Container, { Constructable } from 'typedi';
+import { BuildSchemaOptions, ResolverData } from 'type-graphql';
+import { Ctx } from './types';
+import { OnResponseEventPayload } from '@whatwg-node/server';
 import { PrismaClient } from '@prisma/client';
+import { YogaServerOptions } from 'graphql-yoga';
 import { resolvers } from './resolvers';
-import { v4 as uuidv4 } from 'uuid';
 
 export async function createServerOptions(connectPrisma = false): Promise<ServerOptions> {
   const prisma = new PrismaClient();
@@ -33,20 +33,37 @@ export async function createServerOptions(connectPrisma = false): Promise<Server
   return {
     buildSchema: {
       resolvers,
-      // container: ({ context: ctx }: ResolverData<Ctx>) => Container.of(ctx.id),
+      container: ({ context: ctx }: ResolverData<Ctx>) => ctx.container,
       validate: {
         forbidUnknownValues: false,
       },
     },
     yoga: {
-      context(ctx): Ctx {
-        return {
-          ...ctx,
-          id: uuidv4(),
+      context(context): Ctx {
+        const id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
+        const container = Container.of(id);
+        const ctx = {
+          ...context,
+          container,
+          id,
           prisma,
         };
+        container.set('ctx', ctx);
+        (resolvers as any[]).forEach((resolver: Constructable<any>) =>
+          container.set({
+            id: resolver,
+            type: resolver,
+          }),
+        );
+        return ctx;
       },
-      plugins: [],
+      plugins: [
+        {
+          onResponse({ serverContext }: OnResponseEventPayload<Ctx>) {
+            Container.reset(serverContext?.id);
+          },
+        },
+      ],
     },
     async cleanup() {
       await prisma.$disconnect();

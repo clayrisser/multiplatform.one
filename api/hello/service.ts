@@ -1,7 +1,7 @@
 /*
- *  File: /hello/resolver.ts
+ *  File: /hello/service.ts
  *  Project: api
- *  File Created: 06-01-2024 23:24:23
+ *  File Created: 08-01-2024 11:16:55
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,15 +19,11 @@
  *  limitations under the License.
  */
 
-import { Query, Resolver } from 'type-graphql';
-import { HelloService } from './service';
+import { Service } from 'typedi';
 
-@Resolver((_of) => String)
-export class HelloResolver {
-  constructor(private readonly helloService: HelloService) {}
-
-  @Query((_returns) => String)
-  async hello(): Promise<string> {
-    return this.helloService.hello();
+@Service()
+export class HelloService {
+  public hello() {
+    return 'Hello World!';
   }
 }
