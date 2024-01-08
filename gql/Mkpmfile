@@ -44,7 +44,8 @@ $(ACTION)/generate: $(PROJECT_ROOT)/api/lib/index.js codegen.ts
 	@$(GRAPHQL_CODEGEN) -s --config codegen.ts
 	@$(call done,$@)
 $(PROJECT_ROOT)/api/lib/index.js:
-	@$(MKPM_MAKE) -C ../api ~generate && $(MKPM_MAKE) -C ../api +build
+	@$(MKPM_MAKE) -C ../api ~generate
+	@$(MKPM_MAKE) -C ../api +build
 
 ACTIONS += format~generate ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
@@ -69,7 +70,13 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 
 .PHONY: watch
 watch: ~deps $(PROJECT_ROOT)/api/lib/index.js
-	@$(NODEMON) --exec "$(MKPM_MAKE) +generate"
+	@$(NODEMON) --exec "$(MKPM_MAKE) +generate" $(WATCH_ARGS)
+
+.PHONY: dev
+dev: ~deps $(PROJECT_ROOT)/api/lib/index.js
+	@$(SLEEP) 3 && WATCH_ARGS="-w ../app" $(MKPM_MAKE) watch &
+	@$(MKPM_MAKE) -C ../api watch \
+		WATCH_ARGS="--onSuccess '$(MKPM_MAKE) -C ../gql +generate'"
 
 .PHONY: clean
 clean: ##

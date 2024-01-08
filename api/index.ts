@@ -23,9 +23,9 @@ import type { BuildSchemaOptions } from 'type-graphql';
 import type { YogaServerOptions } from 'graphql-yoga';
 import { PrismaClient } from '@prisma/client';
 
-export async function createServerOptions(): Promise<ServerOptions> {
+export async function createServerOptions(connectPrisma = false): Promise<ServerOptions> {
   const prisma = new PrismaClient();
-  await prisma.$connect();
+  if (connectPrisma) await prisma.$connect();
   return {
     buildSchema: {
       validate: {
