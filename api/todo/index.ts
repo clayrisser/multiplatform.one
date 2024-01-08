@@ -1,8 +1,8 @@
 /*
- *  File: /resolvers.ts
+ *  File: /todo/index.ts
  *  Project: api
- *  File Created: 07-01-2024 08:13:01
- *  Author: Clay Risser
+ *  File Created: 08-01-2024 12:22:21
+ *  Author: dharmendra
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
  *
@@ -19,13 +19,4 @@
  *  limitations under the License.
  */
 
-import type { NonEmptyArray } from 'type-graphql';
-import { UserCrudResolver } from './generated/type-graphql';
-import { HelloResolver } from './hello';
-import { TodoResolver } from './todo';
-
-export const resolvers: NonEmptyArray<Function> | NonEmptyArray<string> = [
-  UserCrudResolver,
-  HelloResolver,
-  TodoResolver,
-];
+export * from './resolver';
