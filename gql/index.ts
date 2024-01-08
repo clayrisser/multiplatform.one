@@ -20,3 +20,4 @@
  */
 
 export * from './generated/gql';
+export { graphql as gql } from './generated/gql';

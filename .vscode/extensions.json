@@ -9,6 +9,9 @@
     "ms-azuretools.vscode-docker",
     "prisma.prisma",
     "psioniq.psi-header",
-    "streetsidesoftware.code-spell-checker"
+    "streetsidesoftware.code-spell-checker",
+    "graphql.vscode-graphql-execution",
+    "graphql.vscode-graphql-syntax",
+    "graphql.vscode-graphql"
   ]
 }

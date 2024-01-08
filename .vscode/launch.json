@@ -31,10 +31,10 @@
       "command": "./mkpm expo/dev"
     },
     {
-      "name": "api dev",
+      "name": "gql dev",
       "type": "node-terminal",
       "request": "launch",
-      "command": "./mkpm api/dev"
+      "command": "./mkpm gql/dev"
     }
   ]
 }

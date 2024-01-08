@@ -25,6 +25,7 @@
     "react-native-web-lite": "^1.82.8",
     "reflect-metadata": "^0.2.1",
     "type-graphql": "^1.1.1",
+    "typedi": "^0.10.0",
     "ws": "^8.16.0"
   },
   "devDependencies": {

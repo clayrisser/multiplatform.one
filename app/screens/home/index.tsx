@@ -20,18 +20,26 @@
  */
 
 import React, { useState } from 'react';
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack } from 'ui';
+import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { useLink } from 'solito/link';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { useTranslation } from 'multiplatform.one';
 import { withDefaultLayout } from 'app/layouts/Default';
-import { graphql } from 'gql';
+import { gql } from 'gql';
 
-export const AllUsers = graphql(`
-  query AllUsers {
-    users {
+const Hello = gql(/* GraphQL */ `
+  query Hello {
+    hello
+  }
+`);
+
+const CreateOneUser = gql(/* GraphQL */ `
+  mutation CreateOneUser($email: String!, $name: String) {
+    createOneUser(data: { email: $email, name: $name }) {
+      email
       id
+      name
     }
   }
 `);
@@ -41,12 +49,20 @@ function HomeScreen() {
   const linkProps = useLink({
     href: '/user/alice',
   });
-  const { data } = useQuery(AllUsers);
+  const { data, loading } = useQuery(Hello);
+  const [createOneUser] = useMutation(CreateOneUser);
 
-  console.log('USERS', data?.users);
+  async function handleCreateOneUser() {
+    await createOneUser({
+      variables: {
+        email: `${Math.random()}@example.com`,
+      },
+    });
+  }
 
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
+      {loading ? <Spinner /> : <Text>{JSON.stringify(data)}</Text>}
       <YStack space="$4" maw={600}>
         <H1 ta="center">{t('screens.home.welcome')}</H1>
         <Paragraph fontFamily="$silkscreen" ta="center">
@@ -61,6 +77,7 @@ function HomeScreen() {
       </YStack>
       <XStack>
         <Button {...linkProps}>{t('screens.home.link')}</Button>
+        <Button onPress={handleCreateOneUser}>Create One User</Button>
       </XStack>
       <SheetDemo />
     </YStack>
