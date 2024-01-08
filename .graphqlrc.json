@@ -1,0 +1,16 @@
+{
+  "schema": "gql/generated/schema.graphql",
+  "documents": [
+    "api/**/*.{ts,tsx}",
+    "app/**/*.{ts,tsx}",
+    "!api/node_modules/**/*.{ts,tsx}",
+    "!app/node_modules/**/*.{ts,tsx}"
+  ],
+  "extensions": {
+    "endpoints": {
+      "default": {
+        "url": "http://localhost:3000/graphql"
+      }
+    }
+  }
+}

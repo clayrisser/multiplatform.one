@@ -305,6 +305,7 @@ tsup
 tsx
 txt
 typ
+typedi
 typegraphql
 typeof
 umd

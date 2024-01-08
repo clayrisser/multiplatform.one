@@ -1,7 +1,7 @@
 /*
- *  File: /buildSchema.ts
- *  Project: gql
- *  File Created: 07-01-2024 14:06:26
+ *  File: /types.ts
+ *  Project: api
+ *  File Created: 08-01-2024 02:16:47
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,15 +19,10 @@
  *  limitations under the License.
  */
 
-import path from 'path';
-import type { ServerOptions } from './index';
-import { buildSchema as typeGraphqlBuildSchema } from 'type-graphql';
-import { createServerOptions } from './index';
+import type { PrismaClient } from '@prisma/client';
+import type { YogaInitialContext } from 'graphql-yoga';
 
-export async function buildSchema(serverOptions?: ServerOptions) {
-  if (!serverOptions) serverOptions = await createServerOptions();
-  return typeGraphqlBuildSchema({
-    ...serverOptions.buildSchema,
-    emitSchemaFile: path.resolve(__dirname, '../../gql/generated/schema.graphql'),
-  });
+export interface Ctx extends YogaInitialContext {
+  id: string;
+  prisma: PrismaClient;
 }

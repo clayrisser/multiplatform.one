@@ -11,6 +11,8 @@
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
+    "@playlyfe/gql": "^2.6.2",
+    "@types/uuid": "^9",
     "@typescript-eslint/eslint-plugin": "^6.18.0",
     "@typescript-eslint/parser": "^6.18.0",
     "eslint": "^8.56.0",
@@ -55,8 +57,5 @@
     "solito"
   ],
   "packageManager": "yarn@3.6.1",
-  "prettier": "eslint-config-alloy/.prettierrc.js",
-  "dependencies": {
-    "@apollo/client": "^3.8.8"
-  }
+  "prettier": "eslint-config-alloy/.prettierrc.js"
 }
