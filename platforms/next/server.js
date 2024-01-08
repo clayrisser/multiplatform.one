@@ -45,7 +45,7 @@ const logger = console;
 const graphqlEndpoint = '/graphql';
 
 (async () => {
-  const serverOptions = await createServerOptions();
+  const serverOptions = await createServerOptions(true);
   const yoga = createYoga({
     logging: 'info',
     ...serverOptions.yoga,
