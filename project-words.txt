@@ -65,6 +65,7 @@ codegen
 comment
 compat
 consolas
+constructable
 corejs
 coreutils
 cors
@@ -335,6 +336,7 @@ wcag
 webkit
 webpack
 webpack5
+whatwg
 wienert
 workspace
 xmas

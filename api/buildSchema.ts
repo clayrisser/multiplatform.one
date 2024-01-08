@@ -20,9 +20,8 @@
  */
 
 import path from 'path';
-import type { ServerOptions } from './index';
 import { buildSchema as typeGraphqlBuildSchema } from 'type-graphql';
-import { createServerOptions } from './index';
+import { createServerOptions, ServerOptions } from './index';
 
 export async function buildSchema(serverOptions?: ServerOptions) {
   if (!serverOptions) serverOptions = await createServerOptions();

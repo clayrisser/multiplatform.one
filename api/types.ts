@@ -19,10 +19,12 @@
  *  limitations under the License.
  */
 
-import type { PrismaClient } from '@prisma/client';
-import type { YogaInitialContext } from 'graphql-yoga';
+import { ContainerInstance } from 'typedi';
+import { PrismaClient } from '@prisma/client';
+import { YogaInitialContext } from 'graphql-yoga';
 
 export interface Ctx extends YogaInitialContext {
+  container: ContainerInstance;
   id: string;
   prisma: PrismaClient;
 }
