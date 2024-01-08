@@ -36,14 +36,25 @@ export const AllUsers = graphql(`
   }
 `);
 
+export const GetTodos = graphql(`
+  query GetTodos {
+    getTodos {
+      id
+      text
+      completed
+    }
+  }
+`);
+
 function HomeScreen() {
   const { t } = useTranslation();
   const linkProps = useLink({
     href: '/user/alice',
   });
-  const { data } = useQuery(AllUsers);
+  // const { data } = useQuery(AllUsers);
+  const { data } = useQuery(GetTodos);
 
-  console.log('USERS', data?.users);
+  console.log('TODOS', data);
 
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
