@@ -25,7 +25,7 @@ import type { ProviderProps } from './types';
 import type { TamaguiInternalConfig } from 'ui';
 import type { TamaguiProviderProps } from './tamagui';
 import { ApolloProvider } from './apollo';
-import { KeycloakProvider } from './keycloak';
+// import { KeycloakProvider } from './keycloak';
 import { NavigationProvider } from './navigation';
 import { TamaguiProvider } from './tamagui';
 
@@ -40,15 +40,15 @@ export type GlobalProviderProps = ProviderProps &
 
 export function GlobalProvider({ children, keycloak, cookies, tamaguiConfig, ...props }: GlobalProviderProps) {
   return (
-    <KeycloakProvider disabled={!keycloak} cookies={cookies} {...keycloak}>
-      <ApolloProvider>
-        <TamaguiProvider config={tamaguiConfig} {...props}>
-          <Suspense>
-            <NavigationProvider>{children}</NavigationProvider>
-          </Suspense>
-        </TamaguiProvider>
-      </ApolloProvider>
-    </KeycloakProvider>
+    // <KeycloakProvider disabled={!keycloak} cookies={cookies} {...keycloak}>
+    <ApolloProvider>
+      <TamaguiProvider config={tamaguiConfig} {...props}>
+        <Suspense>
+          <NavigationProvider>{children}</NavigationProvider>
+        </Suspense>
+      </TamaguiProvider>
+    </ApolloProvider>
+    // </KeycloakProvider>
   );
 }
 
