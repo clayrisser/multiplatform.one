@@ -40,6 +40,7 @@ import { config } from 'app/config';
 import { importFonts } from 'app/fonts';
 import { setDefaultCrossStorage } from 'multiplatform.one/zustand';
 import { useThemeState } from 'app/state/theme';
+import { SessionProvider } from 'next-auth/react';
 
 const sentryDsn = config.get('SENTRY_DSN');
 if (sentryDsn) {
@@ -81,7 +82,9 @@ function App({ Component, pageProps, cookies }: AppProps) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Provider cookies={cookies}>{contents}</Provider>
+      <SessionProvider>
+        <Provider cookies={cookies}>{contents}</Provider>
+      </SessionProvider>
     </>
   );
 }

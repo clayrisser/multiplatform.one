@@ -35,6 +35,9 @@ dotenv.config();
 const port = Number(process.env.PORT || 3000);
 const hostname = 'localhost';
 
+process.env.NEXTAUTH_SECRET = process.env.SECRET;
+process.env.NEXTAUTH_URL = process.env.BASE_URL;
+
 const app = next({
   dev: process.env.NODE_ENV === 'development',
   hostname,
