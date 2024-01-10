@@ -21,38 +21,40 @@
 
 import React, { useEffect } from 'react';
 import type { ComponentType, ReactNode } from 'react';
-import { useLogin, useKeycloak } from './hooks';
-import { useAuthState } from './state';
+import { MultiPlatform } from 'multiplatform.one';
 import { useAuthConfig, useTokensFromQuery, useTokensFromState } from './hooks';
+import { useKeycloak } from './keycloak';
 
 export interface AuthenticatedProps {
   children: ReactNode;
   disabled?: boolean;
+  loadingComponent?: ComponentType;
   loggedOutComponent?: ComponentType;
-  loginRoute?: string;
 }
 
-export function Authenticated({ children, disabled, loginRoute, loggedOutComponent }: AuthenticatedProps) {
+export function Authenticated({ children, disabled, loggedOutComponent, loadingComponent }: AuthenticatedProps) {
   const authConfig = useAuthConfig();
-  const authState = useAuthState();
-  const login = useLogin(loginRoute);
+  const keycloak = useKeycloak();
   const tokensFromQuery = useTokensFromQuery();
   const tokensFromState = useTokensFromState();
-  const { authenticated } = useKeycloak();
 
   useEffect(() => {
-    if (authenticated !== false) return;
-    if (authConfig.persist) {
-      authState.setIdToken('');
-      authState.setRefreshToken('');
-      authState.setToken('');
+    if (!keycloak?.authenticated) return;
+    if (!MultiPlatform.isServer && !tokensFromQuery && !tokensFromState && !MultiPlatform.isIframe) {
+      keycloak.login({
+        redirectUri: authConfig.loginRedirectUri,
+      });
     }
-    if (typeof window !== 'undefined' && !tokensFromQuery && !tokensFromState && window.self === window.top) login();
-  }, [authenticated]);
+  }, [keycloak]);
 
-  if (disabled || authenticated) return <>{children}</>;
-  const LoggedOutComponent = loggedOutComponent || (() => <>{authConfig.debug ? 'not authenticated' : null}</>);
-  return <LoggedOutComponent />;
+  if (typeof disabled === 'undefined') disabled = authConfig.disabled;
+  if (disabled) return <>{children}</>;
+  const LoadingComponent = loadingComponent;
+  if (typeof keycloak === 'undefined') {
+    return LoadingComponent ? <LoadingComponent /> : <>{authConfig.debug ? 'loading' : null}</>;
+  }
+  const LoggedOutComponent = loggedOutComponent;
+  return LoggedOutComponent ? <LoggedOutComponent /> : <>{authConfig.debug ? 'not authenticated' : null}</>;
 }
 
 export function withAuthenticated<P extends object>(Component: ComponentType<P>) {

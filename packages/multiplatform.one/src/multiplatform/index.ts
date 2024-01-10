@@ -21,7 +21,6 @@
 
 import nextConfig from 'next/config';
 import { MultiPlatformBase } from './multiplatformBase';
-import { Platform } from 'react-native';
 import { isChrome, isClient, isWindowDefined, isServer, isWeb, isWebTouchable } from '@tamagui/constants';
 
 const getConfig =
@@ -33,11 +32,20 @@ export class MultiPlatform extends MultiPlatformBase {
   static isElectronMain = isWindowDefined && (window as any).versions?.electron;
   static isElectronRender = isWindowDefined && (window as any).process?.type === 'renderer';
   static isFirefox = isWindowDefined && window?.navigator?.userAgent?.toLowerCase().indexOf('firefox') > -1;
-  static isWeb = Platform.OS === 'web' && isWeb;
+  static isWeb = isWeb;
   static isNext = MultiPlatform.isWeb && (!isWindowDefined || typeof window.__NEXT_DATA__ === 'object');
   static isServer = isServer;
   static isTest = process?.env?.NODE_ENV === 'test' || process?.env?.JEST_WORKER_ID !== undefined;
   static isWebTouchable = isWebTouchable;
+
+  static isIframe = (() => {
+    if (typeof window === 'undefined') return false;
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;
+    }
+  })();
 
   static isStatic =
     MultiPlatform.isNext &&

@@ -1,10 +1,10 @@
 /*
- *  File: /src/hooks/useTokensFromQuery/index.ts
+ *  File: /src/keycloak/context.ts
  *  Project: @multiplatform.one/keycloak
- *  File Created: 22-06-2023 10:07:56
+ *  File Created: 10-01-2024 15:10:13
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,11 +19,7 @@
  *  limitations under the License.
  */
 
-import { MultiPlatform } from 'multiplatform.one';
-import { useRouter } from 'next/router';
+import type { Keycloak } from './keycloak';
+import { createContext } from 'react';
 
-export function useTokensFromQuery() {
-  if (!MultiPlatform.isIframe) return false;
-  const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
-  return 'idToken' in query || 'token' in query || 'refreshToken' in query;
-}
+export const KeycloakContext = createContext<Keycloak | undefined>(undefined);

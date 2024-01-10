@@ -1,10 +1,10 @@
 /**
- * File: /src/provider/keycloakProvider.native.tsx
+ * File: /src/provider/AuthProvider/AuthProvider.native.tsx
  * Project: @multiplatform.one/keycloak
- * File Created: 22-06-2023 10:07:56
+ * File Created: 09-01-2024 11:29:20
  * Author: Clay Risser
  * -----
- * BitSpur (c) Copyright 2021 - 2023
+ * BitSpur (c) Copyright 2021 - 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,22 +20,14 @@
  */
 
 import React from 'react';
-import type { FC } from 'react';
-import type { KeycloakConfig } from '@bitspur/keycloak-js';
-import type { KeycloakProviderProps } from './keycloakProvider';
-import { AfterAuth } from './afterAuth';
+import type { AuthProviderProps } from './AuthProvider';
+import { AfterAuth } from '../AfterAuth';
 import { KeycloakProvider as ExpoKeycloakProvider } from 'expo-keycloak-auth';
 
-export const KeycloakProvider: FC<KeycloakProviderProps> = ({ children, keycloakConfig }: KeycloakProviderProps) => {
-  const clonedKeycloakConfig = {
-    ...(keycloakConfig as Omit<KeycloakConfig, 'baseUrl'>),
-    url: keycloakConfig.url,
-  };
-  // @ts-ignore
-  delete keycloakConfig.baseUrl;
+export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
   return (
-    <ExpoKeycloakProvider {...clonedKeycloakConfig}>
+    <ExpoKeycloakProvider {...keycloakConfig}>
       <AfterAuth>{children}</AfterAuth>
     </ExpoKeycloakProvider>
   );
-};
+}

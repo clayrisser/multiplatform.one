@@ -8,7 +8,6 @@
     "@tamagui/next-theme": "^1.82.8",
     "api": "*",
     "cookie": "^0.6.0",
-    "cryptr": "^6.3.0",
     "graphql": "~15.3.0",
     "graphql-scalars": "^1.22.4",
     "graphql-ws": "^5.14.3",

@@ -1,10 +1,10 @@
 /*
- *  File: /src/@types/coreJsPure.d.ts
+ *  File: /src/keycloak/index.ts
  *  Project: @multiplatform.one/keycloak
- *  File Created: 23-06-2023 09:00:47
+ *  File Created: 09-01-2024 11:59:25
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,12 +19,4 @@
  *  limitations under the License.
  */
 
-// declare module 'core-js-pure/stable/atob' {
-//   const atob: (...args: any[]) => any;
-//   export = atob;
-// }
-
-// declare module 'core-js-pure/stable/escape' {
-//   const escape: (...args: any[]) => any;
-//   export = escape;
-// }
+export * from './keycloak';

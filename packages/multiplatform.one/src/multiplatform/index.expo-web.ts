@@ -19,11 +19,19 @@
  *  limitations under the License.
  */
 
-import { isWeb } from '@tamagui/constants';
-import { Platform } from 'react-native';
 import { MultiPlatformBase } from './multiplatformBase';
+import { isWeb } from '@tamagui/constants';
 
 export class MultiPlatform extends MultiPlatformBase {
   static isExpo = true;
-  static isWeb = Platform.OS === 'web' && isWeb;
+  static isWeb = isWeb;
+
+  static isIframe = (() => {
+    if (typeof window === 'undefined') return false;
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;
+    }
+  })();
 }

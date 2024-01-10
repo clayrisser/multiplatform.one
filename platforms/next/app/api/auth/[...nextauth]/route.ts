@@ -38,6 +38,8 @@ const handler = NextAuth({
     async jwt({ token, account }) {
       if (account) {
         const decoded = jwtDecode(account.access_token || '') as KeycloakToken;
+        console.log(account.access_token);
+        console.log(decoded);
         token.decoded = decoded;
         token.accessToken = account.access_token;
         token.idToken = account.id_token;

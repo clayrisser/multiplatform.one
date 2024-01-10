@@ -30,6 +30,7 @@ export class MultiPlatformBase {
   static isElectronRender = false;
   static isExpo = false;
   static isFirefox = false;
+  static isIframe = false;
   static isIos = false;
   static isNative = false;
   static isNext = false;

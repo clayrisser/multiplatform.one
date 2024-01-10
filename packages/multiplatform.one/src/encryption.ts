@@ -1,5 +1,5 @@
 /*
- *  File: /utils/encryption.ts
+ *  File: /src/encryption.ts
  *  Project: @platform/next
  *  File Created: 09-01-2024 01:23:34
  *  Author: Clay Risser
@@ -19,14 +19,26 @@
  *  limitations under the License.
  */
 
-import Cryptr from 'cryptr';
+import type Cryptr from 'cryptr';
+import { MultiPlatform } from './multiplatform';
 
-const cryptr = new Cryptr(process.env.SECRET || '-');
+let _cryptr: Cryptr | undefined;
 
-export function encrypt(value: string) {
-  return cryptr.encrypt(value);
+async function getCryptr() {
+  if (MultiPlatform.isServer) {
+    if (_cryptr) return _cryptr;
+    const { default: Cryptr } = await import('cryptr');
+    _cryptr = new Cryptr(process.env.SECRET || '-');
+    return _cryptr;
+  }
 }
 
-export function decrypt(encryptedValue: string) {
-  return cryptr.decrypt(encryptedValue);
+export async function encrypt(value: string) {
+  const cryptr = await getCryptr();
+  return cryptr?.encrypt(value);
+}
+
+export async function decrypt(encryptedValue: string) {
+  const cryptr = await getCryptr();
+  return cryptr?.decrypt(encryptedValue);
 }
