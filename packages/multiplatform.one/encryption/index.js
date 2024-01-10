@@ -1,7 +1,7 @@
 /*
- *  File: /src/hooks/useCurrentRouteName/index.native.ts
- *  Project: @multiplatform.one/keycloak
- *  File Created: 22-06-2023 10:07:56
+ *  File: /encryption/index.js
+ *  Project: multiplatform.one
+ *  File Created: 22-06-2023 05:33:21
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,11 +19,4 @@
  *  limitations under the License.
  */
 
-import { MultiPlatform } from 'multiplatform.one';
-import { useRoute } from '@react-navigation/native';
-
-export function useCurrentRouteName() {
-  if (MultiPlatform.isStorybook) return null;
-  const route = useRoute();
-  return route.name;
-}
+module.exports = require('../lib/encryption.js');

@@ -1,10 +1,10 @@
 /**
- * File: /src/provider/keycloakProvider.tsx
+ * File: /src/provider/AuthProvider/AuthProvider.tsx
  * Project: @multiplatform.one/keycloak
- * File Created: 22-06-2023 10:07:56
+ * File Created: 09-01-2024 11:29:20
  * Author: Clay Risser
  * -----
- * BitSpur (c) Copyright 2021 - 2023
+ * BitSpur (c) Copyright 2021 - 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,62 +19,55 @@
  * limitations under the License.
  */
 
-import Keycloak from '@bitspur/keycloak-js';
-import React, { useMemo, useEffect, useState, useCallback } from 'react';
-import type { AuthClientEvent, AuthClientError, AuthClientTokens } from '@bitspur/react-keycloak-core';
-import type { KeycloakInitOptions, KeycloakConfig } from '@bitspur/keycloak-js';
-import type { ReactNode, ComponentType } from 'react';
-import { AfterAuth } from './afterAuth';
+import KeycloakClient from 'keycloak-js';
+import React, { useEffect, useMemo, useState } from 'react';
+import type { KeycloakConfig, KeycloakInitOptions } from 'keycloak-js';
+import type { PropsWithChildren } from 'react';
+import type { SessionProviderProps } from 'next-auth/react';
+import { Keycloak } from '../../keycloak';
+import { KeycloakContext } from 'src/keycloak/context';
 import { MultiPlatform } from 'multiplatform.one';
-import { ReactKeycloakProvider } from '@bitspur/react-keycloak-web';
-import { SSRKeycloakProvider, SSRCookies } from '@bitspur/react-keycloak-ssr';
-import { useAuthConfig } from '../hooks/useAuthConfig';
-import { useAuthState } from '../state';
+import { SessionProvider } from 'next-auth/react';
+import { persist, useAuthState } from '../../state';
+import { useAuthConfig } from '../../hooks';
 import { useRouter } from 'next/router';
-import { validToken } from '../util';
+import { validToken } from '../../token';
 
-export interface KeycloakProviderProps {
-  children: ReactNode;
-  cookies?: unknown;
-  keycloakConfig: KeycloakConfig;
+export interface AuthProviderProps extends PropsWithChildren {
+  keycloakConfig?: KeycloakConfig;
   keycloakInitOptions?: KeycloakInitOptions;
-  loadingComponent?: ComponentType;
-  onEvent?: (eventType: AuthClientEvent, error?: AuthClientError) => void;
-  onTokens?: (tokens: AuthClientTokens) => void;
+  sessionProvider?: Omit<SessionProviderProps, 'children'>;
 }
 
 const logger = console;
 
-export function KeycloakProvider({
-  children,
-  cookies,
-  keycloakConfig,
-  keycloakInitOptions,
-  loadingComponent,
-  onEvent,
-  onTokens,
-}: KeycloakProviderProps) {
-  const { debug, ensureFreshness, persist, messageHandlerKeys, ssr } = useAuthConfig();
-  const authState = useAuthState();
-  const LoadingComponent = loadingComponent || (() => <>{debug ? 'authenticating' : null}</>);
+export function AuthProvider({ children, sessionProvider, keycloakInitOptions, keycloakConfig }: AuthProviderProps) {
+  const { debug, messageHandlerKeys } = useAuthConfig();
   const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
-  const [refreshToken, setRefreshToken] = useState<string | boolean>(
+  const authState = useAuthState();
+  const [keycloak, setKeycloak] = useState<Keycloak>();
+  const [refreshToken, setRefreshToken] = useState<string | boolean | undefined>(
     validToken(
-      (ensureFreshness &&
-        (('refreshToken' in query && (query.refreshToken?.toString() || true)) ||
-          (persist && authState.refreshToken))) ||
-        false,
+      MultiPlatform.isIframe
+        ? ('refreshToken' in query && (query.refreshToken?.toString() || true)) ||
+            (persist && authState.refreshToken) ||
+            false
+        : undefined,
     ),
   );
-  const [idToken, setIdToken] = useState<string | boolean>(
+  const [token, setToken] = useState<string | boolean | undefined>(
     validToken(
-      ('idToken' in query && (query.idToken?.toString() || true)) || (persist && authState.idToken) || false,
+      MultiPlatform.isIframe
+        ? ('token' in query && (query.token?.toString() || true)) || (persist && authState.token) || false
+        : undefined,
       refreshToken,
     ),
   );
-  const [token, setToken] = useState<string | boolean>(
+  const [idToken, setIdToken] = useState<string | boolean | undefined>(
     validToken(
-      ('token' in query && (query.token?.toString() || true)) || (persist && authState.token) || false,
+      MultiPlatform.isIframe
+        ? ('idToken' in query && (query.idToken?.toString() || true)) || (persist && authState.idToken) || false
+        : undefined,
       refreshToken,
     ),
   );
@@ -188,28 +181,20 @@ export function KeycloakProvider({
     };
   }, []);
 
-  const handleEvent = useCallback((eventType: AuthClientEvent, error?: AuthClientError) => {
-    if (error) {
-      if (typeof error === 'string') throw new Error(error);
-      const err: Error & { errorDescription?: string } = new Error(error.error);
-      err.errorDescription = error.error_description;
-      throw err;
-    }
-    if (onEvent) onEvent(eventType, error);
-  }, []);
-
-  const keycloak = useMemo(
+  const keycloakClient = useMemo(
     () =>
-      typeof window !== 'undefined' &&
-      new Keycloak({
-        url: keycloakConfig.url,
-        realm: keycloakConfig.realm,
-        clientId: keycloakConfig.clientId,
-      }),
-    [keycloakInitOptions, token, refreshToken, idToken],
+      MultiPlatform.isIframe && keycloakConfig
+        ? new KeycloakClient({
+            url: keycloakConfig.url,
+            realm: keycloakConfig.realm,
+            clientId: keycloakConfig.clientId,
+          })
+        : undefined,
+    [keycloakInitOptions, keycloakConfig, token, refreshToken, idToken],
   );
 
   const initOptions = useMemo(() => {
+    if (!MultiPlatform.isIframe) return;
     const initOptions = {
       ...defaultKeycloakInitOptions,
       ...keycloakInitOptions,
@@ -227,45 +212,46 @@ export function KeycloakProvider({
       initOptions.onLoad = undefined;
     }
     return initOptions;
-  }, [keycloakInitOptions, token, refreshToken, idToken]);
+  }, [keycloakInitOptions, token, idToken, refreshToken]);
 
-  if (token === true || idToken === true || refreshToken === true) return <LoadingComponent />;
-  if (cookies && ssr) {
-    return (
-      // @ts-ignore
-      <SSRKeycloakProvider
-        LoadingComponent={<LoadingComponent />}
-        autoRefreshToken={initOptions.checkLoginIframe}
-        initOptions={initOptions}
-        onEvent={handleEvent}
-        onTokens={onTokens}
-        persistor={SSRCookies(cookies)}
-        keycloakConfig={{
-          clientId: keycloakConfig.clientId,
-          realm: keycloakConfig.realm,
-          url: keycloakConfig.url,
-        }}
-      >
-        <AfterAuth>{children}</AfterAuth>
-      </SSRKeycloakProvider>
-    );
-  }
-  if (!keycloak) return <LoadingComponent />;
+  useEffect(() => {
+    function onError() {
+      if (keycloakClient && initOptions) setKeycloak(new Keycloak(keycloakClient));
+    }
+    function onUpdate() {
+      if (keycloakClient && initOptions) setKeycloak(new Keycloak(keycloakClient));
+    }
+    if (keycloakClient && initOptions) {
+      (async () => {
+        keycloakClient.onAuthError = onError;
+        keycloakClient.onAuthLogout = onUpdate;
+        keycloakClient.onAuthRefreshError = onError;
+        keycloakClient.onAuthRefreshSuccess = onUpdate;
+        keycloakClient.onAuthSuccess = onUpdate;
+        keycloakClient.onReady = onUpdate;
+        keycloakClient.onTokenExpired = async () => {
+          try {
+            await keycloakClient.updateToken(5);
+          } catch (err) {
+            setKeycloak(new Keycloak());
+          }
+        };
+        const authenticated = await keycloakClient.init(initOptions);
+        setKeycloak(new Keycloak(authenticated ? keycloakClient : undefined));
+      })();
+    }
+  }, []);
+
   return (
-    <ReactKeycloakProvider
-      LoadingComponent={<LoadingComponent />}
-      authClient={keycloak}
-      autoRefreshToken={initOptions.checkLoginIframe}
-      initOptions={initOptions}
-      onEvent={handleEvent}
-      onTokens={onTokens}
-    >
-      <AfterAuth>{children}</AfterAuth>
-    </ReactKeycloakProvider>
+    <SessionProvider {...sessionProvider}>
+      <KeycloakContext.Provider value={keycloak}>
+        <AuthProvider>{children}</AuthProvider>
+      </KeycloakContext.Provider>
+    </SessionProvider>
   );
 }
 
-export const defaultKeycloakInitOptions: KeycloakInitOptions = {
+const defaultKeycloakInitOptions: KeycloakInitOptions = {
   checkLoginIframe: true,
   checkLoginIframeInterval: 5,
   enableLogging: false,

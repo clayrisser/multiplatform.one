@@ -20,7 +20,7 @@
  */
 
 import { useAuthState } from '../state';
-import { validToken } from '../util';
+import { validToken } from '../token';
 
 export function useTokensFromState() {
   const authState = useAuthState();

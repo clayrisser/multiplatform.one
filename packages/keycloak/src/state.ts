@@ -1,5 +1,5 @@
 /*
- *  File: /src/hooks/useCurrentRouteName/index.ts
+ *  File: /src/state.ts
  *  Project: @multiplatform.one/keycloak
  *  File Created: 22-06-2023 10:07:56
  *  Author: Clay Risser
@@ -19,16 +19,22 @@
  *  limitations under the License.
  */
 
+import { createStateStore } from 'multiplatform.one/zustand';
 import { MultiPlatform } from 'multiplatform.one';
-import { useRoute } from '@react-navigation/native';
-import { useRouter } from 'next/router';
 
-export function useCurrentRouteName() {
-  if (MultiPlatform.isStorybook) return null;
-  if (MultiPlatform.isNext) {
-    const router = useRouter();
-    return router.route;
-  }
-  const route = useRoute();
-  return route.name;
+export const persist = MultiPlatform.isIframe || (!MultiPlatform.isNext && !MultiPlatform.isServer);
+
+const { useStore } = createStateStore(
+  'auth',
+  {
+    idToken: '',
+    refreshToken: '',
+    token: '',
+  },
+  undefined,
+  { persist },
+);
+
+export function useAuthState() {
+  return useStore();
 }

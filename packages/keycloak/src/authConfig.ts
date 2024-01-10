@@ -21,19 +21,13 @@
 
 import { createContext } from 'react';
 
-export const defaultAuthConfig: AuthConfig = {
-  ensureFreshness: true,
-  persist: false,
-  ssr: false,
-};
+export const defaultAuthConfig: AuthConfig = {};
 
 export const AuthConfigContext = createContext<AuthConfig>(defaultAuthConfig);
 
 export interface AuthConfig {
   debug?: boolean;
-  ensureFreshness?: boolean;
-  loginRoute?: string;
+  disabled?: boolean;
+  loginRedirectUri?: string;
   messageHandlerKeys?: string[];
-  persist?: boolean;
-  ssr?: boolean;
 }

@@ -1,10 +1,10 @@
 /*
- *  File: /src/util.ts
+ *  File: /src/token.ts
  *  Project: @multiplatform.one/keycloak
- *  File Created: 22-06-2023 10:07:56
+ *  File Created: 10-01-2024 16:19:33
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,7 +19,11 @@
  *  limitations under the License.
  */
 
-export function validToken(token: string | boolean, refreshToken?: string | boolean) {
+import type { KeycloakTokenParsed } from 'keycloak-js';
+import { jwtDecode } from 'jwt-decode';
+
+export function validToken(token?: string | boolean, refreshToken?: string | boolean) {
+  if (typeof token === 'undefined') return;
   if (typeof token !== 'string') return token;
   if (refreshToken) {
     if (refreshToken === true || isTokenValid(refreshToken)) return token;
@@ -29,11 +33,20 @@ export function validToken(token: string | boolean, refreshToken?: string | bool
 }
 
 export function isTokenValid(token: string) {
-  try {
-    const { exp } = JSON.parse(Buffer.from(token.split('.')?.[1] || '', 'base64').toString() || '{}');
-    return Math.floor(Date.now() / 1000) <= exp;
-  } catch (err) {
-    if (err instanceof SyntaxError) return false;
-    throw err;
-  }
+  const { exp } = jwtDecode(token) as TokenParsed;
+  if (!exp) return false;
+  return Math.floor(Date.now() / 1000) <= exp;
+}
+
+export interface TokenParsed extends KeycloakTokenParsed {
+  jti?: string;
+  sid?: string;
+  typ?: 'Bearer' | string;
+}
+
+export interface AccessTokenParsed extends TokenParsed {
+  email?: string;
+  email_verified?: boolean;
+  preferred_username?: string;
+  scope?: string;
 }

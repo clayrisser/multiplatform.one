@@ -37,7 +37,6 @@
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "1.19.3",
-    "@react-navigation/native": "^6.0.14",
     "expo-keycloak-auth": "1.0.14",
     "multiplatform.one": "^0.7.16",
     "next": "^13.0.5",
@@ -92,11 +91,8 @@
     "indent": 4
   },
   "dependencies": {
-    "@bitspur/keycloak-js": "^21.1.2",
-    "@bitspur/react-keycloak-ssr": "^4.0.14",
-    "@bitspur/react-keycloak-web": "^4.0.14",
-    "core-js-pure": "^3.35.0",
     "expo-auth-session": "^5.4.0",
-    "solito": "^4.2.0"
+    "keycloak-js": "^23.0.4",
+    "next-auth": "^4.24.5"
   }
 }

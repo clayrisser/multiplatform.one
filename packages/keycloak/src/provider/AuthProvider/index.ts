@@ -1,10 +1,10 @@
 /*
- *  File: /src/state/index.ts
+ *  File: /src/provider/AuthProvider/index.ts
  *  Project: @multiplatform.one/keycloak
- *  File Created: 22-06-2023 10:07:56
+ *  File Created: 10-01-2024 13:43:20
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,21 +19,4 @@
  *  limitations under the License.
  */
 
-import { createStateStore } from 'multiplatform.one/zustand';
-// @ts-ignore
-import { config } from 'app/config';
-
-const { useStore } = createStateStore(
-  'auth',
-  {
-    idToken: '',
-    refreshToken: '',
-    token: '',
-  },
-  undefined,
-  { persist: config.get('KEYCLOAK_PERSIST') === '1' },
-);
-
-export function useAuthState() {
-  return useStore();
-}
+export * from './AuthProvider';

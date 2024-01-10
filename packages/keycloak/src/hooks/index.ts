@@ -20,8 +20,5 @@
  */
 
 export * from './useAuthConfig';
-export * from './useCurrentRouteName';
-export * from './useKeycloak';
-export * from './useLogin';
 export * from './useTokensFromQuery';
 export * from './useTokensFromState';

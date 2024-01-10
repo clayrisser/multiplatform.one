@@ -24,6 +24,7 @@ import { MultiPlatform } from './multiplatform';
 export { MultiPlatform };
 
 export * from './config';
+export * from './encryption';
 export * from './font';
 export * from './helpers';
 export * from './hooks';
