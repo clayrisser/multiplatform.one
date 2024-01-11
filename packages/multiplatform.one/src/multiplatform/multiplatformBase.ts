@@ -21,8 +21,6 @@
 
 import { isTouchable, isWindowDefined } from '@tamagui/constants';
 
-console.log('typeofWidow', typeof window);
-
 export class MultiPlatformBase {
   static isAndroid = false;
   static isChrome = false;
@@ -38,7 +36,6 @@ export class MultiPlatformBase {
   static isNext = false;
   static isServer = false;
   static isStatic = false;
-  // @ts-ignore
   static isStorybook = isWindowDefined && typeof window.__STORYBOOK_ADDONS === 'object';
   static isTouchable = isTouchable;
   static isWeb = false;

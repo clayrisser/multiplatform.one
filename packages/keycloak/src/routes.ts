@@ -1,5 +1,5 @@
 /*
- *  File: /src/route.ts
+ *  File: /src/routes.ts
  *  Project: @multiplatform.one/keycloak
  *  File Created: 09-01-2024 11:32:46
  *  Author: Clay Risser
@@ -23,25 +23,58 @@ import type { AccessTokenParsed } from './token';
 import type { AuthOptions, CallbacksOptions } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import type { OAuthUserConfig } from 'next-auth/providers';
-import type { Session } from './session/session';
+import type { Session } from './session';
+import { getServerSession } from 'next-auth';
 import { jwtDecode } from 'jwt-decode';
 
 const KeycloakProvider = require('next-auth/providers/keycloak').default;
 const NextAuth = require('next-auth').default;
+const NextResponse = require('next/server').NextResponse;
 
-export interface CreateHandlerOptions {
-  keycloakProvider?: Partial<OAuthUserConfig<any>>;
-  nextAuth?: AuthOptions;
+const logger = console;
+let _nextAuth: AuthOptions | undefined;
+
+export function createAuthHandler(options: CreateAuthHandlerOptions = {}) {
+  const handler = NextAuth(createAuthOptions(options));
+  return {
+    GET: handler,
+    POST: handler,
+  };
 }
 
-export function createHandler(options: CreateHandlerOptions = {}) {
-  return NextAuth({
+export function createLogoutHandler(options: CreateAuthHandlerOptions = {}) {
+  return {
+    async GET() {
+      const idToken = ((await getServerSession(createAuthOptions(options))) as Session)?.idToken;
+      if (idToken) {
+        try {
+          await fetch(
+            `${process.env.KEYCLOAK_BASE_URL}/realms/${
+              process.env.KEYCLOAK_REALM || 'master'
+            }/protocol/openid-connect/logout?id_token_hint=${idToken}&post_logout_redirect_uri=${encodeURIComponent(
+              process.env.NEXTAUTH_URL || '',
+            )}`,
+            { method: 'GET' },
+          );
+        } catch (err) {
+          logger.error(err);
+          return new NextResponse(null, { status: 500 });
+        }
+      }
+      return new NextResponse();
+    },
+  };
+}
+
+function createAuthOptions(options: CreateAuthHandlerOptions = {}) {
+  if (_nextAuth) return _nextAuth;
+  _nextAuth = {
     ...options.nextAuth,
     providers: [
       KeycloakProvider({
         clientId: process.env.KEYCLOAK_CLIENT_ID || '',
         clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || '',
-        issuer: `${process.env.KEYCLOAK_BASE_URL}/realms/main`,
+        issuer: `${process.env.KEYCLOAK_BASE_URL}/realms/${process.env.KEYCLOAK_REALM || 'master'}`,
         ...options.keycloakProvider,
       }),
       ...(options.nextAuth?.providers || []),
@@ -85,7 +118,8 @@ export function createHandler(options: CreateHandlerOptions = {}) {
         return session;
       },
     } as CallbacksOptions,
-  });
+  } as AuthOptions;
+  return _nextAuth;
 }
 
 async function refreshAccessToken(nextToken: NextToken) {
@@ -95,8 +129,8 @@ async function refreshAccessToken(nextToken: NextToken) {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: new URLSearchParams({
-      client_id: process.env.DEMO_FRONTEND_CLIENT_ID || '',
-      client_secret: process.env.DEMO_FRONTEND_CLIENT_SECRET || '',
+      client_id: process.env.KEYCLOAK_CLIENT_ID || '',
+      client_secret: process.env.KEYCLOAK_CLIENT_SECRET || '',
       grant_type: 'refresh_token',
       refresh_token: nextToken.refreshToken,
     }),
@@ -111,6 +145,11 @@ async function refreshAccessToken(nextToken: NextToken) {
     idToken: refreshToken.id_token,
     refreshToken: refreshToken.refresh_token,
   };
+}
+
+export interface CreateAuthHandlerOptions {
+  keycloakProvider?: Partial<OAuthUserConfig<any>>;
+  nextAuth?: AuthOptions;
 }
 
 export interface NextToken extends JWT {

@@ -136,7 +136,7 @@ export class Keycloak {
     if (this.keycloakClient) {
       await this.keycloakClient.logout(options);
     } else if (MultiPlatform.isNext && !MultiPlatform.isServer) {
-      await fetch('/api/auth/logout');
+      await fetch('/api/auth/logout', { method: 'GET' });
       await signOut({
         callbackUrl: options.redirectUri,
       });

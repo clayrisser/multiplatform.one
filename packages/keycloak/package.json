@@ -13,10 +13,10 @@
       "require": "./lib/index.js",
       "types": "./lib/index.d.ts"
     },
-    "./route": {
-      "import": "./lib/route.mjs",
-      "require": "./lib/route.js",
-      "types": "./lib/route.d.ts"
+    "./routes": {
+      "import": "./lib/routes.mjs",
+      "require": "./lib/routes.js",
+      "types": "./lib/routes.d.ts"
     }
   },
   "author": "BitSpur",
@@ -31,9 +31,8 @@
   "homepage": "https://multiplatform.one",
   "license": "Apache-2.0",
   "files": [
-    "dist",
-    "index.d.ts",
     "lib",
+    "routes",
     "src"
   ],
   "repository": {
