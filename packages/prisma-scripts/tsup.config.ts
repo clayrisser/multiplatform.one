@@ -32,7 +32,7 @@ export default defineConfig({
   minify: false,
   outDir: 'lib',
   publicDir: './public',
-  skipNodeModulesBundle: true,
+  skipNodeModulesBundle: false,
   noExternal: transpileModules,
   splitting: true,
   target: 'es5',
