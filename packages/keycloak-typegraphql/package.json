@@ -1,0 +1,58 @@
+{
+  "name": "@multiplatform.one/keycloak-typegraphql",
+  "version": "0.1.0",
+  "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
+  "contributors": [
+    {
+      "name": "Clay Risser",
+      "url": "https://clayrisser.com"
+    }
+  ],
+  "description": "authenticate typegraphql with keycloak",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "react-native": "src/index.ts",
+  "source": "src/index.ts",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    }
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues"
+  },
+  "keywords": [
+    "type-graphql",
+    "graphql"
+  ],
+  "engines": {
+    "node": ">= 16.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4",
+    "@types/express-session": "^1",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@keycloak/keycloak-admin-client": "^23.0.4",
+    "axios": "^1.6.5",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "keycloak-connect": "^23.0.4",
+    "type-graphql": "^1.1.1",
+    "typedi": "^0.10.0"
+  }
+}
