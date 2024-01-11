@@ -79,6 +79,7 @@
     "log-symbols",
     "npm-run-path",
     "ora",
+    "restore-cursor",
     "stdin-discarder",
     "strip-final-newline"
   ],
