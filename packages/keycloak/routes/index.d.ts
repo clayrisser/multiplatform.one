@@ -1,10 +1,10 @@
 /*
- *  File: /app/api/auth/[...nextauth]/route.ts
- *  Project: @platform/next
- *  File Created: 10-01-2024 08:10:46
+ *  File: /routes/index.d.ts
+ *  Project: multiplatform.one
+ *  File Created: 22-06-2023 05:33:21
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2024
+ *  BitSpur (c) Copyright 2021 - 2023
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,8 +19,4 @@
  *  limitations under the License.
  */
 
-import { createAuthHandler } from '@multiplatform.one/keycloak/routes';
-
-const { GET, POST } = createAuthHandler();
-
-export { GET, POST };
+export * from '../lib/routes';

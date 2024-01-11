@@ -1,10 +1,10 @@
 /*
- *  File: /route/index.d.ts
- *  Project: multiplatform.one
- *  File Created: 22-06-2023 05:33:21
+ *  File: /app/api/auth/logout/route.ts
+ *  Project: @platform/next
+ *  File Created: 11-01-2024 11:25:49
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,4 +19,8 @@
  *  limitations under the License.
  */
 
-export * from '../lib/route';
+import { createLogoutHandler } from '@multiplatform.one/keycloak/routes';
+
+const { GET } = createLogoutHandler();
+
+export { GET };
