@@ -39,12 +39,19 @@ export function Authenticated({ children, disabled, loggedOutComponent, loadingC
   const tokensFromState = useTokensFromState();
 
   useEffect(() => {
-    if (!keycloak?.authenticated) return;
-    if (!MultiPlatform.isServer && !tokensFromQuery && !tokensFromState && !MultiPlatform.isIframe) {
-      keycloak.login({
-        redirectUri: authConfig.loginRedirectUri,
-      });
+    if (
+      !keycloak ||
+      MultiPlatform.isIframe ||
+      MultiPlatform.isServer ||
+      keycloak.authenticated ||
+      tokensFromQuery ||
+      tokensFromState
+    ) {
+      return;
     }
+    keycloak.login({
+      redirectUri: authConfig.loginRedirectUri,
+    });
   }, [keycloak]);
 
   if (typeof disabled === 'undefined') disabled = authConfig.disabled;

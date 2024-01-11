@@ -24,6 +24,7 @@ import { jwtDecode } from 'jwt-decode';
 
 export function validToken(token?: string | boolean, refreshToken?: string | boolean) {
   if (typeof token === 'undefined') return;
+  if (!token) return false;
   if (typeof token !== 'string') return token;
   if (refreshToken) {
     if (refreshToken === true || isTokenValid(refreshToken)) return token;
