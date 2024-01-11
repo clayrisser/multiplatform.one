@@ -3,9 +3,9 @@
   "private": true,
   "dependencies": {
     "@next/bundle-analyzer": "^14.0.4",
-    "@sentry/react": "^7.92.0",
-    "@tamagui/next-plugin": "^1.82.8",
-    "@tamagui/next-theme": "^1.82.8",
+    "@sentry/react": "^7.93.0",
+    "@tamagui/next-plugin": "^1.84.1",
+    "@tamagui/next-theme": "^1.84.1",
     "api": "*",
     "cookie": "^0.6.0",
     "graphql": "~15.3.0",
@@ -22,9 +22,9 @@
     "raf": "^3.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "~0.73.1",
+    "react-native": "~0.73.2",
     "react-native-web": "~0.18.12",
-    "react-native-web-lite": "^1.82.8",
+    "react-native-web-lite": "^1.84.1",
     "reflect-metadata": "^0.2.1",
     "type-graphql": "^1.1.1",
     "typedi": "^0.10.0",
@@ -33,7 +33,7 @@
   "devDependencies": {
     "@expo/next-adapter": "^5.0.2",
     "@types/cookie": "^0.6.0",
-    "@types/node": "~20.10.6",
+    "@types/node": "~20.10.8",
     "@types/node-cleanup": "^2.1.5",
     "@types/ws": "^8.5.10"
   },
