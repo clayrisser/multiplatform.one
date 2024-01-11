@@ -1,7 +1,7 @@
 /*
- *  File: /zustand/index.js
- *  Project: multiplatform.one
- *  File Created: 22-06-2023 05:33:21
+ *  File: /transpileModules.js
+ *  Project: @multiplatform.one/prisma-scripts
+ *  File Created: 19-09-2023 14:08:50
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,4 +19,6 @@
  *  limitations under the License.
  */
 
-module.exports = require('../lib/zustand.js');
+const logger = console;
+module.exports = [...new Set([...(require('./package.json').transpileModules || [])])];
+logger.debug('transpileModules:', module.exports.join(', '));

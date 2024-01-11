@@ -1,7 +1,7 @@
 /*
- *  File: /zustand/index.js
- *  Project: multiplatform.one
- *  File Created: 22-06-2023 05:33:21
+ *  File: /tsup.config.ts
+ *  Project: @multiplatform.one/nestjs-keycloak
+ *  File Created: 19-09-2023 07:07:18
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,4 +19,21 @@
  *  limitations under the License.
  */
 
-module.exports = require('../lib/zustand.js');
+import { defineConfig } from 'tsup';
+import transpileModules from './transpileModules';
+
+export default defineConfig({
+  bundle: true,
+  clean: true,
+  dts: true,
+  entry: ['src/**/*.ts?(x)'],
+  entryPoints: ['src/index.ts'],
+  format: ['cjs', 'esm'],
+  minify: false,
+  outDir: 'lib',
+  publicDir: './public',
+  skipNodeModulesBundle: true,
+  noExternal: transpileModules,
+  splitting: true,
+  target: 'es5',
+});

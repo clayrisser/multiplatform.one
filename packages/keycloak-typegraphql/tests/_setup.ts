@@ -1,7 +1,7 @@
 /*
- *  File: /zustand/index.js
- *  Project: multiplatform.one
- *  File Created: 22-06-2023 05:33:21
+ *  File: /tests/_setup.ts
+ *  Project: @multiplatform.one/nestjs-keycloak
+ *  File Created: 19-09-2023 04:38:30
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2023
@@ -19,4 +19,4 @@
  *  limitations under the License.
  */
 
-module.exports = require('../lib/zustand.js');
+export default null;
