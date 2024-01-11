@@ -27,12 +27,10 @@ import Head from 'next/head';
 import React, { useEffect, useMemo } from 'react';
 import cookie from 'cookie';
 import tamaguiConfig from '../tamagui.config';
-import type { AppContext } from 'next/app';
+import type { AppContext, AppProps as NextAppProps } from 'next/app';
 import type { ColorScheme } from 'app/state/theme';
-import type { GlobalProviderKeycloak } from 'app/providers';
 import type { NextIncomingMessage } from 'next/dist/server/request-meta';
-import type { ReactNode } from 'react';
-import type { SolitoAppProps } from 'solito';
+import type { PropsWithChildren } from 'react';
 import { GlobalProvider } from 'app/providers';
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
 import { appWithTranslation } from 'next-i18next';
@@ -40,7 +38,6 @@ import { config } from 'app/config';
 import { importFonts } from 'app/fonts';
 import { setDefaultCrossStorage } from 'multiplatform.one/zustand';
 import { useThemeState } from 'app/state/theme';
-import { SessionProvider } from 'next-auth/react';
 
 const sentryDsn = config.get('SENTRY_DSN');
 if (sentryDsn) {
@@ -51,19 +48,11 @@ if (sentryDsn) {
 
 const crossStorageHubUrl = config.get('CROSS_STORAGE_HUB_URL');
 if (crossStorageHubUrl) setDefaultCrossStorage(crossStorageHubUrl);
-const automaticStaticOptimization = config.get('NEXT_AUTOMATIC_STATIC_OPTIMIZATION') === '1';
 const nextStatic = config.get('NEXT_STATIC') === '1';
-const keycloak: GlobalProviderKeycloak = {
-  baseUrl: config.get('KEYCLOAK_BASE_URL')!,
-  clientId: config.get('KEYCLOAK_CLIENT_ID')!,
-  messageHandlerKeys: [],
-  realm: config.get('KEYCLOAK_REALM')!,
-  ssr: config.get('KEYCLOAK_SSR') === '1',
-};
 importFonts();
 if (nextStatic) import('app/i18n').then(({ i18nInit }) => i18nInit());
 
-export interface AppProps extends SolitoAppProps {
+export interface AppProps extends NextAppProps {
   cookies?: unknown;
 }
 
@@ -82,14 +71,12 @@ function App({ Component, pageProps, cookies }: AppProps) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <SessionProvider>
-        <Provider cookies={cookies}>{contents}</Provider>
-      </SessionProvider>
+      <Provider cookies={cookies}>{contents}</Provider>
     </>
   );
 }
 
-function Provider({ children, ...props }: { children: ReactNode; cookies: unknown }) {
+function Provider({ children }: PropsWithChildren & { cookies: unknown }) {
   const themeState = useThemeState();
   const [rootTheme, setRootTheme] = useRootTheme();
 
@@ -105,12 +92,17 @@ function Provider({ children, ...props }: { children: ReactNode; cookies: unknow
       forcedTheme={rootTheme}
     >
       <GlobalProvider
-        cookies={props.cookies}
+        // cookies={props.cookies}
         defaultTheme={rootTheme}
         disableInjectCSS
         disableRootThemeClass
-        keycloak={keycloak}
         tamaguiConfig={tamaguiConfig}
+        keycloak={{
+          baseUrl: config.get('KEYCLOAK_BASE_URL')!,
+          clientId: config.get('KEYCLOAK_CLIENT_ID')!,
+          messageHandlerKeys: [],
+          realm: config.get('KEYCLOAK_REALM')!,
+        }}
       >
         {children}
       </GlobalProvider>
@@ -123,14 +115,8 @@ function parseCookies(req?: NextIncomingMessage) {
   return cookie.parse(req.headers.cookie || '');
 }
 
-if (keycloak.ssr) {
-  App.getInitialProps = async (context: AppContext) => ({
-    cookies: parseCookies(context?.ctx?.req) as unknown,
-  });
-} else if (automaticStaticOptimization) {
-  App.getInitialProps = async (_context: AppContext) => ({
-    cookies: undefined,
-  });
-}
+App.getInitialProps = async (context: AppContext) => ({
+  cookies: parseCookies(context?.ctx?.req) as unknown,
+});
 
 export default nextStatic ? App : appWithTranslation(App);

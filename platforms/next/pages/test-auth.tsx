@@ -40,44 +40,19 @@
  * limitations under the License.
  */
 
-import type { Session } from '../app/api/auth/[...nextauth]/route';
-import { useEffect } from 'react';
-import { useSession as nextUseSession, signOut, signIn } from 'next-auth/react';
+import { withAuthenticated, useKeycloak } from '@multiplatform.one/keycloak';
 
-export function useSession() {
-  const nextSession = nextUseSession();
-  return {
-    ...nextSession,
-    data: nextSession.data as Session,
-  };
+export function TestAuth() {
+  const keycloak = useKeycloak();
+  return (
+    <button
+      onClick={() => {
+        keycloak?.logout();
+      }}
+    >
+      Log out
+    </button>
+  );
 }
 
-export default function TestAuth() {
-  const { data: session, status } = useSession();
-
-  useEffect(() => {
-    if (status !== 'loading' && session?.err) signOut({ callbackUrl: '/' });
-  }, [session, status]);
-
-  if (status === 'loading') {
-    return <div>Loading...</div>;
-  } else if (session) {
-    return (
-      <div>
-        <div>{JSON.stringify(session)}</div>
-        <button
-          onClick={() => {
-            keycloakSessionLogOut().then(() => signOut({ callbackUrl: '/' }));
-          }}
-        >
-          Log out
-        </button>
-      </div>
-    );
-  }
-  return <button onClick={() => signIn('keycloak')}>Log in</button>;
-}
-
-async function keycloakSessionLogOut() {
-  await fetch(`/api/auth/logout`);
-}
+export default withAuthenticated(TestAuth);

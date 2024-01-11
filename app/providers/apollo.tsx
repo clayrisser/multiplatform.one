@@ -21,7 +21,7 @@
 
 import React from 'react';
 import type { PropsWithChildren } from 'react';
-import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider as OriginalApolloProvider, split } from '@apollo/client';
+import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider, split } from '@apollo/client';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 
@@ -50,6 +50,6 @@ const client = new ApolloClient({
 
 export interface ApolloProviderProps extends PropsWithChildren {}
 
-export function ApolloProvider({ children }: ApolloProviderProps) {
-  return <OriginalApolloProvider client={client}>{children}</OriginalApolloProvider>;
+export function GlobalApolloProvider({ children }: ApolloProviderProps) {
+  return <ApolloProvider client={client}>{children}</ApolloProvider>;
 }

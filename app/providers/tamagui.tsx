@@ -21,31 +21,26 @@
 
 import React from 'react';
 import config from '../tamagui.config';
-import type { TamaguiProviderProps as OriginalTamaguiProviderProps, ThemeName } from 'ui';
-import { TamaguiProvider as OriginalTamaguiProvider, Theme } from 'ui';
-import { useThemeState } from 'app/state/theme';
+import type { TamaguiProviderProps, ThemeName } from 'ui';
+import { TamaguiProvider, Theme } from 'ui';
 import { ToastProvider } from '@tamagui/toast';
+import { useThemeState } from 'app/state/theme';
 
-export type TamaguiProviderProps = Omit<OriginalTamaguiProviderProps, 'config'> &
-  Partial<Pick<OriginalTamaguiProviderProps, 'config'>> & {
+export type GlobalTamaguiProviderProps = Omit<TamaguiProviderProps, 'config'> &
+  Partial<Pick<TamaguiProviderProps, 'config'>> & {
     defaultSubTheme?: ThemeName;
   };
 
-export function TamaguiProvider({ children, ...props }: TamaguiProviderProps) {
+export function GlobalTamaguiProvider({ children, ...props }: GlobalTamaguiProviderProps) {
   const themeState = useThemeState();
   const defaultTheme = props.defaultTheme || themeState.root;
   const subTheme = props.defaultSubTheme || themeState.sub || 'gray';
 
   return (
-    <OriginalTamaguiProvider
-      defaultTheme={defaultTheme}
-      disableInjectCSS={false}
-      {...props}
-      config={config || props.config}
-    >
+    <TamaguiProvider defaultTheme={defaultTheme} disableInjectCSS={false} {...props} config={config || props.config}>
       <Theme name={subTheme}>
         <ToastProvider>{children}</ToastProvider>
       </Theme>
-    </OriginalTamaguiProvider>
+    </TamaguiProvider>
   );
 }
