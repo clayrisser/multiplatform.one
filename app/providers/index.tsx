@@ -20,38 +20,38 @@
  */
 
 import React, { Suspense } from 'react';
-import type { KeycloakProviderProps } from './keycloak';
-import type { ProviderProps } from './types';
+import type { GlobalKeycloakProviderProps } from './keycloak';
+import type { GlobalTamaguiProviderProps } from './tamagui';
+import type { PropsWithChildren } from 'react';
 import type { TamaguiInternalConfig } from 'ui';
-import type { TamaguiProviderProps } from './tamagui';
-import { ApolloProvider } from './apollo';
-// import { KeycloakProvider } from './keycloak';
-import { NavigationProvider } from './navigation';
-import { TamaguiProvider } from './tamagui';
+import { GlobalApolloProvider } from './apollo';
+import { GlobalKeycloakProvider } from './keycloak';
+import { GlobalTamaguiProvider } from './tamagui';
+import { GlobalNavigationProvider } from './navigation';
 
-export type GlobalProviderKeycloak = Omit<KeycloakProviderProps, 'disabled' | 'cookies' | 'children'>;
+export type GlobalProviderKeycloak = Omit<GlobalKeycloakProviderProps, 'disabled' | 'children'>;
 
-export type GlobalProviderProps = ProviderProps &
-  Omit<TamaguiProviderProps, 'config'> & {
-    cookies?: unknown;
+export type GlobalProviderProps = PropsWithChildren &
+  Omit<GlobalTamaguiProviderProps, 'config'> & {
     keycloak?: GlobalProviderKeycloak;
     tamaguiConfig?: TamaguiInternalConfig;
   };
 
-export function GlobalProvider({ children, keycloak, cookies, tamaguiConfig, ...props }: GlobalProviderProps) {
+export function GlobalProvider({ children, keycloak, tamaguiConfig, ...props }: GlobalProviderProps) {
   return (
-    // <KeycloakProvider disabled={!keycloak} cookies={cookies} {...keycloak}>
-    <ApolloProvider>
-      <TamaguiProvider config={tamaguiConfig} {...props}>
-        <Suspense>
-          <NavigationProvider>{children}</NavigationProvider>
-        </Suspense>
-      </TamaguiProvider>
-    </ApolloProvider>
-    // </KeycloakProvider>
+    <GlobalKeycloakProvider disabled={!keycloak} {...keycloak}>
+      <GlobalApolloProvider>
+        <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
+          <Suspense>
+            <GlobalNavigationProvider>{children}</GlobalNavigationProvider>
+          </Suspense>
+        </GlobalTamaguiProvider>
+      </GlobalApolloProvider>
+    </GlobalKeycloakProvider>
   );
 }
 
+export * from './apollo';
+export * from './keycloak';
 export * from './navigation';
 export * from './tamagui';
-export * from './types';

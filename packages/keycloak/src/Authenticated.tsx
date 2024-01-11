@@ -49,10 +49,11 @@ export function Authenticated({ children, disabled, loggedOutComponent, loadingC
 
   if (typeof disabled === 'undefined') disabled = authConfig.disabled;
   if (disabled) return <>{children}</>;
-  const LoadingComponent = loadingComponent;
   if (typeof keycloak === 'undefined') {
+    const LoadingComponent = loadingComponent;
     return LoadingComponent ? <LoadingComponent /> : <>{authConfig.debug ? 'loading' : null}</>;
   }
+  if (keycloak.authenticated) return <>{children}</>;
   const LoggedOutComponent = loggedOutComponent;
   return LoggedOutComponent ? <LoggedOutComponent /> : <>{authConfig.debug ? 'not authenticated' : null}</>;
 }

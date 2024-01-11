@@ -24,7 +24,7 @@ import type { AccessTokenParsed, TokenParsed } from '../token';
 import type { KeycloakLoginOptions, KeycloakLogoutOptions } from 'keycloak-js';
 import type { KeycloakMock } from '../types';
 import { MultiPlatform } from 'multiplatform.one';
-import { getSession } from '../session';
+import { getSession } from '../session/session';
 import { jwtDecode } from 'jwt-decode';
 import { useKeycloak as useExpoKeycloak } from 'expo-keycloak-auth';
 

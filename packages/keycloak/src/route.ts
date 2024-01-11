@@ -25,7 +25,7 @@ import type { AccessTokenParsed } from './token';
 import type { AuthOptions } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import type { OAuthUserConfig } from 'next-auth/providers';
-import type { Session } from './session';
+import type { Session } from './session/session';
 import { jwtDecode } from 'jwt-decode';
 
 export interface CreateHandlerOptions {

@@ -1,10 +1,10 @@
 /*
- *  File: /src/provider/index.ts
- *  Project: @multiplatform.one/keycloak
- *  File Created: 09-01-2024 11:29:13
+ *  File: /route/index.d.ts
+ *  Project: multiplatform.one
+ *  File Created: 22-06-2023 05:33:21
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2024
+ *  BitSpur (c) Copyright 2021 - 2023
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,6 +19,4 @@
  *  limitations under the License.
  */
 
-export * from './AfterAuth';
-export * from './AuthProvider';
-export * from './KeycloakProvider';
+export * from '../lib/route';

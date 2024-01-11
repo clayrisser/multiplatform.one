@@ -12,6 +12,11 @@
       "import": "./lib/index.mjs",
       "require": "./lib/index.js",
       "types": "./lib/index.d.ts"
+    },
+    "./route": {
+      "import": "./lib/route.mjs",
+      "require": "./lib/route.js",
+      "types": "./lib/route.d.ts"
     }
   },
   "author": "BitSpur",

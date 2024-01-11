@@ -19,8 +19,6 @@
  *  limitations under the License.
  */
 
-import type { Session as NextSession } from 'next-auth';
-
 declare global {
   interface Window {
     ReactNativeWebView: {
@@ -34,13 +32,6 @@ declare global {
       };
     };
   }
-}
-
-export interface Session extends NextSession {
-  accessToken: string;
-  err?: Error;
-  idToken?: string;
-  refreshToken?: string;
 }
 
 export interface KeycloakMock {

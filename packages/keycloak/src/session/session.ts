@@ -19,8 +19,6 @@
  *  limitations under the License.
  */
 
-import type { AccessTokenParsed } from './token';
-import type { JWT } from 'next-auth/jwt';
 import type { Session as NextSession } from 'next-auth';
 import type { SessionContextValue as NextSessionContextValue, UseSessionOptions } from 'next-auth/react';
 import { MultiPlatform } from 'multiplatform.one';

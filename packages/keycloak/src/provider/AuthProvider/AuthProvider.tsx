@@ -24,8 +24,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import type { KeycloakConfig, KeycloakInitOptions } from 'keycloak-js';
 import type { PropsWithChildren } from 'react';
 import type { SessionProviderProps } from 'next-auth/react';
+import { AfterAuth } from '../AfterAuth';
 import { Keycloak } from '../../keycloak';
-import { KeycloakContext } from 'src/keycloak/context';
+import { KeycloakContext } from '../../keycloak/context';
 import { MultiPlatform } from 'multiplatform.one';
 import { SessionProvider } from 'next-auth/react';
 import { persist, useAuthState } from '../../state';
@@ -245,7 +246,7 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
   return (
     <SessionProvider {...sessionProvider}>
       <KeycloakContext.Provider value={keycloak}>
-        <AuthProvider>{children}</AuthProvider>
+        <AfterAuth>{children}</AfterAuth>
       </KeycloakContext.Provider>
     </SessionProvider>
   );
