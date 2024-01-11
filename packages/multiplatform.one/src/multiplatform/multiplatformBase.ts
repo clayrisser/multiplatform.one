@@ -21,6 +21,12 @@
 
 import { isTouchable, isWindowDefined } from '@tamagui/constants';
 
+declare global {
+  interface Window {
+    __STORYBOOK_ADDONS: unknown;
+  }
+}
+
 export class MultiPlatformBase {
   static isAndroid = false;
   static isChrome = false;
