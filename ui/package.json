@@ -13,22 +13,22 @@
   ],
   "dependencies": {
     "@multiplatform.one/components": "0.7.13",
-    "@tamagui/animations-css": "^1.82.8",
-    "@tamagui/animations-moti": "^1.82.8",
-    "@tamagui/animations-react-native": "^1.82.8",
-    "@tamagui/animations-reanimated": "^1.82.8",
-    "@tamagui/react-native-media-driver": "^1.82.8",
-    "@tamagui/shorthands": "^1.82.8",
-    "@tamagui/themes": "^1.82.8",
+    "@tamagui/animations-css": "^1.84.1",
+    "@tamagui/animations-moti": "^1.84.1",
+    "@tamagui/animations-react-native": "^1.84.1",
+    "@tamagui/animations-reanimated": "^1.84.1",
+    "@tamagui/react-native-media-driver": "^1.84.1",
+    "@tamagui/shorthands": "^1.84.1",
+    "@tamagui/themes": "^1.84.1",
     "moti": "^0.27.2",
     "react-native-reanimated": "3.6.1",
     "solito": "^4.2.0",
-    "tamagui": "^1.82.8",
+    "tamagui": "^1.84.1",
     "zustand": "^4.4.7",
     "zustand-tools": "^0.0.7"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.82.8"
+    "@tamagui/build": "^1.84.1"
   },
   "jest": {
     "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",

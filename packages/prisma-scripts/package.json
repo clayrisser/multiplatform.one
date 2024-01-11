@@ -55,7 +55,7 @@
     "prisma": "^5.7.1"
   },
   "devDependencies": {
-    "@types/eslint": "^8.56.1",
+    "@types/eslint": "^8.56.2",
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.11",
     "cspell": "^8.3.2",
@@ -64,7 +64,7 @@
     "jest-sonar-reporter": "^2.0.0",
     "majestic": "^1.8.1",
     "prettier": "^3.1.1",
-    "prisma": "~5.7.1",
+    "prisma": "~5.8.0",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
   },
