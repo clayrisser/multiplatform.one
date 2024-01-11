@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/prisma-scripts",
-  "version": "0.5.24",
+  "version": "0.5.25",
   "description": "scripts for managing prisma orm",
   "sideEffects": false,
   "keywords": [
@@ -72,12 +72,14 @@
     "#ansi-styles",
     "#supports-color",
     "chalk",
+    "cli-cursor",
     "execa",
     "is-interactive",
     "is-unicode-supported",
     "log-symbols",
     "npm-run-path",
     "ora",
+    "restore-cursor",
     "stdin-discarder",
     "strip-final-newline"
   ],
