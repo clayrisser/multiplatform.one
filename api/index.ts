@@ -21,10 +21,12 @@
 
 import Container, { Constructable } from 'typedi';
 import { BuildSchemaOptions, ResolverData } from 'type-graphql';
+import { CTX, REQ } from '@multiplatform.one/typegraphql';
 import { Ctx } from './types';
 import { OnResponseEventPayload } from '@whatwg-node/server';
 import { PrismaClient } from '@prisma/client';
 import { YogaServerOptions } from 'graphql-yoga';
+import { registerKeycloak } from '@multiplatform.one/keycloak-typegraphql';
 import { resolvers } from './resolvers';
 
 export async function createServerOptions(connectPrisma = false): Promise<ServerOptions> {
@@ -39,22 +41,30 @@ export async function createServerOptions(connectPrisma = false): Promise<Server
       },
     },
     yoga: {
-      context(context): Ctx {
+      async context(context): Promise<Ctx> {
         const id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
         const container = Container.of(id);
-        const ctx = {
+        const ctx: Ctx = {
           ...context,
           container,
           id,
           prisma,
         };
-        container.set('ctx', ctx);
+        container.set(CTX, ctx);
+        container.set(REQ, ctx.request);
         (resolvers as any[]).forEach((resolver: Constructable<any>) =>
           container.set({
             id: resolver,
             type: resolver,
           }),
         );
+        await registerKeycloak(container, {
+          baseUrl: process.env.KEYCLOAK_BASE_URL || '',
+          clientId: process.env.KEYCLOAK_CLIENT_ID || '',
+          clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || '',
+          debug: process.env.DEBUG === '1',
+          realm: process.env.KEYCLOAK_REALM || 'master',
+        });
         return ctx;
       },
       plugins: [
