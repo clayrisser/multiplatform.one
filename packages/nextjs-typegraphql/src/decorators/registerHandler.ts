@@ -23,15 +23,21 @@ import type { ResolverData, NextFn } from 'type-graphql';
 import { createMethodDecorator } from 'type-graphql';
 import { Ctx } from '../types';
 
+const Container = require('typedi').Container as typeof import('typedi').Container;
+
 export function RegisterHandler(
   target: any,
   propertyKey: string | symbol,
   descriptor: TypedPropertyDescriptor<any>,
 ): undefined | TypedPropertyDescriptor<any> {
   if (target.prototype) return undefined;
-  return createMethodDecorator(({ context }: ResolverData<Ctx>, next: NextFn) => {
+  function RegisterHandlerDecorator({ context }: ResolverData<Ctx>, next: NextFn) {
     if (!context.typegraphqlMeta) context.typegraphqlMeta = {};
     context.typegraphqlMeta.getHandler = () => descriptor.value;
     return next();
-  })(target, propertyKey, descriptor) as undefined | TypedPropertyDescriptor<any>;
+  }
+  Container.set(RegisterHandlerDecorator, RegisterHandlerDecorator);
+  return createMethodDecorator(RegisterHandlerDecorator)(target, propertyKey, descriptor) as
+    | undefined
+    | TypedPropertyDescriptor<any>;
 }

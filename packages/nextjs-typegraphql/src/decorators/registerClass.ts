@@ -21,16 +21,18 @@
 
 import type { Ctx } from '../types';
 import type { ResolverData, NextFn } from 'type-graphql';
-import { DecorateAll } from '../decorate';
+import { DecorateAll } from './decorateAll';
 import { createMethodDecorator } from 'type-graphql';
+
+const Container = require('typedi').Container as typeof import('typedi').Container;
 
 export const RegisterClass = ((target: any): undefined | Function => {
   if (!target.prototype) return undefined;
-  return DecorateAll(
-    createMethodDecorator(({ context }: ResolverData<Ctx>, next: NextFn) => {
-      if (!context.typegraphqlMeta) context.typegraphqlMeta = {};
-      context.typegraphqlMeta.getClass = () => target;
-      return next();
-    }),
-  )(target) as undefined | Function;
+  function RegisterClassDecorator({ context: ctx }: ResolverData<Ctx>, next: NextFn) {
+    if (!ctx.typegraphqlMeta) ctx.typegraphqlMeta = {};
+    ctx.typegraphqlMeta.getClass = () => target;
+    return next();
+  }
+  Container.set(RegisterClassDecorator, RegisterClassDecorator);
+  return DecorateAll(createMethodDecorator(RegisterClassDecorator))(target) as undefined | Function;
 }) as ClassDecorator;

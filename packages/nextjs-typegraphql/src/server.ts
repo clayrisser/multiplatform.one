@@ -19,15 +19,17 @@
  *  limitations under the License.
  */
 
+// @ts-ignore
+import { registerKeycloak } from '@multiplatform.one/keycloak-typegraphql';
 import type { Constructable } from 'typedi';
 import type { Ctx, NextJSTypeGraphQLServer, ServerOptions } from './types';
-import { registerKeycloak, type KeycloakOptions } from '@multiplatform.one/keycloak-typegraphql';
 import type { NextServer } from 'next/dist/server/next';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
 import type { YogaServerOptions } from 'graphql-yoga';
-import { Server as WebSocketServer } from 'ws';
+import { WebSocketServer } from 'ws';
 import { buildSchema } from 'type-graphql';
 import { createBuildSchemaOptions } from './buildSchema';
+import { createKeycloakOptions } from './keycloak';
 import { createYoga } from 'graphql-yoga';
 import { useServer } from 'graphql-ws/lib/use/ws';
 
@@ -66,20 +68,17 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
       };
       container.set(CTX, ctx);
       container.set(REQ, ctx.request);
-      (options.resolvers as any[]).forEach((resolver: Constructable<any>) =>
+      (buildSchemaOptions.resolvers as any[]).forEach((resolver: Constructable<any>) => {
         container.set({
           id: resolver,
           type: resolver,
-        }),
-      );
-      const keycloakOptions: KeycloakOptions = {
-        baseUrl: process.env.KEYCLOAK_BASE_URL || '',
-        clientId: process.env.KEYCLOAK_CLIENT_ID || '',
-        clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || '',
-        debug,
-        realm: process.env.KEYCLOAK_REALM || 'master',
-        ...options.keycloak,
-      };
+        });
+        // container.set({
+        //   id: (resolver as any).__typedi_container_id || resolver,
+        //   type: resolver,
+        // });
+      });
+      const keycloakOptions = createKeycloakOptions(options);
       if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
         await registerKeycloak(container, keycloakOptions);
       }
@@ -207,7 +206,7 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
   > App started!
     HTTP server running on http://${hostname}:${port}
     GraphQL WebSocket server running on ws://${hostname}:${port}${graphqlEndpoint}
-  `);
+`);
       } catch (err) {
         logger.error(err);
         process.exit(1);

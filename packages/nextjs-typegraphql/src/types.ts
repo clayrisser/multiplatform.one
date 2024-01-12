@@ -19,11 +19,12 @@
  *  limitations under the License.
  */
 
+// @ts-ignore
+import type { KeycloakOptions } from '@multiplatform.one/keycloak-typegraphql';
 import type { BuildSchemaOptions, MiddlewareFn } from 'type-graphql';
 import type { ContainerInstance } from 'typedi';
 import type { Express, Request } from 'express';
 import type { GraphQLSchema } from 'graphql';
-import type { KeycloakOptions } from '@multiplatform.one/keycloak-typegraphql';
 import type { NextServer } from 'next/dist/server/next';
 import type { NonEmptyArray } from 'type-graphql';
 import type { PrismaClient } from '@prisma/client';

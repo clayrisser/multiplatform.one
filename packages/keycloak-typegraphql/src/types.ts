@@ -29,10 +29,9 @@ export type KeycloakRequest<R extends Request = Request> = {
   kauth?: Kauth;
   keycloakService?: KeycloakService;
   originalUrl?: string;
-  // redirectUnauthorized?: RedirectMeta | false;
   resourceDenied?: boolean;
-  user?: ACLUser;
   session?: Session;
+  user?: ACLUser;
 } & R;
 
 export interface UserInfo {

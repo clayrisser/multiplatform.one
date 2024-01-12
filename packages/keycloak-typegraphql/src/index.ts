@@ -19,6 +19,7 @@
  *  limitations under the License.
  */
 
+export * from './authGuard';
 export * from './decorators';
 export * from './keycloakService';
 export * from './register';
