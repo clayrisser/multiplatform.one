@@ -19,7 +19,7 @@
  *  limitations under the License.
  */
 
-import type { BuildSchemaOptions } from 'type-graphql';
+import type { BuildSchemaOptions, MiddlewareFn } from 'type-graphql';
 import type { ContainerInstance } from 'typedi';
 import type { Express, Request } from 'express';
 import type { GraphQLSchema } from 'graphql';
@@ -31,10 +31,12 @@ import type { Server, IncomingMessage, ServerResponse } from 'http';
 import type { WebSocketServer } from 'ws';
 import type { YogaInitialContext, YogaServerInstance, YogaServerOptions } from 'graphql-yoga';
 
-export interface Ctx<P extends PrismaClient = PrismaClient> extends YogaInitialContext {
+export interface Ctx<P extends PrismaClient = PrismaClient, M extends TypeGraphqlMeta = TypeGraphqlMeta>
+  extends YogaInitialContext {
   container: ContainerInstance;
   id: string;
   prisma?: P;
+  typegraphqlMeta?: M;
 }
 
 export interface Req extends Request {
@@ -70,4 +72,16 @@ export interface NextJSTypeGraphQLServer {
   wsServer: WebSocketServer;
   yoga: YogaServerInstance<Record<string, any>, Record<string, any>>;
   yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>>;
+}
+
+export interface TypeGraphqlMeta {
+  deferredMiddlewares?: MiddlewareFn<Ctx>[];
+  getClass?: () => Type<any>;
+  getHandler?: () => Function;
+  [key: string]: any;
+}
+
+export interface Type<T = any> extends Function {
+  // eslint-disable-next-line @typescript-eslint/prefer-function-type
+  new (...args: any[]): T;
 }
