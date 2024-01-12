@@ -20,7 +20,7 @@
  */
 
 // @ts-ignore
-import token from 'keycloak-connect/middleware/auth-utils/token';
+import token from 'keycloak-connect/middleware/auth-utils/token.js';
 import type { Token as IToken } from 'keycloak-connect';
 
 export interface TokenContentRealmAccess {

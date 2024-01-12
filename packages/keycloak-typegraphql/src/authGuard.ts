@@ -20,61 +20,62 @@
  */
 
 import type { Ctx } from '@multiplatform.one/nextjs-typegraphql';
-import type { NextFn, ResolverData } from 'type-graphql';
+import type { MiddlewareInterface, NextFn, ResolverData } from 'type-graphql';
 import type { TypeGraphqlKeycloakMeta } from './types';
 import { KeycloakService } from './keycloakService';
+import { Service } from 'typedi';
 import { deferMiddleware } from '@multiplatform.one/nextjs-typegraphql';
 
 const logger = console;
 
-export function registerAuthGuard() {
-  function getResourceName(ctx: Ctx<any, TypeGraphqlKeycloakMeta>): string | undefined {
-    return ctx.typegraphqlMeta?.keycloak?.resourceName;
-  }
-
-  function getRoles(ctx: Ctx<any, TypeGraphqlKeycloakMeta>): (string | string[])[] | undefined {
-    const { classRoles, handlerRoles } = ctx.typegraphqlMeta?.keycloak || {};
-    if (
-      (typeof classRoles === 'undefined' || classRoles === null) &&
-      (typeof handlerRoles === 'undefined' || handlerRoles === null)
-    ) {
-      return undefined;
-    }
-    return [...new Set([...(handlerRoles || []), ...(classRoles || [])])];
-  }
-
-  function getIsPublic(ctx: Ctx<any, TypeGraphqlKeycloakMeta>) {
-    return ctx.typegraphqlMeta?.keycloak?.isPublic || false;
-  }
-
-  async function canActivate(ctx: Ctx): Promise<boolean> {
-    const isPublic = getIsPublic(ctx);
-    const roles = getRoles(ctx);
-    if (isPublic || typeof roles === 'undefined') return true;
-    const keycloakService = ctx.container.get(KeycloakService);
-    const username = (await keycloakService.getUserInfo())?.preferredUsername;
-    if (!username) return false;
-    const resourceName = getResourceName(ctx);
-    logger.debug(
-      `resource${resourceName ? ` '${resourceName}'` : ''} for '${username}' requires ${
-        roles.length ? `roles [ ${roles.join(' | ')} ]` : 'authentication'
-      }`,
-    );
-    if (await keycloakService.isAuthorizedByRoles(roles)) {
-      logger.debug(`authorization for '${username}' granted`);
-      return true;
-    }
-    logger.debug(`authorization for '${username}' denied`);
-    return false;
-  }
-
-  return ({ context }: ResolverData<Ctx>, next: NextFn) => {
-    deferMiddleware(context, async ({ context }: ResolverData<Ctx>, next: NextFn) => {
-      if (!(await canActivate(context))) {
-        throw new Error('Unauthorized');
-      }
+@Service()
+export class AuthGuard implements MiddlewareInterface<Ctx> {
+  async use(data: ResolverData<Ctx>, next: NextFn) {
+    const ctx = data.context;
+    deferMiddleware(ctx, async ({ context: ctx }: ResolverData<Ctx>, next: NextFn) => {
+      if (!(await canActivate(ctx))) throw new Error('Unauthorized');
       return next();
     });
     return next();
-  };
+  }
+}
+
+function getResourceName(ctx: Ctx<any, TypeGraphqlKeycloakMeta>): string | undefined {
+  return ctx.typegraphqlMeta?.keycloak?.resourceName;
+}
+
+function getRoles(ctx: Ctx<any, TypeGraphqlKeycloakMeta>): (string | string[])[] | undefined {
+  const { classRoles, handlerRoles } = ctx.typegraphqlMeta?.keycloak || {};
+  if (
+    (typeof classRoles === 'undefined' || classRoles === null) &&
+    (typeof handlerRoles === 'undefined' || handlerRoles === null)
+  ) {
+    return undefined;
+  }
+  return [...new Set([...(handlerRoles || []), ...(classRoles || [])])];
+}
+
+function getIsPublic(ctx: Ctx<any, TypeGraphqlKeycloakMeta>) {
+  return ctx.typegraphqlMeta?.keycloak?.isPublic || false;
+}
+
+async function canActivate(ctx: Ctx): Promise<boolean> {
+  const isPublic = getIsPublic(ctx);
+  const roles = getRoles(ctx);
+  if (isPublic || typeof roles === 'undefined') return true;
+  const keycloakService = ctx.container.get(KeycloakService);
+  const username = (await keycloakService.getUserInfo())?.preferredUsername;
+  if (!username) return false;
+  const resourceName = getResourceName(ctx);
+  logger.debug(
+    `resource${resourceName ? ` '${resourceName}'` : ''} for '${username}' requires ${
+      roles.length ? `roles [ ${roles.join(' | ')} ]` : 'authentication'
+    }`,
+  );
+  if (await keycloakService.isAuthorizedByRoles(roles)) {
+    logger.debug(`authorization for '${username}' granted`);
+    return true;
+  }
+  logger.debug(`authorization for '${username}' denied`);
+  return false;
 }

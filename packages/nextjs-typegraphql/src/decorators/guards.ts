@@ -21,24 +21,25 @@
 
 import type { Ctx } from '../types';
 import type { NextFn, ResolverData } from 'type-graphql';
-import { DecorateAll, applyClassDecorators } from '../decorate';
+import { DecorateAll } from './decorateAll';
 import { RegisterClass } from './registerClass';
 import { RegisterHandler } from './registerHandler';
+import { applyClassDecorators } from '../decorate';
 import { combineMiddlewares } from '../middleware';
 import { createMethodDecorator } from 'type-graphql';
 
-export function Guards(): ClassDecorator {
-  return applyClassDecorators(
-    DecorateAll(
-      createMethodDecorator((data: ResolverData<Ctx>, next: NextFn) => {
-        const { context } = data;
-        if (!context.typegraphqlMeta?.deferredMiddlewares?.length) {
-          return next();
-        }
-        return combineMiddlewares(context.typegraphqlMeta.deferredMiddlewares)(data, next);
-      }),
-    ),
-    DecorateAll(RegisterHandler),
-    RegisterClass,
-  );
+const Container = require('typedi').Container as typeof import('typedi').Container;
+
+function GuardsDecorator(data: ResolverData<Ctx>, next: NextFn) {
+  const { context: ctx } = data;
+  if (!ctx.typegraphqlMeta?.deferredMiddlewares?.length) return next();
+  return combineMiddlewares(ctx.typegraphqlMeta.deferredMiddlewares)(data, next);
 }
+
+Container.set(GuardsDecorator, GuardsDecorator);
+
+export const Guards = applyClassDecorators(
+  DecorateAll(createMethodDecorator(GuardsDecorator)),
+  DecorateAll(RegisterHandler),
+  RegisterClass,
+);

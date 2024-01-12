@@ -24,9 +24,7 @@ import type { MiddlewareFn, ResolverData, NextFn } from 'type-graphql';
 
 export function deferMiddleware(ctx: Ctx, middleware: MiddlewareFn<Ctx>) {
   if (!ctx.typegraphqlMeta) ctx.typegraphqlMeta = {};
-  if (!ctx.typegraphqlMeta.deferredMiddlewares) {
-    ctx.typegraphqlMeta.deferredMiddlewares = [];
-  }
+  if (!ctx.typegraphqlMeta.deferredMiddlewares) ctx.typegraphqlMeta.deferredMiddlewares = [];
   ctx.typegraphqlMeta.deferredMiddlewares.push(middleware);
 }
 

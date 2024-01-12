@@ -1,7 +1,7 @@
 /*
- *  File: /src/decorators/resolver.ts
+ *  File: /src/keycloak.ts
  *  Project: @multiplatform.one/nextjs-typegraphql
- *  File Created: 12-01-2024 10:14:21
+ *  File Created: 12-01-2024 12:17:13
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,12 +19,18 @@
  *  limitations under the License.
  */
 
-import type { ClassType } from 'type-graphql';
-import type { ClassTypeResolver } from 'type-graphql/dist/decorators/types';
-import { Guards } from './guards';
-import { Resolver as TypeGraphqlResolver } from 'type-graphql';
-import { applyClassDecorators } from '../decorate';
+// @ts-ignore
+import type { KeycloakOptions } from '@multiplatform.one/keycloak-typegraphql';
+import type { ServerOptions } from './types';
 
-export function Resolver(typeFuncOrObjectType?: ClassTypeResolver | ClassType): ClassDecorator {
-  return applyClassDecorators(Guards(), TypeGraphqlResolver(typeFuncOrObjectType as ClassType));
+export function createKeycloakOptions(options: ServerOptions): KeycloakOptions {
+  const debug = typeof options.debug !== 'undefined' ? options.debug : process.env.DEBUG === '1';
+  return {
+    baseUrl: process.env.KEYCLOAK_BASE_URL || '',
+    clientId: process.env.KEYCLOAK_CLIENT_ID || '',
+    clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || '',
+    debug,
+    realm: process.env.KEYCLOAK_REALM || 'master',
+    ...options.keycloak,
+  };
 }

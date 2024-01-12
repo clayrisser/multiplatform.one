@@ -1,7 +1,7 @@
 /*
- *  File: /src/decorators/index.ts
+ *  File: /src/resolvers.ts
  *  Project: @multiplatform.one/nextjs-typegraphql
- *  File Created: 12-01-2024 09:46:59
+ *  File Created: 12-01-2024 12:55:41
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,6 +19,15 @@
  *  limitations under the License.
  */
 
-export * from './guards';
-export * from './registerClass';
-export * from './registerHandler';
+import type { NonEmptyArray } from 'type-graphql';
+import type { ServerOptions } from './types';
+import { Guards } from './decorators/guards';
+
+export function createResolvers(options: ServerOptions) {
+  return options.resolvers.map((resolver) => {
+    if (typeof resolver === 'string') return resolver;
+    const decoratedResolver = Guards(resolver);
+    (decoratedResolver as any).__typedi_container_id = resolver;
+    return decoratedResolver;
+  }) as NonEmptyArray<Function> | NonEmptyArray<string>;
+}

@@ -19,10 +19,15 @@
  *  limitations under the License.
  */
 
+// @ts-ignore
+import { AuthGuard } from '@multiplatform.one/keycloak-typegraphql';
 import path from 'path';
 import type { Ctx, ServerOptions } from './types';
+import type { Middleware } from 'type-graphql/dist/interfaces/Middleware';
 import { BuildSchemaOptions, ResolverData, buildSchema as typeGraphqlBuildSchema } from 'type-graphql';
 import { ValidateSettings } from 'type-graphql/dist/schema/build-context';
+import { createKeycloakOptions } from './keycloak';
+import { createResolvers } from './resolvers';
 
 export async function buildSchema(options: ServerOptions, emit?: string | true) {
   return typeGraphqlBuildSchema({
@@ -35,10 +40,16 @@ export function createBuildSchemaOptions(options: ServerOptions) {
   const validate: ValidateSettings = {
     forbidUnknownValues: false,
   };
+  const globalMiddlewares: Middleware<any>[] = [];
+  const keycloakOptions = createKeycloakOptions(options);
+  if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
+    globalMiddlewares.push(AuthGuard);
+  }
   return {
     ...options.buildSchema,
-    resolvers: options.resolvers,
+    resolvers: createResolvers(options),
     container: ({ context: ctx }: ResolverData<Ctx>) => ctx.container,
+    globalMiddlewares,
     validate:
       typeof options.buildSchema?.validate === 'object'
         ? {
