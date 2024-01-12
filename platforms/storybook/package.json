@@ -34,7 +34,7 @@
     "@babel/preset-typescript": "^7.23.3",
     "@loki/target-chrome-core": "0.33.0",
     "@storybook/addon-styling": "^1.3.7",
-    "@tamagui/babel-plugin": "^1.84.1",
+    "@tamagui/babel-plugin": "^1.84.2",
     "@types/babel__preset-env": "^7.9.6",
     "@types/node": "~20.10.8",
     "@types/react": "^18.2.47",

@@ -20,13 +20,7 @@
  */
 
 import path from 'path';
-import { buildSchema as typeGraphqlBuildSchema } from 'type-graphql';
-import { createServerOptions, ServerOptions } from './index';
+import { buildSchema } from '@multiplatform.one/nextjs-typegraphql';
+import { options } from './server';
 
-export async function buildSchema(serverOptions?: ServerOptions) {
-  if (!serverOptions) serverOptions = await createServerOptions();
-  return typeGraphqlBuildSchema({
-    ...serverOptions.buildSchema,
-    emitSchemaFile: path.resolve(__dirname, '../../gql/generated/schema.graphql'),
-  });
-}
+buildSchema(options, path.resolve(__dirname, '../../gql/generated/schema.graphql'));

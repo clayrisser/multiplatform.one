@@ -25,7 +25,7 @@ include $(MKPM)/dotenv
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
-BUILD_SCHEMA ?= $(NODE) -e "require('reflect-metadata');require('api/buildSchema').buildSchema()"
+BUILD_SCHEMA ?= $(NODE) -e "require('reflect-metadata');require('api/buildSchema')"
 GRAPHQL_CODEGEN ?= $(YARN) graphql-codegen
 NODEMON ?= $(YARN) nodemon
 

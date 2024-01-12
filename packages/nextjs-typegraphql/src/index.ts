@@ -1,7 +1,7 @@
 /*
- *  File: /src/register.ts
- *  Project: @multiplatform.one/typegraphql
- *  File Created: 12-01-2024 02:15:36
+ *  File: /src/index.ts
+ *  Project: @multiplatform.one/keycloak-typegraphql
+ *  File Created: 11-01-2024 14:26:32
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,5 +19,6 @@
  *  limitations under the License.
  */
 
-export const CTX = 'CTX';
-export const REQ = 'REQ';
+export * from './buildSchema';
+export * from './server';
+export * from './types';

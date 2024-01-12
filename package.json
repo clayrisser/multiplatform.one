@@ -12,7 +12,6 @@
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "@playlyfe/gql": "^2.6.2",
-    "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
     "eslint": "^8.56.0",

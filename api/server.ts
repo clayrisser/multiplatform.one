@@ -1,7 +1,7 @@
 /*
- *  File: /src/index.ts
- *  Project: @multiplatform.one/keycloak-typegraphql
- *  File Created: 11-01-2024 14:26:32
+ *  File: /server.ts
+ *  Project: api
+ *  File Created: 12-01-2024 05:15:21
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,4 +19,19 @@
  *  limitations under the License.
  */
 
-export * from './register';
+import type { ServerOptions } from '@multiplatform.one/nextjs-typegraphql';
+import { createServer } from '@multiplatform.one/nextjs-typegraphql';
+import { resolvers } from './resolvers';
+
+export const options: ServerOptions = {
+  resolvers,
+  debug: process.env.DEBUG === '1',
+  keycloak: {
+    baseUrl: process.env.KEYCLOAK_BASE_URL || '',
+    clientId: process.env.KEYCLOAK_CLIENT_ID || '',
+    clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || '',
+    realm: process.env.KEYCLOAK_REALM || 'master',
+  },
+};
+
+export default createServer(options);

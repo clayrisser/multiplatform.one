@@ -66,7 +66,7 @@ export async function registerKeycloak(container: ContainerInstance, options: Ke
 }
 
 export class KeycloakOptions {
-  // register?: RegisterOptions | boolean;
+  register?: RegisterOptions | boolean;
   adminClientId?: string;
   adminPassword?: string;
   adminUsername?: string;
@@ -82,3 +82,8 @@ export class KeycloakOptions {
 }
 
 export { KeycloakConnect };
+
+export interface RegisterOptions {
+  resources?: Record<string, string[]>;
+  roles?: string[];
+}
