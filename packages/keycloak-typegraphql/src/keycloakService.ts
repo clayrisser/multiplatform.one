@@ -23,9 +23,10 @@ import axios from 'axios';
 import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
 import type { AxiosError } from 'axios';
 import type { Grant } from 'keycloak-connect';
-import type { Keycloak, KeycloakOptions } from './register';
+import type { KeycloakConnect, KeycloakOptions } from './register';
 import type { NextFunction } from 'express';
 import { KeycloakAdmin } from './register';
+import { REQ } from '@multiplatform.one/nextjs-typegraphql';
 import { Service, Inject } from 'typedi';
 import { Token } from './token';
 import type {
@@ -55,9 +56,9 @@ export class KeycloakService {
   private _grant: Grant | undefined;
 
   constructor(
-    @Inject('REQ') public readonly req: KeycloakRequest,
+    @Inject(REQ) public readonly req: KeycloakRequest,
     options: KeycloakOptions,
-    public readonly keycloak: Keycloak,
+    public readonly keycloakConnect: KeycloakConnect,
     public readonly keycloakAdmin: KeycloakAdmin,
   ) {
     this.options = {
@@ -67,7 +68,7 @@ export class KeycloakService {
   }
 
   get clientId(): string {
-    return (this.keycloak.grantManager as any).clientId;
+    return (this.keycloakConnect.grantManager as any).clientId;
   }
 
   get bearerToken(): Token | undefined {
@@ -183,7 +184,7 @@ export class KeycloakService {
     const userInfo =
       accessToken &&
       !accessToken.isExpired() &&
-      (await this.keycloak.grantManager.userInfo<
+      (await this.keycloakConnect.grantManager.userInfo<
         Token | string,
         {
           email_verified: boolean;
@@ -330,9 +331,9 @@ export class KeycloakService {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         },
       );
-      grant = await this.keycloak.grantManager.createGrant(res.data);
+      grant = await this.keycloakConnect.grantManager.createGrant(res.data);
     } else {
-      grant = await this.keycloak.grantManager.obtainDirectly(
+      grant = await this.keycloakConnect.grantManager.obtainDirectly(
         username,
         password,
         // @ts-ignore missing scope argument
@@ -365,9 +366,9 @@ export class KeycloakService {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         },
       );
-      grant = await this.keycloak.grantManager.createGrant(res.data);
+      grant = await this.keycloakConnect.grantManager.createGrant(res.data);
     } else {
-      grant = await this.keycloak.grantManager.obtainFromClientCredentials(
+      grant = await this.keycloakConnect.grantManager.obtainFromClientCredentials(
         // @ts-ignore missing scope argument
         undefined,
         this.serializeScope(scope),
@@ -395,7 +396,7 @@ export class KeycloakService {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       },
     );
-    const grant = await this.keycloak.grantManager.createGrant(res.data);
+    const grant = await this.keycloakConnect.grantManager.createGrant(res.data);
     if (!grant) return;
     if (persistSession) this.sessionSetTokens(grant.access_token as Token, grant.refresh_token as Token);
     await this.afterGrant(grant);
@@ -425,9 +426,9 @@ export class KeycloakService {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         },
       );
-      grant = await this.keycloak.grantManager.createGrant(res.data);
+      grant = await this.keycloakConnect.grantManager.createGrant(res.data);
     } else {
-      grant = await this.keycloak.grantManager.obtainFromCode(
+      grant = await this.keycloakConnect.grantManager.obtainFromCode(
         // @ts-ignore first argument is req
         this.req,
         code,
@@ -444,7 +445,7 @@ export class KeycloakService {
   async enforce(permissions: string[]) {
     await this.getGrant();
     return new Promise<boolean>((resolve) => {
-      return this.keycloak.enforcer(permissions)(
+      return this.keycloakConnect.enforcer(permissions)(
         this.req as any,
         {} as any,
         ((_: Request, _res: Response, _next: NextFunction) => {
@@ -458,7 +459,7 @@ export class KeycloakService {
   async logout(redirectUri: string): Promise<LogoutResult> {
     this.clearGrant();
     await this.clearSession();
-    return { redirect: this.keycloak.logoutUrl(redirectUri) };
+    return { redirect: this.keycloakConnect.logoutUrl(redirectUri) };
   }
 
   private async afterGrant(grant?: Grant) {
@@ -527,7 +528,7 @@ export class KeycloakService {
 
   private async createGrant(accessToken: Token, refreshToken?: Token | null): Promise<Grant | undefined> {
     return (
-      this.keycloak.grantManager.createGrant({
+      this.keycloakConnect.grantManager.createGrant({
         // access_token is actually a string even though keycloak-connect
         // thinks it is a Token
         // @ts-ignore
@@ -546,9 +547,9 @@ export class KeycloakService {
   private async validateGrant(grant: Grant): Promise<Grant | undefined> {
     // @ts-ignore isGrantRefreshable is private
     if (this.options.ensureFreshness && this.keycloak.grantManager.isGrantRefreshable(grant)) {
-      await this.keycloak.grantManager.ensureFreshness(grant);
+      await this.keycloakConnect.grantManager.ensureFreshness(grant);
     }
-    return await this.keycloak.grantManager.validateGrant(grant);
+    return await this.keycloakConnect.grantManager.validateGrant(grant);
   }
 
   private serializeScope(scope?: string | string[]) {

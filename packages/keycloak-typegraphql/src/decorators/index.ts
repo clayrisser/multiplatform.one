@@ -1,7 +1,7 @@
 /*
- *  File: /src/index.ts
+ *  File: /src/decorators/index.ts
  *  Project: @multiplatform.one/keycloak-typegraphql
- *  File Created: 11-01-2024 14:26:32
+ *  File Created: 12-01-2024 09:57:05
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,8 +19,4 @@
  *  limitations under the License.
  */
 
-export * from './decorators';
-export * from './keycloakService';
-export * from './register';
-export * from './token';
-export * from './types';
+export * from './onlyOwner';

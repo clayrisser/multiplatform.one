@@ -19,7 +19,7 @@
  *  limitations under the License.
  */
 
-import KeycloakConnect from 'keycloak-connect';
+import Keycloak from 'keycloak-connect';
 import session from 'express-session';
 import type IKeycloakAdminClient from '@keycloak/keycloak-admin-client';
 import type { ContainerInstance } from 'typedi';
@@ -27,7 +27,7 @@ import type { Keycloak as IKeycloakConnect } from 'keycloak-connect';
 import type { NextFunction } from 'express';
 import { KeycloakRequest } from './types';
 
-export class Keycloak extends KeycloakConnect implements IKeycloakConnect {
+export class KeycloakConnect extends Keycloak implements IKeycloakConnect {
   accessDenied: any;
 }
 
@@ -50,7 +50,7 @@ export async function registerKeycloak(container: ContainerInstance, options: Ke
     });
     container.set(KeycloakAdmin, keycloakAdmin);
   }
-  const keycloak = new Keycloak({ store: new session.MemoryStore() }, {
+  const keycloakConnect = new KeycloakConnect({ store: new session.MemoryStore() }, {
     clientId,
     realm,
     serverUrl: options.baseUrl,
@@ -58,15 +58,14 @@ export async function registerKeycloak(container: ContainerInstance, options: Ke
       ...(clientSecret ? { secret: clientSecret } : {}),
     },
   } as unknown as any);
-  keycloak.accessDenied = (req: KeycloakRequest, _res: Response, next: NextFunction) => {
+  keycloakConnect.accessDenied = (req: KeycloakRequest, _res: Response, next: NextFunction) => {
     req.resourceDenied = true;
     next();
   };
-  container.set(Keycloak, keycloak);
+  container.set(KeycloakConnect, keycloakConnect);
 }
 
 export class KeycloakOptions {
-  register?: RegisterOptions | boolean;
   adminClientId?: string;
   adminPassword?: string;
   adminUsername?: string;
@@ -77,11 +76,10 @@ export class KeycloakOptions {
   ensureFreshness?: boolean;
   privatePort?: number;
   realm!: string;
+  register?: RegisterOptions | boolean;
   strict?: boolean;
   xApiKey?: string;
 }
-
-export { KeycloakConnect };
 
 export interface RegisterOptions {
   resources?: Record<string, string[]>;

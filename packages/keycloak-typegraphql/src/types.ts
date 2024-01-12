@@ -22,6 +22,7 @@
 import type { Grant } from 'keycloak-connect';
 import type { KeycloakOptions } from './register';
 import type { KeycloakService } from './keycloakService';
+import { TypeGraphqlMeta } from '@multiplatform.one/nextjs-typegraphql';
 
 export type KeycloakRequest<R extends Request = Request> = {
   annotationKeys?: Set<string>;
@@ -103,4 +104,13 @@ export interface AuthorizationCodeGrantOptions {
   sessionHost?: string;
   codeVerifier?: string;
   clientId?: string;
+}
+
+export interface TypeGraphqlKeycloakMeta extends TypeGraphqlMeta {
+  keycloak?: {
+    classRoles?: string | string[];
+    handlerRoles?: string | string[];
+    isPublic?: boolean;
+    resourceName?: string;
+  };
 }

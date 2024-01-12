@@ -1,7 +1,7 @@
 /*
- *  File: /src/index.ts
- *  Project: @multiplatform.one/keycloak-typegraphql
- *  File Created: 11-01-2024 14:26:32
+ *  File: /src/decorators/resolver.ts
+ *  Project: @multiplatform.one/nextjs-typegraphql
+ *  File Created: 12-01-2024 10:14:21
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,8 +19,12 @@
  *  limitations under the License.
  */
 
-export * from './decorators';
-export * from './keycloakService';
-export * from './register';
-export * from './token';
-export * from './types';
+import type { ClassType } from 'type-graphql';
+import type { ClassTypeResolver } from 'type-graphql/dist/decorators/types';
+import { Guards } from './guards';
+import { Resolver as TypeGraphqlResolver } from 'type-graphql';
+import { applyClassDecorators } from '../decorate';
+
+export function Resolver(typeFuncOrObjectType?: ClassTypeResolver | ClassType): ClassDecorator {
+  return applyClassDecorators(Guards(), TypeGraphqlResolver(typeFuncOrObjectType as ClassType));
+}
