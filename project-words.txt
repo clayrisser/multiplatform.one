@@ -107,6 +107,7 @@ estree
 etchteam
 execa
 fam
+fastify
 favicon
 fets
 figcaption
@@ -220,6 +221,7 @@ pid
 pino
 pixelmatch
 pkce
+playlyfe
 pluralrules
 plusplus
 pos
