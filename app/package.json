@@ -11,7 +11,7 @@
     "@expo-google-fonts/silkscreen": "^0.2.3",
     "@fontsource/rock-salt": "^5.0.18",
     "@fontsource/silkscreen": "^5.0.18",
-    "@multiplatform.one/keycloak": "^0.7.15",
+    "@multiplatform.one/keycloak": "^0.7.17",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "@tamagui/font-fira-mono": "^1.84.1",
