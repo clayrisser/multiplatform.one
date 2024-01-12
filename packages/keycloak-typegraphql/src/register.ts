@@ -27,8 +27,6 @@ import type { Keycloak as IKeycloakConnect } from 'keycloak-connect';
 import type { NextFunction } from 'express';
 import { KeycloakRequest } from './types';
 
-export const REQUEST = 'REQUEST';
-
 export class Keycloak extends KeycloakConnect implements IKeycloakConnect {
   accessDenied: any;
 }
