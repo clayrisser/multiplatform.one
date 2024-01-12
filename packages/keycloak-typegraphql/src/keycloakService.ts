@@ -25,7 +25,8 @@ import type { AxiosError } from 'axios';
 import type { Grant } from 'keycloak-connect';
 import type { Keycloak, KeycloakOptions } from './register';
 import type { NextFunction } from 'express';
-import { KeycloakAdmin, REQUEST } from './register';
+import { KeycloakAdmin } from './register';
+import { REQ } from '@multiplatform.one/typegraphql';
 import { Service, Inject } from 'typedi';
 import { Token } from './token';
 import type {
@@ -55,7 +56,7 @@ export class KeycloakService {
   private _grant: Grant | undefined;
 
   constructor(
-    @Inject(REQUEST) public readonly req: KeycloakRequest,
+    @Inject(REQ) public readonly req: KeycloakRequest,
     options: KeycloakOptions,
     public readonly keycloak: Keycloak,
     public readonly keycloakAdmin: KeycloakAdmin,
