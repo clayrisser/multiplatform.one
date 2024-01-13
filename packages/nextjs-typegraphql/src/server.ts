@@ -20,8 +20,8 @@
  */
 
 // @ts-ignore
-import { registerKeycloak } from '@multiplatform.one/keycloak-typegraphql';
-import type { Constructable } from 'typedi';
+import { initializeKeycloak } from '@multiplatform.one/keycloak-typegraphql';
+import type { Constructable, ContainerInstance } from 'typedi';
 import type { Ctx, NextJSTypeGraphQLServer, ServerOptions } from './types';
 import type { NextServer } from 'next/dist/server/next';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
@@ -53,6 +53,11 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
   if (options.prisma) await options.prisma.$connect();
   const buildSchemaOptions = createBuildSchemaOptions(options);
   const graphiql = { subscriptionsProtocol: 'WS' as 'WS' };
+  const keycloakOptions = createKeycloakOptions(options);
+  let keycloakBindContainer: (container: ContainerInstance) => void;
+  if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
+    keycloakBindContainer = await initializeKeycloak(keycloakOptions, buildSchemaOptions.resolvers);
+  }
   const yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>> = {
     graphqlEndpoint,
     logging: 'info',
@@ -75,10 +80,7 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
           type: resolver,
         });
       });
-      const keycloakOptions = createKeycloakOptions(options);
-      if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
-        await registerKeycloak(container, keycloakOptions);
-      }
+      if (keycloakBindContainer) keycloakBindContainer(container);
       if (options.yoga?.context) {
         if (typeof options.yoga.context === 'function') return options.yoga.context(ctx as any as YogaInitialContext);
         if (typeof options.yoga.context === 'object') return { ...(await options.yoga.context), ...ctx };

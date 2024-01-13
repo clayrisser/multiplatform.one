@@ -20,7 +20,7 @@
  */
 
 import type { Grant } from 'keycloak-connect';
-import type { KeycloakOptions } from './register';
+import type { KeycloakOptions } from './initialize';
 import type { KeycloakService } from './keycloakService';
 import type { Request } from 'express';
 
@@ -105,4 +105,9 @@ export interface AuthorizationCodeGrantOptions {
   sessionHost?: string;
   codeVerifier?: string;
   clientId?: string;
+}
+
+export interface RegisterOptions {
+  resources?: Record<string, string[]>;
+  roles?: string[];
 }

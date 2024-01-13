@@ -21,6 +21,7 @@
 
 export * from './authGuard';
 export * from './decorators';
+export * from './initialize';
 export * from './keycloakService';
 export * from './register';
 export * from './token';

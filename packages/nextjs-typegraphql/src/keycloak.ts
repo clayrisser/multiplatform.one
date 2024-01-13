@@ -26,11 +26,14 @@ import type { ServerOptions } from './types';
 export function createKeycloakOptions(options: ServerOptions): KeycloakOptions {
   const debug = typeof options.debug !== 'undefined' ? options.debug : process.env.DEBUG === '1';
   return {
+    adminPassword: process.env.KEYCLOAK_ADMIN_PASSWORD || '',
+    adminUsername: process.env.KEYCLOAK_ADMIN_USERNAME || '',
     baseUrl: process.env.KEYCLOAK_BASE_URL || '',
     clientId: process.env.KEYCLOAK_CLIENT_ID || '',
     clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || '',
     debug,
     realm: process.env.KEYCLOAK_REALM || 'master',
+    register: process.env.KEYCLOAK_REGISTER === '1',
     ...options.keycloak,
   };
 }
