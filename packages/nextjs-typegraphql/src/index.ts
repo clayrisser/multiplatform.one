@@ -19,6 +19,8 @@
  *  limitations under the License.
  */
 
+import 'reflect-metadata';
+
 export * from './buildSchema';
 export * from './decorate';
 export * from './decorators';

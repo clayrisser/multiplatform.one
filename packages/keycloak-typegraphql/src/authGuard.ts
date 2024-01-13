@@ -19,12 +19,12 @@
  *  limitations under the License.
  */
 
-import type { Ctx } from '@multiplatform.one/nextjs-typegraphql';
+import type { Ctx, Type } from '@multiplatform.one/nextjs-typegraphql';
 import type { MiddlewareInterface, NextFn, ResolverData } from 'type-graphql';
-import type { TypeGraphqlKeycloakMeta } from './types';
+import { AUTHORIZED, PUBLIC, RESOURCE } from './decorators';
 import { KeycloakService } from './keycloakService';
 import { Service } from 'typedi';
-import { deferMiddleware } from '@multiplatform.one/nextjs-typegraphql';
+import { deferMiddleware, getMetadata } from '@multiplatform.one/nextjs-typegraphql';
 
 const logger = console;
 
@@ -39,12 +39,22 @@ export class AuthGuard implements MiddlewareInterface<Ctx> {
   }
 }
 
-function getResourceName(ctx: Ctx<any, TypeGraphqlKeycloakMeta>): string | undefined {
-  return ctx.typegraphqlMeta?.keycloak?.resourceName;
+function getResource(ctx: Ctx): string | undefined {
+  const { getClass } = ctx.typegraphqlMeta || {};
+  if (!getClass) return;
+  const classTarget = getClass();
+  if (!classTarget) return;
+  return getMetadata<string>(RESOURCE, classTarget);
 }
 
-function getRoles(ctx: Ctx<any, TypeGraphqlKeycloakMeta>): (string | string[])[] | undefined {
-  const { classRoles, handlerRoles } = ctx.typegraphqlMeta?.keycloak || {};
+function getRoles(ctx: Ctx): (string | string[])[] | undefined {
+  const { getClass, getHandler } = ctx.typegraphqlMeta || {};
+  let classTarget: Type<any> | undefined;
+  let handlerTarget: Function | undefined;
+  if (getClass) classTarget = getClass();
+  if (getHandler) handlerTarget = getHandler();
+  const handlerRoles = handlerTarget ? getMetadata<(string | string[])[]>(AUTHORIZED, handlerTarget) : [];
+  const classRoles = classTarget ? getMetadata<(string | string[])[]>(AUTHORIZED, classTarget) : [];
   if (
     (typeof classRoles === 'undefined' || classRoles === null) &&
     (typeof handlerRoles === 'undefined' || handlerRoles === null)
@@ -54,8 +64,11 @@ function getRoles(ctx: Ctx<any, TypeGraphqlKeycloakMeta>): (string | string[])[]
   return [...new Set([...(handlerRoles || []), ...(classRoles || [])])];
 }
 
-function getIsPublic(ctx: Ctx<any, TypeGraphqlKeycloakMeta>) {
-  return ctx.typegraphqlMeta?.keycloak?.isPublic || false;
+function getIsPublic(ctx: Ctx): boolean {
+  const { getHandler } = ctx.typegraphqlMeta || {};
+  let handlerTarget: Function | undefined;
+  if (getHandler) handlerTarget = getHandler();
+  return handlerTarget ? !!getMetadata<boolean>(PUBLIC, handlerTarget) : false;
 }
 
 async function canActivate(ctx: Ctx): Promise<boolean> {
@@ -65,9 +78,9 @@ async function canActivate(ctx: Ctx): Promise<boolean> {
   const keycloakService = ctx.container.get(KeycloakService);
   const username = (await keycloakService.getUserInfo())?.preferredUsername;
   if (!username) return false;
-  const resourceName = getResourceName(ctx);
+  const resource = getResource(ctx);
   logger.debug(
-    `resource${resourceName ? ` '${resourceName}'` : ''} for '${username}' requires ${
+    `resource${resource ? ` '${resource}'` : ''} for '${username}' requires ${
       roles.length ? `roles [ ${roles.join(' | ')} ]` : 'authentication'
     }`,
   );

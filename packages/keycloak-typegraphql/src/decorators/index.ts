@@ -19,4 +19,8 @@
  *  limitations under the License.
  */
 
+export * from './authorized';
 export * from './onlyOwner';
+export * from './public';
+export * from './resource';
+export * from './scopes';

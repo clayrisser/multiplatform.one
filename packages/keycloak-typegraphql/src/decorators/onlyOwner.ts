@@ -21,8 +21,8 @@
 
 import type { Ctx } from '@multiplatform.one/nextjs-typegraphql';
 import type { ResolverData, NextFn, MiddlewareInterface } from 'type-graphql';
+import { DecorateAll, createMethodDecorator } from '@multiplatform.one/nextjs-typegraphql';
 import { KeycloakService } from '../keycloakService';
-import { createMethodDecorator } from '@multiplatform.one/nextjs-typegraphql';
 
 const get = require('lodash.get') as typeof import('lodash.get');
 
@@ -31,17 +31,22 @@ export function OnlyOwner(
   grantSubPath: string | string[] = 'content.sub',
   skipRoles: (string | string[])[] = ['realm:admin'],
 ) {
-  return createMethodDecorator(
-    class OnlyOwnerDecorator implements MiddlewareInterface<Ctx> {
-      async use({ context: ctx }: ResolverData<Ctx>, next: NextFn) {
-        const keycloakService = ctx.container.get(KeycloakService);
-        const result = await next();
-        if (!keycloakService || !(await isOwner(keycloakService, result, resultUserIdPath, grantSubPath, skipRoles))) {
-          throw new Error('Unauthorized');
+  return DecorateAll(
+    createMethodDecorator(
+      class OnlyOwnerDecorator implements MiddlewareInterface<Ctx> {
+        async use({ context: ctx }: ResolverData<Ctx>, next: NextFn) {
+          const keycloakService = ctx.container.get(KeycloakService);
+          const result = await next();
+          if (
+            !keycloakService ||
+            !(await isOwner(keycloakService, result, resultUserIdPath, grantSubPath, skipRoles))
+          ) {
+            throw new Error('Unauthorized');
+          }
+          return result;
         }
-        return result;
-      }
-    },
+      },
+    ),
   );
 }
 

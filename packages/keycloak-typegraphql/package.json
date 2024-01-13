@@ -55,6 +55,7 @@
     "express-session": "^1.17.3",
     "keycloak-connect": "^23.0.4",
     "lodash.get": "^4.4.2",
+    "reflect-metadata": "^0.2.1",
     "type-graphql": "^1.1.1",
     "typedi": "^0.10.0"
   },

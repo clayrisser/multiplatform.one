@@ -1,7 +1,7 @@
 /*
- *  File: /tsup.config.ts
- *  Project: @multiplatform.one/keycloak
- *  File Created: 10-10-2023 06:39:34
+ *  File: /src/decorators/authorized.ts
+ *  Project: @multiplatform.one/keycloak-typegraphql
+ *  File Created: 13-01-2024 02:38:38
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,21 +19,10 @@
  *  limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
-import transpileModules from './transpileModules';
+import { SetMetadata } from '@multiplatform.one/nextjs-typegraphql';
 
-export default defineConfig({
-  bundle: true,
-  clean: true,
-  dts: true,
-  entry: ['src/**/*.ts?(x)'],
-  entryPoints: ['src/index.ts'],
-  format: ['cjs', 'esm'],
-  minify: false,
-  outDir: 'lib',
-  publicDir: './public',
-  skipNodeModulesBundle: true,
-  noExternal: transpileModules,
-  splitting: true,
-  target: 'es2022',
-});
+export const AUTHORIZED = 'KEYCLOAK_AUTHORIZED';
+
+export function Authorized(...roles: (string | string[])[]) {
+  return SetMetadata(AUTHORIZED, roles || []);
+}

@@ -73,10 +73,6 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
           id: resolver,
           type: resolver,
         });
-        // container.set({
-        //   id: (resolver as any).__typedi_container_id || resolver,
-        //   type: resolver,
-        // });
       });
       const keycloakOptions = createKeycloakOptions(options);
       if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {

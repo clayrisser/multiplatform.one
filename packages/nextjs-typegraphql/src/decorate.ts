@@ -19,16 +19,12 @@
  *  limitations under the License.
  */
 
-import { ContainerInstance, Constructable } from 'typedi';
-import { Ctx } from './types';
-import {
-  MiddlewareFn,
-  MiddlewareInterface,
-  createMethodDecorator as typeGraphqlCreateMethodDecorator,
-} from 'type-graphql';
+import type { ContainerInstance, Constructable } from 'typedi';
+import type { Ctx, ReflectableDecorator, Type } from './types';
+import type { MiddlewareFn } from 'type-graphql';
+import { createMethodDecorator as typeGraphqlCreateMethodDecorator } from 'type-graphql';
 
 const Container = require('typedi').Container as typeof import('typedi').Container;
-export type NestjsTypegraphqlNext = () => Promise<any>;
 
 export function applyMethodDecorators(...decorators: Array<MethodDecorator>) {
   return ((target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) => {
@@ -79,4 +75,12 @@ export function createMethodDecorator<C extends Ctx = Ctx>(
     type: resolver as unknown as Constructable<any>,
   });
   return typeGraphqlCreateMethodDecorator<C>(resolver as any as MiddlewareFn<C>);
+}
+
+export function getMetadata<TResult = any, TKey = any>(
+  metadataKeyOrDecorator: TKey,
+  target: Type<any> | Function,
+): TResult {
+  const metadataKey = (metadataKeyOrDecorator as ReflectableDecorator<unknown>).KEY ?? metadataKeyOrDecorator;
+  return Reflect.getMetadata(metadataKey, target);
 }

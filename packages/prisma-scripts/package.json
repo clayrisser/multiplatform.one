@@ -12,9 +12,9 @@
     "prisma-scripts",
     "scripts"
   ],
-  "homepage": "https://gitlab.com/risserlabs/nestjs/prisma-scripts",
+  "homepage": "https://multiplatform.one",
   "bugs": {
-    "url": "https://gitlab.com/risserlabs/nestjs/prisma-scripts/issues",
+    "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues",
     "email": "support@risserlabs.com"
   },
   "license": "Apache-2.0",
@@ -37,7 +37,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/risserlabs/nestjs/prisma-scripts"
+    "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
   },
   "bin": {
     "generate-prisma": "bin/generate.js",
