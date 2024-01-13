@@ -22,12 +22,11 @@
 import React, { useState } from 'react';
 import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
+import { gql } from 'gql';
+import { useAuthQuery, withAuthenticated } from '@multiplatform.one/keycloak';
 import { useLink } from 'solito/link';
-import { useQuery } from '@apollo/client';
 import { useTranslation } from 'multiplatform.one';
 import { withDefaultLayout } from 'app/layouts/Default';
-import { gql } from 'gql';
-import { useKeycloak, withAuthenticated } from '@multiplatform.one/keycloak';
 
 const Auth = gql(/* GraphQL */ `
   query Auth {
@@ -40,8 +39,7 @@ function HomeScreen() {
   const linkProps = useLink({
     href: '/user/alice',
   });
-  const keycloak = useKeycloak();
-  const { data, loading } = useQuery(Auth, { skip: !keycloak?.token });
+  const { data, loading } = useAuthQuery(Auth);
 
   console.log('data', data);
 

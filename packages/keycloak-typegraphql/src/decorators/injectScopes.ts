@@ -1,7 +1,7 @@
 /*
- *  File: /src/decorators/index.ts
+ *  File: /src/decorators/injectScopes.ts
  *  Project: @multiplatform.one/keycloak-typegraphql
- *  File Created: 12-01-2024 09:57:05
+ *  File Created: 13-01-2024 13:59:59
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,16 +19,17 @@
  *  limitations under the License.
  */
 
-export * from './authorized';
-export * from './injectAccessToken';
-export * from './injectGrant';
-export * from './injectRefreshToken';
-export * from './injectRoles';
-export * from './injectScopes';
-export * from './injectUserId';
-export * from './injectUserInfo';
-export * from './injectUsername';
-export * from './onlyOwner';
-export * from './public';
-export * from './resource';
-export * from './scopes';
+import type { Ctx } from '@multiplatform.one/nextjs-typegraphql';
+import type { KeycloakRequest } from '../types';
+import type { ResolverData } from 'type-graphql';
+import type { Token } from '../token';
+import { createParamDecorator } from 'type-graphql';
+
+export function InjectScopes() {
+  return createParamDecorator(({ context: ctx }: ResolverData<Ctx>) => {
+    const req = ctx.req as KeycloakRequest;
+    if (!req?.kauth?.grant?.access_token) return;
+    const accessToken = req.kauth.grant.access_token as Token;
+    return (accessToken.content?.scope || '').split(' ');
+  });
+}
