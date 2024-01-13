@@ -23,9 +23,9 @@ import axios from 'axios';
 import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
 import type { AxiosError } from 'axios';
 import type { Grant } from 'keycloak-connect';
-import type { KeycloakConnect, KeycloakOptions } from './register';
+import type { KeycloakConnect, KeycloakOptions } from './initialize';
 import type { NextFunction } from 'express';
-import { KeycloakAdmin } from './register';
+import { KeycloakAdmin } from './initialize';
 import { Service, Inject } from 'typedi';
 import { Token } from './token';
 import type {

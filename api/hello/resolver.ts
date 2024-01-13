@@ -21,18 +21,21 @@
 
 import { Query, Resolver } from 'type-graphql';
 import { HelloService } from './service';
-import { Authorized } from '@multiplatform.one/keycloak-typegraphql';
+import { Authorized, Resource, Scopes } from '@multiplatform.one/keycloak-typegraphql';
 
-@Authorized()
+@Resource('hello')
+@Authorized('admin')
 @Resolver((_of) => String)
 export class HelloResolver {
   constructor(private readonly helloService: HelloService) {}
 
+  @Scopes('ding')
   @Query((_returns) => String)
   async hello(): Promise<string> {
     return this.helloService.hello();
   }
 
+  @Authorized('bob')
   @Query((_returns) => String)
   async world(): Promise<string> {
     return 'Hello World!';

@@ -24,7 +24,7 @@ import type { ServerOptions } from './types';
 import { Guards } from './decorators/guards';
 
 export function createResolvers(options: ServerOptions) {
-  return options.resolvers.map((resolver) => (typeof resolver === 'string' ? resolver : Guards(resolver))) as
-    | NonEmptyArray<Function>
-    | NonEmptyArray<string>;
+  return options.resolvers.map((resolver) => (typeof resolver === 'string' ? resolver : Guards(resolver))) as Resolvers;
 }
+
+export type Resolvers = NonEmptyArray<Function> | NonEmptyArray<string>;
