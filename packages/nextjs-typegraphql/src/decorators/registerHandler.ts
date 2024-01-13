@@ -19,11 +19,9 @@
  *  limitations under the License.
  */
 
-import type { ResolverData, NextFn } from 'type-graphql';
-import { createMethodDecorator } from 'type-graphql';
+import type { ResolverData, NextFn, MiddlewareInterface } from 'type-graphql';
 import { Ctx } from '../types';
-
-const Container = require('typedi').Container as typeof import('typedi').Container;
+import { createMethodDecorator } from '../decorate';
 
 export function RegisterHandler(
   target: any,
@@ -31,13 +29,13 @@ export function RegisterHandler(
   descriptor: TypedPropertyDescriptor<any>,
 ): undefined | TypedPropertyDescriptor<any> {
   if (target.prototype) return undefined;
-  function RegisterHandlerDecorator({ context }: ResolverData<Ctx>, next: NextFn) {
-    if (!context.typegraphqlMeta) context.typegraphqlMeta = {};
-    context.typegraphqlMeta.getHandler = () => descriptor.value;
-    return next();
-  }
-  Container.set(RegisterHandlerDecorator, RegisterHandlerDecorator);
-  return createMethodDecorator(RegisterHandlerDecorator)(target, propertyKey, descriptor) as
-    | undefined
-    | TypedPropertyDescriptor<any>;
+  return createMethodDecorator(
+    class RegisterHandlerDecorator implements MiddlewareInterface<Ctx> {
+      async use({ context: ctx }: ResolverData<Ctx>, next: NextFn) {
+        if (!ctx.typegraphqlMeta) ctx.typegraphqlMeta = {};
+        ctx.typegraphqlMeta.getHandler = () => descriptor.value;
+        return next();
+      }
+    },
+  )(target, propertyKey, descriptor) as undefined | TypedPropertyDescriptor<any>;
 }

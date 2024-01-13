@@ -30,8 +30,7 @@ const logger = console;
 
 @Service()
 export class AuthGuard implements MiddlewareInterface<Ctx> {
-  async use(data: ResolverData<Ctx>, next: NextFn) {
-    const ctx = data.context;
+  async use({ context: ctx }: ResolverData<Ctx>, next: NextFn) {
     deferMiddleware(ctx, async ({ context: ctx }: ResolverData<Ctx>, next: NextFn) => {
       if (!(await canActivate(ctx))) throw new Error('Unauthorized');
       return next();
