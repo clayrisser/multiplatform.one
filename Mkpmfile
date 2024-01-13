@@ -31,7 +31,6 @@ ACTIONS += deps ##
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
 	@$(YARN) install $(DEPS_ARGS)
 	@$(call done,$@)
-	@$(MAKE) \~build
 
 ACTIONS += format ##
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
@@ -58,6 +57,8 @@ build +build ~build:
 	@$(MKPM_MAKE) multiplatform.one/$@
 	@$(MKPM_MAKE) prisma-scripts/$@
 	@$(MKPM_MAKE) keycloak/$@
+	@$(MKPM_MAKE) keycloak-typegraphql/$@
+	@$(MKPM_MAKE) nextjs-typegraphql/$@
 	@$(MKPM_MAKE) components/$@
 
 .PHONY: upgrade

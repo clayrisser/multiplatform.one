@@ -1,7 +1,7 @@
 /*
- *  File: /src/index.ts
+ *  File: /src/decorators/injectAccessToken.ts
  *  Project: @multiplatform.one/keycloak-typegraphql
- *  File Created: 11-01-2024 14:26:32
+ *  File Created: 13-01-2024 09:23:55
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,12 +19,17 @@
  *  limitations under the License.
  */
 
-import 'reflect-metadata';
+import type { Ctx } from '@multiplatform.one/nextjs-typegraphql';
+import type { KeycloakRequest } from '../types';
+import type { ResolverData } from 'type-graphql';
+import type { Token } from '../token';
+import { createParamDecorator } from 'type-graphql';
 
-export * from './authGuard';
-export * from './decorators';
-export * from './initialize';
-export * from './keycloakService';
-export * from './register';
-export * from './token';
-export * from './types';
+export function InjectAccessToken() {
+  return createParamDecorator(({ context: ctx }: ResolverData<Ctx>) => {
+    const req = ctx.req as KeycloakRequest;
+    if (!req?.kauth?.grant?.access_token) return;
+    const accessToken = req.kauth.grant.access_token as Token;
+    return accessToken.token;
+  });
+}

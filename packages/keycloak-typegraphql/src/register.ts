@@ -27,8 +27,7 @@ import type ResourceRepresentation from '@keycloak/keycloak-admin-client/lib/def
 import type RoleRepresentation from '@keycloak/keycloak-admin-client/lib/defs/roleRepresentation';
 import type ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation';
 import type { AxiosError } from 'axios';
-import type { RegisterOptions } from './types';
-import { KeycloakOptions } from './initialize';
+import type { KeycloakOptions, RegisterOptions } from './types';
 import { AUTHORIZED, RESOURCE, SCOPES } from './decorators/';
 import { getMetadata, Resolvers } from '@multiplatform.one/nextjs-typegraphql';
 

@@ -122,6 +122,7 @@ freakout
 frontchannel
 frontmatter
 func
+githubusercontent
 globals
 glusp
 gmail
@@ -321,6 +322,7 @@ undef
 unist
 unoptimized
 unordered
+unpkg
 unregister
 unselectable
 unshift

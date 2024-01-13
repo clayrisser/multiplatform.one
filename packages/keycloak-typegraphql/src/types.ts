@@ -20,9 +20,7 @@
  */
 
 import type { Grant } from 'keycloak-connect';
-import type { KeycloakOptions } from './initialize';
 import type { KeycloakService } from './keycloakService';
-import type { Request } from 'express';
 
 export type KeycloakRequest<R extends Request = Request> = {
   annotationKeys?: Set<string>;
@@ -110,4 +108,20 @@ export interface AuthorizationCodeGrantOptions {
 export interface RegisterOptions {
   resources?: Record<string, string[]>;
   roles?: string[];
+}
+
+export interface KeycloakOptions {
+  adminClientId?: string;
+  adminPassword?: string;
+  adminUsername?: string;
+  baseUrl: string;
+  clientId: string;
+  clientSecret: string;
+  debug?: boolean;
+  ensureFreshness?: boolean;
+  privatePort?: number;
+  realm: string;
+  register?: RegisterOptions | boolean;
+  strict?: boolean;
+  xApiKey?: string;
 }

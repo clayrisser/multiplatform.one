@@ -20,12 +20,14 @@
  */
 
 import type { ServerOptions } from '@multiplatform.one/nextjs-typegraphql';
+import { PrismaClient } from '@prisma/client';
 import { createServer } from '@multiplatform.one/nextjs-typegraphql';
 import { resolvers } from './resolvers';
 
 export const options: ServerOptions = {
   resolvers,
   debug: process.env.DEBUG === '1',
+  prisma: new PrismaClient(),
   keycloak: {
     adminPassword: process.env.KEYCLOAK_ADMIN_PASSWORD || '',
     adminUsername: process.env.KEYCLOAK_ADMIN_USERNAME || '',

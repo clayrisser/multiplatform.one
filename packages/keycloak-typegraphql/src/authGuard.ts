@@ -65,12 +65,14 @@ function getRoleSets(ctx: Ctx) {
 }
 
 async function canActivate(ctx: Ctx): Promise<boolean> {
-  const keycloakService = ctx.container.get(KeycloakService);
-  const username = (await keycloakService.getUserInfo())?.preferredUsername;
+  const roleSets = getRoleSets(ctx);
+  if (!roleSets.length) return true;
+  const keycloakService: KeycloakService = ctx.container.get(KeycloakService);
+  const username = await keycloakService.getUsername();
   if (!username) return false;
-  const req = ctx.request as KeycloakRequest;
+  const req = ctx.request as any as KeycloakRequest;
   if (!req.resolversAuthChecked) req.resolversAuthChecked = new Set();
-  for (const roleSet of getRoleSets(ctx)) {
+  for (const roleSet of roleSets) {
     let authorized = false;
     if (await keycloakService.isAuthorizedByRoles(roleSet.roles)) authorized = true;
     if (roleSet.resolverName) {
@@ -80,18 +82,18 @@ async function canActivate(ctx: Ctx): Promise<boolean> {
       }
       req.resolversAuthChecked.add(roleSet.resolverName);
     }
-    logger.debug(
+    logger.log(
       `resolver${roleSet.resolverName ? ` '${roleSet.resolverName}'` : ''} for '${username}' requires ${
         roleSet.roles.length ? `roles [ ${roleSet.roles.join(' | ')} ]` : 'authentication'
       }`,
     );
     if (!authorized) {
-      logger.debug(`authorization for '${username}' denied`);
+      logger.log(`authorization for '${username}' denied`);
       return false;
     }
   }
   if (!req.authChecked) {
-    logger.debug(`authorization for '${username}' granted`);
+    logger.log(`authorization for '${username}' granted`);
     req.authChecked = true;
   }
   return true;
