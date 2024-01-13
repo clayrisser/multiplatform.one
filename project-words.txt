@@ -189,7 +189,6 @@ namespace
 namespaces
 natively
 nbsp
-nestjs
 nextauth
 nextjs
 nixpkgs
@@ -245,6 +244,7 @@ redeclare
 redirector
 redis
 refactor
+reflectable
 refractor
 refreshable
 rehype

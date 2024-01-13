@@ -1,10 +1,10 @@
 /*
  *  File: /tests/_setup.ts
- *  Project: @multiplatform.one/nestjs-keycloak
- *  File Created: 19-09-2023 04:38:30
+ *  Project: @multiplatform.one/nextjs-typegraphql
+ *  File Created: 12-01-2024 02:13:34
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,4 +19,4 @@
  *  limitations under the License.
  */
 
-export default null;
+export default {};

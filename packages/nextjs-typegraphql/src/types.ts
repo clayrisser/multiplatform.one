@@ -86,3 +86,12 @@ export interface Type<T = any> extends Function {
   // eslint-disable-next-line @typescript-eslint/prefer-function-type
   new (...args: any[]): T;
 }
+
+export type CustomDecorator<TKey = string> = MethodDecorator &
+  ClassDecorator & {
+    KEY: TKey;
+  };
+
+export type ReflectableDecorator<TParam> = ((opts?: TParam) => CustomDecorator) & {
+  KEY: string;
+};

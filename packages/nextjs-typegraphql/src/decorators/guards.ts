@@ -36,7 +36,7 @@ class GuardsDecorator implements MiddlewareInterface<Ctx> {
 }
 
 export const Guards = applyClassDecorators(
-  DecorateAll(createMethodDecorator(GuardsDecorator)),
-  DecorateAll(RegisterHandler),
+  DecorateAll(createMethodDecorator(GuardsDecorator)) as ClassDecorator,
+  DecorateAll(RegisterHandler) as ClassDecorator,
   RegisterClass,
 );

@@ -20,7 +20,8 @@
  */
 
 export function DecorateAll(decorator: MethodDecorator, options: { exclude?: string[]; deep?: boolean } = {}) {
-  return (target: any) => {
+  return ((target: Function, propertyKey?: string | symbol, descriptor?: TypedPropertyDescriptor<any>) => {
+    if (propertyKey && descriptor) return decorator(target, propertyKey, descriptor);
     let descriptors = Object.getOwnPropertyDescriptors(target.prototype);
     if (options.deep) {
       let base = Object.getPrototypeOf(target);
@@ -38,5 +39,5 @@ export function DecorateAll(decorator: MethodDecorator, options: { exclude?: str
       Object.defineProperty(target.prototype, propName, descriptor);
     }
     return target;
-  };
+  }) as ClassDecorator | MethodDecorator;
 }

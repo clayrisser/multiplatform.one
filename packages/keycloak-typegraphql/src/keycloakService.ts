@@ -73,7 +73,7 @@ export class KeycloakService {
   get bearerToken(): Token | undefined {
     if (this._bearerToken) return this._bearerToken;
     const { strict } = this.options;
-    const authorization = this.req.headers.get('authorization');
+    const authorization = this.req.headers?.['authorization'];
     if (typeof authorization === 'undefined') return undefined;
     if (authorization && authorization.indexOf(' ') <= -1) {
       if (strict) return undefined;

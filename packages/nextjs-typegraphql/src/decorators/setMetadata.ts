@@ -1,7 +1,7 @@
 /*
- *  File: /tsup.config.ts
+ *  File: /src/decorators/setMetadata.ts
  *  Project: @multiplatform.one/nextjs-typegraphql
- *  File Created: 12-01-2024 02:13:34
+ *  File Created: 13-01-2024 04:05:25
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,21 +19,17 @@
  *  limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
-import transpileModules from './transpileModules';
+import type { CustomDecorator } from '../types';
 
-export default defineConfig({
-  bundle: true,
-  clean: true,
-  dts: true,
-  entry: ['src/**/*.ts?(x)'],
-  entryPoints: ['src/index.ts'],
-  format: ['cjs', 'esm'],
-  minify: false,
-  outDir: 'lib',
-  publicDir: './public',
-  skipNodeModulesBundle: true,
-  noExternal: transpileModules,
-  splitting: true,
-  target: 'es5',
-});
+export const SetMetadata = <K = string, V = any>(metadataKey: K, metadataValue: V): CustomDecorator<K> => {
+  const decoratorFactory = (target: object, _key?: any, descriptor?: any) => {
+    if (descriptor) {
+      Reflect.defineMetadata(metadataKey, metadataValue, descriptor.value);
+      return descriptor;
+    }
+    Reflect.defineMetadata(metadataKey, metadataValue, target);
+    return target;
+  };
+  decoratorFactory.KEY = metadataKey;
+  return decoratorFactory;
+};

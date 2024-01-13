@@ -1,10 +1,10 @@
 /*
  *  File: /tsup.config.ts
- *  Project: @multiplatform.one/nestjs-keycloak
- *  File Created: 19-09-2023 07:07:18
+ *  Project: @multiplatform.one/prisma-scripts
+ *  File Created: 10-10-2023 06:39:34
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.

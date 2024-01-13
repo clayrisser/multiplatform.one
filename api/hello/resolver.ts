@@ -21,6 +21,7 @@
 
 import { Query, Resolver } from 'type-graphql';
 import { HelloService } from './service';
+import { Authorized } from '@multiplatform.one/keycloak-typegraphql';
 
 @Resolver((_of) => String)
 export class HelloResolver {
@@ -29,5 +30,11 @@ export class HelloResolver {
   @Query((_returns) => String)
   async hello(): Promise<string> {
     return this.helloService.hello();
+  }
+
+  @Authorized()
+  @Query((_returns) => String)
+  async world(): Promise<string> {
+    return 'Hello World!';
   }
 }
