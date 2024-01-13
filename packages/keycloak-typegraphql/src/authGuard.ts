@@ -19,7 +19,8 @@
  *  limitations under the License.
  */
 
-import type { Ctx, Type } from '@multiplatform.one/nextjs-typegraphql';
+import type { Ctx } from '@multiplatform.one/nextjs-typegraphql';
+import type { KeycloakRequest } from './types';
 import type { MiddlewareInterface, NextFn, ResolverData } from 'type-graphql';
 import { AUTHORIZED, PUBLIC, RESOURCE } from './decorators';
 import { KeycloakService } from './keycloakService';
@@ -39,55 +40,64 @@ export class AuthGuard implements MiddlewareInterface<Ctx> {
   }
 }
 
-function getResource(ctx: Ctx): string | undefined {
-  const { getClass } = ctx.typegraphqlMeta || {};
-  if (!getClass) return;
-  const classTarget = getClass();
-  if (!classTarget) return;
-  return getMetadata<string>(RESOURCE, classTarget);
-}
-
-function getRoles(ctx: Ctx): (string | string[])[] | undefined {
-  const { getClass, getHandler } = ctx.typegraphqlMeta || {};
-  let classTarget: Type<any> | undefined;
-  let handlerTarget: Function | undefined;
-  if (getClass) classTarget = getClass();
-  if (getHandler) handlerTarget = getHandler();
-  const handlerRoles = handlerTarget ? getMetadata<(string | string[])[]>(AUTHORIZED, handlerTarget) : [];
-  const classRoles = classTarget ? getMetadata<(string | string[])[]>(AUTHORIZED, classTarget) : [];
-  if (
-    (typeof classRoles === 'undefined' || classRoles === null) &&
-    (typeof handlerRoles === 'undefined' || handlerRoles === null)
-  ) {
-    return undefined;
-  }
-  return [...new Set([...(handlerRoles || []), ...(classRoles || [])])];
-}
-
-function getIsPublic(ctx: Ctx): boolean {
-  const { getHandler } = ctx.typegraphqlMeta || {};
-  let handlerTarget: Function | undefined;
-  if (getHandler) handlerTarget = getHandler();
-  return handlerTarget ? !!getMetadata<boolean>(PUBLIC, handlerTarget) : false;
+function getRoleSets(ctx: Ctx) {
+  return Object.values(ctx.typegraphqlMeta?.resolvers || {})
+    .reduce((rolesSets: RoleSet[], resolver) => {
+      const classRoles = getMetadata<string | string[]>(AUTHORIZED, resolver.target);
+      resolver.handlers.forEach((handler) => {
+        const handlerRoles = getMetadata<string | string[]>(AUTHORIZED, handler);
+        const isPublic = getMetadata<boolean>(PUBLIC, handler);
+        if (
+          isPublic ||
+          ((typeof classRoles === 'undefined' || classRoles === null) &&
+            (typeof handlerRoles === 'undefined' || handlerRoles === null))
+        ) {
+          return;
+        }
+        rolesSets.push({
+          resolverName: `${getMetadata<string>(RESOURCE, resolver.target) || resolver.target?.name}.${handler.name}`,
+          roles: [...new Set([...(handlerRoles || []), ...(classRoles || [])])],
+        });
+      });
+      return rolesSets;
+    }, [])
+    .filter(Boolean);
 }
 
 async function canActivate(ctx: Ctx): Promise<boolean> {
-  const isPublic = getIsPublic(ctx);
-  const roles = getRoles(ctx);
-  if (isPublic || typeof roles === 'undefined') return true;
   const keycloakService = ctx.container.get(KeycloakService);
   const username = (await keycloakService.getUserInfo())?.preferredUsername;
   if (!username) return false;
-  const resource = getResource(ctx);
-  logger.debug(
-    `resource${resource ? ` '${resource}'` : ''} for '${username}' requires ${
-      roles.length ? `roles [ ${roles.join(' | ')} ]` : 'authentication'
-    }`,
-  );
-  if (await keycloakService.isAuthorizedByRoles(roles)) {
-    logger.debug(`authorization for '${username}' granted`);
-    return true;
+  const req = ctx.request as KeycloakRequest;
+  if (!req.resolversAuthChecked) req.resolversAuthChecked = new Set();
+  for (const roleSet of getRoleSets(ctx)) {
+    let authorized = false;
+    if (await keycloakService.isAuthorizedByRoles(roleSet.roles)) authorized = true;
+    if (roleSet.resolverName) {
+      if (req.resolversAuthChecked.has(roleSet.resolverName)) {
+        if (!authorized) return false;
+        continue;
+      }
+      req.resolversAuthChecked.add(roleSet.resolverName);
+    }
+    logger.debug(
+      `resolver${roleSet.resolverName ? ` '${roleSet.resolverName}'` : ''} for '${username}' requires ${
+        roleSet.roles.length ? `roles [ ${roleSet.roles.join(' | ')} ]` : 'authentication'
+      }`,
+    );
+    if (!authorized) {
+      logger.debug(`authorization for '${username}' denied`);
+      return false;
+    }
   }
-  logger.debug(`authorization for '${username}' denied`);
-  return false;
+  if (!req.authChecked) {
+    logger.debug(`authorization for '${username}' granted`);
+    req.authChecked = true;
+  }
+  return true;
+}
+
+export interface RoleSet {
+  resolverName?: string;
+  roles: (string | string[])[];
 }

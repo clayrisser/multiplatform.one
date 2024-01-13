@@ -25,7 +25,8 @@ import type { Constructable } from 'typedi';
 import type { Ctx, NextJSTypeGraphQLServer, ServerOptions } from './types';
 import type { NextServer } from 'next/dist/server/next';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
-import type { YogaServerOptions } from 'graphql-yoga';
+import type { Request } from 'express';
+import type { YogaInitialContext, YogaServerOptions } from 'graphql-yoga';
 import { WebSocketServer } from 'ws';
 import { buildSchema } from 'type-graphql';
 import { createBuildSchemaOptions } from './buildSchema';
@@ -61,7 +62,7 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
       const id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
       const container = Container.of(id);
       const ctx: Ctx = {
-        ...context,
+        ...(context as any as Omit<YogaInitialContext, 'request'> & { request: Request }),
         container,
         id,
         prisma: options.prisma,
@@ -79,7 +80,7 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
         await registerKeycloak(container, keycloakOptions);
       }
       if (options.yoga?.context) {
-        if (typeof options.yoga.context === 'function') return options.yoga.context(ctx);
+        if (typeof options.yoga.context === 'function') return options.yoga.context(ctx as any as YogaInitialContext);
         if (typeof options.yoga.context === 'object') return { ...(await options.yoga.context), ...ctx };
       }
       return ctx;

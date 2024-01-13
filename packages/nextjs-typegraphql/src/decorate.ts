@@ -80,7 +80,7 @@ export function createMethodDecorator<C extends Ctx = Ctx>(
 export function getMetadata<TResult = any, TKey = any>(
   metadataKeyOrDecorator: TKey,
   target: Type<any> | Function,
-): TResult {
+): TResult | undefined {
   const metadataKey = (metadataKeyOrDecorator as ReflectableDecorator<unknown>).KEY ?? metadataKeyOrDecorator;
   return Reflect.getMetadata(metadataKey, target);
 }

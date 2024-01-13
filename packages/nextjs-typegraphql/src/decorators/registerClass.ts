@@ -25,14 +25,18 @@ import { DecorateAll } from './decorateAll';
 import { createMethodDecorator } from '../decorate';
 
 export const RegisterClass = ((target: any): undefined | Function => {
-  if (!target.prototype) return undefined;
+  if (!target.prototype) return;
   return (
     DecorateAll(
       createMethodDecorator(
         class RegisterClassDecorator implements MiddlewareInterface<Ctx> {
           async use({ context: ctx }: ResolverData<Ctx>, next: NextFn) {
             if (!ctx.typegraphqlMeta) ctx.typegraphqlMeta = {};
-            ctx.typegraphqlMeta.getClass = () => target;
+            if (!ctx.typegraphqlMeta.resolvers) ctx.typegraphqlMeta.resolvers = {};
+            ctx.typegraphqlMeta.resolvers[target.name] = {
+              target,
+              handlers: [],
+            };
             return next();
           }
         },
