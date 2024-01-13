@@ -23,7 +23,7 @@
 import type { KeycloakOptions } from '@multiplatform.one/keycloak-typegraphql';
 import type { BuildSchemaOptions, MiddlewareFn } from 'type-graphql';
 import type { ContainerInstance } from 'typedi';
-import type { Express, Request } from 'express';
+import type { Express } from 'express';
 import type { GraphQLSchema } from 'graphql';
 import type { NextServer } from 'next/dist/server/next';
 import type { NonEmptyArray } from 'type-graphql';
@@ -32,12 +32,12 @@ import type { Server, IncomingMessage, ServerResponse } from 'http';
 import type { WebSocketServer } from 'ws';
 import type { YogaInitialContext, YogaServerInstance, YogaServerOptions } from 'graphql-yoga';
 
-export interface Ctx<R extends Request = Request, P extends PrismaClient = PrismaClient>
-  extends Omit<YogaInitialContext, 'request'> {
+export interface Ctx<R extends Request = Request, P extends PrismaClient = PrismaClient> extends YogaInitialContext {
   container: ContainerInstance;
   id: string;
   prisma?: P;
-  request: R;
+  req: R;
+  res: Response;
   typegraphqlMeta?: TypeGraphqlMeta;
 }
 

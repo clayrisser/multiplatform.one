@@ -19,12 +19,12 @@
  *  limitations under the License.
  */
 
-import { HelloResolver } from './hello';
+import { AuthResolver } from './auth';
 import { NonEmptyArray } from 'type-graphql';
 import { UserCrudResolver, PostCrudResolver } from './generated/type-graphql';
 
 export const resolvers: NonEmptyArray<Function> | NonEmptyArray<string> = [
-  HelloResolver,
+  AuthResolver,
   PostCrudResolver,
   UserCrudResolver,
 ];

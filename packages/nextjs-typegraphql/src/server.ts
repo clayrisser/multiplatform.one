@@ -25,8 +25,8 @@ import type { Constructable, ContainerInstance } from 'typedi';
 import type { Ctx, NextJSTypeGraphQLServer, ServerOptions } from './types';
 import type { NextServer } from 'next/dist/server/next';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
-import type { Request } from 'express';
-import type { YogaInitialContext, YogaServerOptions } from 'graphql-yoga';
+import type { YogaServerOptions, YogaInitialContext } from 'graphql-yoga';
+import { Token } from 'typedi';
 import { WebSocketServer } from 'ws';
 import { buildSchema } from 'type-graphql';
 import { createBuildSchemaOptions } from './buildSchema';
@@ -39,8 +39,8 @@ const express = require('express') as typeof import('express');
 const http = require('http') as typeof import('http');
 const logger = console;
 const nodeCleanup = require('node-cleanup') as typeof import('node-cleanup');
-export const CTX = 'CTX';
-export const REQ = 'REQ';
+export const CTX = new Token<Ctx>('CTX');
+export const REQ = new Token<Request>('REQ');
 
 export async function createServer(options: ServerOptions): Promise<NextJSTypeGraphQLServer> {
   const debug = typeof options.debug !== 'undefined' ? options.debug : process.env.DEBUG === '1';
@@ -63,17 +63,24 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
     logging: 'info',
     ...options.yoga,
     graphiql: typeof options.yoga?.graphiql === 'object' ? { ...graphiql, ...options.yoga?.graphiql } : graphiql,
-    async context(context): Promise<Ctx> {
+    async context(context: YogaInitialContext & { res: Response }): Promise<Ctx> {
       const id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
       const container = Container.of(id);
       const ctx: Ctx = {
-        ...(context as any as Omit<YogaInitialContext, 'request'> & { request: Request }),
+        ...context,
         container,
         id,
         prisma: options.prisma,
-      };
-      container.set(CTX, ctx);
-      container.set(REQ, ctx.request);
+        req: context.request,
+      } as any;
+      container.set({
+        id: CTX,
+        factory: () => ctx,
+      });
+      container.set({
+        id: REQ,
+        factory: () => ctx.request,
+      });
       (buildSchemaOptions.resolvers as any[]).forEach((resolver: Constructable<any>) => {
         container.set({
           id: resolver,
@@ -82,7 +89,7 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
       });
       if (keycloakBindContainer) keycloakBindContainer(container);
       if (options.yoga?.context) {
-        if (typeof options.yoga.context === 'function') return options.yoga.context(ctx as any as YogaInitialContext);
+        if (typeof options.yoga.context === 'function') return options.yoga.context(ctx);
         if (typeof options.yoga.context === 'object') return { ...(await options.yoga.context), ...ctx };
       }
       return ctx;
@@ -156,9 +163,7 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
         const yogaRouter = express.Router();
         yogaRouter.use(yoga);
         app.use(yoga.graphqlEndpoint, yogaRouter);
-        app.get('*', (req, res) => {
-          return handle(req, res);
-        });
+        app.all('*', (req, res) => handle(req, res));
         nodeCleanup((_exitCode, signal) => {
           if (signal) {
             (async () => {

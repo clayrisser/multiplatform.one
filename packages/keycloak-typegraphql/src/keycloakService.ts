@@ -23,15 +23,17 @@ import axios from 'axios';
 import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
 import type { AxiosError } from 'axios';
 import type { Grant } from 'keycloak-connect';
-import type { KeycloakConnect, KeycloakOptions } from './initialize';
+import type { KeycloakConnect } from './initialize';
 import type { NextFunction } from 'express';
-import { KeycloakAdmin } from './initialize';
+import { KEYCLOAK_CONNECT, KEYCLOAK_OPTIONS, KeycloakAdmin } from './initialize';
+import { REQ } from '@multiplatform.one/nextjs-typegraphql';
 import { Service, Inject } from 'typedi';
 import { Token } from './token';
 import type {
   AuthorizationCodeGrantOptions,
   ClientCredentialsGrantOptions,
   DirectGrantOptions,
+  KeycloakOptions,
   KeycloakRequest,
   RefreshTokenGrantOptions,
   SmartGrantOptions,
@@ -55,9 +57,9 @@ export class KeycloakService {
   private _grant: Grant | undefined;
 
   constructor(
-    @Inject('REQ') public readonly req: KeycloakRequest,
-    options: KeycloakOptions,
-    public readonly keycloakConnect: KeycloakConnect,
+    @Inject(REQ) public readonly req: KeycloakRequest,
+    @Inject(KEYCLOAK_OPTIONS) options: KeycloakOptions,
+    @Inject(KEYCLOAK_CONNECT) public readonly keycloakConnect: KeycloakConnect,
     public readonly keycloakAdmin: KeycloakAdmin,
   ) {
     this.options = {
@@ -73,7 +75,7 @@ export class KeycloakService {
   get bearerToken(): Token | undefined {
     if (this._bearerToken) return this._bearerToken;
     const { strict } = this.options;
-    const authorization = this.req.headers?.['authorization'];
+    const authorization = this.req.headers.get('authorization');
     if (typeof authorization === 'undefined') return undefined;
     if (authorization && authorization.indexOf(' ') <= -1) {
       if (strict) return undefined;

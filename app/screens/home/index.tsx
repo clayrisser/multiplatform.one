@@ -23,24 +23,15 @@ import React, { useState } from 'react';
 import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { useLink } from 'solito/link';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useTranslation } from 'multiplatform.one';
 import { withDefaultLayout } from 'app/layouts/Default';
 import { gql } from 'gql';
+import { useKeycloak, withAuthenticated } from '@multiplatform.one/keycloak';
 
-const Hello = gql(/* GraphQL */ `
-  query Hello {
-    hello
-  }
-`);
-
-const CreateOneUser = gql(/* GraphQL */ `
-  mutation CreateOneUser($email: String!, $name: String) {
-    createOneUser(data: { email: $email, name: $name }) {
-      email
-      id
-      name
-    }
+const Auth = gql(/* GraphQL */ `
+  query Auth {
+    accessToken
   }
 `);
 
@@ -49,16 +40,10 @@ function HomeScreen() {
   const linkProps = useLink({
     href: '/user/alice',
   });
-  const { data, loading } = useQuery(Hello);
-  const [createOneUser] = useMutation(CreateOneUser);
+  const keycloak = useKeycloak();
+  const { data, loading } = useQuery(Auth, { skip: !keycloak?.token });
 
-  async function handleCreateOneUser() {
-    await createOneUser({
-      variables: {
-        email: `${Math.random()}@example.com`,
-      },
-    });
-  }
+  console.log('data', data);
 
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
@@ -77,7 +62,6 @@ function HomeScreen() {
       </YStack>
       <XStack>
         <Button {...linkProps}>{t('screens.home.link')}</Button>
-        <Button onPress={handleCreateOneUser}>Create One User</Button>
       </XStack>
       <SheetDemo />
     </YStack>
@@ -116,4 +100,4 @@ function SheetDemo() {
   );
 }
 
-export default withDefaultLayout(HomeScreen);
+export default withDefaultLayout(withAuthenticated(HomeScreen));

@@ -1,7 +1,7 @@
 /*
- *  File: /hello/service.ts
+ *  File: /auth/resolver.ts
  *  Project: api
- *  File Created: 08-01-2024 11:16:55
+ *  File Created: 06-01-2024 23:24:23
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,11 +19,14 @@
  *  limitations under the License.
  */
 
-import { Service } from 'typedi';
+import { Authorized, InjectAccessToken } from '@multiplatform.one/keycloak-typegraphql';
+import { Query, Resolver } from 'type-graphql';
 
-@Service()
-export class HelloService {
-  public hello() {
-    return 'Hello World!';
+@Authorized()
+@Resolver((_of) => String)
+export class AuthResolver {
+  @Query((_returns) => String)
+  accessToken(@InjectAccessToken() accessToken: string): string {
+    return accessToken;
   }
 }

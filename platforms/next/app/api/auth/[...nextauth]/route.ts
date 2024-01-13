@@ -21,6 +21,6 @@
 
 import { createAuthHandler } from '@multiplatform.one/keycloak/routes';
 
-const { GET, POST } = createAuthHandler();
+const handler = createAuthHandler();
 
-export { GET, POST };
+export { handler as GET, handler as POST };

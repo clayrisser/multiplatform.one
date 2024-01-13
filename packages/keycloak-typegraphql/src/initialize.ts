@@ -22,13 +22,19 @@
 import Keycloak from 'keycloak-connect';
 import session from 'express-session';
 import type IKeycloakAdminClient from '@keycloak/keycloak-admin-client';
-import type { ContainerInstance } from 'typedi';
 import type { Keycloak as IKeycloakConnect } from 'keycloak-connect';
-import type { RegisterOptions } from './types';
+import type { KeycloakOptions } from './types';
 import type { Resolvers } from '@multiplatform.one/nextjs-typegraphql';
 import { RegisterKeycloak } from './register';
+import { Token, type ContainerInstance } from 'typedi';
+
+const Container = require('typedi').Container as typeof import('typedi').Container;
 
 export class KeycloakConnect extends Keycloak implements IKeycloakConnect {}
+
+export const KEYCLOAK_CONNECT = new Token<KeycloakConnect>('KEYCLOAK_CONNECT');
+
+export const KEYCLOAK_OPTIONS = new Token<KeycloakOptions>('KEYCLOAK_OPTIONS');
 
 export class KeycloakAdmin extends (require('@keycloak/keycloak-admin-client')
   .default as typeof IKeycloakAdminClient) {}
@@ -60,25 +66,19 @@ export async function initializeKeycloak(options: KeycloakOptions, resolvers: Re
       ...(clientSecret ? { secret: clientSecret } : {}),
     },
   } as unknown as any);
-  return (container: ContainerInstance) => {
-    container.set(KeycloakAdmin, keycloakAdmin);
-    container.set(KeycloakConnect, keycloakConnect);
-    container.set(KeycloakOptions, options);
+  Container.set({
+    id: KeycloakAdmin,
+    factory: () => keycloakAdmin,
+  });
+  Container.set({
+    id: KEYCLOAK_CONNECT,
+    factory: () => keycloakConnect,
+  });
+  Container.set({
+    id: KEYCLOAK_OPTIONS,
+    factory: () => options,
+  });
+  return (_container: ContainerInstance) => {
+    return;
   };
-}
-
-export class KeycloakOptions {
-  adminClientId?: string;
-  adminPassword?: string;
-  adminUsername?: string;
-  baseUrl!: string;
-  clientId!: string;
-  clientSecret!: string;
-  debug?: boolean;
-  ensureFreshness?: boolean;
-  privatePort?: number;
-  realm!: string;
-  register?: RegisterOptions | boolean;
-  strict?: boolean;
-  xApiKey?: string;
 }

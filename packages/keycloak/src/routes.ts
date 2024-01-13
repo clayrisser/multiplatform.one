@@ -27,19 +27,16 @@ import type { Session } from './session';
 import { getServerSession } from 'next-auth';
 import { jwtDecode } from 'jwt-decode';
 
-const KeycloakProvider = require('next-auth/providers/keycloak').default;
-const NextAuth = require('next-auth').default;
-const NextResponse = require('next/server').NextResponse;
+const NextAuth = require('next-auth').default as typeof import('next-auth').default;
+const NextResponse = require('next/server').NextResponse as typeof import('next/server').NextResponse;
+const KeycloakProvider = require('next-auth/providers/keycloak')
+  .default as typeof import('next-auth/providers/keycloak').default;
 
 const logger = console;
 let _nextAuth: AuthOptions | undefined;
 
 export function createAuthHandler(options: CreateAuthHandlerOptions = {}) {
-  const handler = NextAuth(createAuthOptions(options));
-  return {
-    GET: handler,
-    POST: handler,
-  };
+  return NextAuth(createAuthOptions(options));
 }
 
 export function createLogoutHandler(options: CreateAuthHandlerOptions = {}) {
@@ -66,7 +63,7 @@ export function createLogoutHandler(options: CreateAuthHandlerOptions = {}) {
   };
 }
 
-function createAuthOptions(options: CreateAuthHandlerOptions = {}) {
+export function createAuthOptions(options: CreateAuthHandlerOptions = {}) {
   if (_nextAuth) return _nextAuth;
   _nextAuth = {
     ...options.nextAuth,

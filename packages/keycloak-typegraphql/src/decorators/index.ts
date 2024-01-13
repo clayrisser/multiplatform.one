@@ -20,6 +20,7 @@
  */
 
 export * from './authorized';
+export * from './injectAccessToken';
 export * from './onlyOwner';
 export * from './public';
 export * from './resource';

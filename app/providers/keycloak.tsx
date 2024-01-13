@@ -29,7 +29,13 @@ export interface GlobalKeycloakProviderProps extends KeycloakProviderProps {}
 export function GlobalKeycloakProvider({ children, debug, ...props }: KeycloakProviderProps) {
   if (config.get('KEYCLOAK_ENABLED') !== '1') return <>{children}</>;
   return (
-    <KeycloakProvider {...props} debug={typeof debug !== 'undefined' ? debug : config.get('DEBUG') === '1'}>
+    <KeycloakProvider
+      {...props}
+      debug={
+        false
+        // typeof debug !== 'undefined' ? debug : config.get('DEBUG') === '1'
+      }
+    >
       {children}
     </KeycloakProvider>
   );
