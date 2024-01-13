@@ -19,8 +19,8 @@
  *  limitations under the License.
  */
 
+import type { Ctx } from '../types';
 import type { ResolverData, NextFn, MiddlewareInterface } from 'type-graphql';
-import { Ctx } from '../types';
 import { createMethodDecorator } from '../decorate';
 
 export function RegisterHandler(
@@ -28,12 +28,21 @@ export function RegisterHandler(
   propertyKey: string | symbol,
   descriptor: TypedPropertyDescriptor<any>,
 ): undefined | TypedPropertyDescriptor<any> {
-  if (target.prototype) return undefined;
+  if (target.prototype) return;
   return createMethodDecorator(
     class RegisterHandlerDecorator implements MiddlewareInterface<Ctx> {
       async use({ context: ctx }: ResolverData<Ctx>, next: NextFn) {
         if (!ctx.typegraphqlMeta) ctx.typegraphqlMeta = {};
-        ctx.typegraphqlMeta.getHandler = () => descriptor.value;
+        if (!ctx.typegraphqlMeta.resolvers) ctx.typegraphqlMeta.resolvers = {};
+        if (!ctx.typegraphqlMeta.resolvers[target.constructor.name]) {
+          ctx.typegraphqlMeta.resolvers[target.constructor.name] = {
+            target: target.constructor,
+            handlers: [],
+          };
+        }
+        if (typeof descriptor.value === 'function') {
+          ctx.typegraphqlMeta.resolvers[target.constructor.name].handlers.push(descriptor.value);
+        }
         return next();
       }
     },

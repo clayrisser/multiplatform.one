@@ -32,12 +32,13 @@ import type { Server, IncomingMessage, ServerResponse } from 'http';
 import type { WebSocketServer } from 'ws';
 import type { YogaInitialContext, YogaServerInstance, YogaServerOptions } from 'graphql-yoga';
 
-export interface Ctx<P extends PrismaClient = PrismaClient, M extends TypeGraphqlMeta = TypeGraphqlMeta>
-  extends YogaInitialContext {
+export interface Ctx<R extends Request = Request, P extends PrismaClient = PrismaClient>
+  extends Omit<YogaInitialContext, 'request'> {
   container: ContainerInstance;
   id: string;
   prisma?: P;
-  typegraphqlMeta?: M;
+  request: R;
+  typegraphqlMeta?: TypeGraphqlMeta;
 }
 
 export interface Req extends Request {
@@ -77,9 +78,13 @@ export interface NextJSTypeGraphQLServer {
 
 export interface TypeGraphqlMeta {
   deferredMiddlewares?: MiddlewareFn<Ctx>[];
-  getClass?: () => Type<any>;
-  getHandler?: () => Function;
-  [key: string]: any;
+  resolvers?: Record<
+    string,
+    {
+      target: Type<any>;
+      handlers: Function[];
+    }
+  >;
 }
 
 export interface Type<T = any> extends Function {

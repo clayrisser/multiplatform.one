@@ -31,6 +31,8 @@ export type KeycloakRequest<R extends Request = Request> = {
   originalUrl?: string;
   resourceDenied?: boolean;
   session?: Session;
+  resolversAuthChecked?: Set<string>;
+  authChecked?: boolean;
   user?: ACLUser;
 } & R;
 
