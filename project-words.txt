@@ -50,6 +50,7 @@ btlr
 btrr
 bts
 btw
+bufferutil
 buildpack
 bxsh
 camelcase

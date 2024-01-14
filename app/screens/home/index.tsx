@@ -23,7 +23,7 @@ import React, { useState } from 'react';
 import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { gql } from 'gql';
-import { useAuthQuery, withAuthenticated } from '@multiplatform.one/keycloak';
+import { useAuthQuery, withAuthenticated, useKeycloak } from '@multiplatform.one/keycloak';
 import { useLink } from 'solito/link';
 import { useTranslation } from 'multiplatform.one';
 import { withDefaultLayout } from 'app/layouts/Default';
@@ -40,6 +40,9 @@ function HomeScreen() {
     href: '/user/alice',
   });
   const { data, loading } = useAuthQuery(Auth);
+  const keycloak = useKeycloak();
+
+  console.log(keycloak?.token);
 
   console.log('data', data);
 

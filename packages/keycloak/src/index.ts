@@ -19,7 +19,7 @@
  *  limitations under the License.
  */
 
-export * from './Authenticated';
+export * from './Authenticated/Authenticated';
 export * from './apollo';
 export * from './authConfig';
 export * from './hooks';

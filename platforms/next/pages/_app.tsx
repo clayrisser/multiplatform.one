@@ -29,12 +29,13 @@ import cookie from 'cookie';
 import tamaguiConfig from '../tamagui.config';
 import type { AppContext, AppProps as NextAppProps } from 'next/app';
 import type { ColorScheme } from 'app/state/theme';
-import type { NextIncomingMessage } from 'next/dist/server/request-meta';
 import type { PropsWithChildren } from 'react';
+import type { Session } from 'next-auth';
 import { GlobalProvider } from 'app/providers';
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
 import { appWithTranslation } from 'next-i18next';
 import { config } from 'app/config';
+import { getSession } from '@multiplatform.one/keycloak';
 import { importFonts } from 'app/fonts';
 import { setDefaultCrossStorage } from 'multiplatform.one/zustand';
 import { useThemeState } from 'app/state/theme';
@@ -54,9 +55,10 @@ if (nextStatic) import('app/i18n').then(({ i18nInit }) => i18nInit());
 
 export interface AppProps extends NextAppProps {
   cookies?: unknown;
+  session?: Session;
 }
 
-function App({ Component, pageProps, cookies }: AppProps) {
+function App({ Component, pageProps, cookies, session }: AppProps) {
   const contents = useMemo(() => {
     return <Component {...pageProps} />;
   }, [pageProps, Component]);
@@ -71,12 +73,20 @@ function App({ Component, pageProps, cookies }: AppProps) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Provider cookies={cookies}>{contents}</Provider>
+      <Provider cookies={cookies} session={session}>
+        {contents}
+      </Provider>
     </>
   );
 }
 
-function Provider({ children }: PropsWithChildren & { cookies: unknown }) {
+export function Provider({
+  children,
+  session,
+}: PropsWithChildren & {
+  cookies: unknown;
+  session?: Session;
+}) {
   const themeState = useThemeState();
   const [rootTheme, setRootTheme] = useRootTheme();
 
@@ -92,7 +102,7 @@ function Provider({ children }: PropsWithChildren & { cookies: unknown }) {
       forcedTheme={rootTheme}
     >
       <GlobalProvider
-        // cookies={props.cookies}
+        // cookies={cookies}
         defaultTheme={rootTheme}
         disableInjectCSS
         disableRootThemeClass
@@ -102,6 +112,7 @@ function Provider({ children }: PropsWithChildren & { cookies: unknown }) {
           clientId: config.get('KEYCLOAK_CLIENT_ID')!,
           messageHandlerKeys: [],
           realm: config.get('KEYCLOAK_REALM')!,
+          session,
         }}
       >
         {children}
@@ -110,13 +121,15 @@ function Provider({ children }: PropsWithChildren & { cookies: unknown }) {
   );
 }
 
-function parseCookies(req?: NextIncomingMessage) {
-  if (!req?.headers) return {};
-  return cookie.parse(req.headers.cookie || '');
-}
-
-App.getInitialProps = async (context: AppContext) => ({
-  cookies: parseCookies(context?.ctx?.req) as unknown,
-});
+App.getInitialProps = async ({ ctx }: AppContext) => {
+  return {
+    cookies: !ctx.req ? {} : cookie.parse(ctx.req.headers.cookie || ''),
+    session: await getSession(
+      typeof window === 'undefined' ? (await import('../authOptions')).authOptions : undefined,
+      ctx.req,
+      ctx.res,
+    ),
+  };
+};
 
 export default nextStatic ? App : appWithTranslation(App);

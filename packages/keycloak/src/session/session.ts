@@ -1,5 +1,5 @@
 /*
- *  File: /src/session.ts
+ *  File: /src/session/session.ts
  *  Project: @multiplatform.one/keycloak
  *  File Created: 10-01-2024 02:31:26
  *  Author: Clay Risser
@@ -19,21 +19,31 @@
  *  limitations under the License.
  */
 
-import type { Session as NextSession } from 'next-auth';
-import type { SessionContextValue as NextSessionContextValue, UseSessionOptions } from 'next-auth/react';
+import type { AuthOptions, Session as NextSession } from 'next-auth';
 import { MultiPlatform } from 'multiplatform.one';
 import { useSession as useNextSession, getSession as getNextSession } from 'next-auth/react';
+import type {
+  GetSessionParams,
+  SessionContextValue as NextSessionContextValue,
+  UseSessionOptions,
+} from 'next-auth/react';
 
-let _getServerSession: (() => Promise<Session | null>) | undefined;
+let _getServerSession: ((options?: AuthOptions, req?: any, res?: any) => Promise<Session | null>) | undefined;
 
-export async function getSession(): Promise<Session | null> {
+export async function getSession(
+  options?: AuthOptions | GetSessionParams,
+  req?: any,
+  res?: any,
+): Promise<Session | null> {
   if (MultiPlatform.isServer) {
-    if (typeof _getServerSession === 'function') return _getServerSession();
+    if (typeof _getServerSession === 'function') return _getServerSession(options as AuthOptions, req, res);
     const getSession = (await import('next-auth')).getServerSession;
-    _getServerSession = () => getSession();
-    return _getServerSession();
+    _getServerSession = (options?: AuthOptions, req?: any, res?: any) => {
+      return req && res ? getSession(req, res, options as any) : getSession(options as any);
+    };
+    return _getServerSession(options as AuthOptions, req, res);
   }
-  return getNextSession();
+  return getNextSession(options as GetSessionParams);
 }
 
 export type SessionContextValue<R extends boolean> = Partial<

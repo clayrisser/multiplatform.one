@@ -21,6 +21,8 @@
 
 import type KeycloakClient from 'keycloak-js';
 import type { AccessTokenParsed, TokenParsed } from '../token';
+import type { AuthOptions } from 'next-auth';
+import type { GetSessionParams } from 'next-auth/react';
 import type { KeycloakLoginOptions, KeycloakLogoutOptions } from 'keycloak-js';
 import type { KeycloakMock } from '../types';
 import type { Session } from '../session/session';
@@ -155,7 +157,6 @@ export function useKeycloak() {
   const keycloak = useContext(KeycloakContext);
   if (keycloak) return keycloak;
   const { session, status } = useSession();
-  if (MultiPlatform.isServer) return;
   if (MultiPlatform.isStorybook) {
     return new Keycloak({
       email: 'storybook@example.com',
@@ -168,8 +169,8 @@ export function useKeycloak() {
   }
 }
 
-export async function getKeycloak() {
-  const session = await getSession();
+export async function getKeycloak(options?: AuthOptions | GetSessionParams, req?: any, res?: any) {
+  const session = await getSession(options, req, res);
   if (session?.accessToken) return new Keycloak(session as Session);
   return new Keycloak();
 }

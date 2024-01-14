@@ -23,6 +23,7 @@ import type { Ctx } from '@multiplatform.one/nextjs-typegraphql';
 import type { KeycloakRequest } from './types';
 import type { MiddlewareInterface, NextFn, ResolverData } from 'type-graphql';
 import { AUTHORIZED, PUBLIC, RESOURCE } from './decorators';
+import { GraphQLError } from 'graphql';
 import { KeycloakService } from './keycloakService';
 import { Service } from 'typedi';
 import { deferMiddleware, getMetadata } from '@multiplatform.one/nextjs-typegraphql';
@@ -33,7 +34,7 @@ const logger = console;
 export class AuthGuard implements MiddlewareInterface<Ctx> {
   async use({ context: ctx }: ResolverData<Ctx>, next: NextFn) {
     deferMiddleware(ctx, async ({ context: ctx }: ResolverData<Ctx>, next: NextFn) => {
-      if (!(await canActivate(ctx))) throw new Error('Unauthorized');
+      if (!(await canActivate(ctx))) throw new GraphQLError('Unauthorized');
       return next();
     });
     return next();

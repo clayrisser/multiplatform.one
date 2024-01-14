@@ -56,7 +56,7 @@ export function AfterAuth({ children }: AfterAuthProps) {
   }, [keycloak?.refreshToken]);
 
   useEffect(() => {
-    if (keycloak?.authenticated) logger.debug('authenticated', keycloak.authenticated);
+    if (authConfig.debug && keycloak?.authenticated) logger.debug('authenticated', keycloak.authenticated);
   }, [keycloak?.authenticated]);
 
   return <>{children}</>;

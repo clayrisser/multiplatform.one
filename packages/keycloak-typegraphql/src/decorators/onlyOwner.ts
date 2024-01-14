@@ -23,6 +23,7 @@ import type { Ctx } from '@multiplatform.one/nextjs-typegraphql';
 import type { ResolverData, NextFn, MiddlewareInterface } from 'type-graphql';
 import { DecorateAll, createMethodDecorator } from '@multiplatform.one/nextjs-typegraphql';
 import { KeycloakService } from '../keycloakService';
+import { GraphQLError } from 'graphql';
 
 const get = require('lodash.get') as typeof import('lodash.get');
 
@@ -41,7 +42,7 @@ export function OnlyOwner(
             !keycloakService ||
             !(await isOwner(keycloakService, result, resultUserIdPath, grantSubPath, skipRoles))
           ) {
-            throw new Error('Unauthorized');
+            throw new GraphQLError('Unauthorized');
           }
           return result;
         }
