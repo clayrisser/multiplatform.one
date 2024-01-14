@@ -27,22 +27,24 @@ import type { Session } from './session';
 import { getServerSession } from 'next-auth';
 import { jwtDecode } from 'jwt-decode';
 
-const NextAuth = require('next-auth').default as typeof import('next-auth').default;
-const NextResponse = require('next/server').NextResponse as typeof import('next/server').NextResponse;
 const KeycloakProvider = require('next-auth/providers/keycloak')
   .default as typeof import('next-auth/providers/keycloak').default;
 
-const logger = console;
 let _nextAuth: AuthOptions | undefined;
 
-export function createAuthHandler(options: CreateAuthHandlerOptions = {}) {
-  return NextAuth(createAuthOptions(options));
+const NextAuth = require('next-auth').default as typeof import('next-auth').default;
+const NextResponse = require('next/server').NextResponse as typeof import('next/server').NextResponse;
+
+const logger = console;
+
+export function createAuthHandler(options = createNextAuthOptions()) {
+  return NextAuth(options);
 }
 
-export function createLogoutHandler(options: CreateAuthHandlerOptions = {}) {
+export function createLogoutHandler(options = createNextAuthOptions()) {
   return {
     async GET() {
-      const idToken = ((await getServerSession(createAuthOptions(options))) as Session)?.idToken;
+      const idToken = ((await getServerSession(options)) as Session)?.idToken;
       if (idToken) {
         try {
           await fetch(
@@ -63,7 +65,7 @@ export function createLogoutHandler(options: CreateAuthHandlerOptions = {}) {
   };
 }
 
-export function createAuthOptions(options: CreateAuthHandlerOptions = {}) {
+export function createNextAuthOptions(options: CreateAuthHandlerOptions = {}) {
   if (_nextAuth) return _nextAuth;
   _nextAuth = {
     ...options.nextAuth,
@@ -119,6 +121,21 @@ export function createAuthOptions(options: CreateAuthHandlerOptions = {}) {
   return _nextAuth;
 }
 
+export interface CreateAuthHandlerOptions {
+  keycloakProvider?: Partial<OAuthUserConfig<any>>;
+  nextAuth?: AuthOptions;
+}
+
+export interface NextToken extends JWT {
+  accessToken?: string;
+  decoded: AccessTokenParsed;
+  err?: Error;
+  expiresAt: number;
+  idToken?: string;
+  refreshToken: string;
+  roles: string[];
+}
+
 async function refreshAccessToken(nextToken: NextToken) {
   const res = await fetch(process.env.REFRESH_TOKEN_URL || '', {
     method: 'POST',
@@ -142,19 +159,4 @@ async function refreshAccessToken(nextToken: NextToken) {
     idToken: refreshToken.id_token,
     refreshToken: refreshToken.refresh_token,
   };
-}
-
-export interface CreateAuthHandlerOptions {
-  keycloakProvider?: Partial<OAuthUserConfig<any>>;
-  nextAuth?: AuthOptions;
-}
-
-export interface NextToken extends JWT {
-  accessToken?: string;
-  decoded: AccessTokenParsed;
-  err?: Error;
-  expiresAt: number;
-  idToken?: string;
-  refreshToken: string;
-  roles: string[];
 }

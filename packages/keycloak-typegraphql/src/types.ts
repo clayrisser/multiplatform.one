@@ -23,15 +23,12 @@ import type { Grant } from 'keycloak-connect';
 import type { KeycloakService } from './keycloakService';
 
 export type KeycloakRequest<R extends Request = Request> = {
-  annotationKeys?: Set<string>;
   kauth?: Kauth;
   keycloakService?: KeycloakService;
-  originalUrl?: string;
   resourceDenied?: boolean;
   session?: Session;
   resolversAuthChecked?: Set<string>;
   authChecked?: boolean;
-  user?: ACLUser;
 } & R;
 
 export interface UserInfo {
@@ -43,24 +40,29 @@ export interface UserInfo {
   [key: string]: any;
 }
 
-export type ACLUser = UserInfo & {
+export type User = UserInfo & {
+  aclRoles?: string[];
   roles?: string[];
 };
 
 export interface Kauth {
+  aclRoles?: string[];
   grant?: Grant;
   keycloak?: KeycloakService;
   options?: KeycloakOptions;
+  roles?: string[];
+  userInfo?: UserInfo;
+}
+
+export interface SessionKauth {
+  accessToken?: string;
+  idToken?: string;
+  refreshToken?: string;
   userInfo?: UserInfo;
 }
 
 export interface Session {
-  token?: string;
-  kauth?: {
-    accessToken?: string;
-    refreshToken?: string;
-    userInfo?: UserInfo;
-  };
+  kauth?: SessionKauth;
   [key: string]: any;
 }
 
@@ -119,9 +121,11 @@ export interface KeycloakOptions {
   clientSecret: string;
   debug?: boolean;
   ensureFreshness?: boolean;
+  nextAuthCookieName?: string;
   privatePort?: number;
   realm: string;
   register?: RegisterOptions | boolean;
+  secret?: string;
   strict?: boolean;
   xApiKey?: string;
 }

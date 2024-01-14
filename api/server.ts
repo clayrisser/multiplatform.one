@@ -19,7 +19,7 @@
  *  limitations under the License.
  */
 
-import type { ServerOptions } from '@multiplatform.one/nextjs-typegraphql';
+import type { NextJSTypeGraphQLServer, ServerOptions } from '@multiplatform.one/nextjs-typegraphql';
 import { PrismaClient } from '@prisma/client';
 import { createServer } from '@multiplatform.one/nextjs-typegraphql';
 import { resolvers } from './resolvers';
@@ -28,6 +28,7 @@ export const options: ServerOptions = {
   resolvers,
   debug: process.env.DEBUG === '1',
   prisma: new PrismaClient(),
+  secret: process.env.SECRET,
   keycloak: {
     adminPassword: process.env.KEYCLOAK_ADMIN_PASSWORD || '',
     adminUsername: process.env.KEYCLOAK_ADMIN_USERNAME || '',
@@ -39,4 +40,4 @@ export const options: ServerOptions = {
   },
 };
 
-export default createServer(options);
+export default createServer(options) as Promise<NextJSTypeGraphQLServer>;

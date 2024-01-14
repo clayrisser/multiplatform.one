@@ -1,7 +1,7 @@
 /*
- *  File: /utils/encryption.ts
- *  Project: @platform/next
- *  File Created: 09-01-2024 01:23:34
+ *  File: /src/provider/KeycloakProvider/index.ts
+ *  Project: @multiplatform.one/keycloak
+ *  File Created: 14-01-2024 06:28:31
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,14 +19,4 @@
  *  limitations under the License.
  */
 
-import Cryptr from 'cryptr';
-
-const cryptr = new Cryptr(process.env.SECRET || '-');
-
-export function encrypt(value: string) {
-  return cryptr.encrypt(value);
-}
-
-export function decrypt(encryptedValue: string) {
-  return cryptr.decrypt(encryptedValue);
-}
+export * from './KeycloakProvider';

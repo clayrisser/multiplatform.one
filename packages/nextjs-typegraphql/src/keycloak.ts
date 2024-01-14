@@ -34,6 +34,7 @@ export function createKeycloakOptions(options: ServerOptions): KeycloakOptions {
     debug,
     realm: process.env.KEYCLOAK_REALM || 'master',
     register: process.env.KEYCLOAK_REGISTER === '1',
+    secret: options.secret || process.env.SECRET,
     ...options.keycloak,
   };
 }

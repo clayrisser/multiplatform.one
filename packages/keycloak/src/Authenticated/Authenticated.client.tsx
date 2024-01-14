@@ -1,5 +1,5 @@
 /**
- * File: /src/Authenticated.tsx
+ * File: /src/Authenticated/Authenticated.client.tsx
  * Project: @multiplatform.one/keycloak
  * File Created: 22-06-2023 10:07:56
  * Author: Clay Risser
@@ -20,17 +20,10 @@
  */
 
 import React, { useEffect } from 'react';
-import type { ComponentType, ReactNode } from 'react';
+import type { AuthenticatedProps } from './Authenticated';
 import { MultiPlatform } from 'multiplatform.one';
-import { useAuthConfig, useTokensFromQuery, useTokensFromState } from './hooks';
-import { useKeycloak } from './keycloak';
-
-export interface AuthenticatedProps {
-  children: ReactNode;
-  disabled?: boolean;
-  loadingComponent?: ComponentType;
-  loggedOutComponent?: ComponentType;
-}
+import { useAuthConfig, useTokensFromQuery, useTokensFromState } from '../hooks';
+import { useKeycloak } from '../keycloak';
 
 export function Authenticated({ children, disabled, loggedOutComponent, loadingComponent }: AuthenticatedProps) {
   const authConfig = useAuthConfig();
@@ -63,12 +56,4 @@ export function Authenticated({ children, disabled, loggedOutComponent, loadingC
   if (keycloak.authenticated) return <>{children}</>;
   const LoggedOutComponent = loggedOutComponent;
   return LoggedOutComponent ? <LoggedOutComponent /> : <>{authConfig.debug ? 'not authenticated' : null}</>;
-}
-
-export function withAuthenticated<P extends object>(Component: ComponentType<P>) {
-  return (props: P) => (
-    <Authenticated>
-      <Component {...props} />
-    </Authenticated>
-  );
 }

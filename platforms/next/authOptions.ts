@@ -1,7 +1,7 @@
 /*
- *  File: /src/encryption.ts
+ *  File: /authOptions.ts
  *  Project: @platform/next
- *  File Created: 09-01-2024 01:23:34
+ *  File Created: 14-01-2024 07:57:42
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,26 +19,6 @@
  *  limitations under the License.
  */
 
-import type Cryptr from 'cryptr';
-import { MultiPlatform } from './multiplatform';
+import { createNextAuthOptions } from '@multiplatform.one/keycloak/routes';
 
-let _cryptr: Cryptr | undefined;
-
-async function getCryptr() {
-  if (MultiPlatform.isServer) {
-    if (_cryptr) return _cryptr;
-    const { default: Cryptr } = await import('cryptr');
-    _cryptr = new Cryptr(process.env.SECRET || '-');
-    return _cryptr;
-  }
-}
-
-export async function encrypt(value: string) {
-  const cryptr = await getCryptr();
-  return cryptr?.encrypt(value);
-}
-
-export async function decrypt(encryptedValue: string) {
-  const cryptr = await getCryptr();
-  return cryptr?.decrypt(encryptedValue);
-}
+export const authOptions = createNextAuthOptions({});

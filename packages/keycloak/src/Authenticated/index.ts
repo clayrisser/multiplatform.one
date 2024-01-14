@@ -1,7 +1,7 @@
 /*
- *  File: /app/api/auth/[...nextauth]/route.ts
- *  Project: @platform/next
- *  File Created: 10-01-2024 08:10:46
+ *  File: /src/Authenticated/index.ts
+ *  Project: @multiplatform.one/keycloak
+ *  File Created: 14-01-2024 06:30:13
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,9 +19,4 @@
  *  limitations under the License.
  */
 
-import { createAuthHandler } from '@multiplatform.one/keycloak/routes';
-import { authOptions } from '../../../../authOptions';
-
-const handler = createAuthHandler(authOptions);
-
-export { handler as GET, handler as POST };
+export * from './Authenticated';
