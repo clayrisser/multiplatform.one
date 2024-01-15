@@ -23,14 +23,21 @@ import React, { useState } from 'react';
 import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { gql } from 'gql';
-import { useAuthQuery, withAuthenticated, useKeycloak } from '@multiplatform.one/keycloak';
+import { useAuthQuery, withAuthenticated } from '@multiplatform.one/keycloak';
 import { useLink } from 'solito/link';
+import { useSubscription } from '@apollo/client';
 import { useTranslation } from 'multiplatform.one';
 import { withDefaultLayout } from 'app/layouts/Default';
 
-const Auth = gql(/* GraphQL */ `
-  query Auth {
+const AuthQuery = gql(/* GraphQL */ `
+  query AuthQuery {
     accessToken
+  }
+`);
+
+const CountSubscription = gql(/* GraphQL */ `
+  subscription CountSubscription {
+    count
   }
 `);
 
@@ -39,15 +46,19 @@ function HomeScreen() {
   const linkProps = useLink({
     href: '/user/alice',
   });
-  const { data, loading } = useAuthQuery(Auth);
-  const keycloak = useKeycloak();
+  const { data, loading, error } = useAuthQuery(AuthQuery);
+  const {
+    data: cData,
+    loading: cLoading,
+    error: cError,
+  } = useSubscription(CountSubscription, { skip: typeof window === 'undefined' });
 
-  console.log(keycloak?.token);
-
-  console.log('data', data);
+  console.log({ cData, cLoading, cError });
+  console.log({ data, loading, error });
 
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
+      {cData?.count}
       {loading ? <Spinner /> : <Text>{JSON.stringify(data)}</Text>}
       <YStack space="$4" maw={600}>
         <H1 ta="center">{t('screens.home.welcome')}</H1>

@@ -137,18 +137,21 @@ export interface NextToken extends JWT {
 }
 
 async function refreshAccessToken(nextToken: NextToken) {
-  const res = await fetch(process.env.REFRESH_TOKEN_URL || '', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+  const res = await fetch(
+    `${process.env.KEYCLOAK_BASE_URL}/realms/${process.env.KEYCLOAK_REALM || 'master'}/protocol/openid-connect/token`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        client_id: process.env.KEYCLOAK_CLIENT_ID || '',
+        client_secret: process.env.KEYCLOAK_CLIENT_SECRET || '',
+        grant_type: 'refresh_token',
+        refresh_token: nextToken.refreshToken,
+      }),
     },
-    body: new URLSearchParams({
-      client_id: process.env.KEYCLOAK_CLIENT_ID || '',
-      client_secret: process.env.KEYCLOAK_CLIENT_SECRET || '',
-      grant_type: 'refresh_token',
-      refresh_token: nextToken.refreshToken,
-    }),
-  });
+  );
   const refreshToken = await res.json();
   if (!res.ok) throw refreshToken;
   return {

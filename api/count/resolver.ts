@@ -1,7 +1,7 @@
 /*
- *  File: /src/Authenticated/index.ts
- *  Project: @multiplatform.one/keycloak
- *  File Created: 14-01-2024 06:30:13
+ *  File: /count/resolver.ts
+ *  Project: api
+ *  File Created: 06-01-2024 23:24:23
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,4 +19,21 @@
  *  limitations under the License.
  */
 
-export * from './Authenticated';
+import { Resolver, Subscription, Root } from 'type-graphql';
+
+@Resolver((_of) => String)
+export class CountResolver {
+  @Subscription(() => Number, {
+    async *subscribe() {
+      let count = 0;
+      for (let i = 0; i < 99; i++) {
+        ++count;
+        yield count;
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    },
+  })
+  count(@Root() payload: number): number {
+    return payload;
+  }
+}

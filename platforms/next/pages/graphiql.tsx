@@ -19,23 +19,75 @@
  * limitations under the License.
  */
 
-import type { GetServerSidePropsContext } from 'next';
-import { withAuthenticated, getKeycloak } from '@multiplatform.one/keycloak';
+import 'graphiql/graphiql.css';
+import React, { useEffect, useState } from 'react';
+import { GraphiQL, GraphiQLInterface, GraphiQLProvider } from 'graphiql';
+import { createClient } from 'graphql-ws';
+import { createGraphiQLFetcher } from '@graphiql/toolkit';
+import { explorerPlugin } from '@graphiql/plugin-explorer';
+import { useUrlSearchParams } from 'use-url-search-params';
+import { withAuthenticated, useKeycloak } from '@multiplatform.one/keycloak';
 
-export default withAuthenticated(() => <>{}</>);
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const keycloak = await getKeycloak(
-    typeof window === 'undefined' ? (await import('../authOptions')).authOptions : undefined,
-    ctx.req,
-    ctx.res,
+function GraphiQLPage() {
+  const [ready, setReady] = useState(false);
+  const keycloak = useKeycloak();
+  const [params, setParams] = useUrlSearchParams(
+    {
+      query: `query {
+  accessToken
+}`,
+    },
+    { query: String },
+    false,
   );
-  return {
-    props: {},
-    redirect: typeof keycloak !== 'undefined' &&
-      keycloak.token && {
-        destination: '/graphql',
-        permanent: false,
-      },
-  };
+  const [query, setQuery] = useState(params.query?.toString());
+
+  useEffect(() => {
+    if (!keycloak?.authenticated) return;
+    setReady(true);
+  }, [keycloak?.authenticated]);
+
+  if (!ready) return <>{}</>;
+  return (
+    <div
+      style={{
+        width: '100vw',
+        height: '100vh',
+      }}
+    >
+      <GraphiQLProvider
+        schemaDescription
+        query={query}
+        headers={params.headers?.toString()}
+        plugins={[
+          explorerPlugin({
+            query,
+            onEdit: setQuery,
+            showAttribution: true,
+          } as any),
+        ]}
+        fetcher={createGraphiQLFetcher({
+          url: 'http://localhost:3000/api/graphql',
+          wsClient: createClient({
+            url: 'ws://localhost:3000/api/graphql',
+          }),
+        })}
+      >
+        <GraphiQLInterface
+          isHeadersEditorEnabled
+          defaultEditorToolsVisibility
+          onEditQuery={(query) => setParams({ query })}
+          onEditHeaders={(headers) => setParams({ headers })}
+        >
+          <GraphiQL.Logo>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span>multiplatform.one</span>
+            </div>
+          </GraphiQL.Logo>
+        </GraphiQLInterface>
+      </GraphiQLProvider>
+    </div>
+  );
 }
+
+export default withAuthenticated(GraphiQLPage);

@@ -20,7 +20,7 @@
     "eslint-plugin-spellcheck": "^0.0.20",
     "jest": "^29.7.0",
     "jest-sonar-reporter": "^2.0.0",
-    "prettier": "^3.1.1",
+    "prettier": "^3.2.2",
     "typescript": "^5.3.3"
   },
   "resolutions": {
@@ -33,6 +33,7 @@
     "expo-keycloak-auth@1.0.14": "patch:expo-keycloak-auth@npm%3A1.0.14#./.yarn/patches/expo-keycloak-auth-npm-1.0.14-78201597ce.patch",
     "is-reference": "1.2.1",
     "pino": "8.15.1",
+    "graphql": "^16.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "~0.73.1",

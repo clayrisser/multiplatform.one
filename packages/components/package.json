@@ -41,11 +41,11 @@
   "dependencies": {
     "@mdx-js/mdx": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
-    "@tamagui/font-inter": "^1.84.2",
-    "@tamagui/logo": "^1.84.2",
-    "@tamagui/react-native-media-driver": "^1.84.2",
-    "@tamagui/shorthands": "^1.84.2",
-    "@tamagui/themes": "^1.84.2",
+    "@tamagui/font-inter": "^1.85.5",
+    "@tamagui/logo": "^1.85.5",
+    "@tamagui/react-native-media-driver": "^1.85.5",
+    "@tamagui/shorthands": "^1.85.5",
+    "@tamagui/themes": "^1.85.5",
     "burnt": "^0.12.2",
     "expo-asset": "^8.14.0",
     "expo-image": "^1.10.3",
@@ -62,7 +62,7 @@
     "rehype-slug": "~5.1.0",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^3.0.0",
-    "tamagui": "^1.84.2",
+    "tamagui": "^1.85.5",
     "unist-util-visit": "^5.0.0"
   },
   "peerDependencies": {
@@ -71,11 +71,11 @@
     "solito": "^3.2.6"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.84.2",
+    "@tamagui/build": "^1.85.5",
     "@types/eslint": "^8.56.2",
     "eslint": "^8.56.0",
     "moti": "^0.27.2",
-    "prettier": "^3.1.1",
+    "prettier": "^3.2.2",
     "react-native-reanimated": "3.6.1",
     "solito": "^4.2.0",
     "tsup": "^8.0.1",

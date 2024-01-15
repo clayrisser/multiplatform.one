@@ -130,6 +130,7 @@ gmail
 gnumake
 gnused
 gql
+graphi
 graphicsmagick
 graphiql
 graphql
@@ -339,9 +340,11 @@ uuidv4
 vals
 vercel
 verifier
+vh
 vite
 vizag
 vscode
+vw
 wcag
 webkit
 webpack

@@ -23,36 +23,37 @@
 import { initializeKeycloak } from '@multiplatform.one/keycloak-typegraphql';
 import type { Constructable, ContainerInstance } from 'typedi';
 import type { Ctx, NextJSTypeGraphQLServer, ServerOptions } from './types';
-import type { NextServer } from 'next/dist/server/next';
+import type { NextServer, RequestHandler } from 'next/dist/server/next';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
 import type { YogaServerOptions, YogaInitialContext } from 'graphql-yoga';
-import { Token } from 'typedi';
 import { WebSocketServer } from 'ws';
+import { Token } from 'typedi';
 import { buildSchema } from 'type-graphql';
+import http from 'node:http';
 import { createBuildSchemaOptions } from './buildSchema';
+import { parse } from 'node:url';
 import { createKeycloakOptions } from './keycloak';
 import { createYoga } from 'graphql-yoga';
 import { useServer } from 'graphql-ws/lib/use/ws';
 
 const Container = require('typedi').Container as typeof import('typedi').Container;
-const express = require('express') as typeof import('express');
-const http = require('http') as typeof import('http');
 const logger = console;
 const nodeCleanup = require('node-cleanup') as typeof import('node-cleanup');
 export const CTX = new Token<Ctx>('CTX');
 export const REQ = new Token<Request>('REQ');
 
-export async function createServer(options: ServerOptions): Promise<NextJSTypeGraphQLServer> {
+export async function createServer(
+  options: ServerOptions,
+  ready?: (nextjsTypeGraphqlServer: Omit<NextJSTypeGraphQLServer, 'start'>) => Promise<void> | void,
+): Promise<NextJSTypeGraphQLServer> {
   const debug = typeof options.debug !== 'undefined' ? options.debug : process.env.DEBUG === '1';
-  const dev = typeof options.dev !== 'undefined' ? options.dev : process.env.NODE_ENV === 'development';
-  const graphqlEndpoint = options.graphqlEndpoint || '/graphql';
+  const graphqlEndpoint = options.graphqlEndpoint || '/api/graphql';
   const hostname = options.hostname || 'localhost';
   const port = options.port || Number(process.env.PORT || 3000);
   process.env.NEXTAUTH_SECRET = options.secret || process.env.SECRET;
   process.env.NEXTAUTH_URL = options.baseUrl || process.env.BASE_URL;
   if (options.prisma) await options.prisma.$connect();
   const buildSchemaOptions = createBuildSchemaOptions(options);
-  const graphiql = { subscriptionsProtocol: 'WS' as 'WS' };
   const keycloakOptions = createKeycloakOptions(options);
   let keycloakBindContainer: (container: ContainerInstance) => void;
   if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
@@ -62,7 +63,12 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
     graphqlEndpoint,
     logging: 'info',
     ...options.yoga,
-    graphiql: typeof options.yoga?.graphiql === 'object' ? { ...graphiql, ...options.yoga?.graphiql } : graphiql,
+    graphiql: !options.yoga?.graphiql
+      ? false
+      : {
+          subscriptionsProtocol: 'WS' as 'WS',
+          ...(typeof options.yoga?.graphiql === 'object' ? { ...options.yoga?.graphiql } : {}),
+        },
     async context(context: YogaInitialContext & { res: Response }): Promise<Ctx> {
       const id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
       const container = Container.of(id);
@@ -105,50 +111,32 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
   };
   const schema = await buildSchema(buildSchemaOptions);
   const yoga = createYoga({
+    graphiql: false,
     ...yogaServerOptions,
     schema,
   });
-  const app = express();
-  const server = http.createServer(app);
+  let nextHandle: RequestHandler | undefined;
+  const server = http.createServer(async (req, res) => {
+    try {
+      const url = parse(req.url!, true);
+      if (url.pathname?.startsWith(graphqlEndpoint)) {
+        await yoga(req, res);
+      } else {
+        if (!nextHandle) throw new Error(`handler for ${url} is not implemented`);
+        await nextHandle(req, res, url);
+      }
+    } catch (err) {
+      logger.error(err);
+      res.writeHead(500).end();
+    }
+  });
   const wsServer = new WebSocketServer({
-    server: server,
+    server,
     path: graphqlEndpoint,
   });
-  useServer(
-    {
-      execute: (args: any) => args.rootValue.execute(args),
-      subscribe: (args: any) => args.rootValue.subscribe(args),
-      onSubscribe: async (ctx, message) => {
-        const enveloped = yoga.getEnveloped({
-          ...ctx,
-          req: ctx.extra.request,
-          socket: ctx.extra.socket,
-          params: message.payload,
-        });
-        const { schema, execute, subscribe, contextFactory, parse, validate } = enveloped;
-        const args = {
-          contextValue: await contextFactory(),
-          document: parse(message.payload.query),
-          operationName: message.payload.operationName,
-          schema,
-          variableValues: message.payload.variables,
-          rootValue: {
-            execute,
-            subscribe,
-          },
-        };
-        const errors = validate(args.schema, args.document);
-        if (errors.length) return errors;
-        return args;
-      },
-    },
-    wsServer,
-  );
   return {
-    app,
     buildSchemaOptions,
     debug,
-    dev,
     hostname,
     port,
     schema,
@@ -159,11 +147,37 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
     async start(next: NextServer) {
       try {
         await next.prepare();
-        const handle = next.getRequestHandler();
-        const yogaRouter = express.Router();
-        yogaRouter.use(yoga);
-        app.use(yoga.graphqlEndpoint, yogaRouter);
-        app.all('*', (req, res) => handle(req, res));
+        nextHandle = next.getRequestHandler();
+        useServer(
+          {
+            execute: (args: any) => args.rootValue.execute(args),
+            subscribe: (args: any) => args.rootValue.subscribe(args),
+            onSubscribe: async (ctx, message) => {
+              const enveloped = yoga.getEnveloped({
+                ...ctx,
+                req: ctx.extra.request,
+                socket: ctx.extra.socket,
+                params: message.payload,
+              });
+              const { schema, execute, subscribe, contextFactory, parse, validate } = enveloped;
+              const args = {
+                contextValue: await contextFactory(),
+                document: parse(message.payload.query),
+                operationName: message.payload.operationName,
+                schema,
+                variableValues: message.payload.variables,
+                rootValue: {
+                  execute,
+                  subscribe,
+                },
+              };
+              const errors = validate(args.schema, args.document);
+              if (errors.length) return errors;
+              return args;
+            },
+          },
+          wsServer,
+        );
         nodeCleanup((_exitCode, signal) => {
           if (signal) {
             (async () => {
@@ -184,7 +198,6 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
                   }),
                 ]);
                 process.kill(process.pid, signal);
-                process.exit();
               } catch (err) {
                 logger.error(err);
                 process.exit(1);
@@ -206,11 +219,27 @@ export async function createServer(options: ServerOptions): Promise<NextJSTypeGr
             return resolve(undefined);
           });
         });
+        const result = {
+          buildSchemaOptions,
+          debug,
+          hostname,
+          port,
+          schema,
+          server,
+          wsServer,
+          yoga,
+          yogaServerOptions: { ...yogaServerOptions, schema } as YogaServerOptions<
+            Record<string, any>,
+            Record<string, any>
+          >,
+        };
+        await ready?.(result);
         logger.info(`
   > App started!
     HTTP server running on http://${hostname}:${port}
     GraphQL WebSocket server running on ws://${hostname}:${port}${graphqlEndpoint}
 `);
+        return result;
       } catch (err) {
         logger.error(err);
         process.exit(1);

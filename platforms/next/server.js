@@ -29,7 +29,7 @@ dotenv.config();
   const server = await serverPromise;
   await server.start(
     next({
-      dev: server.dev,
+      dev: process.env.NODE_ENV === 'development',
       hostname: server.hostname,
       port: server.port,
     }),
