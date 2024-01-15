@@ -1,5 +1,5 @@
 /**
- * File: /src/provider/KeycloakProvider/KeycloakProvider.client.tsx
+ * File: /src/provider/KeycloakProvider.tsx
  * Project: @multiplatform.one/keycloak
  * File Created: 10-01-2024 13:56:05
  * Author: Clay Risser
@@ -20,11 +20,11 @@
  */
 
 import React, { useMemo } from 'react';
-import type { AuthConfig } from '../../authConfig';
+import type { AuthConfig } from '../authConfig';
 import type { PropsWithChildren } from 'react';
 import type { Session } from 'next-auth';
-import { AuthConfigContext } from '../../authConfig';
-import { AuthProvider } from '../AuthProvider';
+import { AuthConfigContext } from '../authConfig';
+import { AuthProvider } from './AuthProvider';
 
 export interface KeycloakProviderProps extends PropsWithChildren, AuthConfig {
   baseUrl?: string;

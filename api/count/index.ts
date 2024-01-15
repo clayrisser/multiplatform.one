@@ -1,7 +1,7 @@
 /*
- *  File: /src/provider/KeycloakProvider/index.ts
- *  Project: @multiplatform.one/keycloak
- *  File Created: 14-01-2024 06:28:31
+ *  File: /clock/index.ts
+ *  Project: api
+ *  File Created: 07-01-2024 00:34:58
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,4 +19,4 @@
  *  limitations under the License.
  */
 
-export * from './KeycloakProvider';
+export * from './resolver';

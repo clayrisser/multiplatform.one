@@ -21,13 +21,23 @@
 
 import type { NextJSTypeGraphQLServer, ServerOptions } from '@multiplatform.one/nextjs-typegraphql';
 import { PrismaClient } from '@prisma/client';
+import { createPubSub } from '@graphql-yoga/subscription';
 import { createServer } from '@multiplatform.one/nextjs-typegraphql';
 import { resolvers } from './resolvers';
 
-export const options: ServerOptions = {
-  resolvers,
+const pubSub = createPubSub<{
+  NOTIFICATIONS: [String];
+  DYNAMIC_ID_TOPIC: [number, String];
+}>();
+
+export const options: ServerOptions<{
+  NOTIFICATIONS: [String];
+  DYNAMIC_ID_TOPIC: [number, String];
+}> = {
   debug: process.env.DEBUG === '1',
   prisma: new PrismaClient(),
+  pubSub,
+  resolvers,
   secret: process.env.SECRET,
   keycloak: {
     adminPassword: process.env.KEYCLOAK_ADMIN_PASSWORD || '',

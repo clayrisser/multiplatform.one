@@ -20,7 +20,6 @@
  */
 
 import Keycloak from 'keycloak-connect';
-import session from 'express-session';
 import type IKeycloakAdminClient from '@keycloak/keycloak-admin-client';
 import type { Keycloak as IKeycloakConnect } from 'keycloak-connect';
 import type { KeycloakOptions } from './types';
@@ -58,7 +57,7 @@ export async function initializeKeycloak(options: KeycloakOptions, resolvers: Re
       realmName: options.realm,
     });
   }
-  const keycloakConnect = new KeycloakConnect({ store: new session.MemoryStore() }, {
+  const keycloakConnect = new KeycloakConnect({}, {
     clientId,
     realm,
     serverUrl: options.baseUrl,

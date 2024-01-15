@@ -1,7 +1,7 @@
 /*
- *  File: /types.ts
- *  Project: api
- *  File Created: 08-01-2024 02:16:47
+ *  File: /providers/apollo/index.ts
+ *  Project: app
+ *  File Created: 14-01-2024 11:30:38
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,12 +19,4 @@
  *  limitations under the License.
  */
 
-import { ContainerInstance } from 'typedi';
-import { PrismaClient } from '@prisma/client';
-import { YogaInitialContext } from 'graphql-yoga';
-
-export interface Ctx extends YogaInitialContext {
-  container: ContainerInstance;
-  id: string;
-  prisma: PrismaClient;
-}
+export * from './apollo';

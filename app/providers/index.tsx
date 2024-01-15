@@ -51,7 +51,7 @@ export function GlobalProvider({ children, keycloak, tamaguiConfig, ...props }: 
   );
 }
 
-export * from './apollo';
+export * from './apollo/apollo';
 export * from './keycloak';
 export * from './navigation';
 export * from './tamagui';

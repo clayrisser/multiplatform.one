@@ -25,7 +25,6 @@ import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/us
 import type { AxiosError } from 'axios';
 import type { Grant } from 'keycloak-connect';
 import type { KeycloakConnect } from './initialize';
-import type { NextFunction } from 'express';
 import type { Session } from '@multiplatform.one/keycloak';
 import { KEYCLOAK_CONNECT, KEYCLOAK_OPTIONS, KeycloakAdmin } from './initialize';
 import { REQ } from '@multiplatform.one/nextjs-typegraphql';
@@ -431,20 +430,6 @@ export class KeycloakService {
     if (persistSession) this.sessionSetTokens(grant.access_token as Token, grant.refresh_token as Token);
     await this.afterGrant(grant);
     return grant;
-  }
-
-  async enforce(permissions: string[]) {
-    await this.getGrant();
-    return new Promise<boolean>((resolve) => {
-      return this.keycloakConnect.enforcer(permissions)(
-        this.req as any,
-        {} as any,
-        ((_: Request, _res: Response, _next: NextFunction) => {
-          if (this.req.resourceDenied) return resolve(false);
-          return resolve(true);
-        }) as NextFunction,
-      );
-    });
   }
 
   async logout(redirectUri: string): Promise<LogoutResult> {

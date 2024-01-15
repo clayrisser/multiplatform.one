@@ -23,14 +23,13 @@
 import type { KeycloakOptions } from '@multiplatform.one/keycloak-typegraphql';
 import type { BuildSchemaOptions, MiddlewareFn } from 'type-graphql';
 import type { ContainerInstance } from 'typedi';
-import type { Express } from 'express';
 import type { GraphQLSchema } from 'graphql';
 import type { NextServer } from 'next/dist/server/next';
 import type { NonEmptyArray } from 'type-graphql';
 import type { PrismaClient } from '@prisma/client';
-import type { Server, IncomingMessage, ServerResponse } from 'http';
+import type { PubSub, YogaInitialContext, YogaServerInstance, YogaServerOptions } from 'graphql-yoga';
+import type { Server, IncomingMessage, ServerResponse } from 'node:http';
 import type { WebSocketServer } from 'ws';
-import type { YogaInitialContext, YogaServerInstance, YogaServerOptions } from 'graphql-yoga';
 
 export interface Ctx<R extends Request = Request, P extends PrismaClient = PrismaClient> extends YogaInitialContext {
   container: ContainerInstance;
@@ -45,32 +44,34 @@ export interface Req extends Request {
   container?: ContainerInstance;
 }
 
-export interface ServerOptions {
+export interface PubSubPublishArgsByKey {
+  [key: string]: [] | [any] | [number | string, any];
+}
+
+export interface ServerOptions<TPubSubPublishArgsByKey extends PubSubPublishArgsByKey = PubSubPublishArgsByKey> {
   baseUrl?: string;
   buildSchema?: Omit<BuildSchemaOptions, 'resolvers'>;
   cleanup?: () => Promise<void>;
   debug?: boolean;
-  dev?: boolean;
   graphqlEndpoint?: string;
   hostname?: string;
   keycloak?: KeycloakOptions;
   port?: number;
   prisma?: PrismaClient;
+  pubSub?: PubSub<TPubSubPublishArgsByKey>;
   resolvers: NonEmptyArray<Function> | NonEmptyArray<string>;
   secret?: string;
   yoga?: YogaServerOptions<Record<string, any>, Record<string, any>>;
 }
 
 export interface NextJSTypeGraphQLServer {
-  app: Express;
   buildSchemaOptions: BuildSchemaOptions;
   debug: boolean;
-  dev: boolean;
   hostname: string;
   port: number;
   schema: GraphQLSchema;
   server: Server<typeof IncomingMessage, typeof ServerResponse>;
-  start: (next: NextServer) => Promise<void>;
+  start: (next: NextServer) => Promise<Omit<NextJSTypeGraphQLServer, 'start'>>;
   wsServer: WebSocketServer;
   yoga: YogaServerInstance<Record<string, any>, Record<string, any>>;
   yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>>;

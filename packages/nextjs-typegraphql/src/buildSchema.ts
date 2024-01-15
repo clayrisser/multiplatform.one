@@ -23,11 +23,13 @@
 import { AuthGuard } from '@multiplatform.one/keycloak-typegraphql';
 import path from 'path';
 import type { Ctx, ServerOptions } from './types';
-import type { Middleware } from 'type-graphql/dist/interfaces/Middleware';
+// import type { Middleware } from 'type-graphql/dist/interfaces/Middleware';
 import { BuildSchemaOptions, ResolverData, buildSchema as typeGraphqlBuildSchema } from 'type-graphql';
-import { ValidateSettings } from 'type-graphql/dist/schema/build-context';
+// import { ValidateSettings } from 'type-graphql/dist/schema/build-context';
 import { createKeycloakOptions } from './keycloak';
 import { createResolvers } from './resolvers';
+import type { Middleware } from 'type-graphql/build/typings/typings/middleware';
+import type { ValidateSettings } from 'type-graphql/build/typings/schema/build-context';
 
 export async function buildSchema(options: ServerOptions, emit?: string | true) {
   return typeGraphqlBuildSchema({
@@ -47,9 +49,10 @@ export function createBuildSchemaOptions(options: ServerOptions) {
   }
   return {
     ...options.buildSchema,
-    resolvers: createResolvers(options),
     container: ({ context: ctx }: ResolverData<Ctx>) => ctx.container,
     globalMiddlewares,
+    pubSub: options.pubSub,
+    resolvers: createResolvers(options),
     validate:
       typeof options.buildSchema?.validate === 'object'
         ? {

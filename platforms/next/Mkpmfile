@@ -25,6 +25,9 @@ include $(MKPM)/chain
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
+export NEXTAUTH_SECRET := $(SECRET)
+export NEXTAUTH_URL := $(BASE_URL)
+
 NEXT ?= $(YARN) next
 
 ACTIONS += deps ##
