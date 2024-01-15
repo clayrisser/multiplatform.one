@@ -21,26 +21,27 @@
 
 // @ts-ignore
 import { initializeKeycloak } from '@multiplatform.one/keycloak-typegraphql';
+import http from 'node:http';
 import type { Constructable, ContainerInstance } from 'typedi';
-import type { Ctx, NextJSTypeGraphQLServer, ServerOptions } from './types';
+import type { Ctx, CtxExtra, NextJSTypeGraphQLServer, ServerOptions } from './types';
+import type { IncomingMessage } from 'node:http';
 import type { NextServer, RequestHandler } from 'next/dist/server/next';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
 import type { YogaServerOptions, YogaInitialContext } from 'graphql-yoga';
-import { WebSocketServer } from 'ws';
 import { Token } from 'typedi';
+import { WebSocketServer } from 'ws';
 import { buildSchema } from 'type-graphql';
-import http from 'node:http';
 import { createBuildSchemaOptions } from './buildSchema';
-import { parse } from 'node:url';
 import { createKeycloakOptions } from './keycloak';
 import { createYoga } from 'graphql-yoga';
+import { parse } from 'node:url';
 import { useServer } from 'graphql-ws/lib/use/ws';
 
 const Container = require('typedi').Container as typeof import('typedi').Container;
 const logger = console;
 const nodeCleanup = require('node-cleanup') as typeof import('node-cleanup');
 export const CTX = new Token<Ctx>('CTX');
-export const REQ = new Token<Request>('REQ');
+export const REQ = new Token<Request | IncomingMessage>('REQ');
 
 export async function createServer(
   options: ServerOptions,
@@ -69,15 +70,17 @@ export async function createServer(
           subscriptionsProtocol: 'WS' as 'WS',
           ...(typeof options.yoga?.graphiql === 'object' ? { ...options.yoga?.graphiql } : {}),
         },
-    async context(context: YogaInitialContext & { res: Response }): Promise<Ctx> {
+    async context(context: YogaInitialContext & { res: Response; extra?: CtxExtra }): Promise<Ctx> {
       const id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
       const container = Container.of(id);
       const ctx: Ctx = {
         ...context,
         container,
         id,
+        payload: context.extra?.payload,
         prisma: options.prisma,
-        req: context.request,
+        req: context.request || context.extra?.request,
+        socket: context.extra?.socket,
       } as any;
       container.set({
         id: CTX,
@@ -85,7 +88,7 @@ export async function createServer(
       });
       container.set({
         id: REQ,
-        factory: () => ctx.request,
+        factory: () => ctx.req,
       });
       (buildSchemaOptions.resolvers as any[]).forEach((resolver: Constructable<any>) => {
         container.set({
@@ -95,7 +98,9 @@ export async function createServer(
       });
       if (keycloakBindContainer) keycloakBindContainer(container);
       if (options.yoga?.context) {
-        if (typeof options.yoga.context === 'function') return options.yoga.context(ctx);
+        if (typeof options.yoga.context === 'function') {
+          return options.yoga.context(ctx as unknown as YogaInitialContext);
+        }
         if (typeof options.yoga.context === 'object') return { ...(await options.yoga.context), ...ctx };
       }
       return ctx;
@@ -182,21 +187,20 @@ export async function createServer(
           if (signal) {
             (async () => {
               try {
-                await Promise.all([
-                  (() => options.prisma?.$disconnect())(),
-                  new Promise((resolve, reject) => {
-                    server.close((err) => {
-                      if (err) return reject(err);
-                      return resolve(undefined);
-                    });
-                  }),
-                  new Promise((resolve, reject) => {
-                    wsServer.close((err) => {
-                      if (err) return reject(err);
-                      return resolve(undefined);
-                    });
-                  }),
-                ]);
+                logger.info('App gracefully shutting down...');
+                await new Promise((resolve, reject) => {
+                  wsServer.close((err) => {
+                    if (err) return reject(err);
+                    return resolve(undefined);
+                  });
+                });
+                await options.prisma?.$disconnect();
+                await new Promise((resolve, reject) => {
+                  server.close((err) => {
+                    if (err) return reject(err);
+                    return resolve(undefined);
+                  });
+                });
                 process.kill(process.pid, signal);
               } catch (err) {
                 logger.error(err);

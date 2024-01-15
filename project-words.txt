@@ -202,6 +202,7 @@ nowrap
 nullable
 num
 numberify
+nyptek
 oauth2
 oidc
 ondevice

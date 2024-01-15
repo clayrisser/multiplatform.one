@@ -1,5 +1,5 @@
 /**
- * File: /providers/apollo.tsx
+ * File: /providers/apollo/apollo.native.tsx
  * Project: app
  * File Created: 07-01-2024 10:15:59
  * Author: Clay Risser
@@ -26,7 +26,7 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { useKeycloak } from '@multiplatform.one/keycloak';
 
-const uri = 'http://localhost:3000/graphql';
+const uri = 'http://localhost:3000/api/graphql';
 const websocket = false;
 
 export interface ApolloProviderProps extends PropsWithChildren {}

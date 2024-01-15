@@ -20,9 +20,10 @@
  */
 
 import type { Grant } from 'keycloak-connect';
+import type { IncomingMessage } from 'node:http';
 import type { KeycloakService } from './keycloakService';
 
-export type KeycloakRequest<R extends Request = Request> = {
+export type KeycloakRequest<R extends Request | IncomingMessage = Request | IncomingMessage> = {
   kauth?: Kauth;
   keycloakService?: KeycloakService;
   resourceDenied?: boolean;
