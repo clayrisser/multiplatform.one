@@ -21,6 +21,7 @@
 
 // @ts-ignore
 import type { KeycloakOptions } from '@multiplatform.one/keycloak-typegraphql';
+import type WebSocket from 'ws';
 import type { BuildSchemaOptions, MiddlewareFn } from 'type-graphql';
 import type { ContainerInstance } from 'typedi';
 import type { GraphQLSchema } from 'graphql';
@@ -29,15 +30,27 @@ import type { NonEmptyArray } from 'type-graphql';
 import type { PrismaClient } from '@prisma/client';
 import type { PubSub, YogaInitialContext, YogaServerInstance, YogaServerOptions } from 'graphql-yoga';
 import type { Server, IncomingMessage, ServerResponse } from 'node:http';
+import type { SubscribePayload } from 'graphql-ws';
 import type { WebSocketServer } from 'ws';
 
-export interface Ctx<R extends Request = Request, P extends PrismaClient = PrismaClient> extends YogaInitialContext {
+export interface Ctx<R extends Request = Request, P extends PrismaClient = PrismaClient>
+  extends Omit<YogaInitialContext, 'request'> {
   container: ContainerInstance;
+  extra?: CtxExtra;
   id: string;
+  payload?: SubscribePayload;
   prisma?: P;
   req: R;
   res: Response;
+  socket?: WebSocket;
   typegraphqlMeta?: TypeGraphqlMeta;
+}
+
+export interface CtxExtra {
+  payload: SubscribePayload;
+  request: IncomingMessage;
+  socket: WebSocket;
+  [key: string]: any;
 }
 
 export interface Req extends Request {

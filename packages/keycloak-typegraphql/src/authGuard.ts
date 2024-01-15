@@ -71,7 +71,7 @@ async function canActivate(ctx: Ctx): Promise<boolean> {
   const keycloakService: KeycloakService = ctx.container.get(KeycloakService);
   const username = await keycloakService.getUsername();
   if (!username) return false;
-  const req = ctx.request as any as KeycloakRequest;
+  const req = ctx.req as any as KeycloakRequest;
   if (!req.resolversAuthChecked) req.resolversAuthChecked = new Set();
   for (const roleSet of roleSets) {
     let authorized = false;

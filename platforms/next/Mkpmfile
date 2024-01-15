@@ -82,6 +82,17 @@ dev: | ~deps +dev ##
 		cd $(CURDIR) && \
 		NODE_ENV=development $(NODE) server.js'"
 
+.PHONY: start +start
+start: | ~deps +start ##
++start:
+	@$(MKPM_MAKE) -C ../../api prisma/dev
+	@$(MKPM_MAKE) -C ../../docker dev-d
+	@$(MKPM_MAKE) -C ../../api build
+	@$(MKPM_MAKE) -C ../../gql generate
+	@$(MKPM_MAKE) +build
+	@$(CD) $(CURDIR) && \
+		NODE_ENV=production $(NODE) server.js
+
 .PHONY: clean
 clean: ##
 	-@$(MKCACHE_CLEAN)

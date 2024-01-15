@@ -19,8 +19,10 @@
  *  limitations under the License.
  */
 
+import { Authorized, InjectAccessToken } from '@multiplatform.one/keycloak-typegraphql';
 import { Resolver, Subscription, Root } from 'type-graphql';
 
+@Authorized()
 @Resolver((_of) => String)
 export class CountResolver {
   @Subscription(() => Number, {
