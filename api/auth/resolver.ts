@@ -19,14 +19,21 @@
  *  limitations under the License.
  */
 
+import 'reflect-metadata';
 import { Authorized, InjectAccessToken } from '@multiplatform.one/keycloak-typegraphql';
 import { Query, Resolver } from 'type-graphql';
+import { Inject } from 'typedi';
+import { Logger } from '@multiplatform.one/nextjs-typegraphql';
 
 @Authorized()
 @Resolver((_of) => String)
 export class AuthResolver {
+  @Inject()
+  logger: Logger;
+
   @Query((_returns) => String)
   accessToken(@InjectAccessToken() accessToken: string): string {
+    this.logger.info('HELLO');
     return accessToken;
   }
 }

@@ -25,6 +25,7 @@ import type WebSocket from 'ws';
 import type { BuildSchemaOptions, MiddlewareFn } from 'type-graphql';
 import type { ContainerInstance } from 'typedi';
 import type { GraphQLSchema } from 'graphql';
+import type { LoggerOptions } from './logger';
 import type { NextServer } from 'next/dist/server/next';
 import type { NonEmptyArray } from 'type-graphql';
 import type { PrismaClient } from '@prisma/client';
@@ -69,6 +70,7 @@ export interface ServerOptions<TPubSubPublishArgsByKey extends PubSubPublishArgs
   graphqlEndpoint?: string;
   hostname?: string;
   keycloak?: KeycloakOptions;
+  logger?: LoggerOptions;
   port?: number;
   prisma?: PrismaClient;
   pubSub?: PubSub<TPubSubPublishArgsByKey>;

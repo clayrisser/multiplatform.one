@@ -1,5 +1,5 @@
 /**
- * File: /pages/graphiql.tsx
+ * File: /pages/graphql.tsx
  * Project: @platform/next
  * File Created: 14-01-2024 06:46:04
  * Author: Clay Risser
@@ -26,6 +26,7 @@ import { createClient } from 'graphql-ws';
 import { createGraphiQLFetcher } from '@graphiql/toolkit';
 import { explorerPlugin } from '@graphiql/plugin-explorer';
 import { useUrlSearchParams } from 'use-url-search-params';
+import { v4 as uuid } from 'uuid';
 import { withAuthenticated, useKeycloak } from '@multiplatform.one/keycloak';
 
 function GraphiQLPage() {
@@ -68,6 +69,15 @@ function GraphiQLPage() {
         ]}
         fetcher={createGraphiQLFetcher({
           url: 'http://localhost:3000/api/graphql',
+          async fetch(input: RequestInfo, init?: RequestInit) {
+            return fetch(input, {
+              ...init,
+              headers: {
+                ...init?.headers,
+                'X-Request-Id': uuid(),
+              },
+            });
+          },
           wsClient: createClient({
             url: 'ws://localhost:3000/api/graphql',
           }),

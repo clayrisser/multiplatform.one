@@ -22,13 +22,12 @@
 import axios from 'axios';
 import cookie from 'cookie';
 import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
-import type { IncomingMessage, IncomingHttpHeaders } from 'node:http';
 import type { AxiosError } from 'axios';
 import type { Grant } from 'keycloak-connect';
 import type { KeycloakConnect } from './initialize';
 import type { Session } from '@multiplatform.one/keycloak';
 import { KEYCLOAK_CONNECT, KEYCLOAK_OPTIONS, KeycloakAdmin } from './initialize';
-import { REQ } from '@multiplatform.one/nextjs-typegraphql';
+import { REQ, getReqHeader } from '@multiplatform.one/nextjs-typegraphql';
 import { Service, Inject } from 'typedi';
 import { Token } from './token';
 import { decode } from 'next-auth/jwt';
@@ -442,7 +441,7 @@ export class KeycloakService {
   private get bearerToken(): Token | undefined {
     if (this._bearerToken) return this._bearerToken;
     const { strict } = this.options;
-    const authorization = this.getHeader('authorization');
+    const authorization = getReqHeader(this.req, 'authorization');
     if (typeof authorization === 'undefined') return undefined;
     if (authorization && authorization.indexOf(' ') <= -1) {
       if (strict) return undefined;
@@ -460,7 +459,7 @@ export class KeycloakService {
   private async getNextAuthSession() {
     if (this._nextAuthSession) return this._nextAuthSession;
     const chunks: Record<string, string> = {};
-    const cookies = cookie.parse(this.getHeader('cookie') || '');
+    const cookies = cookie.parse(getReqHeader(this.req, 'cookie') || '');
     const cookieName = this.options.nextAuthCookieName!;
     Object.keys(cookies).forEach((name) => {
       if (name.startsWith(cookieName)) chunks[name] = cookies[name];
@@ -604,15 +603,6 @@ export class KeycloakService {
         this.req.session.token = accessToken.token;
       }
     }
-  }
-
-  private getHeader(name: string) {
-    if (typeof this.req.headers?.get === 'function') {
-      return this.req.headers.get(name) || undefined;
-    }
-    const header = (this.req.headers as IncomingHttpHeaders)?.[name];
-    if (Array.isArray(header)) return header.join(', ');
-    return header;
   }
 
   private async setOptions() {
