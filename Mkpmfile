@@ -27,27 +27,27 @@ include $(MKPM)/chain
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
-ACTIONS += deps ##
+ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
 	@$(YARN) install $(DEPS_ARGS)
 	@$(call done,$@)
 
-ACTIONS += format ##
+ACTIONS += format
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 	@$(call workspace_foreach,format,$(FORMAT_ARGS))
 	@$(call done,$@)
 
-ACTIONS += spellcheck ##
+ACTIONS += spellcheck
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 	@$(call workspace_foreach,spellcheck,$(SPELLCHECK_ARGS))
 	@$(call done,$@)
 
-ACTIONS += lint ##
+ACTIONS += lint
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 	@$(call workspace_foreach,lint,$(LINT_ARGS))
 	@$(call done,$@)
 
-ACTIONS += test ##
+ACTIONS += test
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	@$(call workspace_foreach,test,$(TEST_ARGS))
 	@$(call done,$@)
@@ -57,16 +57,16 @@ build +build ~build:
 	@$(MKPM_MAKE) multiplatform.one/$@
 	@$(MKPM_MAKE) prisma-scripts/$@
 	@$(MKPM_MAKE) keycloak/$@
+	@$(MKPM_MAKE) typegraphql/$@
 	@$(MKPM_MAKE) keycloak-typegraphql/$@
-	@$(MKPM_MAKE) nextjs-typegraphql/$@
 	@$(MKPM_MAKE) components/$@
 
 .PHONY: upgrade
-upgrade: ##
+upgrade:
 	@$(YARN) upgrade-interactive
 
 .PHONY: clean
-clean: ##
+clean:
 	@$(call workspace_foreach,clean,$(CLEAN_ARGS))
 	-@$(MKCACHE_CLEAN)
 	-@$(JEST) --clearCache $(NOFAIL)
@@ -77,7 +77,7 @@ clean: ##
 		$(NOFAIL)
 
 .PHONY: purge
-purge: clean ##
+purge: clean
 	@$(GIT) clean -fXd
 
 .PHONY: $(patsubst %,%/%,$(WORKSPACE_NAMES))

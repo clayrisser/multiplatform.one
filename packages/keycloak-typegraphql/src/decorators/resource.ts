@@ -19,7 +19,7 @@
  *  limitations under the License.
  */
 
-import { SetMetadata } from '@multiplatform.one/nextjs-typegraphql';
+import { SetMetadata } from '@multiplatform.one/typegraphql';
 
 export const RESOURCE = 'KEYCLOAK_RESOURCE';
 

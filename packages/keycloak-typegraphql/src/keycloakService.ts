@@ -27,7 +27,7 @@ import type { Grant } from 'keycloak-connect';
 import type { KeycloakConnect } from './initialize';
 import type { Session } from '@multiplatform.one/keycloak';
 import { KEYCLOAK_CONNECT, KEYCLOAK_OPTIONS, KeycloakAdmin } from './initialize';
-import { REQ, getReqHeader } from '@multiplatform.one/nextjs-typegraphql';
+import { REQ, getReqHeader, Logger } from '@multiplatform.one/typegraphql';
 import { Service, Inject } from 'typedi';
 import { Token } from './token';
 import { decode } from 'next-auth/jwt';
@@ -45,8 +45,6 @@ import type {
 @Service()
 export class KeycloakService {
   options: KeycloakOptions;
-
-  private logger = console;
 
   private _bearerToken: Token | undefined;
 
@@ -71,6 +69,7 @@ export class KeycloakService {
   constructor(
     @Inject(REQ) public readonly req: KeycloakRequest,
     @Inject(KEYCLOAK_OPTIONS) options: KeycloakOptions,
+    @Inject() private readonly logger: Logger,
     @Inject(KEYCLOAK_CONNECT) public readonly keycloakConnect: KeycloakConnect,
     public readonly keycloakAdmin: KeycloakAdmin,
   ) {

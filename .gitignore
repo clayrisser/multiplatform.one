@@ -24,7 +24,6 @@ debug.json
 /build
 /out/
 THUMBS_DB
-graphql.config.*
 node_modules/
 npm-debug.log*
 package-lock.json

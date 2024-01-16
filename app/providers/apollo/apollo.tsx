@@ -26,7 +26,7 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 
-const uri = 'http://localhost:3000/api/graphql';
+const uri = 'http://localhost:5001/api/graphql';
 const websocket = typeof window !== 'undefined';
 
 export interface ApolloProviderProps extends PropsWithChildren {}

@@ -86,5 +86,13 @@
   },
   "files.associations": {
     "Mkpmfile": "makefile"
+  },
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "(app|gql)\\/.*\\.(tsx|ts|gql|graphql)$",
+        "cmd": "yarn graphql-codegen"
+      }
+    ]
   }
 }

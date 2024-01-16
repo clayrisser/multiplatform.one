@@ -42,15 +42,18 @@
   },
   "devDependencies": {
     "@types/cookie": "^0.6.0",
+    "@types/eslint": "^8.56.2",
     "@types/lodash.difference": "^4.5.9",
     "@types/lodash.get": "^4.4.9",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.2",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
   },
   "dependencies": {
     "@keycloak/keycloak-admin-client": "^23.0.4",
     "@multiplatform.one/keycloak": "0.7.17",
-    "@multiplatform.one/nextjs-typegraphql": "^0.1.0",
+    "@multiplatform.one/typegraphql": "^0.1.0",
     "axios": "^1.6.5",
     "cookie": "^0.6.0",
     "graphql": "^16.8.1",

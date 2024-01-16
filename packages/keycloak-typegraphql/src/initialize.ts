@@ -23,7 +23,7 @@ import Keycloak from 'keycloak-connect';
 import type IKeycloakAdminClient from '@keycloak/keycloak-admin-client';
 import type { Keycloak as IKeycloakConnect } from 'keycloak-connect';
 import type { KeycloakOptions } from './types';
-import type { Resolvers } from '@multiplatform.one/nextjs-typegraphql';
+import type { Resolvers } from '@multiplatform.one/typegraphql';
 import { RegisterKeycloak } from './register';
 import { Token, type ContainerInstance } from 'typedi';
 
@@ -40,10 +40,6 @@ export class KeycloakAdmin extends (require('@keycloak/keycloak-admin-client')
 
 export async function initializeKeycloak(options: KeycloakOptions, resolvers: Resolvers) {
   const { clientSecret, clientId, realm, baseUrl, adminUsername, adminPassword } = options;
-  if (options.register) {
-    const registerKeycloak = new RegisterKeycloak(options, resolvers);
-    await registerKeycloak.register();
-  }
   let keycloakAdmin: KeycloakAdmin | undefined;
   if (adminUsername && adminPassword) {
     keycloakAdmin = new KeycloakAdmin({ baseUrl });
@@ -77,7 +73,10 @@ export async function initializeKeycloak(options: KeycloakOptions, resolvers: Re
     id: KEYCLOAK_OPTIONS,
     factory: () => options,
   });
-  return (_container: ContainerInstance) => {
-    return;
+  return async () => {
+    if (options.register) {
+      const registerKeycloak = new RegisterKeycloak(options, resolvers);
+      await registerKeycloak.register();
+    }
   };
 }

@@ -3,12 +3,6 @@
   "main": "index.ts",
   "private": true,
   "sideEffects": false,
-  "devDependencies": {
-    "@graphql-codegen/cli": "~4.0.1",
-    "@graphql-codegen/client-preset": "^4.2.0",
-    "@graphql-codegen/introspection": "4.0.1",
-    "nodemon": "^3.0.2"
-  },
   "nodemonConfig": {
     "watch": [
       "../api",
@@ -17,5 +11,11 @@
     "ext": "ts,tsx,graphql",
     "signal": "SIGTERM",
     "delay": 100
+  },
+  "eslintIgnore": [
+    "generated"
+  ],
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   }
 }

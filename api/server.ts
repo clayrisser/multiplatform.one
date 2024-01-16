@@ -1,7 +1,7 @@
 /*
  *  File: /server.ts
  *  Project: api
- *  File Created: 12-01-2024 05:15:21
+ *  File Created: 16-01-2024 14:04:28
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,11 +19,13 @@
  *  limitations under the License.
  */
 
-import type { NextJSTypeGraphQLServer, ServerOptions } from '@multiplatform.one/nextjs-typegraphql';
+import dotenv from 'dotenv';
+import type { ServerOptions } from '@multiplatform.one/typegraphql';
 import { PrismaClient } from '@prisma/client';
 import { createPubSub } from '@graphql-yoga/subscription';
-import { createServer } from '@multiplatform.one/nextjs-typegraphql';
 import { resolvers } from './resolvers';
+
+dotenv.config();
 
 const pubSub = createPubSub<{
   NOTIFICATIONS: [String];
@@ -39,6 +41,9 @@ export const options: ServerOptions<{
   pubSub,
   resolvers,
   secret: process.env.SECRET,
+  tracing: {
+    apollo: process.env.APOLLO_TRACING === '1',
+  },
   keycloak: {
     adminPassword: process.env.KEYCLOAK_ADMIN_PASSWORD || '',
     adminUsername: process.env.KEYCLOAK_ADMIN_USERNAME || '',
@@ -49,5 +54,3 @@ export const options: ServerOptions<{
     register: process.env.KEYCLOAK_REGISTER === '1',
   },
 };
-
-export default createServer(options) as Promise<NextJSTypeGraphQLServer>;

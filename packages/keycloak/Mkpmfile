@@ -30,7 +30,7 @@ JEST ?= $(YARN) jest
 PRETTIER ?= $(YARN) prettier
 TSC ?= $(YARN) tsc
 
-ACTIONS += deps ##
+ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
 	@$(MAKE) -sC $(PROJECT_ROOT) -f $(PROJECT_ROOT)/Mkpmfile \~deps DEPS_ARGS=$(DEPS_ARGS)
@@ -39,28 +39,28 @@ else
 endif
 	@$(call done,$@)
 
-ACTIONS += format~deps ##
+ACTIONS += format~deps
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 	-@$(call prettier,$?,$(ARGS))
 	@$(call done,$@)
 
-ACTIONS += spellcheck~format ##
+ACTIONS += spellcheck~format
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
 	@$(call done,$@)
 
-ACTIONS += lint~spellcheck ##
+ACTIONS += lint~spellcheck
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call eslint,$?,$(ARGS))
 	@$(call done,$@)
 
-ACTIONS += test~lint ##
+ACTIONS += test~lint
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	-@$(MKDIR) -p node_modules/.tmp
 	-@$(call jest,$?,$(ARGS))
 	@$(call done,$@)
 
-ACTIONS += build~test ##
+ACTIONS += build~test
 BUILD_TARGETS := dist/lib/index.js
 dist/lib/index.js:
 	@$(call reset,build)

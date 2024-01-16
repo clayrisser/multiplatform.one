@@ -1,6 +1,6 @@
 /*
  *  File: /src/keycloak.ts
- *  Project: @multiplatform.one/nextjs-typegraphql
+ *  Project: @multiplatform.one/typegraphql
  *  File Created: 12-01-2024 12:17:13
  *  Author: Clay Risser
  *  -----

@@ -19,9 +19,9 @@
  *  limitations under the License.
  */
 
-import type { Ctx } from '@multiplatform.one/nextjs-typegraphql';
+import type { Ctx } from '@multiplatform.one/typegraphql';
 import type { ResolverData, NextFn, MiddlewareInterface } from 'type-graphql';
-import { DecorateAll, createMethodDecorator } from '@multiplatform.one/nextjs-typegraphql';
+import { DecorateAll, createMethodDecorator } from '@multiplatform.one/typegraphql';
 import { KeycloakService } from '../keycloakService';
 import { GraphQLError } from 'graphql';
 

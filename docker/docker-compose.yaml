@@ -7,22 +7,34 @@ services:
     command: tail -f /dev/null
     depends_on:
       - keycloak
+      - postgres
+      - tempo
+      - loki
+      - promtail
+      - prometheus
+      - grafana
 
   app:
     container_name: ${NAME}
     image: ${IMAGE}:latest
     user: 0:0
     ports:
-      - 3000:3000
+      - 5000:5000
     environment:
       DEBUG: '1'
     depends_on:
       - keycloak
+      - postgres
+      - tempo
+      - loki
+      - promtail
+      - prometheus
+      - grafana
 
   keycloak:
     container_name: keycloak
+    restart: unless-stopped
     image: quay.io/keycloak/keycloak:23.0.3
-    restart: always
     ports:
       - 8080:8080
     volumes:
@@ -48,9 +60,9 @@ services:
       KEYCLOAK_IMPORT: /tmp/realm-export.json
 
   postgres:
-    image: postgres:14
     container_name: postgres
     restart: unless-stopped
+    image: postgres:14.5
     ports:
       - 5432:5432
     environment:
@@ -60,6 +72,143 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
 
+  tempo:
+    container_name: tempo
+    user: 0:0
+    restart: unless-stopped
+    image: grafana/tempo:1.5.0
+    command: ['-config.file=/etc/tempo.yaml']
+    volumes:
+      - ./tempo.yaml:/etc/tempo.yaml
+      - tempo:/tmp/tempo
+    ports:
+      - 14268:14268
+      - '14250'
+      - '55680'
+      - 6831/udp
+      - 6832/udp
+
+  loki:
+    container_name: loki
+    user: 0:0
+    restart: unless-stopped
+    image: grafana/loki:2.6.1
+    command: -config.file=/etc/loki/loki-local.yaml
+    ports:
+      - 3100:3100
+    environment:
+      - JAEGER_AGENT_HOST=tempo
+      - JAEGER_ENDPOINT=http://tempo:14268/api/traces
+      - JAEGER_SAMPLER_PARAM=1
+      - JAEGER_SAMPLER_TYPE=const
+    volumes:
+      - ./loki.yaml:/etc/loki/loki-local.yaml
+      - loki:/tmp/loki
+
+  promtail:
+    container_name: promtail
+    user: 0:0
+    restart: unless-stopped
+    image: grafana/promtail:2.2.1
+    command: -config.file=/etc/promtail/promtail-local.yaml
+    volumes:
+      - ./promtail.yaml:/etc/promtail/promtail-local.yaml
+      - ./data/logs:/app/logs
+    depends_on:
+      - loki
+
+  prometheus:
+    container_name: prometheus
+    user: 0:0
+    restart: unless-stopped
+    image: prom/prometheus:latest
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus.yaml
+    entrypoint:
+      - /bin/prometheus
+      - --config.file=/etc/prometheus.yaml
+    ports:
+      - '9090:9090'
+
+  grafana:
+    container_name: grafana
+    user: 0:0
+    restart: unless-stopped
+    image: grafana/grafana:9.1.1-ubuntu
+    volumes:
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/dashboards-provisioning:/etc/grafana/provisioning/dashboards
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - '3000:3000'
+    depends_on:
+      - prometheus
+      - tempo
+      - loki
+
+  sentry-postgres:
+    container_name: sentry-postgres
+    restart: unless-stopped
+    image: postgres:14.5
+    volumes:
+      - sentry-postgres:/var/lib/postgresql/data
+
+  sentry-redis:
+    container_name: sentry-redis
+    restart: unless-stopped
+    image: 'redis:6.2.13-alpine'
+    volumes:
+      - sentry-redis:/data
+
+  sentry-web:
+    container_name: sentry-web
+    restart: unless-stopped
+    image: sebinn09/sentry-selfhosted:sentry-self-hosted-local
+    depends_on:
+      - sentry-redis
+      - sentry-postgres
+    entrypoint: /etc/sentry/entrypoint.sh
+    command: [run, web]
+    environment:
+      PYTHONUSERBASE: /data/custom-packages
+      SENTRY_CONF: /etc/sentry
+    volumes:
+      - sentry-web:/data
+      - ./sentry:/etc/sentry
+
+  sentry-worker:
+    restart: unless-stopped
+    image: sebinn09/sentry-selfhosted:sentry-cleanup-self-hosted-local
+    depends_on:
+      - sentry-redis
+      - sentry-postgres
+    entrypoint: /etc/sentry/entrypoint.sh
+    command: [run, worker]
+    environment:
+      PYTHONUSERBASE: /data/custom-packages
+      SENTRY_CONF: /etc/sentry
+    volumes:
+      - sentry-worker:/data
+      - ./sentry:/etc/sentry
+
 volumes:
+  sentry-redis:
+    name: sentry-redis-${NAME}
+  sentry-postgres:
+    name: sentry-postgres-${NAME}
+  sentry-web:
+    name: sentry-web-${NAME}
+  sentry-worker:
+    name: sentry-worker-${NAME}
   postgres:
     name: postgres-${NAME}
+  tempo:
+    name: tempo-${NAME}
+  loki:
+    name: loki-${NAME}

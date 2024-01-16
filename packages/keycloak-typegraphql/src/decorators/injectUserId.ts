@@ -19,7 +19,7 @@
  *  limitations under the License.
  */
 
-import type { Ctx } from '@multiplatform.one/nextjs-typegraphql';
+import type { Ctx } from '@multiplatform.one/typegraphql';
 import type { KeycloakRequest } from '../types';
 import type { ResolverData } from 'type-graphql';
 import type { Token } from '../token';

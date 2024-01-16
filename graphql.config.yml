@@ -1,0 +1,18 @@
+schema: gql/generated/schema.graphql
+documents:
+  - api/**/*.{ts,tsx,graphql,gql}
+  - app/**/*.{ts,tsx,graphql,gql}
+  - '!api/node_modules/**/*.{ts,tsx,graphql,gql}'
+  - '!app/node_modules/**/*.{ts,tsx,graphql,gql}'
+extensions:
+  endpoints:
+    default:
+      url: http://localhost:5001/api/graphql
+  codegen:
+    overwrite: true
+    generates:
+      ./gql/generated/gql/:
+        preset: client
+      ./gql/generated/graphql.schema.json:
+        plugins:
+          - introspection

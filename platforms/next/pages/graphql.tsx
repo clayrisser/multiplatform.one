@@ -68,7 +68,7 @@ function GraphiQLPage() {
           } as any),
         ]}
         fetcher={createGraphiQLFetcher({
-          url: 'http://localhost:3000/api/graphql',
+          url: 'http://localhost:5001/api/graphql',
           async fetch(input: RequestInfo, init?: RequestInit) {
             return fetch(input, {
               ...init,
@@ -79,7 +79,7 @@ function GraphiQLPage() {
             });
           },
           wsClient: createClient({
-            url: 'ws://localhost:3000/api/graphql',
+            url: 'ws://localhost:5001/api/graphql',
           }),
         })}
       >

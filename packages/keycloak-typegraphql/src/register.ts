@@ -29,7 +29,7 @@ import type ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/s
 import type { AxiosError } from 'axios';
 import type { KeycloakOptions, RegisterOptions } from './types';
 import { AUTHORIZED, RESOURCE, SCOPES } from './decorators/';
-import { getMetadata, Resolvers } from '@multiplatform.one/nextjs-typegraphql';
+import { getMetadata, Resolvers } from '@multiplatform.one/typegraphql';
 
 // makes registration idempotent
 let registeredKeycloak = false;

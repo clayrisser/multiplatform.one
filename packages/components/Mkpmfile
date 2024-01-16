@@ -26,7 +26,7 @@ include $(PROJECT_ROOT)/shared.mk
 
 TAMAGUI_BUILD ?= $(YARN) tamagui-build
 
-ACTIONS += deps ##
+ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
 	@$(MAKE) -sC $(PROJECT_ROOT) -f $(PROJECT_ROOT)/Mkpmfile \~deps DEPS_ARGS=$(DEPS_ARGS)
@@ -35,23 +35,23 @@ else
 endif
 	@$(call done,$@)
 
-ACTIONS += format~deps ##
+ACTIONS += format~deps
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 #	-@$(call eslint_format,$?)
 	-@$(call prettier,$?,$(ARGS))
 	@$(call done,$@)
 
-ACTIONS += spellcheck~format ##
+ACTIONS += spellcheck~format
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
 	@$(call done,$@)
 
-ACTIONS += lint~spellcheck ##
+ACTIONS += lint~spellcheck
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call eslint,$?,$(ARGS))
 	@$(call done,$@)
 
-ACTIONS += test~lint ##
+ACTIONS += test~lint
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call jest,$?,$(ARGS))
 	@$(call done,$@)
@@ -66,7 +66,7 @@ $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(call done,$@)
 
 .PHONY: clean
-clean: ##
+clean:
 	-@$(MKCACHE_CLEAN)
 	-@$(JEST) --clearCache $(NOFAIL)
 	-@$(WATCHMAN) watch-del-all $(NOFAIL)

@@ -1,6 +1,6 @@
 /*
  *  File: /src/decorators/decorateAll.ts
- *  Project: @multiplatform.one/nextjs-typegraphql
+ *  Project: @multiplatform.one/typegraphql
  *  File Created: 12-01-2024 12:40:10
  *  Author: Clay Risser
  *  -----

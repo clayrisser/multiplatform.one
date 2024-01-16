@@ -1,7 +1,7 @@
 /*
- *  File: /src/decorators/index.ts
- *  Project: @multiplatform.one/nextjs-typegraphql
- *  File Created: 12-01-2024 09:46:59
+ *  File: /tests/_setup.ts
+ *  Project: @multiplatform.one/typegraphql
+ *  File Created: 12-01-2024 02:13:34
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,8 +19,4 @@
  *  limitations under the License.
  */
 
-export * from './decorateAll';
-export * from './guards';
-export * from './registerClass';
-export * from './registerHandler';
-export * from './setMetadata';
+export default {};

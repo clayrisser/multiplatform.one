@@ -1,6 +1,6 @@
 /*
  *  File: /src/decorators/registerClass.ts
- *  Project: @multiplatform.one/nextjs-typegraphql
+ *  Project: @multiplatform.one/typegraphql
  *  File Created: 12-01-2024 09:45:36
  *  Author: Clay Risser
  *  -----

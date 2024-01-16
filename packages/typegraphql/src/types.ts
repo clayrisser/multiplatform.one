@@ -26,7 +26,7 @@ import type { BuildSchemaOptions, MiddlewareFn } from 'type-graphql';
 import type { ContainerInstance } from 'typedi';
 import type { GraphQLSchema } from 'graphql';
 import type { LoggerOptions } from './logger';
-import type { NextServer } from 'next/dist/server/next';
+import type { NodeSDK } from '@opentelemetry/sdk-node';
 import type { NonEmptyArray } from 'type-graphql';
 import type { PrismaClient } from '@prisma/client';
 import type { PubSub, YogaInitialContext, YogaServerInstance, YogaServerOptions } from 'graphql-yoga';
@@ -77,16 +77,23 @@ export interface ServerOptions<TPubSubPublishArgsByKey extends PubSubPublishArgs
   resolvers: NonEmptyArray<Function> | NonEmptyArray<string>;
   secret?: string;
   yoga?: YogaServerOptions<Record<string, any>, Record<string, any>>;
+  tracing?: TracingOptions;
 }
 
-export interface NextJSTypeGraphQLServer {
+export interface TracingOptions {
+  apollo?: boolean;
+  exporter?: boolean | string;
+}
+
+export interface TypeGraphQLServer {
   buildSchemaOptions: BuildSchemaOptions;
   debug: boolean;
   hostname: string;
+  otelSDK: NodeSDK;
   port: number;
   schema: GraphQLSchema;
   server: Server<typeof IncomingMessage, typeof ServerResponse>;
-  start: (next: NextServer) => Promise<Omit<NextJSTypeGraphQLServer, 'start'>>;
+  start: () => Promise<Omit<TypeGraphQLServer, 'start'>>;
   wsServer: WebSocketServer;
   yoga: YogaServerInstance<Record<string, any>, Record<string, any>>;
   yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>>;

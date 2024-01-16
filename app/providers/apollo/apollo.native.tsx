@@ -26,7 +26,7 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { useKeycloak } from '@multiplatform.one/keycloak';
 
-const uri = 'http://localhost:3000/api/graphql';
+const uri = 'http://localhost:5001/api/graphql';
 const websocket = false;
 
 export interface ApolloProviderProps extends PropsWithChildren {}

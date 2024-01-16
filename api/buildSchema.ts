@@ -19,8 +19,10 @@
  *  limitations under the License.
  */
 
+// eslint-disable-next-line no-eval
+eval('require')('reflect-metadata');
 import path from 'path';
-import { buildSchema } from '@multiplatform.one/nextjs-typegraphql';
+import { buildSchema } from '@multiplatform.one/typegraphql';
 import { options } from './server';
 
 buildSchema(options, path.resolve(__dirname, '../../gql/generated/schema.graphql'));
