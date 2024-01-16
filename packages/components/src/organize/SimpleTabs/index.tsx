@@ -59,7 +59,8 @@ export function SimpleTabs({
   const contextValue = useMemo(() => ({ orientation, width }), [orientation, width]);
 
   return (
-    <SimpleTabsContext.Provider value={contextValue}>
+    // TODO: Fix this type
+    <SimpleTabsContext.Provider value={contextValue as any}>
       <Tabs
         borderRadius="$4"
         borderWidth="$0.25"

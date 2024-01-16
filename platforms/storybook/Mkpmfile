@@ -28,7 +28,7 @@ include $(PROJECT_ROOT)/shared.mk
 NODE_HEAP ?= 8192
 STORYBOOK ?= $(NODE) --max-old-space-size=$(NODE_HEAP) $(YARN) storybook
 
-ACTIONS += deps ##
+ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
 	@$(MAKE) -C $(PROJECT_ROOT) -f $(PROJECT_ROOT)/Mkpmfile \~deps DEPS_ARGS=$(DEPS_ARGS)
@@ -37,28 +37,28 @@ else
 endif
 	@$(call done,$@)
 
-ACTIONS += format~deps ##
+ACTIONS += format~deps
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 #	-@$(call eslint_format,$?)
 	-@$(call prettier,$?,$(FORMAT_ARGS))
 	@$(call done,$@)
 
-ACTIONS += spellcheck~format ##
+ACTIONS += spellcheck~format
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
 	@$(call done,$@)
 
-ACTIONS += lint~spellcheck ##
+ACTIONS += lint~spellcheck
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call eslint,$?,$(LINT_ARGS))
 	@$(call done,$@)
 
-ACTIONS += test~lint ##
+ACTIONS += test~lint
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call jest,$?,$(TEST_ARGS))
 	@$(call done,$@)
 
-ACTIONS += build~test ##
+ACTIONS += build~test
 BUILD_TARGETS := storybook-static/index.html
 storybook-static/index.html:
 	@$(call reset,build)
@@ -68,12 +68,12 @@ $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 
 PORT ?= 6006
 .PHONY: dev +dev
-dev: | ~deps +dev ##
+dev: | ~deps +dev
 +dev:
 	@TAMAGUI_TARGET=web $(STORYBOOK) dev -p $(PORT) -s ./public
 
 .PHONY: vr-update
-vr-update: ~build ##
+vr-update: ~build
 	@$(LOKI) \
 		--requireReference \
 		--diffingEngine $(VR_DIFFING_ENGINE) \
@@ -82,7 +82,7 @@ vr-update: ~build ##
 		update
 
 .PHONY: vr-test
-vr-test: ~build ##
+vr-test: ~build
 	@$(LOKI) \
 		--requireReference \
 		--diffingEngine $(VR_DIFFING_ENGINE) \
@@ -91,7 +91,7 @@ vr-test: ~build ##
 		test
 
 .PHONY: vr-approve
-vr-approve: ##
+vr-approve:
 	@$(LOKI) \
 		--requireReference \
 		--diffingEngine $(VR_DIFFING_ENGINE) \
@@ -100,7 +100,7 @@ vr-approve: ##
 		approve
 
 .PHONY: clean
-clean: ##
+clean:
 	-@$(MKCACHE_CLEAN)
 	-@$(JEST) --clearCache $(NOFAIL)
 	-@$(WATCHMAN) watch-del-all $(NOFAIL)
@@ -110,6 +110,6 @@ clean: ##
 		$(NOFAIL)
 
 .PHONY: postinstall
-postinstall: ##
+postinstall:
 
 -include $(call chain)

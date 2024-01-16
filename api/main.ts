@@ -1,7 +1,7 @@
 /*
- *  File: /tsup.config.ts
- *  Project: @multiplatform.one/nextjs-typegraphql
- *  File Created: 12-01-2024 02:13:34
+ *  File: /main.ts
+ *  Project: api
+ *  File Created: 12-01-2024 05:15:21
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,21 +19,12 @@
  *  limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
-import transpileModules from './transpileModules';
+// eslint-disable-next-line no-eval
+eval('require')('reflect-metadata');
+import { createServer } from '@multiplatform.one/typegraphql';
+import { options } from './server';
 
-export default defineConfig({
-  bundle: true,
-  clean: true,
-  dts: true,
-  entry: ['src/**/*.ts?(x)'],
-  entryPoints: ['src/index.ts'],
-  format: ['cjs', 'esm'],
-  minify: false,
-  outDir: 'lib',
-  publicDir: './public',
-  skipNodeModulesBundle: true,
-  noExternal: transpileModules,
-  splitting: true,
-  target: 'es5',
-});
+(async () => {
+  const server = await createServer(options);
+  await server.start();
+})();

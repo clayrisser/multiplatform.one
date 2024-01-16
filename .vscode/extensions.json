@@ -4,14 +4,15 @@
     "dbaeumer.vscode-eslint",
     "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
+    "graphql.vscode-graphql",
+    "graphql.vscode-graphql-execution",
+    "graphql.vscode-graphql-syntax",
     "mikestead.dotenv",
     "mkhl.direnv",
     "ms-azuretools.vscode-docker",
     "prisma.prisma",
     "psioniq.psi-header",
     "streetsidesoftware.code-spell-checker",
-    "graphql.vscode-graphql-execution",
-    "graphql.vscode-graphql-syntax",
-    "graphql.vscode-graphql"
+    "emeraldwalk.runonsave"
   ]
 }

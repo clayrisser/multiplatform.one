@@ -29,8 +29,9 @@ export NEXTAUTH_SECRET := $(SECRET)
 export NEXTAUTH_URL := $(BASE_URL)
 
 NEXT ?= $(YARN) next
+NEXT_PORT ?= 5000
 
-ACTIONS += deps ##
+ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
 	@$(MAKE) -C $(PROJECT_ROOT) -f $(PROJECT_ROOT)/Mkpmfile \~deps DEPS_ARGS=$(DEPS_ARGS)
@@ -39,62 +40,50 @@ else
 endif
 	@$(call done,$@)
 
-ACTIONS += format~deps ##
+ACTIONS += format~deps
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 #	-@$(call eslint_format,$?)
 	-@$(call prettier,$?,$(FORMAT_ARGS))
 	@$(call done,$@)
 
-ACTIONS += spellcheck~format ##
+ACTIONS += spellcheck~format
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
 	@$(call done,$@)
 
-ACTIONS += lint~spellcheck ##
+ACTIONS += lint~spellcheck
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call eslint,$?,$(LINT_ARGS))
 	@$(call done, $@)
 
-ACTIONS += test~lint ##
+ACTIONS += test~lint
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call jest,$?,$(TEST_ARGS))
 	@$(call done, $@)
 
-ACTIONS += build~test ##
+ACTIONS += build~test
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(NEXT) build $(BUILD_ARGS)
 	@$(call done,$@)
 
-ACTIONS += export~test ##
+ACTIONS += export~test
 $(ACTION)/export: $(call git_deps,\.([jt]sx?)$$)
 	@NEXT_STATIC=1 $(NEXT) build
 	@NEXT_STATIC=1 $(NEXT) export
 	@$(call done,$@)
 
 .PHONY: dev +dev
-dev: | ~deps +dev ##
+dev: | ~deps +dev
 +dev:
-	@$(MKPM_MAKE) -C ../../api prisma/dev
-	@$(MKPM_MAKE) -C ../../docker dev-d
-	@$(SLEEP) 3 && WATCH_ARGS="-w ../app" $(MKPM_MAKE) -C ../../gql watch &
-	@$(MKPM_MAKE) -C ../../api watch \
-		WATCH_ARGS="--onSuccess '$(MKPM_MAKE) -C ../gql +generate && \
-		cd $(CURDIR) && \
-		NODE_ENV=development $(NODE) server.js'"
+	@$(NEXT) dev -p $(NEXT_PORT)
 
 .PHONY: start +start
-start: | ~deps +start ##
+start: | ~deps +build +start
 +start:
-	@$(MKPM_MAKE) -C ../../api prisma/dev
-	@$(MKPM_MAKE) -C ../../docker dev-d
-	@$(MKPM_MAKE) -C ../../api build
-	@$(MKPM_MAKE) -C ../../gql generate
-	@$(MKPM_MAKE) +build
-	@$(CD) $(CURDIR) && \
-		NODE_ENV=production $(NODE) server.js
+	@$(NEXT) start -p $(NEXT_PORT)
 
 .PHONY: clean
-clean: ##
+clean:
 	-@$(MKCACHE_CLEAN)
 	-@$(JEST) --clearCache $(NOFAIL)
 	-@$(WATCHMAN) watch-del-all $(NOFAIL)

@@ -31,6 +31,12 @@
       "command": "./mkpm expo/dev"
     },
     {
+      "name": "api dev",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "./mkpm api/dev"
+    },
+    {
       "name": "gql dev",
       "type": "node-terminal",
       "request": "launch",

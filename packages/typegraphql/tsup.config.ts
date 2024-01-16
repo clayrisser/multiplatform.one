@@ -1,8 +1,8 @@
 /*
- *  File: /todo/index.ts
- *  Project: api
- *  File Created: 08-01-2024 12:22:21
- *  Author: dharmendra
+ *  File: /tsup.config.ts
+ *  Project: @multiplatform.one/typegraphql
+ *  File Created: 12-01-2024 02:13:34
+ *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
  *
@@ -19,4 +19,21 @@
  *  limitations under the License.
  */
 
-export * from './resolver';
+import { defineConfig } from 'tsup';
+import transpileModules from './transpileModules';
+
+export default defineConfig({
+  bundle: true,
+  clean: true,
+  dts: true,
+  entry: ['src/**/*.ts?(x)'],
+  entryPoints: ['src/index.ts'],
+  format: ['cjs', 'esm'],
+  minify: false,
+  outDir: 'lib',
+  publicDir: './public',
+  skipNodeModulesBundle: true,
+  noExternal: transpileModules,
+  splitting: true,
+  target: 'es5',
+});

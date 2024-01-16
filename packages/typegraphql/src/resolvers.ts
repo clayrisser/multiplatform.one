@@ -1,7 +1,7 @@
 /*
- *  File: /server.js
- *  Project: @platform/next
- *  File Created: 06-01-2024 22:25:26
+ *  File: /src/resolvers.ts
+ *  Project: @multiplatform.one/typegraphql
+ *  File Created: 12-01-2024 12:55:41
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,19 +19,12 @@
  *  limitations under the License.
  */
 
-require('reflect-metadata');
-const dotenv = require('dotenv');
-const next = require('next');
-const serverPromise = require('api/server').default;
-dotenv.config();
+import type { NonEmptyArray } from 'type-graphql';
+import type { ServerOptions } from './types';
+import { Guards } from './decorators/guards';
 
-(async () => {
-  const server = await serverPromise;
-  await server.start(
-    next({
-      dev: process.env.NODE_ENV === 'development',
-      hostname: server.hostname,
-      port: server.port,
-    }),
-  );
-})();
+export function createResolvers(options: ServerOptions) {
+  return options.resolvers.map((resolver) => (typeof resolver === 'string' ? resolver : Guards(resolver))) as Resolvers;
+}
+
+export type Resolvers = NonEmptyArray<Function> | NonEmptyArray<string>;

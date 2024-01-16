@@ -5,7 +5,9 @@
     "noEmit": true,
     "target": "ES5",
     "paths": {
-      "react-native": ["react-native-web"]
+      "react-native": [
+        "react-native-web"
+      ]
     },
     "plugins": [
       {
@@ -27,8 +29,11 @@
     "../../app/**/*.jsx",
     "../../app/**/*.ts",
     "../../app/**/*.tsx",
-    ".next/types/**/*.ts",
-    "components/utils.tsx"
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "dist", "lib"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "lib"
+  ]
 }

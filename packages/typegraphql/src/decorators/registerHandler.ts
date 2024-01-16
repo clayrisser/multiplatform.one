@@ -1,6 +1,6 @@
 /*
  *  File: /src/decorators/registerHandler.ts
- *  Project: @multiplatform.one/nextjs-typegraphql
+ *  Project: @multiplatform.one/typegraphql
  *  File Created: 12-01-2024 09:46:44
  *  Author: Clay Risser
  *  -----

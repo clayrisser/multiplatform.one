@@ -22,13 +22,20 @@
 // @ts-ignore
 import { initializeKeycloak } from '@multiplatform.one/keycloak-typegraphql';
 import http from 'node:http';
-import type { Constructable, ContainerInstance } from 'typedi';
-import type { Ctx, CtxExtra, NextJSTypeGraphQLServer, ServerOptions } from './types';
+import type { Constructable } from 'typedi';
+import type { Ctx, CtxExtra, TypeGraphQLServer, ServerOptions, TracingOptions } from './types';
 import type { IncomingMessage } from 'node:http';
-import type { NextServer, RequestHandler } from 'next/dist/server/next';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
 import type { YogaServerOptions, YogaInitialContext } from 'graphql-yoga';
+import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks';
+import { B3InjectEncoding, B3Propagator } from '@opentelemetry/propagator-b3';
+import { CompositePropagator, W3CTraceContextPropagator, W3CBaggagePropagator } from '@opentelemetry/core';
+import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
 import { Logger } from './logger';
+import { NodeSDK } from '@opentelemetry/sdk-node';
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
+import { PrismaInstrumentation } from '@prisma/instrumentation';
+import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { Token } from 'typedi';
 import { WebSocketServer } from 'ws';
 import { buildSchema } from 'type-graphql';
@@ -36,8 +43,11 @@ import { createBuildSchemaOptions } from './buildSchema';
 import { createKeycloakOptions } from './keycloak';
 import { createYoga, useLogger } from 'graphql-yoga';
 import { generateRequestId } from './utils';
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { parse } from 'node:url';
 import { randomUUID } from 'node:crypto';
+import { useApolloTracing } from '@envelop/apollo-tracing';
+import { useOpenTelemetry } from '@envelop/opentelemetry';
 import { useServer } from 'graphql-ws/lib/use/ws';
 
 const Container = require('typedi').Container as typeof import('typedi').Container;
@@ -47,20 +57,56 @@ export const REQ = new Token<Request | IncomingMessage>('REQ');
 
 export async function createServer(
   options: ServerOptions,
-  ready?: (nextjsTypeGraphqlServer: Omit<NextJSTypeGraphQLServer, 'start'>) => Promise<void> | void,
-): Promise<NextJSTypeGraphQLServer> {
+  ready?: (typeGraphqlServer: Omit<TypeGraphQLServer, 'start'>) => Promise<void> | void,
+): Promise<TypeGraphQLServer> {
   const debug = typeof options.debug !== 'undefined' ? options.debug : process.env.DEBUG === '1';
+  const tracingOptions: TracingOptions = {
+    apollo: process.env.APOLLO_TRACING ? process.env.APOLLO_TRACING === '1' : debug,
+    exporter:
+      process.env.OTEL_EXPORTER_TRACE_ENABLED === '1' && process.env.OTEL_EXPORTER_TRACE_ENDPOINT
+        ? process.env.OTEL_EXPORTER_TRACE_ENDPOINT
+        : false,
+    ...options.tracing,
+  };
+  const otelSDK = new NodeSDK({
+    metricReader:
+      process.env.OTEL_EXPORTER_PROMETHEUS_ENABLED === '1'
+        ? new PrometheusExporter({
+            port: 8081,
+          })
+        : undefined,
+    traceExporter:
+      tracingOptions.exporter && typeof tracingOptions.exporter === 'string'
+        ? new OTLPTraceExporter({
+            url: tracingOptions.exporter,
+            concurrencyLimit: 10,
+          })
+        : undefined,
+    contextManager: new AsyncLocalStorageContextManager(),
+    textMapPropagator: new CompositePropagator({
+      propagators: [
+        new JaegerPropagator(),
+        new W3CTraceContextPropagator(),
+        new W3CBaggagePropagator(),
+        new B3Propagator(),
+        new B3Propagator({
+          injectEncoding: B3InjectEncoding.MULTI_HEADER,
+        }),
+      ],
+    }),
+    instrumentations: [getNodeAutoInstrumentations(), new PrismaInstrumentation()],
+  });
+  otelSDK.start();
+  // @ts-ignore
+  const tracingProvider = otelSDK._tracerProvider;
   const graphqlEndpoint = options.graphqlEndpoint || '/api/graphql';
   const hostname = options.hostname || 'localhost';
-  const port = options.port || Number(process.env.PORT || 3000);
-  process.env.NEXTAUTH_SECRET = options.secret || process.env.SECRET;
-  process.env.NEXTAUTH_URL = options.baseUrl || process.env.BASE_URL;
-  if (options.prisma) await options.prisma.$connect();
+  const port = options.port || Number(process.env.PORT || 5001);
   const buildSchemaOptions = createBuildSchemaOptions(options);
   const keycloakOptions = createKeycloakOptions(options);
-  let keycloakBindContainer: (container: ContainerInstance) => void;
+  let registerKeycloak: (() => Promise<void>) | undefined;
   if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
-    keycloakBindContainer = await initializeKeycloak(keycloakOptions, buildSchemaOptions.resolvers);
+    registerKeycloak = await initializeKeycloak(keycloakOptions, buildSchemaOptions.resolvers);
   }
   const loggerOptions = {
     container: process.env.CONTAINER === '1',
@@ -108,7 +154,6 @@ export async function createServer(
         id: Logger,
         factory: () => new Logger(loggerOptions, ctx),
       });
-      if (keycloakBindContainer) keycloakBindContainer(container);
       if (options.yoga?.context) {
         if (typeof options.yoga.context === 'function') {
           return options.yoga.context(ctx as unknown as YogaInitialContext);
@@ -144,6 +189,15 @@ export async function createServer(
           logger.info(eventName);
         },
       }),
+      useOpenTelemetry(
+        {
+          resolvers: true,
+          variables: true,
+          result: true,
+        },
+        tracingProvider,
+      ),
+      ...(tracingOptions.apollo ? [useApolloTracing()] : []),
       ...(options.yoga?.plugins || []),
     ],
   };
@@ -154,7 +208,6 @@ export async function createServer(
     ...yogaServerOptions,
     schema,
   });
-  let nextHandle: RequestHandler | undefined;
   const server = http.createServer(async (req, res) => {
     generateRequestId(req, res);
     try {
@@ -162,8 +215,7 @@ export async function createServer(
       if (url.pathname?.startsWith(graphqlEndpoint)) {
         await yoga(req, res);
       } else {
-        if (!nextHandle) throw new Error(`handler for ${url} is not implemented`);
-        await nextHandle(req, res, url);
+        logger.warn(`handler for ${url} is not implemented`);
       }
     } catch (err) {
       logger.error(err);
@@ -178,16 +230,17 @@ export async function createServer(
     buildSchemaOptions,
     debug,
     hostname,
+    otelSDK,
     port,
     schema,
     server,
     wsServer,
     yoga,
     yogaServerOptions: { ...yogaServerOptions, schema } as YogaServerOptions<Record<string, any>, Record<string, any>>,
-    async start(next: NextServer) {
+    async start() {
       try {
-        await next.prepare();
-        nextHandle = next.getRequestHandler();
+        if (options.prisma) await options.prisma.$connect();
+        if (registerKeycloak) await registerKeycloak();
         useServer(
           {
             execute: (args: any) => args.rootValue.execute(args),
@@ -236,6 +289,7 @@ export async function createServer(
                     return resolve(undefined);
                   });
                 });
+                await otelSDK.shutdown();
                 process.kill(process.pid, signal);
               } catch (err) {
                 logger.error(err);
@@ -262,6 +316,7 @@ export async function createServer(
           buildSchemaOptions,
           debug,
           hostname,
+          otelSDK,
           port,
           schema,
           server,

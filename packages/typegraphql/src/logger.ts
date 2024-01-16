@@ -1,6 +1,6 @@
 /*
  *  File: /src/logger.ts
- *  Project: @multiplatform.one/nextjs-typegraphql
+ *  Project: @multiplatform.one/typegraphql
  *  File Created: 16-01-2024 03:23:43
  *  Author: Clay Risser
  *  -----
@@ -27,10 +27,9 @@ import pretty from 'pino-pretty';
 import type { Ctx } from './types';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { Logger as PinoLogger } from 'pino';
-import { Options as PinoHttpOptions } from 'pino-http';
+import type { Options as PinoHttpOptions } from 'pino-http';
 import { Token } from 'typedi';
-import { generateRequestId, getReqHeader, setResHeader } from './utils';
-import { randomUUID } from 'node:crypto';
+import { generateRequestId } from './utils';
 import { trace, context } from '@opentelemetry/api';
 
 export const LOGGER = new Token<Logger>('LOGGER');

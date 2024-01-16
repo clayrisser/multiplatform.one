@@ -1,6 +1,6 @@
 /*
  *  File: /src/decorate.ts
- *  Project: @multiplatform.one/nextjs-typegraphql
+ *  Project: @multiplatform.one/typegraphql
  *  File Created: 12-01-2024 09:38:33
  *  Author: Clay Risser
  *  -----

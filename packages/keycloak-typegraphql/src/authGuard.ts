@@ -19,16 +19,14 @@
  *  limitations under the License.
  */
 
-import type { Ctx } from '@multiplatform.one/nextjs-typegraphql';
+import type { Ctx } from '@multiplatform.one/typegraphql';
 import type { KeycloakRequest } from './types';
 import type { MiddlewareInterface, NextFn, ResolverData } from 'type-graphql';
 import { AUTHORIZED, PUBLIC, RESOURCE } from './decorators';
 import { GraphQLError } from 'graphql';
 import { KeycloakService } from './keycloakService';
 import { Service } from 'typedi';
-import { deferMiddleware, getMetadata } from '@multiplatform.one/nextjs-typegraphql';
-
-const logger = console;
+import { Logger, deferMiddleware, getMetadata } from '@multiplatform.one/typegraphql';
 
 @Service()
 export class AuthGuard implements MiddlewareInterface<Ctx> {
@@ -73,6 +71,7 @@ async function canActivate(ctx: Ctx): Promise<boolean> {
   if (!username) return false;
   const req = ctx.req as any as KeycloakRequest;
   if (!req.resolversAuthChecked) req.resolversAuthChecked = new Set();
+  const logger = ctx.container.get(Logger);
   for (const roleSet of roleSets) {
     let authorized = false;
     if (await keycloakService.isAuthorizedByRoles(roleSet.roles)) authorized = true;
@@ -83,18 +82,18 @@ async function canActivate(ctx: Ctx): Promise<boolean> {
       }
       req.resolversAuthChecked.add(roleSet.resolverName);
     }
-    logger.log(
+    logger.info(
       `resolver${roleSet.resolverName ? ` '${roleSet.resolverName}'` : ''} for '${username}' requires ${
         roleSet.roles.length ? `roles [ ${roleSet.roles.join(' | ')} ]` : 'authentication'
       }`,
     );
     if (!authorized) {
-      logger.log(`authorization for '${username}' denied`);
+      logger.info(`authorization for '${username}' denied`);
       return false;
     }
   }
   if (!req.authChecked) {
-    logger.log(`authorization for '${username}' granted`);
+    logger.info(`authorization for '${username}' granted`);
     req.authChecked = true;
   }
   return true;

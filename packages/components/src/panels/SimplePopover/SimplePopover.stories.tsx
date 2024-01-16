@@ -21,7 +21,7 @@
 
 import React, { useState } from 'react';
 import { SimplePopover } from './index';
-import { Text, YStack, XStack, Switch, Input, Label, Button } from 'tamagui';
+import { Text, YStack, XStack, Switch, Label, Button } from 'tamagui';
 import type { Meta } from '@storybook/react';
 
 const meta: Meta = {

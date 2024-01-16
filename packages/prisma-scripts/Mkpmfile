@@ -29,28 +29,28 @@ $(ACTION)/deps: package.json
 	@$(YARN) install $(ARGS)
 	@$(call done,$@)
 
-ACTIONS += format~deps ##
+ACTIONS += format~deps
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 	-@$(call prettier,$?,$(ARGS))
 	@$(call done,$@)
 
-ACTIONS += spellcheck~format ##
+ACTIONS += spellcheck~format
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 	-@$(call cspell,$?,$(ARGS))
 	@$(call done,$@)
 
-ACTIONS += lint~spellcheck ##
+ACTIONS += lint~spellcheck
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call eslint,$?,$(ARGS))
 	@$(call done,$@)
 
-# ACTIONS += test~lint ##
+# ACTIONS += test~lint
 # $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 # 	-@$(MKDIR) -p node_modules/.tmp
 # 	-@$(call jest,$?,$(ARGS))
 # 	@$(call done,$@)
 
-ACTIONS += build~lint ##
+ACTIONS += build~lint
 BUILD_TARGETS := lib/index.js
 lib/index.js:
 	@$(call reset,build)

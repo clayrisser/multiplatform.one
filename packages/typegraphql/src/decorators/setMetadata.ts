@@ -1,6 +1,6 @@
 /*
  *  File: /src/decorators/setMetadata.ts
- *  Project: @multiplatform.one/nextjs-typegraphql
+ *  Project: @multiplatform.one/typegraphql
  *  File Created: 13-01-2024 04:05:25
  *  Author: Clay Risser
  *  -----

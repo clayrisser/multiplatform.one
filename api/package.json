@@ -2,36 +2,34 @@
   "name": "api",
   "version": "0.0.2",
   "private": true,
-  "main": "lib/index.js",
-  "source": "src/index.ts",
-  "types": "lib/index.d.ts",
+  "main": "dist/main.js",
+  "source": "src/main.ts",
+  "types": "dist/main.d.ts",
   "exports": {
     ".": {
-      "require": "./lib/index.js",
-      "types": "./lib/index.d.ts"
+      "require": "./dist/main.js",
+      "types": "./dist/main.d.ts"
     },
     "./buildSchema": {
-      "require": "./lib/buildSchema.js",
-      "types": "./lib/buildSchema.d.ts"
-    },
-    "./server": {
-      "require": "./lib/server.js",
-      "types": "./lib/server.d.ts"
+      "require": "./dist/buildSchema.js",
+      "types": "./dist/buildSchema.d.ts"
     }
   },
   "dependencies": {
     "@graphql-yoga/subscription": "^5.0.0",
     "@multiplatform.one/keycloak-typegraphql": "0.1.0",
-    "@multiplatform.one/nextjs-typegraphql": "^0.1.0",
     "@multiplatform.one/prisma-scripts": "0.5.26",
-    "@prisma/client": "5.8.0",
+    "@multiplatform.one/typegraphql": "^0.1.0",
+    "@prisma/client": "~5.8.1",
     "@whatwg-node/server": "^0.9.23",
     "class-validator": "^0.14.1",
+    "dotenv": "^16.3.1",
     "graphql": "^16.8.1",
     "graphql-fields": "^2.0.3",
     "graphql-scalars": "^1.22.4",
     "graphql-yoga": "^5.1.1",
-    "prisma": "^5.8.0",
+    "prisma": "~5.8.1",
+    "reflect-metadata": "^0.2.1",
     "type-graphql": "^2.0.0-beta.6",
     "typedi": "^0.10.0",
     "typegraphql-prisma": "^0.27.1"
@@ -45,5 +43,10 @@
   },
   "prisma": {
     "seed": "node dist/seed.js"
-  }
+  },
+  "eslintIgnore": [
+    "dist",
+    "generated",
+    "prisma/dist"
+  ]
 }
