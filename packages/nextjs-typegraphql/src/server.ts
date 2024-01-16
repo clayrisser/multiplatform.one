@@ -28,17 +28,19 @@ import type { IncomingMessage } from 'node:http';
 import type { NextServer, RequestHandler } from 'next/dist/server/next';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
 import type { YogaServerOptions, YogaInitialContext } from 'graphql-yoga';
+import { Logger } from './logger';
 import { Token } from 'typedi';
 import { WebSocketServer } from 'ws';
 import { buildSchema } from 'type-graphql';
 import { createBuildSchemaOptions } from './buildSchema';
 import { createKeycloakOptions } from './keycloak';
-import { createYoga } from 'graphql-yoga';
+import { createYoga, useLogger } from 'graphql-yoga';
+import { generateRequestId } from './utils';
 import { parse } from 'node:url';
+import { randomUUID } from 'node:crypto';
 import { useServer } from 'graphql-ws/lib/use/ws';
 
 const Container = require('typedi').Container as typeof import('typedi').Container;
-const logger = console;
 const nodeCleanup = require('node-cleanup') as typeof import('node-cleanup');
 export const CTX = new Token<Ctx>('CTX');
 export const REQ = new Token<Request | IncomingMessage>('REQ');
@@ -60,9 +62,14 @@ export async function createServer(
   if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
     keycloakBindContainer = await initializeKeycloak(keycloakOptions, buildSchemaOptions.resolvers);
   }
+  const loggerOptions = {
+    container: process.env.CONTAINER === '1',
+    logFileName: process.env.LOG_FILE_NAME,
+    pretty: process.env.LOG_PRETTY === '1',
+    ...options.logger,
+  };
   const yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>> = {
     graphqlEndpoint,
-    logging: 'info',
     ...options.yoga,
     graphiql: !options.yoga?.graphiql
       ? false
@@ -71,15 +78,16 @@ export async function createServer(
           ...(typeof options.yoga?.graphiql === 'object' ? { ...options.yoga?.graphiql } : {}),
         },
     async context(context: YogaInitialContext & { res: Response; extra?: CtxExtra }): Promise<Ctx> {
-      const id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
-      const container = Container.of(id);
+      const req = context.request || context.extra?.request;
+      const containerId = randomUUID();
+      const container = Container.of(containerId);
       const ctx: Ctx = {
         ...context,
         container,
-        id,
+        id: generateRequestId(req, context.res) || containerId,
         payload: context.extra?.payload,
         prisma: options.prisma,
-        req: context.request || context.extra?.request,
+        req,
         socket: context.extra?.socket,
       } as any;
       container.set({
@@ -96,6 +104,10 @@ export async function createServer(
           type: resolver,
         });
       });
+      container.set({
+        id: Logger,
+        factory: () => new Logger(loggerOptions, ctx),
+      });
       if (keycloakBindContainer) keycloakBindContainer(container);
       if (options.yoga?.context) {
         if (typeof options.yoga.context === 'function') {
@@ -105,15 +117,37 @@ export async function createServer(
       }
       return ctx;
     },
+    logging: {
+      debug: () => null,
+      info(message: string, ...args) {
+        const logger = new Logger(loggerOptions);
+        logger.info(message, ...args);
+      },
+      warn(message, ...args) {
+        const logger = new Logger(loggerOptions);
+        logger.warn(message, ...args);
+      },
+      error(message, ...args) {
+        const logger = new Logger(loggerOptions);
+        logger.error(message, ...args);
+      },
+    },
     plugins: [
       {
         onResponse({ serverContext }: OnResponseEventPayload<Ctx>) {
           Container.reset(serverContext?.id);
         },
       },
+      useLogger({
+        logFn: (eventName, { args }) => {
+          const logger = new Logger(loggerOptions, args.contextValue);
+          logger.info(eventName);
+        },
+      }),
       ...(options.yoga?.plugins || []),
     ],
   };
+  const logger = new Logger(loggerOptions);
   const schema = await buildSchema(buildSchemaOptions);
   const yoga = createYoga({
     graphiql: false,
@@ -122,6 +156,7 @@ export async function createServer(
   });
   let nextHandle: RequestHandler | undefined;
   const server = http.createServer(async (req, res) => {
+    generateRequestId(req, res);
     try {
       const url = parse(req.url!, true);
       if (url.pathname?.startsWith(graphqlEndpoint)) {
@@ -241,8 +276,7 @@ export async function createServer(
         logger.info(`
   > App started!
     HTTP server running on http://${hostname}:${port}
-    GraphQL WebSocket server running on ws://${hostname}:${port}${graphqlEndpoint}
-`);
+    GraphQL WebSocket server running on ws://${hostname}:${port}${graphqlEndpoint}`);
         return result;
       } catch (err) {
         logger.error(err);
