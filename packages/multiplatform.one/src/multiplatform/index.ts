@@ -33,7 +33,6 @@ export class MultiPlatform extends MultiPlatformBase {
   static isElectronRender = isWindowDefined && (window as any).process?.type === 'renderer';
   static isFirefox = isWindowDefined && window?.navigator?.userAgent?.toLowerCase().indexOf('firefox') > -1;
   static isWeb = isWeb;
-  // @ts-ignore
   static isNext = MultiPlatform.isWeb && (!isWindowDefined || typeof window.__NEXT_DATA__ === 'object');
   static isServer = isServer;
   static isTest = process?.env?.NODE_ENV === 'test' || process?.env?.JEST_WORKER_ID !== undefined;
