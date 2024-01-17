@@ -210,6 +210,17 @@ export async function createServer(
   });
   const server = http.createServer(async (req, res) => {
     generateRequestId(req, res);
+    if (process.env.BASE_URL) {
+      res.setHeader('Access-Control-Allow-Origin', process.env.BASE_URL);
+      res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+      res.setHeader('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization');
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+    }
+    if (req.method === 'OPTIONS') {
+      res.writeHead(204);
+      res.end();
+      return;
+    }
     try {
       const url = parse(req.url!, true);
       if (url.pathname?.startsWith(graphqlEndpoint)) {

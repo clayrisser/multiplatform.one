@@ -90,7 +90,7 @@
   "emeraldwalk.runonsave": {
     "commands": [
       {
-        "match": "(app|gql)\\/.*\\.(tsx|ts|gql|graphql)$",
+        "match": "(api|app)\\/.*\\.(tsx|ts|gql|graphql)$",
         "cmd": "yarn graphql-codegen"
       }
     ]
