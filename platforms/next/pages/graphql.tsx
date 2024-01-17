@@ -68,18 +68,19 @@ function GraphiQLPage() {
           } as any),
         ]}
         fetcher={createGraphiQLFetcher({
-          url: 'http://localhost:5001/api/graphql',
+          url: 'http://localhost:5001/graphql',
           async fetch(input: RequestInfo, init?: RequestInit) {
             return fetch(input, {
               ...init,
               headers: {
                 ...init?.headers,
                 'X-Request-Id': uuid(),
+                ...(keycloak?.token ? { Authorization: `Bearer ${keycloak.token}` } : {}),
               },
             });
           },
           wsClient: createClient({
-            url: 'ws://localhost:5001/api/graphql',
+            url: 'ws://localhost:5001/graphql',
           }),
         })}
       >

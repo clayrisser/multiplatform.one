@@ -25,6 +25,8 @@ include $(MKPM)/dotenv
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
+BUILD_SCHEMA ?= $(NODE) $(PROJECT_ROOT)/api/dist/buildSchema.js
+
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 ifneq (,$(SUBPROC))
@@ -69,6 +71,7 @@ dist/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(TSUP)
+	@$(BUILD_SCHEMA)
 	@$(call done,$@)
 
 .PHONY: watch
@@ -79,7 +82,9 @@ watch: ~generate
 dev: prisma/dev docker/dev-d +dev
 +dev:
 	@$(MKPM_MAKE) watch \
-		WATCH_ARGS="--onSuccess 'NODE_ENV=development $(NODE) dist/main.js'"
+		WATCH_ARGS="--onSuccess ' \
+			$(BUILD_SCHEMA) && \
+			NODE_ENV=development $(NODE) dist/main.js'"
 
 .PHONY: clean
 clean:

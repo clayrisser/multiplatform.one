@@ -82,7 +82,8 @@ services:
       - ./tempo.yaml:/etc/tempo.yaml
       - tempo:/tmp/tempo
     ports:
-      - 14268:14268
+      - '9095'
+      - '14268'
       - '14250'
       - '55680'
       - 6831/udp

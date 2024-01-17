@@ -21,6 +21,8 @@
 
 import 'reflect-metadata';
 
+export { Ctx as Context } from 'type-graphql';
+
 export * from './buildSchema';
 export * from './decorate';
 export * from './decorators';

@@ -20,13 +20,11 @@
  */
 
 import KeycloakAdmin from '@keycloak/keycloak-admin-client';
-import axios from 'axios';
 import difference from 'lodash.difference';
 import type ClientRepresentation from '@keycloak/keycloak-admin-client/lib/defs/clientRepresentation';
 import type ResourceRepresentation from '@keycloak/keycloak-admin-client/lib/defs/resourceRepresentation';
 import type RoleRepresentation from '@keycloak/keycloak-admin-client/lib/defs/roleRepresentation';
 import type ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation';
-import type { AxiosError } from 'axios';
 import type { KeycloakOptions, RegisterOptions } from './types';
 import { AUTHORIZED, RESOURCE, SCOPES } from './decorators/';
 import { getMetadata, Resolvers } from '@multiplatform.one/typegraphql';
@@ -70,7 +68,7 @@ export class RegisterKeycloak {
               return getMetadata<string | string[]>(AUTHORIZED, method);
             })
             .filter(Boolean)
-            .flat() as string[]),
+            .flat(Infinity) as string[]),
         ]);
       }, new Set()),
       ...(this.registerOptions.roles || []),
@@ -111,9 +109,6 @@ export class RegisterKeycloak {
 
   async register(force = false) {
     if (!force && !this.canRegister) return;
-    this.logger.log('waiting for keycloak');
-    await this.waitForReady();
-    this.logger.log('registering keycloak');
     await this.initializeKeycloakAdmin();
     const client = await this.getClient();
     await this.createRealmRoles();
@@ -336,39 +331,6 @@ export class RegisterKeycloak {
         name: scope,
       },
     );
-  }
-
-  private async waitForReady(interval = 5000): Promise<void> {
-    try {
-      const res = await axios.get(`${this.options.baseUrl}/health/live`, {
-        silent: !this.options.debug,
-      } as any);
-      if ((res?.status || 500) > 299) {
-        await new Promise((r) => setTimeout(r, interval));
-        return this.waitForReady(interval);
-      }
-    } catch (err) {
-      const error = err as AxiosError;
-      const res = error.response;
-      if (res?.status === 404) return this.waitForReadyWellKnown(interval);
-      await new Promise((r) => setTimeout(r, interval));
-      return this.waitForReady(interval);
-    }
-  }
-
-  private async waitForReadyWellKnown(interval = 5000): Promise<void> {
-    try {
-      const res = await axios.get(`${this.options.baseUrl}/realms/master/.well-known/openid-configuration`, {
-        silent: !this.options.debug,
-      } as any);
-      if ((res.status || 500) > 299) {
-        await new Promise((r) => setTimeout(r, interval));
-        return this.waitForReadyWellKnown(interval);
-      }
-    } catch (err) {
-      await new Promise((r) => setTimeout(r, interval));
-      return this.waitForReadyWellKnown(interval);
-    }
   }
 }
 

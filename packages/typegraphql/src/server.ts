@@ -33,7 +33,7 @@ import { CompositePropagator, W3CTraceContextPropagator, W3CBaggagePropagator } 
 import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
 import { Logger } from './logger';
 import { NodeSDK } from '@opentelemetry/sdk-node';
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc';
 import { PrismaInstrumentation } from '@prisma/instrumentation';
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { Token } from 'typedi';
@@ -49,11 +49,43 @@ import { randomUUID } from 'node:crypto';
 import { useApolloTracing } from '@envelop/apollo-tracing';
 import { useOpenTelemetry } from '@envelop/opentelemetry';
 import { useServer } from 'graphql-ws/lib/use/ws';
+import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
+import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
 
 const Container = require('typedi').Container as typeof import('typedi').Container;
 const nodeCleanup = require('node-cleanup') as typeof import('node-cleanup');
 export const CTX = new Token<Ctx>('CTX');
 export const REQ = new Token<Request | IncomingMessage>('REQ');
+
+const otelSDK = new NodeSDK({
+  metricReader:
+    process.env.OTEL_EXPORTER_PROMETHEUS_ENABLED === '1'
+      ? new PrometheusExporter({
+          port: 8081,
+        })
+      : undefined,
+  spanProcessor: new BatchSpanProcessor(new JaegerExporter()) as any,
+  // traceExporter:
+  //   process.env.OTEL_EXPORTER_TRACE_ENABLED === '1' && process.env.OTEL_EXPORTER_TRACE_ENDPOINT
+  //     ? new OTLPTraceExporter({
+  //         url: process.env.OTEL_EXPORTER_TRACE_ENDPOINT,
+  //         concurrencyLimit: 10,
+  //       })
+  //     : undefined,
+  contextManager: new AsyncLocalStorageContextManager(),
+  textMapPropagator: new CompositePropagator({
+    propagators: [
+      new JaegerPropagator(),
+      new W3CTraceContextPropagator(),
+      new W3CBaggagePropagator(),
+      new B3Propagator(),
+      new B3Propagator({
+        injectEncoding: B3InjectEncoding.MULTI_HEADER,
+      }),
+    ],
+  }),
+  instrumentations: [getNodeAutoInstrumentations(), new PrismaInstrumentation()],
+});
 
 export async function createServer(
   options: ServerOptions,
@@ -62,58 +94,28 @@ export async function createServer(
   const debug = typeof options.debug !== 'undefined' ? options.debug : process.env.DEBUG === '1';
   const tracingOptions: TracingOptions = {
     apollo: process.env.APOLLO_TRACING ? process.env.APOLLO_TRACING === '1' : debug,
-    exporter:
-      process.env.OTEL_EXPORTER_TRACE_ENABLED === '1' && process.env.OTEL_EXPORTER_TRACE_ENDPOINT
-        ? process.env.OTEL_EXPORTER_TRACE_ENDPOINT
-        : false,
     ...options.tracing,
   };
-  const otelSDK = new NodeSDK({
-    metricReader:
-      process.env.OTEL_EXPORTER_PROMETHEUS_ENABLED === '1'
-        ? new PrometheusExporter({
-            port: 8081,
-          })
-        : undefined,
-    traceExporter:
-      tracingOptions.exporter && typeof tracingOptions.exporter === 'string'
-        ? new OTLPTraceExporter({
-            url: tracingOptions.exporter,
-            concurrencyLimit: 10,
-          })
-        : undefined,
-    contextManager: new AsyncLocalStorageContextManager(),
-    textMapPropagator: new CompositePropagator({
-      propagators: [
-        new JaegerPropagator(),
-        new W3CTraceContextPropagator(),
-        new W3CBaggagePropagator(),
-        new B3Propagator(),
-        new B3Propagator({
-          injectEncoding: B3InjectEncoding.MULTI_HEADER,
-        }),
-      ],
-    }),
-    instrumentations: [getNodeAutoInstrumentations(), new PrismaInstrumentation()],
-  });
   otelSDK.start();
   // @ts-ignore
   const tracingProvider = otelSDK._tracerProvider;
-  const graphqlEndpoint = options.graphqlEndpoint || '/api/graphql';
+  const graphqlEndpoint = options.graphqlEndpoint || '/graphql';
   const hostname = options.hostname || 'localhost';
   const port = options.port || Number(process.env.PORT || 5001);
   const buildSchemaOptions = createBuildSchemaOptions(options);
   const keycloakOptions = createKeycloakOptions(options);
-  let registerKeycloak: (() => Promise<void>) | undefined;
-  if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
-    registerKeycloak = await initializeKeycloak(keycloakOptions, buildSchemaOptions.resolvers);
-  }
   const loggerOptions = {
     container: process.env.CONTAINER === '1',
     logFileName: process.env.LOG_FILE_NAME,
     pretty: process.env.LOG_PRETTY === '1',
     ...options.logger,
   };
+  const logger = new Logger(loggerOptions);
+  let registerKeycloak: (() => Promise<void>) | undefined;
+  if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
+    // @ts-ignore
+    registerKeycloak = await initializeKeycloak(keycloakOptions, buildSchemaOptions.resolvers, logger);
+  }
   const yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>> = {
     graphqlEndpoint,
     ...options.yoga,
@@ -201,32 +203,27 @@ export async function createServer(
       ...(options.yoga?.plugins || []),
     ],
   };
-  const logger = new Logger(loggerOptions);
   const schema = await buildSchema(buildSchemaOptions);
   const yoga = createYoga({
     graphiql: false,
     ...yogaServerOptions,
+    cors: {
+      origin: process.env.BASE_URL,
+      credentials: true,
+      ...(yogaServerOptions.cors as any),
+    },
     schema,
   });
   const server = http.createServer(async (req, res) => {
     generateRequestId(req, res);
-    if (process.env.BASE_URL) {
-      res.setHeader('Access-Control-Allow-Origin', process.env.BASE_URL);
-      res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-      res.setHeader('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization');
-      res.setHeader('Access-Control-Allow-Credentials', 'true');
-    }
-    if (req.method === 'OPTIONS') {
-      res.writeHead(204);
-      res.end();
-      return;
-    }
     try {
       const url = parse(req.url!, true);
       if (url.pathname?.startsWith(graphqlEndpoint)) {
         await yoga(req, res);
       } else {
-        logger.warn(`handler for ${url} is not implemented`);
+        logger.warn(`handler for ${url.pathname} is not implemented`);
+        res.writeHead(404);
+        res.end(`handler for ${url.pathname} is not implemented`);
       }
     } catch (err) {
       logger.error(err);

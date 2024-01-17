@@ -19,7 +19,7 @@
  *  limitations under the License.
  */
 
-import { Authorized, InjectAccessToken } from '@multiplatform.one/keycloak-typegraphql';
+import { Authorized, InjectAccessToken, InjectUsername, InjectUserId } from '@multiplatform.one/keycloak-typegraphql';
 import { Query, Resolver } from 'type-graphql';
 import { Inject } from 'typedi';
 import { Logger } from '@multiplatform.one/typegraphql';
@@ -33,5 +33,17 @@ export class AuthResolver {
   accessToken(@InjectAccessToken() accessToken: string): string {
     this.logger.info('accessToken', accessToken);
     return accessToken;
+  }
+
+  @Query((_returns) => String)
+  username(@InjectUsername() username: string): string {
+    this.logger.info('username', username);
+    return username;
+  }
+
+  @Query((_returns) => String)
+  userId(@InjectUserId() userId: string): string {
+    this.logger.info('userId', userId);
+    return userId;
   }
 }

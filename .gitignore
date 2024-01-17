@@ -1,9 +1,10 @@
 # app
 .env
 /.changeset/*.md
+/.dockerignore
+/docker/data
 /null
 debug.json
-/.dockerignore
 
 # node
 **/.expo/*

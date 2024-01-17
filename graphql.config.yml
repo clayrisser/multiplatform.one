@@ -7,7 +7,7 @@ documents:
 extensions:
   endpoints:
     default:
-      url: http://localhost:5001/api/graphql
+      url: http://localhost:5001/graphql
   codegen:
     overwrite: true
     generates:
