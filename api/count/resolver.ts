@@ -19,7 +19,7 @@
  *  limitations under the License.
  */
 
-import { Authorized, InjectAccessToken } from '@multiplatform.one/keycloak-typegraphql';
+import { Authorized } from '@multiplatform.one/keycloak-typegraphql';
 import { Resolver, Subscription, Root } from 'type-graphql';
 
 @Authorized()
