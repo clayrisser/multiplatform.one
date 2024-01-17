@@ -29,7 +29,7 @@ export NEXTAUTH_SECRET := $(SECRET)
 export NEXTAUTH_URL := $(BASE_URL)
 
 NEXT ?= $(YARN) next
-NEXT_PORT ?= 5000
+NEXT_PORT ?= 5002
 
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -73,14 +73,18 @@ $(ACTION)/export: $(call git_deps,\.([jt]sx?)$$)
 	@$(call done,$@)
 
 .PHONY: dev +dev
-dev: | ~deps +dev
+dev: | ~deps docker/nginx-d +dev
 +dev:
 	@$(NEXT) dev -p $(NEXT_PORT)
 
 .PHONY: start +start
-start: | ~deps +build +start
+start: | ~deps +build docker/nginx-d +start
 +start:
 	@$(NEXT) start -p $(NEXT_PORT)
+
+.PHONY: docker/%
+docker/%:
+	@$(MKPM_MAKE) -C $(PROJECT_ROOT)/docker $*
 
 .PHONY: clean
 clean:
