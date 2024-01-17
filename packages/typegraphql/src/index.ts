@@ -21,8 +21,8 @@
 
 import 'reflect-metadata';
 
-export { Ctx as Context } from 'type-graphql';
-
+export * from './tracing';
+export * from './server';
 export * from './buildSchema';
 export * from './decorate';
 export * from './decorators';
@@ -30,6 +30,7 @@ export * from './keycloak';
 export * from './logger';
 export * from './middleware';
 export * from './resolvers';
-export * from './server';
 export * from './types';
 export * from './utils';
+
+export { Ctx as Context } from 'type-graphql';
