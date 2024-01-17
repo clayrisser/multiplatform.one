@@ -93,8 +93,11 @@ storybook/docker/%:
 	@$(MKPM_MAKE) -C platforms/storybook/docker $*
 
 .PHONY: docker/%
-docker/%:
+docker/%: docker/data/logs/app.log
 	@$(MKPM_MAKE) -C docker $*
+docker/data/logs/app.log:
+	@$(MKDIR) -p $(@D)
+	@$(TOUCH) $@
 
 .PHONY: prisma/%
 prisma/%:

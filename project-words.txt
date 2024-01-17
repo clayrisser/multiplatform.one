@@ -81,6 +81,7 @@ cuid
 dast
 dat
 datasource
+datasources
 datetimepicker
 dbateman
 decrypt

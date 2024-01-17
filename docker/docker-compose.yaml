@@ -76,24 +76,32 @@ services:
     container_name: tempo
     user: 0:0
     restart: unless-stopped
-    image: grafana/tempo:1.5.0
+    image: grafana/tempo:2.3.1
     command: ['-config.file=/etc/tempo.yaml']
     volumes:
       - ./tempo.yaml:/etc/tempo.yaml
       - tempo:/tmp/tempo
     ports:
-      - '9095'
-      - '14268'
-      - '14250'
-      - '55680'
-      - 6831/udp
-      - 6832/udp
+      - 14268:14268
+      - 3200:3200
+      - 4317:4317
+      - 4318:4318
+      - 9095:9095
+      - 9411:9411
+
+  k6-tracing:
+    image: ghcr.io/grafana/xk6-client-tracing:latest
+    environment:
+      - ENDPOINT=tempo:4317
+    restart: always
+    depends_on:
+      - tempo
 
   loki:
     container_name: loki
     user: 0:0
     restart: unless-stopped
-    image: grafana/loki:2.6.1
+    image: grafana/loki:2.9.3
     command: -config.file=/etc/loki/loki-local.yaml
     ports:
       - 3100:3100
@@ -110,7 +118,7 @@ services:
     container_name: promtail
     user: 0:0
     restart: unless-stopped
-    image: grafana/promtail:2.2.1
+    image: grafana/promtail:2.8.7
     command: -config.file=/etc/promtail/promtail-local.yaml
     volumes:
       - ./promtail.yaml:/etc/promtail/promtail-local.yaml
@@ -122,14 +130,15 @@ services:
     container_name: prometheus
     user: 0:0
     restart: unless-stopped
-    image: prom/prometheus:latest
+    image: prom/prometheus:v2.49.1
     extra_hosts:
       - host.docker.internal:host-gateway
+    command:
+      - --config.file=/etc/prometheus.yaml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=exemplar-storage
     volumes:
       - ./prometheus.yaml:/etc/prometheus.yaml
-    entrypoint:
-      - /bin/prometheus
-      - --config.file=/etc/prometheus.yaml
     ports:
       - '9090:9090'
 
@@ -137,7 +146,7 @@ services:
     container_name: grafana
     user: 0:0
     restart: unless-stopped
-    image: grafana/grafana:9.1.1-ubuntu
+    image: grafana/grafana:10.2.2
     volumes:
       - ./grafana/datasources:/etc/grafana/provisioning/datasources
       - ./grafana/dashboards-provisioning:/etc/grafana/provisioning/dashboards
@@ -146,8 +155,9 @@ services:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
       - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor traceQLStreaming metricsSummary
     ports:
-      - '3000:3000'
+      - 3000:3000
     depends_on:
       - prometheus
       - tempo

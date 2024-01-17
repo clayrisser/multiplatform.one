@@ -19,6 +19,7 @@
  *  limitations under the License.
  */
 
+import { otelSDK } from './tracing';
 // @ts-ignore
 import { initializeKeycloak } from '@multiplatform.one/keycloak-typegraphql';
 import http from 'node:http';
@@ -27,15 +28,7 @@ import type { Ctx, CtxExtra, TypeGraphQLServer, ServerOptions, TracingOptions } 
 import type { IncomingMessage } from 'node:http';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
 import type { YogaServerOptions, YogaInitialContext } from 'graphql-yoga';
-import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks';
-import { B3InjectEncoding, B3Propagator } from '@opentelemetry/propagator-b3';
-import { CompositePropagator, W3CTraceContextPropagator, W3CBaggagePropagator } from '@opentelemetry/core';
-import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
 import { Logger } from './logger';
-import { NodeSDK } from '@opentelemetry/sdk-node';
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc';
-import { PrismaInstrumentation } from '@prisma/instrumentation';
-import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { Token } from 'typedi';
 import { WebSocketServer } from 'ws';
 import { buildSchema } from 'type-graphql';
@@ -43,49 +36,16 @@ import { createBuildSchemaOptions } from './buildSchema';
 import { createKeycloakOptions } from './keycloak';
 import { createYoga, useLogger } from 'graphql-yoga';
 import { generateRequestId } from './utils';
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { parse } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import { useApolloTracing } from '@envelop/apollo-tracing';
 import { useOpenTelemetry } from '@envelop/opentelemetry';
 import { useServer } from 'graphql-ws/lib/use/ws';
-import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
-import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
 
 const Container = require('typedi').Container as typeof import('typedi').Container;
 const nodeCleanup = require('node-cleanup') as typeof import('node-cleanup');
 export const CTX = new Token<Ctx>('CTX');
 export const REQ = new Token<Request | IncomingMessage>('REQ');
-
-const otelSDK = new NodeSDK({
-  metricReader:
-    process.env.OTEL_EXPORTER_PROMETHEUS_ENABLED === '1'
-      ? new PrometheusExporter({
-          port: 8081,
-        })
-      : undefined,
-  spanProcessor: new BatchSpanProcessor(new JaegerExporter()) as any,
-  // traceExporter:
-  //   process.env.OTEL_EXPORTER_TRACE_ENABLED === '1' && process.env.OTEL_EXPORTER_TRACE_ENDPOINT
-  //     ? new OTLPTraceExporter({
-  //         url: process.env.OTEL_EXPORTER_TRACE_ENDPOINT,
-  //         concurrencyLimit: 10,
-  //       })
-  //     : undefined,
-  contextManager: new AsyncLocalStorageContextManager(),
-  textMapPropagator: new CompositePropagator({
-    propagators: [
-      new JaegerPropagator(),
-      new W3CTraceContextPropagator(),
-      new W3CBaggagePropagator(),
-      new B3Propagator(),
-      new B3Propagator({
-        injectEncoding: B3InjectEncoding.MULTI_HEADER,
-      }),
-    ],
-  }),
-  instrumentations: [getNodeAutoInstrumentations(), new PrismaInstrumentation()],
-});
 
 export async function createServer(
   options: ServerOptions,
