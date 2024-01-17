@@ -82,7 +82,6 @@ export interface ServerOptions<TPubSubPublishArgsByKey extends PubSubPublishArgs
 
 export interface TracingOptions {
   apollo?: boolean;
-  exporter?: boolean | string;
 }
 
 export interface TypeGraphQLServer {

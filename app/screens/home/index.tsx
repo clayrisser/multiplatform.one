@@ -23,15 +23,16 @@ import React, { useState } from 'react';
 import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { gql } from 'gql';
-import { useAuthQuery, withAuthenticated } from '@multiplatform.one/keycloak';
+import { useAuthQuery, useAuthSubscription, withAuthenticated } from '@multiplatform.one/keycloak';
 import { useLink } from 'solito/link';
-import { useSubscription } from '@apollo/client';
 import { useTranslation } from 'multiplatform.one';
 import { withDefaultLayout } from 'app/layouts/Default';
 
 const AuthQuery = gql(/* GraphQL */ `
   query AuthQuery {
     accessToken
+    username
+    userId
   }
 `);
 
@@ -47,11 +48,7 @@ function HomeScreen() {
     href: '/user/alice',
   });
   const { data, loading, error } = useAuthQuery(AuthQuery);
-  const {
-    data: cData,
-    loading: cLoading,
-    error: cError,
-  } = useSubscription(CountSubscription, { skip: typeof window === 'undefined' });
+  const { data: cData, loading: cLoading, error: cError } = useAuthSubscription(CountSubscription);
 
   console.log({ cData, cLoading, cError });
   console.log({ data, loading, error });

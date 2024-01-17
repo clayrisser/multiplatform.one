@@ -20,7 +20,7 @@
  */
 
 import { useKeycloak } from './keycloak';
-import { useQuery as apolloUseQuery, useMutation as apolloUseMutation } from '@apollo/client';
+import { useQuery, useMutation, useSubscription } from '@apollo/client';
 import type {
   ApolloCache,
   DefaultContext,
@@ -31,6 +31,8 @@ import type {
   OperationVariables,
   QueryHookOptions,
   QueryResult,
+  SubscriptionHookOptions,
+  SubscriptionResult,
   TypedDocumentNode,
 } from '@apollo/client';
 
@@ -39,7 +41,7 @@ export function useAuthQuery<TData = any, TVariables extends OperationVariables 
   options?: QueryHookOptions<NoInfer<TData>, NoInfer<TVariables>>,
 ): QueryResult<TData, TVariables> {
   const keycloak = useKeycloak();
-  return apolloUseQuery(query, {
+  return useQuery(query, {
     ...options,
     skip: options?.skip || !keycloak?.authenticated || !keycloak.token,
     context: {
@@ -52,7 +54,7 @@ export function useAuthQuery<TData = any, TVariables extends OperationVariables 
   });
 }
 
-export function useMutation<
+export function useAuthMutation<
   TData = any,
   TVariables = OperationVariables,
   TContext = DefaultContext,
@@ -62,7 +64,7 @@ export function useMutation<
   options?: MutationHookOptions<NoInfer<TData>, NoInfer<TVariables>, TContext, TCache>,
 ): MutationTuple<TData, TVariables, TContext, TCache> {
   const keycloak = useKeycloak();
-  return apolloUseMutation(mutation, {
+  return useMutation(mutation, {
     ...options,
     context: {
       ...options?.context,
@@ -71,5 +73,23 @@ export function useMutation<
         authorization: `Bearer ${keycloak?.token}`,
       },
     } as TContext,
+  });
+}
+
+export function useAuthSubscription<TData = any, TVariables extends OperationVariables = OperationVariables>(
+  subscription: DocumentNode | TypedDocumentNode<TData, TVariables>,
+  options?: SubscriptionHookOptions<NoInfer<TData>, NoInfer<TVariables>>,
+): SubscriptionResult<TData, TVariables> {
+  const keycloak = useKeycloak();
+  return useSubscription(subscription, {
+    ...options,
+    skip: options?.skip || !keycloak?.authenticated || !keycloak.token,
+    context: {
+      ...options?.context,
+      headers: {
+        ...((options?.context as DefaultContext)?.headers || {}),
+        authorization: `Bearer ${keycloak?.token}`,
+      },
+    },
   });
 }

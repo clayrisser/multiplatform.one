@@ -20,12 +20,14 @@
  */
 
 import Keycloak from 'keycloak-connect';
+import axios from 'axios';
 import type IKeycloakAdminClient from '@keycloak/keycloak-admin-client';
+import type { AxiosError } from 'axios';
 import type { Keycloak as IKeycloakConnect } from 'keycloak-connect';
 import type { KeycloakOptions } from './types';
-import type { Resolvers } from '@multiplatform.one/typegraphql';
+import type { Resolvers, Logger } from '@multiplatform.one/typegraphql';
 import { RegisterKeycloak } from './register';
-import { Token, type ContainerInstance } from 'typedi';
+import { Token } from 'typedi';
 
 const Container = require('typedi').Container as typeof import('typedi').Container;
 
@@ -38,20 +40,11 @@ export const KEYCLOAK_OPTIONS = new Token<KeycloakOptions>('KEYCLOAK_OPTIONS');
 export class KeycloakAdmin extends (require('@keycloak/keycloak-admin-client')
   .default as typeof IKeycloakAdminClient) {}
 
-export async function initializeKeycloak(options: KeycloakOptions, resolvers: Resolvers) {
+export async function initializeKeycloak(options: KeycloakOptions, resolvers: Resolvers, logger?: Logger) {
   const { clientSecret, clientId, realm, baseUrl, adminUsername, adminPassword } = options;
   let keycloakAdmin: KeycloakAdmin | undefined;
   if (adminUsername && adminPassword) {
     keycloakAdmin = new KeycloakAdmin({ baseUrl });
-    await keycloakAdmin.auth({
-      clientId: options.adminClientId || 'admin-cli',
-      grantType: 'password',
-      password: options.adminPassword,
-      username: options.adminUsername,
-    });
-    keycloakAdmin.setConfig({
-      realmName: options.realm,
-    });
   }
   const keycloakConnect = new KeycloakConnect({}, {
     clientId,
@@ -74,9 +67,54 @@ export async function initializeKeycloak(options: KeycloakOptions, resolvers: Re
     factory: () => options,
   });
   return async () => {
+    logger?.info('waiting for keycloak');
+    await waitForReady(options);
+    logger?.info('registering keycloak');
     if (options.register) {
       const registerKeycloak = new RegisterKeycloak(options, resolvers);
       await registerKeycloak.register();
     }
+    await keycloakAdmin?.auth({
+      clientId: options.adminClientId || 'admin-cli',
+      grantType: 'password',
+      password: options.adminPassword,
+      username: options.adminUsername,
+    });
+    keycloakAdmin?.setConfig({
+      realmName: options.realm,
+    });
   };
+}
+
+async function waitForReady(options: KeycloakOptions, interval = 5000): Promise<void> {
+  try {
+    const res = await axios.get(`${options.baseUrl}/health/live`, {
+      silent: !options.debug,
+    } as any);
+    if ((res?.status || 500) > 299) {
+      await new Promise((r) => setTimeout(r, interval));
+      return waitForReady(options, interval);
+    }
+  } catch (err) {
+    const error = err as AxiosError;
+    const res = error.response;
+    if (res?.status === 404) return waitForReadyWellKnown(options, interval);
+    await new Promise((r) => setTimeout(r, interval));
+    return waitForReady(options, interval);
+  }
+}
+
+async function waitForReadyWellKnown(options: KeycloakOptions, interval = 5000): Promise<void> {
+  try {
+    const res = await axios.get(`${options.baseUrl}/realms/master/.well-known/openid-configuration`, {
+      silent: !options.debug,
+    } as any);
+    if ((res.status || 500) > 299) {
+      await new Promise((r) => setTimeout(r, interval));
+      return waitForReadyWellKnown(options, interval);
+    }
+  } catch (err) {
+    await new Promise((r) => setTimeout(r, interval));
+    return waitForReadyWellKnown(options, interval);
+  }
 }

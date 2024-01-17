@@ -40,7 +40,6 @@ endif
 
 ACTIONS += generate~deps
 $(ACTION)/generate: $(PROJECT_ROOT)/api/dist/buildSchema.js $(PROJECT_ROOT)/graphql.config.yml
-	@$(BUILD_SCHEMA)
 	@$(CD) $(PROJECT_ROOT) && $(GRAPHQL_CODEGEN) 2>$(NULL)
 	@$(call done,$@)
 $(PROJECT_ROOT)/api/dist/buildSchema.js:
@@ -76,7 +75,9 @@ watch: ~deps $(PROJECT_ROOT)/api/dist/buildSchema.js
 dev: ~deps $(PROJECT_ROOT)/api/dist/buildSchema.js
 	@$(SLEEP) 3 && WATCH_ARGS="-w ../app" $(MKPM_MAKE) watch &
 	@$(MKPM_MAKE) -C ../api watch \
-		WATCH_ARGS="--onSuccess '$(MKPM_MAKE) -C ../gql +generate'"
+		WATCH_ARGS="--onSuccess ' \
+			$(BUILD_SCHEMA) && \
+			$(MKPM_MAKE) -C ../gql +generate'"
 
 .PHONY: clean
 clean:
