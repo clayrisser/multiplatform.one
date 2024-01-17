@@ -97,6 +97,6 @@ prisma/%: ~deps
 
 .PHONY: docker/%
 docker/%:
-	@$(MKPM_MAKE) -C ../docker $*
+	@$(MKPM_MAKE) -C $(PROJECT_ROOT)/docker $*
 
 -include $(call chain)
