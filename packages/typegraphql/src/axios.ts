@@ -30,9 +30,9 @@ let registeredAxiosInterceptors = false;
 
 export function initializeAxiosLogger(options: AxiosLoggerOptions, logger: Logger) {
   options = {
-    data: true,
+    data: false,
     errorLogLevel: 'error',
-    headers: true,
+    headers: false,
     kind: true,
     method: true,
     requestLogLevel: 'debug',

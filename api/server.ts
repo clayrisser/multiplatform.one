@@ -52,6 +52,14 @@ export const options: ServerOptions<{
   pubSub,
   resolvers,
   secret: process.env.SECRET,
+  logger: {
+    axios: {
+      requestLogLevel: 'info',
+      responseLogLevel: 'info',
+      data: false,
+      headers: false,
+    },
+  },
   tracing: {
     apollo: process.env.APOLLO_TRACING === '1',
   },
