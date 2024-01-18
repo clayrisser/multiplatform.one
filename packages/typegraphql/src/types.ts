@@ -71,17 +71,22 @@ export interface ServerOptions<TPubSubPublishArgsByKey extends PubSubPublishArgs
   hostname?: string;
   keycloak?: KeycloakOptions;
   logger?: LoggerOptions;
+  metrics?: boolean | MetricsOptions;
   port?: number;
   prisma?: PrismaClient;
   pubSub?: PubSub<TPubSubPublishArgsByKey>;
   resolvers: NonEmptyArray<Function> | NonEmptyArray<string>;
   secret?: string;
-  yoga?: YogaServerOptions<Record<string, any>, Record<string, any>>;
   tracing?: TracingOptions;
+  yoga?: YogaServerOptions<Record<string, any>, Record<string, any>>;
 }
 
 export interface TracingOptions {
   apollo?: boolean;
+}
+
+export interface MetricsOptions {
+  port?: number;
 }
 
 export interface TypeGraphQLServer {

@@ -191,13 +191,10 @@ function createLogger(options: LoggerOptions) {
           : []),
       ],
       {
-        // levels,
         dedupe: true,
       },
     ),
   ) as PinoLogger<any>;
-  _logger.info('PAP');
-  _logger.debug('ZAP');
   return _logger;
 }
 

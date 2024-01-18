@@ -18,18 +18,20 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+/* eslint-disable max-lines-per-function */
 
 import { otelSDK } from './tracing';
 // @ts-ignore
 import { initializeKeycloak } from '@multiplatform.one/keycloak-typegraphql';
 import http from 'node:http';
 import type { Constructable } from 'typedi';
-import type { Ctx, CtxExtra, TypeGraphQLServer, ServerOptions, TracingOptions } from './types';
+import type { Ctx, CtxExtra, TypeGraphQLServer, ServerOptions, TracingOptions, MetricsOptions } from './types';
 import type { IncomingMessage } from 'node:http';
 import type { LoggerOptions } from './logger';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
 import type { YogaServerOptions, YogaInitialContext, LogLevel } from 'graphql-yoga';
 import { Logger } from './logger';
+import promClient, { Registry as PromClientRegistry } from 'prom-client';
 import { Token } from 'typedi';
 import { WebSocketServer } from 'ws';
 import { buildSchema } from 'type-graphql';
@@ -42,6 +44,7 @@ import { parse } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import { useApolloTracing } from '@envelop/apollo-tracing';
 import { useOpenTelemetry } from '@envelop/opentelemetry';
+import { usePrometheus } from '@envelop/prometheus';
 import { useServer } from 'graphql-ws/lib/use/ws';
 
 const Container = require('typedi').Container as typeof import('typedi').Container;
@@ -58,9 +61,24 @@ export async function createServer(
     apollo: process.env.APOLLO_TRACING ? process.env.APOLLO_TRACING === '1' : debug,
     ...options.tracing,
   };
+  const metricsOptions: MetricsOptions = {
+    port: 5081,
+    ...(typeof options.metrics === 'object' ? options.metrics : {}),
+  };
   otelSDK.start();
   // @ts-ignore
   const tracingProvider = otelSDK._tracerProvider;
+  const promClientRegistry = (
+    typeof options.metrics === 'undefined' ? process.env.METRICS_ENABLED !== '0' : !!options.metrics
+  )
+    ? new PromClientRegistry()
+    : undefined;
+  if (promClientRegistry) {
+    promClientRegistry.setDefaultLabels({
+      app: 'app',
+    });
+    promClient.collectDefaultMetrics({ register: promClientRegistry });
+  }
   const graphqlEndpoint = options.graphqlEndpoint || '/graphql';
   const hostname = options.hostname || 'localhost';
   const port = options.port || Number(process.env.PORT || 5001);
@@ -79,9 +97,6 @@ export async function createServer(
   if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
     // @ts-ignore
     registerKeycloak = await initializeKeycloak(keycloakOptions, buildSchemaOptions.resolvers, logger);
-  }
-  if (loggerOptions.axios) {
-    initializeAxiosLogger(typeof loggerOptions.axios === 'boolean' ? {} : loggerOptions.axios, logger);
   }
   const yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>> = {
     graphqlEndpoint,
@@ -169,6 +184,23 @@ export async function createServer(
         },
         tracingProvider,
       ),
+      ...(promClientRegistry
+        ? [
+            usePrometheus({
+              contextBuilding: true,
+              deprecatedFields: true,
+              errors: true,
+              execute: true,
+              parse: true,
+              requestCount: true,
+              requestSummary: true,
+              resolvers: true,
+              resolversWhitelist: undefined,
+              validate: true,
+              registry: promClientRegistry,
+            }),
+          ]
+        : []),
       ...(tracingOptions.apollo ? [useApolloTracing()] : []),
       ...(options.yoga?.plugins || []),
     ],
@@ -184,6 +216,24 @@ export async function createServer(
     },
     schema,
   });
+  const metricsServer = promClientRegistry
+    ? http.createServer(async (req, res) => {
+        try {
+          const url = parse(req.url!, true);
+          if (url.pathname === '/metrics') {
+            res.setHeader('Content-Type', promClientRegistry.contentType);
+            res.end(await promClientRegistry.metrics());
+          } else {
+            logger.warn(`handler for ${url.pathname} is not implemented`);
+            res.writeHead(404);
+            res.end(`handler for ${url.pathname} is not implemented`);
+          }
+        } catch (err) {
+          logger.error(err);
+          res.writeHead(500).end();
+        }
+      })
+    : undefined;
   const server = http.createServer(async (req, res) => {
     generateRequestId(req, res);
     try {
@@ -217,8 +267,14 @@ export async function createServer(
     yogaServerOptions: { ...yogaServerOptions, schema } as YogaServerOptions<Record<string, any>, Record<string, any>>,
     async start() {
       try {
-        if (options.prisma) await options.prisma.$connect();
         if (registerKeycloak) await registerKeycloak();
+        if (options.prisma) {
+          await options.prisma.$connect();
+          logger.info('connected to database');
+        }
+        if (loggerOptions.axios) {
+          initializeAxiosLogger(typeof loggerOptions.axios === 'boolean' ? {} : loggerOptions.axios, logger);
+        }
         useServer(
           {
             execute: (args: any) => args.rootValue.execute(args),
@@ -267,6 +323,13 @@ export async function createServer(
                     return resolve(undefined);
                   });
                 });
+                await new Promise((resolve, reject) => {
+                  if (!metricsServer?.close) return resolve(undefined);
+                  metricsServer.close((err) => {
+                    if (err) return reject(err);
+                    return resolve(undefined);
+                  });
+                });
                 await otelSDK.shutdown();
                 process.kill(process.pid, signal);
               } catch (err) {
@@ -279,6 +342,19 @@ export async function createServer(
           }
           return;
         });
+        if (metricsServer) {
+          await new Promise((resolve, reject) => {
+            function handleError(err: Error) {
+              metricsServer?.off('error', handleError);
+              return reject(err);
+            }
+            metricsServer?.on('error', handleError);
+            metricsServer?.listen(metricsOptions.port || 5081, () => {
+              metricsServer?.off('error', handleError);
+              return resolve(undefined);
+            });
+          });
+        }
         await new Promise((resolve, reject) => {
           function handleError(err: Error) {
             server.off('error', handleError);
