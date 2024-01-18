@@ -26,19 +26,12 @@ import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
 import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { PrismaInstrumentation } from '@prisma/instrumentation';
-import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 
 process.env.OTEL_EXPORTER_JAEGER_ENDPOINT = process.env.OTEL_EXPORTER_TRACE_ENDPOINT;
 
 export const otelSDK = new NodeSDK({
-  metricReader:
-    process.env.OTEL_EXPORTER_PROMETHEUS_ENABLED === '1'
-      ? new PrometheusExporter({
-          port: 8081,
-        })
-      : undefined,
   spanProcessor:
     process.env.OTEL_EXPORTER_TRACE_ENABLED === '1' && process.env.OTEL_EXPORTER_TRACE_ENDPOINT
       ? new SimpleSpanProcessor(new JaegerExporter())

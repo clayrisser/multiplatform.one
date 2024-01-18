@@ -67,7 +67,6 @@
     "@opentelemetry/auto-instrumentations-node": "^0.40.3",
     "@opentelemetry/core": "^1.20.0",
     "@opentelemetry/exporter-jaeger": "^1.20.0",
-    "@opentelemetry/exporter-prometheus": "^0.47.0",
     "@opentelemetry/sdk-node": "^0.47.0",
     "@prisma/instrumentation": "^5.8.1",
     "axios": "^1.6.5",
@@ -81,6 +80,7 @@
     "pino": "^8.17.2",
     "pino-http": "^9.0.0",
     "pino-pretty": "^10.3.1",
+    "prom-client": "^15.1.0",
     "reflect-metadata": "^0.2.1",
     "typedi": "^0.10.0",
     "ws": "^8.16.0"
