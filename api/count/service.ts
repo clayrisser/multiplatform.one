@@ -1,7 +1,7 @@
 /*
- *  File: /buildSchema.ts
- *  Project: gql
- *  File Created: 07-01-2024 14:06:26
+ *  File: /count/service.ts
+ *  Project: api
+ *  File Created: 18-01-2024 12:10:48
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,8 +19,15 @@
  *  limitations under the License.
  */
 
-import path from 'path';
-import { buildSchema } from '@multiplatform.one/typegraphql';
-import { options } from './server';
+import { Logger } from '@multiplatform.one/typegraphql';
+import { Inject, Service } from 'typedi';
 
-buildSchema(options, path.resolve(__dirname, '../../gql/generated/schema.graphql'));
+@Service()
+export class CountService {
+  constructor(@Inject() private readonly logger: Logger) {}
+
+  async hello() {
+    this.logger.info('hello');
+    return 'world';
+  }
+}

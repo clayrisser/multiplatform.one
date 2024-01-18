@@ -23,7 +23,15 @@
     "strict": true,
     "target": "ES5",
     "types": ["reflect-metadata"],
-    "lib": ["DOM", "DOM.Iterable", "ES2022", "ScriptHost", "WebWorker", "WebWorker.ImportScripts", "Webworker.Iterable"]
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2022",
+      "ScriptHost",
+      "WebWorker",
+      "WebWorker.ImportScripts",
+      "Webworker.Iterable",
+    ],
   },
-  "include": ["src", "tests"]
+  "include": ["src", "tests"],
 }

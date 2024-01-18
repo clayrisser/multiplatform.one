@@ -1,7 +1,7 @@
 /*
- *  File: /buildSchema.ts
- *  Project: gql
- *  File Created: 07-01-2024 14:06:26
+ *  File: /bin/buildSchema.js
+ *  Project: api
+ *  File Created: 18-01-2024 12:00:01
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,8 +19,5 @@
  *  limitations under the License.
  */
 
-import path from 'path';
-import { buildSchema } from '@multiplatform.one/typegraphql';
-import { options } from './server';
-
-buildSchema(options, path.resolve(__dirname, '../../gql/generated/schema.graphql'));
+require('reflect-metadata');
+require('../dist/buildSchema.js');

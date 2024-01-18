@@ -20,11 +20,14 @@
  */
 
 import { Authorized } from '@multiplatform.one/keycloak-typegraphql';
-import { Resolver, Subscription, Root } from 'type-graphql';
+import { CountService } from './service';
+import { Resolver, Subscription, Root, Query } from 'type-graphql';
 
 @Authorized()
 @Resolver((_of) => String)
 export class CountResolver {
+  constructor(private readonly countService: CountService) {}
+
   @Subscription(() => Number, {
     async *subscribe() {
       let count = 0;
@@ -37,5 +40,10 @@ export class CountResolver {
   })
   count(@Root() payload: number): number {
     return payload;
+  }
+
+  @Query(() => String)
+  async hello() {
+    return this.countService.hello();
   }
 }
