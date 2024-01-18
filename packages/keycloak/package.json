@@ -63,7 +63,7 @@
     "jest-sonar-reporter": "^2.0.0",
     "multiplatform.one": "^1.0.0",
     "next": "^14.0.4",
-    "prettier": "^3.2.2",
+    "prettier": "^3.2.4",
     "react": "^18.2.0",
     "react-native": "~0.73.2",
     "ts-node": "^10.9.2",

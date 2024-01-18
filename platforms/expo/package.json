@@ -30,7 +30,7 @@
     "@babel/core": "^7.23.7",
     "@babel/plugin-proposal-private-methods": "^7.18.6",
     "@expo/metro-config": "^0.10.7",
-    "@tamagui/babel-plugin": "^1.85.12",
+    "@tamagui/babel-plugin": "^1.86.6",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "metro-minify-terser": "^0.80.4",
     "typescript": "^5.3.3"

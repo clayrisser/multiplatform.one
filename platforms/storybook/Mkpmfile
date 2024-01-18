@@ -26,7 +26,7 @@ include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
 NODE_HEAP ?= 8192
-STORYBOOK ?= $(NODE) --max-old-space-size=$(NODE_HEAP) $(YARN) storybook
+STORYBOOK ?= $(NODE) --max-old-space-size=$(NODE_HEAP) $(PROJECT_ROOT)/node_modules/.bin/storybook
 
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
