@@ -19,8 +19,6 @@
  *  limitations under the License.
  */
 
-// eslint-disable-next-line no-eval
-eval('require')('reflect-metadata');
 import { createServer } from '@multiplatform.one/typegraphql';
 import { options } from './server';
 

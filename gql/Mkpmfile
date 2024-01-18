@@ -25,7 +25,7 @@ include $(MKPM)/dotenv
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
-BUILD_SCHEMA ?= $(NODE) $(PROJECT_ROOT)/api/dist/buildSchema.js
+BUILD_SCHEMA ?= $(NODE) $(PROJECT_ROOT)/api/bin/buildSchema.js
 GRAPHQL_CODEGEN ?= $(YARN) graphql-codegen
 NODEMON ?= $(YARN) nodemon
 

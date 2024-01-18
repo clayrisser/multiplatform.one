@@ -25,7 +25,7 @@ include $(MKPM)/dotenv
 include $(MKPM)/yarn
 include $(PROJECT_ROOT)/shared.mk
 
-BUILD_SCHEMA ?= $(NODE) $(PROJECT_ROOT)/api/dist/buildSchema.js
+BUILD_SCHEMA ?= $(NODE) $(PROJECT_ROOT)/api/bin/buildSchema.js
 
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -84,7 +84,7 @@ dev: prisma/dev docker/dev-d +dev
 	@$(MKPM_MAKE) watch \
 		WATCH_ARGS="--onSuccess ' \
 			$(BUILD_SCHEMA) && \
-			NODE_ENV=development $(NODE) dist/main.js'"
+			NODE_ENV=development $(NODE) bin/main.js'"
 
 .PHONY: clean
 clean:
