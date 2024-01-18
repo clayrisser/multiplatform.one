@@ -31,8 +31,8 @@ services:
       - postgres
       - prometheus
       - promtail
-      - sentry-web
-      - sentry-worker
+      # - sentry-web
+      # - sentry-worker
       - tempo
 
   keycloak:
