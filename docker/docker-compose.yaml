@@ -12,6 +12,8 @@ services:
       - postgres
       - prometheus
       - promtail
+      # - sentry-web
+      # - sentry-worker
       - tempo
 
   app:
@@ -29,6 +31,8 @@ services:
       - postgres
       - prometheus
       - promtail
+      - sentry-web
+      - sentry-worker
       - tempo
 
   keycloak:

@@ -103,17 +103,9 @@ docker/data/logs/app.log:
 prisma/%:
 	@$(MKPM_MAKE) -C api prisma/$*
 
-.PHONY: gen/%
-gen/%:
-	@npx turbo generate $(subst  gen/,,$@)
-
 .PHONY: api/%
 api/%:
 	@$(MKPM_MAKE) -C api $*
-
-.PHONY: gen
-gen:
-	@npx turbo generate
 
 .PHONY: kill/%
 kill/%:

@@ -21,6 +21,7 @@
 
 import dotenv from 'dotenv';
 import type { ServerOptions } from '@multiplatform.one/typegraphql';
+import type { UserRepresentation } from '@multiplatform.one/keycloak-typegraphql';
 import { PrismaClient } from '@prisma/client';
 import { createPubSub } from '@graphql-yoga/subscription';
 import { resolvers } from './resolvers';
@@ -31,6 +32,16 @@ const pubSub = createPubSub<{
   NOTIFICATIONS: [String];
   DYNAMIC_ID_TOPIC: [number, String];
 }>();
+
+const seedUsers: UserRepresentation[] = [
+  {
+    username: 'one',
+    email: 'one@multiplatform',
+    firstName: 'Multiplatform',
+    lastName: 'One',
+    credentials: [{ value: 'pass' }],
+  },
+];
 
 export const options: ServerOptions<{
   NOTIFICATIONS: [String];
@@ -51,6 +62,11 @@ export const options: ServerOptions<{
     clientId: process.env.KEYCLOAK_CLIENT_ID || '',
     clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || '',
     realm: process.env.KEYCLOAK_REALM || 'master',
-    register: process.env.KEYCLOAK_REGISTER === '1',
+    register:
+      process.env.KEYCLOAK_REGISTER === '1'
+        ? {
+            ...(process.env.SEED === '1' ? { users: seedUsers } : {}),
+          }
+        : false,
   },
 };
