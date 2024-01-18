@@ -1,4 +1,0 @@
-ARG SENTRY_IMAGE
-FROM ${SENTRY_IMAGE}
-
-COPY . /usr/src/sentry

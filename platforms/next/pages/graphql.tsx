@@ -92,7 +92,15 @@ function GraphiQLPage() {
         >
           <GraphiQL.Logo>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <span>multiplatform.one</span>
+              {keycloak?.authenticated && (
+                <button
+                  onClick={() => keycloak?.logout()}
+                  type="button"
+                  className="graphiql-un-styled graphiql-tab-close"
+                >
+                  Logout
+                </button>
+              )}
             </div>
           </GraphiQL.Logo>
         </GraphiQLInterface>

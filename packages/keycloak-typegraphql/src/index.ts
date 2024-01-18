@@ -28,3 +28,4 @@ export * from './keycloakService';
 export * from './register';
 export * from './token';
 export * from './types';
+export * from '@keycloak/keycloak-admin-client';

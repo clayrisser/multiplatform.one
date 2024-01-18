@@ -101,9 +101,9 @@ prisma/%: ~deps
 	@$(MKPM_MAKE) -C prisma $*
 
 .PHONY: docker/%
-docker/%: docker/data/logs/app.log
-	@$(MKPM_MAKE) -C $(PROJECT_ROOT)/docker $*
-docker/data/logs/app.log:
+docker/%: $(PROJECT_ROOT)/docker/data/logs/app.log
+	@$(CD) $(PROJECT_ROOT) && $(MKPM_MAKE) -C docker $*
+$(PROJECT_ROOT)/docker/data/logs/app.log:
 	@$(MKDIR) -p $(@D)
 	@$(TOUCH) $@
 

@@ -19,6 +19,11 @@
  *  limitations under the License.
  */
 
+import type ClientRepresentation from '@keycloak/keycloak-admin-client/lib/defs/clientRepresentation';
+import type ResourceRepresentation from '@keycloak/keycloak-admin-client/lib/defs/resourceRepresentation';
+import type RoleRepresentation from '@keycloak/keycloak-admin-client/lib/defs/roleRepresentation';
+import type ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation';
+import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
 import type { Grant } from 'keycloak-connect';
 import type { IncomingMessage } from 'node:http';
 import type { KeycloakService } from './keycloakService';
@@ -111,6 +116,7 @@ export interface AuthorizationCodeGrantOptions {
 export interface RegisterOptions {
   resources?: Record<string, string[]>;
   roles?: string[];
+  users?: UserRepresentation[];
 }
 
 export interface KeycloakOptions {
@@ -130,3 +136,11 @@ export interface KeycloakOptions {
   strict?: boolean;
   xApiKey?: string;
 }
+
+export type {
+  ClientRepresentation,
+  ResourceRepresentation,
+  RoleRepresentation,
+  ScopeRepresentation,
+  UserRepresentation,
+};

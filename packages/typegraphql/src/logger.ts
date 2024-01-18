@@ -24,6 +24,7 @@ import chalk from 'chalk';
 import httpStatus from 'http-status';
 import path from 'path';
 import pretty from 'pino-pretty';
+import type { AxiosLoggerOptions } from './axios';
 import type { Ctx } from './types';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { Logger as PinoLogger } from 'pino';
@@ -36,6 +37,8 @@ export const LOGGER = new Token<Logger>('LOGGER');
 
 let _logger: PinoLogger | undefined;
 
+export type LogLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal';
+
 export class Logger {
   pino?: PinoLogger<any>;
 
@@ -46,64 +49,83 @@ export class Logger {
     this.pino = createLogger(this.options);
   }
 
-  trace(message: string, ...args: any[]) {
+  trace(message: string | Record<string, any>, ...args: string[]) {
     this.pino?.trace(
       {
+        ...(typeof message === 'object' ? message : {}),
         id: this.ctx?.id,
         operationName: this.ctx?.params?.operationName,
         time: new Date(),
       },
-      message,
-      ...args,
+      ...(typeof message !== 'object' ? [[message, ...args].join(' ')] : []),
     );
   }
 
-  debug(message: string, ...args: any[]) {
+  debug(message: string | Record<string, any>, ...args: string[]) {
     this.pino?.debug(
       {
+        ...(typeof message === 'object' ? message : {}),
         id: this.ctx?.id,
         operationName: this.ctx?.params?.operationName,
         time: new Date(),
       },
-      message,
-      ...args,
+      ...(typeof message !== 'object' ? [[message, ...args].join(' ')] : []),
     );
   }
 
-  info(message: string, ...args: any[]) {
+  info(message: string | Record<string, any>, ...args: string[]) {
     this.pino?.info(
       {
+        ...(typeof message === 'object' ? message : {}),
         id: this.ctx?.id,
         operationName: this.ctx?.params?.operationName,
         time: new Date(),
       },
-      message,
-      ...args,
+      ...(typeof message !== 'object' ? [[message, ...args].join(' ')] : []),
     );
   }
 
-  warn(message: string | Error | unknown, ...args: any[]) {
-    const err: Error & Record<string, any> = typeof message === 'string' ? new Error(message) : (message as Error);
-    err.id = this.ctx?.id;
-    err.operationName = this.ctx?.params?.operationName;
-    err.time = new Date();
-    return this.pino?.warn(err, ...args);
+  warn(message: Record<string, any>, error?: string | Error | unknown, ...args: string[]): void;
+  warn(message: string | Error | unknown, error?: string, ...args: string[]): void;
+  warn(message: string | Record<string, any> | Error | unknown, error?: string | Error | unknown, ...args: string[]) {
+    const err = this.getError(message, error, ...args);
+    return this.pino?.warn(err);
   }
 
-  error(message: string | Error | unknown, ...args: any[]) {
-    const err: Error & Record<string, any> = typeof message === 'string' ? new Error(message) : (message as Error);
-    err.id = this.ctx?.id;
-    err.operationName = this.ctx?.params?.operationName;
-    err.time = new Date();
-    return this.pino?.error(err, ...args);
+  error(message: Record<string, any>, error?: string | Error | unknown, ...args: string[]): void;
+  error(message: string | Error | unknown, error?: string, ...args: string[]): void;
+  error(message: string | Record<string, any> | Error | unknown, error?: string | Error | unknown, ...args: string[]) {
+    const err = this.getError(message, error, ...args);
+    return this.pino?.error(err);
   }
 
-  fatal(message: string | Error | unknown, ...args: any[]) {
-    const err: Error & Record<string, any> = typeof message === 'string' ? new Error(message) : (message as Error);
+  fatal(message: Record<string, any>, error?: string | Error | unknown, ...args: string[]): void;
+  fatal(message: string | Error | unknown, error?: string, ...args: string[]): void;
+  fatal(message: string | Record<string, any> | Error | unknown, error?: string | Error | unknown, ...args: string[]) {
+    const err = this.getError(message, error, ...args);
+    return this.pino?.fatal(err);
+  }
+
+  getError(
+    message: string | Record<string, any> | Error | unknown,
+    error?: string | Error | unknown,
+    ...args: string[]
+  ) {
+    let err: Error & Record<string, any> =
+      typeof message !== 'object'
+        ? new Error([message, ...(error ? [error] : []), ...args].join(' '))
+        : (message as Error);
+    if (typeof err === 'object' && !(err instanceof Error) && error) {
+      if (typeof error !== 'object') error = new Error([error, ...args].join(' '));
+      Object.entries(err as Record<string, any>).forEach(([key, value]) => {
+        (error as Record<string, any>)[key] = value;
+      });
+      err = error as Error & Record<string, any>;
+    }
     err.id = this.ctx?.id;
     err.operationName = this.ctx?.params?.operationName;
     err.time = new Date();
-    return this.pino?.fatal(err, ...args);
+    return err;
   }
 }
 
@@ -113,7 +135,7 @@ function createLogger(options: LoggerOptions) {
   if (_logger) return _logger;
   _logger = Pino(
     {
-      level: 'trace',
+      level: options.level || 'debug',
       mixin(obj: any, _level: number) {
         return obj;
       },
@@ -169,19 +191,13 @@ function createLogger(options: LoggerOptions) {
           : []),
       ],
       {
-        levels: {
-          silent: Infinity,
-          fatal: 60,
-          error: 50,
-          warn: 50,
-          info: 30,
-          debug: 20,
-          trace: 10,
-        },
+        // levels,
         dedupe: true,
       },
     ),
   ) as PinoLogger<any>;
+  _logger.info('PAP');
+  _logger.debug('ZAP');
   return _logger;
 }
 
@@ -314,10 +330,12 @@ function createSonicBoom(dest: string) {
 }
 
 export interface LoggerOptions {
+  axios?: AxiosLoggerOptions | boolean;
   color?: boolean;
   container?: boolean;
   httpMixin?: (mergeObject: object, req: IncomingMessage, res: ServerResponse<IncomingMessage>) => object;
   ignore?: string[];
+  level?: LogLevel;
   logFileName?: string;
   mixin?: (mergeObject: object, level: number) => object;
   prettifiers?: Record<string, (data: string | object) => string>;

@@ -26,8 +26,9 @@ import http from 'node:http';
 import type { Constructable } from 'typedi';
 import type { Ctx, CtxExtra, TypeGraphQLServer, ServerOptions, TracingOptions } from './types';
 import type { IncomingMessage } from 'node:http';
+import type { LoggerOptions } from './logger';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
-import type { YogaServerOptions, YogaInitialContext } from 'graphql-yoga';
+import type { YogaServerOptions, YogaInitialContext, LogLevel } from 'graphql-yoga';
 import { Logger } from './logger';
 import { Token } from 'typedi';
 import { WebSocketServer } from 'ws';
@@ -36,6 +37,7 @@ import { createBuildSchemaOptions } from './buildSchema';
 import { createKeycloakOptions } from './keycloak';
 import { createYoga, useLogger } from 'graphql-yoga';
 import { generateRequestId } from './utils';
+import { initializeAxiosLogger } from './axios';
 import { parse } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import { useApolloTracing } from '@envelop/apollo-tracing';
@@ -64,8 +66,10 @@ export async function createServer(
   const port = options.port || Number(process.env.PORT || 5001);
   const buildSchemaOptions = createBuildSchemaOptions(options);
   const keycloakOptions = createKeycloakOptions(options);
-  const loggerOptions = {
+  const loggerOptions: LoggerOptions = {
+    axios: process.env.LOG_AXIOS !== '0',
     container: process.env.CONTAINER === '1',
+    level: (process.env.LOG_LEVEL as LogLevel) || (options.debug ? 'debug' : 'info'),
     logFileName: process.env.LOG_FILE_NAME,
     pretty: process.env.LOG_PRETTY === '1',
     ...options.logger,
@@ -75,6 +79,9 @@ export async function createServer(
   if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
     // @ts-ignore
     registerKeycloak = await initializeKeycloak(keycloakOptions, buildSchemaOptions.resolvers, logger);
+  }
+  if (loggerOptions.axios) {
+    initializeAxiosLogger(typeof loggerOptions.axios === 'boolean' ? {} : loggerOptions.axios, logger);
   }
   const yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>> = {
     graphqlEndpoint,
@@ -125,10 +132,13 @@ export async function createServer(
       return ctx;
     },
     logging: {
-      debug: () => null,
+      debug(message: string, ...args) {
+        const logger = new Logger(loggerOptions);
+        logger.trace(message, ...args);
+      },
       info(message: string, ...args) {
         const logger = new Logger(loggerOptions);
-        logger.info(message, ...args);
+        logger.debug(message, ...args);
       },
       warn(message, ...args) {
         const logger = new Logger(loggerOptions);

@@ -21,13 +21,17 @@
 
 import KeycloakAdmin from '@keycloak/keycloak-admin-client';
 import difference from 'lodash.difference';
-import type ClientRepresentation from '@keycloak/keycloak-admin-client/lib/defs/clientRepresentation';
-import type ResourceRepresentation from '@keycloak/keycloak-admin-client/lib/defs/resourceRepresentation';
-import type RoleRepresentation from '@keycloak/keycloak-admin-client/lib/defs/roleRepresentation';
-import type ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation';
-import type { KeycloakOptions, RegisterOptions } from './types';
 import { AUTHORIZED, RESOURCE, SCOPES } from './decorators/';
 import { getMetadata, Resolvers } from '@multiplatform.one/typegraphql';
+import type {
+  ClientRepresentation,
+  KeycloakOptions,
+  RegisterOptions,
+  ResourceRepresentation,
+  RoleRepresentation,
+  ScopeRepresentation,
+  UserRepresentation,
+} from './types';
 
 // makes registration idempotent
 let registeredKeycloak = false;
@@ -117,6 +121,7 @@ export class RegisterKeycloak {
       await this.createApplicationRoles();
       await this.createScopedResources();
     }
+    await this.createUsers();
     registeredKeycloak = true;
   }
 
@@ -248,6 +253,24 @@ export class RegisterKeycloak {
       }),
     );
     return createdScopes;
+  }
+
+  private async createUsers() {
+    if (!this.options.register || typeof this.options.register === 'boolean') return;
+    return Promise.all(
+      ((this.options.register as RegisterOptions).users || []).map(async (user: UserRepresentation) => {
+        try {
+          await this.keycloakAdmin!.users.create({
+            emailVerified: true,
+            enabled: true,
+            ...user,
+          });
+        } catch (err: any) {
+          if (err?.response?.status === 409) return;
+          throw err;
+        }
+      }),
+    );
   }
 
   private async getResources(): Promise<ResourceRepresentation[]> {
