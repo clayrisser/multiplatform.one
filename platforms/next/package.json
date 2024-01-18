@@ -7,8 +7,8 @@
     "@multiplatform.one/keycloak": "^0.7.17",
     "@next/bundle-analyzer": "^14.0.4",
     "@sentry/react": "^7.93.0",
-    "@tamagui/next-plugin": "^1.85.12",
-    "@tamagui/next-theme": "^1.85.12",
+    "@tamagui/next-plugin": "^1.86.6",
+    "@tamagui/next-theme": "^1.86.6",
     "api": "*",
     "cookie": "^0.6.0",
     "critters": "^0.0.20",
@@ -26,7 +26,7 @@
     "react-dom": "18.2.0",
     "react-native": "~0.73.2",
     "react-native-web": "~0.19.10",
-    "react-native-web-lite": "^1.85.12",
+    "react-native-web-lite": "^1.86.6",
     "use-url-search-params": "^2.5.1",
     "uuid": "^9.0.1",
     "ws": "^8.16.0"
@@ -35,12 +35,12 @@
     "@expo/next-adapter": "^5.0.2",
     "@types/cookie": "^0.6.0",
     "@types/eslint": "^8.56.2",
-    "@types/node": "~20.11.4",
+    "@types/node": "~20.11.5",
     "@types/node-cleanup": "^2.1.5",
     "@types/uuid": "^9.0.7",
     "@types/ws": "^8.5.10",
     "eslint": "^8.56.0",
-    "prettier": "^3.2.2"
+    "prettier": "^3.2.4"
   },
   "transpileModules": [
     "@multiplatform.one/components",
