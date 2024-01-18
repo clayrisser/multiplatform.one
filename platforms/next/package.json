@@ -4,7 +4,7 @@
   "dependencies": {
     "@graphiql/plugin-explorer": "^1.0.2",
     "@graphiql/toolkit": "^0.9.1",
-    "@multiplatform.one/keycloak": "^0.7.17",
+    "@multiplatform.one/keycloak": "^1.0.0",
     "@next/bundle-analyzer": "^14.0.4",
     "@sentry/react": "^7.93.0",
     "@tamagui/next-plugin": "^1.86.6",

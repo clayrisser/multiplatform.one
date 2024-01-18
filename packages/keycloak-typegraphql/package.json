@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/keycloak-typegraphql",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
   "contributors": [
     {
@@ -52,8 +52,8 @@
   },
   "dependencies": {
     "@keycloak/keycloak-admin-client": "^23.0.4",
-    "@multiplatform.one/keycloak": "0.7.17",
-    "@multiplatform.one/typegraphql": "^0.1.0",
+    "@multiplatform.one/keycloak": "1.0.0",
+    "@multiplatform.one/typegraphql": "^1.0.0",
     "axios": "^1.6.5",
     "cookie": "^0.6.0",
     "graphql": "^16.8.1",
