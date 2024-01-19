@@ -19,12 +19,11 @@
  *  limitations under the License.
  */
 
-import { Logger } from '@multiplatform.one/typegraphql';
-import { Inject, Service } from 'typedi';
+import { Logger, Injectable } from '@multiplatform.one/typegraphql';
 
-@Service()
+@Injectable()
 export class CountService {
-  constructor(@Inject() private readonly logger: Logger) {}
+  constructor(private readonly logger: Logger) {}
 
   async hello() {
     this.logger.info('hello');

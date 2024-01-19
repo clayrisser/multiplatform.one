@@ -330,9 +330,9 @@ tsc
 tsconfig
 tsup
 tsx
+tsyringe
 txt
 typ
-typedi
 typegraphql
 typeof
 umd

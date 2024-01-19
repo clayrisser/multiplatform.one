@@ -19,20 +19,15 @@
  *  limitations under the License.
  */
 
-import { Authorized, InjectAccessToken, InjectUsername, InjectUserId } from '@multiplatform.one/keycloak-typegraphql';
-import { Inject } from 'typedi';
-import { Logger } from '@multiplatform.one/typegraphql';
-import { Query, Resolver } from 'type-graphql';
 import axios from 'axios';
+import { Authorized, InjectAccessToken, InjectUsername, InjectUserId } from '@multiplatform.one/keycloak-typegraphql';
+import { Query, Resolver } from 'type-graphql';
 
 @Authorized()
 @Resolver((_of) => String)
 export class AuthResolver {
-  constructor(@Inject() private readonly logger: Logger) {}
-
   @Query((_returns) => String)
   async accessToken(@InjectAccessToken() accessToken: string): Promise<string> {
-    await axios.get('http://example.com');
     return accessToken;
   }
 

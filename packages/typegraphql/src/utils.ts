@@ -49,7 +49,7 @@ export function setResHeader(res: any, name: string, value: string) {
   }
 }
 
-export function generateRequestId(req: any, res: any) {
+export function generateRequestId(req: any, res: any): string {
   if ((req as any).requestId) return (req as any).requestId;
   const requestId =
     (req as any).requestId || typeof req.id === 'string' ? req.id : getReqHeader(req, 'X-Request-Id') || randomUUID();

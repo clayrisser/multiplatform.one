@@ -23,7 +23,7 @@
 import type { KeycloakOptions } from '@multiplatform.one/keycloak-typegraphql';
 import type WebSocket from 'ws';
 import type { BuildSchemaOptions, MiddlewareFn } from 'type-graphql';
-import type { ContainerInstance } from 'typedi';
+import type { DependencyContainer } from 'tsyringe';
 import type { GraphQLSchema } from 'graphql';
 import type { LoggerOptions } from './logger';
 import type { NodeSDK } from '@opentelemetry/sdk-node';
@@ -36,7 +36,7 @@ import type { WebSocketServer } from 'ws';
 
 export interface Ctx<R extends Request = Request, P extends PrismaClient = PrismaClient>
   extends Omit<YogaInitialContext, 'request'> {
-  container: ContainerInstance;
+  container: DependencyContainer;
   extra?: CtxExtra;
   id: string;
   payload?: SubscribePayload;
@@ -55,7 +55,7 @@ export interface CtxExtra {
 }
 
 export interface Req extends Request {
-  container?: ContainerInstance;
+  container?: DependencyContainer;
 }
 
 export interface PubSubPublishArgsByKey {

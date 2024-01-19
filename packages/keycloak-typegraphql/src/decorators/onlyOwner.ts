@@ -36,7 +36,7 @@ export function OnlyOwner(
     createMethodDecorator(
       class OnlyOwnerDecorator implements MiddlewareInterface<Ctx> {
         async use({ context: ctx }: ResolverData<Ctx>, next: NextFn) {
-          const keycloakService = ctx.container.get(KeycloakService);
+          const keycloakService = ctx.container.resolve(KeycloakService);
           const result = await next();
           if (
             !keycloakService ||

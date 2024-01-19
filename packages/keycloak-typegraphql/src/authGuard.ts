@@ -25,10 +25,11 @@ import type { MiddlewareInterface, NextFn, ResolverData } from 'type-graphql';
 import { AUTHORIZED, PUBLIC, RESOURCE } from './decorators';
 import { GraphQLError } from 'graphql';
 import { KeycloakService } from './keycloakService';
-import { Service } from 'typedi';
 import { Logger, deferMiddleware, getMetadata } from '@multiplatform.one/typegraphql';
+import { injectable, scoped, Lifecycle } from 'tsyringe';
 
-@Service()
+@injectable()
+@scoped(Lifecycle.ContainerScoped)
 export class AuthGuard implements MiddlewareInterface<Ctx> {
   async use({ context: ctx }: ResolverData<Ctx>, next: NextFn) {
     deferMiddleware(ctx, async ({ context: ctx }: ResolverData<Ctx>, next: NextFn) => {
@@ -66,12 +67,12 @@ function getRoleSets(ctx: Ctx) {
 async function canActivate(ctx: Ctx): Promise<boolean> {
   const roleSets = getRoleSets(ctx);
   if (!roleSets.length) return true;
-  const keycloakService: KeycloakService = ctx.container.get(KeycloakService);
+  const keycloakService: KeycloakService = ctx.container.resolve(KeycloakService);
   const username = await keycloakService.getUsername();
   if (!username) return false;
   const req = ctx.req as any as KeycloakRequest;
   if (!req.resolversAuthChecked) req.resolversAuthChecked = new Set();
-  const logger = ctx.container.get(Logger);
+  const logger = ctx.container.resolve(Logger);
   for (const roleSet of roleSets) {
     let authorized = false;
     if (await keycloakService.isAuthorizedByRoles(roleSet.roles)) authorized = true;

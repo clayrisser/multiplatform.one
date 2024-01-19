@@ -19,8 +19,6 @@
  *  limitations under the License.
  */
 
-import 'reflect-metadata';
-
 export * from './authGuard';
 export * from './decorators';
 export * from './initialize';
