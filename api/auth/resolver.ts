@@ -19,7 +19,6 @@
  *  limitations under the License.
  */
 
-import axios from 'axios';
 import { Authorized, InjectAccessToken, InjectUsername, InjectUserId } from '@multiplatform.one/keycloak-typegraphql';
 import { Query, Resolver } from 'type-graphql';
 
