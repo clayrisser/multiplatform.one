@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/prisma-scripts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "scripts for managing prisma orm",
   "sideEffects": false,
   "keywords": [
