@@ -30,6 +30,7 @@ import type { LoggerOptions } from './logger';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
 import type { YogaServerOptions, YogaInitialContext, LogLevel } from 'graphql-yoga';
 import { LOGGER, LOGGER_OPTIONS, Logger } from './logger';
+import { PrismaClient } from '@prisma/client';
 import { WebSocketServer } from 'ws';
 import { buildSchema } from 'type-graphql';
 import { container as Container, Lifecycle } from 'tsyringe';
@@ -121,6 +122,7 @@ export async function createServer(
       childContainer.register(LOGGER_OPTIONS, { useValue: loggerOptions });
       childContainer.register(Logger, { useValue: logger });
       childContainer.register(LOGGER, { useValue: logger });
+      childContainer.register(PrismaClient, { useValue: options.prisma });
       (buildSchemaOptions.resolvers as any[]).forEach((resolver: any) => {
         childContainer.register(resolver, { useClass: resolver }, { lifecycle: Lifecycle.ContainerScoped });
       });
