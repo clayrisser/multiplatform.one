@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "main": "dist/main.js",
   "source": "src/main.ts",
@@ -17,9 +17,9 @@
   },
   "dependencies": {
     "@graphql-yoga/subscription": "^5.0.0",
-    "@multiplatform.one/keycloak-typegraphql": "1.0.0",
-    "@multiplatform.one/prisma-scripts": "1.0.0",
-    "@multiplatform.one/typegraphql": "^1.0.0",
+    "@multiplatform.one/keycloak-typegraphql": "1.0.1",
+    "@multiplatform.one/prisma-scripts": "1.0.1",
+    "@multiplatform.one/typegraphql": "^1.0.1",
     "@prisma/client": "~5.8.1",
     "@whatwg-node/server": "^0.9.23",
     "class-validator": "^0.14.1",

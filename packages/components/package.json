@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/components",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "sideEffects": [
     "*.css"
   ],
@@ -79,7 +79,7 @@
     "react-native-reanimated": "3.6.1",
     "solito": "^4.2.0",
     "tsup": "^8.0.1",
-    "ui": "1.0.0"
+    "ui": "1.0.1"
   },
   "jest": {
     "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
