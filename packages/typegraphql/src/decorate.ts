@@ -19,12 +19,10 @@
  *  limitations under the License.
  */
 
-import type { ContainerInstance, Constructable } from 'typedi';
 import type { Ctx, ReflectableDecorator, Type } from './types';
 import type { MiddlewareFn } from 'type-graphql';
+import { container as Container, Lifecycle, container } from 'tsyringe';
 import { createMethodDecorator as typeGraphqlCreateMethodDecorator } from 'type-graphql';
-
-const Container = require('typedi').Container as typeof import('typedi').Container;
 
 export function applyMethodDecorators(...decorators: Array<MethodDecorator>) {
   return ((target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) => {
@@ -66,14 +64,8 @@ export function applyClassDecorators(...decorators: Array<ClassDecorator>) {
   }) as ClassDecorator;
 }
 
-export function createMethodDecorator<C extends Ctx = Ctx>(
-  resolver: Constructable<any>,
-  container: ContainerInstance = Container as unknown as ContainerInstance,
-): MethodDecorator {
-  container.set({
-    id: resolver as unknown as Constructable<any>,
-    type: resolver as unknown as Constructable<any>,
-  });
+export function createMethodDecorator<C extends Ctx = Ctx>(resolver: any, _container = Container): MethodDecorator {
+  container.register(resolver, { useClass: resolver }, { lifecycle: Lifecycle.ContainerScoped });
   return typeGraphqlCreateMethodDecorator<C>(resolver as any as MiddlewareFn<C>);
 }
 

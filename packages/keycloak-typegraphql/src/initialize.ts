@@ -27,15 +27,13 @@ import type { Keycloak as IKeycloakConnect } from 'keycloak-connect';
 import type { KeycloakOptions } from './types';
 import type { Resolvers, Logger } from '@multiplatform.one/typegraphql';
 import { RegisterKeycloak } from './register';
-import { Token } from 'typedi';
-
-const Container = require('typedi').Container as typeof import('typedi').Container;
+import { container as Container } from 'tsyringe';
 
 export class KeycloakConnect extends Keycloak implements IKeycloakConnect {}
 
-export const KEYCLOAK_CONNECT = new Token<KeycloakConnect>('KEYCLOAK_CONNECT');
+export const KEYCLOAK_CONNECT = 'KEYCLOAK_CONNECT';
 
-export const KEYCLOAK_OPTIONS = new Token<KeycloakOptions>('KEYCLOAK_OPTIONS');
+export const KEYCLOAK_OPTIONS = 'KEYCLOAK_OPTIONS';
 
 export class KeycloakAdmin extends (require('@keycloak/keycloak-admin-client')
   .default as typeof IKeycloakAdminClient) {}
@@ -54,18 +52,9 @@ export async function initializeKeycloak(options: KeycloakOptions, resolvers: Re
       ...(clientSecret ? { secret: clientSecret } : {}),
     },
   } as unknown as any);
-  Container.set({
-    id: KeycloakAdmin,
-    factory: () => keycloakAdmin,
-  });
-  Container.set({
-    id: KEYCLOAK_CONNECT,
-    factory: () => keycloakConnect,
-  });
-  Container.set({
-    id: KEYCLOAK_OPTIONS,
-    factory: () => options,
-  });
+  Container.register(KeycloakAdmin, { useValue: keycloakAdmin });
+  Container.register(KEYCLOAK_CONNECT, { useValue: keycloakConnect });
+  Container.register(KEYCLOAK_OPTIONS, { useValue: options });
   return async () => {
     logger?.info('waiting for keycloak');
     await waitForReady(options);

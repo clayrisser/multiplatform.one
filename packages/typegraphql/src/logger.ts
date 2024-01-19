@@ -29,11 +29,12 @@ import type { Ctx } from './types';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { Logger as PinoLogger } from 'pino';
 import type { Options as PinoHttpOptions } from 'pino-http';
-import { Token } from 'typedi';
 import { generateRequestId } from './utils';
 import { trace, context } from '@opentelemetry/api';
 
-export const LOGGER = new Token<Logger>('LOGGER');
+export const LOGGER = 'LOGGER';
+
+export const LOGGER_OPTIONS = 'LOGGER_OPTIONS';
 
 let _logger: PinoLogger | undefined;
 
@@ -128,8 +129,6 @@ export class Logger {
     return err;
   }
 }
-
-export const LOGGER_OPTIONS = new Token<LoggerOptions>('LOGGER_OPTIONS');
 
 function createLogger(options: LoggerOptions) {
   if (_logger) return _logger;

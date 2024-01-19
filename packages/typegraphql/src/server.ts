@@ -24,33 +24,29 @@ import { otelSDK } from './tracing';
 // @ts-ignore
 import { initializeKeycloak } from '@multiplatform.one/keycloak-typegraphql';
 import http from 'node:http';
-import type { Constructable } from 'typedi';
+import promClient, { Registry as PromClientRegistry } from 'prom-client';
 import type { Ctx, CtxExtra, TypeGraphQLServer, ServerOptions, TracingOptions, MetricsOptions } from './types';
-import type { IncomingMessage } from 'node:http';
 import type { LoggerOptions } from './logger';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
 import type { YogaServerOptions, YogaInitialContext, LogLevel } from 'graphql-yoga';
-import { Logger } from './logger';
-import promClient, { Registry as PromClientRegistry } from 'prom-client';
-import { Token } from 'typedi';
+import { LOGGER, LOGGER_OPTIONS, Logger } from './logger';
 import { WebSocketServer } from 'ws';
 import { buildSchema } from 'type-graphql';
+import { container as Container, Lifecycle } from 'tsyringe';
 import { createBuildSchemaOptions } from './buildSchema';
 import { createKeycloakOptions } from './keycloak';
 import { createYoga, useLogger } from 'graphql-yoga';
 import { generateRequestId } from './utils';
 import { initializeAxiosLogger } from './axios';
 import { parse } from 'node:url';
-import { randomUUID } from 'node:crypto';
 import { useApolloTracing } from '@envelop/apollo-tracing';
 import { useOpenTelemetry } from '@envelop/opentelemetry';
 import { usePrometheus } from '@envelop/prometheus';
 import { useServer } from 'graphql-ws/lib/use/ws';
 
-const Container = require('typedi').Container as typeof import('typedi').Container;
 const nodeCleanup = require('node-cleanup') as typeof import('node-cleanup');
-export const CTX = new Token<Ctx>('CTX');
-export const REQ = new Token<Request | IncomingMessage>('REQ');
+export const CTX = 'CTX';
+export const REQ = 'REQ';
 
 export async function createServer(
   options: ServerOptions,
@@ -109,34 +105,24 @@ export async function createServer(
         },
     async context(context: YogaInitialContext & { res: Response; extra?: CtxExtra }): Promise<Ctx> {
       const req = context.request || context.extra?.request;
-      const containerId = randomUUID();
-      const container = Container.of(containerId);
+      const childContainer = Container.createChildContainer();
       const ctx: Ctx = {
         ...context,
-        container,
-        id: generateRequestId(req, context.res) || containerId,
+        container: childContainer,
+        id: generateRequestId(req, context.res),
         payload: context.extra?.payload,
         prisma: options.prisma,
         req,
         socket: context.extra?.socket,
       } as any;
-      container.set({
-        id: CTX,
-        factory: () => ctx,
-      });
-      container.set({
-        id: REQ,
-        factory: () => ctx.req,
-      });
-      (buildSchemaOptions.resolvers as any[]).forEach((resolver: Constructable<any>) => {
-        container.set({
-          id: resolver,
-          type: resolver,
-        });
-      });
-      container.set({
-        id: Logger,
-        factory: () => new Logger(loggerOptions, ctx),
+      const logger = new Logger(loggerOptions, ctx);
+      childContainer.register(CTX, { useValue: ctx });
+      childContainer.register(REQ, { useValue: req });
+      childContainer.register(LOGGER_OPTIONS, { useValue: loggerOptions });
+      childContainer.register(Logger, { useValue: logger });
+      childContainer.register(LOGGER, { useValue: logger });
+      (buildSchemaOptions.resolvers as any[]).forEach((resolver: any) => {
+        childContainer.register(resolver, { useClass: resolver }, { lifecycle: Lifecycle.ContainerScoped });
       });
       if (options.yoga?.context) {
         if (typeof options.yoga.context === 'function') {
@@ -167,7 +153,7 @@ export async function createServer(
     plugins: [
       {
         onResponse({ serverContext }: OnResponseEventPayload<Ctx>) {
-          Container.reset(serverContext?.id);
+          serverContext?.container?.clearInstances();
         },
       },
       useLogger({
@@ -264,7 +250,10 @@ export async function createServer(
     server,
     wsServer,
     yoga,
-    yogaServerOptions: { ...yogaServerOptions, schema } as YogaServerOptions<Record<string, any>, Record<string, any>>,
+    yogaServerOptions: {
+      ...yogaServerOptions,
+      schema,
+    } as YogaServerOptions<Record<string, any>, Record<string, any>>,
     async start() {
       try {
         if (registerKeycloak) await registerKeycloak();

@@ -27,10 +27,10 @@ import type { Grant } from 'keycloak-connect';
 import type { KeycloakConnect } from './initialize';
 import type { Session } from '@multiplatform.one/keycloak';
 import { KEYCLOAK_CONNECT, KEYCLOAK_OPTIONS, KeycloakAdmin } from './initialize';
-import { REQ, getReqHeader, Logger } from '@multiplatform.one/typegraphql';
-import { Service, Inject } from 'typedi';
+import { getReqHeader, Logger } from '@multiplatform.one/typegraphql';
 import { Token } from './token';
 import { decode } from 'next-auth/jwt';
+import { injectable, scoped, Lifecycle, inject } from 'tsyringe';
 import type {
   AuthorizationCodeGrantOptions,
   ClientCredentialsGrantOptions,
@@ -42,7 +42,8 @@ import type {
   UserInfo,
 } from './types';
 
-@Service()
+@injectable()
+@scoped(Lifecycle.ContainerScoped)
 export class KeycloakService {
   options: KeycloakOptions;
 
@@ -67,10 +68,10 @@ export class KeycloakService {
   private _nextAuthSession: Session | undefined;
 
   constructor(
-    @Inject(REQ) public readonly req: KeycloakRequest,
-    @Inject(KEYCLOAK_OPTIONS) options: KeycloakOptions,
-    @Inject() private readonly logger: Logger,
-    @Inject(KEYCLOAK_CONNECT) public readonly keycloakConnect: KeycloakConnect,
+    @inject('REQ') public readonly req: KeycloakRequest,
+    @inject(KEYCLOAK_OPTIONS) options: KeycloakOptions,
+    @inject('LOGGER') private readonly logger: Logger,
+    @inject(KEYCLOAK_CONNECT) public readonly keycloakConnect: KeycloakConnect,
     public readonly keycloakAdmin: KeycloakAdmin,
   ) {
     this.options = {

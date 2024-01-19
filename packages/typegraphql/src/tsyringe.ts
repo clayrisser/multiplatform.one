@@ -1,7 +1,7 @@
 /*
- *  File: /src/index.ts
- *  Project: @multiplatform.one/keycloak-typegraphql
- *  File Created: 11-01-2024 14:26:32
+ *  File: /src/tsyringe.ts
+ *  Project: @multiplatform.one/typegraphql
+ *  File Created: 19-01-2024 04:15:00
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,17 +19,13 @@
  *  limitations under the License.
  */
 
-export * from './tracing';
-export * from './buildSchema';
-export * from './decorate';
-export * from './decorators';
-export * from './keycloak';
-export * from './logger';
-export * from './middleware';
-export * from './resolvers';
-export * from './server';
-export * from './tsyringe';
-export * from './types';
-export * from './utils';
+import { Lifecycle, injectable, scoped, singleton } from 'tsyringe';
+import { applyClassDecorators } from './decorate';
 
-export { Ctx as Context } from 'type-graphql';
+export function Injectable(lifecycle = Lifecycle.ContainerScoped) {
+  let scope = scoped(lifecycle as Lifecycle.ContainerScoped | Lifecycle.ResolutionScoped) as ClassDecorator;
+  if (lifecycle === Lifecycle.Singleton) scope = singleton() as ClassDecorator;
+  return applyClassDecorators(injectable() as ClassDecorator, scope);
+}
+
+export { inject as Inject } from 'tsyringe';
