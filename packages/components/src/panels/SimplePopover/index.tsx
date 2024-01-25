@@ -28,8 +28,6 @@ export type SimplePopoverProps = PopoverProps & {
   contentStyle?: PopoverContentProps;
   arrowStyle?: PopoverArrowProps;
   triggerStyle?: PopoverTriggerProps;
-  triggerOnHover?: boolean;
-  closeOnHoverOut?: boolean;
   arrow?: boolean;
   open?: boolean;
   setOpen?: (open: boolean) => void;
@@ -42,35 +40,19 @@ export function SimplePopover({
   triggerStyle,
   arrowStyle,
   arrow = true,
-  triggerOnHover,
-  closeOnHoverOut,
   trigger,
   ...props
 }: SimplePopoverProps) {
   const [open, setOpen] = React.useState(false);
 
-  function handleHoverIn(e) {
-    if (!triggerOnHover) return;
-    setOpen(true);
-    if (contentStyle?.onHoverIn) contentStyle?.onHoverIn(e);
-    if (triggerStyle?.onHoverIn) triggerStyle.onHoverIn(e);
-  }
-
-  function handleHoverOut(e) {
-    if (!closeOnHoverOut) return;
-    setOpen(false);
-    if (contentStyle?.onHoverOut) contentStyle.onHoverOut(e);
-    if (triggerStyle?.onHoverOut) triggerStyle.onHoverOut(e);
-  }
-
   return (
-    <Popover size="$5" allowFlip open={open} onOpenChange={setOpen} {...props}>
-      <Popover.Trigger asChild {...triggerStyle} onHoverIn={handleHoverIn} onHoverOut={handleHoverOut}>
+    <Popover size="$5" allowFlip open={open} onOpenChange={setOpen} hoverable {...props}>
+      <Popover.Trigger asChild {...triggerStyle}>
         {trigger}
       </Popover.Trigger>
       <Adapt when="sm" platform="touch">
         <Popover.Sheet modal dismissOnSnapToBottom>
-          <Popover.Sheet.Frame padding="$4" onMouseEnter={() => setOpen(true)}>
+          <Popover.Sheet.Frame padding="$4">
             <Adapt.Contents />
           </Popover.Sheet.Frame>
           <Popover.Sheet.Overlay />
@@ -79,28 +61,18 @@ export function SimplePopover({
       <Popover.Content
         borderWidth={1}
         borderColor="$borderColor"
-        enterStyle={{ x: 0, y: -10, opacity: 0 }}
-        exitStyle={!triggerOnHover ? { x: 0, y: -10, opacity: 0 } : undefined}
-        x={0}
-        y={0}
-        opacity={1}
-        animation={
-          !triggerOnHover
-            ? [
-                'quick',
-                {
-                  opacity: {
-                    overshootClamping: true,
-                  },
-                },
-              ]
-            : undefined
-        }
+        enterStyle={{ y: -10, opacity: 0 }}
+        exitStyle={{ y: -10, opacity: 0 }}
         elevate
-        zi={9999999999}
+        animation={[
+          'quick',
+          {
+            opacity: {
+              overshootClamping: true,
+            },
+          },
+        ]}
         {...contentStyle}
-        onHoverIn={handleHoverIn}
-        onHoverOut={handleHoverOut}
       >
         {arrow && <Popover.Arrow borderWidth={1} borderColor="$borderColor" {...arrowStyle} />}
         {children}
