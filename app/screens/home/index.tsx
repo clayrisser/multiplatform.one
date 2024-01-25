@@ -20,7 +20,7 @@
  */
 
 import React, { useState } from 'react';
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text } from 'ui';
+import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text, SimplePopover } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { gql } from 'gql';
 import { useAuthQuery, useAuthSubscription, withAuthenticated } from '@multiplatform.one/keycloak';
@@ -72,6 +72,7 @@ function HomeScreen() {
       <XStack>
         <Button {...linkProps}>{t('screens.home.link')}</Button>
       </XStack>
+
       <SheetDemo />
     </YStack>
   );

@@ -141,6 +141,7 @@ graphiql
 graphql
 helvetica
 hmr
+hoverable
 href
 hsl
 hsla
