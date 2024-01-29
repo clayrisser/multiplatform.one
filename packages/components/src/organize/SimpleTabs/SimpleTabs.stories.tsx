@@ -20,8 +20,8 @@
  */
 
 import React from 'react';
-import { SimpleTabs, TabContent, TabsList, Tab } from './index';
-import { H5, SizableText } from 'tamagui';
+import { SimpleTabs, TabsList, TabsContent } from './index';
+import { H5, SizableText, Tabs, Separator, YStack, Switch, XStack, Text } from 'tamagui';
 
 export default {
   title: 'organize/SimpleTabs',
@@ -33,52 +33,47 @@ export default {
   },
 };
 
-export const horizontalTabs = () => (
-  <SimpleTabs defaultRoute="contact" fullScreen>
-    <TabsList>
-      <Tab path="home">Home</Tab>
-      <Tab path="about">About</Tab>
-      <Tab path="contact">Contact</Tab>
-      <Tab path="description">
-        <SizableText textAlign="center">Description</SizableText>
-      </Tab>
-    </TabsList>
-    <TabContent route="home">
-      <H5>Home</H5>
-    </TabContent>
-    <TabContent route="about">
-      <H5>About</H5>
-    </TabContent>
-    <TabContent route="contact">
-      <H5>Contact</H5>
-    </TabContent>
-    <TabContent route="description" jc="center" ai="center">
-      <H5>Default</H5>
-    </TabContent>
-  </SimpleTabs>
-);
+const Main = () => {
+  const [orientation, setOrientation] = React.useState<'horizontal' | 'vertical'>('horizontal');
+  const [isHorizontal, setIsHorizontal] = React.useState(true);
 
-export const verticalTabs = () => (
-  <SimpleTabs defaultRoute="about" orientation="vertical" width="100%" height="100%">
-    <TabsList fullHeight={false}>
-      <Tab path="home">Home</Tab>
-      <Tab path="about">About</Tab>
-      <Tab path="contact">Contact</Tab>
-      <Tab path="description">
-        <SizableText textAlign="center">Description</SizableText>
-      </Tab>
-    </TabsList>
-    <TabContent route="home">
-      <H5>Home</H5>
-    </TabContent>
-    <TabContent route="about">
-      <H5>About</H5>
-    </TabContent>
-    <TabContent route="contact">
-      <H5>Contact</H5>
-    </TabContent>
-    <TabContent route="description" jc="center" ai="center">
-      <H5>Default</H5>
-    </TabContent>
-  </SimpleTabs>
-);
+  React.useEffect(() => {
+    setOrientation(isHorizontal ? 'horizontal' : 'vertical');
+  }, [isHorizontal]);
+
+  return (
+    <YStack space padding="$4">
+      <XStack space>
+        <Switch size="$3" checked={isHorizontal} onCheckedChange={setIsHorizontal}>
+          <Switch.Thumb animation="bouncy" />
+        </Switch>
+        <Text>{orientation}</Text>
+      </XStack>
+      <SimpleTabs orientation={orientation} defaultValue="home">
+        <TabsList justifyContent="space-between" orientation={orientation}>
+          <Tabs.Tab value="home" flex={1}>
+            <SizableText textAlign="center">Home</SizableText>
+          </Tabs.Tab>
+          <Tabs.Tab value="about" flex={1}>
+            <SizableText textAlign="center">About</SizableText>
+          </Tabs.Tab>
+          <Tabs.Tab value="contact" flex={1}>
+            <SizableText textAlign="center">Contact</SizableText>
+          </Tabs.Tab>
+        </TabsList>
+        <Separator vertical={orientation === 'vertical'} />
+        <TabsContent value="home">
+          <H5>Home</H5>
+        </TabsContent>
+        <TabsContent value="about">
+          <H5>About</H5>
+        </TabsContent>
+        <TabsContent value="contact">
+          <H5>Contact</H5>
+        </TabsContent>
+      </SimpleTabs>
+    </YStack>
+  );
+};
+
+export const main = () => <Main />;
