@@ -32,7 +32,6 @@ export function SimpleTabs({ ...props }: SimpleTabsProps) {
 }
 
 function HorizontalTabs({ children, ...props }: SimpleTabsProps) {
-  console.log('horizontal tabs');
   return (
     <Tabs
       flexDirection="column"
@@ -51,7 +50,6 @@ function HorizontalTabs({ children, ...props }: SimpleTabsProps) {
 }
 
 function VerticalTabs({ children, ...props }: SimpleTabsProps) {
-  console.log('vertical tabs');
   return (
     <Tabs
       flexDirection="row"
