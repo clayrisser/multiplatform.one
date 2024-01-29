@@ -91,8 +91,8 @@ export function SimpleAlertDialog({
             children
           ) : (
             <YStack space>
-              {title && <AlertDialog.Title>{title}</AlertDialog.Title>}
-              {description && <AlertDialog.Description>{description}</AlertDialog.Description>}
+              {title && <AlertDialog.Title {...titleStyle}>{title}</AlertDialog.Title>}
+              {description && <AlertDialog.Description {...descriptionStyle}>{description}</AlertDialog.Description>}
               <XStack space="$3" jc="flex-end">
                 <AlertDialog.Cancel asChild>
                   <Button {...buttonStyle}>{cancel || 'cancel'}</Button>
