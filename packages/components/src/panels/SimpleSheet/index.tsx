@@ -1,108 +1,40 @@
+/**
+ * File: /src/panels/SimpleSheet/index.tsx
+ * Project: @multiplatform.one/components
+ * File Created: 25-01-2024 09:49:47
+ * Author: Lalit rajak
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React from 'react';
-import type { SizeTokens, SheetProps } from 'tamagui';
-import { Button, XStack, YStack } from 'tamagui';
-import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
+import type { SheetProps, DialogOverlayProps, YStackProps } from 'tamagui';
 import { Sheet } from '@tamagui/sheet';
-import { create } from 'zustand';
 
-type SimpleSheetProps = SheetProps & { sheetElement?: React.ReactNode } & { modal?: boolean } & {
-  buttonSize?: SizeTokens | undefined;
+export type SimpleSheetProps = SheetProps & {
+  overlayStyle?: DialogOverlayProps;
+  frameStyle?: YStackProps;
 };
 
-type ComponentProps = SheetProps & { innerSheetElement?: React.ReactNode } & {
-  innerSheetButtonSize?: SizeTokens | undefined;
-};
-
-interface State {
-  position: number;
-  open: boolean;
-  innerOpen: boolean;
-}
-
-interface Action {
-  setPosition: (position: number) => void;
-  setOpen: (open: boolean) => void;
-  setInnerOpen: (innerOpen: boolean) => void;
-}
-
-const useStore = create<State & Action>((set) => ({
-  position: 0,
-  open: false,
-  innerOpen: false,
-  setPosition: (position) => set({ position }),
-  setOpen: (open) => set({ open }),
-  setInnerOpen: (innerOpen) => set({ innerOpen }),
-}));
-
-export const SimpleSheet = ({
-  children,
-  sheetElement,
-  modal,
-  innerSheetElement,
-  buttonSize,
-  innerSheetButtonSize,
-  ...props
-}: SimpleSheetProps & ComponentProps) => {
-  const { position, open, innerOpen, setPosition, setOpen, setInnerOpen } = useStore();
+export function SimpleSheet({ children, overlayStyle, frameStyle, ...props }: SimpleSheetProps) {
   return (
-    <>
-      <XStack space>
-        <Button onPress={() => setOpen(true)}>{children}</Button>
-      </XStack>
-      <Sheet
-        forceRemoveScrollEnabled={open}
-        modal={modal || false}
-        open={open}
-        onOpenChange={setOpen}
-        snapPoints={[85, 50, 25]}
-        dismissOnSnapToBottom
-        position={position}
-        onPositionChange={setPosition}
-        zIndex={100_000}
-        {...props}
-      >
-        <Sheet.Overlay />
-        <Sheet.Handle />
-        <Sheet.Frame>
-          {sheetElement || (
-            <YStack f={1} p="$4" space="$5" jc="center" ai="center">
-              <Button size={buttonSize || '$6'} circular icon={ChevronDown} onPress={() => setOpen(false)} />
-              {(modal || innerSheetElement) && (
-                <>
-                  <InnerSheet
-                    open={innerOpen}
-                    onOpenChange={setInnerOpen}
-                    innerSheetElement={innerSheetElement}
-                    innerSheetButtonSize={innerSheetButtonSize}
-                    {...props}
-                  />
-                  <Button size={buttonSize || '$6'} circular icon={ChevronUp} onPress={() => setInnerOpen(true)} />
-                </>
-              )}
-            </YStack>
-          )}
-        </Sheet.Frame>
-      </Sheet>
-    </>
-  );
-};
-
-function InnerSheet({ innerSheetElement, innerSheetButtonSize, ...props }: ComponentProps) {
-  return (
-    <Sheet modal snapPoints={[90]} dismissOnSnapToBottom {...props}>
-      <Sheet.Overlay />
+    <Sheet zIndex={100_000} {...props}>
+      <Sheet.Overlay animation="lazy" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} {...overlayStyle} />
       <Sheet.Handle />
-      <Sheet.Frame f={1} jc="center" ai="center" space="$5">
-        <Sheet.ScrollView p="$4" space>
-          <Button
-            size={innerSheetButtonSize || '$8'}
-            circular
-            als="center"
-            icon={ChevronDown}
-            onPress={() => props.onOpenChange?.(false)}
-          />
-          {innerSheetElement}
-        </Sheet.ScrollView>
+      <Sheet.Frame padding="$4" justifyContent="center" alignItems="center" space="$5" {...frameStyle}>
+        {children}
       </Sheet.Frame>
     </Sheet>
   );
