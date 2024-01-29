@@ -1,3 +1,24 @@
+/**
+ * File: /src/panels/SimpleAlertDialog/index.tsx
+ * Project: @multiplatform.one/components
+ * File Created: 25-01-2024 09:49:47
+ * Author: Lalit rajak
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React from 'react';
 import type { ReactNode } from 'react';
 import { AlertDialog, Button, XStack, YStack } from 'tamagui';
@@ -8,6 +29,7 @@ import type {
   AlertDialogTitleProps,
   AlertDialogTriggerProps,
   ButtonProps,
+  AlertDialogActionProps,
 } from 'tamagui';
 
 export type AlterDialogSimpleProps = AlertDialogTriggerProps &
@@ -22,8 +44,8 @@ export type AlterDialogSimpleProps = AlertDialogTriggerProps &
     descriptionStyle?: AlertDialogDescriptionProps;
     contentStyle?: AlertDialogContentProps;
     onOpenChange?: (open: boolean) => void;
-    onAccept?: () => void;
-  } & { buttonStyle?: ButtonProps } & { customContent?: JSX.Element | undefined };
+    actionStyle?: AlertDialogActionProps;
+  } & { buttonStyle?: ButtonProps } & { trigger: JSX.Element | undefined };
 
 export function SimpleAlertDialog({
   children,
@@ -36,22 +58,13 @@ export function SimpleAlertDialog({
   descriptionStyle,
   open,
   buttonStyle,
-  customContent,
-  ...triggerProps
+  trigger,
+  actionStyle,
+  ...props
 }: AlterDialogSimpleProps) {
-  const [isOpen, setIsOpen] = React.useState(open);
-
   return (
-    <AlertDialog
-      native
-      {...triggerProps}
-      open={isOpen}
-      onOpenChange={(e) => {
-        if (triggerProps.onOpenChange) triggerProps.onOpenChange(e);
-        else setIsOpen(!isOpen);
-      }}
-    >
-      {typeof open === 'undefined' ? <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger> : null}
+    <AlertDialog native {...props}>
+      <AlertDialog.Trigger asChild>{trigger}</AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay key="overlay" animation="quick" o={0.5} enterStyle={{ o: 0 }} exitStyle={{ o: 0 }} />
         <AlertDialog.Content
@@ -74,8 +87,8 @@ export function SimpleAlertDialog({
           y={0}
           {...contentStyle}
         >
-          {customContent ? (
-            customContent
+          {children ? (
+            children
           ) : (
             <YStack space>
               {title && <AlertDialog.Title>{title}</AlertDialog.Title>}
@@ -84,7 +97,7 @@ export function SimpleAlertDialog({
                 <AlertDialog.Cancel asChild>
                   <Button {...buttonStyle}>{cancel || 'cancel'}</Button>
                 </AlertDialog.Cancel>
-                <AlertDialog.Action asChild onPress={triggerProps.onAccept}>
+                <AlertDialog.Action asChild {...actionStyle}>
                   <Button theme="active" {...buttonStyle}>
                     {accept || 'accept'}
                   </Button>
