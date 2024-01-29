@@ -20,25 +20,40 @@
  */
 
 import React from 'react';
-import type { TooltipProps, ThemeProps } from 'tamagui';
+import type { TooltipProps, ThemeProps, PopoverContentProps, PopoverTriggerProps, PopoverArrowProps } from 'tamagui';
 import { Theme, Tooltip } from 'tamagui';
 
-type SimpleToolTipProps = TooltipProps & { trigger: React.ReactNode; themeStyle?: ThemeProps };
+type SimpleToolTipProps = TooltipProps & {
+  trigger: React.ReactNode;
+  themeStyle?: ThemeProps;
+  contentStyle?: PopoverContentProps;
+  triggerStyle?: PopoverTriggerProps;
+  arrow: boolean;
+  arrowStyle?: PopoverArrowProps;
+};
 
-export function SimpleTooltip({ Icon, children, themeStyle, trigger, ...props }: SimpleToolTipProps & { Icon?: any }) {
+export function SimpleTooltip({
+  Icon,
+  children,
+  trigger,
+  arrow,
+  themeStyle,
+  triggerStyle,
+  contentStyle,
+  arrowStyle,
+  ...props
+}: SimpleToolTipProps & { Icon?: any }) {
   return (
     <Tooltip {...props}>
-      <Tooltip.Trigger cursor="pointer" ai="center" jc="center">
-        {trigger}
-      </Tooltip.Trigger>
+      <Tooltip.Trigger {...triggerStyle}>{trigger}</Tooltip.Trigger>
       <Theme inverse {...themeStyle}>
         <Tooltip.Content
-          enterStyle={{ x: 0, y: -5, o: 0, scale: 0.9 }}
-          exitStyle={{ x: 0, y: -5, o: 0, scale: 0.9 }}
+          enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
+          exitStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
           scale={1}
           x={0}
           y={0}
-          o={1}
+          opacity={1}
           animation={[
             'quick',
             {
@@ -47,8 +62,9 @@ export function SimpleTooltip({ Icon, children, themeStyle, trigger, ...props }:
               },
             },
           ]}
+          {...contentStyle}
         >
-          <Tooltip.Arrow />
+          {arrow && <Tooltip.Arrow {...arrowStyle} />}
           {children}
         </Tooltip.Content>
       </Theme>
