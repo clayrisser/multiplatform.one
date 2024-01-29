@@ -21,7 +21,7 @@
 
 import React from 'react';
 import { SimpleTooltip } from './index';
-import { Text } from 'tamagui';
+import { Button, Label, Switch, Text, XStack, YStack } from 'tamagui';
 import type { Meta } from '@storybook/react';
 
 const meta: Meta = {
@@ -30,11 +30,22 @@ const meta: Meta = {
   parameters: { status: { type: 'beta' } },
 };
 
-export const main = () => (
-  <SimpleTooltip trigger={<Text>Tool Tip</Text>}>
-    <Text fontSize={15} fontWeight="700">
-      tool tip content
-    </Text>
-  </SimpleTooltip>
-);
+function Tooltip() {
+  const [arrow, setArrow] = React.useState(true);
+  return (
+    <YStack space="$4">
+      <XStack space padding="$4" alignItems="center">
+        <Switch size="$3" checked={arrow} onCheckedChange={setArrow}>
+          <Switch.Thumb animation="bouncy" />
+        </Switch>
+        <Label>arrow</Label>
+        <SimpleTooltip arrow={arrow} trigger={<Button>?</Button>}>
+          <Text>tooltip content</Text>
+        </SimpleTooltip>
+      </XStack>
+    </YStack>
+  );
+}
+
+export const main = () => <Tooltip />;
 export default meta;
