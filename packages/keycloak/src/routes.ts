@@ -37,21 +37,28 @@ const NextResponse = require('next/server').NextResponse as typeof import('next/
 
 const logger = console;
 
-export function createAuthHandler(options = createNextAuthOptions()) {
-  return NextAuth(options);
+export function createAuthHandler(options: AuthHandlerOptions) {
+  return NextAuth(createNextAuthOptions(options));
 }
 
-export function createLogoutHandler(options = createNextAuthOptions()) {
+const defaults = {
+  keycloak: {
+    baseUrl: 'http://localhost:8080',
+    realm: 'master',
+  },
+};
+
+export function createLogoutHandler(options: AuthHandlerOptions) {
   return {
     async GET() {
-      const idToken = ((await getServerSession(options)) as Session)?.idToken;
+      const idToken = ((await getServerSession(createNextAuthOptions(options))) as Session)?.idToken;
       if (idToken) {
         try {
           await fetch(
-            `${process.env.KEYCLOAK_BASE_URL}/realms/${
-              process.env.KEYCLOAK_REALM || 'master'
+            `${options.keycloak?.baseUrl || defaults.keycloak.baseUrl}/realms/${
+              options.keycloak?.realm || defaults.keycloak.realm
             }/protocol/openid-connect/logout?id_token_hint=${idToken}&post_logout_redirect_uri=${encodeURIComponent(
-              process.env.NEXTAUTH_URL || '',
+              options.baseUrl,
             )}`,
             { method: 'GET' },
           );
@@ -65,16 +72,14 @@ export function createLogoutHandler(options = createNextAuthOptions()) {
   };
 }
 
-export function createNextAuthOptions(options: CreateAuthHandlerOptions = {}) {
+export function createNextAuthOptions(options: AuthHandlerOptions) {
   if (_nextAuth) return _nextAuth;
   _nextAuth = {
     ...options.nextAuth,
     providers: [
       KeycloakProvider({
-        clientId: process.env.KEYCLOAK_CLIENT_ID || '',
-        clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || '',
-        issuer: `${process.env.KEYCLOAK_BASE_URL}/realms/${process.env.KEYCLOAK_REALM || 'master'}`,
-        ...options.keycloakProvider,
+        issuer: `${options.keycloak?.baseUrl || defaults.keycloak.baseUrl}/realms/${options.keycloak?.realm || defaults.keycloak.realm}`,
+        ...options.keycloak,
       }),
       ...(options.nextAuth?.providers || []),
     ],
@@ -98,7 +103,7 @@ export function createNextAuthOptions(options: CreateAuthHandlerOptions = {}) {
           return token;
         } else {
           try {
-            return refreshAccessToken(token as NextToken);
+            return refreshAccessToken(options, token as NextToken);
           } catch (err) {
             return { ...token, err };
           }
@@ -121,9 +126,17 @@ export function createNextAuthOptions(options: CreateAuthHandlerOptions = {}) {
   return _nextAuth;
 }
 
-export interface CreateAuthHandlerOptions {
-  keycloakProvider?: Partial<OAuthUserConfig<any>>;
-  nextAuth?: AuthOptions;
+export interface AuthHandlerOptions {
+  baseUrl: string;
+  keycloak: KeycloakOptions;
+  nextAuth?: Partial<AuthOptions>;
+}
+
+export interface KeycloakOptions extends OAuthUserConfig<any> {
+  adminPassword?: string;
+  adminUsername?: string;
+  baseUrl?: string;
+  realm?: string;
 }
 
 export interface NextToken extends JWT {
@@ -136,17 +149,19 @@ export interface NextToken extends JWT {
   roles: string[];
 }
 
-async function refreshAccessToken(nextToken: NextToken) {
+async function refreshAccessToken(options: AuthHandlerOptions, nextToken: NextToken) {
   const res = await fetch(
-    `${process.env.KEYCLOAK_BASE_URL}/realms/${process.env.KEYCLOAK_REALM || 'master'}/protocol/openid-connect/token`,
+    `${options.keycloak?.baseUrl || defaults.keycloak.baseUrl}/realms/${
+      options.keycloak?.realm || defaults.keycloak.realm
+    }/protocol/openid-connect/token`,
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
-        client_id: process.env.KEYCLOAK_CLIENT_ID || '',
-        client_secret: process.env.KEYCLOAK_CLIENT_SECRET || '',
+        client_id: options.keycloak.clientId,
+        client_secret: options.keycloak.clientSecret,
         grant_type: 'refresh_token',
         refresh_token: nextToken.refreshToken,
       }),
