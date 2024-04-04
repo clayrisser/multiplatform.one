@@ -8,11 +8,3 @@ extensions:
   endpoints:
     default:
       url: http://localhost:5001/graphql
-  codegen:
-    overwrite: true
-    generates:
-      ./gql/generated/gql/:
-        preset: client
-      ./gql/generated/graphql.schema.json:
-        plugins:
-          - introspection

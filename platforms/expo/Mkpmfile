@@ -23,7 +23,6 @@ include $(MKPM)/gnu
 include $(MKPM)/chain
 include $(MKPM)/dotenv
 include $(MKPM)/yarn
-include $(PROJECT_ROOT)/shared.mk
 
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json

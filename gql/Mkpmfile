@@ -23,11 +23,6 @@ include $(MKPM)/gnu
 include $(MKPM)/chain
 include $(MKPM)/dotenv
 include $(MKPM)/yarn
-include $(PROJECT_ROOT)/shared.mk
-
-BUILD_SCHEMA ?= $(NODE) $(PROJECT_ROOT)/api/bin/buildSchema.js
-GRAPHQL_CODEGEN ?= $(YARN) graphql-codegen
-NODEMON ?= $(YARN) nodemon
 
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -39,8 +34,7 @@ endif
 	@$(call done,$@)
 
 ACTIONS += generate~deps
-$(ACTION)/generate: $(PROJECT_ROOT)/api/dist/buildSchema.js $(PROJECT_ROOT)/graphql.config.yml
-	@$(CD) $(PROJECT_ROOT) && $(GRAPHQL_CODEGEN) 2>$(NULL)
+$(ACTION)/generate: $(PROJECT_ROOT)/api/dist/buildSchema.js
 	@$(call done,$@)
 $(PROJECT_ROOT)/api/dist/buildSchema.js:
 	@$(MKPM_MAKE) -C $(PROJECT_ROOT)/api ~generate
@@ -66,18 +60,6 @@ ACTIONS += test~lint
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call jest,$?,$(TEST_ARGS))
 	@$(call done,$@)
-
-.PHONY: watch
-watch: ~deps $(PROJECT_ROOT)/api/dist/buildSchema.js
-	@$(NODEMON) --exec "$(MKPM_MAKE) +generate" $(WATCH_ARGS)
-
-.PHONY: dev
-dev: ~deps $(PROJECT_ROOT)/api/dist/buildSchema.js
-	@$(SLEEP) 3 && WATCH_ARGS="-w ../app" $(MKPM_MAKE) watch &
-	@$(MKPM_MAKE) -C ../api watch \
-		WATCH_ARGS="--onSuccess ' \
-			$(BUILD_SCHEMA) && \
-			$(MKPM_MAKE) -C ../gql +generate'"
 
 .PHONY: clean
 clean:
