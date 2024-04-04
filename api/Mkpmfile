@@ -54,14 +54,14 @@ $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 watch: ~generate
 	@$(TSUP) --watch '**/*.ts' $(WATCH_ARGS)
 
-.PHONY: dev prelaunch
+.PHONY: dev +dev prelaunch
 dev: prelaunch +dev
-prelaunch: prisma/dev docker/dev-d
+prelaunch: ~deps prisma/dev docker/dev-d
 +dev:
 	@$(call make) watch \
 		WATCH_ARGS="--onSuccess ' \
 			$(BUILD_SCHEMA) && \
-			NODE_ENV=development $(NODE) bin/main.js'"
+			NODE_ENV=development $(NODE) --inspect bin/main.js'"
 
 .PHONY: clean
 clean:
@@ -79,7 +79,7 @@ prisma/%: ~deps
 
 .PHONY: docker/%
 docker/%: $(PROJECT_ROOT)/docker/data/logs/app.log
-	@$(CD) $(PROJECT_ROOT) && $(call make,docker) $*
+	@$(call make,$(PROJECT_ROOT)) docker/$*
 $(PROJECT_ROOT)/docker/data/logs/app.log:
 	@$(MKDIR) -p $(@D)
 	@$(TOUCH) $@
