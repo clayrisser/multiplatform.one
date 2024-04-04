@@ -48,19 +48,20 @@ $(ACTION)/export: $(call git_deps,\.([jt]sx?)$$)
 	@NEXT_STATIC=1 $(NEXT) export
 	@$(call done,$@)
 
-.PHONY: dev +dev
-dev: | ~deps gql/~generate +dev
+.PHONY: dev +dev prelaunch
+dev: prelaunch +dev
+prelaunch: ~deps api/~build
 +dev:
-	@$(NEXT) dev -p $(NEXT_PORT)
+	@NODE_OPTIONS='--inspect' $(NEXT) dev -p $(NEXT_PORT)
 
 .PHONY: start +start
-start: | ~deps gql/~generate +build +start
+start: ~deps api/~build +build +start
 +start:
 	@$(NEXT) start -p $(NEXT_PORT)
 
-.PHONY: gql/%
-gql/%:
-	@$(call make,gql) $*
+.PHONY: api/%
+api/%:
+	@$(call make,$(PROJECT_ROOT)) api/$*
 
 .PHONY: clean
 clean:

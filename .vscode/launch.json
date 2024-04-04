@@ -17,11 +17,14 @@
       "name": "next platform dev",
       "type": "node-terminal",
       "request": "launch",
-      "command": "./mkpm next/dev",
+      "command": "../../.mkpm/mkpm/.bin/mkpm next/+dev",
+      "preLaunchTask": "next/prelaunch",
+      "cwd": "${workspaceFolder}/platforms/next",
       "serverReadyAction": {
-        "pattern": "started server on .+, url: (https?://.+)",
+        "webRoot": "${workspaceFolder}/platforms/next",
+        "pattern": "- Local:.+(https?://.+)",
         "uriFormat": "%s",
-        "action": "openExternally"
+        "action": "debugWithChrome"
       }
     },
     {
@@ -36,14 +39,7 @@
       "request": "launch",
       "preLaunchTask": "api/prelaunch",
       "cwd": "${workspaceFolder}/api",
-      "envFile": "${workspaceFolder}/.env",
-      "command": "POSTGRES_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}?sslmode=prefer ${workspaceFolder}/node_modules/.bin/tsup --watch '**/*.ts' --onSuccess 'node bin/buildSchema.js && NODE_ENV=development node bin/main.js'"
-    },
-    {
-      "name": "gql dev",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "./mkpm gql/dev"
+      "command": "../.mkpm/mkpm/.bin/mkpm api/+dev"
     }
   ]
 }

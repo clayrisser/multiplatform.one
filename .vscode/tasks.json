@@ -19,6 +19,12 @@
       "type": "shell",
       "command": "./mkpm",
       "args": ["api/prelaunch"]
+    },
+    {
+      "label": "next/prelaunch",
+      "type": "shell",
+      "command": "./mkpm",
+      "args": ["next/prelaunch"]
     }
   ]
 }
