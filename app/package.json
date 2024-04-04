@@ -32,7 +32,7 @@
     "intl-pluralrules": "^2.0.1",
     "multiplatform.one": "^1.0.1",
     "react-i18next": "^14.1.0",
-    "react-native-svg": "15.1.0",
+    "react-native-svg": "14.1.0",
     "solito": "^4.2.2",
     "tamagui": "^1.94.3",
     "utf-8-validate": "^6.0.3",

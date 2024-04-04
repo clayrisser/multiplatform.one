@@ -69,7 +69,7 @@
     "next-i18next": "^13.2.2",
     "react": "^18.2.0",
     "react-i18next": "^12.3.1",
-    "react-native": "~0.73.1",
+    "react-native": "~0.73.6",
     "react-native-recoil-persist": "^0.0.6",
     "recoil-persist": "^4.2.0",
     "zustand": "^4.3.8",
