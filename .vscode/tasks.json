@@ -13,6 +13,12 @@
       "group": "build",
       "isBackground": true,
       "problemMatcher": ["$ts-webpack-watch", "$tslint-webpack-watch"]
+    },
+    {
+      "label": "api/prelaunch",
+      "type": "shell",
+      "command": "./mkpm",
+      "args": ["api/prelaunch"]
     }
   ]
 }

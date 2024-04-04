@@ -1,9 +1,9 @@
 # File: /Makefile
 # Project: root
-# File Created: 10-08-2023 10:50:11
+# File Created: 10-10-2023 06:39:34
 # Author: Clay Risser
 # -----
-# BitSpur (c) Copyright 2021 - 2023
+# BitSpur (c) Copyright 2021 - 2024
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

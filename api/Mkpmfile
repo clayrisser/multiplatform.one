@@ -78,10 +78,11 @@ $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 watch: ~generate
 	@$(TSUP) --watch '**/*.ts' $(WATCH_ARGS)
 
-.PHONY: dev
-dev: prisma/dev docker/dev-d +dev
+.PHONY: dev prelaunch
+dev: prelaunch +dev
+prelaunch: prisma/dev docker/dev-d
 +dev:
-	@$(MKPM_MAKE) watch \
+	@$(call make) watch \
 		WATCH_ARGS="--onSuccess ' \
 			$(BUILD_SCHEMA) && \
 			NODE_ENV=development $(NODE) bin/main.js'"
