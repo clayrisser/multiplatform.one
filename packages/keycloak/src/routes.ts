@@ -103,7 +103,6 @@ function createNextAuthOptions(options: AuthHandlerOptions) {
           return token;
         } else {
           try {
-            console.log('options', options);
             return refreshAccessToken(options, token as NextToken);
           } catch (err) {
             return { ...token, err };

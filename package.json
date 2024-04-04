@@ -11,10 +11,6 @@
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
-    "@graphql-codegen/cli": "~5.0.2",
-    "@graphql-codegen/client-preset": "^4.2.5",
-    "@graphql-codegen/introspection": "4.0.3",
-    "@playlyfe/gql": "^2.6.2",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
     "eslint": "^8.57.0",

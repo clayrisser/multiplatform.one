@@ -21,7 +21,6 @@ include $(MKPM)/mkpm
 include $(MKPM)/gnu
 DEFAULT_ENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/dotenv
-include $(PROJECT_ROOT)/shared.mk
 
 export NAME := $(shell $(NODE) -e "console.log(require('$(PROJECT_ROOT)/package.json').name)")-next
 export VERSION := $(shell $(NODE) -e "console.log(require('$(PROJECT_ROOT)/package.json').version)")

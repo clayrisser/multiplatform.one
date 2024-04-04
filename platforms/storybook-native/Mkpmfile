@@ -23,7 +23,6 @@ include $(MKPM)/gnu
 include $(MKPM)/dotenv
 include $(MKPM)/chain
 include $(MKPM)/yarn
-include $(PROJECT_ROOT)/shared.mk
 
 SB_RN_GET_STORIES ?= $(YARN) sb-rn-get-stories
 export STORYBOOK_ENABLED=true

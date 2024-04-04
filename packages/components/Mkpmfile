@@ -22,7 +22,6 @@ include $(MKPM)/gnu
 include $(MKPM)/chain
 include $(MKPM)/dotenv
 include $(MKPM)/yarn
-include $(PROJECT_ROOT)/shared.mk
 
 TAMAGUI_BUILD ?= $(YARN) tamagui-build
 

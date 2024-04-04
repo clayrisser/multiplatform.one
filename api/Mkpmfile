@@ -23,7 +23,6 @@ include $(MKPM)/chain
 DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/dotenv
 include $(MKPM)/yarn
-include $(PROJECT_ROOT)/shared.mk
 
 BUILD_SCHEMA ?= $(NODE) $(PROJECT_ROOT)/api/bin/buildSchema.js
 

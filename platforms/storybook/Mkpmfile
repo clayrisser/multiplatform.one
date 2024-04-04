@@ -23,7 +23,6 @@ include $(MKPM)/gnu
 include $(MKPM)/dotenv
 include $(MKPM)/chain
 include $(MKPM)/yarn
-include $(PROJECT_ROOT)/shared.mk
 
 NODE_HEAP ?= 8192
 STORYBOOK ?= $(NODE) --max-old-space-size=$(NODE_HEAP) $(PROJECT_ROOT)/node_modules/.bin/storybook
