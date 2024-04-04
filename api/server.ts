@@ -36,7 +36,7 @@ const pubSub = createPubSub<{
 const seedUsers: UserRepresentation[] = [
   {
     username: 'one',
-    email: 'one@multiplatform',
+    email: 'one@multiplatform.one',
     firstName: 'Multiplatform',
     lastName: 'One',
     credentials: [{ value: 'pass' }],

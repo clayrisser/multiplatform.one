@@ -1,6 +1,7 @@
 # app
 /debug.json
 /node_modules
+/.tamagui
 
 # next
 .vercel

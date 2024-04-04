@@ -25,10 +25,10 @@
     "sourceMap": false,
     "strictNullChecks": true,
     "types": ["node", "jest"],
-    "useUnknownInCatchVariables": false,
+    "useUnknownInCatchVariables": false
   },
   "exclude": ["_"],
   "typeAcquisition": {
-    "enable": true,
-  },
+    "enable": true
+  }
 }

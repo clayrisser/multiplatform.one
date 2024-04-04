@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
+import React, { useEffect } from 'react';
 import type { ButtonProps, ColorTokens, InputProps, SizeTokens, ThemeTokens, XStackProps } from 'tamagui';
+import type { IconProps } from '@tamagui/helpers-icon';
 import { Button, Input, XGroup, XStack } from 'tamagui';
 import { Eye, EyeOff } from '@tamagui/lucide-icons';
-import React, { useEffect } from 'react';
-import type { SvgProps } from 'react-native-svg';
 
 export interface BaseIconProps {
   size?: number | SizeTokens;
@@ -47,8 +47,6 @@ interface CustomProps {
   iconAfterAsButton?: boolean;
   passwordWithoutIcon?: boolean;
 }
-
-type IconProps = SvgProps & BaseIconProps;
 
 export type SimpleInputProps = Omit<InputProps & CustomProps & XStackProps, 'ref'>;
 

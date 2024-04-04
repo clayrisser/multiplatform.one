@@ -30,7 +30,7 @@ import type { NodeSDK } from '@opentelemetry/sdk-node';
 import type { NonEmptyArray } from 'type-graphql';
 import type { PrismaClient } from '@prisma/client';
 import type { PubSub, YogaInitialContext, YogaServerInstance, YogaServerOptions } from 'graphql-yoga';
-import type { Server, IncomingMessage, ServerResponse } from 'node:http';
+import type { Server, IncomingMessage, ServerResponse } from 'http';
 import type { SubscribePayload } from 'graphql-ws';
 import type { WebSocketServer } from 'ws';
 

@@ -79,7 +79,7 @@ function requestLogger(request: InternalAxiosRequestConfig, options: AxiosLogger
 function responseLogger(response: AxiosResponse, options: AxiosLoggerOptions, logger: Logger) {
   if ((response as any)?.config?.silent) return response;
   const url = response.request?.url || response.request?.res?.responseUrl;
-  const statusName = httpStatus[`${response.status}_NAME`];
+  const statusName = httpStatus[response.status as keyof typeof httpStatus];
   let message = `[Response]${options.method ? ` ${response.request?.method?.toUpperCase()}` : ''}${
     options.url && url ? ` ${url}` : ''
   }${options.status ? ` ${response.status}` : ''}${statusName ? `:${statusName}` : ''}`;
