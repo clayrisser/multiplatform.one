@@ -11,6 +11,7 @@ export default defineConfig({
   minify: false,
   noExternal: transpileModules,
   outDir: 'dist',
+  sourcemap: true,
   publicDir: './public',
   skipNodeModulesBundle: true,
   splitting: true,

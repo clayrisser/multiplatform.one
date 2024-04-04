@@ -19,6 +19,12 @@ import { importFonts } from 'app/fonts';
 import { setDefaultCrossStorage } from 'multiplatform.one/zustand';
 import { useThemeState } from 'app/state/theme';
 
+if (typeof window === 'undefined') {
+  console.log('window is undefined');
+} else {
+  console.log('window is defined');
+}
+
 const sentryDsn = config.get('SENTRY_DSN');
 if (sentryDsn) {
   Sentry.init({
