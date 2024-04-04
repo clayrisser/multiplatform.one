@@ -23,7 +23,7 @@
 import { otelSDK } from './tracing';
 // @ts-ignore
 import { initializeKeycloak } from '@multiplatform.one/keycloak-typegraphql';
-import http from 'node:http';
+import http from 'http';
 import promClient, { Registry as PromClientRegistry } from 'prom-client';
 import type { Ctx, CtxExtra, TypeGraphQLServer, ServerOptions, TracingOptions, MetricsOptions } from './types';
 import type { LoggerOptions } from './logger';
@@ -39,7 +39,7 @@ import { createKeycloakOptions } from './keycloak';
 import { createYoga, useLogger } from 'graphql-yoga';
 import { generateRequestId } from './utils';
 import { initializeAxiosLogger } from './axios';
-import { parse } from 'node:url';
+import { parse } from 'url';
 import { useApolloTracing } from '@envelop/apollo-tracing';
 import { useOpenTelemetry } from '@envelop/opentelemetry';
 import { usePrometheus } from '@envelop/prometheus';
