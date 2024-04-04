@@ -34,7 +34,10 @@
       "name": "api dev",
       "type": "node-terminal",
       "request": "launch",
-      "command": "./mkpm api/dev"
+      "preLaunchTask": "api/prelaunch",
+      "cwd": "${workspaceFolder}/api",
+      "envFile": "${workspaceFolder}/.env",
+      "command": "POSTGRES_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}?sslmode=prefer ${workspaceFolder}/node_modules/.bin/tsup --watch '**/*.ts' --onSuccess 'node bin/buildSchema.js && NODE_ENV=development node bin/main.js'"
     },
     {
       "name": "gql dev",

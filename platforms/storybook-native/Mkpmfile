@@ -72,22 +72,22 @@ EXPO_PORT ?= 8081
 .PHONY: dev +dev
 dev: | ~generate +dev
 +dev:
-	@$(EXPO) start -c -p $(EXPO_PORT) $(DEV_ARGS)
+	@$(EXPO) start -c -p $(EXPO_PORT) --go $(DEV_ARGS)
 
 .PHONY: dev@web +dev@web
 dev@web: | ~deps +dev@web
 +dev@web: +generate
-	@$(EXPO) start -c -p $(EXPO_PORT) --web $(ARGS)
+	@$(EXPO) start -c -p $(EXPO_PORT) --go --web $(ARGS)
 
 .PHONY: dev@android +dev@android
 dev@android: | ~generate +dev@android
 +dev@android:
-	@$(EXPO) start -c -p $(EXPO_PORT) --android $(ARGS)
+	@$(EXPO) start -c -p $(EXPO_PORT) --go --android $(ARGS)
 
 .PHONY: dev@ios +dev@ios
 dev@ios: | ~generate dev@ios
 +dev@ios:
-	@$(EXPO) start -c -p $(EXPO_PORT) --ios $(ARGS)
+	@$(EXPO) start -c -p $(EXPO_PORT) --go --ios $(ARGS)
 
 .PHONY: clean
 clean:
