@@ -26,7 +26,7 @@ import path from 'path';
 import pretty from 'pino-pretty';
 import type { AxiosLoggerOptions } from './axios';
 import type { Ctx } from './types';
-import type { IncomingMessage, ServerResponse } from 'node:http';
+import type { IncomingMessage, ServerResponse } from 'http';
 import type { Logger as PinoLogger } from 'pino';
 import type { Options as PinoHttpOptions } from 'pino-http';
 import { generateRequestId } from './utils';
@@ -290,7 +290,7 @@ function colorTime(time: string, milli: string, color = false) {
 }
 
 function formatStatus(status: number | string, color = false) {
-  const statusName = httpStatus[`${status}_NAME`];
+  const statusName = httpStatus[`${status}_NAME` as keyof typeof httpStatus];
   status = `${status}${statusName ? ':' + statusName : ''}`;
   if (color) {
     switch (parseInt(status[0], 10)) {

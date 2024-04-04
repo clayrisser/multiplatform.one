@@ -25,7 +25,7 @@ import type RoleRepresentation from '@keycloak/keycloak-admin-client/lib/defs/ro
 import type ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation';
 import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
 import type { Grant } from 'keycloak-connect';
-import type { IncomingMessage } from 'node:http';
+import type { IncomingMessage } from 'http';
 import type { KeycloakService } from './keycloakService';
 
 export type KeycloakRequest<R extends Request | IncomingMessage = Request | IncomingMessage> = {

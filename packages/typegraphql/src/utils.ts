@@ -19,7 +19,7 @@
  *  limitations under the License.
  */
 
-import { randomUUID } from 'node:crypto';
+import { randomUUID } from 'crypto';
 import startCase from 'lodash.startcase';
 
 export function getReqHeader(req: any, name: string) {

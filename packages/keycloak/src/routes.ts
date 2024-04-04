@@ -72,7 +72,7 @@ export function createLogoutHandler(options: AuthHandlerOptions) {
   };
 }
 
-export function createNextAuthOptions(options: AuthHandlerOptions) {
+function createNextAuthOptions(options: AuthHandlerOptions) {
   if (_nextAuth) return _nextAuth;
   _nextAuth = {
     ...options.nextAuth,
@@ -103,6 +103,7 @@ export function createNextAuthOptions(options: AuthHandlerOptions) {
           return token;
         } else {
           try {
+            console.log('options', options);
             return refreshAccessToken(options, token as NextToken);
           } catch (err) {
             return { ...token, err };

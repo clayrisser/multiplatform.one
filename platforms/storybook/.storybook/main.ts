@@ -19,20 +19,19 @@
  *  limitations under the License.
  */
 
-import path from 'path';
 import publicConfig from 'app/config/public';
-import tamaguiModules from '../tamaguiModules';
 import transpileModules from '../transpileModules';
 import type { StorybookConfig } from '@storybook/nextjs';
 import webpack from 'webpack';
 
 const config: StorybookConfig = {
   stories: [
-    '../../../app/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-    '../../../packages/*/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-    '../../../ui/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-    '../stories/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-  ],
+    '../../../app/layouts',
+    '../../../app/screens',
+    '../../../packages/components/src',
+    '../../../ui/src',
+    '../stories',
+  ].map((directory) => ({ directory, files: '**/*.stories.@(js|jsx|ts|tsx|mdx)' })),
   addons: [
     '@etchteam/storybook-addon-status',
     '@storybook/addon-a11y',
@@ -40,6 +39,7 @@ const config: StorybookConfig = {
     '@storybook/addon-notes',
     '@storybook/addon-storyshots',
     '@storybook/addon-storysource',
+    '@storybook/addon-webpack5-compiler-babel',
     'addon-screen-reader',
     'storybook-addon-paddings',
     'storybook-color-picker',
@@ -105,27 +105,12 @@ const config: StorybookConfig = {
         zlib: require.resolve('browserify-zlib'),
       },
       fallback: {
-        ...(config.resolve?.fallback || []),
+        ...(config.resolve?.fallback || {}),
         fs: false,
         os: false,
         path: false,
         util: false,
       },
-    },
-    module: {
-      ...config.module,
-      rules: [
-        ...(config.module?.rules || [
-          {
-            loader: 'tamagui-loader',
-            options: {
-              components: tamaguiModules,
-              config: path.resolve(__dirname, '../tamagui.config.ts'),
-              exclude: /node_modules/,
-            },
-          },
-        ]),
-      ],
     },
     plugins: [
       ...(config.plugins || []),
