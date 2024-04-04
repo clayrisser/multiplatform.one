@@ -73,7 +73,7 @@
     "autoHeader": "autoSave",
     "enforceHeader": true,
     "include": ["javascript", "makefile", "typescript", "typescriptreact"],
-    "isActive": true,
+    "isActive": false,
     "modAuthor": "Modified By:",
     "modDate": "Last Modified:",
     "modDateFormat": "dd-MM-yyyy hh:nn:ss",

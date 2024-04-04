@@ -25,8 +25,8 @@ include $(MKPM)/envcache
 include $(MKPM)/dotenv
 
 ACTIONS += deps
-$(ACTION)/deps: package.json
-	@$(YARN) install $(ARGS)
+$(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
+	@$(call make,$(PROJECT_ROOT)) \~deps DEPS_ARGS=$(DEPS_ARGS)
 	@$(call done,$@)
 
 ACTIONS += format~deps
