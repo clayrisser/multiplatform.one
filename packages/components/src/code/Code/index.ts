@@ -1,10 +1,10 @@
 /*
  *  File: /src/code/Code/index.ts
  *  Project: @multiplatform.one/components
- *  File Created: 22-06-2023 05:33:09
+ *  File Created: 04-04-2024 15:50:39
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
