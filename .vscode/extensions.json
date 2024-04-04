@@ -12,7 +12,6 @@
     "ms-azuretools.vscode-docker",
     "prisma.prisma",
     "psioniq.psi-header",
-    "streetsidesoftware.code-spell-checker",
-    "emeraldwalk.runonsave"
+    "streetsidesoftware.code-spell-checker"
   ]
 }

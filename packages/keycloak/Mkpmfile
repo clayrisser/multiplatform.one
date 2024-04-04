@@ -22,7 +22,6 @@ include $(MKPM)/gnu
 include $(MKPM)/chain
 include $(MKPM)/yarn
 include $(MKPM)/dotenv
-include $(PROJECT_ROOT)/shared.mk
 
 CSPELL ?= $(YARN) cspell
 ESLINT ?= $(YARN) eslint

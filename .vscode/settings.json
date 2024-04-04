@@ -87,12 +87,6 @@
   "files.associations": {
     "Mkpmfile": "makefile"
   },
-  "emeraldwalk.runonsave": {
-    "commands": [
-      {
-        "match": "(api|app)\\/.*\\.(tsx|ts|gql|graphql)$",
-        "cmd": "yarn graphql-codegen"
-      }
-    ]
-  }
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }

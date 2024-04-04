@@ -25,7 +25,6 @@ include $(MKPM)/envcache
 include $(MKPM)/dotenv
 include $(MKPM)/chain
 include $(MKPM)/yarn
-include $(PROJECT_ROOT)/shared.mk
 
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)

@@ -20,7 +20,7 @@
  */
 
 import React, { useState } from 'react';
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text, SimplePopover } from 'ui';
+import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { gql } from 'gql';
 import { useAuthQuery, useAuthSubscription, withAuthenticated } from '@multiplatform.one/keycloak';
@@ -28,7 +28,7 @@ import { useLink } from 'solito/link';
 import { useTranslation } from 'multiplatform.one';
 import { withDefaultLayout } from 'app/layouts/Default';
 
-const AuthQuery = gql(/* GraphQL */ `
+const AuthQuery = gql(`
   query AuthQuery {
     accessToken
     username
@@ -36,7 +36,7 @@ const AuthQuery = gql(/* GraphQL */ `
   }
 `);
 
-const CountSubscription = gql(/* GraphQL */ `
+const CountSubscription = gql(`
   subscription CountSubscription {
     count
   }
