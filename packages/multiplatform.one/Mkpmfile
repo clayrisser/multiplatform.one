@@ -25,11 +25,7 @@ include $(MKPM)/dotenv
 
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
-ifneq (,$(SUBPROC))
-	@$(MAKE) -sC $(PROJECT_ROOT) -f $(PROJECT_ROOT)/Mkpmfile \~deps DEPS_ARGS=$(DEPS_ARGS)
-else
-	@$(YARN) workspaces focus $(DEPS_ARGS)
-endif
+	@$(call make,$(PROJECT_ROOT)) \~deps DEPS_ARGS=$(DEPS_ARGS)
 	@$(call done,$@)
 
 ACTIONS += format~deps
