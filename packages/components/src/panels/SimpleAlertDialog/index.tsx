@@ -90,10 +90,10 @@ export function SimpleAlertDialog({
           {children ? (
             children
           ) : (
-            <YStack space>
+            <YStack gap>
               {title && <AlertDialog.Title {...titleStyle}>{title}</AlertDialog.Title>}
               {description && <AlertDialog.Description {...descriptionStyle}>{description}</AlertDialog.Description>}
-              <XStack space="$3" jc="flex-end">
+              <XStack gap="$3" jc="flex-end">
                 <AlertDialog.Cancel asChild>
                   <Button {...buttonStyle}>{cancel || 'cancel'}</Button>
                 </AlertDialog.Cancel>

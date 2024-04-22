@@ -39,7 +39,7 @@ export default {
 };
 
 export const main = () => (
-  <SimpleForm padding="$4" space>
+  <SimpleForm padding="$4" gap>
     <FormInput name="firstName" label="First Name" />
     <FormInput name="lastName" label="Last Name" />
     <FormSelectSimple name="favoriteColor" label="Favorite Color">
@@ -76,7 +76,7 @@ export const main = () => (
       name="Gender"
       label="Gender"
       horizontal
-      spacingProps={{ space: true }}
+      spacingProps={{ gap: true }}
     /> */}
     <FormSubmitButton onSubmit={action('onSubmit')}>Submit</FormSubmitButton>
   </SimpleForm>

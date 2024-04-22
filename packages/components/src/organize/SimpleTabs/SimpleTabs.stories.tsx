@@ -42,8 +42,8 @@ const Main = () => {
   }, [isHorizontal]);
 
   return (
-    <YStack space padding="$4">
-      <XStack space>
+    <YStack gap padding="$4">
+      <XStack gap>
         <Switch size="$3" checked={isHorizontal} onCheckedChange={setIsHorizontal}>
           <Switch.Thumb animation="bouncy" />
         </Switch>

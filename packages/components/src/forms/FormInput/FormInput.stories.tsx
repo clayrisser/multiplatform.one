@@ -12,7 +12,7 @@ export default {
 };
 
 export const main = () => (
-  <YStack padding="$4" space>
+  <YStack padding="$4" gap>
     <FormInput onChangeText={action('onTextChange')} name="firstName" label="First Name" />
     <FormInput onChangeText={action('onTextChange')} name="lastName" label="Last Name" />
   </YStack>

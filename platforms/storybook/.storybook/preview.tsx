@@ -6,11 +6,10 @@ import tamaguiConfig from '../tamagui.config';
 import type { Preview } from '@storybook/react';
 import type { PropsWithChildren } from 'react';
 import type { ThemeName } from 'ui';
-import { DebugLayout, mdxComponents } from 'ui';
 import { GlobalProvider } from 'app/providers';
 import { MDXProvider } from '@mdx-js/react';
-import { YStack } from 'ui';
 import { importFonts } from 'app/fonts';
+import { mdxComponents, YStack } from 'ui';
 import { supportedLocales, defaultLocale, i18nInit, i18n } from 'app/i18n';
 import { themes as storybookThemes } from '@storybook/theming';
 import { useDarkMode } from 'storybook-dark-mode';
@@ -50,7 +49,7 @@ const preview: Preview = {
   decorators: [
     withThemeFromJSXProvider({
       themes: {
-        ...DebugLayout.defaultProps.subThemeNames.reduce((themes, name) => {
+        ...['blue', 'gray', 'green', 'orange', 'pink', 'purple', 'red', 'yellow'].reduce((themes, name) => {
           themes[name] = { name };
           return themes;
         }, {}),

@@ -29,7 +29,7 @@ export interface CheckBoxElement {
 export interface CheckBoxElementSizing {
   width?: any;
   height?: any;
-  space?: SizeTokens;
+  gap?: SizeTokens;
   ai?: FlexAlignType;
 }
 
@@ -55,10 +55,10 @@ export function FormCheckBox({
   const id = useId();
   if (!formContext) {
     return (
-      <YStack space>
+      <YStack gap>
         <XStack
           style={{ alignItems: 'center' }}
-          space={CheckBoxElementSizing?.space || '$3'}
+          gap={CheckBoxElementSizing?.gap || '$3'}
           height={CheckBoxElementSizing?.height}
           width={CheckBoxElementSizing?.width || '300'}
           ai="center"
@@ -100,7 +100,7 @@ export function FormCheckBox({
           <YStack>
             <XStack
               alignItems={CheckBoxElementSizing?.ai || 'center'}
-              space={CheckBoxElementSizing?.space || '$3'}
+              gap={CheckBoxElementSizing?.gap || '$3'}
               height={CheckBoxElementSizing?.height}
               width={CheckBoxElementSizing?.width || '300'}
             >

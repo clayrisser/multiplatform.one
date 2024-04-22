@@ -19,4 +19,4 @@
  *  limitations under the License.
  */
 
-module.exports = require('../lib/recoil.js');
+module.exports = require('../lib/recoil/index.js');
