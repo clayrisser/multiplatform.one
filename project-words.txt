@@ -100,6 +100,7 @@ dsn
 dsp
 dto
 dts
+easter
 ecma
 ejs
 enum
@@ -139,6 +140,7 @@ graphicsmagick
 graphiql
 graphql
 graphqlsp
+halloween
 helvetica
 hmr
 hoverable

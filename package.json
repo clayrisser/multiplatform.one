@@ -25,6 +25,7 @@
   "resolutions": {
     "@keycloak/keycloak-admin-client": "^19.0.3",
     "@storybook/types": "^7.0.15",
+    "@tamagui/compose-refs": "1.94.3",
     "@types/react": "^18.2.7",
     "@types/react-native": "^0.72.2",
     "estree-util-build-jsx": "2.2.0",

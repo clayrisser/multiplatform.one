@@ -1,3 +1,4 @@
+import type { ThemeName } from 'tamagui';
 import { animations } from './animations';
 import { createMedia } from '@tamagui/react-native-media-driver';
 import { createTamagui } from 'tamagui';
@@ -31,3 +32,12 @@ export const config = createTamagui({
     pointerCoarse: { pointer: 'coarse' },
   }),
 });
+
+export const tintFamilies = {
+  easter: ['yellow', 'pink', 'yellow', 'pink', 'yellow', 'pink', 'yellow'] as ThemeName[],
+  halloween: ['orange', 'gray', 'orange', 'gray', 'orange', 'gray', 'orange'] as ThemeName[],
+  lunar: ['yellow', 'red', 'red', 'red', 'red', 'red', 'yellow'] as ThemeName[],
+  tamagui: ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red'] as ThemeName[],
+  valentine: ['pink', 'red', 'pink', 'red', 'pink', 'red', 'pink'] as ThemeName[],
+  xmas: ['red', 'green', 'red', 'green', 'red', 'green', 'red'] as ThemeName[],
+};

@@ -5,6 +5,7 @@ import { gql } from 'gql';
 import { useAuthQuery, useAuthSubscription, withAuthenticated } from '@multiplatform.one/keycloak';
 import { useLink } from 'solito/link';
 import { useTranslation } from 'multiplatform.one';
+import { ThemeTintAlt } from '@multiplatform.one/components';
 import { withDefaultLayout } from 'app/layouts/Default';
 
 const AuthQuery = gql(`
@@ -56,31 +57,37 @@ function SheetDemo() {
   const [open, setOpen] = useState(false);
   const [position, setPosition] = useState(0);
   return (
-    <>
-      <Button size="$6" icon={open ? ChevronDown : ChevronUp} circular onPress={() => setOpen((x) => !x)} />
-      <Sheet
-        modal
-        open={open}
-        onOpenChange={setOpen}
-        snapPoints={[80]}
-        position={position}
-        onPositionChange={setPosition}
-        dismissOnSnapToBottom
-      >
-        <Sheet.Overlay />
-        <Sheet.Frame ai="center" jc="center">
-          <Sheet.Handle />
-          <Button
-            size="$6"
-            circular
-            icon={ChevronDown}
-            onPress={() => {
-              setOpen(false);
-            }}
-          />
-        </Sheet.Frame>
-      </Sheet>
-    </>
+    <ThemeTintAlt offset={1}>
+      <>
+        <Button size="$6" icon={open ? ChevronDown : ChevronUp} circular onPress={() => setOpen((x) => !x)} />
+        <ThemeTintAlt offset={2}>
+          <Sheet
+            modal
+            open={open}
+            onOpenChange={setOpen}
+            snapPoints={[80]}
+            position={position}
+            onPositionChange={setPosition}
+            dismissOnSnapToBottom
+          >
+            <Sheet.Overlay />
+            <Sheet.Frame ai="center" jc="center">
+              <ThemeTintAlt offset={3}>
+                <Sheet.Handle />
+                <Button
+                  size="$6"
+                  circular
+                  icon={ChevronDown}
+                  onPress={() => {
+                    setOpen(false);
+                  }}
+                />
+              </ThemeTintAlt>
+            </Sheet.Frame>
+          </Sheet>
+        </ThemeTintAlt>
+      </>
+    </ThemeTintAlt>
   );
 }
 

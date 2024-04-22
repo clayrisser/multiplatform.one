@@ -27,6 +27,7 @@ import { Select, YStack, XStack, Adapt, Popover, Circle } from 'tamagui';
 import { SelectSimple } from '../../forms/SelectSimple';
 import { createWithLayout, useLocale, useSupportedLocales } from 'multiplatform.one';
 import { useTheme } from 'multiplatform.one/theme';
+import { useTint } from '../../tints';
 // @ts-ignore
 import { config } from 'app/config';
 // @ts-ignore
@@ -50,6 +51,7 @@ export function DebugLayout<DebugViewProps>({
   size = 12,
   subThemeNames = ['blue', 'gray', 'green', 'orange', 'pink', 'purple', 'red', 'yellow'],
 }: DebugLayoutProps<DebugViewProps>) {
+  const { familiesNames, setFamily, name } = useTint();
   const DebugView = debugView;
   const [theme, setTheme] = useTheme();
   const [locale, setLocale] = useLocale();
@@ -85,6 +87,16 @@ export function DebugLayout<DebugViewProps>({
 
   function renderLocaleItems() {
     return (supportedLocales || []).map((name: string, i: number) => {
+      return (
+        <Select.Item key={i + name} index={i} value={name}>
+          <Select.ItemText>{name}</Select.ItemText>
+        </Select.Item>
+      );
+    });
+  }
+
+  function renderTintFamilyItems() {
+    return familiesNames.map((name, i) => {
       return (
         <Select.Item key={i + name} index={i} value={name}>
           <Select.ItemText>{name}</Select.ItemText>
@@ -138,6 +150,16 @@ export function DebugLayout<DebugViewProps>({
                 onValueChange={setLocale}
               >
                 {renderLocaleItems()}
+              </SelectSimple>
+              <SelectSimple
+                id="tint-families"
+                width={96}
+                placeholder={name.toString()}
+                backgroundColor="$color10"
+                value={name.toString()}
+                onValueChange={setFamily}
+              >
+                {renderTintFamilyItems()}
               </SelectSimple>
             </XStack>
             {DebugView && <DebugView {...(debugViewProps as any)} />}
