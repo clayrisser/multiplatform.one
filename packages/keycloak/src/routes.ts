@@ -72,7 +72,7 @@ export function createLogoutHandler(options: AuthHandlerOptions) {
   };
 }
 
-function createNextAuthOptions(options: AuthHandlerOptions) {
+export function createNextAuthOptions(options: AuthHandlerOptions) {
   if (_nextAuth) return _nextAuth;
   _nextAuth = {
     ...options.nextAuth,

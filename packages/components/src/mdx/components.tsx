@@ -147,15 +147,7 @@ export const mdxComponents: MDXComponents = {
 };
 
 const LinkHeading = ({ id, children, ...props }: { id?: string } & XStackProps) => (
-  <XStack
-    href={`#${id}`}
-    id={id}
-    data-id={id}
-    display="inline-flex"
-    alignItems="center"
-    space
-    {...sanitizeProps(props)}
-  >
+  <XStack href={`#${id}`} id={id} data-id={id} display="inline-flex" alignItems="center" gap {...sanitizeProps(props)}>
     {children}
     <YStack opacity={0.3}>
       <IconLink size={12} color="var(--color)" aria-hidden />

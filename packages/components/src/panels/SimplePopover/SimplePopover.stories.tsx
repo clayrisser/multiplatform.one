@@ -34,7 +34,7 @@ function Hoverable() {
   const [hoverable, setHoverable] = useState(true);
   return (
     <YStack>
-      <XStack space padding="$4" alignItems="center">
+      <XStack gap padding="$4" alignItems="center">
         <Label>Hoverable</Label>
         <Switch size="$3" checked={hoverable} onCheckedChange={setHoverable}>
           <Switch.Thumb animation="bouncy" />

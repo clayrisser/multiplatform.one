@@ -48,10 +48,10 @@ export const Custom = () => (
     accept="Yes, Delete"
     trigger={<Button>Get Alert</Button>}
   >
-    <YStack space width={400}>
+    <YStack gap width={400}>
       <AlertDialog.Title>Custom Alert</AlertDialog.Title>
       <AlertDialog.Description>this is a custom alert</AlertDialog.Description>
-      <XStack space="$3" jc="flex-end">
+      <XStack gap="$3" jc="flex-end">
         <AlertDialog.Cancel asChild>
           <Button>cancel</Button>
         </AlertDialog.Cancel>

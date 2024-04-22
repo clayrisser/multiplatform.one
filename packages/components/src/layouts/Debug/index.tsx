@@ -26,10 +26,10 @@ import type { WithLayout } from 'multiplatform.one';
 import { Select, YStack, XStack, Adapt, Popover, Circle } from 'tamagui';
 import { SelectSimple } from '../../forms/SelectSimple';
 import { createWithLayout, useLocale, useSupportedLocales } from 'multiplatform.one';
+import { useTheme } from 'multiplatform.one/theme';
 // @ts-ignore
 import { config } from 'app/config';
 // @ts-ignore
-import { useThemeState } from 'app/state/theme';
 
 type ColorScheme = 'dark' | 'light';
 
@@ -46,21 +46,21 @@ export function DebugLayout<DebugViewProps>({
   children,
   debugView,
   debugViewProps,
-  rootThemeNames,
-  size,
-  subThemeNames,
+  rootThemeNames = ['system', 'light', 'dark'],
+  size = 12,
+  subThemeNames = ['blue', 'gray', 'green', 'orange', 'pink', 'purple', 'red', 'yellow'],
 }: DebugLayoutProps<DebugViewProps>) {
   const DebugView = debugView;
+  const [theme, setTheme] = useTheme();
   const [locale, setLocale] = useLocale();
-  const themeState = useThemeState();
   const supportedLocales = useSupportedLocales();
 
   function handleSubThemeChange(subTheme: ThemeName) {
-    themeState.setSub(subTheme);
+    setTheme({ sub: subTheme });
   }
 
-  function handleRootThemeChange(rootTheme: ThemeName) {
-    themeState.setRoot(rootTheme as ColorScheme);
+  function handleRootThemeChange(rootTheme: ColorScheme) {
+    setTheme({ root: rootTheme });
   }
 
   function renderSubThemeItems() {
@@ -95,7 +95,7 @@ export function DebugLayout<DebugViewProps>({
 
   function renderDebug() {
     return (
-      <XStack space m="$4" width={size} height={size}>
+      <XStack gap m="$4" width={size} height={size}>
         <Popover placement="right" size="$5">
           <Popover.Trigger>
             <Circle cursor="pointer" backgroundColor="$color9" width={size} height={size} />
@@ -109,22 +109,22 @@ export function DebugLayout<DebugViewProps>({
             </Popover.Sheet>
           </Adapt>
           <Popover.Content borderWidth={1} borderColor="$borderColor" elevate>
-            <XStack space>
+            <XStack gap>
               <SelectSimple
                 id="root-theme"
-                placeholder={themeState.root}
+                placeholder={theme.root}
                 width={96}
-                value={themeState.root}
+                value={theme.root || 'system'}
                 onValueChange={handleRootThemeChange}
               >
                 {renderRootThemeItems()}
               </SelectSimple>
               <SelectSimple
                 id="sub-theme"
-                placeholder={themeState.sub}
+                placeholder={theme.sub}
                 width={96}
                 backgroundColor="$color5"
-                value={themeState.sub}
+                value={theme.sub?.toString()}
                 onValueChange={handleSubThemeChange}
               >
                 {renderSubThemeItems()}
@@ -155,12 +155,6 @@ export function DebugLayout<DebugViewProps>({
     </YStack>
   );
 }
-
-DebugLayout.defaultProps = {
-  rootThemeNames: ['light', 'dark'],
-  size: 12,
-  subThemeNames: ['blue', 'gray', 'green', 'orange', 'pink', 'purple', 'red', 'yellow'],
-};
 
 export function createWithDebugLayout<DebugViewProps>(
   extraLayouts?: WithLayout<any>[],

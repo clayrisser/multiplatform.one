@@ -32,6 +32,11 @@
       "import": "./lib/encryption/index.mjs",
       "require": "./lib/encryption/index.js",
       "types": "./lib/encryption/index.d.ts"
+    },
+    "./theme": {
+      "import": "./lib/theme/index.mjs",
+      "require": "./lib/theme/index.js",
+      "types": "./lib/theme/index.d.ts"
     }
   },
   "author": "BitSpur",
@@ -72,7 +77,7 @@
     "react-native": "~0.73.6",
     "react-native-recoil-persist": "^0.0.6",
     "recoil-persist": "^4.2.0",
-    "zustand": "^4.3.8",
+    "zustand": "^4.5.2",
     "zustand-tools": "^0.0.7"
   },
   "devDependencies": {
@@ -129,7 +134,9 @@
     "indent": 4
   },
   "dependencies": {
+    "cookies-next": "^4.1.1",
     "cross-storage": "^1.0.0",
-    "merge-options": "^3.0.4"
+    "merge-options": "^3.0.4",
+    "react-cookie": "^7.1.4"
   }
 }

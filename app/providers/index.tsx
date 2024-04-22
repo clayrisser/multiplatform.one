@@ -1,12 +1,14 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import type { GlobalKeycloakProviderProps } from './keycloak';
 import type { GlobalTamaguiProviderProps } from './tamagui';
 import type { PropsWithChildren } from 'react';
 import type { TamaguiInternalConfig } from 'ui';
+import type { ThemeProviderProps } from 'multiplatform.one/theme';
 import { GlobalApolloProvider } from './apollo';
 import { GlobalKeycloakProvider } from './keycloak';
-import { GlobalTamaguiProvider } from './tamagui';
 import { GlobalNavigationProvider } from './navigation';
+import { GlobalTamaguiProvider } from './tamagui';
+import { ThemeProvider } from 'multiplatform.one/theme';
 
 export type GlobalProviderKeycloak = Omit<GlobalKeycloakProviderProps, 'disabled' | 'children'>;
 
@@ -14,23 +16,23 @@ export type GlobalProviderProps = PropsWithChildren &
   Omit<GlobalTamaguiProviderProps, 'config'> & {
     keycloak?: GlobalProviderKeycloak;
     tamaguiConfig?: TamaguiInternalConfig;
-  };
+  } & ThemeProviderProps;
 
-export function GlobalProvider({ children, keycloak, tamaguiConfig, ...props }: GlobalProviderProps) {
+export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, theme, ...props }: GlobalProviderProps) {
   return (
-    <GlobalKeycloakProvider disabled={!keycloak} {...keycloak}>
-      <GlobalApolloProvider>
-        <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
-          <Suspense>
+    <ThemeProvider cookies={cookies} theme={theme}>
+      <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
+        <GlobalKeycloakProvider disabled={!keycloak} {...keycloak}>
+          <GlobalApolloProvider>
             <GlobalNavigationProvider>{children}</GlobalNavigationProvider>
-          </Suspense>
-        </GlobalTamaguiProvider>
-      </GlobalApolloProvider>
-    </GlobalKeycloakProvider>
+          </GlobalApolloProvider>
+        </GlobalKeycloakProvider>
+      </GlobalTamaguiProvider>
+    </ThemeProvider>
   );
 }
 
-export * from './apollo/apollo';
+export * from './apollo';
 export * from './keycloak';
 export * from './navigation';
 export * from './tamagui';
