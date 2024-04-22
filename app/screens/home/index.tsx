@@ -4,7 +4,6 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { gql } from 'gql';
 import { useAuthQuery, useAuthSubscription, withAuthenticated } from '@multiplatform.one/keycloak';
 import { useLink } from 'solito/link';
-// import { useSubTheme } from 'multiplatform.one/theme';
 import { useTranslation } from 'multiplatform.one';
 import { withDefaultLayout } from 'app/layouts/Default';
 
@@ -27,13 +26,12 @@ function HomeScreen() {
   const linkProps = useLink({
     href: '/user/alice',
   });
-  console.log('R');
-  // const { data, loading } = useAuthQuery(AuthQuery);
-  // const { data: cData } = useAuthSubscription(CountSubscription);
+  const { data, loading } = useAuthQuery(AuthQuery);
+  const { data: cData } = useAuthSubscription(CountSubscription);
   return (
     <YStack f={1} jc="center" ai="center" p="$4" gap>
-      {/* {cData?.count} */}
-      {/* {loading ? <Spinner /> : <Text>username: {data?.username}</Text>} */}
+      {cData?.count}
+      {loading ? <Spinner /> : <Text>username: {data?.username}</Text>}
       <YStack gap="$4" maw={600}>
         <H1 ta="center">{t('screens.home.welcome')}</H1>
         <Paragraph fontFamily="$silkscreen" ta="center">

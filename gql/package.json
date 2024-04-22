@@ -3,21 +3,11 @@
   "main": "index.ts",
   "private": true,
   "sideEffects": false,
-  "nodemonConfig": {
-    "watch": [
-      "../api",
-      "../app"
-    ],
-    "ext": "ts,tsx,graphql",
-    "signal": "SIGTERM",
-    "delay": 100
-  },
   "eslintIgnore": [
     "generated"
   ],
   "devDependencies": {
-    "@0no-co/graphqlsp": "^1.10.3",
-    "nodemon": "^3.1.0"
+    "@0no-co/graphqlsp": "^1.10.3"
   },
   "dependencies": {
     "gql.tada": "^1.5.5"

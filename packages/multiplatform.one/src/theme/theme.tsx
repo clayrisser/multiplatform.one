@@ -24,8 +24,8 @@ import type { Actions } from '../zustand';
 import type { ColorScheme as TamaguiColorScheme } from '@tamagui/next-theme';
 import type { PropsWithChildren } from 'react';
 import type { ThemeName } from '@tamagui/web';
-import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
 import { MultiPlatform } from 'multiplatform.one';
+import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
 import { createStateStore } from '../zustand';
 import { useCookies } from 'react-cookie';
 
@@ -106,15 +106,15 @@ export function ThemeProvider({ children, cookies: nextCookies, theme }: ThemePr
   const themeState = useThemeState();
   const root =
     themeState.root ||
-    (MultiPlatform.isServer
+    (MultiPlatform.isNext && MultiPlatform.isServer
       ? (nextCookies?.[COOKIE_ROOT_THEME] as ColorScheme)
       : (localCookies?.[COOKIE_ROOT_THEME] as ColorScheme)) ||
     defaultThemeValue.root;
   const sub =
     themeState.sub ||
-    (MultiPlatform.isServer
-      ? (nextCookies?.[COOKIE_ROOT_THEME] as ColorScheme)
-      : (localCookies?.[COOKIE_ROOT_THEME] as ColorScheme)) ||
+    (MultiPlatform.isNext && MultiPlatform.isServer
+      ? (nextCookies?.[COOKIE_SUB_THEME] as ColorScheme)
+      : (localCookies?.[COOKIE_SUB_THEME] as ColorScheme)) ||
     defaultThemeValue.sub;
   const value = React.useMemo(() => ({ root, sub }), [root, sub]);
 
