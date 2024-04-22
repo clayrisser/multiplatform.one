@@ -86,7 +86,7 @@ export function SimpleDialog({
       {trigger && <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>}
       <Adapt when="sm" platform="touch">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" space>
+          <Sheet.Frame padding="$4" gap>
             <Adapt.Contents />
           </Sheet.Frame>
           <Sheet.Overlay />
@@ -119,7 +119,7 @@ export function SimpleDialog({
           ]}
           enterStyle={{ x: 0, y: -150, opacity: 0, scale: 0.4 }}
           exitStyle={{ x: 0, y: -150, opacity: 0, scale: 0.4 }}
-          space
+          gap
           {...(asRightSideSheet && {
             enterStyle: { x: transitionWidth || 200, opacity: 0 },
             exitStyle: { x: transitionWidth || 200, opacity: 0 },
@@ -142,8 +142,8 @@ export function SimpleDialog({
           {children}
           {!withoutCloseButton && (
             <Unspaced>
-              <Dialog.Close asChild space>
-                <Button pos="absolute" t="$3" r="$3" size="$2" circular space icon={X} />
+              <Dialog.Close asChild gap>
+                <Button pos="absolute" t="$3" r="$3" size="$2" circular gap icon={X} />
               </Dialog.Close>
             </Unspaced>
           )}

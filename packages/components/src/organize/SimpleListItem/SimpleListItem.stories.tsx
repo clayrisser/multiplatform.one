@@ -36,7 +36,7 @@ function Main() {
   const [orientation, setOrientation] = React.useState(true);
   return (
     <YStack fullscreen>
-      <XStack width={200} alignItems="center" space="$4" alignSelf="flex-start">
+      <XStack width={200} alignItems="center" gap="$4" alignSelf="flex-start">
         <Label paddingRight="$0" minWidth={90} justifyContent="flex-end" size="$2">
           {orientation ? 'Horizontal' : 'Vertical'}
         </Label>

@@ -3,12 +3,11 @@ import '@tamagui/core/reset.css';
 import 'raf/polyfill';
 import * as Sentry from '@sentry/react';
 import Head from 'next/head';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import cookie from 'cookie';
 import tamaguiConfig from '../tamagui.config';
 import type { AppContext, AppProps as NextAppProps } from 'next/app';
-import type { ColorScheme } from 'app/state/theme';
-import type { PropsWithChildren } from 'react';
+import type { ColorScheme } from '@tamagui/next-theme';
 import type { Session } from 'next-auth';
 import { GlobalProvider } from 'app/providers';
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
@@ -17,13 +16,6 @@ import { config } from 'app/config';
 import { getSession } from '@multiplatform.one/keycloak';
 import { importFonts } from 'app/fonts';
 import { setDefaultCrossStorage } from 'multiplatform.one/zustand';
-import { useThemeState } from 'app/state/theme';
-
-if (typeof window === 'undefined') {
-  console.log('window is undefined');
-} else {
-  console.log('window is defined');
-}
 
 const sentryDsn = config.get('SENTRY_DSN');
 if (sentryDsn) {
@@ -39,15 +31,13 @@ importFonts();
 if (nextStatic) import('app/i18n').then(({ i18nInit }) => i18nInit());
 
 export interface AppProps extends NextAppProps {
-  cookies?: unknown;
+  cookies?: Record<string, string>;
   session?: Session;
 }
 
-function App({ Component, pageProps, cookies, session }: AppProps) {
-  const contents = useMemo(() => {
-    return <Component {...pageProps} />;
-  }, [pageProps, Component]);
-
+function App({ Component, cookies, pageProps, session }: AppProps) {
+  const [theme, setTheme] = useRootTheme();
+  const contents = useMemo(() => <Component {...pageProps} />, [pageProps, Component]);
   return (
     <>
       <Head>
@@ -58,59 +48,40 @@ function App({ Component, pageProps, cookies, session }: AppProps) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Provider cookies={cookies} session={session}>
-        {contents}
-      </Provider>
+      <NextThemeProvider onChangeTheme={(name: string) => setTheme(name as ColorScheme)}>
+        <GlobalProvider
+          cookies={cookies}
+          defaultTheme={theme}
+          disableInjectCSS
+          disableRootThemeClass
+          tamaguiConfig={tamaguiConfig}
+          theme={{
+            sub: 'blue',
+          }}
+          keycloak={{
+            baseUrl: config.get('KEYCLOAK_BASE_URL')!,
+            clientId: config.get('KEYCLOAK_CLIENT_ID')!,
+            messageHandlerKeys: [],
+            realm: config.get('KEYCLOAK_REALM')!,
+            session,
+          }}
+        >
+          {contents}
+        </GlobalProvider>
+      </NextThemeProvider>
     </>
-  );
-}
-
-export function Provider({
-  children,
-  session,
-}: PropsWithChildren & {
-  cookies: unknown;
-  session?: Session;
-}) {
-  const themeState = useThemeState();
-  const [rootTheme, setRootTheme] = useRootTheme();
-
-  useEffect(() => {
-    if (themeState.root) setRootTheme(themeState.root);
-  }, [themeState.root, setRootTheme]);
-
-  return (
-    <NextThemeProvider
-      onChangeTheme={(theme) => {
-        setRootTheme(theme as ColorScheme);
-      }}
-      forcedTheme={rootTheme}
-    >
-      <GlobalProvider
-        // cookies={cookies}
-        defaultTheme={rootTheme}
-        disableInjectCSS
-        disableRootThemeClass
-        tamaguiConfig={tamaguiConfig}
-        keycloak={{
-          baseUrl: config.get('KEYCLOAK_BASE_URL')!,
-          clientId: config.get('KEYCLOAK_CLIENT_ID')!,
-          messageHandlerKeys: [],
-          realm: config.get('KEYCLOAK_REALM')!,
-          session,
-        }}
-      >
-        {children}
-      </GlobalProvider>
-    </NextThemeProvider>
   );
 }
 
 App.getInitialProps = async ({ ctx }: AppContext) => {
   return {
-    cookies: !ctx.req ? {} : cookie.parse(ctx.req.headers.cookie || ''),
+    cookies: !ctx.req?.headers ? {} : cookie.parse(ctx.req.headers.cookie || ''),
     session: await getSession(
-      typeof window === 'undefined' ? (await import('../authOptions')).authOptions : undefined,
+      typeof window === 'undefined'
+        ? (await import('@multiplatform.one/keycloak/routes')).createNextAuthOptions(
+            (await import('../authOptions')).authHandlerOptions,
+          )
+        : undefined,
       ctx.req,
       ctx.res,
     ),

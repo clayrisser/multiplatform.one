@@ -23,10 +23,10 @@ import type { GetStaticPaths } from 'next/types';
 import { MultiPlatform } from '../multiplatform';
 
 export async function getBaseProps(locale: any, namespacesRequired: string[] = []) {
-  if (MultiPlatform.isNext && MultiPlatform.isServer && !MultiPlatform.isStatic) {
-    const { serverSideTranslations } = await import('next-i18next/serverSideTranslations');
-    return serverSideTranslations(locale, ['common', ...namespacesRequired]);
-  }
+  // if (MultiPlatform.isNext && MultiPlatform.isServer && !MultiPlatform.isStatic) {
+  //   const { serverSideTranslations } = await import('next-i18next/serverSideTranslations');
+  //   return serverSideTranslations(locale, ['common', ...namespacesRequired]);
+  // }
   return {};
 }
 

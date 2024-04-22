@@ -111,7 +111,7 @@ export function SimpleCarousel({
         left={0}
         right={0}
       >
-        <XStack space="$2" ai="center" marginBottom={20}>
+        <XStack gap="$2" ai="center" marginBottom={20}>
           {Array.from({ length: childrenCount }).map((_, index) => (
             <Stack
               height={index === currentSlide ? 4 : 1}

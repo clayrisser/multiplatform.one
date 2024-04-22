@@ -37,10 +37,10 @@ export const main = (args) => (
       name="radio group"
       label="radio group"
       helperText="select an option"
-      contentStyle={{ space: '$4' }}
+      contentStyle={{ gap: '$4' }}
       required
       onValueChange={action('onValueChange')}
-      space
+      gap
       {...args}
     >
       <FormRadio size="$4" value="option1">

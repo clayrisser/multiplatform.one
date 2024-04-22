@@ -48,6 +48,11 @@ export function FormSwitch({
   thumbStyle,
   ...switchProps
 }: FormSwitchProps) {
+  switchProps = {
+    size: '$3',
+    animation: 'quick',
+    ...switchProps,
+  };
   const formContext = useFormContext();
   const id = useId();
   if (!formContext) {
@@ -92,8 +97,3 @@ export function FormSwitch({
     />
   );
 }
-
-FormSwitch.defaultProps = {
-  size: '$3',
-  Animation: 'quick',
-};

@@ -14,7 +14,7 @@ function UserScreen() {
   const { t } = useTranslation();
 
   return (
-    <YStack f={1} jc="center" ai="center" space>
+    <YStack f={1} jc="center" ai="center" gap>
       <Paragraph ta="center" fow="800">{`User ID: ${id}`}</Paragraph>
       <Button {...linkProps} icon={ChevronLeft}>
         {t('screens.user.goHome')}

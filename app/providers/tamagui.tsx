@@ -3,21 +3,16 @@ import config from '../tamagui.config';
 import type { TamaguiProviderProps, ThemeName } from 'ui';
 import { TamaguiProvider, Theme } from 'ui';
 import { ToastProvider } from '@tamagui/toast';
-import { useThemeState } from 'app/state/theme';
+import { useTheme } from 'multiplatform.one/theme';
 
 export type GlobalTamaguiProviderProps = Omit<TamaguiProviderProps, 'config'> &
-  Partial<Pick<TamaguiProviderProps, 'config'>> & {
-    defaultSubTheme?: ThemeName;
-  };
+  Partial<Pick<TamaguiProviderProps, 'config'>>;
 
 export function GlobalTamaguiProvider({ children, ...props }: GlobalTamaguiProviderProps) {
-  const themeState = useThemeState();
-  const defaultTheme = props.defaultTheme || themeState.root;
-  const subTheme = props.defaultSubTheme || themeState.sub || 'gray';
-
+  const [theme] = useTheme();
   return (
-    <TamaguiProvider defaultTheme={defaultTheme} disableInjectCSS={false} {...props} config={config || props.config}>
-      <Theme name={subTheme}>
+    <TamaguiProvider disableInjectCSS={false} {...props} config={config || props.config}>
+      <Theme name={theme.sub || ('gray' as ThemeName)}>
         <ToastProvider>{children}</ToastProvider>
       </Theme>
     </TamaguiProvider>

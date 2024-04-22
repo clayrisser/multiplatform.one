@@ -33,8 +33,8 @@ const meta: Meta = {
 function Tooltip() {
   const [arrow, setArrow] = React.useState(true);
   return (
-    <YStack space="$4">
-      <XStack space padding="$4" alignItems="center">
+    <YStack gap="$4">
+      <XStack gap padding="$4" alignItems="center">
         <Switch size="$3" checked={arrow} onCheckedChange={setArrow}>
           <Switch.Thumb animation="bouncy" />
         </Switch>

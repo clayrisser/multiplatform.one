@@ -95,7 +95,7 @@
     "indent": 4
   },
   "dependencies": {
-    "@apollo/client": "^3.9.10",
+    "@apollo/client": "^3.9.11",
     "expo-auth-session": "^5.4.0",
     "keycloak-js": "^24.0.2",
     "next-auth": "^4.24.7"

@@ -4,6 +4,7 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { gql } from 'gql';
 import { useAuthQuery, useAuthSubscription, withAuthenticated } from '@multiplatform.one/keycloak';
 import { useLink } from 'solito/link';
+// import { useSubTheme } from 'multiplatform.one/theme';
 import { useTranslation } from 'multiplatform.one';
 import { withDefaultLayout } from 'app/layouts/Default';
 
@@ -26,17 +27,14 @@ function HomeScreen() {
   const linkProps = useLink({
     href: '/user/alice',
   });
-  const { data, loading, error } = useAuthQuery(AuthQuery);
-  const { data: cData, loading: cLoading, error: cError } = useAuthSubscription(CountSubscription);
-
-  console.log({ cData, cLoading, cError });
-  console.log({ data, loading, error });
-
+  console.log('R');
+  // const { data, loading } = useAuthQuery(AuthQuery);
+  // const { data: cData } = useAuthSubscription(CountSubscription);
   return (
-    <YStack f={1} jc="center" ai="center" p="$4" space>
-      {cData?.count}
-      {loading ? <Spinner /> : <Text>{JSON.stringify(data)}</Text>}
-      <YStack space="$4" maw={600}>
+    <YStack f={1} jc="center" ai="center" p="$4" gap>
+      {/* {cData?.count} */}
+      {/* {loading ? <Spinner /> : <Text>username: {data?.username}</Text>} */}
+      <YStack gap="$4" maw={600}>
         <H1 ta="center">{t('screens.home.welcome')}</H1>
         <Paragraph fontFamily="$silkscreen" ta="center">
           {t('screens.home.message')}
@@ -51,7 +49,6 @@ function HomeScreen() {
       <XStack>
         <Button {...linkProps}>{t('screens.home.link')}</Button>
       </XStack>
-
       <SheetDemo />
     </YStack>
   );

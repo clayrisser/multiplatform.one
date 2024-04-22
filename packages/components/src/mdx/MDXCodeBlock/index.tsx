@@ -107,7 +107,7 @@ export function MDXCodeBlock(props: MDXCodeBlockProps) {
               </ScrollView>
             </Pre>
           )}
-          <XStack position="absolute" top="$3" right="$3" space="$3">
+          <XStack position="absolute" top="$3" right="$3" gap="$3">
             {(!isCollapsed || !isCollapsible) && !disableCopy && (
               <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
                 <Button

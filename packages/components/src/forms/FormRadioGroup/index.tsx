@@ -105,7 +105,7 @@ export function FormRadioGroup({
 
 export function FormRadio({ children, value, size, disabled, id, ...props }: FormRadioProps) {
   return (
-    <XStack alignItems="center" space="$1">
+    <XStack alignItems="center" gap="$1">
       <RadioGroup.Item value={value} id={id} size={size || '$4'} {...props}>
         <RadioGroup.Indicator disabled={disabled} />
       </RadioGroup.Item>

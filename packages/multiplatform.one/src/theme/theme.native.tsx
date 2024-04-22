@@ -1,10 +1,10 @@
 /*
- *  File: /zustand/index.js
+ *  File: /src/theme/index.native.ts
  *  Project: multiplatform.one
- *  File Created: 22-06-2023 05:33:21
+ *  File Created: 21-04-2024 16:17:34
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,4 +19,8 @@
  *  limitations under the License.
  */
 
-module.exports = require('../lib/zustand/index.js');
+import type { CookiesFn } from 'cookies-next/lib/types';
+
+export function useSubTheme(_cookies?: CookiesFn) {
+  return;
+}

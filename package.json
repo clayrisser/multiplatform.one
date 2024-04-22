@@ -38,7 +38,8 @@
     "react-dom": "18.2.0",
     "react-native-svg": "14.1.0",
     "react-native-web": "~0.18.12",
-    "react-refresh": "^0.14.0"
+    "react-refresh": "^0.14.0",
+    "zustand": "^4.5.2"
   },
   "tamaguiModules": [
     "@multiplatform.one/components",
