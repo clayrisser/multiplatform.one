@@ -55,9 +55,6 @@ function App({ Component, cookies, pageProps, session }: AppProps) {
           disableInjectCSS
           disableRootThemeClass
           tamaguiConfig={tamaguiConfig}
-          theme={{
-            sub: 'blue',
-          }}
           keycloak={{
             baseUrl: config.get('KEYCLOAK_BASE_URL')!,
             clientId: config.get('KEYCLOAK_CLIENT_ID')!,
