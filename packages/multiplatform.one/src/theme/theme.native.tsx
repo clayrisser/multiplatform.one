@@ -19,8 +19,85 @@
  *  limitations under the License.
  */
 
-import type { CookiesFn } from 'cookies-next/lib/types';
+import React, { createContext, useContext, useEffect, useMemo } from 'react';
+import type { Actions } from '../zustand';
+import type { ColorScheme as TamaguiColorScheme } from '@tamagui/next-theme';
+import type { ThemeState, ThemeProviderProps } from './theme';
+import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
+import { createStateStore } from '../zustand';
 
-export function useSubTheme(_cookies?: CookiesFn) {
-  return;
+const defaultThemeState: ThemeState = { root: 'system', sub: 'gray' };
+
+const ThemeContext = createContext<ThemeState>(defaultThemeState);
+
+const { useStore: useThemeState } = createStateStore<ThemeState, Actions<ThemeState, {}>>(
+  'theme',
+  {
+    root: null,
+    sub: null,
+  },
+  undefined,
+  {
+    persist: true,
+  },
+);
+
+export function useTheme(): [ThemeState, (theme: Partial<ThemeState>) => undefined] {
+  const themeContextValue = useContext(ThemeContext);
+  const themeState = useThemeState();
+  return [
+    {
+      root: themeContextValue.root || 'system',
+      sub: themeContextValue.sub,
+    },
+    (theme: Partial<ThemeState>) => {
+      if (typeof theme.root !== 'undefined') {
+        if (theme.root === null || theme.root === 'system') {
+          themeState.setRoot(null);
+        } else {
+          themeState.setRoot(theme.root);
+        }
+      }
+      if (typeof theme.sub !== 'undefined') {
+        if (theme.sub === null) {
+          themeState.setSub(null);
+        } else {
+          themeState.setSub(theme.sub);
+        }
+      }
+    },
+  ];
+}
+
+export function ThemeProvider({ children, theme }: ThemeProviderProps) {
+  const defaultThemeValue = useMemo(
+    () => ({
+      ...defaultThemeState,
+      ...theme,
+    }),
+    [theme?.root, theme?.sub],
+  );
+  const [, setRootTheme] = useRootTheme();
+  const [, setTheme] = useTheme();
+  const themeState = useThemeState();
+  const root = themeState.root || defaultThemeValue.root;
+  const sub = themeState.sub || defaultThemeValue.sub;
+  const value = React.useMemo(() => ({ root, sub }), [root, sub]);
+
+  useEffect(() => {
+    setTheme({ root, sub });
+  }, [defaultThemeValue.root, defaultThemeValue.sub]);
+
+  return (
+    <ThemeContext.Provider value={value}>
+      <NextThemeProvider
+        onChangeTheme={(root: TamaguiColorScheme) => {
+          setRootTheme(root);
+        }}
+        forcedTheme={root && root !== 'system' ? root : undefined}
+      >
+        {children}
+      </NextThemeProvider>
+    </ThemeContext.Provider>
+  );
 }

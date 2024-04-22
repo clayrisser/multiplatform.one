@@ -20,14 +20,12 @@
  */
 
 import i18n from 'i18next';
-// import { MultiPlatform } from '../../multiplatform';
+import { MultiPlatform } from '../../multiplatform';
 import { useEffect, useState } from 'react';
-import type { NextRouter } from 'next/router';
 import { useRouter } from 'next/router';
 
 export function useLocale(): [string, (locale: string) => void] {
-  // const nextRouter = MultiPlatform.isNext && !MultiPlatform.isStatic ? useRouter() : null;
-  const nextRouter: NextRouter | null = null as unknown as NextRouter;
+  const nextRouter = MultiPlatform.isNext && !MultiPlatform.isStatic ? useRouter() : null;
   const [locale, setLocale] = useState(nextRouter?.locale || i18n?.language || 'en');
 
   useEffect(() => {
