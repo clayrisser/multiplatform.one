@@ -27,6 +27,7 @@ export * from './hooks';
 export * from './images';
 export * from './layouts';
 export * from './mdx';
+export * from './organize';
 export * from './panels';
 export * from './table';
-export * from './organize';
+export * from './tints';

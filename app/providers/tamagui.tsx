@@ -1,7 +1,8 @@
 import React from 'react';
 import config from '../tamagui.config';
 import type { TamaguiProviderProps, ThemeName } from 'ui';
-import { TamaguiProvider, Theme } from 'ui';
+import { TamaguiProvider, Theme, tintFamilies } from 'ui';
+import { TintFamiliesProvider } from '@multiplatform.one/components';
 import { ToastProvider } from '@tamagui/toast';
 import { useTheme } from 'multiplatform.one/theme';
 
@@ -13,7 +14,9 @@ export function GlobalTamaguiProvider({ children, ...props }: GlobalTamaguiProvi
   return (
     <TamaguiProvider disableInjectCSS={false} {...props} config={config || props.config}>
       <Theme name={theme.sub || ('gray' as ThemeName)}>
-        <ToastProvider>{children}</ToastProvider>
+        <TintFamiliesProvider families={tintFamilies}>
+          <ToastProvider>{children}</ToastProvider>
+        </TintFamiliesProvider>
       </Theme>
     </TamaguiProvider>
   );
