@@ -19,4 +19,4 @@ WATCHMAN ?= watchman
 export POSTGRES_URL ?= \
 	postgresql://$(POSTGRES_PASSWORD):$(POSTGRES_USER)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=prefer
 
-export TAMAGUI_IGNORE_BUNDLE_ERRORS := solito/image,solito/link
+export TAMAGUI_IGNORE_BUNDLE_ERRORS := solito/image,solito/link,moti

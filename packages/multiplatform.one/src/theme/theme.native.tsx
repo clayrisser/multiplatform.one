@@ -21,9 +21,7 @@
 
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
 import type { Actions } from '../zustand';
-import type { ColorScheme as TamaguiColorScheme } from '@tamagui/next-theme';
 import type { ThemeState, ThemeProviderProps } from './theme';
-import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
 import { createStateStore } from '../zustand';
 
 const defaultThemeState: ThemeState = { root: 'system', sub: 'gray' };
@@ -77,7 +75,7 @@ export function ThemeProvider({ children, theme }: ThemeProviderProps) {
     }),
     [theme?.root, theme?.sub],
   );
-  const [, setRootTheme] = useRootTheme();
+  // const [, setRootTheme] = useRootTheme();
   const [, setTheme] = useTheme();
   const themeState = useThemeState();
   const root = themeState.root || defaultThemeValue.root;
@@ -88,16 +86,5 @@ export function ThemeProvider({ children, theme }: ThemeProviderProps) {
     setTheme({ root, sub });
   }, [defaultThemeValue.root, defaultThemeValue.sub]);
 
-  return (
-    <ThemeContext.Provider value={value}>
-      <NextThemeProvider
-        onChangeTheme={(root: TamaguiColorScheme) => {
-          setRootTheme(root);
-        }}
-        forcedTheme={root && root !== 'system' ? root : undefined}
-      >
-        {children}
-      </NextThemeProvider>
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }

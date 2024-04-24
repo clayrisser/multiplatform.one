@@ -7,9 +7,9 @@
     "generated"
   ],
   "devDependencies": {
-    "@0no-co/graphqlsp": "^1.10.3"
+    "@0no-co/graphqlsp": "^1.11.0"
   },
   "dependencies": {
-    "gql.tada": "^1.5.5"
+    "gql.tada": "^1.5.6"
   }
 }

@@ -19,9 +19,9 @@
  * limitations under the License.
  */
 
-import type { AccordionContentProps, AccordionItemProps, AccordionTriggerProps } from 'ui';
-import { Accordion } from 'ui';
 import React from 'react';
+import type { AccordionContentProps, AccordionItemProps, AccordionTriggerProps } from 'tamagui';
+import { Accordion } from 'tamagui';
 
 interface SimpleAccordionProps {
   children: React.ReactNode;

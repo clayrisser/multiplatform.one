@@ -42,22 +42,22 @@
   },
   "devDependencies": {
     "@types/cookie": "^0.6.0",
-    "@types/eslint": "^8.56.7",
+    "@types/eslint": "^8.56.10",
     "@types/lodash.difference": "^4.5.9",
     "@types/lodash.get": "^4.4.9",
-    "eslint": "^8.57.0",
+    "eslint": "^9.1.1",
     "prettier": "^3.2.5",
     "tsup": "^8.0.2",
-    "typescript": "~5.3.3"
+    "typescript": "~5.4.5"
   },
   "dependencies": {
-    "@keycloak/keycloak-admin-client": "^24.0.2",
+    "@keycloak/keycloak-admin-client": "^24.0.3",
     "@multiplatform.one/keycloak": "1.0.2",
     "@multiplatform.one/typegraphql": "^1.0.1",
     "axios": "^1.6.8",
     "cookie": "^0.6.0",
     "graphql": "^16.8.1",
-    "keycloak-connect": "^24.0.2",
+    "keycloak-connect": "^24.0.3",
     "lodash.difference": "^4.5.0",
     "lodash.get": "^4.4.2",
     "next-auth": "^4.24.7",

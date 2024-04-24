@@ -8,4 +8,4 @@ module.exports = {
   SENTRY_DSN: process.env.SENTRY_DSN,
 };
 
-delete process.env.DEBUG;
+if (process.env.DEBUG !== 'tamagui') delete process.env.DEBUG;

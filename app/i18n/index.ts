@@ -8,6 +8,7 @@ import { initReactI18next } from 'react-i18next';
 
 const logger = console;
 
+
 if (MultiPlatform.isNext && !MultiPlatform.isStatic) {
   logger.warn("next should not import 'app/i18n'");
 }

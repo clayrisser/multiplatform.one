@@ -20,7 +20,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { MultiPlatform } from '../../multiplatform';
+import { MultiPlatform } from 'multiplatform.one';
 
 export function useSupportedLocales(): string[] | undefined {
   const [supportedLocales, setSupportedLocales] = useState<string[]>();
