@@ -1,10 +1,10 @@
 /*
- *  File: /src/index.ts
- *  Project: multiplatform.one
- *  File Created: 22-06-2023 05:33:21
+ *  File: /app/index.ts
+ *  Project: @platform/expo
+ *  File Created: 23-04-2024 17:35:17
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,11 +18,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import { Button } from 'tamagui';
 
-import { MultiPlatform } from './multiplatform';
-
-export { MultiPlatform };
-
-export * from './config';
-export * from './font';
-export * from './helpers';
+export default function Page() {
+  return <Button pressStyle={{ backgroundColor: 'red' }}>Hello</Button>;
+}

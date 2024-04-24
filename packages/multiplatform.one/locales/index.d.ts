@@ -1,5 +1,5 @@
 /*
- *  File: /src/hooks/index.ts
+ *  File: /zustand/index.d.ts
  *  Project: multiplatform.one
  *  File Created: 22-06-2023 05:33:21
  *  Author: Clay Risser
@@ -19,6 +19,4 @@
  *  limitations under the License.
  */
 
-export * from './useLocale';
-export * from './useTranslation';
-export * from './useSupportedLocales';
+export * from '../lib/locales';

@@ -3,7 +3,7 @@ import { Button, Paragraph, YStack } from 'ui';
 import { ChevronLeft } from '@tamagui/lucide-icons';
 import { createParam } from 'solito';
 import { useLink } from 'solito/link';
-import { useTranslation } from 'multiplatform.one';
+import { useTranslation } from 'multiplatform.one/locales';
 import { withDefaultLayout } from 'app/layouts/Default';
 
 const { useParam } = createParam<{ id: string }>();

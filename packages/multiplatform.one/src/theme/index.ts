@@ -19,4 +19,4 @@
  *  limitations under the License.
  */
 
-export * from './theme';
+export * from './theme.native';
