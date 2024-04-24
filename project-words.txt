@@ -1,5 +1,6 @@
 1aji48u
 aaguids
+acc
 acl
 acr
 aint
@@ -86,6 +87,7 @@ dbateman
 decrypt
 dedupe
 defs
+devlop
 devtool
 devtools
 dharmendra
@@ -142,6 +144,7 @@ graphql
 graphqlsp
 halloween
 helvetica
+hermes
 hmr
 hoverable
 href
@@ -160,6 +163,7 @@ instrumentations
 interop
 iss
 jaeger
+jsc
 jsx
 jti
 kauth
@@ -189,6 +193,9 @@ mih
 milli
 minifier
 minify
+minpath
+minproc
+minurl
 miw
 mjs
 mkchain
@@ -360,6 +367,7 @@ uuidv4
 vals
 vercel
 verifier
+vfile
 vh
 vite
 vizag

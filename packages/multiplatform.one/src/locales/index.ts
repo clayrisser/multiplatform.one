@@ -1,10 +1,10 @@
 /*
- *  File: /src/index.ts
+ *  File: /src/locales/index.ts
  *  Project: multiplatform.one
- *  File Created: 22-06-2023 05:33:21
+ *  File Created: 24-04-2024 17:24:51
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,10 +19,6 @@
  *  limitations under the License.
  */
 
-import { MultiPlatform } from './multiplatform';
-
-export { MultiPlatform };
-
-export * from './config';
-export * from './font';
-export * from './helpers';
+export * from './useLocale';
+export * from './useSupportedLocales';
+export * from './useTranslation';

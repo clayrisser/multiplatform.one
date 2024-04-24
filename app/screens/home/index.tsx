@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
+import { ThemeTintAlt } from '@multiplatform.one/components';
 import { gql } from 'gql';
 import { useAuthQuery, useAuthSubscription, withAuthenticated } from '@multiplatform.one/keycloak';
 import { useLink } from 'solito/link';
-import { useTranslation } from 'multiplatform.one';
-import { ThemeTintAlt } from '@multiplatform.one/components';
+import { useTranslation } from 'multiplatform.one/locales';
 import { withDefaultLayout } from 'app/layouts/Default';
 
 const AuthQuery = gql(`

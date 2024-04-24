@@ -6,7 +6,6 @@ import type { TamaguiInternalConfig } from 'ui';
 import type { ThemeProviderProps } from 'multiplatform.one/theme';
 import { GlobalApolloProvider } from './apollo';
 import { GlobalKeycloakProvider } from './keycloak';
-import { GlobalNavigationProvider } from './navigation';
 import { GlobalTamaguiProvider } from './tamagui';
 import { ThemeProvider } from 'multiplatform.one/theme';
 
@@ -23,9 +22,7 @@ export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, the
     <ThemeProvider cookies={cookies} theme={theme}>
       <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
         <GlobalKeycloakProvider disabled={!keycloak} {...keycloak}>
-          <GlobalApolloProvider>
-            <GlobalNavigationProvider>{children}</GlobalNavigationProvider>
-          </GlobalApolloProvider>
+          <GlobalApolloProvider>{children}</GlobalApolloProvider>
         </GlobalKeycloakProvider>
       </GlobalTamaguiProvider>
     </ThemeProvider>
@@ -34,5 +31,4 @@ export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, the
 
 export * from './apollo';
 export * from './keycloak';
-export * from './navigation';
 export * from './tamagui';

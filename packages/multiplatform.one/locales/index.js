@@ -1,5 +1,5 @@
 /*
- *  File: /src/index.ts
+ *  File: /zustand/index.js
  *  Project: multiplatform.one
  *  File Created: 22-06-2023 05:33:21
  *  Author: Clay Risser
@@ -19,10 +19,4 @@
  *  limitations under the License.
  */
 
-import { MultiPlatform } from './multiplatform';
-
-export { MultiPlatform };
-
-export * from './config';
-export * from './font';
-export * from './helpers';
+module.exports = require('../lib/locales/index.js');
