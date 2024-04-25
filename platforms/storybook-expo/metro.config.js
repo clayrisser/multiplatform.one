@@ -56,7 +56,6 @@ config.resolver.extraNodeModules = {
   url: require.resolve('url-polyfill'),
   zlib: require.resolve('browserify-zlib'),
 };
-config.resolver.sourceExts = [...config.resolver.sourceExts, ...config.resolver.sourceExts.map((ext) => `ios.${ext}`)];
 config.resetCache = true;
 config.transformer.unstable_allowRequireContext = true;
 module.exports = config;
