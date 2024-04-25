@@ -1,8 +1,36 @@
+/*
+ *  File: /metro.config.js
+ *  Project: @platform/storybook-native
+ *  File Created: 25-04-2024 14:57:26
+ *  Author: Clay Risser
+ *  -----
+ *  BitSpur (c) Copyright 2021 - 2024
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 /**
  * @type {import('expo/metro-config')}
  */
+
 const { getDefaultConfig } = require('@expo/metro-config');
 const path = require('path');
+const { generate } = require('@storybook/react-native/scripts/generate');
+
+generate({
+  configPath: path.resolve(__dirname, './.storybook'),
+  useJs: true,
+});
 
 const projectRoot = __dirname;
 const workspaceRoot = path.resolve(__dirname, '../..');
@@ -30,6 +58,5 @@ config.resolver.extraNodeModules = {
 };
 config.resolver.sourceExts = [...config.resolver.sourceExts, ...config.resolver.sourceExts.map((ext) => `ios.${ext}`)];
 config.resetCache = true;
-console.log(config.resolver.sourceExts);
-console.log(config.resolver.platforms);
+config.transformer.unstable_allowRequireContext = true;
 module.exports = config;

@@ -1,7 +1,7 @@
 /*
  *  File: /src/apollo.ts
  *  Project: @multiplatform.one/keycloak
- *  File Created: 13-01-2024 13:37:13
+ *  File Created: 04-04-2024 15:50:39
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024

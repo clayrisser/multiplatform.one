@@ -1,3 +1,22 @@
+# File: /Mkpmfile
+# Project: @platform/storybook-native
+# File Created: 25-04-2024 14:29:00
+# Author: Clay Risser
+# -----
+# BitSpur (c) Copyright 2021 - 2024
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 include $(MKPM)/mkpm
 DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/gnu
@@ -13,17 +32,7 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call make,$(PROJECT_ROOT)) \~deps DEPS_ARGS=$(DEPS_ARGS)
 	@$(call done,$@)
 
-ACTIONS += generate~deps
-.storybook/storybook.requires.ts:
-	@$(call reset,generate)
-$(ACTION)/generate: .storybook/storybook.requires.ts $(call git_deps,\.([jt]sx?)$$)
-	@$(SB_RN_GET_STORIES) --config-path $(CURDIR)/.storybook
-	$(SED) -i \
-		's|import { argsEnhancers } from "@storybook/addon-actions/dist/modern/preset/addArgs";|const argsEnhancers=[]|g' \
-		.storybook/storybook.requires.ts
-	@$(call done,$@)
-
-ACTIONS += format~generate
+ACTIONS += format~deps
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
 #	-@$(call eslint_format,$?)
 	-@$(call prettier,$?,$(FORMAT_ARGS))
@@ -46,22 +55,22 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 
 EXPO_PORT ?= 8081
 .PHONY: dev +dev
-dev: | ~generate +dev
+dev: +dev
 +dev:
 	@$(EXPO) start -c -p $(EXPO_PORT) --go $(DEV_ARGS)
 
 .PHONY: dev@web +dev@web
-dev@web: | ~deps +dev@web
+dev@web: ~deps +dev@web
 +dev@web: +generate
 	@$(EXPO) start -c -p $(EXPO_PORT) --go --web $(ARGS)
 
 .PHONY: dev@android +dev@android
-dev@android: | ~generate +dev@android
+dev@android: ~generate +dev@android
 +dev@android:
 	@$(EXPO) start -c -p $(EXPO_PORT) --go --android $(ARGS)
 
 .PHONY: dev@ios +dev@ios
-dev@ios: | ~generate dev@ios
+dev@ios: ~generate dev@ios
 +dev@ios:
 	@$(EXPO) start -c -p $(EXPO_PORT) --go --ios $(ARGS)
 
