@@ -8,10 +8,10 @@
       "command": "./mkpm storybook/dev"
     },
     {
-      "name": "storybook native dev",
+      "name": "storybook expo dev",
       "type": "node-terminal",
       "request": "launch",
-      "command": "./mkpm storybook-native/dev"
+      "command": "./mkpm storybook-expo/dev"
     },
     {
       "name": "next platform dev",
