@@ -25,7 +25,8 @@
     "react-native-screens": "~3.29.0",
     "react-native-svg": "15.2.0",
     "react-native-url-polyfill": "^2.0.0",
-    "readable-stream": "^4.5.2"
+    "readable-stream": "^4.5.2",
+    "url-polyfill": "^1.1.12"
   },
   "devDependencies": {
     "@babel/core": "^7.24.4",
