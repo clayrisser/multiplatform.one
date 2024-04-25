@@ -21,8 +21,8 @@
 
 import tamaguiConfig from '../tamagui.config';
 import { GlobalProvider } from 'app/providers';
-import { LogBox, View } from 'react-native';
 import { SplashScreen, Stack } from 'expo-router';
+import { View } from 'react-native';
 import { config } from 'app/config';
 import { i18nInit } from 'app/i18n';
 import { importFonts } from 'app/fonts';
@@ -31,7 +31,6 @@ import { useFonts } from 'expo-font';
 
 const fonts = importFonts();
 const logger = console;
-LogBox.ignoreLogs([]);
 SplashScreen.preventAutoHideAsync().catch(logger.error);
 i18nInit();
 
@@ -46,11 +45,11 @@ export default function HomeLayout() {
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <GlobalProvider
         tamaguiConfig={tamaguiConfig}
-        keycloak={{
-          baseUrl: config.get('KEYCLOAK_BASE_URL')!,
-          clientId: config.get('KEYCLOAK_CLIENT_ID')!,
-          realm: config.get('KEYCLOAK_REALM')!,
-        }}
+        // keycloak={{
+        //   baseUrl: config.get('KEYCLOAK_BASE_URL')!,
+        //   clientId: config.get('KEYCLOAK_CLIENT_ID')!,
+        //   realm: config.get('KEYCLOAK_REALM')!,
+        // }}
       >
         <Stack />
       </GlobalProvider>
