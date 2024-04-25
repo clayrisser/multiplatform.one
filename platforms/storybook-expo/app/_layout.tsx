@@ -19,62 +19,40 @@
  * limitations under the License.
  */
 
-import StorybookUI from './index';
 import tamaguiConfig from '../tamagui.config';
 import { GlobalProvider } from 'app/providers';
-import { LogBox, View, Platform, StatusBar } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { SplashScreen } from 'expo-router';
-import { config } from 'app/config';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SplashScreen, Stack } from 'expo-router';
+import { View } from 'react-native';
+// import { config } from 'app/config';
 import { i18nInit } from 'app/i18n';
 import { importFonts } from 'app/fonts';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useFonts } from 'expo-font';
 
-const Stack = createNativeStackNavigator();
 const fonts = importFonts();
 const logger = console;
-LogBox.ignoreLogs([]);
 SplashScreen.preventAutoHideAsync().catch(logger.error);
 i18nInit();
 
 export default function HomeLayout() {
   const [fontsLoaded] = useFonts(fonts);
-
-  useEffect(() => {
-    if (fontsLoaded) {
-      SplashScreen.hideAsync();
-    }
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) await SplashScreen.hideAsync();
   }, [fontsLoaded]);
+  if (!fontsLoaded) return;
 
-  if (!fontsLoaded) {
-    return null;
-  }
-
-  function render() {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="storybook" component={StorybookUI} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
-
-  if (Platform.OS === 'android') {
-    return (
-      <GlobalProvider tamaguiConfig={tamaguiConfig}>
-        <StatusBar />
-        <View style={{ height: StatusBar.currentHeight }} />
-        {render()}
+  return (
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <GlobalProvider
+        tamaguiConfig={tamaguiConfig}
+        // keycloak={{
+        //   baseUrl: config.get('KEYCLOAK_BASE_URL')!,
+        //   clientId: config.get('KEYCLOAK_CLIENT_ID')!,
+        //   realm: config.get('KEYCLOAK_REALM')!,
+        // }}
+      >
+        <Stack />
       </GlobalProvider>
-    );
-  }
-
-  return <GlobalProvider tamaguiConfig={tamaguiConfig}>{render()}</GlobalProvider>;
+    </View>
+  );
 }

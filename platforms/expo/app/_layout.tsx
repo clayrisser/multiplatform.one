@@ -23,7 +23,7 @@ import tamaguiConfig from '../tamagui.config';
 import { GlobalProvider } from 'app/providers';
 import { SplashScreen, Stack } from 'expo-router';
 import { View } from 'react-native';
-import { config } from 'app/config';
+// import { config } from 'app/config';
 import { i18nInit } from 'app/i18n';
 import { importFonts } from 'app/fonts';
 import { useCallback } from 'react';

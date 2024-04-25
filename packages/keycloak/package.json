@@ -40,15 +40,15 @@
     "url": "https://gitlab.com/risserlabs/multiplatform.one/keycloak"
   },
   "peerDependencies": {
-    "@react-native-async-storage/async-storage": "1.19.3",
+    "@react-native-async-storage/async-storage": "1.21.0",
     "expo-keycloak-auth": "1.0.14",
     "multiplatform.one": "^1.0.2",
     "next": "^13.0.5",
-    "react": "^18.3.0",
+    "react": "18.2.0",
     "react-native": "0.73.6"
   },
   "devDependencies": {
-    "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native-async-storage/async-storage": "1.21.0",
     "@types/eslint": "^8.56.10",
     "@types/jest": "^29.5.12",
     "@types/lodash.camelcase": "^4.3.9",
@@ -63,8 +63,8 @@
     "multiplatform.one": "^1.0.2",
     "next": "^14.2.3",
     "prettier": "^3.2.5",
-    "react": "^18.3.0",
-    "react-native": "0.73.7",
+    "react": "18.2.0",
+    "react-native": "0.73.6",
     "ts-node": "^10.9.2",
     "tsup": "^8.0.2",
     "typescript": "~5.4.5"
