@@ -16,23 +16,24 @@ const AuthQuery = gql(`
   }
 `);
 
-const CountSubscription = gql(`
-  subscription CountSubscription {
-    count
-  }
-`);
+// const CountSubscription = gql(`
+//   subscription CountSubscription {
+//     count
+//   }
+// `);
 
 function HomeScreen() {
   const { t } = useTranslation();
   const linkProps = useLink({
     href: '/user/alice',
   });
-  const { data, loading } = useAuthQuery(AuthQuery);
-  const { data: cData } = useAuthSubscription(CountSubscription);
+  // const { data, loading } = useAuthQuery(AuthQuery);
+  // const { data: cData } = useAuthSubscription(CountSubscription);
+  // return <Text>Home</Text>;
   return (
-    <YStack f={1} jc="center" ai="center" p="$4" gap>
-      {cData?.count}
-      {loading ? <Spinner /> : <Text>username: {data?.username}</Text>}
+    <YStack f={1} jc="center" ai="center" p="$4">
+      {/* {cData?.count} */}
+      {/* {loading ? <Spinner /> : <Text>username: {data?.username}</Text>} */}
       <YStack gap="$4" maw={600}>
         <H1 ta="center">{t('screens.home.welcome')}</H1>
         <Paragraph fontFamily="$silkscreen" ta="center">
@@ -91,4 +92,4 @@ function SheetDemo() {
   );
 }
 
-export default withDefaultLayout(withAuthenticated(HomeScreen));
+export default HomeScreen;
