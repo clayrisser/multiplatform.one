@@ -19,6 +19,24 @@
  *  limitations under the License.
  */
 
-import HomeScreen from 'app/screens/home';
+import { view } from '../.storybook/storybook.requires';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import { getStorybookUI } from '@storybook/react-native';
 
-export default HomeScreen;
+console.log('view', view);
+
+// const StorybookUI = getStorybookUI({
+//   initialSelection: {
+//     kind: 'welcome',
+//     name: 'welcome',
+//   },
+// });
+
+const StorybookUIRoot = view.getStorybookUI({
+  storage: {
+    getItem: AsyncStorage.getItem,
+    setItem: AsyncStorage.setItem,
+  },
+});
+
+export default StorybookUIRoot;

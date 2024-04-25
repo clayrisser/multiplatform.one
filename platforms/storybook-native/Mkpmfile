@@ -14,13 +14,13 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call done,$@)
 
 ACTIONS += generate~deps
-.storybook/storybook.requires.js:
+.storybook/storybook.requires.ts:
 	@$(call reset,generate)
-$(ACTION)/generate: .storybook/storybook.requires.js $(call git_deps,\.([jt]sx?)$$)
+$(ACTION)/generate: .storybook/storybook.requires.ts $(call git_deps,\.([jt]sx?)$$)
 	@$(SB_RN_GET_STORIES) --config-path $(CURDIR)/.storybook
 	$(SED) -i \
 		's|import { argsEnhancers } from "@storybook/addon-actions/dist/modern/preset/addArgs";|const argsEnhancers=[]|g' \
-		.storybook/storybook.requires.js
+		.storybook/storybook.requires.ts
 	@$(call done,$@)
 
 ACTIONS += format~generate
