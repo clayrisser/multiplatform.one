@@ -18,8 +18,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { Button } from 'tamagui';
 
-export default function Page() {
-  return <Button pressStyle={{ backgroundColor: 'red' }}>Hello</Button>;
-}
+import HomeScreen from 'app/screens/home';
+
+export default HomeScreen;

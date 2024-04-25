@@ -21,7 +21,6 @@ module.exports = {
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'com.example.app',
-      jsEngine: 'jsc',
     },
     android: {
       adaptiveIcon: {
@@ -36,7 +35,7 @@ module.exports = {
     extra: {
       ...publicConfig,
     },
-    jsEngine: 'hermes',
     plugins: [['expo-router', { root: './app' }]],
   },
+  jsEngine: 'hermes',
 };
