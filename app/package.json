@@ -6,7 +6,7 @@
     "*.css"
   ],
   "dependencies": {
-    "@apollo/client": "^3.9.11",
+    "@apollo/client": "^3.10.1",
     "@expo-google-fonts/rock-salt": "^0.2.3",
     "@expo-google-fonts/silkscreen": "^0.2.3",
     "@fontsource/rock-salt": "^5.0.19",

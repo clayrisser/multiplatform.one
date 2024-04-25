@@ -48,7 +48,7 @@
     "@tamagui/themes": "^1.95.1",
     "burnt": "^0.12.2",
     "expo-asset": "^9.0.2",
-    "expo-image": "^1.12.3",
+    "expo-image": "^1.12.4",
     "fast-xml-parser": "^4.3.6",
     "gray-matter": "^4.0.3",
     "hast-util-to-html": "8.0.4",

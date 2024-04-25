@@ -17,10 +17,19 @@ config.resolver.nodeModulesPaths = [
 ];
 config.resolver.extraNodeModules = {
   ...config.resolver.extraNodeModules,
+  'node:path': require.resolve('path-browserify'),
+  'node:process': require.resolve('process/browser'),
+  'node:url': require.resolve('url-polyfill'),
   buffer: require.resolve('buffer/'),
   fs: require.resolve('browserify-fs'),
   path: require.resolve('path-browserify'),
+  process: require.resolve('process/browser'),
   stream: require.resolve('readable-stream'),
+  url: require.resolve('url-polyfill'),
   zlib: require.resolve('browserify-zlib'),
 };
+config.resolver.sourceExts = [...config.resolver.sourceExts, ...config.resolver.sourceExts.map((ext) => `ios.${ext}`)];
+config.resetCache = true;
+console.log(config.resolver.sourceExts);
+console.log(config.resolver.platforms);
 module.exports = config;
