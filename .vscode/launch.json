@@ -14,7 +14,7 @@
       "command": "./mkpm storybook-expo/dev"
     },
     {
-      "name": "next platform dev",
+      "name": "next dev",
       "type": "node-terminal",
       "request": "launch",
       "command": "../../.mkpm/mkpm/.bin/mkpm next/+dev",
@@ -28,7 +28,7 @@
       }
     },
     {
-      "name": "expo platform dev",
+      "name": "expo dev",
       "type": "node-terminal",
       "request": "launch",
       "command": "./mkpm expo/dev"
