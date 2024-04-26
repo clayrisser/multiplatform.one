@@ -1,10 +1,10 @@
 /*
- *  File: /tsup.config.ts
+ *  File: /src/hooks/useSupportedLocales/index.native.ts
  *  Project: multiplatform.one
- *  File Created: 10-10-2023 06:39:34
+ *  File Created: 22-06-2023 05:33:21
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2024
+ *  BitSpur (c) Copyright 2021 - 2023
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,21 +19,9 @@
  *  limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
-import transpileModules from './transpileModules';
+// @ts-ignore
+import { supportedLocales } from 'app/i18n';
 
-export default defineConfig({
-  bundle: true,
-  clean: true,
-  dts: true,
-  entry: ['src/**/*.ts?(x)'],
-  entryPoints: ['src/index.ts'],
-  format: ['cjs', 'esm'],
-  minify: false,
-  outDir: 'lib',
-  publicDir: './public',
-  skipNodeModulesBundle: true,
-  noExternal: transpileModules,
-  splitting: true,
-  target: 'es5',
-});
+export function useSupportedLocales(): string[] | undefined {
+  return supportedLocales;
+}

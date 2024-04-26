@@ -1,5 +1,5 @@
 /*
- *  File: /zustand/index.d.ts
+ *  File: /theme/index.d.ts
  *  Project: multiplatform.one
  *  File Created: 22-06-2023 05:33:21
  *  Author: Clay Risser
@@ -19,4 +19,4 @@
  *  limitations under the License.
  */
 
-export * from '../lib/theme';
+export * from '../types/theme';

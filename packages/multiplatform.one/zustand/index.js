@@ -19,4 +19,4 @@
  *  limitations under the License.
  */
 
-module.exports = require('../lib/zustand/index.js');
+module.exports = require('../dist/cjs/zustand/index.js');

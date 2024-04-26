@@ -34,7 +34,7 @@
     "@tamagui/babel-plugin": "^1.95.1",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "metro-minify-terser": "^0.80.8",
-    "typescript": "~5.4.5"
+    "typescript": "5.3.3"
   },
   "jest": {
     "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",

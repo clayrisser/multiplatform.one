@@ -40,7 +40,7 @@
     "@types/react": "^18.2.79",
     "loki": "^0.35.0",
     "storybook": "^8.0.9",
-    "typescript": "~5.4.5"
+    "typescript": "5.3.3"
   },
   "loki": {
     "configurations": {

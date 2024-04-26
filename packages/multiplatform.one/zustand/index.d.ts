@@ -19,4 +19,4 @@
  *  limitations under the License.
  */
 
-export * from '../lib/zustand';
+export * from '../types/zustand';

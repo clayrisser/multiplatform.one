@@ -1,3 +1,24 @@
+/**
+ * File: /screens/home/index.tsx
+ * Project: app
+ * File Created: 26-04-2024 07:27:54
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React, { useState } from 'react';
 import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
@@ -5,7 +26,7 @@ import { ThemeTintAlt } from '@multiplatform.one/components';
 import { gql } from 'gql';
 import { useAuthQuery, useAuthSubscription, withAuthenticated } from '@multiplatform.one/keycloak';
 import { useLink } from 'solito/link';
-import { useTranslation } from 'multiplatform.one/locales';
+import { useTranslation } from '@multiplatform.one/locales';
 import { withDefaultLayout } from 'app/layouts/Default';
 
 const AuthQuery = gql(`
@@ -16,24 +37,23 @@ const AuthQuery = gql(`
   }
 `);
 
-// const CountSubscription = gql(`
-//   subscription CountSubscription {
-//     count
-//   }
-// `);
+const CountSubscription = gql(`
+  subscription CountSubscription {
+    count
+  }
+`);
 
 function HomeScreen() {
   const { t } = useTranslation();
   const linkProps = useLink({
     href: '/user/alice',
   });
-  // const { data, loading } = useAuthQuery(AuthQuery);
-  // const { data: cData } = useAuthSubscription(CountSubscription);
-  // return <Text>Home</Text>;
+  const { data, loading } = useAuthQuery(AuthQuery);
+  const { data: cData } = useAuthSubscription(CountSubscription);
   return (
     <YStack f={1} jc="center" ai="center" p="$4">
-      {/* {cData?.count} */}
-      {/* {loading ? <Spinner /> : <Text>username: {data?.username}</Text>} */}
+      {cData?.count}
+      {loading ? <Spinner /> : <Text>username: {data?.username}</Text>}
       <YStack gap="$4" maw={600}>
         <H1 ta="center">{t('screens.home.welcome')}</H1>
         <Paragraph fontFamily="$silkscreen" ta="center">

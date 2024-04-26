@@ -1,5 +1,5 @@
 /*
- *  File: /tests/_setup.ts
+ *  File: /src/hooks/useLocale/index.native.ts
  *  Project: multiplatform.one
  *  File Created: 22-06-2023 05:33:21
  *  Author: Clay Risser
@@ -19,4 +19,25 @@
  *  limitations under the License.
  */
 
-export default null;
+import i18n from 'i18next';
+import { useEffect, useState } from 'react';
+
+export function useLocale(): [string, (locale: string) => void] {
+  const [locale, setLocale] = useState(i18n?.language || 'en');
+
+  useEffect(() => {
+    function handleLanguageChanged(lng: string) {
+      setLocale(lng);
+    }
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  function changeLocale(locale: string) {
+    i18n?.changeLanguage(locale);
+  }
+
+  return [locale, changeLocale];
+}
