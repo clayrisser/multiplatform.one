@@ -51,6 +51,5 @@ config.resolver.extraNodeModules = {
   zlib: require.resolve('browserify-zlib'),
 };
 config.resetCache = true;
-console.log(config.resolver.sourceExts);
-console.log(config.resolver.platforms);
+config.transformer.unstable_allowRequireContext = true;
 module.exports = config;

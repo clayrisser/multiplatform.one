@@ -26,12 +26,11 @@ import type { WithLayout } from 'multiplatform.one';
 import { Select, YStack, XStack, Adapt, Popover, Circle } from 'tamagui';
 import { SelectSimple } from '../../forms/SelectSimple';
 import { createWithLayout } from 'multiplatform.one';
-import { useLocale, useSupportedLocales } from 'multiplatform.one/locales';
+import { useLocale, useSupportedLocales } from '@multiplatform.one/locales';
 import { useTheme } from 'multiplatform.one/theme';
 import { useTint } from '../../tints';
 // @ts-ignore
 import { config } from 'app/config';
-// @ts-ignore
 
 type ColorScheme = 'dark' | 'light';
 

@@ -48,7 +48,7 @@
     "eslint": "^9.1.1",
     "prettier": "^3.2.5",
     "tsup": "^8.0.2",
-    "typescript": "~5.4.5"
+    "typescript": "5.3.3"
   },
   "dependencies": {
     "@keycloak/keycloak-admin-client": "^24.0.3",

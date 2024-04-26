@@ -17,11 +17,6 @@
       "require": "./dist/cjs/index.js",
       "types": "./types/index.d.ts"
     },
-    "./tamagui": {
-      "import": "./dist/esm/tamagui",
-      "require": "./dist/cjs/tamagui",
-      "types": "./types/tamagui"
-    },
     "./css/code-highlight.css": {
       "import": "./css/code-highlight.css",
       "require": "./css/code-highlight.css"
@@ -41,6 +36,7 @@
   "dependencies": {
     "@mdx-js/mdx": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
+    "@multiplatform.one/locales": "1.0.2",
     "@tamagui/font-inter": "^1.95.1",
     "@tamagui/logo": "^1.95.1",
     "@tamagui/react-native-media-driver": "^1.95.1",
@@ -81,6 +77,10 @@
     "tsup": "^8.0.2",
     "ui": "1.0.1"
   },
+  "eslintIgnore": [
+    "dist",
+    "types"
+  ],
   "jest": {
     "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
     "verbose": true,
