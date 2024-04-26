@@ -1,5 +1,5 @@
 /*
- *  File: /src/locales/useSupportedLocales/index.ts
+ *  File: /src/useSupportedLocales/index.ts
  *  Project: multiplatform.one
  *  File Created: 22-06-2023 05:33:21
  *  Author: Clay Risser
@@ -19,8 +19,8 @@
  *  limitations under the License.
  */
 
+import { MultiPlatform } from 'multiplatform.one';
 import { useState, useEffect } from 'react';
-import { MultiPlatform } from '../../multiplatform';
 
 export function useSupportedLocales(): string[] | undefined {
   const [supportedLocales, setSupportedLocales] = useState<string[]>();

@@ -12,6 +12,7 @@
     "@fontsource/rock-salt": "^5.0.19",
     "@fontsource/silkscreen": "^5.0.20",
     "@multiplatform.one/keycloak": "^1.0.0",
+    "@multiplatform.one/locales": "^1.0.2",
     "@tamagui/font-fira-mono": "^1.95.1",
     "@tamagui/font-glusp": "^1.95.1",
     "@tamagui/font-inter": "^1.95.1",

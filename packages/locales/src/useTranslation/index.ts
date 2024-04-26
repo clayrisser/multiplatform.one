@@ -1,5 +1,5 @@
 /*
- *  File: /zustand/index.d.ts
+ *  File: /src/useTranslation/index.ts
  *  Project: multiplatform.one
  *  File Created: 22-06-2023 05:33:21
  *  Author: Clay Risser
@@ -19,4 +19,14 @@
  *  limitations under the License.
  */
 
-export * from '../lib/locales';
+import { MultiPlatform } from 'multiplatform.one';
+import { useTranslation as nextUseTranslation } from 'next-i18next';
+import { useTranslation as reactUseTranslation } from 'react-i18next';
+
+let useTranslation = reactUseTranslation;
+
+if (MultiPlatform.isNext && !MultiPlatform.isStatic) {
+  useTranslation = nextUseTranslation;
+}
+
+export { useTranslation };

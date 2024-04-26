@@ -1,5 +1,5 @@
 /*
- *  File: /zustand/index.js
+ *  File: /theme/index.js
  *  Project: multiplatform.one
  *  File Created: 22-06-2023 05:33:21
  *  Author: Clay Risser
@@ -19,4 +19,4 @@
  *  limitations under the License.
  */
 
-module.exports = require('../lib/theme/index.js');
+module.exports = require('../dist/cjs/theme/index.js');

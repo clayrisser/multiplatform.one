@@ -19,4 +19,4 @@
  *  limitations under the License.
  */
 
-module.exports = require('../lib/next/index.js');
+module.exports = require('../dist/cjs/next/index.js');

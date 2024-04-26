@@ -67,7 +67,7 @@
     "react-native": "0.73.6",
     "ts-node": "^10.9.2",
     "tsup": "^8.0.2",
-    "typescript": "~5.4.5"
+    "typescript": "5.3.3"
   },
   "engines": {
     "node": ">=6.0.0"
