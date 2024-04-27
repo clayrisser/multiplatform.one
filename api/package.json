@@ -21,7 +21,7 @@
     "@multiplatform.one/prisma-scripts": "1.0.1",
     "@multiplatform.one/typegraphql": "^1.0.1",
     "@prisma/client": "~5.13.0",
-    "@whatwg-node/server": "^0.9.33",
+    "@whatwg-node/server": "^0.9.34",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
     "graphql": "^16.8.1",
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@types/eslint": "^8.56.10",
-    "eslint": "^9.1.1",
+    "eslint": "~8.56.0",
     "prettier": "^3.2.5",
     "reflect-metadata": "^0.2.2",
     "tsup": "^8.0.2"
