@@ -1,6 +1,6 @@
 # File: /Mkpmfile
-# Project: @multiplatform.one/keycloak
-# File Created: 04-04-2024 15:50:39
+# Project: multiplatform.one
+# File Created: 26-04-2024 17:28:14
 # Author: Clay Risser
 # -----
 # BitSpur (c) Copyright 2021 - 2024
@@ -20,14 +20,10 @@
 include $(MKPM)/mkpm
 include $(MKPM)/gnu
 include $(MKPM)/chain
-include $(MKPM)/yarn
 include $(MKPM)/dotenv
+include $(MKPM)/yarn
 
-CSPELL ?= $(YARN) cspell
-ESLINT ?= $(YARN) eslint
-JEST ?= $(YARN) jest
-PRETTIER ?= $(YARN) prettier
-TSC ?= $(YARN) tsc
+TAMAGUI_BUILD ?= $(YARN) tamagui-build
 
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -36,6 +32,7 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 
 ACTIONS += format~deps
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
+#	-@$(call eslint_format,$?)
 	-@$(call prettier,$?,$(ARGS))
 	@$(call done,$@)
 
@@ -51,22 +48,30 @@ $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 
 ACTIONS += test~lint
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
-	-@$(MKDIR) -p node_modules/.tmp
 	-@$(call jest,$?,$(ARGS))
 	@$(call done,$@)
 
 ACTIONS += build~test
-BUILD_TARGETS := dist/lib/index.js
-dist/lib/index.js:
+BUILD_TARGETS := dist/cjs/index.js
+dist/cjs/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(TSUP)
+	@$(RM) -rf types
+	@$(TAMAGUI_BUILD)
 	@$(call done,$@)
 
-COLLECT_COVERAGE_FROM := ["src/**/*.{js,jsx,ts,tsx}"]
-.PHONY: coverage +coverage
-coverage: | ~lint +coverage
-+coverage:
-	@$(JEST) --coverage --collectCoverageFrom='$(COLLECT_COVERAGE_FROM)' $(ARGS)
+.PHONY: clean
+clean:
+	-@$(MKCACHE_CLEAN)
+	-@$(JEST) --clearCache $(NOFAIL)
+	-@$(WATCHMAN) watch-del-all $(NOFAIL)
+	-@$(GIT) clean -fXd \
+		$(MKPM_GIT_CLEAN_FLAGS) \
+		$(YARN_GIT_CLEAN_FLAGS) \
+		$(NOFAIL)
+
+.PHONY: publish
+publish:
+	@$(NPM) publish
 
 -include $(call chain)
