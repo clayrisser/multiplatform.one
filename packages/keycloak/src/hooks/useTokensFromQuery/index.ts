@@ -19,6 +19,8 @@
  *  limitations under the License.
  */
 
+'use client';
+
 import { MultiPlatform } from 'multiplatform.one';
 import { useRouter } from 'next/router';
 

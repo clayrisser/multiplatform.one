@@ -19,13 +19,16 @@
  * limitations under the License.
  */
 
+'use client';
+
 import KeycloakClient from 'keycloak-js';
 import React, { useEffect, useMemo, useState } from 'react';
-import type { KeycloakConfig, KeycloakInitOptions } from 'keycloak-js';
+import type { KeycloakInitOptions } from 'keycloak-js';
+import type { KeycloakConfig } from '../../keycloak';
 import type { PropsWithChildren } from 'react';
 import type { SessionProviderProps } from 'next-auth/react';
 import { AfterAuth } from '../AfterAuth';
-import { Keycloak } from '../../keycloak';
+import { Keycloak, KeycloakConfigContext } from '../../keycloak';
 import { KeycloakContext } from '../../keycloak/context';
 import { MultiPlatform } from 'multiplatform.one';
 import { SessionProvider } from 'next-auth/react';
@@ -35,7 +38,7 @@ import { useRouter } from 'next/router';
 import { validToken } from '../../token';
 
 export interface AuthProviderProps extends PropsWithChildren {
-  keycloakConfig?: KeycloakConfig;
+  keycloakConfig: KeycloakConfig;
   keycloakInitOptions?: KeycloakInitOptions;
   sessionProvider?: Omit<SessionProviderProps, 'children'>;
 }
@@ -217,10 +220,10 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
 
   useEffect(() => {
     function onError() {
-      if (keycloakClient && initOptions) setKeycloak(new Keycloak(keycloakClient));
+      if (keycloakClient && initOptions) setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
     }
     function onUpdate() {
-      if (keycloakClient && initOptions) setKeycloak(new Keycloak(keycloakClient));
+      if (keycloakClient && initOptions) setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
     }
     if (keycloakClient && initOptions) {
       (async () => {
@@ -234,20 +237,22 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
           try {
             await keycloakClient.updateToken(5);
           } catch (err) {
-            setKeycloak(new Keycloak());
+            setKeycloak(new Keycloak(keycloakConfig));
           }
         };
         const authenticated = await keycloakClient.init(initOptions);
-        setKeycloak(new Keycloak(authenticated ? keycloakClient : undefined));
+        setKeycloak(new Keycloak(keycloakConfig, authenticated ? keycloakClient : undefined));
       })();
     }
   }, []);
 
   return (
     <SessionProvider {...sessionProvider}>
-      <KeycloakContext.Provider value={keycloak}>
-        <AfterAuth>{children}</AfterAuth>
-      </KeycloakContext.Provider>
+      <KeycloakConfigContext.Provider value={keycloakConfig}>
+        <KeycloakContext.Provider value={keycloak}>
+          <AfterAuth>{children}</AfterAuth>
+        </KeycloakContext.Provider>
+      </KeycloakConfigContext.Provider>
     </SessionProvider>
   );
 }

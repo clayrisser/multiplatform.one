@@ -20,21 +20,13 @@
  */
 
 import type { AuthOptions, Session as NextSession } from 'next-auth';
+import type { SessionContextValue as NextSessionContextValue, UseSessionOptions } from 'next-auth/react';
 import { MultiPlatform } from 'multiplatform.one';
 import { useSession as useNextSession, getSession as getNextSession } from 'next-auth/react';
-import type {
-  GetSessionParams,
-  SessionContextValue as NextSessionContextValue,
-  UseSessionOptions,
-} from 'next-auth/react';
 
 let _getServerSession: ((options?: AuthOptions, req?: any, res?: any) => Promise<Session | null>) | undefined;
 
-export async function getSession(
-  options?: AuthOptions | GetSessionParams,
-  req?: any,
-  res?: any,
-): Promise<Session | null> {
+export async function getSession(options?: AuthOptions, req?: any, res?: any): Promise<Session | null> {
   if (MultiPlatform.isServer) {
     if (typeof _getServerSession === 'function') return _getServerSession(options as AuthOptions, req, res);
     const getSession = (await import('next-auth')).getServerSession;
@@ -43,17 +35,14 @@ export async function getSession(
     };
     return _getServerSession(options as AuthOptions, req, res);
   }
-  return getNextSession(options as GetSessionParams);
+  return getNextSession();
 }
 
 export type SessionContextValue<R extends boolean> = Partial<
   Omit<NextSessionContextValue<R> & { session: Session }, 'data'>
 >;
 
-let useSession = <R extends boolean>(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  options?: UseSessionOptions<R>,
-): SessionContextValue<R> => {
+let useSession = <R extends boolean>(_options?: UseSessionOptions<R>): SessionContextValue<R> => {
   return {};
 };
 

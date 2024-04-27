@@ -1,10 +1,10 @@
 /*
- *  File: /src/authConfig.ts
+ *  File: /src/keycloak/config.ts
  *  Project: @multiplatform.one/keycloak
- *  File Created: 22-06-2023 10:07:56
+ *  File Created: 27-04-2024 10:53:19
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,15 +21,13 @@
 
 'use client';
 
+import type { KeycloakConfig } from 'keycloak-js';
 import { createContext } from 'react';
 
-export const defaultAuthConfig: AuthConfig = {};
+export const KeycloakConfigContext = createContext<KeycloakConfig>({
+  clientId: '',
+  realm: '',
+  url: '',
+});
 
-export const AuthConfigContext = createContext<AuthConfig>(defaultAuthConfig);
-
-export interface AuthConfig {
-  debug?: boolean;
-  disabled?: boolean;
-  loginRedirectUri?: string;
-  messageHandlerKeys?: string[];
-}
+export type { KeycloakConfig };

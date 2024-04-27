@@ -22,6 +22,8 @@
 import type { KeycloakTokenParsed } from 'keycloak-js';
 import { jwtDecode } from 'jwt-decode';
 
+export function validToken(token?: string | false, refreshToken?: string | boolean): string | false | undefined;
+export function validToken(token?: string | boolean, refreshToken?: string | boolean): string | boolean | undefined;
 export function validToken(token?: string | boolean, refreshToken?: string | boolean) {
   if (typeof token === 'undefined') return;
   if (!token) return false;
