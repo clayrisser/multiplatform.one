@@ -19,6 +19,8 @@
  * limitations under the License.
  */
 
+'use client';
+
 import React, { ComponentType, PropsWithChildren, useEffect } from 'react';
 import { MultiPlatform } from 'multiplatform.one';
 import { useAuthConfig, useTokensFromQuery, useTokensFromState } from './hooks';
