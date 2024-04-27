@@ -19,4 +19,4 @@
  *  limitations under the License.
  */
 
-export * from '../lib/routes.js';
+export * from '../types/routes';

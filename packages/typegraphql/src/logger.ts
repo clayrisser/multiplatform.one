@@ -41,7 +41,7 @@ let _logger: PinoLogger | undefined;
 export type LogLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal';
 
 export class Logger {
-  pino?: PinoLogger<any>;
+  pino?: PinoLogger;
 
   constructor(
     private readonly options: LoggerOptions = {},
@@ -193,11 +193,11 @@ function createLogger(options: LoggerOptions) {
         dedupe: true,
       },
     ),
-  ) as PinoLogger<any>;
+  ) as PinoLogger;
   return _logger;
 }
 
-export function createPinoHttp(options: LoggerOptions): PinoHttpOptions<IncomingMessage, ServerResponse, any> {
+export function createPinoHttp(options: LoggerOptions): PinoHttpOptions<IncomingMessage, ServerResponse> {
   return {
     logger: createLogger(options),
     genReqId: generateRequestId,

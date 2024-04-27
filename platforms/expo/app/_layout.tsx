@@ -28,6 +28,7 @@ import { i18nInit } from 'app/i18n';
 import { importFonts } from 'app/fonts';
 import { useCallback } from 'react';
 import { useFonts } from 'expo-font';
+import { AuthProvider } from '../components/AuthProvider';
 
 const fonts = importFonts();
 const logger = console;
@@ -51,7 +52,9 @@ export default function HomeLayout() {
         //   realm: config.get('KEYCLOAK_REALM')!,
         // }}
       >
-        <Stack />
+        <AuthProvider>
+          <Stack />
+        </AuthProvider>
       </GlobalProvider>
     </View>
   );

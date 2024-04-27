@@ -19,6 +19,8 @@
  * limitations under the License.
  */
 
+'use client';
+
 import React, { useEffect } from 'react';
 import type { PropsWithChildren } from 'react';
 import { useAuthConfig } from '../hooks';
