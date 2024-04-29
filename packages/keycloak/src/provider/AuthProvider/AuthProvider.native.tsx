@@ -19,84 +19,162 @@
  * limitations under the License.
  */
 
-import React, { useState, useEffect } from 'react';
-import type { AuthProviderProps } from './AuthProvider';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import type { AuthProviderProps, Tokens } from './AuthProvider';
 import type { KeycloakLoginOptions, KeycloakLogoutOptions } from '../../keycloak';
 import { AfterAuth } from '../AfterAuth';
 import { Keycloak, KeycloakConfigContext } from '../../keycloak';
 import { KeycloakContext } from '../../keycloak/context';
-import { makeRedirectUri, useAuthRequest, useAutoDiscovery } from 'expo-auth-session';
+import { makeRedirectUri, useAuthRequest, useAutoDiscovery, refreshAsync, exchangeCodeAsync } from 'expo-auth-session';
 import { persist, useAuthState } from '../../state';
-import { validToken } from '../../token';
+import { validOrRefreshableToken, isTokenExpired } from '../../token';
 
 export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
   const [keycloak, setKeycloak] = useState<Keycloak>();
   const authState = useAuthState();
-  const [refreshToken, setRefreshToken] = useState<string | false | undefined>(
-    validToken((persist && authState.refreshToken) || false),
-  );
-  const [token, setToken] = useState<string | false | undefined>(
-    validToken((persist && authState.token) || false, refreshToken),
-  );
-  const [idToken, setIdToken] = useState<string | false | undefined>(
-    validToken((persist && authState.idToken) || false, refreshToken),
-  );
+  const initialRefreshToken = useMemo(() => validOrRefreshableToken((persist && authState.refreshToken) || false), []);
   const keycloakUrl = `${keycloakConfig?.url}/realms/${keycloakConfig?.realm}`;
+  const clientId = keycloakConfig.publicClientId || keycloakConfig?.clientId || '';
   const discovery = useAutoDiscovery(keycloakUrl);
   const redirectUri = makeRedirectUri();
+  const [tokens, setTokens] = useState<Tokens<false>>({
+    refreshToken: initialRefreshToken,
+    token: validOrRefreshableToken((persist && authState.token) || false, initialRefreshToken),
+    idToken: validOrRefreshableToken((persist && authState.idToken) || false, initialRefreshToken),
+  });
+  const scopes = useMemo(
+    () => [...new Set(['email', 'openid', 'profile', ...(keycloakConfig.scopes || [])])],
+    [keycloakConfig.scopes],
+  );
   const [request, response, promptAsync] = useAuthRequest(
     {
-      clientId: keycloakConfig?.clientId || '',
+      clientId,
       redirectUri: redirectUri,
-      scopes: ['openid', 'profile'],
+      scopes,
     },
     discovery,
   );
 
   useEffect(() => {
+    if (!discovery || !response?.type || !request?.codeVerifier || !clientId) return;
     (async () => {
-      if (response?.type === 'success' && request?.codeVerifier && response.params.code) {
-        const res = await fetch(`${keycloakUrl}/protocol/openid-connect/token`, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: Object.entries({
-            client_id: keycloakConfig?.clientId || '',
+      if (response?.type === 'success' && request.codeVerifier && response.params.code) {
+        const tokenResponse = await exchangeCodeAsync(
+          {
+            clientId,
             code: response.params.code,
-            code_verifier: request.codeVerifier,
-            grant_type: 'authorization_code',
-            redirect_uri: redirectUri,
-          })
-            .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-            .join('&'),
-        });
-        if (res.ok) {
-          const body = await res.json();
-          if (body['access_token']) setToken(body['access_token']);
-          if (body['id_token']) setIdToken(body['id_token']);
-          if (body['refresh_token']) setRefreshToken(body['refresh_token']);
+            redirectUri,
+            scopes,
+            extraParams: {
+              code_verifier: request.codeVerifier,
+            },
+          },
+          discovery,
+        );
+        if (tokenResponse) {
+          setTokens({
+            idToken: tokenResponse.idToken,
+            refreshToken: tokenResponse.refreshToken,
+            token: tokenResponse.accessToken,
+          });
         }
       }
     })();
-  }, [redirectUri, request?.codeVerifier, response]);
+  }, [
+    discovery,
+    request?.codeVerifier,
+    response?.type === 'success' ? response?.params?.code : undefined,
+    clientId,
+    scopes,
+    redirectUri,
+  ]);
+
+  const resetTokens = useCallback(() => {
+    authState.setIdToken('');
+    authState.setRefreshToken('');
+    authState.setToken('');
+    setTokens({
+      refreshToken: undefined,
+      token: undefined,
+      idToken: undefined,
+    });
+  }, [authState]);
+
+  const refreshTokens = useCallback(async () => {
+    if (!discovery) return;
+    if (typeof tokens.refreshToken === 'string') {
+      if (!isTokenExpired(tokens.refreshToken)) {
+        const tokenResponse = await refreshAsync(
+          {
+            clientId,
+            refreshToken: tokens.refreshToken,
+            scopes,
+          },
+          discovery,
+        );
+        if (tokenResponse) {
+          setTokens({
+            idToken: tokenResponse.idToken,
+            refreshToken: tokenResponse.refreshToken,
+            token: tokenResponse.accessToken,
+          });
+        } else {
+          resetTokens();
+        }
+      } else {
+        resetTokens();
+      }
+    } else if (
+      authState.refreshToken &&
+      typeof authState.refreshToken === 'string' &&
+      isTokenExpired(authState.refreshToken)
+    ) {
+      resetTokens();
+    }
+  }, [discovery, resetTokens, authState.refreshToken, tokens.refreshToken, clientId, scopes]);
 
   useEffect(() => {
-    if (token)
-      setKeycloak(
-        new Keycloak(
+    if (!discovery) return;
+    refreshTokens();
+  }, [discovery]);
+
+  useEffect(() => {
+    if (!request) return;
+    let refreshHandle: NodeJS.Timeout;
+    (async () => {
+      if (tokens.token && isTokenExpired(tokens.token)) {
+        await refreshTokens();
+      } else {
+        const _keycloak = new Keycloak(
           keycloakConfig,
-          token,
-          idToken || undefined,
-          refreshToken || undefined,
+          tokens.token || undefined,
+          tokens.idToken || undefined,
+          tokens.refreshToken || undefined,
           async (options: KeycloakLoginOptions) => {
             await promptAsync(options);
           },
-          async (options: KeycloakLogoutOptions) => {},
-        ),
-      );
-  }, [token, idToken, refreshToken]);
+          async (_options: KeycloakLogoutOptions) => {
+            resetTokens();
+          },
+        );
+        if (_keycloak.refreshTokenParsed?.exp) {
+          const timeout = (_keycloak.refreshTokenParsed.exp - Math.floor(Date.now() / 1000) - 10) * 1000;
+          if (timeout > 0) {
+            refreshHandle = setTimeout(() => {
+              refreshTokens();
+            }, timeout);
+          } else {
+            setTimeout(() => _keycloak.logout(), Math.max(0, timeout + 10) * 1000);
+            return;
+          }
+        }
+        setKeycloak(_keycloak);
+      }
+    })();
+    return () => {
+      if (refreshHandle) clearTimeout(refreshHandle);
+    };
+  }, [request, tokens.token, tokens.idToken, tokens.refreshToken, refreshTokens, resetTokens]);
 
   return (
     <KeycloakConfigContext.Provider value={keycloakConfig}>

@@ -50,6 +50,11 @@ function HomeScreen() {
   });
   const { data, loading } = useAuthQuery(AuthQuery);
   const { data: cData } = useAuthSubscription(CountSubscription);
+  // return (
+  //   <XStack bg="red">
+  //     <Text>Hello</Text>
+  //   </XStack>
+  // );
   return (
     <YStack f={1} jc="center" ai="center" p="$4">
       {cData?.count}
