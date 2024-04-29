@@ -113,6 +113,7 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
           discovery,
         );
         if (tokenResponse) {
+          console.log('REFRESHED TOKENS');
           setTokens({
             idToken: tokenResponse.idToken,
             refreshToken: tokenResponse.refreshToken,
