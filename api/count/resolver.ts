@@ -33,7 +33,7 @@ export class CountResolver {
   @Subscription(() => Number, {
     async *subscribe() {
       let count = 0;
-      for (let i = 0; i < 99; i++) {
+      for (let i = 0; i < 999; i++) {
         ++count;
         yield count;
         await new Promise((resolve) => setTimeout(resolve, 1000));
