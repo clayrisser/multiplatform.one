@@ -87,8 +87,11 @@ export class KeycloakService {
     return (this.keycloakConnect.grantManager as any).clientId;
   }
 
-  async getGrant(force = false): Promise<Grant | undefined> {
-    if (!force && this._grant) return this._grant;
+  async getGrant(force = false, grant?: Grant): Promise<Grant | undefined> {
+    if (grant) return grant;
+    if (!force && this._grant) {
+      return this.validateGrant(this._grant);
+    }
     if (force) this.clearGrant();
     await this.setOptions();
     if (this.req.kauth?.grant) {
@@ -119,21 +122,21 @@ export class KeycloakService {
     return this._grant;
   }
 
-  async getAccessToken(): Promise<Token | undefined> {
-    return (await this.getGrant())?.access_token as Token;
+  async getAccessToken(grant?: Grant): Promise<Token | undefined> {
+    return (await this.getGrant(false, grant))?.access_token as Token;
   }
 
-  async getRefreshToken(): Promise<Token | undefined> {
-    return (await this.getGrant())?.refresh_token as Token;
+  async getRefreshToken(grant?: Grant): Promise<Token | undefined> {
+    return (await this.getGrant(false, grant))?.refresh_token as Token;
   }
 
-  async getIdToken(): Promise<Token | undefined> {
-    return (await this.getGrant())?.id_token as Token;
+  async getIdToken(grant?: Grant): Promise<Token | undefined> {
+    return (await this.getGrant(false, grant))?.id_token as Token;
   }
 
-  async getRoles(): Promise<string[] | undefined> {
+  async getRoles(grant?: Grant): Promise<string[] | undefined> {
     if (this._roles) return this._roles;
-    const accessToken = await this.getAccessToken();
+    const accessToken = await this.getAccessToken(grant);
     if (!accessToken) return;
     this._roles = [
       ...(accessToken.content?.realm_access?.roles || []).map((role: string) => `realm:${role}`),
@@ -142,24 +145,24 @@ export class KeycloakService {
     return this._roles;
   }
 
-  async getACLRoles(): Promise<string[] | undefined> {
+  async getACLRoles(grant?: Grant): Promise<string[] | undefined> {
     if (this._aclRoles) return this._aclRoles;
-    const roles = await this.getRoles();
+    const roles = await this.getRoles(grant);
     if (!roles) return;
     this._aclRoles = roles.map((role: string) => role.replace(/^realm:/g, ''));
     return this._aclRoles;
   }
 
-  async getScopes(): Promise<string[] | undefined> {
+  async getScopes(grant?: Grant): Promise<string[] | undefined> {
     if (this._scopes) return this._scopes;
-    const accessToken = await this.getAccessToken();
+    const accessToken = await this.getAccessToken(grant);
     if (!accessToken) return;
     this._scopes = (accessToken.content?.scope || '').split(' ');
     return this._scopes;
   }
 
-  async getUserInfo(force = false): Promise<UserInfo | undefined> {
-    await this.getGrant(force);
+  async getUserInfo(grant?: Grant, force = false): Promise<UserInfo | undefined> {
+    await this.getGrant(force, grant);
     if (this._userInfo) return this._userInfo;
     if (this.req.kauth?.userInfo) {
       this._userInfo = this.req.kauth.userInfo;
@@ -170,7 +173,7 @@ export class KeycloakService {
       this._userInfo = this.req.session.kauth.userInfo;
       return this._userInfo;
     }
-    const accessToken = await this.getAccessToken();
+    const accessToken = await this.getAccessToken(grant);
     const userInfo =
       accessToken &&
       !accessToken.isExpired() &&
@@ -203,18 +206,18 @@ export class KeycloakService {
     return this._userInfo;
   }
 
-  async getUserId(): Promise<string | undefined> {
-    const accessToken = await this.getAccessToken();
+  async getUserId(grant?: Grant): Promise<string | undefined> {
+    const accessToken = await this.getAccessToken(grant);
     return accessToken?.content?.sub;
   }
 
-  async getUsername(): Promise<string | undefined> {
-    const accessToken = await this.getAccessToken();
+  async getUsername(grant?: Grant): Promise<string | undefined> {
+    const accessToken = await this.getAccessToken(grant);
     return accessToken?.content?.preferred_username;
   }
 
-  async isAuthorizedByRoles(roles: (string | string[])[] = []): Promise<boolean> {
-    const accessToken = await this.getAccessToken();
+  async isAuthorizedByRoles(roles: (string | string[])[] = [], grant?: Grant): Promise<boolean> {
+    const accessToken = await this.getAccessToken(grant);
     const rolesArr = Array.isArray(roles) ? roles : [roles];
     if (!roles.length) return true;
     return rolesArr.some((role: string | string[]) => {
@@ -226,8 +229,8 @@ export class KeycloakService {
   }
 
   // username must start with `service-account-`
-  async getClientFromServiceAccountUsername(username?: string) {
-    if (!username) username = await this.getUsername();
+  async getClientFromServiceAccountUsername(username?: string, grant?: Grant) {
+    if (!username) username = await this.getUsername(grant);
     if (!username) return;
     const clientId = (username.match(/service-account-(.+)/) || [])?.[1];
     if (!clientId) return;
@@ -246,8 +249,8 @@ export class KeycloakService {
     }
   }
 
-  async getUser(userId?: string): Promise<UserRepresentation | undefined> {
-    if (!userId) userId = await this.getUserId();
+  async getUser(userId?: string, grant?: Grant): Promise<UserRepresentation | undefined> {
+    if (!userId) userId = await this.getUserId(grant);
     if (!userId) return;
     if (!this.keycloakAdmin) return;
     try {
@@ -633,10 +636,10 @@ export class KeycloakService {
 
   private async validateGrant(grant: Grant): Promise<Grant | undefined> {
     // @ts-ignore isGrantRefreshable is private
-    if (this.options.ensureFreshness && this.keycloak.grantManager.isGrantRefreshable(grant)) {
+    if (this.options.ensureFreshness && this.keycloakConnect.grantManager.isGrantRefreshable(grant)) {
       await this.keycloakConnect.grantManager.ensureFreshness(grant);
     }
-    return await this.keycloakConnect.grantManager.validateGrant(grant);
+    return this.keycloakConnect.grantManager.validateGrant(grant);
   }
 
   private serializeScope(scope?: string | string[]) {

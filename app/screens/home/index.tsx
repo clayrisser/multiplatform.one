@@ -25,6 +25,7 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { ThemeTintAlt } from '@multiplatform.one/components';
 import { gql } from 'gql';
 import { useAuthQuery, useAuthSubscription, withAuthenticated } from '@multiplatform.one/keycloak';
+import { useSubscription } from '@apollo/client';
 import { useLink } from 'solito/link';
 import { useTranslation } from '@multiplatform.one/locales';
 import { withDefaultLayout } from 'app/layouts/Default';
@@ -49,7 +50,7 @@ function HomeScreen() {
     href: '/user/alice',
   });
   const { data, loading } = useAuthQuery(AuthQuery);
-  const { data: cData } = useAuthSubscription(CountSubscription);
+  const { data: cData } = useSubscription(CountSubscription);
   return (
     <YStack f={1} jc="center" ai="center" p="$4">
       <Text>{cData?.count}</Text>
