@@ -23,13 +23,14 @@ import axios from 'axios';
 import cookie from 'cookie';
 import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
 import type { AxiosError } from 'axios';
+import type { Ctx } from '@multiplatform.one/typegraphql';
 import type { Grant } from 'keycloak-connect';
 import type { KeycloakConnect } from './initialize';
 import type { Session } from '@multiplatform.one/keycloak';
 import { KEYCLOAK_CONNECT, KEYCLOAK_OPTIONS, KeycloakAdmin } from './initialize';
-import { getReqHeader, Logger } from '@multiplatform.one/typegraphql';
 import { Token } from './token';
 import { decode } from 'next-auth/jwt';
+import { getReqHeader, Logger } from '@multiplatform.one/typegraphql';
 import { injectable, scoped, Lifecycle, inject } from 'tsyringe';
 import type {
   AuthorizationCodeGrantOptions,
@@ -73,6 +74,7 @@ export class KeycloakService {
     @inject('LOGGER') private readonly logger: Logger,
     @inject(KEYCLOAK_CONNECT) public readonly keycloakConnect: KeycloakConnect,
     public readonly keycloakAdmin: KeycloakAdmin,
+    @inject('CTX') public readonly ctx?: Ctx,
   ) {
     this.options = {
       ensureFreshness: true,
@@ -441,7 +443,7 @@ export class KeycloakService {
   private get bearerToken(): Token | undefined {
     if (this._bearerToken) return this._bearerToken;
     const { strict } = this.options;
-    const authorization = getReqHeader(this.req, 'authorization');
+    const authorization = getReqHeader(this.req, 'authorization', this.ctx?.headers);
     if (typeof authorization === 'undefined') return undefined;
     if (authorization && authorization.indexOf(' ') <= -1) {
       if (strict) return undefined;

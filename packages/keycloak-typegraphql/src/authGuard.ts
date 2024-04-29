@@ -83,18 +83,18 @@ async function canActivate(ctx: Ctx): Promise<boolean> {
       }
       req.resolversAuthChecked.add(roleSet.resolverName);
     }
-    logger.info(
+    logger.debug(
       `resolver${roleSet.resolverName ? ` '${roleSet.resolverName}'` : ''} for '${username}' requires ${
         roleSet.roles.length ? `roles [ ${roleSet.roles.join(' | ')} ]` : 'authentication'
       }`,
     );
     if (!authorized) {
-      logger.info(`authorization for '${username}' denied`);
+      logger.debug(`authorization for '${username}' denied`);
       return false;
     }
   }
   if (!req.authChecked) {
-    logger.info(`authorization for '${username}' granted`);
+    logger.debug(`authorization for '${username}' granted`);
     req.authChecked = true;
   }
   return true;

@@ -270,6 +270,10 @@ export async function createServer(
           {
             execute: (args: any) => args.rootValue.execute(args),
             subscribe: (args: any) => args.rootValue.subscribe(args),
+            onConnect: (ctx) => {
+              // @ts-ignore
+              ctx.headers = ctx.connectionParams?.headers;
+            },
             onSubscribe: async (ctx, message) => {
               const enveloped = yoga.getEnveloped({
                 ...ctx,

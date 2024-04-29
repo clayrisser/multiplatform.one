@@ -50,14 +50,9 @@ function HomeScreen() {
   });
   const { data, loading } = useAuthQuery(AuthQuery);
   const { data: cData } = useAuthSubscription(CountSubscription);
-  // return (
-  //   <XStack bg="red">
-  //     <Text>Hello</Text>
-  //   </XStack>
-  // );
   return (
     <YStack f={1} jc="center" ai="center" p="$4">
-      {cData?.count}
+      <Text>{cData?.count}</Text>
       {loading ? <Spinner /> : <Text>username: {data?.username}</Text>}
       <YStack gap="$4" maw={600}>
         <H1 ta="center">{t('screens.home.welcome')}</H1>

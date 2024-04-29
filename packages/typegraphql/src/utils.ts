@@ -19,10 +19,17 @@
  *  limitations under the License.
  */
 
-import { randomUUID } from 'crypto';
 import startCase from 'lodash.startcase';
+import { randomUUID } from 'crypto';
 
-export function getReqHeader(req: any, name: string) {
+export function getReqHeader(req: any, name: string, headers: Record<string, string> = {}) {
+  headers = Object.entries(headers).reduce(
+    (headers, [key, value]: [string, string]) => {
+      headers[key.toLowerCase()] = value;
+      return headers;
+    },
+    {} as Record<string, string>,
+  );
   name = name.toLowerCase();
   let header: string | string[] | undefined;
   if (typeof req?.headers?.get === 'function') {
@@ -32,6 +39,9 @@ export function getReqHeader(req: any, name: string) {
     header = req.headers.get(name);
   }
   if (!header && req.headers) header = req.headers?.[name];
+  if (!header) {
+    header = headers[name];
+  }
   if (Array.isArray(header)) return header.join(', ');
   return (header as string) || undefined;
 }

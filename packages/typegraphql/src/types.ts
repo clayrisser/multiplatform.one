@@ -38,6 +38,7 @@ export interface Ctx<R extends Request = Request, P extends PrismaClient = Prism
   extends Omit<YogaInitialContext, 'request'> {
   container: DependencyContainer;
   extra?: CtxExtra;
+  headers?: Record<string, string>;
   id: string;
   payload?: SubscribePayload;
   prisma?: P;

@@ -158,7 +158,7 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
           },
         );
         if (_keycloak.refreshTokenParsed?.exp) {
-          const timeout = (_keycloak.refreshTokenParsed.exp - Math.floor(Date.now() / 1000) - 10) * 1000;
+          const timeout = Math.max(_keycloak.refreshTokenParsed.exp - Math.floor(Date.now() / 1000) - 10, 5) * 1000;
           if (timeout > 0) {
             refreshHandle = setTimeout(() => {
               refreshTokens();
