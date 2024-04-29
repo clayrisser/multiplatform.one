@@ -142,7 +142,7 @@ version:
 	@$(CHANGESET) version
 
 .PHONY: publish +publish
-publish: version ~build +publish
+publish: version build +publish
 +publish:
 	@$(CHANGESET) publish
 
