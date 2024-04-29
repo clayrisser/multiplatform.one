@@ -22,23 +22,29 @@
 import type { KeycloakTokenParsed } from 'keycloak-js';
 import { jwtDecode } from 'jwt-decode';
 
-export function validToken(token?: string | false, refreshToken?: string | boolean): string | false | undefined;
-export function validToken(token?: string | boolean, refreshToken?: string | boolean): string | boolean | undefined;
-export function validToken(token?: string | boolean, refreshToken?: string | boolean) {
+export function validOrRefreshableToken(
+  token?: string | false,
+  refreshToken?: string | boolean,
+): string | false | undefined;
+export function validOrRefreshableToken(
+  token?: string | boolean,
+  refreshToken?: string | boolean,
+): string | boolean | undefined;
+export function validOrRefreshableToken(token?: string | boolean, refreshToken?: string | boolean) {
   if (typeof token === 'undefined') return;
   if (!token) return false;
   if (typeof token !== 'string') return token;
   if (refreshToken) {
-    if (refreshToken === true || isTokenValid(refreshToken)) return token;
+    if (refreshToken === true || !isTokenExpired(refreshToken)) return token;
     return false;
   }
-  return isTokenValid(token) ? token : false;
+  return isTokenExpired(token) ? false : token;
 }
 
-export function isTokenValid(token: string) {
+export function isTokenExpired(token: string) {
   const { exp } = jwtDecode(token) as TokenParsed;
   if (!exp) return false;
-  return Math.floor(Date.now() / 1000) <= exp;
+  return Math.floor(Date.now() / 1000) >= exp;
 }
 
 export interface TokenParsed extends KeycloakTokenParsed {

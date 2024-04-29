@@ -35,7 +35,7 @@ import { SessionProvider } from 'next-auth/react';
 import { persist, useAuthState } from '../../state';
 import { useAuthConfig } from '../../hooks';
 import { useRouter } from 'next/router';
-import { validToken } from '../../token';
+import { validOrRefreshableToken } from '../../token';
 
 export interface AuthProviderProps extends PropsWithChildren {
   keycloakConfig: KeycloakConfig;
@@ -45,39 +45,46 @@ export interface AuthProviderProps extends PropsWithChildren {
 
 const logger = console;
 
+export interface Tokens<B = boolean> {
+  idToken?: string | B;
+  refreshToken?: string | B;
+  token?: string | B;
+}
+
 export function AuthProvider({ children, sessionProvider, keycloakInitOptions, keycloakConfig }: AuthProviderProps) {
   const { debug, messageHandlerKeys } = useAuthConfig();
   const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
   const authState = useAuthState();
   const [keycloak, setKeycloak] = useState<Keycloak>();
-  const [refreshToken, setRefreshToken] = useState<string | boolean | undefined>(
-    validToken(
-      MultiPlatform.isIframe
-        ? ('refreshToken' in query && (query.refreshToken?.toString() || true)) ||
-            (persist && authState.refreshToken) ||
-            false
-        : undefined,
-    ),
+  const initialRefreshToken = useMemo(
+    () =>
+      validOrRefreshableToken(
+        MultiPlatform.isIframe
+          ? ('refreshToken' in query && (query.refreshToken?.toString() || true)) ||
+              (persist && authState.refreshToken) ||
+              false
+          : undefined,
+      ),
+    [],
   );
-  const [token, setToken] = useState<string | boolean | undefined>(
-    validToken(
+  const [tokens, setTokens] = useState<Tokens>({
+    refreshToken: initialRefreshToken,
+    token: validOrRefreshableToken(
       MultiPlatform.isIframe
         ? ('token' in query && (query.token?.toString() || true)) || (persist && authState.token) || false
         : undefined,
-      refreshToken,
+      initialRefreshToken,
     ),
-  );
-  const [idToken, setIdToken] = useState<string | boolean | undefined>(
-    validToken(
+    idToken: validOrRefreshableToken(
       MultiPlatform.isIframe
         ? ('idToken' in query && (query.idToken?.toString() || true)) || (persist && authState.idToken) || false
         : undefined,
-      refreshToken,
+      initialRefreshToken,
     ),
-  );
+  });
 
   useEffect(() => {
-    if (token !== true && refreshToken !== true && idToken !== true) return;
+    if (tokens.token !== true && tokens.refreshToken !== true && tokens.idToken !== true) return;
     if (debug) logger.debug('post message', JSON.stringify({ type: 'LOADED' }));
     (messageHandlerKeys || []).forEach((key: string) => {
       window?.webkit?.messageHandlers?.[key]?.postMessage(JSON.stringify({ type: 'LOADED' }));
@@ -87,7 +94,7 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
   }, []);
 
   useEffect(() => {
-    if (refreshToken !== true) return;
+    if (tokens.refreshToken !== true) return;
     const messageCallback = (e: MessageEvent<any>) => {
       let data = e?.data || null;
       if (typeof data === 'string') {
@@ -100,7 +107,7 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
       if (!message.type) return;
       if (message.type.toUpperCase() === 'REFRESH_TOKEN' && message.payload) {
         if (debug) logger.debug('setting refresh token', message.payload);
-        setRefreshToken(validToken(message.payload));
+        setTokens((tokens) => ({ ...tokens, refreshToken: validOrRefreshableToken(message.payload) }));
         window.removeEventListener('message', messageCallback);
       }
     };
@@ -120,7 +127,7 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
   }, []);
 
   useEffect(() => {
-    if (token !== true) return;
+    if (tokens.token !== true) return;
     const messageCallback = (e: MessageEvent<any>) => {
       let data = e?.data || null;
       if (typeof data === 'string') {
@@ -133,7 +140,7 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
       if (!message.type) return;
       if (message.type.toUpperCase() === 'TOKEN' && message.payload) {
         if (debug) logger.debug('setting token', message.payload);
-        setToken(validToken(message.payload, refreshToken));
+        setTokens((tokens) => ({ ...tokens, token: validOrRefreshableToken(message.payload, tokens.refreshToken) }));
         window.removeEventListener('message', messageCallback);
       }
     };
@@ -153,7 +160,7 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
   }, []);
 
   useEffect(() => {
-    if (idToken !== true) return;
+    if (tokens.idToken !== true) return;
     const messageCallback = (e: MessageEvent<any>) => {
       let data = e?.data || null;
       if (typeof data === 'string') {
@@ -166,7 +173,7 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
       if (!message.type) return;
       if (message.type.toUpperCase() === 'ID_TOKEN' && message.payload) {
         if (debug) logger.debug('setting id token', message.payload);
-        setIdToken(validToken(message.payload, refreshToken));
+        setTokens((tokens) => ({ ...tokens, idToken: validOrRefreshableToken(message.payload, tokens.refreshToken) }));
         window.removeEventListener('message', messageCallback);
       }
     };
@@ -191,32 +198,43 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
         ? new KeycloakClient({
             url: keycloakConfig.url,
             realm: keycloakConfig.realm,
-            clientId: keycloakConfig.clientId,
+            clientId: keycloakConfig.publicClientId || keycloakConfig.clientId,
           })
         : undefined,
-    [keycloakInitOptions, keycloakConfig, token, refreshToken, idToken],
+    [keycloakInitOptions, keycloakConfig, tokens.token, tokens.refreshToken, tokens.idToken],
   );
 
   const initOptions = useMemo(() => {
     if (!MultiPlatform.isIframe) return;
-    const initOptions = {
+    const initOptions: KeycloakInitOptions = {
       ...defaultKeycloakInitOptions,
       ...keycloakInitOptions,
+      scope: [
+        ...new Set([
+          'email',
+          'openid',
+          'profile',
+          ...(defaultKeycloakInitOptions.scope?.split(' ') || []),
+          ...(keycloakInitOptions?.scope?.split(' ') || []),
+          ...(keycloakConfig.scopes || []),
+        ]),
+      ].join(' '),
     };
     if (debug) initOptions.enableLogging = true;
-    if (token && typeof token === 'string') {
-      initOptions.token = token;
+    if (tokens.token && typeof tokens.token === 'string') {
+      initOptions.token = tokens.token;
       initOptions.timeSkew = 0;
-      if (idToken && typeof idToken === 'string') initOptions.idToken = idToken;
-      if (refreshToken && typeof refreshToken === 'string') initOptions.refreshToken = refreshToken;
+      if (tokens.idToken && typeof tokens.idToken === 'string') initOptions.idToken = tokens.idToken;
+      if (tokens.refreshToken && typeof tokens.refreshToken === 'string')
+        initOptions.refreshToken = tokens.refreshToken;
     }
-    if ((typeof window !== 'undefined' && window.self !== window.top) || (token && !refreshToken)) {
+    if ((typeof window !== 'undefined' && window.self !== window.top) || (tokens.token && !tokens.refreshToken)) {
       initOptions.checkLoginIframe = false;
       initOptions.flow = 'implicit';
       initOptions.onLoad = undefined;
     }
     return initOptions;
-  }, [keycloakInitOptions, token, idToken, refreshToken]);
+  }, [keycloakInitOptions, keycloakConfig.scopes, tokens.token, tokens.idToken, tokens.refreshToken]);
 
   useEffect(() => {
     function onError() {

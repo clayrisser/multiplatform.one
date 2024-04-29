@@ -30,7 +30,7 @@
     "intl-pluralrules": "^2.0.1",
     "multiplatform.one": "^1.0.1",
     "react-i18next": "^14.1.1",
-    "react-native-svg": "15.2.0",
+    "react-native-svg": "14.1.0",
     "solito": "^4.2.2",
     "subscriptions-transport-ws": "^0.11.0",
     "tamagui": "^1.95.1",
