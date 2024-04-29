@@ -22,15 +22,16 @@
 import type KeycloakClient from 'keycloak-js';
 import type { AccessTokenParsed, TokenParsed } from '../token';
 import type { KeycloakConfig } from 'keycloak-js';
+import type { KeycloakLoginOptions, KeycloakLogoutOptions } from '../keycloak';
 import type { KeycloakMock } from '../types';
-import { KeycloakConfigContext, type KeycloakLoginOptions, type KeycloakLogoutOptions } from '../keycloak';
+import { KeycloakConfigContext } from '../keycloak/config';
 import { KeycloakContext } from './context';
 import { MultiPlatform } from 'multiplatform.one';
 import { jwtDecode } from 'jwt-decode';
 import { useContext } from 'react';
 
 export class Keycloak {
-  token: string;
+  token?: string;
   idToken?: string;
   refreshToken?: string;
 
@@ -44,7 +45,7 @@ export class Keycloak {
 
   constructor(
     public readonly config: KeycloakConfig,
-    input: string | KeycloakClient | KeycloakMock,
+    input?: string | KeycloakClient | KeycloakMock,
     idToken?: string,
     refreshToken?: string,
     login?: (_options: KeycloakLoginOptions) => Promise<undefined>,
@@ -139,6 +140,9 @@ export class Keycloak {
   }
 
   async login(options: KeycloakLoginOptions = {}) {
+    this.idToken = undefined;
+    this.refreshToken = undefined;
+    this.token = undefined;
     if (this.keycloakClient) {
       await this.keycloakClient.login(options);
     } else {
@@ -147,6 +151,9 @@ export class Keycloak {
   }
 
   async logout(options: KeycloakLogoutOptions = {}) {
+    this.idToken = undefined;
+    this.refreshToken = undefined;
+    this.token = undefined;
     if (this.keycloakClient) {
       await this.keycloakClient.logout(options);
     } else {

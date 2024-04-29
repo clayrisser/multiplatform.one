@@ -21,14 +21,14 @@
 
 import tamaguiConfig from '../tamagui.config';
 import { GlobalProvider } from 'app/providers';
-import { SplashScreen, Stack } from 'expo-router';
+import { Layout } from '../layout';
+import { SplashScreen } from 'expo-router';
 import { View } from 'react-native';
-// import { config } from 'app/config';
+import { config } from 'app/config';
 import { i18nInit } from 'app/i18n';
 import { importFonts } from 'app/fonts';
 import { useCallback } from 'react';
 import { useFonts } from 'expo-font';
-import { AuthProvider } from '../components/AuthProvider';
 
 const fonts = importFonts();
 const logger = console;
@@ -37,25 +37,23 @@ i18nInit();
 
 export default function HomeLayout() {
   const [fontsLoaded] = useFonts(fonts);
-  const onLayoutRootView = useCallback(async () => {
+  const handleLayoutRootView = useCallback(async () => {
     if (fontsLoaded) await SplashScreen.hideAsync();
   }, [fontsLoaded]);
   if (!fontsLoaded) return;
 
   return (
-    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <GlobalProvider
-        tamaguiConfig={tamaguiConfig}
-        // keycloak={{
-        //   baseUrl: config.get('KEYCLOAK_BASE_URL')!,
-        //   clientId: config.get('KEYCLOAK_CLIENT_ID')!,
-        //   realm: config.get('KEYCLOAK_REALM')!,
-        // }}
-      >
-        <AuthProvider>
-          <Stack />
-        </AuthProvider>
-      </GlobalProvider>
-    </View>
+    <GlobalProvider
+      tamaguiConfig={tamaguiConfig}
+      keycloak={{
+        baseUrl: config.get('KEYCLOAK_BASE_URL'),
+        clientId: config.get('KEYCLOAK_PUBLIC_CLIENT_ID'),
+        realm: config.get('KEYCLOAK_REALM'),
+      }}
+    >
+      <View style={{ flex: 1, height: '100%' }} onLayout={handleLayoutRootView}>
+        <Layout />
+      </View>
+    </GlobalProvider>
   );
 }

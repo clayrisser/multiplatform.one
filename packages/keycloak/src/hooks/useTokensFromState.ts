@@ -20,9 +20,9 @@
  */
 
 import { useAuthState } from '../state';
-import { validToken } from '../token';
+import { validOrRefreshableToken } from '../token';
 
 export function useTokensFromState() {
   const authState = useAuthState();
-  return !!validToken(authState.token, authState.refreshToken);
+  return !!validOrRefreshableToken(authState.token, authState.refreshToken);
 }

@@ -74,11 +74,29 @@ export function createLogoutHandler(options: AuthHandlerOptions) {
 
 export function createNextAuthOptions(options: AuthHandlerOptions) {
   if (_nextAuth) return _nextAuth;
+  const authorization =
+    options.keycloak.authorization && typeof options.keycloak.authorization === 'object'
+      ? options.keycloak.authorization
+      : {};
   _nextAuth = {
     ...options.nextAuth,
     providers: [
       KeycloakProvider({
         issuer: `${options.keycloak?.baseUrl || defaults.keycloak.baseUrl}/realms/${options.keycloak?.realm || defaults.keycloak.realm}`,
+        authorization: {
+          ...authorization,
+          params: {
+            scope: [
+              ...new Set([
+                'email',
+                'openid',
+                'profile',
+                ...(authorization.params?.scope?.split(' ') || []),
+                ...(options.scopes || []),
+              ]),
+            ].join(' '),
+          },
+        },
         ...options.keycloak,
       }),
       ...(options.nextAuth?.providers || []),
@@ -130,6 +148,7 @@ export interface AuthHandlerOptions {
   baseUrl: string;
   keycloak: KeycloakOptions;
   nextAuth?: Partial<AuthOptions>;
+  scopes?: string[];
 }
 
 export interface KeycloakOptions extends OAuthUserConfig<any> {

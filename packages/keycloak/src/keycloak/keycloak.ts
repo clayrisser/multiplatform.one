@@ -157,6 +157,9 @@ export class Keycloak {
   }
 
   async login(options: KeycloakLoginOptions = {}) {
+    this.idToken = undefined;
+    this.refreshToken = undefined;
+    this.token = undefined;
     if (this.keycloakClient) {
       await this.keycloakClient.login(options);
     } else if (MultiPlatform.isNext && !MultiPlatform.isServer) {
@@ -170,6 +173,9 @@ export class Keycloak {
   }
 
   async logout(options: KeycloakLogoutOptions = {}) {
+    this.idToken = undefined;
+    this.refreshToken = undefined;
+    this.token = undefined;
     if (this.keycloakClient) {
       await this.keycloakClient.logout(options);
     } else if (MultiPlatform.isNext && !MultiPlatform.isServer) {

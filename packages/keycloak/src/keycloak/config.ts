@@ -21,13 +21,16 @@
 
 'use client';
 
-import type { KeycloakConfig } from 'keycloak-js';
+import type { KeycloakConfig as KeycloakJsConfig } from 'keycloak-js';
 import { createContext } from 'react';
+
+export interface KeycloakConfig extends KeycloakJsConfig {
+  publicClientId?: string;
+  scopes?: string[];
+}
 
 export const KeycloakConfigContext = createContext<KeycloakConfig>({
   clientId: '',
   realm: '',
   url: '',
 });
-
-export type { KeycloakConfig };

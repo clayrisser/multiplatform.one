@@ -23,8 +23,13 @@
 
 import React, { ComponentType, PropsWithChildren, useEffect } from 'react';
 import { MultiPlatform } from 'multiplatform.one';
-import { useAuthConfig, useTokensFromQuery, useTokensFromState } from './hooks';
+import { Text } from 'tamagui';
+import { useAuthConfig, useTokensFromQuery } from './hooks';
 import { useKeycloak } from './keycloak';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+global.AsyncStorage = AsyncStorage;
 
 export interface AuthenticatedProps extends PropsWithChildren {
   disabled?: boolean;
@@ -36,33 +41,25 @@ export function Authenticated({ children, disabled, loggedOutComponent, loadingC
   const authConfig = useAuthConfig();
   const keycloak = useKeycloak();
   const tokensFromQuery = useTokensFromQuery();
-  const tokensFromState = useTokensFromState();
 
   useEffect(() => {
-    if (
-      !keycloak ||
-      MultiPlatform.isIframe ||
-      MultiPlatform.isServer ||
-      keycloak.authenticated ||
-      tokensFromQuery ||
-      tokensFromState
-    ) {
+    if (!keycloak || MultiPlatform.isIframe || MultiPlatform.isServer || keycloak.authenticated || tokensFromQuery) {
       return;
     }
     keycloak.login({
       redirectUri: authConfig.loginRedirectUri,
     });
-  }, [keycloak]);
+  }, [keycloak?.authenticated]);
 
   if (typeof disabled === 'undefined') disabled = authConfig.disabled;
   if (disabled) return <>{children}</>;
   if (typeof keycloak === 'undefined') {
     const LoadingComponent = loadingComponent;
-    return LoadingComponent ? <LoadingComponent /> : <>{authConfig.debug ? 'loading' : null}</>;
+    return LoadingComponent ? <LoadingComponent /> : <Text>{authConfig.debug ? 'loading' : null}</Text>;
   }
   if (keycloak.authenticated) return <>{children}</>;
   const LoggedOutComponent = loggedOutComponent;
-  return LoggedOutComponent ? <LoggedOutComponent /> : <>{authConfig.debug ? 'not authenticated' : null}</>;
+  return LoggedOutComponent ? <LoggedOutComponent /> : <Text>{authConfig.debug ? 'not authenticated' : null}</Text>;
 }
 
 export function withAuthenticated<P extends object>(Component: ComponentType<P>) {
