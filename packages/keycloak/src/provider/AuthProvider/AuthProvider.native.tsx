@@ -29,6 +29,8 @@ import { makeRedirectUri, useAuthRequest, useAutoDiscovery, refreshAsync, exchan
 import { persist, useAuthState } from '../../state';
 import { validOrRefreshableToken, isTokenExpired } from '../../token';
 
+const REFRESH_THRESHOLD = 5;
+
 export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
   const [keycloak, setKeycloak] = useState<Keycloak>();
   const authState = useAuthState();
@@ -81,7 +83,7 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
       }
     })();
   }, [
-    discovery,
+    !discovery,
     request?.codeVerifier,
     response?.type === 'success' ? response?.params?.code : undefined,
     clientId,
@@ -98,7 +100,7 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
       token: undefined,
       idToken: undefined,
     });
-  }, [authState]);
+  }, []);
 
   const refreshTokens = useCallback(async () => {
     if (!discovery) return;
@@ -113,7 +115,6 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
           discovery,
         );
         if (tokenResponse) {
-          console.log('REFRESHED TOKENS');
           setTokens({
             idToken: tokenResponse.idToken,
             refreshToken: tokenResponse.refreshToken,
@@ -132,12 +133,12 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
     ) {
       resetTokens();
     }
-  }, [discovery, resetTokens, authState.refreshToken, tokens.refreshToken, clientId, scopes]);
+  }, [!discovery, tokens.refreshToken, clientId, scopes]);
 
   useEffect(() => {
     if (!discovery) return;
     refreshTokens();
-  }, [discovery]);
+  }, [!discovery]);
 
   useEffect(() => {
     if (!request) return;
@@ -158,14 +159,20 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
             resetTokens();
           },
         );
-        if (_keycloak.refreshTokenParsed?.exp) {
-          const timeout = Math.max(_keycloak.refreshTokenParsed.exp - Math.floor(Date.now() / 1000) - 10, 5) * 1000;
+        if (_keycloak.tokenParsed?.exp) {
+          const timeout =
+            Math.max(
+              Math.min(_keycloak.tokenParsed.exp, _keycloak.refreshTokenParsed?.exp || 0) -
+                Math.floor(Date.now() / 1000) -
+                REFRESH_THRESHOLD,
+              REFRESH_THRESHOLD,
+            ) * 1000;
           if (timeout > 0) {
             refreshHandle = setTimeout(() => {
               refreshTokens();
             }, timeout);
           } else {
-            setTimeout(() => _keycloak.logout(), Math.max(0, timeout + 10) * 1000);
+            setTimeout(() => _keycloak.logout(), Math.max(0, timeout + REFRESH_THRESHOLD) * 1000);
             return;
           }
         }
@@ -175,7 +182,7 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
     return () => {
       if (refreshHandle) clearTimeout(refreshHandle);
     };
-  }, [request, tokens.token, tokens.idToken, tokens.refreshToken, refreshTokens, resetTokens]);
+  }, [!request, tokens.token, tokens.idToken, tokens.refreshToken, refreshTokens]);
 
   return (
     <KeycloakConfigContext.Provider value={keycloakConfig}>
