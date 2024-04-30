@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/keycloak",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "keycloak client for multiplatform.one ecosystem",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -32,7 +32,7 @@
   "homepage": "https://multiplatform.one",
   "license": "Apache-2.0",
   "files": [
-    "lib",
+    "dist",
     "routes",
     "src"
   ],
