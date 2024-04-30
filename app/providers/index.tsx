@@ -43,7 +43,7 @@ export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, the
     <ThemeProvider cookies={cookies} theme={theme}>
       <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
         <GlobalKeycloakProvider disabled={!keycloak} {...keycloak}>
-          <GlobalApolloProvider>{children}</GlobalApolloProvider>
+          <GlobalApolloProvider keycloakDisabled={!keycloak}>{children}</GlobalApolloProvider>
         </GlobalKeycloakProvider>
       </GlobalTamaguiProvider>
     </ThemeProvider>

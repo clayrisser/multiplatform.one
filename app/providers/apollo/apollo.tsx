@@ -24,18 +24,20 @@ import type { PropsWithChildren } from 'react';
 import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider, split } from '@apollo/client';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { MultiPlatform } from 'multiplatform.one';
+import { config } from 'app/config';
 import { createClient } from 'graphql-ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { useKeycloak } from '@multiplatform.one/keycloak';
 
-const uri = 'http://localhost:5001/graphql';
+export interface GlobalApolloProviderProps extends PropsWithChildren {
+  keycloakDisabled?: boolean;
+}
 
-export interface ApolloProviderProps extends PropsWithChildren {}
-
-export function GlobalApolloProvider({ children }: ApolloProviderProps) {
+export function GlobalApolloProvider({ children }: GlobalApolloProviderProps) {
   const keycloak = useKeycloak();
   const client = useMemo(() => {
     const headers = { ...(keycloak ? { Authorization: `Bearer ${keycloak?.token}` } : {}) };
+    const uri = (config.get('API_BASE_URL') || 'http://localhost:5001') + '/graphql';
     const httpLink = new HttpLink({ uri, headers });
     const wsLink = new GraphQLWsLink(
       createClient({
