@@ -1,7 +1,7 @@
 /**
  * File: /providers/index.tsx
  * Project: app
- * File Created: 23-04-2024 05:52:22
+ * File Created: 29-04-2024 19:56:41
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -25,11 +25,10 @@ import type { GlobalTamaguiProviderProps } from './tamagui';
 import type { PropsWithChildren } from 'react';
 import type { TamaguiInternalConfig } from 'ui';
 import type { ThemeProviderProps } from 'multiplatform.one/theme';
-import { ApolloProvider } from '@apollo/client';
+import { GlobalApolloProvider } from './apollo';
 import { GlobalKeycloakProvider } from './keycloak';
 import { GlobalTamaguiProvider } from './tamagui';
 import { ThemeProvider } from 'multiplatform.one/theme';
-import { useApolloClient } from './apollo';
 
 export type GlobalProviderKeycloak = Omit<GlobalKeycloakProviderProps, 'disabled' | 'children'>;
 
@@ -40,12 +39,11 @@ export type GlobalProviderProps = PropsWithChildren &
   } & ThemeProviderProps;
 
 export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, theme, ...props }: GlobalProviderProps) {
-  const apolloClient = useApolloClient();
   return (
     <ThemeProvider cookies={cookies} theme={theme}>
       <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
         <GlobalKeycloakProvider disabled={!keycloak} {...keycloak}>
-          <ApolloProvider client={apolloClient}>{children}</ApolloProvider>
+          <GlobalApolloProvider>{children}</GlobalApolloProvider>
         </GlobalKeycloakProvider>
       </GlobalTamaguiProvider>
     </ThemeProvider>
