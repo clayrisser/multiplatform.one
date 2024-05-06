@@ -54,6 +54,5 @@ export function GlobalApolloProvider({ children, keycloakDisabled }: GlobalApoll
     });
   }, [keycloak?.authenticated, keycloakDisabled]);
 
-  if (!keycloakDisabled && !keycloak) return <>{}</>;
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 }
