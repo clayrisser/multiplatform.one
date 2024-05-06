@@ -24,7 +24,7 @@ import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinne
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { ThemeTintAlt } from '@multiplatform.one/components';
 import { gql } from 'gql';
-import { useAuthQuery, useAuthSubscription } from '@multiplatform.one/keycloak';
+import { useAuthQuery, useAuthSubscription, withAuthenticated } from '@multiplatform.one/keycloak';
 import { useLink } from 'solito/link';
 import { useTranslation } from '@multiplatform.one/locales';
 import { withDefaultLayout } from 'app/layouts/Default';
@@ -116,4 +116,4 @@ function SheetDemo() {
   );
 }
 
-export default withDefaultLayout(HomeScreen);
+export default withAuthenticated(withDefaultLayout(HomeScreen));

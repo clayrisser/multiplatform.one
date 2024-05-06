@@ -25,6 +25,6 @@ import { KeycloakProvider } from '@multiplatform.one/keycloak';
 
 export interface GlobalKeycloakProviderProps extends KeycloakProviderProps {}
 
-export function GlobalKeycloakProvider({ children, debug, disabled, ...props }: KeycloakProviderProps) {
+export function GlobalKeycloakProvider({ children, ...props }: KeycloakProviderProps) {
   return <KeycloakProvider {...props}>{children}</KeycloakProvider>;
 }
