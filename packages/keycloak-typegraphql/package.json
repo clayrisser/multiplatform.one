@@ -52,8 +52,8 @@
   },
   "dependencies": {
     "@keycloak/keycloak-admin-client": "^24.0.3",
-    "@multiplatform.one/keycloak": "1.0.4",
-    "@multiplatform.one/typegraphql": "^1.0.4",
+    "@multiplatform.one/keycloak": "1.0.6",
+    "@multiplatform.one/typegraphql": "1.0.4",
     "axios": "^1.6.8",
     "cookie": "^0.6.0",
     "graphql": "^16.8.1",

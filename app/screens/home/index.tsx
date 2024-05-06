@@ -24,7 +24,7 @@ import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinne
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { ThemeTintAlt } from '@multiplatform.one/components';
 import { gql } from 'gql';
-import { useAuthQuery, useAuthSubscription, withAuthenticated } from '@multiplatform.one/keycloak';
+import { useAuthQuery, useAuthSubscription } from '@multiplatform.one/keycloak';
 import { useLink } from 'solito/link';
 import { useTranslation } from '@multiplatform.one/locales';
 import { withDefaultLayout } from 'app/layouts/Default';
@@ -55,7 +55,10 @@ function HomeScreen() {
     <YStack f={1} jc="center" ai="center" p="$4">
       <Text>{cData?.count}</Text>
       {loading ? <Spinner /> : <Text>username: {data?.username}</Text>}
-      <YStack gap="$4" maw={600}>
+      <YStack
+        // gap="$4"
+        maw={600}
+      >
         <H1 ta="center">{t('screens.home.welcome')}</H1>
         <Paragraph fontFamily="$silkscreen" ta="center">
           {t('screens.home.message')}
@@ -113,4 +116,4 @@ function SheetDemo() {
   );
 }
 
-export default withAuthenticated(withDefaultLayout(HomeScreen));
+export default withDefaultLayout(HomeScreen);

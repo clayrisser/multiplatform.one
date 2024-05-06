@@ -20,6 +20,7 @@
  */
 
 module.exports = {
+  API_BASE_URL: process.env.API_BASE_URL,
   CROSS_STORAGE_HUB_URL: process.env.CROSS_STORAGE_HUB_URL,
   DEBUG: process.env.DEBUG,
   KEYCLOAK_BASE_URL: process.env.KEYCLOAK_BASE_URL,
