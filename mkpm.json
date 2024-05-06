@@ -12,5 +12,11 @@
   },
   "repos": {
     "default": "https://gitlab.com/bitspur/mkpm/packages.git"
+  },
+  "binaries": {
+    "psql": {
+      "darwin": "brew install postgresql@14",
+      "debian": "sudo apt-get install -y postgresql-client-common"
+    }
   }
 }
