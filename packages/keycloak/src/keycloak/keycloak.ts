@@ -33,6 +33,7 @@ import { MultiPlatform } from 'multiplatform.one';
 import { getSession, useSession } from '../session/session';
 import { jwtDecode } from 'jwt-decode';
 import { signIn, signOut } from 'next-auth/react';
+import { useAuthConfig } from '../hooks';
 import { useContext } from 'react';
 import type {
   KeycloakLoginOptions as KeycloakJsLoginOptions,
@@ -199,6 +200,8 @@ export class Keycloak {
 export function useKeycloak() {
   const keycloak = useContext(KeycloakContext);
   const keycloakConfig = useContext(KeycloakConfigContext);
+  const { disabled } = useAuthConfig();
+  if (disabled) return null;
   if (keycloak) return keycloak;
   const { session, status } = useSession();
   if (MultiPlatform.isStorybook) {
