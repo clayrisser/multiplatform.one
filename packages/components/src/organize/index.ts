@@ -18,7 +18,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-export * from './SimpleCarousel';
+
 export * from './SimpleAccordion';
+export * from './SimpleCarousel';
 export * from './SimpleInput';
+export * from './SimpleListItem';
 export * from './SimpleTabs';

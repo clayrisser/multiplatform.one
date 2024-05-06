@@ -1,6 +1,6 @@
 {
   "name": "multiplatform.one",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "multiplatform.one ecosystem",
   "main": "dist/cjs",
   "module": "dist/esm",
