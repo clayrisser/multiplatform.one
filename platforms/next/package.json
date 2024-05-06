@@ -4,7 +4,7 @@
   "dependencies": {
     "@graphiql/plugin-explorer": "^2.0.0",
     "@graphiql/toolkit": "^0.9.1",
-    "@multiplatform.one/keycloak": "1.0.7",
+    "@multiplatform.one/keycloak": "1.0.9",
     "@next/bundle-analyzer": "^14.2.3",
     "@sentry/react": "^7.112.2",
     "@tamagui/next-plugin": "^1.95.1",
@@ -62,5 +62,6 @@
     "reportPath": "node_modules",
     "reportFile": "test-report.xml",
     "indent": 4
-  }
+  },
+  "version": null
 }

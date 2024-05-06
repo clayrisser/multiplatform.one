@@ -35,29 +35,33 @@ export interface KeycloakProviderProps extends PropsWithChildren, AuthConfig {
 }
 
 export function KeycloakProvider({
-  children,
-  debug,
-  realm,
-  clientId,
   baseUrl,
+  children,
+  clientId,
+  debug,
+  disabled,
   publicClientId,
+  realm,
   session,
 }: KeycloakProviderProps) {
-  const authConfig = useMemo(() => ({ debug }), [debug]);
-
+  const authConfig = useMemo(() => ({ debug, disabled }), [debug, disabled]);
   return (
     <AuthConfigContext.Provider value={authConfig}>
-      <AuthProvider
-        sessionProvider={{ session }}
-        keycloakConfig={{
-          clientId: clientId || 'app',
-          publicClientId,
-          realm: realm || 'main',
-          url: baseUrl,
-        }}
-      >
-        {children}
-      </AuthProvider>
+      {disabled ? (
+        <>{children}</>
+      ) : (
+        <AuthProvider
+          sessionProvider={{ session }}
+          keycloakConfig={{
+            clientId: clientId || 'app',
+            publicClientId,
+            realm: realm || 'main',
+            url: baseUrl,
+          }}
+        >
+          {children}
+        </AuthProvider>
+      )}
     </AuthConfigContext.Provider>
   );
 }

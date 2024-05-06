@@ -29,6 +29,7 @@ import { GlobalApolloProvider } from './apollo';
 import { GlobalKeycloakProvider } from './keycloak';
 import { GlobalTamaguiProvider } from './tamagui';
 import { ThemeProvider } from 'multiplatform.one/theme';
+import { config } from 'app/config';
 
 export type GlobalProviderKeycloak = Omit<GlobalKeycloakProviderProps, 'disabled' | 'children'>;
 
@@ -39,7 +40,7 @@ export type GlobalProviderProps = PropsWithChildren &
   } & ThemeProviderProps;
 
 export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, theme, ...props }: GlobalProviderProps) {
-  const keycloakDisabled  = true // !keycloak
+  const keycloakDisabled = !keycloak || config.get('KEYCLOAK_ENABLED') !== '1';
   return (
     <ThemeProvider cookies={cookies} theme={theme}>
       <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
@@ -54,4 +55,3 @@ export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, the
 export * from './apollo';
 export * from './keycloak';
 export * from './tamagui';
-

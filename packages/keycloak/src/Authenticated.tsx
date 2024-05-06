@@ -57,7 +57,7 @@ export function Authenticated({ children, disabled, loggedOutComponent, loadingC
     const LoadingComponent = loadingComponent;
     return LoadingComponent ? <LoadingComponent /> : <Text>{authConfig.debug ? 'loading' : null}</Text>;
   }
-  if (keycloak.authenticated) return <>{children}</>;
+  if (keycloak === null || keycloak.authenticated) return <>{children}</>;
   const LoggedOutComponent = loggedOutComponent;
   return LoggedOutComponent ? <LoggedOutComponent /> : <Text>{authConfig.debug ? 'not authenticated' : null}</Text>;
 }

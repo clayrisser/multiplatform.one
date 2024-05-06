@@ -22,11 +22,9 @@
 import React from 'react';
 import type { KeycloakProviderProps } from '@multiplatform.one/keycloak';
 import { KeycloakProvider } from '@multiplatform.one/keycloak';
-import { config } from 'app/config';
 
 export interface GlobalKeycloakProviderProps extends KeycloakProviderProps {}
 
 export function GlobalKeycloakProvider({ children, debug, disabled, ...props }: KeycloakProviderProps) {
-  if (disabled || config.get('KEYCLOAK_ENABLED') !== '1') return <>{children}</>;
   return <KeycloakProvider {...props}>{children}</KeycloakProvider>;
 }
