@@ -8,7 +8,6 @@
     "graphql.vscode-graphql-execution",
     "graphql.vscode-graphql-syntax",
     "mikestead.dotenv",
-    "mkhl.direnv",
     "ms-azuretools.vscode-docker",
     "prisma.prisma",
     "psioniq.psi-header",
