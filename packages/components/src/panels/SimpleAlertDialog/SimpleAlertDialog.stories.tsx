@@ -63,4 +63,23 @@ export const Custom = () => (
   </SimpleAlertDialog>
 );
 
+const Open = () => {
+  const [open, setOpen] = React.useState(true);
+  return (
+    <YStack>
+      <SimpleAlertDialog
+        title="Are you sure?"
+        description="This action cannot be undone"
+        cancel="Cancel"
+        accept="Yes, Delete"
+        open={open}
+        onOpenChange={setOpen}
+      />
+      <Button onPress={() => setOpen((prev) => !prev)}>{open ? 'close' : 'open'}</Button>
+    </YStack>
+  );
+};
+
+export const OpenClose = () => <Open />;
+
 export default meta;
