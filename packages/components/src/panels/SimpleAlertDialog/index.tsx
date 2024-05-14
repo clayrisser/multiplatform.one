@@ -32,20 +32,21 @@ import type {
   AlertDialogActionProps,
 } from 'tamagui';
 
-export type AlterDialogSimpleProps = AlertDialogTriggerProps &
-  AlertDialogProps & {
-    accept?: string;
-    placeholder?: ReactNode;
-    cancel?: string;
-    title?: ReactNode;
-    description: ReactNode;
-    open?: boolean;
-    titleStyle?: AlertDialogTitleProps;
-    descriptionStyle?: AlertDialogDescriptionProps;
-    contentStyle?: AlertDialogContentProps;
-    onOpenChange?: (open: boolean) => void;
-    actionStyle?: AlertDialogActionProps;
-  } & { buttonStyle?: ButtonProps } & { trigger: JSX.Element | undefined };
+export type AlterDialogSimpleProps = AlertDialogProps & {
+  accept?: string;
+  placeholder?: ReactNode;
+  cancel?: string;
+  title?: ReactNode;
+  trigger?: JSX.Element | undefined;
+  description: ReactNode;
+  titleStyle?: AlertDialogTitleProps;
+  descriptionStyle?: AlertDialogDescriptionProps;
+  contentStyle?: AlertDialogContentProps;
+  actionStyle?: AlertDialogActionProps;
+  triggerStyle?: AlertDialogTriggerProps;
+  onAccept?: () => void;
+  onCancel?: () => void;
+} & { buttonStyle?: ButtonProps } & {};
 
 export function SimpleAlertDialog({
   children,
@@ -56,15 +57,19 @@ export function SimpleAlertDialog({
   titleStyle,
   contentStyle,
   descriptionStyle,
-  open,
   buttonStyle,
   trigger,
   actionStyle,
+  triggerStyle,
+  onAccept,
+  onCancel,
   ...props
 }: AlterDialogSimpleProps) {
   return (
     <AlertDialog native {...props}>
-      <AlertDialog.Trigger asChild>{trigger}</AlertDialog.Trigger>
+      <AlertDialog.Trigger {...triggerStyle} asChild>
+        {trigger}
+      </AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay key="overlay" animation="quick" o={0.5} enterStyle={{ o: 0 }} exitStyle={{ o: 0 }} />
         <AlertDialog.Content
@@ -95,10 +100,12 @@ export function SimpleAlertDialog({
               {description && <AlertDialog.Description {...descriptionStyle}>{description}</AlertDialog.Description>}
               <XStack gap="$3" jc="flex-end">
                 <AlertDialog.Cancel asChild>
-                  <Button {...buttonStyle}>{cancel || 'cancel'}</Button>
+                  <Button onPress={onCancel} {...buttonStyle}>
+                    {cancel || 'cancel'}
+                  </Button>
                 </AlertDialog.Cancel>
                 <AlertDialog.Action asChild {...actionStyle}>
-                  <Button theme="active" {...buttonStyle}>
+                  <Button theme="active" onPress={onAccept} {...buttonStyle}>
                     {accept || 'accept'}
                   </Button>
                 </AlertDialog.Action>
