@@ -30,7 +30,7 @@ interface SimpleAccordionProps {
 }
 
 type SimpleAccordionItemProps = AccordionItemProps & {
-  trigger: React.ReactNode;
+  trigger: (open: boolean) => React.ReactNode;
   triggerStyle?: AccordionTriggerProps;
   contentStyle?: AccordionContentProps;
   children: React.ReactNode;
@@ -38,7 +38,7 @@ type SimpleAccordionItemProps = AccordionItemProps & {
 
 export function SimpleAccordion({ children, ...props }: SimpleAccordionProps) {
   return (
-    <Accordion overflow="hidden" type="single" {...props}>
+    <Accordion type="multiple" {...props}>
       {children}
     </Accordion>
   );
@@ -48,7 +48,7 @@ export function AccordionItem({ trigger, triggerStyle, children, contentStyle, .
   return (
     <Accordion.Item {...props}>
       <Accordion.Trigger flexDirection="row" justifyContent="space-between" {...triggerStyle}>
-        {trigger}
+        {({ open }) => trigger(open)}
       </Accordion.Trigger>
       <Accordion.Content {...contentStyle}>{children}</Accordion.Content>
     </Accordion.Item>
