@@ -50,6 +50,5 @@
     "reportPath": "node_modules",
     "reportFile": "test-report.xml",
     "indent": 4
-  },
-  "version": null
+  }
 }

@@ -34,12 +34,12 @@ export default {
 
 export const main = (args) => (
   <SimpleAccordion {...args}>
-    <AccordionItem trigger={(open) => <Text>Trigger Apple </Text>} value="apple">
+    <AccordionItem trigger={() => <Text>Trigger Apple </Text>} value="apple">
       <YStack padding="$4">
         <Text> Apple Content</Text>
       </YStack>
     </AccordionItem>
-    <AccordionItem trigger={(open) => <Text>Trigger Banana </Text>} value="banana">
+    <AccordionItem trigger={() => <Text>Trigger Banana </Text>} value="banana">
       <YStack padding="$4">
         <Text>Banana Content</Text>
       </YStack>
