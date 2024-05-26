@@ -107,7 +107,7 @@ export function DebugLayout<DebugViewProps>({
 
   function renderDebug() {
     return (
-      <XStack gap m="$4" width={size} height={size}>
+      <XStack gap="$4" margin="$4" width={size} height={size}>
         <Popover placement="right" size="$5">
           <Popover.Trigger>
             <Circle cursor="pointer" backgroundColor="$color9" width={size} height={size} />

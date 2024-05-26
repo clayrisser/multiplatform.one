@@ -9,17 +9,17 @@
     }
   ],
   "description": "typegraphql for multiplatform.one",
-  "main": "lib/index.js",
   "module": "lib/index.mjs",
-  "react-native": "src/index.ts",
   "source": "src/index.ts",
-  "types": "lib/index.d.ts",
+  "types": "lib/index.d.mts",
   "exports": {
     ".": {
       "import": "./lib/index.mjs",
-      "require": "./lib/index.js",
-      "types": "./lib/index.d.ts"
+      "types": "./lib/index.d.mts"
     }
+  },
+  "scripts": {
+    "build": "tsup"
   },
   "files": [
     "lib",

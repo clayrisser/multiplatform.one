@@ -28,7 +28,7 @@ export function RegisterHandler(
   propertyKey: string | symbol,
   descriptor: TypedPropertyDescriptor<any>,
 ): undefined | TypedPropertyDescriptor<any> {
-  if (target.prototype) return;
+  if (target.prototype) return undefined;
   return createMethodDecorator(
     class RegisterHandlerDecorator implements MiddlewareInterface<Ctx> {
       async use({ context: ctx }: ResolverData<Ctx>, next: NextFn) {

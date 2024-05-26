@@ -25,7 +25,7 @@ import { DecorateAll } from './decorateAll';
 import { createMethodDecorator } from '../decorate';
 
 export const RegisterClass = ((target: any): undefined | Function => {
-  if (!target.prototype) return;
+  if (!target.prototype) return undefined;
   return (
     DecorateAll(
       createMethodDecorator(

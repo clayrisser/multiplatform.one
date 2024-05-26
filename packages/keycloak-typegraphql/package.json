@@ -9,17 +9,17 @@
     }
   ],
   "description": "authenticate typegraphql with keycloak",
-  "main": "lib/index.js",
   "module": "lib/index.mjs",
-  "react-native": "src/index.ts",
   "source": "src/index.ts",
-  "types": "lib/index.d.ts",
+  "types": "lib/index.d.mts",
   "exports": {
     ".": {
       "import": "./lib/index.mjs",
-      "require": "./lib/index.js",
-      "types": "./lib/index.d.ts"
+      "types": "./lib/index.d.mts"
     }
+  },
+  "scripts": {
+    "build": "tsup"
   },
   "files": [
     "lib",
@@ -52,8 +52,8 @@
   },
   "dependencies": {
     "@keycloak/keycloak-admin-client": "^24.0.3",
-    "@multiplatform.one/keycloak": "1.0.9",
-    "@multiplatform.one/typegraphql": "1.0.7",
+    "@multiplatform.one/keycloak": "workspace:1.0.9",
+    "@multiplatform.one/typegraphql": "workspace:1.0.7",
     "axios": "^1.6.8",
     "cookie": "^0.6.0",
     "graphql": "^16.8.1",
