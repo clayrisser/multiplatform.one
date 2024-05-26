@@ -20,10 +20,10 @@
  */
 
 import type { NonEmptyArray } from 'type-graphql';
-import type { ServerOptions } from './types';
+import type { AppOptions } from './types';
 import { Guards } from './decorators/guards';
 
-export function createResolvers(options: ServerOptions) {
+export function createResolvers(options: AppOptions) {
   return options.resolvers.map((resolver) => (typeof resolver === 'string' ? resolver : Guards(resolver))) as Resolvers;
 }
 

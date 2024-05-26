@@ -23,7 +23,8 @@
 import http from 'http';
 import nodeCleanup from 'node-cleanup';
 import promClient, { Registry as PromClientRegistry } from 'prom-client';
-import type { Ctx, CtxExtra, TypeGraphQLServer, ServerOptions, TracingOptions, MetricsOptions } from './types';
+import type { Ctx, CtxExtra, MetricsOptions, AppOptions, StartOptions, TracingOptions, TypeGraphQLApp } from './types';
+import type { IncomingMessage, ServerResponse } from 'http';
 import type { LoggerOptions } from './logger';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
 import type { YogaServerOptions, YogaInitialContext, LogLevel } from 'graphql-yoga';
@@ -49,10 +50,10 @@ import { useServer } from 'graphql-ws/lib/use/ws';
 export const CTX = 'CTX';
 export const REQ = 'REQ';
 
-export async function createServer(
-  options: ServerOptions,
-  ready?: (typeGraphqlServer: Omit<TypeGraphQLServer, 'start'>) => Promise<void> | void,
-): Promise<TypeGraphQLServer> {
+export function createApp(
+  options: AppOptions,
+  ready?: (typeGraphqlServer: Omit<TypeGraphQLApp, 'start'>) => Promise<void> | void,
+): TypeGraphQLApp {
   const debug = typeof options.debug !== 'undefined' ? options.debug : process.env.DEBUG === '1';
   const tracingOptions: TracingOptions = {
     apollo: process.env.APOLLO_TRACING ? process.env.APOLLO_TRACING === '1' : debug,
@@ -90,11 +91,6 @@ export async function createServer(
     ...options.logger,
   };
   const logger = new Logger(loggerOptions);
-  let registerKeycloak: (() => Promise<void>) | undefined;
-  if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
-    // @ts-ignore
-    registerKeycloak = await initializeKeycloak(keycloakOptions, buildSchemaOptions.resolvers, logger);
-  }
   const yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>> = {
     graphqlEndpoint,
     ...options.yoga,
@@ -193,17 +189,6 @@ export async function createServer(
       ...(options.yoga?.plugins || []),
     ],
   };
-  const schema = await buildSchema(buildSchemaOptions);
-  const yoga = createYoga({
-    graphiql: false,
-    ...yogaServerOptions,
-    cors: {
-      origin: process.env.BASE_URL,
-      credentials: true,
-      ...(yogaServerOptions.cors as any),
-    },
-    schema,
-  });
   const metricsServer = promClientRegistry
     ? http.createServer(async (req, res) => {
         try {
@@ -222,22 +207,12 @@ export async function createServer(
         }
       })
     : undefined;
-  const server = http.createServer(async (req, res) => {
-    generateRequestId(req, res);
-    try {
-      const url = parse(req.url!, true);
-      if (url.pathname?.startsWith(graphqlEndpoint)) {
-        await yoga(req, res);
-      } else {
-        logger.warn(`handler for ${url.pathname} is not implemented`);
-        res.writeHead(404);
-        res.end(`handler for ${url.pathname} is not implemented`);
-      }
-    } catch (err) {
-      logger.error(err);
-      res.writeHead(500).end();
-    }
-  });
+  const httpServer = {
+    listener: async (_req: IncomingMessage, res: ServerResponse): Promise<any> => {
+      return res.writeHead(404).end('handler for / is not implemented');
+    },
+  };
+  const server = http.createServer(async (req, res) => httpServer.listener(req, res));
   const wsServer = new WebSocketServer({
     server,
     path: graphqlEndpoint,
@@ -248,16 +223,50 @@ export async function createServer(
     hostname,
     otelSDK,
     port,
-    schema,
     server,
     wsServer,
-    yoga,
-    yogaServerOptions: {
-      ...yogaServerOptions,
-      schema,
-    } as YogaServerOptions<Record<string, any>, Record<string, any>>,
-    async start() {
+    async start(startOptions: StartOptions = {}) {
+      startOptions = {
+        listen: {
+          metrics: true,
+          server: true,
+          ...startOptions.listen,
+        },
+        ...startOptions,
+      };
       try {
+        const schema = await buildSchema(buildSchemaOptions);
+        const yoga = createYoga({
+          graphiql: false,
+          ...yogaServerOptions,
+          cors: {
+            origin: process.env.BASE_URL,
+            credentials: true,
+            ...(yogaServerOptions.cors as any),
+          },
+          schema,
+        });
+        httpServer.listener = async (req: IncomingMessage, res: ServerResponse) => {
+          generateRequestId(req, res);
+          try {
+            const url = parse(req.url!, true);
+            if (url.pathname?.startsWith(graphqlEndpoint)) {
+              await yoga(req, res);
+            } else {
+              logger.warn(`handler for ${url.pathname} is not implemented`);
+              res.writeHead(404);
+              res.end(`handler for ${url.pathname} is not implemented`);
+            }
+          } catch (err) {
+            logger.error(err);
+            res.writeHead(500).end();
+          }
+        };
+        let registerKeycloak: (() => Promise<void>) | undefined;
+        if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
+          // @ts-ignore
+          registerKeycloak = await initializeKeycloak(keycloakOptions, buildSchemaOptions.resolvers, logger);
+        }
         if (registerKeycloak) await registerKeycloak();
         if (options.prisma) {
           await options.prisma.$connect();
@@ -338,29 +347,38 @@ export async function createServer(
           return undefined;
         });
         if (metricsServer) {
+          if (startOptions.listen?.metrics) {
+            await new Promise((resolve, reject) => {
+              function handleError(err: Error) {
+                metricsServer?.off('error', handleError);
+                return reject(err);
+              }
+              metricsServer?.on('error', handleError);
+              metricsServer?.listen(
+                typeof startOptions.listen.metrics === 'number'
+                  ? startOptions.listen.metrics
+                  : metricsOptions.port || 5081,
+                () => {
+                  metricsServer?.off('error', handleError);
+                  return resolve(undefined);
+                },
+              );
+            });
+          }
+        }
+        if (startOptions.listen?.server) {
           await new Promise((resolve, reject) => {
             function handleError(err: Error) {
-              metricsServer?.off('error', handleError);
+              server.off('error', handleError);
               return reject(err);
             }
-            metricsServer?.on('error', handleError);
-            metricsServer?.listen(metricsOptions.port || 5081, () => {
-              metricsServer?.off('error', handleError);
+            server.on('error', handleError);
+            server.listen(typeof startOptions.listen.server === 'number' ? startOptions.listen.server : port, () => {
+              server.off('error', handleError);
               return resolve(undefined);
             });
           });
         }
-        await new Promise((resolve, reject) => {
-          function handleError(err: Error) {
-            server.off('error', handleError);
-            return reject(err);
-          }
-          server.on('error', handleError);
-          server.listen(port, () => {
-            server.off('error', handleError);
-            return resolve(undefined);
-          });
-        });
         const result = {
           buildSchemaOptions,
           debug,

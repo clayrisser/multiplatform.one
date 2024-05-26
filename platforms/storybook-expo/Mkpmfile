@@ -19,10 +19,8 @@
 
 include $(MKPM)/mkpm
 DOTENV ?= $(PROJECT_ROOT)/.env
-include $(MKPM)/gnu
 include $(MKPM)/dotenv
 include $(MKPM)/chain
-include $(MKPM)/yarn
 
 SB_RN_GET_STORIES ?= $(YARN) sb-rn-get-stories
 export STORYBOOK_ENABLED=true

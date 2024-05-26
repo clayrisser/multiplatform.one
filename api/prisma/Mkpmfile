@@ -1,7 +1,92 @@
+# File: /prisma/Mkpmfile
+# Project: api
+# File Created: 04-04-2024 15:50:39
+# Author: Clay Risser
+# -----
+# BitSpur (c) Copyright 2021 - 2024
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 include $(MKPM)/mkpm
-include $(MKPM)/gnu
 DOTENV := $(PROJECT_ROOT)/.env
 include $(MKPM)/dotenv
-include $(MKPM)/yarn
 
-include $(MKPM)/prisma
+DOCKER_PATH ?= $(PROJECT_ROOT)/docker
+PRISMA := $(PNPM) prisma
+PRISMA_DATABASE_ENGINE ?= sqlite
+PRISMA_STUDIO_PORT ?= 5555
+PSQL ?= psql
+
+export POSTGRES_URL ?= \
+	postgresql://$(POSTGRES_PASSWORD):$(POSTGRES_USER)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=prefer
+WAIT_FOR_POSTGRES ?= $(ECHO) 'waiting for postgres...' && \
+	until $(PSQL) "$(POSTGRES_URL)" -c '\q' && break; do sleep 1; done; sleep 1 && echo "postgres ready"
+
+.PHONY: deploy
+deploy: dist/seed.js $(PRISMA_DATABASE_ENGINE)
+ifneq ($(PRISMA_DATABASE_ENGINE),none)
+	@$(PRISMA) migrate deploy $(DEPLOY_ARGS)
+endif
+
+.PHONY: dev
+dev: dist/seed.js $(PRISMA_DATABASE_ENGINE)
+ifneq ($(PRISMA_DATABASE_ENGINE),none)
+	@$(ECHO) | $(PRISMA) migrate dev $(DEV_ARGS)
+endif
+
+.PHONY: reset
+reset: $(PRISMA_DATABASE_ENGINE)
+	@$(ECHO) | $(PRISMA) migrate reset $(RESET_ARGS)
+
+.PHONY: squash
+squash:
+	@$(RM) -rf migrations $(NOFAIL)
+	@$(call make) reset
+	@$(call make) dev
+
+.PHONY: pull
+pull: $(PRISMA_DATABASE_ENGINE)
+	@$(PRISMA) db pull $(PULL_ARGS)
+
+.PHONY: push
+push: $(PRISMA_DATABASE_ENGINE)
+	@$(PRISMA) db push $(PUSH_ARGS)
+
+.PHONY: format
+format:
+	@$(PRISMA) format $(FORMAT_ARGS)
+
+.PHONY: studio
+studio: $(PRISMA_DATABASE_ENGINE)
+	@$(PRISMA) studio -p $(PRISMA_STUDIO_PORT) $(STUDIO_ARGS)
+
+.PHONY: generate
+generate:
+	@$(PRISMA) generate $(GENERATE_ARGS)
+
+.PHONY: seed seed/build
+seed: dist/seed.js deploy $(PRISMA_DATABASE_ENGINE)
+	@$(PRISMA) db seed $(SEED_ARGS)
+seed/build: dist/seed.js
+dist/seed.js: seed.ts ../package.json
+	@$(TSUP)
+
+.PHONY: postgres sqlite
+postgres:
+	@$(call make) -C $(DOCKER_PATH) postgres-d
+	@$(WAIT_FOR_POSTGRES)
+sqlite:
+
+.PHONY: none
+none:
+	@$(ECHO) NO DATABASE ENGINE
