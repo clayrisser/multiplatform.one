@@ -24,9 +24,9 @@ import { createApp } from '@multiplatform.one/typegraphql';
 import { options } from './app';
 
 const { env } = process;
-const server = createApp(options);
+const app = createApp(options);
 (async () => {
-  await server.start({
+  await app.start({
     listen: {
       metrics: true,
       server: !!env.PROD,
@@ -34,4 +34,4 @@ const server = createApp(options);
   });
 })();
 
-export const viteNodeApp = server;
+export const viteNodeApp = app.httpListener;
