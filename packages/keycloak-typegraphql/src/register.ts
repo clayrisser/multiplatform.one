@@ -256,7 +256,7 @@ export class RegisterKeycloak {
   }
 
   private async createUsers() {
-    if (!this.options.register || typeof this.options.register === 'boolean') return;
+    if (!this.options.register || typeof this.options.register === 'boolean') return undefined;
     return Promise.all(
       ((this.options.register as RegisterOptions).users || []).map(async (user: UserRepresentation) => {
         try {

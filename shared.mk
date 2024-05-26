@@ -17,23 +17,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-BABEL ?= $(YARN) babel
-BABEL_NODE ?= $(YARN) babel-node
-BROWSERSLIST_BINARY ?= $(YARN) browserslist
-BUILD_STORYBOOK ?= $(YARN) build-storybook
-CHANGESET ?= $(YARN) changeset
+PNPM ?= pnpm
+TURBO ?= $(PNPM) turbo
+BABEL ?= $(PNPM) babel
+BABEL_NODE ?= $(PNPM) babel-node
+BROWSERSLIST_BINARY ?= $(PNPM) browserslist
+BUILD_STORYBOOK ?= $(PNPM) build-storybook
+CHANGESET ?= $(PNPM) changeset
 CLOC ?= cloc
-CSPELL ?= $(YARN) cspell
-ESLINT ?= $(YARN) eslint
-EXPO ?= $(YARN) expo
+CSPELL ?= $(PNPM) cspell
+ESLINT ?= $(PNPM) eslint
+EXPO ?= $(PNPM) expo
 GM ?= command gm
-JEST ?= $(YARN) jest
-LOKI ?= $(YARN) loki
+JEST ?= $(PNPM) jest
+LOKI ?= $(PNPM) loki
 NODE ?= node
-PRETTIER ?= $(YARN) prettier
-SWC ?= $(YARN) swc
-TSC ?= $(YARN) tsc
-TSUP ?= $(YARN) tsup
+PRETTIER ?= $(PNPM) prettier
+SWC ?= $(PNPM) swc
+TSC ?= $(PNPM) tsc
+TSUP ?= $(PNPM) tsup
 WATCHMAN ?= watchman
 
 export POSTGRES_URL ?= \

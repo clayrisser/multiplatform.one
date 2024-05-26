@@ -60,7 +60,7 @@ function OpenWithFunction() {
   }
 
   return (
-    <YStack ai="flex-start">
+    <YStack alignItems="flex-start">
       <Button onPress={handlePress}>Press Me</Button>
       <SimpleDialog open={open} onOpenChange={handleOpenChange} title="Fill the details">
         <Input placeholder="Enter your first name" />

@@ -3,12 +3,11 @@
   "extends": "./tsconfig.base",
   "compilerOptions": {
     "tsBuildInfoFile": ".tsbuildinfo",
+    "strict": false,
     "paths": {
-      "@multiplatform.one/components": ["./packages/components/*"],
       "app/*": ["./app/*"],
       "gql/*": ["./gql/*"],
       "ui/*": ["./ui/*"]
     }
-  },
-  "references": [{ "path": "./gql" }, { "path": "./ui" }, { "path": "./app" }, { "path": "./packages/components" }]
+  }
 }

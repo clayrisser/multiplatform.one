@@ -1,3 +1,24 @@
+/**
+ * File: /src/forms/FormCheckBox/index.tsx
+ * Project: @multiplatform.one/components
+ * File Created: 23-04-2024 05:52:22
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import type { SizeTokens, CheckboxProps, CheckboxIndicatorProps, LabelProps, ThemeName, ThemeKeys } from 'tamagui';
 import { Label, Checkbox, XStack, YStack } from 'tamagui';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -61,7 +82,7 @@ export function FormCheckBox({
           gap={CheckBoxElementSizing?.gap || '$3'}
           height={CheckBoxElementSizing?.height}
           width={CheckBoxElementSizing?.width || '300'}
-          ai="center"
+          alignItems="center"
         >
           <Checkbox
             id={id}

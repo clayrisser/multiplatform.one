@@ -71,7 +71,13 @@ export function SimpleAlertDialog({
         {trigger}
       </AlertDialog.Trigger>
       <AlertDialog.Portal>
-        <AlertDialog.Overlay key="overlay" animation="quick" o={0.5} enterStyle={{ o: 0 }} exitStyle={{ o: 0 }} />
+        <AlertDialog.Overlay
+          key="overlay"
+          animation="quick"
+          opacity={0.5}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
         <AlertDialog.Content
           bordered
           elevate
@@ -98,7 +104,7 @@ export function SimpleAlertDialog({
             <YStack gap>
               {title && <AlertDialog.Title {...titleStyle}>{title}</AlertDialog.Title>}
               {description && <AlertDialog.Description {...descriptionStyle}>{description}</AlertDialog.Description>}
-              <XStack gap="$3" jc="flex-end">
+              <XStack gap="$3" justifyContent="flex-end">
                 <AlertDialog.Cancel asChild>
                   <Button onPress={onCancel} {...buttonStyle}>
                     {cancel || 'cancel'}

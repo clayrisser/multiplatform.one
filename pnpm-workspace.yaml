@@ -1,0 +1,7 @@
+packages:
+  - api
+  - app
+  - gql
+  - packages/*
+  - platforms/*
+  - ui

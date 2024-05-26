@@ -1,7 +1,7 @@
 /*
- *  File: /src/decorators/injectUserInfo.ts
- *  Project: @multiplatform.one/keycloak-typegraphql
- *  File Created: 13-01-2024 14:02:32
+ *  File: /bin/main.mjs
+ *  Project: api
+ *  File Created: 04-04-2024 15:50:39
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,16 +19,5 @@
  *  limitations under the License.
  */
 
-import type { Ctx } from '@multiplatform.one/typegraphql';
-import type { KeycloakRequest } from '../types';
-import type { ResolverData } from 'type-graphql';
-import { createParamDecorator } from 'type-graphql';
-
-export function InjectUserInfo() {
-  return createParamDecorator(({ context: ctx }: ResolverData<Ctx>) => {
-    const req = ctx.req as KeycloakRequest;
-    if (!req?.kauth?.keycloak) return undefined;
-    const { keycloak } = req.kauth;
-    return keycloak.getUserInfo();
-  });
-}
+import 'reflect-metadata';
+import '../dist/main.mjs';

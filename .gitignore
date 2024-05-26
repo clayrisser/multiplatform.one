@@ -1,5 +1,6 @@
 # app
 .env
+.turbo/
 /.changeset/*.md
 /.dockerignore
 /docker/data

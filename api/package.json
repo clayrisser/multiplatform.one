@@ -5,6 +5,10 @@
   "main": "dist/main.js",
   "source": "src/main.ts",
   "types": "dist/main.d.ts",
+  "scripts": {
+    "generate": "prisma generate",
+    "build": "vite build"
+  },
   "exports": {
     ".": {
       "require": "./dist/main.js",
@@ -17,9 +21,9 @@
   },
   "dependencies": {
     "@graphql-yoga/subscription": "^5.0.0",
-    "@multiplatform.one/keycloak-typegraphql": "1.0.7",
-    "@multiplatform.one/prisma-scripts": "1.0.6",
-    "@multiplatform.one/typegraphql": "^1.0.7",
+    "@multiplatform.one/keycloak-typegraphql": "workspace:*",
+    "@multiplatform.one/prisma-scripts": "workspace:*",
+    "@multiplatform.one/typegraphql": "workspace:*",
     "@prisma/client": "~5.13.0",
     "@whatwg-node/server": "^0.9.34",
     "class-validator": "^0.14.1",
@@ -34,11 +38,14 @@
     "typegraphql-prisma": "^0.27.2"
   },
   "devDependencies": {
+    "@swc/core": "1.5.0",
     "@types/eslint": "^8.56.10",
     "eslint": "~8.56.0",
     "prettier": "^3.2.5",
     "reflect-metadata": "^0.2.2",
-    "tsup": "^8.0.2"
+    "tsup": "^8.0.2",
+    "vite": "^5.2.11",
+    "vite-plugin-node": "^3.1.0"
   },
   "prisma": {
     "seed": "node dist/seed.js"

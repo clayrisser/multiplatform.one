@@ -120,8 +120,8 @@ export function SimpleInput({
             icon={iconBefore}
             unstyled={!(iconsAsButton || iconBeforeAsButton)}
             {...iconStyle}
-            jc="center"
-            ai="center"
+            justifyContent="center"
+            alignItems="center"
             scaleIcon={iconBeforeScale}
             width={iconPercentage}
             height="100%"
@@ -163,8 +163,8 @@ export function SimpleInput({
               setBorderWidth(2);
               props.onPress?.(e);
             }}
-            jc="center"
-            ai="center"
+            justifyContent="center"
+            alignItems="center"
             padding={0}
           />
         )}
@@ -172,8 +172,8 @@ export function SimpleInput({
           <Button
             icon={iconAfter}
             {...iconStyle}
-            jc="center"
-            ai="center"
+            justifyContent="center"
+            alignItems="center"
             scaleIcon={iconBeforeScale}
             width={iconPercentage}
             unstyled={!(iconsAsButton || iconAfterAsButton)}

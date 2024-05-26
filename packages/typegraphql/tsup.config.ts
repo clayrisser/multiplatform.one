@@ -28,7 +28,7 @@ export default defineConfig({
   dts: true,
   entry: ['src/**/*.ts?(x)'],
   entryPoints: ['src/index.ts'],
-  format: ['cjs', 'esm'],
+  format: ['esm'],
   minify: false,
   outDir: 'lib',
   publicDir: './public',

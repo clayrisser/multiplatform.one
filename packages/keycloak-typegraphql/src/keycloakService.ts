@@ -106,7 +106,7 @@ export class KeycloakService {
       const accessToken = await this.lookupAccessToken();
       if (!accessToken) {
         this.clearGrant();
-        return;
+        return undefined;
       }
       try {
         const refreshToken = await this.lookupRefreshToken();
@@ -137,7 +137,7 @@ export class KeycloakService {
   async getRoles(grant?: Grant): Promise<string[] | undefined> {
     if (this._roles) return this._roles;
     const accessToken = await this.getAccessToken(grant);
-    if (!accessToken) return;
+    if (!accessToken) return undefined;
     this._roles = [
       ...(accessToken.content?.realm_access?.roles || []).map((role: string) => `realm:${role}`),
       ...(accessToken.content?.resource_access?.[this.clientId]?.roles || []),
@@ -148,7 +148,7 @@ export class KeycloakService {
   async getACLRoles(grant?: Grant): Promise<string[] | undefined> {
     if (this._aclRoles) return this._aclRoles;
     const roles = await this.getRoles(grant);
-    if (!roles) return;
+    if (!roles) return undefined;
     this._aclRoles = roles.map((role: string) => role.replace(/^realm:/g, ''));
     return this._aclRoles;
   }
@@ -156,7 +156,7 @@ export class KeycloakService {
   async getScopes(grant?: Grant): Promise<string[] | undefined> {
     if (this._scopes) return this._scopes;
     const accessToken = await this.getAccessToken(grant);
-    if (!accessToken) return;
+    if (!accessToken) return undefined;
     this._scopes = (accessToken.content?.scope || '').split(' ');
     return this._scopes;
   }
@@ -188,7 +188,7 @@ export class KeycloakService {
           [key: string]: any;
         }
       >(accessToken));
-    if (!userInfo) return;
+    if (!userInfo) return undefined;
     const result = {
       emailVerified: userInfo?.email_verified,
       familyName: userInfo?.family_name,
@@ -231,10 +231,10 @@ export class KeycloakService {
   // username must start with `service-account-`
   async getClientFromServiceAccountUsername(username?: string, grant?: Grant) {
     if (!username) username = await this.getUsername(grant);
-    if (!username) return;
+    if (!username) return undefined;
     const clientId = (username.match(/service-account-(.+)/) || [])?.[1];
-    if (!clientId) return;
-    if (!this.keycloakAdmin) return;
+    if (!clientId) return undefined;
+    if (!this.keycloakAdmin) return undefined;
     try {
       return (
         (await this.keycloakAdmin.clients.findOne({
@@ -245,20 +245,20 @@ export class KeycloakService {
       const error = err as AxiosError;
       if (error.response?.status !== 404) throw err;
       this.logger.error(err);
-      return;
+      return undefined;
     }
   }
 
   async getUser(userId?: string, grant?: Grant): Promise<UserRepresentation | undefined> {
     if (!userId) userId = await this.getUserId(grant);
-    if (!userId) return;
-    if (!this.keycloakAdmin) return;
+    if (!userId) return undefined;
+    if (!this.keycloakAdmin) return undefined;
     try {
       return (await this.keycloakAdmin.users.findOne({ id: userId })) || undefined;
     } catch (err) {
       const error = err as AxiosError;
       if (error.response?.status !== 404) throw err;
-      return;
+      return undefined;
     }
   }
 
@@ -336,7 +336,7 @@ export class KeycloakService {
         this.serializeScope(scope),
       );
     }
-    if (!grant) return;
+    if (!grant) return undefined;
     if (persistSession) this.sessionSetTokens(grant.access_token as Token, grant.refresh_token as Token);
     await this.afterGrant(grant);
     return grant;
@@ -369,7 +369,7 @@ export class KeycloakService {
         this.serializeScope(scope),
       );
     }
-    if (!grant) return;
+    if (!grant) return undefined;
     if (persistSession) this.sessionSetTokens(grant.access_token as Token, grant.refresh_token as Token);
     await this.afterGrant(grant);
     return grant;
@@ -392,7 +392,7 @@ export class KeycloakService {
       },
     );
     const grant = await this.keycloakConnect.grantManager.createGrant(res.data);
-    if (!grant) return;
+    if (!grant) return undefined;
     if (persistSession) this.sessionSetTokens(grant.access_token as Token, grant.refresh_token as Token);
     await this.afterGrant(grant);
     return grant;
@@ -474,7 +474,7 @@ export class KeycloakService {
       const bSuffix = parseInt(b.split('.').pop() ?? '0', 10);
       return aSuffix - bSuffix;
     });
-    if (!sortedKeys.length) return;
+    if (!sortedKeys.length) return undefined;
     const token = sortedKeys.map((key) => chunks[key]).join('');
     try {
       this._nextAuthSession = (await decode({ token, secret: this.options.secret || '' })) as unknown as
@@ -483,7 +483,7 @@ export class KeycloakService {
       return this._nextAuthSession;
     } catch (err) {
       this.logger.error(err);
-      return;
+      return undefined;
     }
   }
 

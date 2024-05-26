@@ -51,7 +51,7 @@ export const Custom = () => (
     <YStack gap width={400}>
       <AlertDialog.Title>Custom Alert</AlertDialog.Title>
       <AlertDialog.Description>this is a custom alert</AlertDialog.Description>
-      <XStack gap="$3" jc="flex-end">
+      <XStack gap="$3" justifyContent="flex-end">
         <AlertDialog.Cancel asChild>
           <Button>cancel</Button>
         </AlertDialog.Cancel>

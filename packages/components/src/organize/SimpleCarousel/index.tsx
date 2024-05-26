@@ -75,24 +75,24 @@ export function SimpleCarousel({
       <>
         <YStack
           height={carouselRef.current?.clientHeight}
-          bg="$backgroundTransparent"
+          backgroundColor="$backgroundTransparent"
           position="absolute"
           justifyContent="center"
           alignItems="center"
         >
-          <Text onPress={handlePressPrev} cur="pointer">
+          <Text onPress={handlePressPrev} cursor="pointer">
             <ChevronLeft color="gray" size="$4" {...sideArrowStyle} />
           </Text>
         </YStack>
         <YStack
           height={carouselRef.current?.clientHeight}
-          bg="$backgroundTransparent"
+          backgroundColor="$backgroundTransparent"
           position="absolute"
           justifyContent="center"
           alignItems="center"
           right={0}
         >
-          <Text onPress={handlePressNext} cur="pointer">
+          <Text onPress={handlePressNext} cursor="pointer">
             <ChevronRight color="gray" size="$4" {...sideArrowStyle} />
           </Text>
         </YStack>
@@ -104,18 +104,18 @@ export function SimpleCarousel({
     return (
       <YStack
         height={carouselRef.current?.clientHeight}
-        bg="$backgroundTransparent"
+        backgroundColor="$backgroundTransparent"
         position="absolute"
         justifyContent="flex-end"
         alignItems="center"
         left={0}
         right={0}
       >
-        <XStack gap="$2" ai="center" marginBottom={20}>
+        <XStack gap="$2" alignItems="center" marginBottom={20}>
           {Array.from({ length: childrenCount }).map((_, index) => (
             <Stack
               height={index === currentSlide ? 4 : 1}
-              bg="$backgroundHover"
+              backgroundColor="$backgroundHover"
               width={30}
               key={index}
               cursor="pointer"

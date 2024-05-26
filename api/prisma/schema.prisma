@@ -19,16 +19,16 @@ model User {
   id    String  @id @default(cuid())
   email String  @unique
   name  String?
-  posts Post[]
+  // posts Post[]
 }
 
-model Post {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  published Boolean
-  title     String
-  content   String?
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  String?
-}
+// model Post {
+//   id        String   @id @default(cuid())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   published Boolean
+//   title     String
+//   content   String?
+//   author    User?    @relation(fields: [authorId], references: [id])
+//   authorId  String?
+// }

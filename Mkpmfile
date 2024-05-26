@@ -19,34 +19,10 @@
 
 include $(MKPM)/mkpm
 include $(MKPM)/gnu
-include $(MKPM)/envcache
 include $(MKPM)/dotenv
-include $(MKPM)/chain
-include $(MKPM)/yarn
 
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
-	@$(YARN) install $(DEPS_ARGS)
-	@$(call done,$@)
-
-ACTIONS += format
-$(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
-	@$(call workspace_foreach,format,$(FORMAT_ARGS))
-	@$(call done,$@)
-
-ACTIONS += spellcheck
-$(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	@$(call workspace_foreach,spellcheck,$(SPELLCHECK_ARGS))
-	@$(call done,$@)
-
-ACTIONS += lint
-$(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
-	@$(call workspace_foreach,lint,$(LINT_ARGS))
-	@$(call done,$@)
-
-ACTIONS += test
-$(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
-	@$(call workspace_foreach,test,$(TEST_ARGS))
 	@$(call done,$@)
 
 PLATFORMS := $(shell $(LS) platforms)
@@ -68,7 +44,7 @@ $(patsubst %,%/%,$(PACKAGES)):
 
 .PHONY: build
 build:
-	@$(foreach pkg,$(PACKAGES),$(call make) $(pkg)/$@;)
+	@$(TURBO) build
 
 .PHONY: api/%
 api/%:
@@ -141,9 +117,6 @@ version:
 	@$(CHANGESET)
 	@$(CHANGESET) version
 
-.PHONY: publish +publish
-publish: version build +publish
-+publish:
+.PHONY: publish
+publish: version build
 	@$(CHANGESET) publish
-
--include $(call chain)

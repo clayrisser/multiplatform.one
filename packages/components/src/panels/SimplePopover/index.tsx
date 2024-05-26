@@ -50,7 +50,7 @@ export function SimplePopover({
       <Popover.Trigger asChild {...triggerStyle}>
         {trigger}
       </Popover.Trigger>
-      <Adapt when="sm" platform="touch">
+      <Adapt when={'sm' as any} platform="touch">
         <Popover.Sheet modal dismissOnSnapToBottom>
           <Popover.Sheet.Frame padding="$4">
             <Adapt.Contents />

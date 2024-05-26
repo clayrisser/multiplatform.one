@@ -84,7 +84,7 @@ export function SimpleDialog({
       }}
     >
       {trigger && <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>}
-      <Adapt when="sm" platform="touch">
+      <Adapt when={'sm' as any} platform="touch">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" gap>
             <Adapt.Contents />
@@ -100,9 +100,9 @@ export function SimpleDialog({
         <Dialog.Overlay
           key="overlay"
           animation="bouncy"
-          o={0.5}
-          enterStyle={{ o: 0 }}
-          exitStyle={{ o: 0 }}
+          opacity={0.5}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
           {...overlayStyle}
         />
         <Dialog.Content
@@ -143,7 +143,7 @@ export function SimpleDialog({
           {!withoutCloseButton && (
             <Unspaced>
               <Dialog.Close asChild gap>
-                <Button pos="absolute" t="$3" r="$3" size="$2" circular gap icon={X} />
+                <Button position="absolute" top="$3" right="$3" size="$2" circular gap icon={X} />
               </Dialog.Close>
             </Unspaced>
           )}

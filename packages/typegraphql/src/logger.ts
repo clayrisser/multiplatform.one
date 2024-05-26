@@ -23,7 +23,7 @@ import Pino, { destination, multistream } from 'pino';
 import chalk from 'chalk';
 import httpStatus from 'http-status';
 import path from 'path';
-import pretty from 'pino-pretty';
+import pretty, { PinoPretty } from 'pino-pretty';
 import type { AxiosLoggerOptions } from './axios';
 import type { Ctx } from './types';
 import type { IncomingMessage, ServerResponse } from 'http';
@@ -219,8 +219,8 @@ function createPrettyStream(options: LoggerOptions, destination: NodeJS.Writable
     destination,
     errorLikeObjectKeys: ['error', 'err'],
     customPrettifiers: {
-      time(data: string | object) {
-        if (!data) return data;
+      time(data: string | object, _key: string, _log: object, _extras: PinoPretty.PrettifierExtras<any>): string {
+        if (!data) return data as string;
         if (typeof data !== 'string' || data.split('.').length < 2) {
           const date = new Date();
           return colorTime(
@@ -236,29 +236,29 @@ function createPrettyStream(options: LoggerOptions, destination: NodeJS.Writable
         const [time, milli] = data.split('.');
         return colorTime(time, milli, options.color);
       },
-      req(data: string | object) {
-        if (!data) return data;
+      req(data: string | object, _key: string, _log: object, _extras: PinoPretty.PrettifierExtras<any>): string {
+        if (!data) return data as string;
         const req = typeof data === 'string' ? JSON.parse(data) : data;
         return req.method && req.url ? `${req.method} ${req.url}${req.id ? ` id=${req.id}` : ''}` : '';
       },
-      res(data: string | object) {
-        if (!data) return data;
+      res(data: string | object, _key: string, _log: object, _extras: PinoPretty.PrettifierExtras<any>): string {
+        if (!data) return data as string;
         const res = typeof data === 'string' ? JSON.parse(data) : data;
         return res.statusCode ? `status=${formatStatus(res.statusCode, options.color)}` : '';
       },
-      method(data: string | object) {
-        if (!data) return data;
+      method(data: string | object, _key: string, _log: object, _extras: PinoPretty.PrettifierExtras<any>): string {
+        if (!data) return data as string;
         if (options.color) {
           return chalk.bold(chalk.gray(data.toString()));
         }
         return data.toString();
       },
-      status(data: string | object) {
-        if (!data) return data;
+      status(data: string | object, _key: string, _log: object, _extras: PinoPretty.PrettifierExtras<any>): string {
+        if (!data) return data as string;
         return formatStatus(data.toString(), options.color);
       },
-      kind(data: string | object) {
-        if (!data) return data;
+      kind(data: string | object, _key: string, _log: object, _extras: PinoPretty.PrettifierExtras<any>): string {
+        if (!data) return data as string;
         if (options.color) {
           switch (data) {
             case 'HTTP_REQUEST': {
@@ -272,7 +272,7 @@ function createPrettyStream(options: LoggerOptions, destination: NodeJS.Writable
             }
           }
         }
-        return prettifierStr(data);
+        return prettifierStr(data) as string;
       },
       ...Object.fromEntries(
         ['ctx', 'id', 'operationName', 'spanId', 'traceId', 'url', ...(options.strings ? options.strings : [])].map(
