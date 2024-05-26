@@ -63,7 +63,7 @@ export interface PubSubPublishArgsByKey {
   [key: string]: [] | [any] | [number | string, any];
 }
 
-export interface ServerOptions<TPubSubPublishArgsByKey extends PubSubPublishArgsByKey = PubSubPublishArgsByKey> {
+export interface AppOptions<TPubSubPublishArgsByKey extends PubSubPublishArgsByKey = PubSubPublishArgsByKey> {
   baseUrl?: string;
   buildSchema?: Omit<BuildSchemaOptions, 'resolvers'>;
   cleanup?: () => Promise<void>;
@@ -90,18 +90,28 @@ export interface MetricsOptions {
   port?: number;
 }
 
-export interface TypeGraphQLServer {
+export interface StartOptions {
+  listen?: {
+    metrics?: boolean | number;
+    server?: boolean | number;
+  };
+}
+
+export interface TypeGraphQLApp {
   buildSchemaOptions: BuildSchemaOptions;
   debug: boolean;
   hostname: string;
   otelSDK: NodeSDK;
   port: number;
-  schema: GraphQLSchema;
   server: Server<typeof IncomingMessage, typeof ServerResponse>;
-  start: () => Promise<Omit<TypeGraphQLServer, 'start'>>;
+  start: (options?: StartOptions) => Promise<
+    Omit<TypeGraphQLApp, 'start'> & {
+      schema: GraphQLSchema;
+      yoga: YogaServerInstance<Record<string, any>, Record<string, any>>;
+      yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>>;
+    }
+  >;
   wsServer: WebSocketServer;
-  yoga: YogaServerInstance<Record<string, any>, Record<string, any>>;
-  yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>>;
 }
 
 export interface TypeGraphqlMeta {

@@ -21,9 +21,9 @@
 
 // @ts-ignore
 import type { KeycloakOptions } from '@multiplatform.one/keycloak-typegraphql';
-import type { ServerOptions } from './types';
+import type { AppOptions } from './types';
 
-export function createKeycloakOptions(options: ServerOptions): KeycloakOptions {
+export function createKeycloakOptions(options: AppOptions): KeycloakOptions {
   const debug = typeof options.debug !== 'undefined' ? options.debug : process.env.DEBUG === '1';
   return {
     adminPassword: process.env.KEYCLOAK_ADMIN_PASSWORD || '',

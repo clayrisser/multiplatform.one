@@ -18,7 +18,6 @@
 # limitations under the License.
 
 include $(MKPM)/mkpm
-include $(MKPM)/gnu
 DEFAULT_ENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/dotenv
 

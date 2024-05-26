@@ -18,9 +18,7 @@
 # limitations under the License.
 
 include $(MKPM)/mkpm
-include $(MKPM)/gnu
 include $(MKPM)/chain
-include $(MKPM)/yarn
 include $(MKPM)/dotenv
 
 ACTIONS += deps

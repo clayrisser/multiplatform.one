@@ -19,19 +19,27 @@
  *  limitations under the License.
  */
 
-import { defineConfig } from 'vite';
+import 'reflect-metadata';
 import { VitePluginNode } from 'vite-plugin-node';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   server: {
-    port: 3000,
+    port: 5001,
   },
   plugins: [
     ...VitePluginNode({
-      adapter: 'express',
+      // adapter: 'express',
       appPath: './main.ts',
       tsCompiler: 'swc',
+      adapter({ app, server, req, res, next }) {
+        console.log('app', Object.keys(app));
+        console.log('server', Object.keys(server));
+        console.log('req', Object.keys(req));
+        console.log('res', Object.keys(res));
+        console.log('next', typeof next);
+        app(res, res);
+      },
     }),
   ],
-  optimizeDeps: {},
 });
