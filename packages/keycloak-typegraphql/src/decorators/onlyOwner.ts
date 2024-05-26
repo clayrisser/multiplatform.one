@@ -19,13 +19,12 @@
  *  limitations under the License.
  */
 
+import get from 'lodash.get';
 import type { Ctx } from '@multiplatform.one/typegraphql';
 import type { ResolverData, NextFn, MiddlewareInterface } from 'type-graphql';
 import { DecorateAll, createMethodDecorator } from '@multiplatform.one/typegraphql';
-import { KeycloakService } from '../keycloakService';
 import { GraphQLError } from 'graphql';
-
-const get = require('lodash.get') as typeof import('lodash.get');
+import { KeycloakService } from '../keycloakService';
 
 export function OnlyOwner(
   resultUserIdPath: string | string[] = 'userId',

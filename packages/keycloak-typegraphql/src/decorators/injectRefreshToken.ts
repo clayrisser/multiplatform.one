@@ -28,7 +28,7 @@ import { createParamDecorator } from 'type-graphql';
 export function InjectRefreshToken() {
   return createParamDecorator(({ context: ctx }: ResolverData<Ctx>) => {
     const req = ctx.req as KeycloakRequest;
-    if (!req?.kauth?.grant?.refresh_token) return;
+    if (!req?.kauth?.grant?.refresh_token) return undefined;
     const refreshToken = req.kauth.grant.refresh_token as Token;
     return refreshToken.token;
   });

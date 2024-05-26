@@ -25,7 +25,7 @@ import { CompositePropagator, W3CTraceContextPropagator, W3CBaggagePropagator } 
 import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
 import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
 import { NodeSDK } from '@opentelemetry/sdk-node';
-import { PrismaInstrumentation } from '@prisma/instrumentation';
+import prismaInstrumentation from '@prisma/instrumentation';
 import { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 
@@ -48,5 +48,5 @@ export const otelSDK = new NodeSDK({
       }),
     ],
   }),
-  instrumentations: [getNodeAutoInstrumentations(), new PrismaInstrumentation()],
+  instrumentations: [getNodeAutoInstrumentations(), new prismaInstrumentation.PrismaInstrumentation()],
 });

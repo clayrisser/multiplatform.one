@@ -1,7 +1,7 @@
 /*
- *  File: /src/decorators/injectUserInfo.ts
- *  Project: @multiplatform.one/keycloak-typegraphql
- *  File Created: 13-01-2024 14:02:32
+ *  File: /vite.config.ts
+ *  Project: api
+ *  File Created: 26-05-2024 04:47:19
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,16 +19,19 @@
  *  limitations under the License.
  */
 
-import type { Ctx } from '@multiplatform.one/typegraphql';
-import type { KeycloakRequest } from '../types';
-import type { ResolverData } from 'type-graphql';
-import { createParamDecorator } from 'type-graphql';
+import { defineConfig } from 'vite';
+import { VitePluginNode } from 'vite-plugin-node';
 
-export function InjectUserInfo() {
-  return createParamDecorator(({ context: ctx }: ResolverData<Ctx>) => {
-    const req = ctx.req as KeycloakRequest;
-    if (!req?.kauth?.keycloak) return undefined;
-    const { keycloak } = req.kauth;
-    return keycloak.getUserInfo();
-  });
-}
+export default defineConfig({
+  server: {
+    port: 3000,
+  },
+  plugins: [
+    ...VitePluginNode({
+      adapter: 'express',
+      appPath: './main.ts',
+      tsCompiler: 'swc',
+    }),
+  ],
+  optimizeDeps: {},
+});

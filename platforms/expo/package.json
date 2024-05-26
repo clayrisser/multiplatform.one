@@ -19,7 +19,7 @@
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "react": "18.2.0",
-    "react-dom": "18.3.0",
+    "react-dom": "18.2.0",
     "react-native": "0.73.6",
     "react-native-gesture-handler": "~2.14.0",
     "react-native-safe-area-context": "4.8.2",
@@ -32,7 +32,7 @@
   "devDependencies": {
     "@babel/core": "^7.24.4",
     "@expo/metro-config": "^0.17.7",
-    "@tamagui/babel-plugin": "^1.95.1",
+    "@tamagui/babel-plugin": "^1.99.1",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "metro-minify-terser": "^0.80.8",
     "typescript": "5.3.3"

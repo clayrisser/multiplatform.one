@@ -35,6 +35,9 @@
       "types": "./types/theme/index.d.ts"
     }
   },
+  "scripts": {
+    "build": "rm -rf dist types 2>/dev/null && tamagui-build"
+  },
   "author": "BitSpur",
   "sideEffects": true,
   "keywords": [
@@ -77,9 +80,9 @@
     "@react-native-async-storage/async-storage": "1.21.0",
     "@storybook/react": "^8.0.9",
     "@storybook/react-native": "^7.6.18",
-    "@tamagui/build": "^1.95.1",
-    "@tamagui/constants": "^1.95.1",
-    "@tamagui/web": "^1.95.1",
+    "@tamagui/build": "^1.99.1",
+    "@tamagui/constants": "^1.99.1",
+    "@tamagui/web": "^1.99.1",
     "@types/cross-storage": "^0.8.33",
     "@types/eslint": "^8.56.10",
     "@types/jest": "^29.5.12",

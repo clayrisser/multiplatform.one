@@ -1,3 +1,24 @@
+/**
+ * File: /src/mdx/MDXCodeBlock/index.tsx
+ * Project: @multiplatform.one/components
+ * File Created: 23-04-2024 05:52:22
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import type { MDXCodeBlockContextValue } from './MDXCodeBlockContext';
 import { Button, Spacer, TooltipSimple, XStack, YStack, getTokens } from 'tamagui';
@@ -50,7 +71,7 @@ export function MDXCodeBlock(props: MDXCodeBlockProps) {
   }, [preRef]);
 
   return (
-    <YStack position="relative" mb="$4">
+    <YStack position="relative" marginBottom="$4">
       <ErrorBoundary>
         <YStack
           position="relative"
@@ -62,16 +83,16 @@ export function MDXCodeBlock(props: MDXCodeBlockProps) {
         >
           {(!isCollapsed || !isCollapsible) && isCutoff && (
             <LinearGradient
-              pos="absolute"
-              b={0}
-              l={0}
-              r={0}
+              position="absolute"
+              bottom={0}
+              left={0}
+              right={0}
               height={200}
               colors={['$backgroundTransparent', '$background']}
-              zi={1000}
+              zIndex={1000}
             >
-              <Spacer f={1} />
-              <Button onPress={() => setIsCutoff(!isCutoff)} als="center">
+              <Spacer flex={1} />
+              <Button onPress={() => setIsCutoff(!isCutoff)} alignSelf="center">
                 Show more
               </Button>
               <Spacer size="$4" />
@@ -83,8 +104,8 @@ export function MDXCodeBlock(props: MDXCodeBlockProps) {
               data-invert-line-highlight={isHighlightingLines}
               data-line-numbers={showLineNumbers}
               className={className}
-              p={0}
-              mb={0}
+              padding={0}
+              marginBottom={0}
               id={id}
             >
               <ScrollView
@@ -96,9 +117,9 @@ export function MDXCodeBlock(props: MDXCodeBlockProps) {
                 <Code
                   backgroundColor="transparent"
                   className={className}
-                  f={1}
-                  lineHeight={tokens.space[size || '$5']}
-                  p="$4"
+                  flex={1}
+                  lineHeight={tokens.space[size || '$5'] as any}
+                  padding="$4"
                   size={size ?? '$5'}
                   {...codeProps}
                 >

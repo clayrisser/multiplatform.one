@@ -256,6 +256,7 @@ postgresql
 pragma
 pressability
 pressable
+prettifier
 prettifiers
 prisma
 psql
@@ -384,7 +385,6 @@ xmas
 xml
 xxl
 xxs
-yarnpkg
 yoda
 zipkin
 zlib

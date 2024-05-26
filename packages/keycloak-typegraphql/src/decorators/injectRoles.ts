@@ -28,7 +28,7 @@ import { createParamDecorator } from 'type-graphql';
 export function InjectRoles() {
   return createParamDecorator(({ context: ctx }: ResolverData<Ctx>) => {
     const req = ctx.req as KeycloakRequest;
-    if (!req?.kauth?.grant?.access_token || !req.kauth.options) return;
+    if (!req?.kauth?.grant?.access_token || !req.kauth.options) return undefined;
     const accessToken = req.kauth.grant.access_token as Token;
     return [
       ...(accessToken.content?.realm_access?.roles || []).map((role: string) => `realm:${role}`),

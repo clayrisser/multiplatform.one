@@ -19,7 +19,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "strict": true,
+    "strict": false,
     "target": "ES5",
     "lib": ["DOM", "DOM.Iterable", "ES2022", "ScriptHost", "WebWorker", "WebWorker.ImportScripts", "Webworker.Iterable"]
   },
