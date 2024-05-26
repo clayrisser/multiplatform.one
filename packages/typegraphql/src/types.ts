@@ -101,6 +101,7 @@ export interface TypeGraphQLApp {
   buildSchemaOptions: BuildSchemaOptions;
   debug: boolean;
   hostname: string;
+  httpListener: (req: IncomingMessage, res: ServerResponse) => Promise<void>;
   otelSDK: NodeSDK;
   port: number;
   server: Server<typeof IncomingMessage, typeof ServerResponse>;

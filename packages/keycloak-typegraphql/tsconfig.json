@@ -22,7 +22,7 @@
     "skipLibCheck": true,
     "sourceMap": false,
     "strict": false,
-    "target": "ES5",
+    "target": "ES2022",
     "types": ["reflect-metadata"],
     "lib": ["DOM", "DOM.Iterable", "ES2022", "ScriptHost", "WebWorker", "WebWorker.ImportScripts", "Webworker.Iterable"]
   },

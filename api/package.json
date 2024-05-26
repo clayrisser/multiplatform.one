@@ -8,7 +8,8 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "generate": "prisma generate"
+    "generate": "prisma generate",
+    "seed": "cd prisma && tsup && cd .. && prisma db seed"
   },
   "exports": {
     ".": {

@@ -212,6 +212,7 @@ export function createApp(
       return res.writeHead(404).end('handler for / is not implemented');
     },
   };
+  const httpListener = async (req: IncomingMessage, res: ServerResponse) => httpServer.listener(req, res);
   const server = http.createServer(async (req, res) => httpServer.listener(req, res));
   const wsServer = new WebSocketServer({
     server,
@@ -221,6 +222,7 @@ export function createApp(
     buildSchemaOptions,
     debug,
     hostname,
+    httpListener,
     otelSDK,
     port,
     server,
@@ -383,6 +385,7 @@ export function createApp(
           buildSchemaOptions,
           debug,
           hostname,
+          httpListener,
           otelSDK,
           port,
           schema,
@@ -395,10 +398,8 @@ export function createApp(
           >,
         };
         await ready?.(result);
-        logger.info(`
-  > App started!
-    HTTP server running on http://${hostname}:${port}
-    GraphQL WebSocket server running on ws://${hostname}:${port}${graphqlEndpoint}`);
+        if (startOptions.listen.server) logger.info(`server listening on http://${hostname}:${port}`);
+        if (startOptions.listen.metrics) logger.info(`metrics listening on http://${hostname}:${port}`);
         return result;
       } catch (err) {
         logger.error(err);

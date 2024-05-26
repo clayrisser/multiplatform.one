@@ -22,15 +22,15 @@ DOTENV := $(PROJECT_ROOT)/.env
 include $(MKPM)/dotenv
 
 DOCKER_PATH ?= $(PROJECT_ROOT)/docker
-PRISMA := $(PNPM) prisma
+PRISMA ?= $(PNPM) prisma
 PRISMA_DATABASE_ENGINE ?= sqlite
 PRISMA_STUDIO_PORT ?= 5555
 PSQL ?= psql
 
 export POSTGRES_URL ?= \
 	postgresql://$(POSTGRES_PASSWORD):$(POSTGRES_USER)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=prefer
-WAIT_FOR_POSTGRES ?= $(ECHO) 'waiting for postgres...' && \
-	until $(PSQL) "$(POSTGRES_URL)" -c '\q' && break; do sleep 1; done; sleep 1 && echo "postgres ready"
+WAIT_FOR_POSTGRES ?= echo 'waiting for postgres...' && \
+	until psql "$(POSTGRES_URL)" -c '\q' && break; do sleep 1; done; sleep 1 && echo "postgres ready"
 
 .PHONY: deploy
 deploy: dist/seed.js $(PRISMA_DATABASE_ENGINE)
@@ -41,12 +41,12 @@ endif
 .PHONY: dev
 dev: dist/seed.js $(PRISMA_DATABASE_ENGINE)
 ifneq ($(PRISMA_DATABASE_ENGINE),none)
-	@$(ECHO) | $(PRISMA) migrate dev $(DEV_ARGS)
+	@$(PRISMA) migrate dev --skip-generate --skip-seed $(DEV_ARGS)
 endif
 
 .PHONY: reset
 reset: $(PRISMA_DATABASE_ENGINE)
-	@$(ECHO) | $(PRISMA) migrate reset $(RESET_ARGS)
+	@$(PRISMA) migrate reset --force $(RESET_ARGS)
 
 .PHONY: squash
 squash:
@@ -75,7 +75,7 @@ generate:
 	@$(PRISMA) generate $(GENERATE_ARGS)
 
 .PHONY: seed seed/build
-seed: dist/seed.js deploy $(PRISMA_DATABASE_ENGINE)
+seed: dist/seed.js dev $(PRISMA_DATABASE_ENGINE)
 	@$(PRISMA) db seed $(SEED_ARGS)
 seed/build: dist/seed.js
 dist/seed.js: seed.ts ../package.json
@@ -89,4 +89,4 @@ sqlite:
 
 .PHONY: none
 none:
-	@$(ECHO) NO DATABASE ENGINE
+	@$(ECHO) PRISMA_DATABASE_ENGINE is none but should be postgres or sqlite 1>&2 && exit 1

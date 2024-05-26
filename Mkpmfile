@@ -31,21 +31,10 @@ PLATFORMS := $(shell $(LS) platforms)
 $(patsubst %,%/%,$(PLATFORMS)):
 	@$(call make,platforms/$(@D)) $*
 
-PACKAGES := \
-	multiplatform.one \
-	locales \
-	prisma-scripts \
-	keycloak \
-	typegraphql \
-	keycloak-typegraphql \
-	components
+PACKAGES := $(shell $(LS) packages)
 .PHONY: $(patsubst %,%/%,$(PACKAGES))
 $(patsubst %,%/%,$(PACKAGES)):
 	@$(call make,packages/$(@D)) $*
-
-.PHONY: build
-build:
-	@$(TURBO) build
 
 .PHONY: api/%
 api/%:
@@ -63,9 +52,9 @@ gql/%:
 ui/%:
 	@$(call make,ui) $*
 
-.PHONY: upgrade
-upgrade:
-	@$(YARN) upgrade-interactive
+.PHONY: update
+update:
+	@$(PNPM) update -ri
 
 .PHONY: clean
 clean:
@@ -121,5 +110,10 @@ version:
 .PHONY: publish
 publish: version build
 	@$(CHANGESET) publish
+
+TURBO_SCRIPTS := $(shell $(CAT) turbo.json | $(JQ) -r '(.pipeline | keys)[]')
+.PHONY: $(TURBO_SCRIPTS)
+$(TURBO_SCRIPTS):
+	@$(TURBO) run $@
 
 -include $(call chain)

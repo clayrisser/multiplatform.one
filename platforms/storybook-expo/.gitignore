@@ -1,5 +1,6 @@
 # app
-.storybook/storybook.requires.js
+/.storybook/storybook.requires.js
+/.tamagui
 /debug.json
 
 # react-native

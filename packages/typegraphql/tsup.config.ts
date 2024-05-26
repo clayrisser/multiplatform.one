@@ -35,5 +35,5 @@ export default defineConfig({
   skipNodeModulesBundle: true,
   noExternal: transpileModules,
   splitting: true,
-  target: 'es5',
+  target: 'es2022',
 });
