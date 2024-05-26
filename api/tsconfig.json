@@ -3,6 +3,8 @@
   "extends": "../tsconfig.base",
   "compilerOptions": {
     "emitDecoratorMetadata": true,
+    "module": "ES2022",
+    "target": "ES2022",
     "tsBuildInfoFile": ".tsbuildinfo"
   }
 }
