@@ -18,7 +18,6 @@
 # limitations under the License.
 
 PNPM ?= pnpm
-TURBO ?= $(PNPM) turbo
 BABEL ?= $(PNPM) babel
 BABEL_NODE ?= $(PNPM) babel-node
 BROWSERSLIST_BINARY ?= $(PNPM) browserslist
@@ -35,7 +34,8 @@ NODE ?= node
 PRETTIER ?= $(PNPM) prettier
 SWC ?= $(PNPM) swc
 TSC ?= $(PNPM) tsc
-TSUP ?= $(PNPM) tsup
+TSUP := $(PROJECT_ROOT)/node_modules/.bin/tsup
+TURBO ?= $(PNPM) turbo
 WATCHMAN ?= watchman
 
 export POSTGRES_URL ?= \

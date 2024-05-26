@@ -19,10 +19,19 @@
  *  limitations under the License.
  */
 
-import { createServer } from '@multiplatform.one/typegraphql';
-import { options } from './server';
+import 'reflect-metadata';
+import { createApp } from '@multiplatform.one/typegraphql';
+import { options } from './app';
 
+const { env } = process;
+const server = createApp(options);
 (async () => {
-  const server = await createServer(options);
-  await server.start();
+  await server.start({
+    listen: {
+      metrics: true,
+      server: !!env.PROD,
+    },
+  });
 })();
+
+export const viteNodeApp = server;

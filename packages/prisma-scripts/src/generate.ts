@@ -20,9 +20,8 @@
  */
 
 import dotenv from 'dotenv';
-import fs from 'fs-extra';
+import fs from 'fs/promises';
 import path from 'path';
-import pkgDir from 'pkg-dir';
 import { execa } from 'execa';
 
 const { argv } = process;
@@ -38,9 +37,10 @@ export default async function generate() {
         env.POSTGRES_PORT || '5432'
       }/${env.POSTGRES_DATABASE || 'postgres'}?sslmode=${env.POSTGRES_SSLMODE || 'prefer'}`;
   const prisma = path.resolve(
-    (await pkgDir(require.resolve('prisma'))) || path.resolve(process.cwd(), 'node_modules/prisma'),
+    import.meta.resolve('prisma') || path.resolve(process.cwd(), 'node_modules/prisma'),
     'build/index.js',
   );
+  console.log('PRISMA', prisma);
   await fs.writeFile(
     path.resolve(prismaPath, '.env'),
     `# ------------------------------------------------------

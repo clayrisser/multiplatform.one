@@ -18,10 +18,8 @@
 # limitations under the License.
 
 include $(MKPM)/mkpm
-include $(MKPM)/gnu
 include $(MKPM)/chain
 include $(MKPM)/dotenv
-include $(MKPM)/yarn
 
 TAMAGUI_BUILD ?= $(YARN) tamagui-build
 

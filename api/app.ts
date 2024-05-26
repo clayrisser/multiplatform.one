@@ -1,5 +1,5 @@
 /*
- *  File: /server.ts
+ *  File: /app.ts
  *  Project: api
  *  File Created: 04-04-2024 15:50:39
  *  Author: Clay Risser
@@ -21,7 +21,7 @@
 
 import 'reflect-metadata';
 import dotenv from 'dotenv';
-import type { ServerOptions } from '@multiplatform.one/typegraphql';
+import type { AppOptions } from '@multiplatform.one/typegraphql';
 import type { UserRepresentation } from '@multiplatform.one/keycloak-typegraphql';
 import { PrismaClient } from '@prisma/client';
 import { createPubSub } from '@graphql-yoga/subscription';
@@ -44,7 +44,7 @@ const seedUsers: UserRepresentation[] = [
   },
 ];
 
-export const options: ServerOptions<{
+export const options: AppOptions<{
   NOTIFICATIONS: [String];
   DYNAMIC_ID_TOPIC: [number, String];
 }> = {

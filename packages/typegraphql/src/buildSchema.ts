@@ -22,21 +22,21 @@
 // @ts-ignore
 import { AuthGuard } from '@multiplatform.one/keycloak-typegraphql';
 import path from 'path';
-import type { Ctx, ServerOptions } from './types';
+import type { Ctx, AppOptions } from './types';
 import type { Middleware } from 'type-graphql/build/typings/typings/middleware';
 import type { ValidateSettings } from 'type-graphql/build/typings/schema/build-context';
 import { BuildSchemaOptions, ResolverData, buildSchema as typeGraphqlBuildSchema } from 'type-graphql';
 import { createKeycloakOptions } from './keycloak';
 import { createResolvers } from './resolvers';
 
-export async function buildSchema(options: ServerOptions, emit?: string | true) {
+export async function buildSchema(options: AppOptions, emit?: string | true) {
   return typeGraphqlBuildSchema({
     ...createBuildSchemaOptions(options),
     emitSchemaFile: emit === true ? path.resolve(process.cwd(), 'schema.graphql') : emit,
   });
 }
 
-export function createBuildSchemaOptions(options: ServerOptions) {
+export function createBuildSchemaOptions(options: AppOptions) {
   const validate: ValidateSettings = {
     forbidUnknownValues: false,
   };

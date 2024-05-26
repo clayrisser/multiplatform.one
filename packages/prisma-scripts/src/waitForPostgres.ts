@@ -57,7 +57,7 @@ export async function waitForPostgres(spinner = ora(), interval = 1000) {
     } catch (err) {
       const execaErr = err as ExecaError;
       if (typeof execaErr.exitCode !== 'number') throw err;
-      spinner.warn(execaErr.stdout || execaErr.message || execaErr.toString());
+      spinner.warn(execaErr.stdout.toString().trim() || execaErr.message || execaErr.toString());
       spinner.start('waiting for postgres');
     }
     await new Promise((r) => setTimeout(r, interval, null));

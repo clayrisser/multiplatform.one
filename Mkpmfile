@@ -18,11 +18,12 @@
 # limitations under the License.
 
 include $(MKPM)/mkpm
-include $(MKPM)/gnu
+include $(MKPM)/chain
 include $(MKPM)/dotenv
 
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
+	@$(PNPM) install
 	@$(call done,$@)
 
 PLATFORMS := $(shell $(LS) platforms)
@@ -120,3 +121,5 @@ version:
 .PHONY: publish
 publish: version build
 	@$(CHANGESET) publish
+
+-include $(call chain)

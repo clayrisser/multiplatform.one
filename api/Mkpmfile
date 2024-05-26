@@ -18,7 +18,6 @@
 # limitations under the License.
 
 include $(MKPM)/mkpm
-include $(MKPM)/gnu
 include $(MKPM)/chain
 DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/dotenv
@@ -30,55 +29,19 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call make,$(PROJECT_ROOT)) \~deps DEPS_ARGS=$(DEPS_ARGS)
 	@$(call done,$@)
 
-ACTIONS += generate~deps
-GENERATE_TARGETS := generated/type-graphql/index.ts
-generated/type-graphql/index.ts:
-	@$(call reset,generate)
-$(ACTION)/generate: $(call git_deps,\.(prisma)$$)
-	@$(call make,prisma) generate
-	@$(call done,$@)
-
-ACTIONS += format~generate
-$(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
-#	-@$(call eslint_format,$?)
-	-@$(call prettier,$?,$(FORMAT_ARGS))
-	@$(call done,$@)
-
-ACTIONS += spellcheck~format
-$(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
-	@$(call done,$@)
-
-ACTIONS += lint~spellcheck
-$(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
-	-@$(call eslint,$?,$(LINT_ARGS))
-	@$(call done,$@)
-
-ACTIONS += test~lint
-$(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
-	-@$(call jest,$?,$(TEST_ARGS))
-	@$(call done,$@)
-
-ACTIONS += build~test
-BUILD_TARGETS := dist/index.js
-dist/index.js:
+ACTIONS += build~deps
+BUILD_TARGETS := dist/main.mjs
+dist/main.mjs:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(TSUP)
+	@$(TURBO) build
 	@$(call done,$@)
-
-.PHONY: watch
-watch: ~generate
-	@$(TSUP) --watch '**/*.ts' $(WATCH_ARGS)
 
 .PHONY: dev +dev prelaunch
 dev: prelaunch +dev
-prelaunch: ~deps prisma/dev docker/dev-d
+prelaunch: ~deps prisma/seed docker/dev-d
 +dev:
-	@$(call make) watch \
-		WATCH_ARGS="--onSuccess ' \
-			$(BUILD_SCHEMA) && \
-			NODE_ENV=development $(NODE) --inspect bin/main.js'"
+	@$(PNPM) run dev
 
 .PHONY: clean
 clean:
