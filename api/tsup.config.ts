@@ -1,5 +1,5 @@
 /*
- *  File: /prisma/tsup.config.ts
+ *  File: /tsup.config.ts
  *  Project: api
  *  File Created: 04-04-2024 15:50:39
  *  Author: Clay Risser
@@ -25,10 +25,10 @@ export default defineConfig({
   bundle: false,
   clean: true,
   dts: false,
-  entry: ['seed.ts'],
+  entry: ['buildSchema.ts', 'prisma/seed.ts'],
   format: ['esm'],
   minify: false,
-  outDir: 'dist',
+  outDir: 'dist/scripts',
   shims: true,
   skipNodeModulesBundle: true,
   splitting: true,

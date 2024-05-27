@@ -28,7 +28,7 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call done,$@)
 
 ACTIONS += generate~deps
-$(ACTION)/generate: $(PROJECT_ROOT)/api/dist/buildSchema.js
+$(ACTION)/generate: $(PROJECT_ROOT)/api/dist/scripts/buildSchema.mjs
 	@$(call done,$@)
 $(PROJECT_ROOT)/api/dist/buildSchema.js:
 	@$(call make,api) ~generate
