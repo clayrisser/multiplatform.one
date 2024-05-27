@@ -1,14 +1,6 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": [
-    "api",
-    "app",
-    "gql",
-    "packages/*",
-    "platforms/*",
-    "ui"
-  ],
   "devDependencies": {
     "@changesets/cli": "^2.27.3",
     "@typescript-eslint/eslint-plugin": "^7.10.0",
