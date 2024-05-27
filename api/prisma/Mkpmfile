@@ -33,13 +33,13 @@ WAIT_FOR_POSTGRES ?= echo 'waiting for postgres...' && \
 	until psql "$(POSTGRES_URL)" -c '\q' && break; do sleep 1; done; sleep 1 && echo "postgres ready"
 
 .PHONY: deploy
-deploy: dist/seed.js $(PRISMA_DATABASE_ENGINE)
+deploy: $(PRISMA_DATABASE_ENGINE)
 ifneq ($(PRISMA_DATABASE_ENGINE),none)
 	@$(PRISMA) migrate deploy $(DEPLOY_ARGS)
 endif
 
 .PHONY: dev
-dev: dist/seed.js $(PRISMA_DATABASE_ENGINE)
+dev: $(PRISMA_DATABASE_ENGINE)
 ifneq ($(PRISMA_DATABASE_ENGINE),none)
 	@$(PRISMA) migrate dev --skip-generate --skip-seed $(DEV_ARGS)
 endif
@@ -75,11 +75,10 @@ generate:
 	@$(PRISMA) generate $(GENERATE_ARGS)
 
 .PHONY: seed seed/build
-seed: dist/seed.js dev $(PRISMA_DATABASE_ENGINE)
+seed: ../dist/scripts/prisma/seed.mjs dev $(PRISMA_DATABASE_ENGINE)
 	@$(PRISMA) db seed $(SEED_ARGS)
-seed/build: dist/seed.js
-dist/seed.js: seed.ts ../package.json
-	@$(TSUP)
+../dist/scripts/prisma/seed.mjs: seed.ts ../package.json
+	@$(PNPM) run build
 
 .PHONY: postgres sqlite
 postgres:

@@ -19,13 +19,20 @@
  *  limitations under the License.
  */
 
-import 'reflect-metadata';
+import childProcess from 'child_process';
+import path from 'path';
+import type { ChildProcess } from 'child_process';
 import { VitePluginNode } from 'vite-plugin-node';
 import { defineConfig } from 'vite';
+
+let previousProcess: ChildProcess;
 
 export default defineConfig({
   server: {
     port: 5001,
+  },
+  build: {
+    outDir: 'dist/api',
   },
   plugins: [
     ...VitePluginNode({
@@ -33,5 +40,32 @@ export default defineConfig({
       appPath: './main.ts',
       tsCompiler: 'swc',
     }),
+    {
+      name: 'close-bundle',
+      async closeBundle() {
+        await new Promise((resolve, reject) => {
+          const p = childProcess.spawn(
+            'pnpm',
+            [
+              'build-schema',
+              path.resolve(__dirname, './dist/api/main.mjs'),
+              path.resolve(__dirname, '../gql/generated/schema.graphql'),
+            ],
+            {
+              stdio: 'inherit',
+              shell: true,
+            },
+          );
+          p.on('close', (code, signal) => resolve({ code, signal }));
+          p.on('error', (err) => reject(err));
+        });
+        if (!new Set(process.argv).has('--watch')) return;
+        previousProcess?.kill();
+        previousProcess = childProcess.spawn('node', ['dist/api/main.mjs'], {
+          stdio: 'inherit',
+          shell: true,
+        });
+      },
+    },
   ],
 });

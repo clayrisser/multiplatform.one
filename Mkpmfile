@@ -114,6 +114,6 @@ publish: version build
 TURBO_SCRIPTS := $(shell $(CAT) turbo.json | $(JQ) -r '(.pipeline | keys)[]')
 .PHONY: $(TURBO_SCRIPTS)
 $(TURBO_SCRIPTS):
-	@$(TURBO) run $@
+	@$(TURBO) run $@ $(TURBO_OPTIONS)
 
 -include $(call chain)

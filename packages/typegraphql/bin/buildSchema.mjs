@@ -1,7 +1,7 @@
 /*
- *  File: /main.ts
- *  Project: api
- *  File Created: 04-04-2024 15:50:39
+ *  File: /bin/buildSchema.mjs
+ *  Project: @multiplatform.one/typegraphql
+ *  File Created: 26-05-2024 18:07:44
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -20,16 +20,5 @@
  */
 
 import 'reflect-metadata';
-import { createApp } from '@multiplatform.one/typegraphql';
-import { fileURLToPath } from 'url';
-import { options } from './app';
-
-const app = createApp(options);
-
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  (async () => {
-    await app.start();
-  })();
-}
-
-export { options };
+import { _buildSchemaBin } from '../lib/buildSchema.mjs';
+_buildSchemaBin();

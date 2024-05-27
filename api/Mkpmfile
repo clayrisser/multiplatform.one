@@ -22,16 +22,14 @@ include $(MKPM)/chain
 DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/dotenv
 
-BUILD_SCHEMA ?= $(NODE) $(PROJECT_ROOT)/api/bin/buildSchema.js
-
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call make,$(PROJECT_ROOT)) \~deps DEPS_ARGS=$(DEPS_ARGS)
 	@$(call done,$@)
 
 ACTIONS += build~deps
-BUILD_TARGETS := dist/main.mjs
-dist/main.mjs:
+BUILD_TARGETS := dist/api/main.mjs
+dist/api/main.mjs:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(TURBO) build
@@ -42,6 +40,12 @@ dev: prelaunch +dev
 prelaunch: ~deps prisma/seed docker/dev-d
 +dev:
 	@$(PNPM) run dev
+
+.PHONY: serve +serve prelaunch
+serve: prelaunch +serve
+prelaunch: ~deps prisma/seed docker/dev-d
++serve:
+	@$(NODE) dist/api/main.mjs
 
 .PHONY: clean
 clean:

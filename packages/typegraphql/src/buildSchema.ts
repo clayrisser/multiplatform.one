@@ -29,6 +29,21 @@ import { BuildSchemaOptions, ResolverData, buildSchema as typeGraphqlBuildSchema
 import { createKeycloakOptions } from './keycloak';
 import { createResolvers } from './resolvers';
 
+const logger = console;
+
+export async function _buildSchemaBin() {
+  const bundlePath = process.argv[2];
+  const emitPath = process.argv.length > 3 ? path.resolve(process.cwd(), process.argv[3]) : undefined;
+  if (!bundlePath || !emitPath) {
+    if (!bundlePath) logger.error('missing bundle path');
+    if (!emitPath) logger.error('missing emit path');
+    process.exit(1);
+  }
+  const { options } = await import(path.resolve(process.cwd(), bundlePath));
+  await buildSchema(options, emitPath);
+  logger.info(`schema emitted to ${emitPath}`);
+}
+
 export async function buildSchema(options: AppOptions, emit?: string | true) {
   return typeGraphqlBuildSchema({
     ...createBuildSchemaOptions(options),
