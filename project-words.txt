@@ -250,6 +250,7 @@ pkce
 playlyfe
 pluralrules
 plusplus
+pnpm
 pos
 postgres
 postgresql

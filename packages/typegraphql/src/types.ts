@@ -103,10 +103,11 @@ export interface TypeGraphQLApp {
   hostname: string;
   httpListener: (req: IncomingMessage, res: ServerResponse) => Promise<void>;
   otelSDK: NodeSDK;
-  port: number;
   server: Server<typeof IncomingMessage, typeof ServerResponse>;
   start: (options?: StartOptions) => Promise<
     Omit<TypeGraphQLApp, 'start'> & {
+      metricsPort: number;
+      port: number;
       schema: GraphQLSchema;
       yoga: YogaServerInstance<Record<string, any>, Record<string, any>>;
       yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>>;

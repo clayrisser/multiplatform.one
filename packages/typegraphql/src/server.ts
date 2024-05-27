@@ -79,7 +79,6 @@ export function createApp(
   }
   const graphqlEndpoint = options.graphqlEndpoint || '/graphql';
   const hostname = options.hostname || 'localhost';
-  const port = options.port || Number(process.env.PORT || 5001);
   const buildSchemaOptions = createBuildSchemaOptions(options);
   const keycloakOptions = createKeycloakOptions(options);
   const loggerOptions: LoggerOptions = {
@@ -224,7 +223,6 @@ export function createApp(
     hostname,
     httpListener,
     otelSDK,
-    port,
     server,
     wsServer,
     async start(startOptions: StartOptions = {}) {
@@ -236,6 +234,14 @@ export function createApp(
         },
         ...startOptions,
       };
+      const port =
+        startOptions.listen.server && typeof startOptions.listen.server === 'number'
+          ? startOptions.listen.server
+          : options.port || Number(process.env.PORT || 5001);
+      const metricsPort =
+        startOptions.listen.metrics && typeof startOptions.listen.metrics === 'number'
+          ? startOptions.listen.metrics
+          : metricsOptions?.port || Number(process.env.METRICS_PORT || 5081);
       try {
         const schema = await buildSchema(buildSchemaOptions);
         const yoga = createYoga({
@@ -315,27 +321,33 @@ export function createApp(
           if (signal) {
             (async () => {
               try {
-                logger.info('App gracefully shutting down...');
-                await new Promise((resolve, reject) => {
-                  wsServer.close((err) => {
-                    if (err) return reject(err);
-                    return resolve(undefined);
+                logger.info('app gracefully shutting down');
+                if (startOptions.listen?.server) {
+                  await new Promise((resolve, reject) => {
+                    wsServer.close((err) => {
+                      if (err) return reject(err);
+                      return resolve(undefined);
+                    });
                   });
-                });
+                }
                 await options.prisma?.$disconnect();
-                await new Promise((resolve, reject) => {
-                  server.close((err) => {
-                    if (err) return reject(err);
-                    return resolve(undefined);
+                if (startOptions.listen.server) {
+                  await new Promise((resolve, reject) => {
+                    server.close((err) => {
+                      if (err) return reject(err);
+                      return resolve(undefined);
+                    });
                   });
-                });
-                await new Promise((resolve, reject) => {
-                  if (!metricsServer?.close) return resolve(undefined);
-                  metricsServer.close((err) => {
-                    if (err) return reject(err);
-                    return resolve(undefined);
+                }
+                if (startOptions.listen.metrics) {
+                  await new Promise((resolve, reject) => {
+                    if (!metricsServer?.close) return resolve(undefined);
+                    metricsServer.close((err) => {
+                      if (err) return reject(err);
+                      return resolve(undefined);
+                    });
                   });
-                });
+                }
                 await otelSDK.shutdown();
                 process.kill(process.pid, signal);
               } catch (err) {
@@ -356,15 +368,10 @@ export function createApp(
                 return reject(err);
               }
               metricsServer?.on('error', handleError);
-              metricsServer?.listen(
-                typeof startOptions.listen.metrics === 'number'
-                  ? startOptions.listen.metrics
-                  : metricsOptions.port || 5081,
-                () => {
-                  metricsServer?.off('error', handleError);
-                  return resolve(undefined);
-                },
-              );
+              metricsServer?.listen(metricsPort, () => {
+                metricsServer?.off('error', handleError);
+                return resolve(undefined);
+              });
             });
           }
         }
@@ -375,7 +382,7 @@ export function createApp(
               return reject(err);
             }
             server.on('error', handleError);
-            server.listen(typeof startOptions.listen.server === 'number' ? startOptions.listen.server : port, () => {
+            server.listen(port, () => {
               server.off('error', handleError);
               return resolve(undefined);
             });
@@ -386,6 +393,7 @@ export function createApp(
           debug,
           hostname,
           httpListener,
+          metricsPort,
           otelSDK,
           port,
           schema,
@@ -399,7 +407,7 @@ export function createApp(
         };
         await ready?.(result);
         if (startOptions.listen.server) logger.info(`server listening on http://${hostname}:${port}`);
-        if (startOptions.listen.metrics) logger.info(`metrics listening on http://${hostname}:${port}`);
+        if (startOptions.listen.metrics) logger.info(`metrics listening on http://${hostname}:${metricsPort}`);
         return result;
       } catch (err) {
         logger.error(err);

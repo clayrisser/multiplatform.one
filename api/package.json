@@ -2,24 +2,11 @@
   "name": "api",
   "version": "1.0.7",
   "private": true,
-  "main": "dist/main.js",
-  "source": "src/main.ts",
-  "types": "dist/main.d.ts",
   "scripts": {
     "build": "vite build",
-    "dev": "vite",
+    "dev": "vite build --watch",
     "generate": "prisma generate",
     "seed": "cd prisma && tsup && cd .. && prisma db seed"
-  },
-  "exports": {
-    ".": {
-      "require": "./dist/main.js",
-      "types": "./dist/main.d.ts"
-    },
-    "./buildSchema": {
-      "require": "./dist/buildSchema.js",
-      "types": "./dist/buildSchema.d.ts"
-    }
   },
   "dependencies": {
     "@graphql-yoga/subscription": "^5.0.0",
@@ -43,6 +30,7 @@
     "@swc/core": "1.5.0",
     "@types/eslint": "^8.56.10",
     "eslint": "~8.56.0",
+    "execa": "^9.1.0",
     "prettier": "^3.2.5",
     "reflect-metadata": "^0.2.2",
     "tsup": "8.0.2",
@@ -50,7 +38,7 @@
     "vite-plugin-node": "^3.1.0"
   },
   "prisma": {
-    "seed": "node prisma/dist/seed.mjs"
+    "seed": "node dist/scripts/prisma/seed.mjs"
   },
   "eslintIgnore": [
     "dist",

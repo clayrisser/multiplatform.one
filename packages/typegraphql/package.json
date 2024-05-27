@@ -18,10 +18,14 @@
       "types": "./lib/index.d.mts"
     }
   },
+  "bin": {
+    "build-schema": "./bin/buildSchema.mjs"
+  },
   "scripts": {
     "build": "tsup"
   },
   "files": [
+    "bin",
     "lib",
     "src"
   ],
@@ -81,7 +85,6 @@
     "pino-http": "^9.0.0",
     "pino-pretty": "^11.0.0",
     "prom-client": "^15.1.2",
-    "reflect-metadata": "^0.2.2",
     "tsyringe": "^4.8.0",
     "ws": "^8.16.0"
   },
