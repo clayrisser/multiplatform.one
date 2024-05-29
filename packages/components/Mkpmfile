@@ -21,7 +21,7 @@ include $(MKPM)/mkpm
 include $(MKPM)/chain
 include $(MKPM)/dotenv
 
-TAMAGUI_BUILD ?= $(YARN) tamagui-build
+TAMAGUI_BUILD ?= $(PNPM) tamagui-build
 
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -57,16 +57,6 @@ $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(RM) -rf types
 	@$(TAMAGUI_BUILD)
 	@$(call done,$@)
-
-.PHONY: clean
-clean:
-	-@$(MKCACHE_CLEAN)
-	-@$(JEST) --clearCache $(NOFAIL)
-	-@$(WATCHMAN) watch-del-all $(NOFAIL)
-	-@$(GIT) clean -fXd \
-		$(MKPM_GIT_CLEAN_FLAGS) \
-		$(YARN_GIT_CLEAN_FLAGS) \
-		$(NOFAIL)
 
 .PHONY: publish
 publish:

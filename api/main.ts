@@ -24,12 +24,13 @@ import { createApp } from '@multiplatform.one/typegraphql';
 import { fileURLToPath } from 'url';
 import { options } from './app';
 
-const app = createApp(options);
-
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  (async () => {
-    await app.start();
-  })();
-}
+const app = createApp({
+  ...options,
+  logger: {
+    ...options.logger,
+    logFileName: process.argv[1] === fileURLToPath(import.meta.url) ? options.logger?.logFileName : undefined,
+  },
+});
+if (process.argv[1] === fileURLToPath(import.meta.url)) app.start();
 
 export { options };

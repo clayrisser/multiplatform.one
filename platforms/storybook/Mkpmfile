@@ -92,16 +92,6 @@ vr-approve:
 		--chromeFlags="--headless --disable-gpu --hide-scrollbars --no-sandbox" \
 		approve
 
-.PHONY: clean
-clean:
-	-@$(MKCACHE_CLEAN)
-	-@$(JEST) --clearCache $(NOFAIL)
-	-@$(WATCHMAN) watch-del-all $(NOFAIL)
-	-@$(GIT) clean -fXd \
-		$(MKPM_GIT_CLEAN_FLAGS) \
-		$(YARN_GIT_CLEAN_FLAGS) \
-		$(NOFAIL)
-
 .PHONY: postinstall
 postinstall:
 

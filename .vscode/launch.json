@@ -17,7 +17,7 @@
       "name": "next dev",
       "type": "node-terminal",
       "request": "launch",
-      "command": "../../.mkpm/mkpm/.bin/mkpm next/+dev",
+      "command": "../../mkpm next/+dev",
       "preLaunchTask": "next/prelaunch",
       "cwd": "${workspaceFolder}/platforms/next",
       "serverReadyAction": {
@@ -39,7 +39,7 @@
       "request": "launch",
       "preLaunchTask": "api/prelaunch",
       "cwd": "${workspaceFolder}/api",
-      "command": "../.mkpm/mkpm/.bin/mkpm api/+dev"
+      "command": "../mkpm api/+dev"
     }
   ]
 }

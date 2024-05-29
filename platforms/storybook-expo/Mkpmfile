@@ -22,7 +22,7 @@ DOTENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/dotenv
 include $(MKPM)/chain
 
-SB_RN_GET_STORIES ?= $(YARN) sb-rn-get-stories
+SB_RN_GET_STORIES ?= $(PNPM) sb-rn-get-stories
 export STORYBOOK_ENABLED=true
 
 ACTIONS += deps
@@ -71,15 +71,5 @@ dev@android: ~generate +dev@android
 dev@ios: ~generate dev@ios
 +dev@ios:
 	@$(EXPO) start -c -p $(EXPO_PORT) --go --ios $(ARGS)
-
-.PHONY: clean
-clean:
-	-@$(MKCACHE_CLEAN)
-	-@$(JEST) --clearCache $(NOFAIL)
-	-@$(WATCHMAN) watch-del-all $(NOFAIL)
-	-@$(GIT) clean -fXd \
-		$(MKPM_GIT_CLEAN_FLAGS) \
-		$(YARN_GIT_CLEAN_FLAGS) \
-		$(NOFAIL)
 
 -include $(call chain)
