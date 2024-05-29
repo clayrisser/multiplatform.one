@@ -43,7 +43,7 @@ module.exports = function (api) {
           root: ['../..'],
           alias: {
             app: '../../app',
-            ui: '../../ui',
+            ui: '../../packages/ui',
             ...moduleResolutions.reduce((acc, module) => ({ ...acc, [module]: require.resolve(module) }), {}),
           },
           extensions: ['.js', '.jsx', '.tsx', '.ios.js', '.android.js'],

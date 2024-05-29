@@ -23,7 +23,7 @@ include $(MKPM)/dotenv
 include $(MKPM)/chain
 
 NODE_HEAP ?= 8192
-STORYBOOK ?= $(NODE) --max-old-space-size=$(NODE_HEAP) $(PROJECT_ROOT)/node_modules/.bin/storybook
+STORYBOOK ?= NODE_OPTIONS="--max-old-space-size=$(NODE_HEAP)" $(PNPM) storybook
 
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
