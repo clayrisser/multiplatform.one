@@ -21,17 +21,22 @@ include $(MKPM)/mkpm
 include $(MKPM)/chain
 include $(MKPM)/dotenv
 
+PACKAGES := $(shell $(LS) packages)
+PLATFORMS := $(shell $(LS) platforms)
+
 ACTIONS += deps
-$(ACTION)/deps: $(PROJECT_ROOT)/package.json $(call workspace_paths,package.json)
+$(ACTION)/deps: package.json \
+	$(patsubst %,packages/%/package.json,$(PACKAGES)) \
+	$(patsubst %,platforms/%/package.json,$(PLATFORMS)) \
+	api/package.json \
+	app/package.json
 	@$(PNPM) install
 	@$(call done,$@)
 
-PLATFORMS := $(shell $(LS) platforms)
 .PHONY: $(patsubst %,%/%,$(PLATFORMS))
 $(patsubst %,%/%,$(PLATFORMS)):
 	@$(call make,platforms/$(@D)) $*
 
-PACKAGES := $(shell $(LS) packages)
 .PHONY: $(patsubst %,%/%,$(PACKAGES))
 $(patsubst %,%/%,$(PACKAGES)):
 	@$(call make,packages/$(@D)) $*
@@ -43,14 +48,6 @@ api/%:
 .PHONY: app/%
 app/%:
 	@$(call make,app) $*
-
-.PHONY: gql/%
-gql/%:
-	@$(call make,gql) $*
-
-.PHONY: ui/%
-ui/%:
-	@$(call make,ui) $*
 
 .PHONY: update
 update:
@@ -64,7 +61,6 @@ clean:
 	-@$(WATCHMAN) watch-del-all $(NOFAIL)
 	-@$(GIT) clean -fXd \
 		$(MKPM_GIT_CLEAN_FLAGS) \
-		$(YARN_GIT_CLEAN_FLAGS) \
 		$(NOFAIL)
 
 .PHONY: purge
@@ -94,10 +90,6 @@ prisma/%:
 api/%:
 	@$(call make,api) $*
 
-.PHONY: kill/%
-kill/%:
-	@fuser -k $(subst kill/,,$@)/tcp || echo "No process to kill on port $(subst kill/,,$@)"
-
 .PHONY: count
 count:
 	@$(CLOC) $(shell ($(GIT) ls-files && ($(GIT) lfs ls-files | $(CUT) -d' ' -f3)) | $(SORT) | $(UNIQ) -u)
@@ -113,7 +105,7 @@ publish: version build
 
 TURBO_SCRIPTS := $(shell $(CAT) turbo.json | $(JQ) -r '(.pipeline | keys)[]')
 .PHONY: $(TURBO_SCRIPTS)
-$(TURBO_SCRIPTS):
+$(TURBO_SCRIPTS): ~deps
 	@$(TURBO) run $@ $(TURBO_OPTIONS)
 
 -include $(call chain)

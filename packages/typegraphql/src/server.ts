@@ -20,10 +20,11 @@
  */
 /* eslint-disable max-lines-per-function */
 
+import fs from 'fs/promises';
 import http from 'http';
 import nodeCleanup from 'node-cleanup';
+import path from 'path';
 import promClient, { Registry as PromClientRegistry } from 'prom-client';
-import type { Ctx, CtxExtra, MetricsOptions, AppOptions, StartOptions, TracingOptions, TypeGraphQLApp } from './types';
 import type { IncomingMessage, ServerResponse } from 'http';
 import type { LoggerOptions } from './logger';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
@@ -46,14 +47,22 @@ import { useApolloTracing } from '@envelop/apollo-tracing';
 import { useOpenTelemetry } from '@envelop/opentelemetry';
 import { usePrometheus } from '@envelop/prometheus';
 import { useServer } from 'graphql-ws/lib/use/ws';
+import type {
+  Ctx,
+  CtxExtra,
+  MetricsOptions,
+  AppOptions,
+  StartOptions,
+  TracingOptions,
+  TypeGraphQLApp,
+  StartReturn,
+} from './types';
 
 export const CTX = 'CTX';
 export const REQ = 'REQ';
 
-export function createApp(
-  options: AppOptions,
-  ready?: (typeGraphqlServer: Omit<TypeGraphQLApp, 'start'>) => Promise<void> | void,
-): TypeGraphQLApp {
+export function createApp(options: AppOptions): TypeGraphQLApp {
+  otelSDK.start();
   const debug = typeof options.debug !== 'undefined' ? options.debug : process.env.DEBUG === '1';
   const tracingOptions: TracingOptions = {
     apollo: process.env.APOLLO_TRACING ? process.env.APOLLO_TRACING === '1' : debug,
@@ -63,9 +72,7 @@ export function createApp(
     port: 5081,
     ...(typeof options.metrics === 'object' ? options.metrics : {}),
   };
-  otelSDK.start();
-  // @ts-ignore
-  const tracingProvider = otelSDK._tracerProvider;
+  const tracingProvider = (otelSDK as any)._tracerProvider;
   const promClientRegistry = (
     typeof options.metrics === 'undefined' ? process.env.METRICS_ENABLED !== '0' : !!options.metrics
   )
@@ -154,7 +161,7 @@ export function createApp(
         },
       },
       useLogger({
-        logFn: (eventName, { args }) => {
+        logFn(eventName: string, { args }) {
           const logger = new Logger(loggerOptions, args.contextValue);
           logger.info(eventName);
         },
@@ -188,6 +195,17 @@ export function createApp(
       ...(options.yoga?.plugins || []),
     ],
   };
+  const httpServer = {
+    listener: async (_req: IncomingMessage, res: ServerResponse): Promise<any> => {
+      return res.writeHead(404).end('handler for / is not implemented');
+    },
+  };
+  const httpListener = async (req: IncomingMessage, res: ServerResponse) => httpServer.listener(req, res);
+  const server = http.createServer(async (req, res) => httpServer.listener(req, res));
+  const wsServer = new WebSocketServer({
+    server,
+    path: graphqlEndpoint,
+  });
   const metricsServer = promClientRegistry
     ? http.createServer(async (req, res) => {
         try {
@@ -206,26 +224,22 @@ export function createApp(
         }
       })
     : undefined;
-  const httpServer = {
-    listener: async (_req: IncomingMessage, res: ServerResponse): Promise<any> => {
-      return res.writeHead(404).end('handler for / is not implemented');
-    },
-  };
-  const httpListener = async (req: IncomingMessage, res: ServerResponse) => httpServer.listener(req, res);
-  const server = http.createServer(async (req, res) => httpServer.listener(req, res));
-  const wsServer = new WebSocketServer({
-    server,
-    path: graphqlEndpoint,
-  });
   return {
     buildSchemaOptions,
     debug,
     hostname,
     httpListener,
+    metricsServer,
     otelSDK,
     server,
     wsServer,
-    async start(startOptions: StartOptions = {}) {
+    async start(startOptions: StartOptions = {}): Promise<StartReturn> {
+      if (loggerOptions.logFileName) {
+        const parentDir = path.dirname(loggerOptions.logFileName);
+        if (!(await fs.stat(parentDir))) {
+          await fs.mkdir(parentDir, { recursive: true });
+        }
+      }
       startOptions = {
         listen: {
           metrics: true,
@@ -248,7 +262,7 @@ export function createApp(
           graphiql: false,
           ...yogaServerOptions,
           cors: {
-            origin: process.env.BASE_URL,
+            origin: options.baseUrl || process.env.BASE_URL,
             credentials: true,
             ...(yogaServerOptions.cors as any),
           },
@@ -388,12 +402,15 @@ export function createApp(
             });
           });
         }
-        const result = {
+        if (startOptions.listen.server) logger.info(`server listening on http://${hostname}:${port}`);
+        if (startOptions.listen.metrics) logger.info(`metrics listening on http://${hostname}:${metricsPort}`);
+        return {
           buildSchemaOptions,
           debug,
           hostname,
           httpListener,
           metricsPort,
+          metricsServer,
           otelSDK,
           port,
           schema,
@@ -405,10 +422,6 @@ export function createApp(
             Record<string, any>
           >,
         };
-        await ready?.(result);
-        if (startOptions.listen.server) logger.info(`server listening on http://${hostname}:${port}`);
-        if (startOptions.listen.metrics) logger.info(`metrics listening on http://${hostname}:${metricsPort}`);
-        return result;
       } catch (err) {
         logger.error(err);
         process.exit(1);

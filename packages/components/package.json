@@ -22,7 +22,9 @@
       "require": "./css/code-highlight.css"
     }
   },
-  "scripts": {},
+  "scripts": {
+    "build": "rm -rf dist types 2>/dev/null && tamagui-build"
+  },
   "files": [
     "css",
     "dist",

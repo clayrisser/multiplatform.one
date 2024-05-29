@@ -25,7 +25,7 @@ include $(MKPM)/chain
 export NEXTAUTH_SECRET := $(SECRET)
 export NEXTAUTH_URL := $(BASE_URL)
 
-NEXT ?= $(YARN) next
+NEXT ?= $(PNPM) next
 NEXT_PORT ?= 5000
 
 ACTIONS += deps
@@ -79,15 +79,5 @@ start: ~deps api/~build +build +start
 .PHONY: api/%
 api/%:
 	@$(call make,$(PROJECT_ROOT)) api/$*
-
-.PHONY: clean
-clean:
-	-@$(MKCACHE_CLEAN)
-	-@$(JEST) --clearCache $(NOFAIL)
-	-@$(WATCHMAN) watch-del-all $(NOFAIL)
-	-@$(GIT) clean -fXd \
-		$(MKPM_GIT_CLEAN_FLAGS) \
-		$(YARN_GIT_CLEAN_FLAGS) \
-		$(NOFAIL)
 
 -include $(call chain)

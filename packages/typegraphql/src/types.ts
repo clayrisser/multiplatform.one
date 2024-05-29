@@ -97,22 +97,23 @@ export interface StartOptions {
   };
 }
 
+export type StartReturn = Omit<TypeGraphQLApp, 'start'> & {
+  metricsPort: number;
+  port: number;
+  schema: GraphQLSchema;
+  yoga: YogaServerInstance<Record<string, any>, Record<string, any>>;
+  yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>>;
+};
+
 export interface TypeGraphQLApp {
   buildSchemaOptions: BuildSchemaOptions;
   debug: boolean;
   hostname: string;
   httpListener: (req: IncomingMessage, res: ServerResponse) => Promise<void>;
+  metricsServer: Server<typeof IncomingMessage, typeof ServerResponse>;
   otelSDK: NodeSDK;
   server: Server<typeof IncomingMessage, typeof ServerResponse>;
-  start: (options?: StartOptions) => Promise<
-    Omit<TypeGraphQLApp, 'start'> & {
-      metricsPort: number;
-      port: number;
-      schema: GraphQLSchema;
-      yoga: YogaServerInstance<Record<string, any>, Record<string, any>>;
-      yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>>;
-    }
-  >;
+  start: (options?: StartOptions) => Promise<StartReturn>;
   wsServer: WebSocketServer;
 }
 

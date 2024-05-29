@@ -25,7 +25,7 @@ export default defineConfig({
   bundle: false,
   clean: true,
   dts: false,
-  entry: ['buildSchema.ts', 'prisma/seed.ts'],
+  entry: ['prisma/seed.ts'],
   format: ['esm'],
   minify: false,
   outDir: 'dist/scripts',

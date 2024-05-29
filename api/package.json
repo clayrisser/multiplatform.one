@@ -3,7 +3,7 @@
   "version": "1.0.7",
   "private": true,
   "scripts": {
-    "build": "vite build",
+    "build": "tsup && vite build",
     "dev": "vite build --watch",
     "generate": "prisma generate",
     "seed": "cd prisma && tsup && cd .. && prisma db seed"
@@ -38,7 +38,7 @@
     "vite-plugin-node": "^3.1.0"
   },
   "prisma": {
-    "seed": "node dist/scripts/prisma/seed.mjs"
+    "seed": "node dist/scripts/seed.mjs"
   },
   "eslintIgnore": [
     "dist",
