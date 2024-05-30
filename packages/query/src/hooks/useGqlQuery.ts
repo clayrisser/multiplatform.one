@@ -1,7 +1,7 @@
 /*
- *  File: /src/hooks/useQuery.ts
+ *  File: /src/hooks/useGqlQuery.ts
  *  Project: @multiplatform.one/query
- *  File Created: 30-05-2024 01:39:54
+ *  File Created: 30-05-2024 06:01:12
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -46,7 +46,7 @@ const apolloQueryOptionsKeys = new Set([
   'variables',
 ]);
 
-export function useApolloQuery<
+export function useGqlQuery<
   TQueryFnData = unknown,
   TError = DefaultError,
   TData = TQueryFnData,
@@ -79,6 +79,10 @@ export function useApolloQuery<
   return useTanstackQuery(
     {
       ...tanstackQueryOptions,
+      enabled:
+        typeof tanstackQueryOptions?.enabled !== 'undefined'
+          ? tanstackQueryOptions.enabled
+          : !!(keycloak?.authenticated && keycloak.token),
       queryFn: () =>
         client.query({
           ...apolloQueryOptions,
