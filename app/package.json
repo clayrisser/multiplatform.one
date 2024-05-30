@@ -6,7 +6,7 @@
     "*.css"
   ],
   "dependencies": {
-    "@apollo/client": "^3.10.1",
+    "@apollo/client": "^3.10.4",
     "@expo-google-fonts/rock-salt": "^0.2.3",
     "@expo-google-fonts/silkscreen": "^0.2.3",
     "@fontsource/rock-salt": "^5.0.19",
@@ -22,23 +22,23 @@
     "@tamagui/toast": "^1.99.1",
     "bufferutil": "^4.0.8",
     "expo-linking": "^6.3.1",
-    "expo-random": "^13.6.0",
+    "expo-random": "^14.0.1",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.16.0",
-    "i18next": "^23.11.2",
-    "immer": "^10.0.4",
+    "i18next": "^23.11.5",
+    "immer": "^10.1.1",
     "intl-pluralrules": "^2.0.1",
     "multiplatform.one": "workspace:1.0.7",
-    "react-i18next": "^14.1.1",
-    "react-native-svg": "14.1.0",
+    "react-i18next": "^14.1.2",
+    "react-native-svg": "15.2.0",
     "solito": "^4.2.2",
     "subscriptions-transport-ws": "^0.11.0",
     "tamagui": "^1.99.1",
-    "utf-8-validate": "^6.0.3",
+    "utf-8-validate": "^6.0.4",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@types/react": "^18.3.1",
+    "@types/react": "^18.3.3",
     "@types/react-native": "^0.73.0"
   },
   "jest": {

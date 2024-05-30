@@ -37,7 +37,9 @@ i18nInit();
 
 export default function HomeLayout() {
   const [fontsLoaded] = useFonts(fonts);
+  console.log('HELLO');
   const handleLayoutRootView = useCallback(async () => {
+    console.log('READY');
     if (fontsLoaded) await SplashScreen.hideAsync();
   }, [fontsLoaded]);
   if (!fontsLoaded) return;

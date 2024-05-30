@@ -1,3 +1,24 @@
+/**
+ * File: /src/tints.tsx
+ * Project: @multiplatform.one/components
+ * File Created: 23-04-2024 05:52:22
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 /*
  *  File: /src/hooks/useTint.ts
  *  Project: @multiplatform.one/components
@@ -86,7 +107,7 @@ export function TintFamiliesProvider(props: TintFamiliesProviderProps) {
       tintIndex,
       setFamily,
       setTintIndex: (next: number) => {
-        setTintIndex(next % families[family].length);
+        setTintIndex(next % (families[family]?.length || 0));
       },
     }),
     [family, setFamily, families, tintIndex, setTintIndex],
@@ -97,14 +118,14 @@ export function TintFamiliesProvider(props: TintFamiliesProviderProps) {
 export function useTint(altOffset = -1) {
   const { families, family, setFamily, setTintIndex, tintIndex } = useContext(TintFamiliesContext);
   const tints = families[family];
-  const tintAltIndex = Math.abs((tintIndex + altOffset) % tints.length);
+  const tintAltIndex = Math.abs((tintIndex + altOffset) % (tints?.length || 0));
   const familiesNames = useMemo(() => Object.keys(families), [families]);
   return {
     families,
     familiesNames,
     name: family,
-    tint: tints[tintIndex] as ThemeName,
-    tintAlt: tints[tintAltIndex] as ThemeName,
+    tint: tints?.[tintIndex] as ThemeName,
+    tintAlt: tints?.[tintAltIndex] as ThemeName,
     tintAltIndex,
     tintIndex,
     tints,
@@ -115,7 +136,8 @@ export function useTint(altOffset = -1) {
     },
     setNextTintFamily: () => {
       setFamily(
-        (family: TintFamily) => familiesNames[(familiesNames.indexOf(family as string) + 1) % familiesNames.length],
+        (prevFamily: TintFamily) =>
+          familiesNames[(familiesNames.indexOf(prevFamily as string) + 1) % familiesNames.length] as TintFamily,
       );
     },
   } as const;

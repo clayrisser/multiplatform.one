@@ -36,7 +36,6 @@ import { appWithTranslation } from 'next-i18next';
 import { config } from 'app/config';
 import { getSession } from '@multiplatform.one/keycloak';
 import { importFonts } from 'app/fonts';
-import { setDefaultCrossStorage } from 'multiplatform.one/zustand';
 
 const sentryDsn = config.get('SENTRY_DSN');
 if (sentryDsn) {
@@ -45,8 +44,6 @@ if (sentryDsn) {
   });
 }
 
-const crossStorageHubUrl = config.get('CROSS_STORAGE_HUB_URL');
-if (crossStorageHubUrl) setDefaultCrossStorage(crossStorageHubUrl);
 const nextStatic = config.get('NEXT_STATIC') === '1';
 importFonts();
 if (nextStatic) import('app/i18n').then(({ i18nInit }) => i18nInit());

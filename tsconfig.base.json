@@ -5,20 +5,21 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "checkJs": false,
-    "downlevelIteration": true,
     "composite": true,
+    "downlevelIteration": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "incremental": true,
     "jsx": "preserve",
     "module": "CommonJS",
     "moduleResolution": "Node",
+    "noEmit": true,
     "noEmitOnError": false,
     "noImplicitAny": false,
     "noImplicitReturns": false,
     "noUncheckedIndexedAccess": true,
-    "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveConstEnums": true,
@@ -29,14 +30,12 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "target": "ES2022",
+    "target": "ES2020",
     "types": ["node"],
     "useUnknownInCatchVariables": false,
     "lib": ["DOM", "DOM.Iterable", "ES2022", "ScriptHost", "WebWorker", "WebWorker.ImportScripts", "Webworker.Iterable"]
   },
   "typeAcquisition": {
     "enable": true
-  },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json"],
-  "exclude": ["node_modules", "dist", "lib"]
+  }
 }

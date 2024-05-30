@@ -1,10 +1,10 @@
 /*
- *  File: /zustand/index.js
- *  Project: multiplatform.one
- *  File Created: 22-06-2023 05:33:21
+ *  File: /src/types.ts
+ *  Project: @multiplatform.one/zustand
+ *  File Created: 30-05-2024 01:07:48
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,4 +19,11 @@
  *  limitations under the License.
  */
 
-module.exports = require('../dist/cjs/zustand/index.js');
+import type { Actions, MiddlewareOptionType, InitStateType } from './tools';
+import type { PersistOptions, DevtoolsOptions } from 'zustand/middleware';
+
+export interface CreateOptions<State extends InitStateType, A extends Actions<State>> {
+  devtools?: boolean | DevtoolsOptions;
+  middlewares?: MiddlewareOptionType<State & ReturnType<A>>[];
+  persist?: boolean | Partial<PersistOptions<State>>;
+}

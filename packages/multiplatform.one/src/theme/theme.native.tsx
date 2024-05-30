@@ -20,15 +20,15 @@
  */
 
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
-import type { Actions } from '../zustand';
+import type { Actions } from '@multiplatform.one/zustand';
 import type { ThemeState, ThemeProviderProps } from './theme';
-import { createStateStore } from '../zustand';
+import { createStateStore } from '@multiplatform.one/zustand';
 
 const defaultThemeState: ThemeState = { root: 'system', sub: 'gray' };
 
 const ThemeContext = createContext<ThemeState>(defaultThemeState);
 
-const { useStore: useThemeState } = createStateStore<ThemeState, Actions<ThemeState, {}>>(
+const { useStore: useThemeState } = createStateStore<ThemeState, Actions<ThemeState>>(
   'theme',
   {
     root: null,

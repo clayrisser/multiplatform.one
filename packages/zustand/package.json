@@ -1,0 +1,63 @@
+{
+  "name": "@multiplatform.one/zustand",
+  "version": "1.0.0",
+  "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
+  "contributors": [
+    {
+      "name": "Clay Risser",
+      "url": "https://clayrisser.com"
+    }
+  ],
+  "description": "simplified zustand state management",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "source": "src/index.ts",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./types/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "rm -rf dist types 2>/dev/null && tamagui-build"
+  },
+  "files": [
+    "NOTICE",
+    "dist",
+    "src",
+    "types"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues"
+  },
+  "keywords": [
+    "zustand",
+    "state",
+    "react"
+  ],
+  "engines": {
+    "node": ">= 16.0"
+  },
+  "devDependencies": {
+    "@react-native-async-storage/async-storage": "1.21.0",
+    "@tamagui/build": "^1.99.1",
+    "@types/node": "~20.12.13",
+    "publint": "^0.2.8",
+    "typescript": "~5.3.3",
+    "vite": "^5.2.12"
+  },
+  "dependencies": {
+    "zustand": "^4.5.2"
+  },
+  "peerDependencies": {
+    "@react-native-async-storage/async-storage": "1.21.0"
+  }
+}

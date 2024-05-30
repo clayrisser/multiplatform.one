@@ -16,7 +16,8 @@
     ".": {
       "import": "./lib/index.mjs",
       "types": "./lib/index.d.mts"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
     "build": "tsup"
@@ -45,24 +46,22 @@
     "@types/eslint": "^8.56.10",
     "@types/lodash.difference": "^4.5.9",
     "@types/lodash.get": "^4.4.9",
-    "eslint": "~8.56.0",
-    "prettier": "^3.2.5",
-    "tsup": "8.0.2",
-    "typescript": "5.3.3"
+    "tsup": "^8.0.2",
+    "typescript": "~5.3.3"
   },
   "dependencies": {
-    "@keycloak/keycloak-admin-client": "^24.0.3",
+    "@keycloak/keycloak-admin-client": "^24.0.4",
     "@multiplatform.one/keycloak": "workspace:1.0.9",
     "@multiplatform.one/typegraphql": "workspace:1.0.7",
-    "axios": "^1.6.8",
+    "axios": "^1.7.2",
     "cookie": "^0.6.0",
     "graphql": "^16.8.1",
-    "keycloak-connect": "^24.0.3",
+    "keycloak-connect": "^24.0.4",
     "lodash.difference": "^4.5.0",
     "lodash.get": "^4.4.2",
     "next-auth": "^4.24.7",
     "reflect-metadata": "^0.2.2",
-    "type-graphql": "^2.0.0-beta.6"
+    "type-graphql": "^2.0.0-rc.1"
   },
   "transpileModules": [
     "@keycloak/keycloak-admin-client",
