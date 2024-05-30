@@ -1,6 +1,6 @@
 # File: /Mkpmfile
-# Project: multiplatform.one
-# File Created: 26-04-2024 17:28:14
+# Project: @multiplatform.one/keycloak-typegraphql
+# File Created: 11-01-2024 14:26:32
 # Author: Clay Risser
 # -----
 # BitSpur (c) Copyright 2021 - 2024
@@ -28,13 +28,12 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 
 ACTIONS += format~deps
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
-#	-@$(call eslint_format,$?)
 	-@$(call prettier,$?,$(ARGS))
 	@$(call done,$@)
 
 ACTIONS += spellcheck~format
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
+	-@$(call cspell,$?,$(ARGS))
 	@$(call done,$@)
 
 ACTIONS += lint~spellcheck
@@ -42,21 +41,31 @@ $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call eslint,$?,$(ARGS))
 	@$(call done,$@)
 
-ACTIONS += test~lint
-$(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
-	-@$(call jest,$?,$(ARGS))
-	@$(call done,$@)
+# ACTIONS += test~lint
+# $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
+# 	-@$(MKDIR) -p node_modules/.tmp
+# 	-@$(call jest,$?,$(ARGS))
+# 	@$(call done,$@)
 
-ACTIONS += build~test
-BUILD_TARGETS := dist/cjs/index.js
+ACTIONS += build~lint
+BUILD_TARGET := dist/cjs/index.js
 dist/cjs/index.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(PNPM) run build
 	@$(call done,$@)
 
-.PHONY: publish
-publish:
-	@$(NPM) publish
+COLLECT_COVERAGE_FROM := ["src/**/*.{js,jsx,ts,tsx}"]
+.PHONY: coverage +coverage
+coverage: | ~lint +coverage
++coverage:
+	@$(JEST) --coverage --collectCoverageFrom='$(COLLECT_COVERAGE_FROM)' $(ARGS)
 
 -include $(call chain)
+
+export CACHE_ENVS += \
+	CSPELL \
+	ESLINT \
+	JEST \
+	PRETTIER \
+	TSC

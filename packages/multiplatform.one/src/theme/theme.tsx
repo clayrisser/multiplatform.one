@@ -20,13 +20,13 @@
  */
 
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
-import type { Actions } from '../zustand';
+import type { Actions } from '@multiplatform.one/zustand';
 import type { ColorScheme as TamaguiColorScheme } from '@tamagui/next-theme';
 import type { PropsWithChildren } from 'react';
 import type { ThemeName } from '@tamagui/web';
 import { MultiPlatform } from '../multiplatform';
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
-import { createStateStore } from '../zustand';
+import { createStateStore } from '@multiplatform.one/zustand';
 import { useCookies } from 'react-cookie';
 
 export const COOKIE_ROOT_THEME = 'multiplatform-one.root-theme';
@@ -48,7 +48,7 @@ export interface ThemeProviderProps extends PropsWithChildren {
   theme?: Partial<ThemeState>;
 }
 
-const { useStore: useThemeState } = createStateStore<ThemeState, Actions<ThemeState, {}>>(
+const { useStore: useThemeState } = createStateStore<ThemeState, Actions<ThemeState>>(
   'theme',
   {
     root: null,

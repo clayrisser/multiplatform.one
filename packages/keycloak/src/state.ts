@@ -19,8 +19,8 @@
  *  limitations under the License.
  */
 
-import { createStateStore } from 'multiplatform.one/zustand';
 import { MultiPlatform } from 'multiplatform.one';
+import { createStateStore } from '@multiplatform.one/zustand';
 
 export const persist = MultiPlatform.isIframe || (!MultiPlatform.isNext && !MultiPlatform.isServer);
 

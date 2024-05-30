@@ -20,7 +20,8 @@
     "./css/code-highlight.css": {
       "import": "./css/code-highlight.css",
       "require": "./css/code-highlight.css"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
     "build": "rm -rf dist types 2>/dev/null && tamagui-build"
@@ -46,7 +47,7 @@
     "@tamagui/shorthands": "^1.99.1",
     "@tamagui/themes": "^1.99.1",
     "burnt": "^0.12.2",
-    "expo-asset": "^9.0.2",
+    "expo-asset": "^10.0.6",
     "expo-image": "^1.12.9",
     "fast-xml-parser": "^4.4.0",
     "gray-matter": "^4.0.3",
@@ -55,7 +56,7 @@
     "multiplatform.one": "workspace:*",
     "parse-numeric-range": "^1.3.0",
     "react-hook-form": "^7.51.5",
-    "react-native-svg": "14.1.0",
+    "react-native-svg": "15.2.0",
     "refractor": "^4.8.1",
     "rehype-autolink-headings": "~6.1.1",
     "rehype-parse": "~8.0.5",
@@ -73,12 +74,10 @@
   "devDependencies": {
     "@tamagui/build": "^1.99.1",
     "@types/eslint": "^8.56.10",
-    "eslint": "~8.56.0",
-    "moti": "^0.28.1",
-    "prettier": "^3.2.5",
-    "react-native-reanimated": "3.8.1",
+    "moti": "^0.29.0",
+    "react-native-reanimated": "3.11.0",
     "solito": "^4.2.2",
-    "tsup": "8.0.2"
+    "tsup": "^8.0.2"
   },
   "eslintIgnore": [
     "dist",

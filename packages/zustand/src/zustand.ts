@@ -1,10 +1,10 @@
 /*
- *  File: /src/zustand/zustand.native.ts
- *  Project: multiplatform.one
- *  File Created: 22-06-2023 05:33:21
+ *  File: /src/zustand.ts
+ *  Project: @multiplatform.one/zustand
+ *  File Created: 30-05-2024 01:07:29
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,22 +20,22 @@
  */
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import type { ActionsType, CreateOptions, MiddlewareOptionType } from './types';
-import type { CrossStorageClientOptions } from 'cross-storage';
-import type { InitStateType } from 'zustand-tools/dist/types';
+import type { CreateOptions } from './types';
+import type { InitStateType, Actions, MiddlewareOptionType, CreateSimpleReturn } from './tools';
 import type { PersistOptions } from 'zustand/middleware';
-import { createSimple } from 'zustand-tools';
+import { createSimple } from './tools';
 import { devtools, persist, createJSONStorage } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
-const g: any = global;
+// @ts-ignore
+const g: any = typeof window === 'undefined' ? global : window;
 
-export function createStateStore<State extends InitStateType, Actions extends ActionsType<State>>(
+export function createStateStore<State extends InitStateType, A extends Actions<State>>(
   name: string,
   initState: State,
-  actions?: Actions,
-  options: CreateOptions<State, Actions> = {},
-): ReturnType<typeof createSimple> {
+  actions?: A,
+  options: CreateOptions<State, A> = {},
+): CreateSimpleReturn<State, A> {
   const store = createSimple(initState, {
     actions,
     middlewares: [
@@ -48,7 +48,7 @@ export function createStateStore<State extends InitStateType, Actions extends Ac
                 enabled: true,
                 ...(typeof options.devtools === 'object' ? options.devtools : {}),
               }),
-          ] as MiddlewareOptionType<State & ReturnType<Actions>>[])),
+          ] as MiddlewareOptionType<State & ReturnType<A>>[])),
       (initializer) => immer(initializer),
       ...(options.persist
         ? ([
@@ -58,14 +58,10 @@ export function createStateStore<State extends InitStateType, Actions extends Ac
                 storage: createJSONStorage(() => AsyncStorage),
                 ...((typeof options.persist === 'object' ? options.persist : {}) as Partial<PersistOptions<any>>),
               }),
-          ] as MiddlewareOptionType<State & ReturnType<Actions>>[])
+          ] as MiddlewareOptionType<State & ReturnType<A>>[])
         : []),
       ...(options.middlewares || []),
     ],
   });
   return store;
-}
-
-export function setDefaultCrossStorage(_hubUrl: string, _options?: Partial<CrossStorageClientOptions>) {
-  return;
 }
