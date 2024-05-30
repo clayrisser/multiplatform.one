@@ -24,9 +24,10 @@ import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinne
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { ThemeTintAlt } from '@multiplatform.one/components';
 import { gql } from 'gql';
-import { useAuthQuery, useAuthSubscription, withAuthenticated } from '@multiplatform.one/keycloak';
+import { useGqlQuery, useGqlSubscription } from '@multiplatform.one/query';
 import { useLink } from 'solito/link';
 import { useTranslation } from '@multiplatform.one/locales';
+import { withAuthenticated } from '@multiplatform.one/keycloak';
 import { withDefaultLayout } from 'app/layouts/Default';
 
 const AuthQuery = gql(`
@@ -48,13 +49,13 @@ function HomeScreen() {
   const linkProps = useLink({
     href: '/user/alice',
   });
-  const { data, loading } = useAuthQuery(AuthQuery);
-  const { data: cData } = useAuthSubscription(CountSubscription);
+  const { data, isLoading } = useGqlQuery({ query: AuthQuery });
+  const { data: cData } = useGqlSubscription({ query: CountSubscription });
 
   return (
     <YStack f={1} jc="center" ai="center" p="$4">
       <Text>{cData?.count}</Text>
-      {loading ? <Spinner /> : <Text>username: {data?.username}</Text>}
+      {isLoading ? <Spinner /> : <Text>username: {data?.username}</Text>}
       <YStack
         // gap="$4"
         maw={600}

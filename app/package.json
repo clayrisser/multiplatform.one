@@ -13,6 +13,8 @@
     "@fontsource/silkscreen": "^5.0.20",
     "@multiplatform.one/keycloak": "workspace:1.0.9",
     "@multiplatform.one/locales": "workspace:^1.0.7",
+    "@multiplatform.one/query": "workspace:*",
+    "@multiplatform.one/zustand": "workspace:*",
     "@tamagui/font-fira-mono": "^1.99.1",
     "@tamagui/font-glusp": "^1.99.1",
     "@tamagui/font-inter": "^1.99.1",
@@ -20,13 +22,13 @@
     "@tamagui/font-silkscreen": "^1.99.1",
     "@tamagui/lucide-icons": "^1.99.1",
     "@tamagui/toast": "^1.99.1",
+    "@tanstack/react-query": "^5.40.0",
     "bufferutil": "^4.0.8",
     "expo-linking": "^6.3.1",
     "expo-random": "^14.0.1",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.16.0",
     "i18next": "^23.11.5",
-    "immer": "^10.1.1",
     "intl-pluralrules": "^2.0.1",
     "multiplatform.one": "workspace:1.0.7",
     "react-i18next": "^14.1.2",
@@ -34,8 +36,7 @@
     "solito": "^4.2.2",
     "subscriptions-transport-ws": "^0.11.0",
     "tamagui": "^1.99.1",
-    "utf-8-validate": "^6.0.4",
-    "zustand": "^4.5.2"
+    "utf-8-validate": "^6.0.4"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

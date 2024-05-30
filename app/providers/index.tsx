@@ -28,6 +28,7 @@ import type { ThemeProviderProps } from 'multiplatform.one/theme';
 import { GlobalApolloProvider } from './apollo';
 import { GlobalKeycloakProvider } from './keycloak';
 import { GlobalTamaguiProvider } from './tamagui';
+import { GlobalTanstackProvider } from './tanstack';
 import { ThemeProvider } from 'multiplatform.one/theme';
 import { config } from 'app/config';
 
@@ -42,13 +43,15 @@ export type GlobalProviderProps = PropsWithChildren &
 export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, theme, ...props }: GlobalProviderProps) {
   const keycloakDisabled = !keycloak || config.get('KEYCLOAK_ENABLED') !== '1';
   return (
-    <ThemeProvider cookies={cookies} theme={theme}>
-      <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
-        <GlobalKeycloakProvider disabled={keycloakDisabled} {...keycloak}>
-          <GlobalApolloProvider keycloakDisabled={keycloakDisabled}>{children}</GlobalApolloProvider>
-        </GlobalKeycloakProvider>
-      </GlobalTamaguiProvider>
-    </ThemeProvider>
+    <GlobalTanstackProvider>
+      <ThemeProvider cookies={cookies} theme={theme}>
+        <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
+          <GlobalKeycloakProvider disabled={keycloakDisabled} {...keycloak}>
+            <GlobalApolloProvider keycloakDisabled={keycloakDisabled}>{children}</GlobalApolloProvider>
+          </GlobalKeycloakProvider>
+        </GlobalTamaguiProvider>
+      </ThemeProvider>
+    </GlobalTanstackProvider>
   );
 }
 

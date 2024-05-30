@@ -58,9 +58,11 @@ export function useGqlQuery<
     | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
     | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
     | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
-    'queryFn'
+    'queryFn' | 'queryKey'
   > &
-    QueryOptions<TVariables, T>,
+    QueryOptions<TVariables, T> & {
+      queryKey?: TQueryKey;
+    },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> {
   const keycloak = useKeycloak();
@@ -79,21 +81,25 @@ export function useGqlQuery<
   return useTanstackQuery(
     {
       ...tanstackQueryOptions,
+      queryKey: tanstackQueryOptions.queryKey || options.query,
       enabled:
         typeof tanstackQueryOptions?.enabled !== 'undefined'
           ? tanstackQueryOptions.enabled
           : !!(keycloak?.authenticated && keycloak.token),
-      queryFn: () =>
-        client.query({
-          ...apolloQueryOptions,
-          context: {
-            ...apolloQueryOptions?.context,
-            headers: {
-              ...(apolloQueryOptions?.context?.headers || {}),
-              authorization: `Bearer ${keycloak?.token}`,
+      async queryFn() {
+        return (
+          await client.query({
+            ...apolloQueryOptions,
+            context: {
+              ...apolloQueryOptions?.context,
+              headers: {
+                ...(apolloQueryOptions?.context?.headers || {}),
+                authorization: `Bearer ${keycloak?.token}`,
+              },
             },
-          },
-        }) as TQueryFnData,
+          })
+        ).data as unknown as TQueryFnData;
+      },
     },
     queryClient,
   );
