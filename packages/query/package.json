@@ -1,5 +1,5 @@
 {
-  "name": "@multiplatform.one/zustand",
+  "name": "@multiplatform.one/query",
   "version": "1.0.0",
   "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
   "contributors": [
@@ -8,7 +8,7 @@
       "url": "https://clayrisser.com"
     }
   ],
-  "description": "simplified zustand state management",
+  "description": "simplified tanstack query",
   "main": "dist/cjs",
   "module": "dist/esm",
   "source": "src/index.ts",
@@ -22,7 +22,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "rm -rf dist types 2>/dev/null && tamagui-build "
+    "build": "rm -rf dist types 2>/dev/null && tamagui-build"
   },
   "files": [
     "NOTICE",
@@ -39,8 +39,9 @@
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues"
   },
   "keywords": [
-    "zustand",
-    "state",
+    "react-query",
+    "tanstack",
+    "query",
     "react"
   ],
   "engines": {
@@ -54,7 +55,9 @@
     "vite": "^5.2.12"
   },
   "dependencies": {
-    "zustand": "^4.5.2"
+    "@apollo/client": "^3.10.4",
+    "@multiplatform.one/keycloak": "workspace:*",
+    "@tanstack/react-query": "^5.40.0"
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "1.21.0"
