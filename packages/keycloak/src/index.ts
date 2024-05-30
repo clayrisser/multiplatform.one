@@ -20,7 +20,6 @@
  */
 
 export * from './Authenticated';
-export * from './apollo';
 export * from './authConfig';
 export * from './hooks';
 export * from './keycloak';
