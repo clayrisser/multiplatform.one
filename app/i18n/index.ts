@@ -34,6 +34,7 @@ if (MultiPlatform.isNext && !MultiPlatform.isStatic) {
 }
 
 export function i18nInit() {
+  console.log('INITIALIZED LOCALES');
   i18n.use(initReactI18next).init({
     defaultNS: defaultNamespace,
     lng: defaultLocale,
