@@ -6,8 +6,8 @@
     "strict": false,
     "paths": {
       "app/*": ["./app/*"],
-      "gql/*": ["./gql/*"],
-      "ui/*": ["./ui/*"]
+      "gql/*": ["./packages/gql/*"],
+      "ui/*": ["./packages/ui/*"]
     }
   }
 }

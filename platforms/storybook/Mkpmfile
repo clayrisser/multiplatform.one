@@ -63,7 +63,7 @@ PORT ?= 6006
 .PHONY: dev +dev
 dev: | ~deps +dev
 +dev:
-	@TAMAGUI_TARGET=web $(STORYBOOK) dev -p $(PORT)
+	@$(PNPM) run dev -p $(PORT)
 
 .PHONY: vr-update
 vr-update: ~build
