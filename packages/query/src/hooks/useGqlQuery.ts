@@ -51,7 +51,6 @@ export function useGqlQuery<
   TError = DefaultError,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey,
-  T = any,
   TVariables extends OperationVariables = OperationVariables,
 >(
   options: Omit<
@@ -60,7 +59,7 @@ export function useGqlQuery<
     | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
     'queryFn' | 'queryKey'
   > &
-    QueryOptions<TVariables, T> & {
+    QueryOptions<TVariables, TData> & {
       queryKey?: TQueryKey;
     },
   queryClient?: QueryClient,
@@ -70,7 +69,7 @@ export function useGqlQuery<
   const apolloQueryOptions = [...apolloQueryOptionsKeys].reduce((apolloQueryOptions, key) => {
     if (options.hasOwnProperty(key)) apolloQueryOptions[key] = options[key];
     return apolloQueryOptions;
-  }, {}) as QueryOptions<TVariables, T>;
+  }, {}) as QueryOptions<TVariables, TData>;
   const tanstackQueryOptions = Object.entries(options).reduce((tanstackQueryOptions, [key, value]) => {
     if (!apolloQueryOptionsKeys.has(key)) tanstackQueryOptions[key] = value;
     return tanstackQueryOptions;
@@ -78,7 +77,7 @@ export function useGqlQuery<
     | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
     | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
     | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>;
-  return useTanstackQuery(
+  return useTanstackQuery<TQueryFnData, TError, TData, TQueryKey>(
     {
       ...tanstackQueryOptions,
       queryKey: tanstackQueryOptions.queryKey || options.query,
@@ -88,7 +87,7 @@ export function useGqlQuery<
           : !!(keycloak?.authenticated && keycloak.token),
       async queryFn() {
         return (
-          await client.query({
+          await client.query<TQueryFnData, TVariables>({
             ...apolloQueryOptions,
             context: {
               ...apolloQueryOptions?.context,
@@ -98,7 +97,7 @@ export function useGqlQuery<
               },
             },
           })
-        ).data as unknown as TQueryFnData;
+        ).data;
       },
     },
     queryClient,

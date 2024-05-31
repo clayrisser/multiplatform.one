@@ -66,10 +66,11 @@ export function useGqlSubscription<
     }, {}),
     skip: !(typeof options?.enabled !== 'undefined' ? options.enabled : !!(keycloak?.authenticated && keycloak.token)),
     onData: ({ client, data }) => {
-      if (options.queryKey)
+      if (options.queryKey) {
         queryClient.setQueryData(options.queryKey, data as NoInfer<TInferredQueryFnData> | undefined, {
           updatedAt: options.updatedAt,
         });
+      }
       if (options.onData) return options.onData({ client, data });
     },
     context: {
