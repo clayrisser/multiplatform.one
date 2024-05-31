@@ -22,11 +22,19 @@
 import React from 'react';
 import type { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export const queryClient = new QueryClient();
 
-export interface GlobalTanstackProviderProps extends PropsWithChildren {}
+export interface GlobalTanstackProviderProps extends PropsWithChildren {
+  debug?: boolean;
+}
 
-export function GlobalTanstackProvider({ children }: GlobalTanstackProviderProps) {
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+export function GlobalTanstackProvider({ children, debug }: GlobalTanstackProviderProps) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      {debug && <ReactQueryDevtools initialIsOpen={false} />}
+      {children}
+    </QueryClientProvider>
+  );
 }

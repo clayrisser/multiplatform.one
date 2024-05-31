@@ -41,9 +41,10 @@ export type GlobalProviderProps = PropsWithChildren &
   } & ThemeProviderProps;
 
 export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, theme, ...props }: GlobalProviderProps) {
+  const debug = config.get('DEBUG') === '1';
   const keycloakDisabled = !keycloak || config.get('KEYCLOAK_ENABLED') !== '1';
   return (
-    <GlobalTanstackProvider>
+    <GlobalTanstackProvider debug={debug}>
       <ThemeProvider cookies={cookies} theme={theme}>
         <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
           <GlobalKeycloakProvider disabled={keycloakDisabled} {...keycloak}>
@@ -58,3 +59,4 @@ export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, the
 export * from './apollo';
 export * from './keycloak';
 export * from './tamagui';
+export * from './tanstack';

@@ -1,7 +1,7 @@
 /*
- *  File: /tamagui.config.ts
+ *  File: /providers/tanstack/index.ts
  *  Project: app
- *  File Created: 10-10-2023 06:39:34
+ *  File Created: 30-05-2024 15:02:54
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,13 +19,4 @@
  *  limitations under the License.
  */
 
-import { config } from 'ui';
-
-export type AppConfig = typeof config;
-
-declare module '@tamagui/core' {
-  interface TamaguiCustomConfig extends AppConfig {}
-  interface ThemeFallbackValue {}
-}
-
-export default config;
+export * from './tanstack';
