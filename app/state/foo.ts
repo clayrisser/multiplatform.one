@@ -1,5 +1,5 @@
 /*
- *  File: /state/theme.ts
+ *  File: /state/foo.ts
  *  Project: app
  *  File Created: 10-10-2023 06:39:34
  *  Author: Clay Risser
@@ -19,39 +19,10 @@
  *  limitations under the License.
  */
 
-import type { Actions } from '@multiplatform.one/zustand';
-import type { ThemeName } from 'ui';
 import { createStateStore } from '@multiplatform.one/zustand';
-import { useColorScheme } from 'react-native';
-import { useEffect } from 'react';
 
-const { useStore } = createStateStore<ThemeState, ThemeActions>(
-  'theme',
-  {
-    root: 'light',
-    sub: 'purple',
-  },
-  undefined,
-  { persist: true },
-);
+const { useStore } = createStateStore('foo', { bar: 'baz' });
 
 export function useThemeState() {
-  const scheme = useColorScheme();
-  const themeStore = useStore();
-
-  useEffect(() => {
-    if (themeStore.root || !themeStore.setRoot) return;
-    themeStore.setRoot(scheme === 'dark' ? 'dark' : 'light');
-  }, [themeStore.root]);
-
-  return themeStore;
+  return useStore();
 }
-
-export interface ThemeState {
-  root: ColorScheme;
-  sub: ThemeName;
-}
-
-export type ThemeActions = Actions<ThemeState>;
-
-export type ColorScheme = 'dark' | 'light';

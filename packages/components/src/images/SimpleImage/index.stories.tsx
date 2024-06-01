@@ -57,23 +57,23 @@ export default {
 //   },
 // };
 
-function WithUseAssets() {
-  const [pokerGame1894Png] = useAssets([require('../../../assets/poker-game-1894.png')]);
-  return <SimpleImage width={400} height={400} backgroundColor="black" src={pokerGame1894Png} />;
-}
-export const withUseAssets = () => <WithUseAssets />;
+// function WithUseAssets() {
+//   const [pokerGame1894Png] = useAssets([require('../../../assets/poker-game-1894.png')]);
+//   return <SimpleImage width={400} height={400} backgroundColor="black" src={pokerGame1894Png} />;
+// }
+// export const withUseAssets = () => <WithUseAssets />;
 
-function WithRequire() {
-  return (
-    <SimpleImage
-      width={400}
-      height={400}
-      backgroundColor="black"
-      src={require('../../../assets/poker-game-1894.png')}
-    />
-  );
-}
-export const withRequire = () => <WithRequire />;
+// function WithRequire() {
+//   return (
+//     <SimpleImage
+//       width={400}
+//       height={400}
+//       backgroundColor="black"
+//       src={require('../../../assets/poker-game-1894.png')}
+//     />
+//   );
+// }
+// export const withRequire = () => <WithRequire />;
 
 export const withYStack = () => (
   <YStack>

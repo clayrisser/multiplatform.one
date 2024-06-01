@@ -1,6 +1,6 @@
 # File: /Mkpmfile
-# Project: @platform/storybook-native
-# File Created: 25-04-2024 14:29:00
+# Project: @platform/expo
+# File Created: 04-04-2024 15:50:39
 # Author: Clay Risser
 # -----
 # BitSpur (c) Copyright 2021 - 2024
@@ -19,11 +19,8 @@
 
 include $(MKPM)/mkpm
 DOTENV ?= $(PROJECT_ROOT)/.env
-include $(MKPM)/dotenv
 include $(MKPM)/chain
-
-SB_RN_GET_STORIES ?= $(PNPM) sb-rn-get-stories
-export STORYBOOK_ENABLED=true
+include $(MKPM)/dotenv
 
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
@@ -53,23 +50,23 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 
 EXPO_PORT ?= 8081
 .PHONY: dev +dev
-dev: +dev
+dev: | ~deps +dev
 +dev:
 	@$(EXPO) start -c -p $(EXPO_PORT) --go $(DEV_ARGS)
 
 .PHONY: dev@web +dev@web
-dev@web: ~deps +dev@web
-+dev@web: +generate
-	@$(EXPO) start -c -p $(EXPO_PORT) --go --web $(ARGS)
+dev@web: | ~deps +dev@web
++dev@web:
+	@$(EXPO) start -c -p $(EXPO_PORT) --go --web
 
 .PHONY: dev@android +dev@android
-dev@android: ~generate +dev@android
+dev@android: | ~deps +dev@android
 +dev@android:
-	@$(EXPO) start -c -p $(EXPO_PORT) --go --android $(ARGS)
+	@$(EXPO) start -c -p $(EXPO_PORT) --go --android
 
 .PHONY: dev@ios +dev@ios
-dev@ios: ~generate dev@ios
+dev@ios: | ~deps dev@ios
 +dev@ios:
-	@$(EXPO) start -c -p $(EXPO_PORT) --go --ios $(ARGS)
+	@$(EXPO) start -c -p $(EXPO_PORT) --go --ios
 
 -include $(call chain)

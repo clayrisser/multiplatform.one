@@ -1,7 +1,7 @@
 /*
  *  File: /metro.config.js
- *  Project: @platform/storybook-native
- *  File Created: 25-04-2024 14:57:26
+ *  Project: @platform/expo
+ *  File Created: 04-04-2024 15:50:39
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
