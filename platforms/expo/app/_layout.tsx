@@ -19,6 +19,7 @@
  * limitations under the License.
  */
 
+import React from 'react';
 import tamaguiConfig from '../tamagui.config';
 import { GlobalProvider } from 'app/providers';
 import { Layout } from '../layout';
@@ -37,9 +38,7 @@ i18nInit();
 
 export default function HomeLayout() {
   const [fontsLoaded] = useFonts(fonts);
-  console.log('HELLO');
   const handleLayoutRootView = useCallback(async () => {
-    console.log('READY');
     if (fontsLoaded) await SplashScreen.hideAsync();
   }, [fontsLoaded]);
   if (!fontsLoaded) return;

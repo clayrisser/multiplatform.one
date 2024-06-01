@@ -25,8 +25,7 @@ import locales from './locales';
 import type { Resource, ResourceKey } from 'i18next';
 import { MultiPlatform } from 'multiplatform.one';
 import { defaultNamespace, defaultLocale, supportedLocales } from './config';
-// @ts-ignore
-import { initReactI18next } from '@multiplatform.one/locales/reactI18next';
+import { initReactI18next } from 'react-i18next';
 
 const logger = console;
 
@@ -34,8 +33,8 @@ if (MultiPlatform.isNext && !MultiPlatform.isStatic) {
   logger.warn("next should not import 'app/i18n'");
 }
 
-export function i18nInit() {
-  i18n.use(initReactI18next).init({
+export async function i18nInit() {
+  return i18n.use(initReactI18next).init({
     defaultNS: defaultNamespace,
     lng: defaultLocale,
     resources: Object.entries(locales).reduce<Resource>((resources, [key, value]: [string, ResourceKey]) => {

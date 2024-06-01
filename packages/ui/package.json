@@ -23,6 +23,7 @@
     "@tamagui/shorthands": "^1.99.1",
     "@tamagui/themes": "^1.99.1",
     "moti": "^0.29.0",
+    "multiplatform.one": "workspace:*",
     "react-native-reanimated": "3.8.1",
     "solito": "^4.2.2",
     "tamagui": "^1.99.1",
