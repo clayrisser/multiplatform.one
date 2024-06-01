@@ -1,5 +1,5 @@
 /**
- * File: /providers/tanstack.tsx
+ * File: /providers/tanstack/tanstack.tsx
  * Project: app
  * File Created: 30-05-2024 14:03:04
  * Author: Clay Risser
@@ -21,6 +21,7 @@
 
 import React from 'react';
 import type { PropsWithChildren } from 'react';
+import { MultiPlatform } from 'multiplatform.one';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -33,7 +34,7 @@ export interface GlobalTanstackProviderProps extends PropsWithChildren {
 export function GlobalTanstackProvider({ children, debug }: GlobalTanstackProviderProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      {debug && <ReactQueryDevtools initialIsOpen={false} />}
+      {debug && !MultiPlatform.isStorybook && <ReactQueryDevtools initialIsOpen={false} />}
       {children}
     </QueryClientProvider>
   );

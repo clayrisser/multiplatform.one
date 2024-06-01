@@ -26,12 +26,6 @@ import { isChrome, isClient, isWindowDefined, isServer, isWeb, isWebTouchable } 
 const getConfig =
   typeof nextConfig === 'function' ? nextConfig : (nextConfig as { default: typeof nextConfig }).default;
 
-declare global {
-  interface Window {
-    __NEXT_DATA__: any;
-  }
-}
-
 export class MultiPlatform extends MultiPlatformBase {
   static isChrome = isChrome;
   static isClient = isClient;
