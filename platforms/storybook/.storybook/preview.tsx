@@ -1,3 +1,24 @@
+/**
+ * File: /.storybook/preview.tsx
+ * Project: @platform/storybook
+ * File Created: 31-05-2024 08:21:11
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import '@multiplatform.one/components/css/code-highlight.css';
 import '@tamagui/core/reset.css';
 import 'raf/polyfill';
@@ -13,7 +34,7 @@ import { mdxComponents, YStack } from 'ui';
 import { supportedLocales, defaultLocale, i18nInit, i18n } from 'app/i18n';
 import { themes as storybookThemes } from '@storybook/theming';
 import { useDarkMode } from 'storybook-dark-mode';
-import { useThemeState } from 'app/state/theme';
+import { useTheme } from 'multiplatform.one/theme';
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
 
 i18nInit();
@@ -83,26 +104,28 @@ const preview: Preview = {
   },
 };
 
-export const DocsContainer = (props) => (
-  <MDXProvider components={mdxComponents}>
-    <DocsContainer {...props} />
-  </MDXProvider>
-);
+export function DocsContainer(props: any) {
+  return (
+    <MDXProvider components={mdxComponents}>
+      <DocsContainer {...props} />
+    </MDXProvider>
+  );
+}
 
-function Provider({ children, theme }: PropsWithChildren & { theme: StylingTheme }) {
+function Provider(props: PropsWithChildren & { theme: StylingTheme }) {
   const darkMode = useDarkMode();
-  const themeState = useThemeState();
+  const [theme, setTheme] = useTheme();
   useEffect(() => {
     if (typeof darkMode === 'undefined') return;
-    themeState.setRoot(darkMode ? 'dark' : 'light');
-  }, [darkMode, themeState.setRoot]);
+    setTheme({ root: darkMode ? 'dark' : 'light' });
+  }, [darkMode]);
   useEffect(() => {
-    if (typeof theme.name === 'undefined') return;
-    themeState.setSub(theme.name);
-  }, [theme.name, themeState.setSub]);
+    if (typeof props.theme.name === 'undefined') return;
+    setTheme({ sub: props.theme.name });
+  }, [props.theme.name]);
   return (
-    <GlobalProvider tamaguiConfig={tamaguiConfig} defaultTheme={themeState.root} defaultSubTheme={theme.name}>
-      <YStack fullscreen>{children}</YStack>
+    <GlobalProvider tamaguiConfig={tamaguiConfig} theme={theme}>
+      <YStack fullscreen>{props.children}</YStack>
     </GlobalProvider>
   );
 }
