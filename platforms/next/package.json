@@ -4,7 +4,8 @@
   "dependencies": {
     "@graphiql/plugin-explorer": "^3.0.1",
     "@graphiql/toolkit": "^0.9.1",
-    "@multiplatform.one/keycloak": "workspace:1.0.9",
+    "@multiplatform.one/components": "workspace:*",
+    "@multiplatform.one/keycloak": "workspace:*",
     "@next/bundle-analyzer": "^14.2.3",
     "@sentry/react": "^8.7.0",
     "@tamagui/next-plugin": "^1.99.1",
@@ -16,6 +17,7 @@
     "graphiql-ws": "^0.1.7",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.16.0",
+    "multiplatform.one": "workspace:*",
     "next": "^14.2.3",
     "next-auth": "^4.24.7",
     "next-i18next": "^15.3.0",

@@ -14,11 +14,6 @@
       "require": "./dist/cjs/index.js",
       "types": "./types/index.d.ts"
     },
-    "./reactI18next": {
-      "import": "./dist/esm/reactI18next.js",
-      "require": "./dist/cjs/reactI18next.js",
-      "types": "./types/reactI18next.d.ts"
-    },
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -35,7 +30,6 @@
   "license": "Apache-2.0",
   "files": [
     "dist",
-    "reactI18next",
     "src",
     "types"
   ],

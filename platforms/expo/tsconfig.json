@@ -3,5 +3,6 @@
   "extends": "../../tsconfig.base",
   "compilerOptions": {
     "tsBuildInfoFile": ".tsbuildinfo"
-  }
+  },
+  "include": ["../../**/*.ts", "../../**/*.tsx", "../../**/*.js", "../../**/*.jsx", "../../**/*.mdx", "../../**/*.json"]
 }
