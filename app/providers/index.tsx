@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import type { GlobalKeycloakProviderProps } from './keycloak';
 import type { GlobalTamaguiProviderProps } from './tamagui';
 import type { PropsWithChildren } from 'react';

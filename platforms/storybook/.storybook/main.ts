@@ -20,6 +20,7 @@
  */
 
 import publicConfig from 'app/config/public';
+// import tamaguiModules from '../tamaguiModules';
 import transpileModules from '../transpileModules';
 import type { StorybookConfig } from '@storybook/nextjs';
 import webpack from 'webpack';
@@ -122,7 +123,16 @@ const config: StorybookConfig = {
   babelDefault: (config, _options) => ({
     ...config,
     presets: [...(config.presets || []), '@babel/preset-typescript'],
-    plugins: ['react-native-reanimated/plugin'],
+    plugins: [
+      // [
+      //   '@tamagui/babel-plugin',
+      //   {
+      //     components: tamaguiModules,
+      //     config: require.resolve('./tamagui.config.ts'),
+      //   },
+      // ],
+      'react-native-reanimated/plugin',
+    ],
   }),
 };
 export default config;
