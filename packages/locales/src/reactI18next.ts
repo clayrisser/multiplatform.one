@@ -1,10 +1,10 @@
 /*
- *  File: /theme/index.js
- *  Project: multiplatform.one
- *  File Created: 22-06-2023 05:33:21
+ *  File: /src/reactI18next.ts
+ *  Project: @multiplatform.one/locales
+ *  File Created: 01-06-2024 13:17:02
  *  Author: Clay Risser
  *  -----
- *  BitSpur (c) Copyright 2021 - 2023
+ *  BitSpur (c) Copyright 2021 - 2024
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,4 +19,4 @@
  *  limitations under the License.
  */
 
-module.exports = require('../dist/cjs/theme/index');
+export * from 'react-i18next';

@@ -14,6 +14,11 @@
       "require": "./dist/cjs/index.js",
       "types": "./types/index.d.ts"
     },
+    "./reactI18next": {
+      "import": "./dist/esm/reactI18next.js",
+      "require": "./dist/cjs/reactI18next.js",
+      "types": "./types/reactI18next.d.ts"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -30,6 +35,7 @@
   "license": "Apache-2.0",
   "files": [
     "dist",
+    "reactI18next",
     "src",
     "types"
   ],
@@ -48,7 +54,7 @@
     "i18next": "^23.11.5",
     "next": "^13.4.3",
     "next-i18next": "^15.3.0",
-    "react": "18.3.1",
+    "react": "18.2.0",
     "react-i18next": "^12.3.1",
     "react-native": "0.74.1",
     "zustand": "^4.5.2"
@@ -72,7 +78,7 @@
     "jest-sonar-reporter": "^2.0.0",
     "next": "^14.2.3",
     "next-i18next": "^15.3.0",
-    "react": "18.3.1",
+    "react": "18.2.0",
     "react-i18next": "^12.3.1",
     "react-native": "0.74.1",
     "ts-jest": "^29.1.4",
