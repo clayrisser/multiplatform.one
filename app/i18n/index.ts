@@ -25,7 +25,8 @@ import locales from './locales';
 import type { Resource, ResourceKey } from 'i18next';
 import { MultiPlatform } from 'multiplatform.one';
 import { defaultNamespace, defaultLocale, supportedLocales } from './config';
-import { initReactI18next } from '@multiplatform.one/locales';
+// @ts-ignore
+import { initReactI18next } from '@multiplatform.one/locales/reactI18next';
 
 const logger = console;
 
@@ -34,7 +35,6 @@ if (MultiPlatform.isNext && !MultiPlatform.isStatic) {
 }
 
 export function i18nInit() {
-  console.log('INITIALIZED LOCALES');
   i18n.use(initReactI18next).init({
     defaultNS: defaultNamespace,
     lng: defaultLocale,
