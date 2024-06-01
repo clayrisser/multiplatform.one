@@ -19,6 +19,7 @@
  * limitations under the License.
  */
 
+import React from 'react';
 import tamaguiConfig from '../tamagui.config';
 import { GlobalProvider } from 'app/providers';
 import { Layout } from '../layout';

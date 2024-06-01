@@ -21,9 +21,11 @@
 
 module.exports = {
   stories: [
-    '../../../app/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-    '../../../packages/*/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-    '../stories/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    ...['../../../app/layouts', '../../../app/screens', '../stories'].map((directory) => ({
+      directory,
+      files: '**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    })),
+    { directory: '../../../packages', files: '*/src/**/*.stories.@(js|jsx|ts|tsx|mdx)' },
   ],
   addons: [
     '@storybook/addon-ondevice-actions',

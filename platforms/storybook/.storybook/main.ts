@@ -27,12 +27,12 @@ import webpack from 'webpack';
 
 const config: StorybookConfig = {
   stories: [
-    '../../../app/layouts',
-    '../../../app/screens',
-    '../../../packages/components/src',
-    '../../../packages/ui/src',
-    '../stories',
-  ].map((directory) => ({ directory, files: '**/*.stories.@(js|jsx|ts|tsx|mdx)' })),
+    ...['../../../app/layouts', '../../../app/screens', '../stories'].map((directory) => ({
+      directory,
+      files: '**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    })),
+    { directory: '../../../packages', files: '*/src/**/*.stories.@(js|jsx|ts|tsx|mdx)' },
+  ],
   addons: [
     '@etchteam/storybook-addon-status',
     '@storybook/addon-a11y',

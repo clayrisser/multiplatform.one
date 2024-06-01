@@ -1,7 +1,7 @@
 /**
  * File: /App.tsx
- * Project: @platform/storybook-native
- * File Created: 25-04-2024 14:29:00
+ * Project: @platform/expo
+ * File Created: 04-04-2024 15:50:39
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -25,7 +25,7 @@ import React from 'react';
 import { ExpoRoot } from 'expo-router';
 import { LogBox } from 'react-native';
 
-LogBox.ignoreLogs(["Tamagui didn't find any valid components"]);
+LogBox.ignoreLogs([]);
 
 export default function App() {
   return <ExpoRoot context={(require as any).context('./app')} />;
