@@ -31,15 +31,5 @@
   },
   "devDependencies": {
     "@tamagui/build": "^1.99.1"
-  },
-  "jest": {
-    "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
-    "verbose": true,
-    "testPathIgnorePatterns": []
-  },
-  "jestSonar": {
-    "reportPath": "node_modules",
-    "reportFile": "test-report.xml",
-    "indent": 4
   }
 }

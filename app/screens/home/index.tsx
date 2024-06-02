@@ -48,7 +48,7 @@ const GetUser = gql(`
   query GetUser($id:String!){
     user(where:{id: $id}){
       name
-      
+
     }
   }
 `);

@@ -1,4 +1,4 @@
-schema: gql/generated/schema.graphql
+schema: packages/gql/generated/schema.graphql
 documents:
   - api/**/*.{ts,tsx,graphql,gql}
   - app/**/*.{ts,tsx,graphql,gql}

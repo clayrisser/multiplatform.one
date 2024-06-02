@@ -61,17 +61,5 @@
   },
   "scripts": {
     "dev": "TAMAGUI_TARGET=web storybook dev"
-  },
-  "jest": {
-    "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
-    "verbose": true,
-    "testPathIgnorePatterns": [
-      "<rootDir>/storybook-static/"
-    ]
-  },
-  "jestSonar": {
-    "reportPath": "node_modules",
-    "reportFile": "test-report.xml",
-    "indent": 4
   }
 }
