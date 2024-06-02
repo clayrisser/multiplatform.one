@@ -23,7 +23,6 @@ export * from './tracing';
 export * from './buildSchema';
 export * from './decorate';
 export * from './decorators';
-export * from './keycloak';
 export * from './logger';
 export * from './middleware';
 export * from './resolvers';
