@@ -29,18 +29,15 @@ import type { IncomingMessage, ServerResponse } from 'http';
 import type { LoggerOptions } from './logger';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
 import type { YogaServerOptions, YogaInitialContext, LogLevel } from 'graphql-yoga';
+import ws from 'ws';
 import { LOGGER, LOGGER_OPTIONS, Logger } from './logger';
 import { PrismaClient } from '@prisma/client';
-import { WebSocketServer } from 'ws';
 import { buildSchema } from 'type-graphql';
 import { container as Container, Lifecycle } from 'tsyringe';
 import { createBuildSchemaOptions } from './buildSchema';
-import { createKeycloakOptions } from './keycloak';
 import { createYoga, useLogger } from 'graphql-yoga';
 import { generateRequestId } from './utils';
 import { initializeAxiosLogger } from './axios';
-// @ts-ignore
-import { initializeKeycloak } from '@multiplatform.one/keycloak-typegraphql';
 import { otelSDK } from './tracing';
 import { parse } from 'url';
 import { useApolloTracing } from '@envelop/apollo-tracing';
@@ -55,7 +52,7 @@ import type {
   StartOptions,
   TracingOptions,
   TypeGraphQLApp,
-  StartReturn,
+  StartResult,
 } from './types';
 
 export const CTX = 'CTX';
@@ -87,7 +84,6 @@ export function createApp(options: AppOptions): TypeGraphQLApp {
   const graphqlEndpoint = options.graphqlEndpoint || '/graphql';
   const hostname = options.hostname || 'localhost';
   const buildSchemaOptions = createBuildSchemaOptions(options);
-  const keycloakOptions = createKeycloakOptions(options);
   const loggerOptions: LoggerOptions = {
     axios: process.env.LOG_AXIOS !== '0',
     container: process.env.CONTAINER === '1',
@@ -202,7 +198,7 @@ export function createApp(options: AppOptions): TypeGraphQLApp {
   };
   const httpListener = async (req: IncomingMessage, res: ServerResponse) => httpServer.listener(req, res);
   const server = http.createServer(async (req, res) => httpServer.listener(req, res));
-  const wsServer = new WebSocketServer({
+  const wsServer = new ws.Server({
     server,
     path: graphqlEndpoint,
   });
@@ -224,16 +220,20 @@ export function createApp(options: AppOptions): TypeGraphQLApp {
         }
       })
     : undefined;
-  return {
+  const app: Omit<TypeGraphQLApp, 'start'> = {
     buildSchemaOptions,
     debug,
     hostname,
     httpListener,
+    logger,
     metricsServer,
     otelSDK,
     server,
     wsServer,
-    async start(startOptions: StartOptions = {}): Promise<StartReturn> {
+  };
+  return {
+    ...app,
+    async start(startOptions: StartOptions = {}): Promise<StartResult> {
       if (loggerOptions.logFileName) {
         const parentDir = path.dirname(loggerOptions.logFileName);
         if (!(await fs.stat(parentDir))) {
@@ -257,6 +257,9 @@ export function createApp(options: AppOptions): TypeGraphQLApp {
           ? startOptions.listen.metrics
           : metricsOptions?.port || Number(process.env.METRICS_PORT || 5081);
       try {
+        await Promise.all(
+          options.addons?.map((addon) => addon.beforeStart && addon.beforeStart(app, options, startOptions)),
+        );
         const schema = await buildSchema(buildSchemaOptions);
         const yoga = createYoga({
           graphiql: false,
@@ -284,12 +287,6 @@ export function createApp(options: AppOptions): TypeGraphQLApp {
             res.writeHead(500).end();
           }
         };
-        let registerKeycloak: (() => Promise<void>) | undefined;
-        if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
-          // @ts-ignore
-          registerKeycloak = await initializeKeycloak(keycloakOptions, buildSchemaOptions.resolvers, logger);
-        }
-        if (registerKeycloak) await registerKeycloak();
         if (options.prisma) {
           await options.prisma.$connect();
           logger.info('connected to database');
@@ -404,11 +401,12 @@ export function createApp(options: AppOptions): TypeGraphQLApp {
         }
         if (startOptions.listen.server) logger.info(`server listening on http://${hostname}:${port}`);
         if (startOptions.listen.metrics) logger.info(`metrics listening on http://${hostname}:${metricsPort}`);
-        return {
+        const result: StartResult = {
           buildSchemaOptions,
           debug,
           hostname,
           httpListener,
+          logger,
           metricsPort,
           metricsServer,
           otelSDK,
@@ -422,6 +420,10 @@ export function createApp(options: AppOptions): TypeGraphQLApp {
             Record<string, any>
           >,
         };
+        await Promise.all(
+          options.addons?.map((addon) => addon.afterStart && addon.afterStart(app, options, startOptions, result)),
+        );
+        return result;
       } catch (err) {
         logger.error(err);
         process.exit(1);

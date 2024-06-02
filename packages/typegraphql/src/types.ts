@@ -19,12 +19,11 @@
  *  limitations under the License.
  */
 
-// @ts-ignore
-import type { KeycloakOptions } from '@multiplatform.one/keycloak-typegraphql';
 import type WebSocket from 'ws';
 import type { BuildSchemaOptions, MiddlewareFn } from 'type-graphql';
 import type { DependencyContainer } from 'tsyringe';
 import type { GraphQLSchema } from 'graphql';
+import type { Logger } from './logger';
 import type { LoggerOptions } from './logger';
 import type { NodeSDK } from '@opentelemetry/sdk-node';
 import type { NonEmptyArray } from 'type-graphql';
@@ -63,14 +62,28 @@ export interface PubSubPublishArgsByKey {
   [key: string]: [] | [any] | [number | string, any];
 }
 
+export interface Addon {
+  beforeStart?: (
+    app: Omit<TypeGraphQLApp, 'start'>,
+    appOptions: AppOptions,
+    startOptions: StartOptions,
+  ) => Promise<void>;
+  afterStart?: (
+    app: Omit<TypeGraphQLApp, 'start'>,
+    appOptions: AppOptions,
+    startOptions: StartOptions,
+    result: StartResult,
+  ) => Promise<void>;
+}
+
 export interface AppOptions<TPubSubPublishArgsByKey extends PubSubPublishArgsByKey = PubSubPublishArgsByKey> {
+  addons?: Addon[];
   baseUrl?: string;
   buildSchema?: Omit<BuildSchemaOptions, 'resolvers'>;
   cleanup?: () => Promise<void>;
   debug?: boolean;
   graphqlEndpoint?: string;
   hostname?: string;
-  keycloak?: KeycloakOptions;
   logger?: LoggerOptions;
   metrics?: boolean | MetricsOptions;
   port?: number;
@@ -97,7 +110,7 @@ export interface StartOptions {
   };
 }
 
-export type StartReturn = Omit<TypeGraphQLApp, 'start'> & {
+export type StartResult = Omit<TypeGraphQLApp, 'start'> & {
   metricsPort: number;
   port: number;
   schema: GraphQLSchema;
@@ -110,10 +123,11 @@ export interface TypeGraphQLApp {
   debug: boolean;
   hostname: string;
   httpListener: (req: IncomingMessage, res: ServerResponse) => Promise<void>;
+  logger: Logger;
   metricsServer: Server<typeof IncomingMessage, typeof ServerResponse>;
   otelSDK: NodeSDK;
   server: Server<typeof IncomingMessage, typeof ServerResponse>;
-  start: (options?: StartOptions) => Promise<StartReturn>;
+  start: (options?: StartOptions) => Promise<StartResult>;
   wsServer: WebSocketServer;
 }
 
