@@ -24,7 +24,8 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "rm -rf dist types 2>/dev/null && tamagui-build"
+    "build": "rm -rf dist types 2>/dev/null && tamagui-build",
+    "test": "vitest run"
   },
   "files": [
     "css",
@@ -72,24 +73,20 @@
   },
   "devDependencies": {
     "@tamagui/build": "^1.99.1",
+    "@tamagui/config": "^1.99.1",
+    "@testing-library/react": "^15.0.7",
     "@types/eslint": "^8.56.10",
+    "@vitejs/plugin-react": "^4.3.0",
+    "jsdom": "^24.1.0",
     "moti": "^0.29.0",
     "react-native-reanimated": "3.8.1",
     "solito": "^4.2.2",
-    "tsup": "^8.0.2"
+    "tsup": "^8.0.2",
+    "vitest": "^1.6.0",
+    "vitest-react-native": "^0.1.5"
   },
   "eslintIgnore": [
     "dist",
     "types"
-  ],
-  "jest": {
-    "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
-    "verbose": true,
-    "testPathIgnorePatterns": []
-  },
-  "jestSonar": {
-    "reportPath": "node_modules",
-    "reportFile": "test-report.xml",
-    "indent": 4
-  }
+  ]
 }
