@@ -1,6 +1,10 @@
 {
   "name": "@platform/next",
   "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "NODE_OPTIONS='--inspect' next dev"
+  },
   "dependencies": {
     "@graphiql/plugin-explorer": "^3.0.1",
     "@graphiql/toolkit": "^0.9.1",
@@ -49,17 +53,5 @@
     "estree-util-build-jsx",
     "multiplatform.one",
     "ui"
-  ],
-  "jest": {
-    "testRegex": "((/(tests|__tests__)((/|/[^_.\n][^/\n]*(/[^_.\n][^/\n]+)*/)[^_.\n][^/\n]*))|((/|/.*/)(([^_.\n][^/\n]*.(spec|test))|(spec|test)))).[jt]sx?$",
-    "verbose": true,
-    "testPathIgnorePatterns": [
-      "<rootDir>/out/"
-    ]
-  },
-  "jestSonar": {
-    "reportPath": "node_modules",
-    "reportFile": "test-report.xml",
-    "indent": 4
-  }
+  ]
 }

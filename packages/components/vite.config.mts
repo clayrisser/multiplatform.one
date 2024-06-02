@@ -28,7 +28,7 @@ export default defineConfig({
   plugins: [reactNative(), react()],
   test: {
     environment: 'jsdom',
-    setupFiles: [path.resolve(__dirname, 'tests/setup.ts')],
+    setupFiles: [path.resolve(__dirname, 'src/testSetup.ts')],
     reporters: 'dot',
   },
 });

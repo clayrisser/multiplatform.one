@@ -11,8 +11,6 @@
     "eslint-plugin-react": "^7.34.2",
     "eslint-plugin-spellcheck": "^0.0.20",
     "gql": "workspace:*",
-    "jest": "^29.7.0",
-    "jest-sonar-reporter": "^2.0.0",
     "npm-check-updates": "^16.14.20",
     "prettier": "^3.2.5",
     "turbo": "^1.13.3",

@@ -1,8 +1,9 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "emitDeclarationOnly": true,
-    "noEmit": false
+    "noEmit": false,
+    "rootDir": "."
   },
-  "exclude": ["types", "dist"]
+  "exclude": ["types", "dist", "tests", "vite.config.mts"]
 }
