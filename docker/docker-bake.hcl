@@ -10,6 +10,10 @@ variable "GIT_COMMIT" {
   default = "local"
 }
 
+group "default" {
+  targets = ["default"]
+}
+
 target "default" {
   context    = ".."
   dockerfile = "docker/Dockerfile"

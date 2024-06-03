@@ -55,17 +55,10 @@ $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(PNPM) run build
 	@$(call done,$@)
 
-COLLECT_COVERAGE_FROM := ["src/**/*.{js,jsx,ts,tsx}"]
-.PHONY: coverage +coverage
-coverage: | ~lint +coverage
-+coverage:
-	@$(JEST) --coverage --collectCoverageFrom='$(COLLECT_COVERAGE_FROM)' $(ARGS)
-
 -include $(call chain)
 
 export CACHE_ENVS += \
 	CSPELL \
 	ESLINT \
-	JEST \
 	PRETTIER \
 	TSC

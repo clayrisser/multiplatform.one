@@ -55,18 +55,23 @@
   "devDependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
     "@tamagui/build": "^1.99.1",
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/react": "^15.0.7",
     "@types/eslint": "^8.56.10",
     "@types/jest": "^29.5.12",
     "@types/lodash.camelcase": "^4.3.9",
     "@types/lodash.startcase": "^4.4.9",
     "@types/react": "^18.3.1",
     "@types/react-native": "^0.73.0",
+    "@vitejs/plugin-react": "^4.3.0",
     "cspell": "^8.8.3",
     "multiplatform.one": "workspace:1.0.7",
     "next": "^14.2.3",
     "react": "18.2.0",
     "react-native": "0.74.1",
-    "typescript": "~5.3.3"
+    "typescript": "~5.3.3",
+    "vitest": "^1.6.0",
+    "vitest-react-native": "^0.1.5"
   },
   "engines": {
     "node": ">=6.0.0"

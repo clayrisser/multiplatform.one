@@ -57,7 +57,6 @@ update:
 clean:
 	@$(call workspace_foreach,clean,$(CLEAN_ARGS))
 	-@$(MKCACHE_CLEAN)
-	-@$(JEST) --clearCache $(NOFAIL)
 	-@$(WATCHMAN) watch-del-all $(NOFAIL)
 	-@$(GIT) clean -fXd \
 		$(MKPM_GIT_CLEAN_FLAGS) \
@@ -103,9 +102,9 @@ version:
 publish: version build
 	@$(CHANGESET) publish
 
-TURBO_SCRIPTS := $(shell $(CAT) turbo.json | $(JQ) -r '(.pipeline | keys)[]')
-.PHONY: $(TURBO_SCRIPTS)
-$(TURBO_SCRIPTS): ~deps
-	@$(TURBO) run $@ $(TURBO_OPTIONS)
+SCRIPTS := $(shell $(CAT) package.json | $(JQ) -r '(.scripts | keys)[]')
+.PHONY: $(SCRIPTS)
+$(SCRIPTS): ~deps
+	@$(PNPM) run $@
 
 -include $(call chain)

@@ -47,15 +47,6 @@ prelaunch: ~deps prisma/seed docker/dev-d
 +serve:
 	@$(NODE) dist/api/main.mjs
 
-.PHONY: clean
-clean:
-	-@$(MKCACHE_CLEAN)
-	-@$(JEST) --clearCache $(NOFAIL)
-	-@$(WATCHMAN) watch-del-all $(NOFAIL)
-	-@$(GIT) clean -fXd \
-		$(MKPM_GIT_CLEAN_FLAGS) \
-		$(NOFAIL)
-
 .PHONY: prisma/%
 prisma/%: ~deps
 	@$(call make,prisma) $*
