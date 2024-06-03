@@ -21,8 +21,8 @@ include $(MKPM)/mkpm
 DEFAULT_ENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/dotenv
 
-export NAME := $(shell $(NODE) -e "console.log(require('$(PROJECT_ROOT)/package.json').name)")-next
-export VERSION := $(shell $(NODE) -e "console.log(require('$(PROJECT_ROOT)/package.json').version)")
+export NAME := $(shell $(NODE) -e "console.log(require('$(PROJECT_ROOT)/package.json').name)")
+export VERSION := $(shell $(ECHO) $(GIT_COMMIT))
 export DOCKER_COMPOSE ?= docker-compose
 export CONTEXT := $(PROJECT_ROOT)
 export REGISTRY := registry.gitlab.com/bitspur/multiplatform.one

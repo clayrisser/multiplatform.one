@@ -1,7 +1,7 @@
 /*
- *  File: /tsup.config.ts
- *  Project: @multiplatform.one/prisma-scripts
- *  File Created: 10-10-2023 06:39:34
+ *  File: /vite.config.mts
+ *  Project: api
+ *  File Created: 26-05-2024 04:47:19
  *  Author: Clay Risser
  *  -----
  *  BitSpur (c) Copyright 2021 - 2024
@@ -19,22 +19,16 @@
  *  limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
-import transpileModules from './transpileModules';
+import path from 'path';
+import react from '@vitejs/plugin-react';
+import reactNative from 'vitest-react-native';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-  bundle: true,
-  clean: true,
-  dts: true,
-  entry: ['src/**/*.ts?(x)'],
-  entryPoints: ['src/index.ts'],
-  external: ['@prisma/client'],
-  format: ['esm'],
-  minify: false,
-  noExternal: transpileModules,
-  outDir: 'lib',
-  publicDir: './public',
-  skipNodeModulesBundle: false,
-  splitting: true,
-  target: 'es5',
+  plugins: [reactNative(), react()],
+  test: {
+    environment: 'jsdom',
+    setupFiles: [path.resolve(__dirname, 'src/testSetup.ts')],
+    reporters: 'dot',
+  },
 });

@@ -39,7 +39,12 @@
     "utf-8-validate": "^6.0.4"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/react": "^15.0.7",
     "@types/react": "^18.3.1",
-    "@types/react-native": "^0.73.0"
+    "@types/react-native": "^0.73.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "vitest": "^1.6.0",
+    "vitest-react-native": "^0.1.5"
   }
 }

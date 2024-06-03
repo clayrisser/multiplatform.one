@@ -4,5 +4,5 @@
     "emitDeclarationOnly": true,
     "noEmit": false
   },
-  "exclude": ["types", "dist"]
+  "exclude": ["types", "dist", "vite.config.mts"]
 }

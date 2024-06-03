@@ -4,7 +4,20 @@
     "generate": {},
     "test": {},
     "build": {
-      "dependsOn": ["generate", "^build"]
+      "dependsOn": ["^build"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "@multiplatform.one/typegraphql#build": {
+      "dependsOn": ["api#generate"]
+    },
+    "@multiplatform.one/prisma-scripts#build": {
+      "dependsOn": ["api#generate"]
+    },
+    "@platform/next#build": {
+      "outputs": ["platforms/next/.next/**", "!platforms/next/.next/cache/**"]
     }
   }
 }

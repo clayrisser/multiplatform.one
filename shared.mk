@@ -28,7 +28,6 @@ CSPELL ?= $(PNPM) cspell
 ESLINT ?= $(PNPM) eslint
 EXPO ?= $(PNPM) expo
 GM ?= command gm
-JEST ?= $(PNPM) jest
 LOKI ?= $(PNPM) loki
 NODE ?= node
 PRETTIER ?= $(PNPM) prettier
@@ -42,4 +41,5 @@ export POSTGRES_URL ?= \
 	postgresql://$(POSTGRES_PASSWORD):$(POSTGRES_USER)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=prefer
 
 export ESLINT_USE_FLAT_CONFIG := false
+export GIT_COMMIT ?= $(shell $(GIT) describe --tags --always --dirty | $(SED) 's|^.*@||g')
 export TAMAGUI_IGNORE_BUNDLE_ERRORS := solito/image,solito/link,moti

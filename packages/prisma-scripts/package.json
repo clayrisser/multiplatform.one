@@ -30,7 +30,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "sleep 3 && tsup"
+    "build": "tsup"
   },
   "files": [
     "bin",
