@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.24.6",
-    "@multiplatform.one/components": "workspace:*",
+    "@multiplatform.one/components": "workspace:2.0.1",
     "@storybook/addon-actions": "^8.1.5",
     "@storybook/addon-ondevice-actions": "7.6.19",
     "@storybook/addon-ondevice-backgrounds": "7.6.19",
@@ -23,7 +23,7 @@
     "expo-router": "~3.5.14",
     "expo-status-bar": "~1.12.1",
     "expo-updates": "~0.25.15",
-    "multiplatform.one": "workspace:*",
+    "multiplatform.one": "workspace:1.0.8",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "react": "18.2.0",
