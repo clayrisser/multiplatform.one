@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/keycloak",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "keycloak client for multiplatform.one ecosystem",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -47,7 +47,7 @@
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "1.21.0",
-    "multiplatform.one": "workspace:1.0.7",
+    "multiplatform.one": "workspace:1.0.8",
     "next": "^13.0.5",
     "react": "18.2.0",
     "react-native": "0.74.1"
@@ -65,7 +65,7 @@
     "@types/react-native": "^0.73.0",
     "@vitejs/plugin-react": "^4.3.0",
     "cspell": "^8.8.3",
-    "multiplatform.one": "workspace:1.0.7",
+    "multiplatform.one": "workspace:1.0.8",
     "next": "^14.2.3",
     "react": "18.2.0",
     "react-native": "0.74.1",
