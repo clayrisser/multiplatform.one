@@ -90,7 +90,7 @@
     "types"
   ],
   "dependencies": {
-    "@multiplatform.one/zustand": "workspace:*",
+    "@multiplatform.one/zustand": "workspace:1.0.1",
     "cookies-next": "^4.2.1",
     "react-cookie": "^7.1.4"
   }

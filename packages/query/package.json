@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.10.4",
-    "@multiplatform.one/keycloak": "workspace:*",
+    "@multiplatform.one/keycloak": "workspace:1.0.10",
     "@tanstack/react-query": "^5.40.0"
   },
   "peerDependencies": {
