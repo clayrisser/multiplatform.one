@@ -165,50 +165,50 @@ services:
       - tempo
       - loki
 
-  sentry-postgres:
-    container_name: sentry-postgres
-    restart: unless-stopped
-    image: postgres:14.5
-    volumes:
-      - sentry-postgres:/var/lib/postgresql/data
+  # sentry-postgres:
+  #   container_name: sentry-postgres
+  #   restart: unless-stopped
+  #   image: postgres:14.5
+  #   volumes:
+  #     - sentry-postgres:/var/lib/postgresql/data
 
-  sentry-redis:
-    container_name: sentry-redis
-    restart: unless-stopped
-    image: 'redis:6.2.13-alpine'
-    volumes:
-      - sentry-redis:/data
+  # sentry-redis:
+  #   container_name: sentry-redis
+  #   restart: unless-stopped
+  #   image: 'redis:6.2.13-alpine'
+  #   volumes:
+  #     - sentry-redis:/data
 
-  sentry-web:
-    container_name: sentry-web
-    restart: unless-stopped
-    image: sebinn09/sentry-selfhosted:sentry-self-hosted-local
-    depends_on:
-      - sentry-redis
-      - sentry-postgres
-    entrypoint: /etc/sentry/entrypoint.sh
-    command: [run, web]
-    environment:
-      PYTHONUSERBASE: /data/custom-packages
-      SENTRY_CONF: /etc/sentry
-    volumes:
-      - sentry-web:/data
-      - ./sentry:/etc/sentry
+  # sentry-web:
+  #   container_name: sentry-web
+  #   restart: unless-stopped
+  #   image: sebinn09/sentry-selfhosted:sentry-self-hosted-local
+  #   depends_on:
+  #     - sentry-redis
+  #     - sentry-postgres
+  #   entrypoint: /etc/sentry/entrypoint.sh
+  #   command: [run, web]
+  #   environment:
+  #     PYTHONUSERBASE: /data/custom-packages
+  #     SENTRY_CONF: /etc/sentry
+  #   volumes:
+  #     - sentry-web:/data
+  #     - ./sentry:/etc/sentry
 
-  sentry-worker:
-    restart: unless-stopped
-    image: sebinn09/sentry-selfhosted:sentry-cleanup-self-hosted-local
-    depends_on:
-      - sentry-redis
-      - sentry-postgres
-    entrypoint: /etc/sentry/entrypoint.sh
-    command: [run, worker]
-    environment:
-      PYTHONUSERBASE: /data/custom-packages
-      SENTRY_CONF: /etc/sentry
-    volumes:
-      - sentry-worker:/data
-      - ./sentry:/etc/sentry
+  # sentry-worker:
+  #   restart: unless-stopped
+  #   image: sebinn09/sentry-selfhosted:sentry-cleanup-self-hosted-local
+  #   depends_on:
+  #     - sentry-redis
+  #     - sentry-postgres
+  #   entrypoint: /etc/sentry/entrypoint.sh
+  #   command: [run, worker]
+  #   environment:
+  #     PYTHONUSERBASE: /data/custom-packages
+  #     SENTRY_CONF: /etc/sentry
+  #   volumes:
+  #     - sentry-worker:/data
+  #     - ./sentry:/etc/sentry
 
 volumes:
   sentry-redis:
