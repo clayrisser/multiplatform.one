@@ -1,11 +1,11 @@
 #!/bin/sh
 
 export API_BASE_URL="$BASE_URL/api"
-export API_PORT="5001"
-export NEXT_BASE_URL="$BASE_URL"
-export NEXT_PORT="5000"
+export API_PORT="5002"
 export NEXTAUTH_SECRET="$SECRET"
+export NEXT_BASE_URL="$BASE_URL"
 export NEXTAUTH_URL="$NEXT_BASE_URL"
+export NEXT_PORT="5001"
 
 alias prisma=/opt/app/node_modules/.bin/prisma
 wait_for_postgres() {
@@ -27,7 +27,7 @@ fi
 
 mkdir -p /data
 (
-    cd api/prisma
+    cd api
     if [ "$PRISMA_MIGRATE" = "1" ]; then
         prisma migrate deploy
     fi

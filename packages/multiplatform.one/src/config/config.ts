@@ -48,9 +48,10 @@ export class Config implements IConfig {
 
   get(): Record<string, string | undefined>;
   get(key: string): string | undefined;
-  get(key?: string): Record<string, string | undefined> | string | undefined {
+  get(key: string, defaultValue: string): string;
+  get(key?: string, defaultValue?: string): Record<string, string | undefined> | string | undefined {
     if (!key) return this._config;
-    return this._config[key];
+    return this._config[key] || defaultValue;
   }
 
   set(key: string, value: string) {

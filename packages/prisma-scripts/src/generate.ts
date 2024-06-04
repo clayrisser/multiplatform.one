@@ -40,7 +40,6 @@ export default async function generate() {
     import.meta.resolve('prisma') || path.resolve(process.cwd(), 'node_modules/prisma'),
     'build/index.js',
   );
-  console.log('PRISMA', prisma);
   await fs.writeFile(
     path.resolve(prismaPath, '.env'),
     `# ------------------------------------------------------
