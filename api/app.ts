@@ -49,6 +49,7 @@ const seedUsers: UserRepresentation[] = [
 
 export const options: AppOptions<PubSubEvents> = {
   debug: process.env.DEBUG === '1',
+  port: process.env.API_PORT ? parseInt(process.env.API_PORT, 10) : 5000,
   prisma: new PrismaClient(),
   pubSub,
   resolvers,

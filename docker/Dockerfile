@@ -1,4 +1,21 @@
-FROM registry.gitlab.com/bitspur/rock8s/images/debian-node:20.12.1-bookworm AS base
+FROM node:20.12.1-bookworm-slim as base
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint
+COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+RUN chmod +x /usr/local/bin/entrypoint && \
+    mkdir -p /var/log/supervisor && \
+    DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
+    docker.io \
+    nginx \
+    openssl \
+    postgresql \
+    sqlite3 \
+    supervisor && \
+    rm -rf \
+    /var/lib/apt/lists/* \
+    /etc/nginx/sites-enabled/*
+
+FROM registry.gitlab.com/bitspur/rock8s/images/debian-node:20.12.1-bookworm AS build-base
 WORKDIR /tmp/app
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -8,14 +25,14 @@ COPY . .
 
 # TODO: once pnpm supports the equivalent of yarn workspace focus this can be improved
 # https://github.com/pnpm/pnpm/issues/6300
-FROM base AS deps
+FROM build-base AS deps
 WORKDIR /tmp/app
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 # --filter './app' \
 # --filter './packages/*' \
 # --filter './platforms/next'
 
-FROM base as build
+FROM build-base as build
 WORKDIR /tmp/app
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 ARG GIT_COMMIT
@@ -58,31 +75,16 @@ RUN mkdir -p /opt/app/api && \
     mv /tmp/app/packages/$p/package.json /opt/app/packages/$p/package.json; \
     done
 
-FROM node:20.12.1-bookworm-slim
+FROM base
 WORKDIR /opt/app
 COPY --from=build /opt/app ./
-COPY docker/entrypoint.sh /usr/local/bin/entrypoint
-COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
-RUN chmod +x /usr/local/bin/entrypoint && \
-    mkdir -p /var/log/supervisor && \
-    DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
-    docker.io \
-    nginx \
-    openssl \
-    postgresql \
-    sqlite3 \
-    supervisor && \
-    rm -rf \
-    /var/lib/apt/lists/* \
-    /etc/nginx/sites-enabled/*
 EXPOSE 5000
 EXPOSE \
     3100 \
-    5555 \
-    80
+    5000 \
+    5555
 ENV \
-    BASE_URL=http://localhost \
+    BASE_URL=http://localhost:5000 \
     CONTAINER=1 \
     DATA_DIR=/var/data \
     DEBUG=0 \

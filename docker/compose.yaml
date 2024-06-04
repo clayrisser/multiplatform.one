@@ -19,9 +19,12 @@ services:
     image: ${IMAGE}:latest
     user: 0:0
     ports:
-      - 8000:80
+      - 5000:5000
     environment:
+      BASE_URL: http://host.docker.internal:5000
       DEBUG: '1'
+      KEYCLOAK_BASE_URL: http://host.docker.internal:8080
+
     depends_on:
       - grafana
       - keycloak
