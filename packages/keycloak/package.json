@@ -81,7 +81,7 @@
   ],
   "dependencies": {
     "@apollo/client": "^3.10.4",
-    "@multiplatform.one/zustand": "workspace:*",
+    "@multiplatform.one/zustand": "workspace:1.0.1",
     "expo-auth-session": "^5.5.2",
     "expo-crypto": "^13.0.2",
     "keycloak-js": "^24.0.4",
