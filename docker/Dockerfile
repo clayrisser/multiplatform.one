@@ -55,6 +55,7 @@ RUN mkdir -p /opt/app/api && \
     if [ -d /tmp/app/packages/$p/lib ]; then mv /tmp/app/packages/$p/lib /opt/app/packages/$p/lib; fi; \
     if [ -d /tmp/app/packages/$p/types ]; then mv /tmp/app/packages/$p/types /opt/app/packages/$p/types; fi; \
     if [ -d /tmp/deps/packages/$p/node_modules ]; then mv /tmp/deps/packages/$p/node_modules /opt/app/packages/$p/node_modules; fi; \
+    mv /tmp/app/packages/$p/package.json /opt/app/packages/$p/package.json; \
     done
 
 FROM node:20.12.1-bookworm-slim
@@ -101,7 +102,7 @@ ENV \
     POSTGRES_PASSWORD=postgres \
     POSTGRES_PORT=5432 \
     POSTGRES_USERNAME=postgres \
-    PRISMA_DATABASE_ENGINE=sqlite \
+    PRISMA_DATABASE_ENGINE=postgres \
     PRISMA_MIGRATE=1 \
     PRISMA_SEED=1 \
     PRISMA_STUDIO=1 \
