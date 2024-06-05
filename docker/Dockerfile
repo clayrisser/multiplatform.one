@@ -78,7 +78,6 @@ RUN mkdir -p /opt/app/api && \
 FROM base
 WORKDIR /opt/app
 COPY --from=build /opt/app ./
-EXPOSE 5000
 EXPOSE \
     3100 \
     5000 \
