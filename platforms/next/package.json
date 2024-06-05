@@ -49,6 +49,7 @@
   "transpileModules": [
     "@multiplatform.one/components",
     "@multiplatform.one/keycloak",
+    "@multiplatform.one/query",
     "app",
     "estree-util-build-jsx",
     "multiplatform.one",
