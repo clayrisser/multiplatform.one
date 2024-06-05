@@ -18,13 +18,20 @@ services:
     container_name: ${NAME}
     image: ${IMAGE}:latest
     user: 0:0
+    network_mode: host
     ports:
       - 5000:5000
     environment:
-      BASE_URL: http://host.docker.internal:5000
+      BASE_URL: http://localhost:5000
       DEBUG: '1'
-      KEYCLOAK_BASE_URL: http://host.docker.internal:8080
-
+      KEYCLOAK_ADMIN_PASSWORD: P@ssw0rd
+      KEYCLOAK_ADMIN_USERNAME: admin
+      KEYCLOAK_BASE_URL: http://localhost:8080
+      KEYCLOAK_CLIENT_ID: app
+      KEYCLOAK_CLIENT_SECRET: P@ssw0rd
+      KEYCLOAK_PUBLIC_CLIENT_ID: app-public
+      KEYCLOAK_REALM: main
+      POSTGRES_HOSTNAME: localhost
     depends_on:
       - grafana
       - keycloak
