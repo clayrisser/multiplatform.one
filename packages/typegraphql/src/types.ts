@@ -62,7 +62,12 @@ export interface PubSubPublishArgsByKey {
   [key: string]: [] | [any] | [number | string, any];
 }
 
+export interface RegisterAddonResult {
+  buildSchemaOptions?: Partial<Pick<BuildSchemaOptions, 'globalMiddlewares'>>;
+}
+
 export interface Addon {
+  register?: (appOptions: AppOptions) => RegisterAddonResult;
   beforeStart?: (
     app: Omit<TypeGraphQLApp, 'start'>,
     appOptions: AppOptions,

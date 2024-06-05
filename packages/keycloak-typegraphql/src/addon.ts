@@ -21,13 +21,17 @@
 
 import type { Addon } from '@multiplatform.one/typegraphql';
 import type { KeycloakOptions } from './types';
+import type { Middleware } from 'type-graphql/build/typings/typings/middleware';
+import { AuthGuard } from './authGuard';
 import { initializeKeycloak } from './initialize';
 
 export function KeycloakAddon(keycloakOptions: Partial<KeycloakOptions>): Addon {
+  let sharedKeycloakOptions: KeycloakOptions;
   return {
-    async beforeStart(app, appOptions) {
+    register(appOptions) {
+      const globalMiddlewares: Middleware<any>[] = [];
       const debug = typeof appOptions.debug !== 'undefined' ? appOptions.debug : process.env.DEBUG === '1';
-      const finalKeycloakOptions: KeycloakOptions = {
+      sharedKeycloakOptions = {
         adminPassword: process.env.KEYCLOAK_ADMIN_PASSWORD || '',
         adminUsername: process.env.KEYCLOAK_ADMIN_USERNAME || '',
         baseUrl: process.env.KEYCLOAK_BASE_URL || '',
@@ -39,9 +43,19 @@ export function KeycloakAddon(keycloakOptions: Partial<KeycloakOptions>): Addon 
         secret: appOptions.secret || process.env.SECRET,
         ...keycloakOptions,
       };
-      if (keycloakOptions.baseUrl && keycloakOptions.clientId && keycloakOptions.realm) {
+      if (sharedKeycloakOptions.baseUrl && sharedKeycloakOptions.clientId && sharedKeycloakOptions.realm) {
+        globalMiddlewares.push(AuthGuard);
+      }
+      return {
+        buildSchemaOptions: {
+          globalMiddlewares,
+        },
+      };
+    },
+    async beforeStart(app) {
+      if (sharedKeycloakOptions.baseUrl && sharedKeycloakOptions.clientId && sharedKeycloakOptions.realm) {
         const registerKeycloak = await initializeKeycloak(
-          finalKeycloakOptions,
+          sharedKeycloakOptions,
           app.buildSchemaOptions.resolvers,
           app.logger,
         );

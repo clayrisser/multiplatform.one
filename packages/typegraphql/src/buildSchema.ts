@@ -51,7 +51,7 @@ export function createBuildSchemaOptions(options: AppOptions) {
   const validate: ValidateSettings = {
     forbidUnknownValues: false,
   };
-  return {
+  const buildSchemaOptions = {
     ...options.buildSchema,
     container: ({ context: ctx }: ResolverData<Ctx>) => ({
       get: (resolver) => ctx.container.resolve(resolver),
@@ -66,4 +66,16 @@ export function createBuildSchemaOptions(options: AppOptions) {
           }
         : validate,
   } as BuildSchemaOptions;
+  options.addons?.forEach((addon) => {
+    if (addon.register) {
+      const addonResult = addon.register(options);
+      if (addonResult.buildSchemaOptions.globalMiddlewares) {
+        buildSchemaOptions.globalMiddlewares = [
+          ...(buildSchemaOptions.globalMiddlewares || []),
+          ...addonResult.buildSchemaOptions.globalMiddlewares,
+        ];
+      }
+    }
+  });
+  return buildSchemaOptions;
 }
