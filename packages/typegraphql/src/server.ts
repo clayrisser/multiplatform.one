@@ -20,6 +20,7 @@
  */
 /* eslint-disable max-lines-per-function */
 
+import * as ws from 'ws';
 import fs from 'fs/promises';
 import http from 'http';
 import nodeCleanup from 'node-cleanup';
@@ -29,7 +30,6 @@ import type { IncomingMessage, ServerResponse } from 'http';
 import type { LoggerOptions } from './logger';
 import type { OnResponseEventPayload } from '@whatwg-node/server';
 import type { YogaServerOptions, YogaInitialContext, LogLevel } from 'graphql-yoga';
-import ws from 'ws';
 import { LOGGER, LOGGER_OPTIONS, Logger } from './logger';
 import { PrismaClient } from '@prisma/client';
 import { buildSchema } from 'type-graphql';
@@ -57,6 +57,7 @@ import type {
 
 export const CTX = 'CTX';
 export const REQ = 'REQ';
+const WebSocketServer = ws.WebSocketServer || ws.default.Server;
 
 export function createApp(options: AppOptions): TypeGraphQLApp {
   otelSDK.start();
@@ -198,7 +199,7 @@ export function createApp(options: AppOptions): TypeGraphQLApp {
   };
   const httpListener = async (req: IncomingMessage, res: ServerResponse) => httpServer.listener(req, res);
   const server = http.createServer(async (req, res) => httpServer.listener(req, res));
-  const wsServer = new ws.Server({
+  const wsServer = new WebSocketServer({
     server,
     path: graphqlEndpoint,
   });
