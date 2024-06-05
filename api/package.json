@@ -9,9 +9,9 @@
   },
   "dependencies": {
     "@graphql-yoga/subscription": "^5.0.0",
-    "@multiplatform.one/keycloak-typegraphql": "workspace:1.0.12",
+    "@multiplatform.one/keycloak-typegraphql": "workspace:1.0.13",
     "@multiplatform.one/prisma-scripts": "workspace:1.0.8",
-    "@multiplatform.one/typegraphql": "workspace:1.0.12",
+    "@multiplatform.one/typegraphql": "workspace:1.0.13",
     "@prisma/client": "~5.14.0",
     "@whatwg-node/server": "^0.9.34",
     "class-validator": "^0.14.1",
