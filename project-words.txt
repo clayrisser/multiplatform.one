@@ -1,5 +1,3 @@
-1aji48u
-aaguids
 acc
 acl
 acr
@@ -15,6 +13,7 @@ apiv
 apollo
 argv
 arial
+asar
 ast
 aud
 audi
@@ -55,6 +54,7 @@ bts
 btw
 bufferutil
 buildpack
+builtins
 bxsh
 camelcase
 cancelable
@@ -78,6 +78,7 @@ cryptr
 cspell
 ctx
 cuid
+darwin
 dast
 dat
 datasource
@@ -165,6 +166,7 @@ iss
 jaeger
 jsc
 jsdom
+jsnext
 jsx
 jti
 kauth
@@ -291,6 +293,7 @@ rhf
 risser
 risserlabs
 roboto
+rollup
 sameorigin
 sast
 sbmodern
@@ -314,6 +317,7 @@ ssr
 startcase
 stdenv
 stderr
+stdin
 stdout
 stonger
 storyshots
