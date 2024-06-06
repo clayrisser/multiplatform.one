@@ -52,14 +52,14 @@
     "ora": "^8.0.1"
   },
   "peerDependencies": {
-    "prisma": "~5.8.1"
+    "prisma": "~5.12.1"
   },
   "devDependencies": {
     "@types/eslint": "^8.56.10",
     "@types/jest": "^29.5.12",
     "cspell": "^8.8.3",
     "majestic": "^1.8.1",
-    "prisma": "~5.14.0",
+    "prisma": "~5.12.1",
     "tsup": "^8.0.2",
     "typescript": "~5.3.3"
   },
