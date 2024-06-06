@@ -34,6 +34,12 @@
       "command": "./mkpm expo/dev"
     },
     {
+      "name": "electron dev",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "./mkpm electron/dev"
+    },
+    {
       "name": "api dev",
       "type": "node-terminal",
       "request": "launch",
