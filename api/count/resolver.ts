@@ -21,8 +21,9 @@
 
 import { Authorized } from '@multiplatform.one/keycloak-typegraphql';
 import { CountService } from './service';
-import { Resolver, Subscription, Root, Query } from 'type-graphql';
 import { Injectable } from '@multiplatform.one/typegraphql';
+import { PING_PONG_EVENTS, pubSub } from '../pubSub';
+import { Resolver, Subscription, Root, Query, Mutation } from 'type-graphql';
 
 @Authorized()
 @Injectable()
@@ -41,6 +42,20 @@ export class CountResolver {
     },
   })
   count(@Root() payload: number): number {
+    return payload;
+  }
+
+  @Mutation(() => Number)
+  ping() {
+    const result = Math.random();
+    pubSub.publish(PING_PONG_EVENTS, result);
+    return result;
+  }
+
+  @Subscription(() => Number, {
+    topics: PING_PONG_EVENTS,
+  })
+  pong(@Root() payload: number): number {
     return payload;
   }
 

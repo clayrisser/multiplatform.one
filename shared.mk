@@ -38,7 +38,7 @@ TURBO ?= $(PNPM) turbo
 WATCHMAN ?= watchman
 
 export POSTGRES_URL ?= \
-	postgresql://$(POSTGRES_PASSWORD):$(POSTGRES_USER)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=prefer
+	postgresql://$(POSTGRES_PASSWORD):$(POSTGRES_USERNAME)@$(POSTGRES_HOSTNAME):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=prefer
 
 export ESLINT_USE_FLAT_CONFIG := false
 export GIT_COMMIT ?= $(shell $(GIT) describe --tags --always --dirty | $(SED) 's|^.*@||g')

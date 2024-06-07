@@ -1,6 +1,6 @@
 {
   "name": "multiplatform.one",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "description": "multiplatform.one ecosystem",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -69,7 +69,6 @@
     "@tamagui/web": "^1.99.1",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^15.0.7",
-    "@types/eslint": "^8.56.10",
     "@types/jest": "^29.5.12",
     "@types/react": "^18.3.1",
     "@types/react-native": "^0.73.0",
@@ -90,7 +89,7 @@
     "types"
   ],
   "dependencies": {
-    "@multiplatform.one/zustand": "workspace:1.0.2",
+    "@multiplatform.one/zustand": "workspace:1.0.3",
     "cookies-next": "^4.2.1",
     "react-cookie": "^7.1.4"
   }

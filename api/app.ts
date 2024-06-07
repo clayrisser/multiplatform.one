@@ -22,21 +22,14 @@
 import 'reflect-metadata';
 import dotenv from 'dotenv';
 import type { AppOptions } from '@multiplatform.one/typegraphql';
+import type { PubSubEvents } from './pubSub';
 import type { UserRepresentation } from '@multiplatform.one/keycloak-typegraphql';
 import { KeycloakAddon } from '@multiplatform.one/keycloak-typegraphql';
 import { PrismaClient } from '@prisma/client';
-import { createPubSub } from '@graphql-yoga/subscription';
+import { pubSub } from './pubSub';
 import { resolvers } from './resolvers';
 
-export interface PubSubEvents {
-  [key: string]: [string] | [number, string];
-  NOTIFICATIONS: [string];
-  DYNAMIC_ID_TOPIC: [number, string];
-}
-
 dotenv.config();
-const pubSub = createPubSub<PubSubEvents>();
-
 const seedUsers: UserRepresentation[] = [
   {
     username: 'one',

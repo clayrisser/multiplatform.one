@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/typegraphql",
-  "version": "1.0.13",
+  "version": "1.0.15",
   "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
   "contributors": [
     {
@@ -48,7 +48,6 @@
   "devDependencies": {
     "@prisma/client": "~5.12.1",
     "@types/body-parser": "^1.19.5",
-    "@types/eslint": "^8.56.10",
     "@types/lodash.startcase": "^4.4.9",
     "@types/node-cleanup": "^2.1.5",
     "@types/ws": "^8.5.10",
@@ -80,6 +79,8 @@
     "http-status": "^1.7.4",
     "lodash.startcase": "^4.4.0",
     "node-cleanup": "^2.1.2",
+    "pg": "^8.12.0",
+    "pg-pubsub": "^0.8.1",
     "pino": "^8.21.0",
     "pino-http": "^9.0.0",
     "pino-pretty": "^11.1.0",

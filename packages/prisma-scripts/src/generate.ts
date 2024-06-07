@@ -33,7 +33,7 @@ export default async function generate() {
   const sqliteUrl = env.SQLITE_URL || 'file:./sqlite.db';
   const postgresUrl = env.POSTGRES_URL
     ? env.POSTGRES_URL
-    : `postgresql://${env.POSTGRES_USERNAME || 'postgres'}:${env.POSTGRES_PASSWORD}@${env.POSTGRES_HOST}:${
+    : `postgresql://${env.POSTGRES_USERNAME || 'postgres'}:${env.POSTGRES_PASSWORD}@${env.POSTGRES_HOSTNAME}:${
         env.POSTGRES_PORT || '5432'
       }/${env.POSTGRES_DATABASE || 'postgres'}?sslmode=${env.POSTGRES_SSLMODE || 'prefer'}`;
   const prisma = path.resolve(

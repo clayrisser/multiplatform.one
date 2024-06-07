@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/locales",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "description": "multiplatform.one locales",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -60,7 +60,6 @@
     "@tamagui/build": "^1.99.1",
     "@tamagui/constants": "^1.99.1",
     "@tamagui/web": "^1.99.1",
-    "@types/eslint": "^8.56.10",
     "@types/jest": "^29.5.12",
     "@types/react": "^18.3.1",
     "@types/react-native": "^0.73.0",
@@ -84,7 +83,7 @@
   "dependencies": {
     "cookies-next": "^4.2.1",
     "merge-options": "^3.0.4",
-    "multiplatform.one": "workspace:1.0.9",
+    "multiplatform.one": "workspace:1.0.11",
     "react-cookie": "^7.1.4"
   }
 }

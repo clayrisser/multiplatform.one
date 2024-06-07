@@ -9,9 +9,9 @@
   },
   "dependencies": {
     "@graphql-yoga/subscription": "^5.0.0",
-    "@multiplatform.one/keycloak-typegraphql": "workspace:1.0.13",
-    "@multiplatform.one/prisma-scripts": "workspace:1.0.8",
-    "@multiplatform.one/typegraphql": "workspace:1.0.13",
+    "@multiplatform.one/keycloak-typegraphql": "workspace:1.0.15",
+    "@multiplatform.one/prisma-scripts": "workspace:1.0.10",
+    "@multiplatform.one/typegraphql": "workspace:1.0.15",
     "@prisma/client": "~5.12.1",
     "@whatwg-node/server": "^0.9.34",
     "class-validator": "^0.14.1",
@@ -27,9 +27,6 @@
   },
   "devDependencies": {
     "@swc/core": "1.5.7",
-    "@types/eslint": "^8.56.10",
-    "execa": "^9.1.0",
-    "reflect-metadata": "^0.2.2",
     "tsup": "^8.0.2",
     "vite": "^5.2.12",
     "vite-plugin-node": "^3.1.0"

@@ -111,5 +111,6 @@ ENV \
     PRISMA_STUDIO_PORT=5555 \
     REDIS=0 \
     REDIS_HOST=redis \
-    REDIS_PORT=6379
+    REDIS_PORT=6379 \
+    SEED=0
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
