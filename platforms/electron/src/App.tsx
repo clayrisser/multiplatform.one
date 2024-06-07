@@ -1,7 +1,7 @@
 /**
- * File: /src/renderer.tsx
+ * File: /src/App.tsx
  * Project: @platform/electron
- * File Created: 06-06-2024 10:58:51
+ * File Created: 07-06-2024 08:39:03
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,8 +19,6 @@
  * limitations under the License.
  */
 
-import { createRoot } from 'react-dom/client';
-import { App } from './App';
-
-const root = createRoot(document.getElementById('app'));
-root.render(<App />);
+export function App() {
+  return <h2>global provider and router goes here</h2>;
+}
