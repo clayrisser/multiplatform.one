@@ -28,7 +28,7 @@ PRISMA_STUDIO_PORT ?= 5555
 PSQL ?= psql
 
 export POSTGRES_URL ?= \
-	postgresql://$(POSTGRES_PASSWORD):$(POSTGRES_USER)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=prefer
+	postgresql://$(POSTGRES_PASSWORD):$(POSTGRES_USERNAME)@$(POSTGRES_HOSTNAME):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=prefer
 WAIT_FOR_POSTGRES ?= echo 'waiting for postgres...' && \
 	until psql "$(POSTGRES_URL)" -c '\q' && break; do sleep 1; done; sleep 1 && echo "postgres ready"
 

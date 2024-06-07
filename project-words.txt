@@ -284,6 +284,7 @@ refractor
 refreshable
 rehype
 renderer
+repeaterjs
 req
 resize
 resizing
