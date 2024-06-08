@@ -1,17 +1,14 @@
 {
   "name": "@platform/keycloak",
-  "version": "1.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "tsc && vite build",
-    "build-keycloak-theme": "yarn build && keycloakify",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-keycloak-theme": "pnpm run build && keycloakify",
+    "build-storybook": "storybook build",
+    "dev": "vite",
+    "storybook": "storybook dev -p 6006"
   },
-  "author": "u/garronej",
-  "license": "MIT",
-  "keywords": [],
   "dependencies": {
     "evt": "^2.5.7",
     "keycloakify": "^9.6.6",
@@ -44,8 +41,5 @@
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
     "vite-plugin-commonjs": "^0.10.1"
-  },
-  "resolutions": {
-    "jackspeak": "2.1.1"
   }
 }

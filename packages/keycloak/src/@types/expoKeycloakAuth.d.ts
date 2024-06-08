@@ -20,6 +20,6 @@
  */
 
 declare module 'expo-keycloak-auth' {
-  export function useKeycloak(): any;
   export const KeycloakProvider: any;
+  export function useKeycloak(): any;
 }
