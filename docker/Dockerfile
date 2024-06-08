@@ -5,7 +5,6 @@ COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 RUN chmod +x /usr/local/bin/entrypoint && \
     mkdir -p /var/log/supervisor && \
     DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
-    docker.io \
     nginx \
     openssl \
     postgresql \

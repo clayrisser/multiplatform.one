@@ -27,15 +27,12 @@ import type { Session } from './session';
 import { getServerSession } from 'next-auth';
 import { jwtDecode } from 'jwt-decode';
 
-const KeycloakProvider = require('next-auth/providers/keycloak')
-  .default as typeof import('next-auth/providers/keycloak').default;
-
-let _nextAuth: AuthOptions | undefined;
-
 const NextAuth = require('next-auth').default as typeof import('next-auth').default;
 const NextResponse = require('next/server').NextResponse as typeof import('next/server').NextResponse;
-
 const logger = console;
+let _nextAuth: AuthOptions | undefined;
+const KeycloakProvider = require('next-auth/providers/keycloak')
+  .default as typeof import('next-auth/providers/keycloak').default;
 
 export function createAuthHandler(options: AuthHandlerOptions) {
   return NextAuth(createNextAuthOptions(options));

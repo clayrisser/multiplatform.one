@@ -177,6 +177,7 @@ instagram
 instrumentations
 interop
 iss
+jackspeak
 jaeger
 jsc
 jsdom
