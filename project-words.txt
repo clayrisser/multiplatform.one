@@ -17,6 +17,7 @@ asar
 ast
 aud
 audi
+authenticator
 autheticator
 authnstatement
 autodocs
@@ -30,6 +31,7 @@ bblr
 bbrr
 bbs
 bbw
+bitbucket
 bitspur
 blc
 blocklist
@@ -64,10 +66,13 @@ ciba
 cjs
 clayrisser
 clearable
+clearfix
 clientregistration
 cloc
+clsx
 codebase
 comment
+commonjs
 compat
 consolas
 constructable
@@ -99,6 +104,7 @@ docsearch
 dotenv
 downsample
 dripsy
+dropdown
 dsn
 dsp
 dto
@@ -113,7 +119,9 @@ esbuild
 esm
 estree
 etchteam
+evt
 execa
+facebook
 fam
 fastify
 favicon
@@ -130,8 +138,13 @@ fow
 freakout
 frontchannel
 frontmatter
+ftl
 func
+garrone
+garronej
+github
 githubusercontent
+gitlab
 globals
 glusp
 gmail
@@ -160,6 +173,7 @@ immer
 ingester
 inlinable
 inmemory
+instagram
 instrumentations
 interop
 iss
@@ -171,6 +185,7 @@ jsx
 jti
 kauth
 keycloak
+keycloakify
 keyinfo
 kvstore
 labelled
@@ -180,6 +195,7 @@ lang
 liaoliaots
 lifecycler
 linejoin
+linkedin
 localhost
 lucide
 lytek
@@ -191,6 +207,7 @@ menlo
 metatype
 michał
 microprofile
+microsoft
 middlewares
 mih
 milli
@@ -207,6 +224,7 @@ modularize
 modulz
 monospace
 moti
+msg
 multiline
 multiplatform
 multistream
@@ -234,6 +252,7 @@ onetimeuse
 openapi
 opencensus
 openid
+openshift
 opentelemetry
 opentracing
 ora
@@ -245,7 +264,10 @@ paddings
 papooch
 passwordless
 pathname
+patternfly
+paypal
 persistor
+pficon
 pid
 pino
 pixelmatch
@@ -257,6 +279,7 @@ pnpm
 pos
 postgres
 postgresql
+powerhooks
 pragma
 pressability
 pressable
@@ -286,6 +309,7 @@ rehype
 renderer
 repeaterjs
 req
+rerender
 resize
 resizing
 resolvers
@@ -308,6 +332,7 @@ shac
 shar
 shof
 sid
+sitekey
 solito
 spnego
 sponsorships
@@ -315,6 +340,7 @@ sqlite
 sslmode
 sso
 ssr
+stackoverflow
 startcase
 stdenv
 stderr
@@ -326,6 +352,7 @@ storysource
 str
 stringified
 sublicense
+submittable
 supabase
 superblue
 suzuki
@@ -346,14 +373,17 @@ toggler
 toolbars
 toolshown
 tooltip
+tos
 totp
 transpile
+tsafe
 tsbuildinfo
 tsc
 tsconfig
 tsup
 tsx
 tsyringe
+twitter
 txt
 typ
 typegraphql
@@ -377,6 +407,7 @@ usr
 ussel
 utf
 uuidv4
+validators
 vals
 vercel
 verifier
@@ -387,11 +418,13 @@ vizag
 vscode
 vw
 wcag
+webfont
 webkit
 webpack
 webpack5
 whatwg
 wienert
+worksans
 workspace
 wuif
 xmas
@@ -401,5 +434,6 @@ xxs
 yoda
 zipkin
 zlib
+zocial
 zstd
 zustand
