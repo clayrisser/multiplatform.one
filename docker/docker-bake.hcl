@@ -7,7 +7,10 @@ variable "GIT_COMMIT" {
 }
 
 group "default" {
-  targets = ["app", "keycloak"]
+  targets = [
+    "app",
+    "keycloak",
+  ]
 }
 
 target "app" {
@@ -23,7 +26,7 @@ target "app" {
 
 target "keycloak" {
   context    = ".."
-  dockerfile = "platforms/keycloak/Dockerfile"
+  dockerfile = "platforms/keycloak/docker/Dockerfile"
   platforms  = ["linux/amd64"]
   output     = ["type=docker"]
   tags = [

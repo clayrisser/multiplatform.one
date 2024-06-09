@@ -32,6 +32,7 @@ const config: StorybookConfig = {
       files: '**/*.stories.@(js|jsx|ts|tsx|mdx)',
     })),
     { directory: '../../../packages', files: '*/src/**/*.stories.@(js|jsx|ts|tsx|mdx)' },
+    { directory: '../../../platforms/keycloak', files: 'src/**/*.stories.@(js|jsx|ts|tsx|mdx)' },
   ],
   addons: [
     '@etchteam/storybook-addon-status',
