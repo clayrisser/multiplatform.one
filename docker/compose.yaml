@@ -47,30 +47,33 @@ services:
   keycloak:
     container_name: keycloak
     restart: unless-stopped
-    image: quay.io/keycloak/keycloak:22.0.5
+    # image: quay.io/keycloak/keycloak:22.0.5
+    image: registry.gitlab.com/bitspur/multiplatform.one/keycloak
     ports:
       - 8080:8080
-    volumes:
-      - ./realm-export.json:/tmp/realm-export.json:ro
-    entrypoint:
-      - sh
-      - -c
-      - |
-        /opt/keycloak/bin/kc.sh build
-        IMPORT_FLAG_FILE=/opt/keycloak/imported.flag
-        if [ "$${KEYCLOAK_IMPORT}" != "" ]; then
-          if [ ! -f "$$IMPORT_FLAG_FILE" ]; then
-            /opt/keycloak/bin/kc.sh import --file "$$KEYCLOAK_IMPORT"
-            touch "$$IMPORT_FLAG_FILE"
-          fi
-        fi
-        /opt/keycloak/bin/kc.sh start-dev
+    # volumes:
+    #   - ./realm-export.json:/tmp/realm-export.json:ro
+    # entrypoint:
+    #   - sh
+    #   - -c
+    #   - |
+    #     /opt/keycloak/bin/kc.sh start --optimized
+    command:
+      - start
+      # - --optimized
+    # security_opt:
+    #   - seccomp:unconfined
     environment:
+      KC_DB_URL_DATABASE: postgres
+      KC_DB_URL_HOST: postgres-keycloak
       KC_HEALTH_ENABLED: 'true'
       KC_METRICS_ENABLED: 'true'
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: P@ssw0rd
+      # JAVA_OPTS: '-Xms1024m -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Dfile.encoding=UTF-8'
       KEYCLOAK_IMPORT: /tmp/realm-export.json
+    depends_on:
+      - postgres-keycloak
 
   postgres:
     container_name: postgres
@@ -84,6 +87,17 @@ services:
       POSTGRES_USER: '${POSTGRES_USERNAME}'
     volumes:
       - postgres:/var/lib/postgresql/data
+
+  postgres-keycloak:
+    container_name: postgres-keycloak
+    restart: unless-stopped
+    image: postgres:14.5
+    environment:
+      POSTGRES_DATABASE: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    volumes:
+      - postgres-keycloak:/var/lib/postgresql/data
 
   tempo:
     container_name: tempo
@@ -232,6 +246,8 @@ volumes:
     name: sentry-worker-${NAME}
   postgres:
     name: postgres-${NAME}
+  postgres-keycloak:
+    name: postgres-keycloak-${NAME}
   tempo:
     name: tempo-${NAME}
   loki:

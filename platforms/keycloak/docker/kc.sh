@@ -6,4 +6,4 @@ if [ "$KEYCLOAK_IMPORT" != "" ] && [ -f "$KEYCLOAK_IMPORT" ] && [ ! -f "$IMPORT_
     touch "$IMPORT_FLAG_FILE"
 fi
 
-exec /opt/keycloak/bin/_kc.sh $@
+exec /opt/keycloak/bin/_kc.sh "$@"
