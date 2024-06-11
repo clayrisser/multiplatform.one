@@ -9,8 +9,8 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.5",
-    "@typescript-eslint/eslint-plugin": "^7.11.0",
-    "@typescript-eslint/parser": "^7.11.0",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
     "app": "workspace:*",
     "eslint": "~8.56.0",
     "eslint-config-alloy": "^5.1.2",
@@ -18,8 +18,8 @@
     "eslint-plugin-spellcheck": "^0.0.20",
     "gql": "workspace:*",
     "npm-check-updates": "^16.14.20",
-    "prettier": "^3.2.5",
-    "turbo": "^1.13.3",
+    "prettier": "^3.3.2",
+    "turbo": "^1.13.4",
     "typescript": "~5.3.3",
     "ui": "workspace:*"
   },

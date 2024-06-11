@@ -47,22 +47,14 @@ services:
   keycloak:
     container_name: keycloak
     restart: unless-stopped
-    # image: quay.io/keycloak/keycloak:22.0.5
     image: registry.gitlab.com/bitspur/multiplatform.one/keycloak
     ports:
       - 8080:8080
-    # volumes:
-    #   - ./realm-export.json:/tmp/realm-export.json:ro
-    # entrypoint:
-    #   - sh
-    #   - -c
-    #   - |
-    #     /opt/keycloak/bin/kc.sh start --optimized
+    volumes:
+      - ../platforms/keycloak/docker/realm-export.json:/tmp/realm-export.json:ro
     command:
       - start
-      # - --optimized
-    # security_opt:
-    #   - seccomp:unconfined
+      - --optimized
     environment:
       KC_DB_URL_DATABASE: postgres
       KC_DB_URL_HOST: postgres-keycloak
@@ -70,7 +62,6 @@ services:
       KC_METRICS_ENABLED: 'true'
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: P@ssw0rd
-      # JAVA_OPTS: '-Xms1024m -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Dfile.encoding=UTF-8'
       KEYCLOAK_IMPORT: /tmp/realm-export.json
     depends_on:
       - postgres-keycloak
