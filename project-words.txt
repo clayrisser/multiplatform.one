@@ -79,6 +79,7 @@ constructable
 corejs
 coreutils
 cors
+crossorigin
 cryptr
 cspell
 ctx
@@ -352,6 +353,7 @@ storyshots
 storysource
 str
 stringified
+stylesheet
 sublicense
 submittable
 supabase

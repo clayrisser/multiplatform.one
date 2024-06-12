@@ -1,8 +1,15 @@
 {
-  "name": "@platform/storybook",
+  "name": "@platform/keycloak",
   "private": true,
   "scripts": {
-    "dev": "TAMAGUI_TARGET=web storybook dev"
+    "build": "react-scripts build && rimraf build/keycloak-resources && keycloakify",
+    "dev": "copy-keycloak-resources-to-public && TAMAGUI_TARGET=web storybook dev -p 6006"
+  },
+  "keycloakify": {
+    "themeName": "keycloakify-starter",
+    "extraThemeProperties": [
+      "foo=bar"
+    ]
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.18.6",
@@ -16,6 +23,8 @@
     "@storybook/addon-react-native-web": "0.0.23",
     "@storybook/addon-storyshots": "^7.6.17",
     "@storybook/addon-storysource": "~7.6.19",
+    "evt": "^2.5.7",
+    "keycloakify": "^9.6.1",
     "@storybook/nextjs": "~7.6.19",
     "@storybook/react": "~7.6.19",
     "addon-screen-reader": "^1.8.6",
@@ -37,14 +46,28 @@
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
     "@loki/target-chrome-core": "0.35.0",
+    "@storybook/addon-actions": "~7.6.19",
+    "@storybook/addon-essentials": "~7.6.19",
+    "@storybook/addon-interactions": "~7.6.19",
+    "@storybook/addon-links": "~7.6.19",
     "@storybook/addon-styling": "^1.3.7",
     "@storybook/addon-webpack5-compiler-babel": "^3.0.3",
+    "@storybook/builder-webpack5": "~7.6.19",
+    "@storybook/manager-webpack5": "^6.5.16",
+    "@storybook/node-logger": "~7.6.19",
+    "@storybook/preset-create-react-app": "~7.6.19",
+    "@storybook/react": "~7.6.19",
+    "@storybook/react-webpack5": "~7.6.19",
+    "@storybook/testing-library": "^0.2.2",
     "@tamagui/babel-plugin": "^1.100.3",
     "@types/babel__preset-env": "^7.9.6",
     "@types/node": "~20.12.13",
     "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
     "loki": "^0.35.0",
     "react-native-reanimated": "3.8.1",
+    "react-scripts": "5.0.1",
+    "rimraf": "^5.0.5",
     "storybook": "~7.6.19",
     "typescript": "~5.3.3"
   },

@@ -40,6 +40,12 @@
       "command": "./mkpm electron/dev"
     },
     {
+      "name": "keycloak dev",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "./mkpm keycloak/dev"
+    },
+    {
       "name": "api dev",
       "type": "node-terminal",
       "request": "launch",
