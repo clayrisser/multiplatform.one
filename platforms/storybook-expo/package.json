@@ -5,7 +5,7 @@
   "dependencies": {
     "@babel/runtime": "^7.24.7",
     "@multiplatform.one/components": "workspace:2.0.4",
-    "@storybook/addon-actions": "^8.1.6",
+    "@storybook/addon-actions": "~7.6.19",
     "@storybook/addon-ondevice-actions": "7.6.19",
     "@storybook/addon-ondevice-backgrounds": "7.6.19",
     "@storybook/addon-ondevice-controls": "7.6.19",
