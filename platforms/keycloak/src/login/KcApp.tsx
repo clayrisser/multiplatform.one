@@ -1,5 +1,5 @@
 /**
- * File: /src/keycloak-theme/login/KcApp.tsx
+ * File: /src/login/KcApp.tsx
  * Project: @platform/keycloak
  * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser
@@ -21,11 +21,16 @@
  */
 
 import './KcApp.css';
-import Fallback, { type PageProps } from 'keycloakify/login';
+import Fallback from 'keycloakify/login';
 import Template from './Template';
+import tamaguiConfig from '../../tamagui.config';
 import type { KcContext } from './kcContext';
+import type { PageProps } from 'keycloakify/login';
+import type { ReactNode } from 'react';
+import { GlobalProvider } from 'app/providers';
 import { lazy, Suspense } from 'react';
 import { useI18n } from './i18n';
+import { useTheme } from 'multiplatform.one/theme';
 
 const Info = lazy(() => import('keycloakify/login/pages/Info'));
 const Login = lazy(() => import('./pages/Login'));
@@ -40,37 +45,48 @@ const classes: PageProps<any, any>['classes'] = {
   kcHeaderWrapperClass: 'my-color my-font',
 };
 
+function Provider({ children }: { children?: ReactNode }) {
+  const [theme] = useTheme();
+  return (
+    <GlobalProvider tamaguiConfig={tamaguiConfig} theme={theme}>
+      {children}
+    </GlobalProvider>
+  );
+}
+
 export default function KcApp({ kcContext }: { kcContext: KcContext }) {
   const i18n = useI18n({ kcContext });
-  if (i18n === null) return <>{}</>;
+  if (i18n === null) return <Provider />;
   return (
-    <Suspense>
-      {(() => {
-        switch (kcContext.pageId) {
-          case 'login.ftl':
-            return <Login {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
-          case 'register.ftl':
-            return <Register {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
-          case 'register-user-profile.ftl':
-            return <RegisterUserProfile {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
-          case 'terms.ftl':
-            return <Terms {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
-          case 'my-extra-page-1.ftl':
-            return <MyExtraPage1 {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
-          case 'my-extra-page-2.ftl':
-            return <MyExtraPage2 {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
-          case 'info.ftl':
-            return (
-              <Info
-                {...{ kcContext, i18n, classes }}
-                Template={lazy(() => import('keycloakify/login/Template'))}
-                doUseDefaultCss={true}
-              />
-            );
-          default:
-            return <Fallback {...{ kcContext, i18n, classes }} Template={Template} doUseDefaultCss={true} />;
-        }
-      })()}
-    </Suspense>
+    <Provider>
+      <Suspense>
+        {(() => {
+          switch (kcContext.pageId) {
+            case 'login.ftl':
+              return <Login {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
+            case 'register.ftl':
+              return <Register {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
+            case 'register-user-profile.ftl':
+              return <RegisterUserProfile {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
+            case 'terms.ftl':
+              return <Terms {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
+            case 'my-extra-page-1.ftl':
+              return <MyExtraPage1 {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
+            case 'my-extra-page-2.ftl':
+              return <MyExtraPage2 {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
+            case 'info.ftl':
+              return (
+                <Info
+                  {...{ kcContext, i18n, classes }}
+                  Template={lazy(() => import('keycloakify/login/Template'))}
+                  doUseDefaultCss={true}
+                />
+              );
+            default:
+              return <Fallback {...{ kcContext, i18n, classes }} Template={Template} doUseDefaultCss={true} />;
+          }
+        })()}
+      </Suspense>
+    </Provider>
   );
 }

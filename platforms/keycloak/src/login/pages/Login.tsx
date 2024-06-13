@@ -1,5 +1,5 @@
 /**
- * File: /src/keycloak-theme/login/pages/Login.tsx
+ * File: /src/login/pages/Login.tsx
  * Project: @platform/keycloak
  * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser
