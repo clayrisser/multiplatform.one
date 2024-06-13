@@ -46,14 +46,12 @@ import '@multiplatform.one/components/css/code-highlight.css';
 import '@tamagui/core/reset.css';
 import 'raf/polyfill';
 import React, { useEffect } from 'react';
-import tamaguiConfig from '../tamagui.config';
 import type { Preview } from '@storybook/react';
 import type { PropsWithChildren } from 'react';
 import type { ThemeName } from 'ui';
-import { GlobalProvider } from 'app/providers';
 import { MDXProvider } from '@mdx-js/react';
 import { importFonts } from 'app/fonts';
-import { mdxComponents, YStack } from 'ui';
+import { mdxComponents } from 'ui';
 import { supportedLocales, defaultLocale, i18nInit, i18n } from 'app/i18n';
 import { themes as storybookThemes } from '@storybook/theming';
 import { useDarkMode } from 'storybook-dark-mode';
@@ -143,7 +141,7 @@ export function DocsContainer(props: any) {
 
 function Provider(props: PropsWithChildren & { theme: StylingTheme }) {
   const darkMode = useDarkMode();
-  const [theme, setTheme] = useTheme();
+  const [, setTheme] = useTheme();
   useEffect(() => {
     if (typeof darkMode === 'undefined') return;
     setTheme({ root: darkMode ? 'dark' : 'light' });
@@ -152,11 +150,7 @@ function Provider(props: PropsWithChildren & { theme: StylingTheme }) {
     if (typeof props.theme.name === 'undefined') return;
     setTheme({ sub: props.theme.name });
   }, [props.theme.name]);
-  return (
-    <GlobalProvider tamaguiConfig={tamaguiConfig} theme={theme}>
-      <YStack fullscreen>{props.children}</YStack>
-    </GlobalProvider>
-  );
+  return <>{props.children}</>;
 }
 
 interface StylingTheme {

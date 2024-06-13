@@ -56,7 +56,7 @@ BUILD_TARGETS := storybook-static/index.html
 storybook-static/index.html:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
-	@$(STORYBOOK) build $(BUILD_ARGS)
+	@$(PNPM) run build $(BUILD_ARGS)
 	@$(call done,$@)
 
 PORT ?= 6006
