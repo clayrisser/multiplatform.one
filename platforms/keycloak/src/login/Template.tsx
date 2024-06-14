@@ -1,5 +1,5 @@
 /**
- * File: /src/keycloak-theme/login/Template.tsx
+ * File: /src/login/Template.tsx
  * Project: @platform/keycloak
  * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser
@@ -52,9 +52,9 @@ export default function Template({
   const { isReady } = usePrepareTemplate({
     doFetchDefaultThemeResources: doUseDefaultCss,
     styles: [
-      `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
-      `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
       `${url.resourcesCommonPath}/lib/zocial/zocial.css`,
+      `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
+      `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
       `${url.resourcesPath}/css/login.css`,
     ],
     htmlClassName: getClassName('kcHtmlClass'),

@@ -22,11 +22,7 @@
 
 import { createGetKcContext } from 'keycloakify/login';
 
-export type KcContextExtension =
-  | { pageId: 'login.ftl'; extraThemeProperties: { foo: string } }
-  | { pageId: 'my-extra-page-1.ftl' }
-  | { pageId: 'my-extra-page-2.ftl'; someCustomValue: string }
-  | { pageId: 'register.ftl'; authorizedMailDomains: string[] };
+export type KcContextExtension = { pageId: 'login.ftl' } | { pageId: 'register.ftl'; authorizedMailDomains: string[] };
 
 export const { getKcContext } = createGetKcContext<KcContextExtension>({
   mockData: [
@@ -35,10 +31,6 @@ export const { getKcContext } = createGetKcContext<KcContextExtension>({
       locale: {
         currentLanguageTag: 'en',
       },
-    },
-    {
-      pageId: 'my-extra-page-2.ftl',
-      someCustomValue: 'foo bar baz',
     },
     {
       pageId: 'register-user-profile.ftl',
@@ -61,15 +53,15 @@ export const { getKcContext } = createGetKcContext<KcContextExtension>({
           {
             validators: {
               options: {
-                options: ['male', 'female', 'non_communicated'],
+                options: ['male', 'female', 'non_binary', 'prefer_not_to_say'],
               },
             },
-            annotations: {},
             displayName: `\${gender}`,
-            groupAnnotations: {},
-            name: 'gender',
-            readOnly: false,
+            annotations: {},
             required: true,
+            groupAnnotations: {},
+            readOnly: false,
+            name: 'gender',
           },
         ],
       },
@@ -77,16 +69,16 @@ export const { getKcContext } = createGetKcContext<KcContextExtension>({
     {
       pageId: 'register.ftl',
       authorizedMailDomains: [
-        'example.com',
-        'another-example.com',
-        '*.yet-another-example.com',
         '*.example.com',
+        '*.yet-another-example.com',
+        'another-example.com',
+        'example.com',
         'hello-world.com',
       ],
       messagesPerField: {
-        printIfExists: <T>(fieldName: string, className: T) => {
+        printIfExists: <T>(fieldName: string, text: T) => {
           console.log({ fieldName });
-          return fieldName === 'email' ? className : undefined;
+          return fieldName === 'email' ? text : undefined;
         },
         existsError: (fieldName: string) => fieldName === 'email',
         get: (fieldName: string) => `Fake error for ${fieldName}`,
@@ -94,6 +86,7 @@ export const { getKcContext } = createGetKcContext<KcContextExtension>({
       },
     },
   ],
+  mockProperties: {},
 });
 
 export const { kcContext } = getKcContext({});

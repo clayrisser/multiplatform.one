@@ -28,7 +28,7 @@ export function useSupportedLocales(): string[] | undefined {
   useEffect(() => {
     (async () => {
       if (MultiPlatform.isNext && !MultiPlatform.isStatic) {
-        const nextConfig = (await import('next/config')).default;
+        const nextConfig = (await import('next/config'))?.default;
         const getConfig =
           typeof nextConfig === 'function' ? nextConfig : (nextConfig as { default: typeof nextConfig }).default;
         setSupportedLocales([

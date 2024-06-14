@@ -19,24 +19,10 @@
  * limitations under the License.
  */
 
-import type { AuthOptions, Session as NextSession } from 'next-auth';
+import type { Session as NextSession } from 'next-auth';
 import type { SessionContextValue as NextSessionContextValue, UseSessionOptions } from 'next-auth/react';
 import { MultiPlatform } from 'multiplatform.one';
-import { useSession as useNextSession, getSession as getNextSession } from 'next-auth/react';
-
-let _getServerSession: ((options?: AuthOptions, req?: any, res?: any) => Promise<Session | null>) | undefined;
-
-export async function getSession(options?: AuthOptions, req?: any, res?: any): Promise<Session | null> {
-  if (MultiPlatform.isServer) {
-    if (typeof _getServerSession === 'function') return _getServerSession(options as AuthOptions, req, res);
-    const getSession = (await import('next-auth')).getServerSession;
-    _getServerSession = (options?: AuthOptions, req?: any, res?: any) => {
-      return req && res ? getSession(req, res, options as any) : getSession(options as any);
-    };
-    return _getServerSession(options as AuthOptions, req, res);
-  }
-  return getNextSession();
-}
+import { useSession as useNextSession } from 'next-auth/react';
 
 export type SessionContextValue<R extends boolean> = Partial<
   Omit<NextSessionContextValue<R> & { session: Session }, 'data'>

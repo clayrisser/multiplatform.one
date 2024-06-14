@@ -19,12 +19,11 @@
  * limitations under the License.
  */
 
+import path from 'path';
 import publicConfig from 'app/config/public';
-// import tamaguiModules from '../tamaguiModules';
 import transpileModules from '../../storybook/transpileModules';
 import type { StorybookConfig } from '@storybook/react-webpack5';
 import webpack from 'webpack';
-import path from 'path';
 
 const config: StorybookConfig = {
   stories: [
@@ -101,18 +100,17 @@ const config: StorybookConfig = {
       ...config.resolve,
       alias: {
         ...(config.resolve?.alias || {}),
-        buffer: require.resolve('buffer/'),
-        stream: require.resolve('stream-browserify'),
-        zlib: require.resolve('browserify-zlib'),
+        'next-i18next': require.resolve('empty-module'),
+        'next/config': require.resolve('empty-module'),
+        'next/head': require.resolve('empty-module'),
+        'next/headers': require.resolve('empty-module'),
+        'next/image': require.resolve('empty-module'),
+        'next/link': require.resolve('empty-module'),
+        'next/router': require.resolve('empty-module'),
+        next: require.resolve('empty-module'),
       },
       fallback: {
         ...(config.resolve?.fallback || {}),
-        fs: false,
-        http: false,
-        https: false,
-        os: false,
-        path: false,
-        util: false,
       },
     },
     plugins: [
@@ -125,16 +123,7 @@ const config: StorybookConfig = {
   babelDefault: (config, _options) => ({
     ...config,
     presets: [...(config.presets || []), '@babel/preset-typescript'],
-    plugins: [
-      // [
-      //   '@tamagui/babel-plugin',
-      //   {
-      //     components: tamaguiModules,
-      //     config: require.resolve('./tamagui.config.ts'),
-      //   },
-      // ],
-      'react-native-reanimated/plugin',
-    ],
+    plugins: ['react-native-reanimated/plugin'],
   }),
 };
 

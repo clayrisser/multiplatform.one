@@ -42,7 +42,6 @@
       "@storybook/manager-webpack5": "^6.5.16",
       "@storybook/nextjs": "~7.6.19",
       "@storybook/node-logger": "~7.6.19",
-      "@storybook/preset-create-react-app": "~7.6.19",
       "@storybook/react": "~7.6.19",
       "@storybook/react-webpack5": "~7.6.19",
       "@storybook/types": "~7.6.19",
@@ -61,16 +60,6 @@
   "tamaguiModules": [
     "@multiplatform.one/components",
     "ui"
-  ],
-  "transpileModules": [
-    "expo-asset",
-    "expo-constants",
-    "expo-linear-gradient",
-    "expo-linking",
-    "expo-modules-core",
-    "react-native-svg",
-    "react-native-web",
-    "solito"
   ],
   "prettier": "eslint-config-alloy/.prettierrc.js"
 }

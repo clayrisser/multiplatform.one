@@ -19,14 +19,32 @@
  * limitations under the License.
  */
 
+const fs = require('fs');
+const path = require('path');
+
+const stories = [
+  '..',
+  '../../../app',
+  ...fs.readdirSync(path.resolve(__dirname, '../../../packages')).map((dir) => `../../../packages/${dir}`),
+]
+  .map((dir) => path.resolve(__dirname, dir))
+  .map((dir) => {
+    return fs
+      .readdirSync(dir, { withFileTypes: true })
+      .filter(
+        (dir) =>
+          dir.isDirectory() &&
+          !['dist', 'lib', 'types', 'bin', 'node_modules'].includes(dir.name) &&
+          !dir.name.startsWith('.') &&
+          !dir.name.startsWith('_') &&
+          !dir.name.startsWith('@'),
+      )
+      .map((dir) => `${dir.parentPath}/${dir.name}`);
+  })
+  .flat();
+
 module.exports = {
-  stories: [
-    ...['../../../app/layouts', '../../../app/screens', '../stories'].map((directory) => ({
-      directory,
-      files: '**/*.stories.@(js|jsx|ts|tsx|mdx)',
-    })),
-    { directory: '../../../packages', files: '*/src/**/*.stories.@(js|jsx|ts|tsx|mdx)' },
-  ],
+  stories,
   addons: [
     '@storybook/addon-ondevice-actions',
     '@storybook/addon-ondevice-backgrounds',

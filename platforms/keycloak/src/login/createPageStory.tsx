@@ -1,5 +1,5 @@
 /**
- * File: /src/keycloak-theme/login/createPageStory.tsx
+ * File: /src/login/createPageStory.tsx
  * Project: @platform/keycloak
  * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser
@@ -31,12 +31,7 @@ export function createPageStory<PageId extends KcContext['pageId']>(params: { pa
       mockPageId: pageId,
       storyPartialKcContext: params.kcContext,
     });
-    return (
-      <>
-        <link rel="stylesheet" type="text/css" href="fonts/WorkSans/font.css" />
-        <KcApp kcContext={kcContext} />
-      </>
-    );
+    return <KcApp kcContext={kcContext} />;
   }
   return { PageStory };
 }
