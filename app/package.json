@@ -6,7 +6,6 @@
     "*.css"
   ],
   "dependencies": {
-    "@apollo/client": "^3.10.4",
     "@expo-google-fonts/rock-salt": "^0.2.3",
     "@expo-google-fonts/silkscreen": "^0.2.3",
     "@fontsource/rock-salt": "^5.0.19",
@@ -36,6 +35,7 @@
     "solito": "^4.2.2",
     "subscriptions-transport-ws": "^0.11.0",
     "tamagui": "^1.100.3",
+    "urql": "^4.1.0",
     "utf-8-validate": "^6.0.4"
   },
   "devDependencies": {

@@ -19,8 +19,9 @@
  * limitations under the License.
  */
 
-import type { OperationVariables, QueryOptions } from '@apollo/client';
-import { useApolloClient } from '@apollo/client';
+import type { DocumentNode } from 'graphql';
+import type { TypedDocumentNode, OperationContext } from 'urql';
+import { useClient } from 'urql';
 import { useKeycloak } from '@multiplatform.one/keycloak';
 import { useQuery as useTanstackQuery } from '@tanstack/react-query';
 import type {
@@ -33,25 +34,20 @@ import type {
   UseQueryResult,
 } from '@tanstack/react-query';
 
-const apolloQueryOptionsKeys = new Set([
-  'canonizeResults',
-  'context',
-  'errorPolicy',
-  'fetchPolicy',
-  'notifyOnNetworkStatusChange',
-  'partialRefetch',
-  'pollInterval',
-  'query',
-  'returnPartialData',
-  'variables',
-]);
+const extraOptionsKeys = new Set(['context', 'query', 'variables']);
+
+export interface ExtraOptions<TQueryFnData = unknown, TData = TQueryFnData, TVariables extends object = {}> {
+  context?: Partial<OperationContext>;
+  query: DocumentNode | TypedDocumentNode<TData, TVariables> | string;
+  variables: TVariables;
+}
 
 export function useGqlQuery<
   TQueryFnData = unknown,
   TError = DefaultError,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey,
-  TVariables extends OperationVariables = OperationVariables,
+  TVariables extends object = {},
 >(
   options: Omit<
     | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
@@ -59,19 +55,19 @@ export function useGqlQuery<
     | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
     'queryFn' | 'queryKey'
   > &
-    QueryOptions<TVariables, TData> & {
+    ExtraOptions<TQueryFnData, TData, TVariables> & {
       queryKey?: TQueryKey;
     },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> {
   const keycloak = useKeycloak();
-  const client = useApolloClient();
-  const apolloQueryOptions = [...apolloQueryOptionsKeys].reduce((apolloQueryOptions, key) => {
-    if (options.hasOwnProperty(key)) apolloQueryOptions[key] = options[key];
-    return apolloQueryOptions;
-  }, {}) as QueryOptions<TVariables, TData>;
+  const client = useClient();
+  const extraOptions = [...extraOptionsKeys].reduce((extraQueryOptions, key) => {
+    if (options.hasOwnProperty(key)) extraQueryOptions[key] = options[key];
+    return extraQueryOptions;
+  }, {}) as ExtraOptions<TQueryFnData, TData, TVariables>;
   const tanstackQueryOptions = Object.entries(options).reduce((tanstackQueryOptions, [key, value]) => {
-    if (!apolloQueryOptionsKeys.has(key)) tanstackQueryOptions[key] = value;
+    if (!extraOptionsKeys.has(key)) tanstackQueryOptions[key] = value;
     return tanstackQueryOptions;
   }, {}) as
     | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
@@ -86,18 +82,23 @@ export function useGqlQuery<
           ? tanstackQueryOptions.enabled
           : !!(keycloak?.authenticated && keycloak.token),
       async queryFn() {
-        return (
-          await client.query<TQueryFnData, TVariables>({
-            ...apolloQueryOptions,
-            context: {
-              ...apolloQueryOptions?.context,
+        const { data, error } = await client
+          .query<TQueryFnData, TVariables>(extraOptions.query, extraOptions.variables, {
+            ...extraOptions.context,
+            fetchOptions: {
+              ...extraOptions.context?.fetchOptions,
               headers: {
-                ...(apolloQueryOptions?.context?.headers || {}),
+                ...(typeof extraOptions.context?.fetchOptions === 'function'
+                  ? extraOptions.context?.fetchOptions()?.headers
+                  : extraOptions.context?.fetchOptions?.headers),
                 authorization: `Bearer ${keycloak?.token}`,
               },
             },
           })
-        ).data;
+          .toPromise();
+        if (error) throw error;
+        if (typeof data === 'undefined') throw new Error('no data returned from query');
+        return data;
       },
     },
     queryClient,

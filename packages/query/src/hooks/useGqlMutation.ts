@@ -19,84 +19,61 @@
  * limitations under the License.
  */
 
+import type { AnyVariables } from '@urql/core';
+import type { DocumentInput, OperationContext } from 'urql';
 import type { QueryKey, UseMutationResult, DefaultError, UseMutationOptions, QueryClient } from '@tanstack/react-query';
 import { useKeycloak } from '@multiplatform.one/keycloak';
-import { useMutation as useApolloMutation } from '@apollo/client';
+import { useMutation } from 'urql';
 import { useQueryClient, useMutation as useTanstackMutation } from '@tanstack/react-query';
-import type {
-  ApolloCache,
-  DefaultContext,
-  DocumentNode,
-  MutationFunctionOptions,
-  MutationHookOptions,
-  NoInfer,
-  OperationVariables,
-  TypedDocumentNode,
-} from '@apollo/client';
 
-const apolloMutationOptionsKeys = new Set(['client']);
-const extraOptionsKeys = new Set(['mutation', 'queryKey']);
+const extraOptionsKeys = new Set(['mutation', 'invalidateQueryKeys', 'context']);
 
-interface ExtraOptions<TQueryKeys extends QueryKey[], AData = any, AVariables = OperationVariables> {
+interface ExtraOptions<TQueryKeys extends QueryKey[], TData = any, TVariables = AnyVariables> {
+  context?: Partial<OperationContext>;
   invalidateQueryKeys?: TQueryKeys;
-  mutation: DocumentNode | TypedDocumentNode<AData, AVariables>;
+  mutation: DocumentInput<TData, TVariables>;
 }
 
-export type ApolloMutationOptions<
-  TData = any,
-  TVariables = OperationVariables,
-  AContext = DefaultContext,
-  TCache extends ApolloCache<any> = ApolloCache<any>,
-> = Omit<
-  MutationHookOptions<NoInfer<TData>, NoInfer<TVariables>, AContext, TCache>,
-  'ignoreResults' | 'notifyOnNetworkStatusChange' | 'onCompleted' | 'onError'
->;
-
 export function useGqlMutation<
-  TData = unknown,
+  TData = any,
   TError = DefaultError,
-  TVariables = OperationVariables,
+  TVariables extends AnyVariables = AnyVariables,
   TContext = unknown,
-  AContext = DefaultContext,
-  TCache extends ApolloCache<any> = ApolloCache<any>,
   TQueryKeys extends QueryKey[] = QueryKey[],
 >(
-  options: UseMutationOptions<TData, TError, TVariables, TContext> &
-    ApolloMutationOptions<TData, TVariables, AContext, TCache> &
-    ExtraOptions<TQueryKeys, TData, TVariables>,
+  options: UseMutationOptions<TData, TError, TVariables, TContext> & ExtraOptions<TQueryKeys, TData, TVariables>,
   queryClient?: QueryClient,
 ): UseMutationResult<TData, TError, TVariables, TContext> {
-  const apolloMutationOptions = [...apolloMutationOptionsKeys].reduce((apolloMutationOptions, key) => {
-    if (options.hasOwnProperty(key)) apolloMutationOptions[key] = options[key];
-    return apolloMutationOptions;
-  }, {}) as ApolloMutationOptions<TData, TVariables, AContext, TCache>;
   const extraOptions = [...extraOptionsKeys].reduce((extraOptions, key) => {
     if (options.hasOwnProperty(key)) extraOptions[key] = options[key];
     return extraOptions;
   }, {}) as ExtraOptions<TQueryKeys, TData, TVariables>;
   const tanstackMutationOptions = Object.entries(options).reduce((tanstackMutationOptions, [key, value]) => {
-    if (!apolloMutationOptionsKeys.has(key) && !extraOptionsKeys.has(key)) tanstackMutationOptions[key] = value;
+    if (!extraOptionsKeys.has(key)) tanstackMutationOptions[key] = value;
     return tanstackMutationOptions;
   }, {}) as UseMutationOptions<TData, TError, TVariables, TContext>;
   const keycloak = useKeycloak();
   const tanstackQueryClient = useQueryClient();
-  const [mutate] = useApolloMutation<TData, TVariables, AContext, TCache>(extraOptions.mutation, {
-    ...apolloMutationOptions,
-    context: {
-      ...apolloMutationOptions?.context,
-      headers: {
-        ...((apolloMutationOptions?.context as any)?.headers || {}),
-        authorization: `Bearer ${keycloak?.token}`,
-      },
-    } as AContext,
-  });
+  const [, mutate] = useMutation<TData, TVariables>(extraOptions.mutation);
   return useTanstackMutation<TData, TError, TVariables, TContext>(
     {
       ...tanstackMutationOptions,
       async mutationFn(variables: TVariables): Promise<TData> {
-        return mutate({
-          variables,
-        } as MutationFunctionOptions<TData, TVariables, AContext, TCache>) as Promise<TData>;
+        const { data, error } = await mutate(variables, {
+          ...extraOptions.context,
+          fetchOptions: {
+            ...extraOptions.context?.fetchOptions,
+            headers: {
+              ...(typeof extraOptions.context?.fetchOptions === 'function'
+                ? extraOptions.context?.fetchOptions()?.headers
+                : extraOptions.context?.fetchOptions?.headers),
+              authorization: `Bearer ${keycloak?.token}`,
+            },
+          },
+        });
+        if (error) throw error;
+        if (!data) throw new Error('no data returned from mutation');
+        return data;
       },
       async onMutate(variables: TVariables) {
         (extraOptions?.invalidateQueryKeys || []).forEach((queryKey) =>

@@ -10,7 +10,6 @@ als
 amr
 anatine
 apiv
-apollo
 argv
 arial
 asar
@@ -403,6 +402,7 @@ unselectable
 unshift
 unspaced
 uri
+urql
 userid
 userinfo
 usermodel
