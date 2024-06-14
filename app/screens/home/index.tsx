@@ -58,12 +58,12 @@ function HomeScreen() {
   const linkProps = useLink({
     href: '/user/alice',
   });
-  const { data, isLoading } = useGqlQuery({ query: AuthQuery, queryKey: ['hello'] });
-  const { data: cData } = useGqlSubscription({ query: CountSubscription, queryKey: ['world'] });
+  const { data, isLoading } = useGqlQuery({ query: AuthQuery, queryKey: ['hello'], variables: {} });
+  // const { data: cData } = useGqlSubscription({ query: CountSubscription, queryKey: ['world'] });
 
   return (
     <YStack f={1} jc="center" ai="center" p="$4">
-      <Text>{cData?.count}</Text>
+      {/* <Text>{cData?.count}</Text> */}
       {isLoading ? <Spinner /> : <Text>username: {data?.username}</Text>}
       <Button>Update name</Button>
       <YStack

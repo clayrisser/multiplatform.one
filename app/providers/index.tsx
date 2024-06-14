@@ -19,13 +19,13 @@
  * limitations under the License.
  */
 
-import React, { Suspense } from 'react';
+import React from 'react';
 import type { GlobalKeycloakProviderProps } from './keycloak';
 import type { GlobalTamaguiProviderProps } from './tamagui';
 import type { PropsWithChildren } from 'react';
 import type { TamaguiInternalConfig } from 'ui';
 import type { ThemeProviderProps } from 'multiplatform.one/theme';
-import { GlobalApolloProvider } from './apollo';
+import { GlobalUrqlProvider } from './urql';
 import { GlobalKeycloakProvider } from './keycloak';
 import { GlobalTamaguiProvider } from './tamagui';
 import { GlobalTanstackProvider } from './tanstack';
@@ -48,7 +48,7 @@ export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, the
       <ThemeProvider cookies={cookies} theme={theme}>
         <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
           <GlobalKeycloakProvider disabled={keycloakDisabled} {...keycloak}>
-            <GlobalApolloProvider keycloakDisabled={keycloakDisabled}>{children}</GlobalApolloProvider>
+            <GlobalUrqlProvider keycloakDisabled={keycloakDisabled}>{children}</GlobalUrqlProvider>
           </GlobalKeycloakProvider>
         </GlobalTamaguiProvider>
       </ThemeProvider>
@@ -56,7 +56,7 @@ export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, the
   );
 }
 
-export * from './apollo';
+export * from './urql';
 export * from './keycloak';
 export * from './tamagui';
 export * from './tanstack';
