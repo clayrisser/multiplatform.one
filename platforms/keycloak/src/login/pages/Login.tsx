@@ -20,13 +20,14 @@
  * limitations under the License.
  */
 
+import type { FormEventHandler } from 'react';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../kcContext';
 import type { PageProps } from 'keycloakify/login/pages/PageProps';
 import { clsx } from 'keycloakify/tools/clsx';
 import { useConstCallback } from 'keycloakify/tools/useConstCallback';
 import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
-import { useState, type FormEventHandler } from 'react';
+import { useState } from 'react';
 
 export default function Login({
   kcContext,

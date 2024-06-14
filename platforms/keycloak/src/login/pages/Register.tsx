@@ -1,5 +1,5 @@
 /**
- * File: /src/keycloak-theme/login/pages/Register.tsx
+ * File: /src/login/pages/Register.tsx
  * Project: @platform/keycloak
  * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser
@@ -20,11 +20,11 @@
  * limitations under the License.
  */
 
-import { clsx } from 'keycloakify/tools/clsx';
-import type { PageProps } from 'keycloakify/login/pages/PageProps';
-import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
-import type { KcContext } from '../kcContext';
 import type { I18n } from '../i18n';
+import type { KcContext } from '../kcContext';
+import type { PageProps } from 'keycloakify/login/pages/PageProps';
+import { clsx } from 'keycloakify/tools/clsx';
+import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
 
 export default function Register({
   kcContext,
