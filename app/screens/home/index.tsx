@@ -21,10 +21,10 @@
 
 import React, { useState } from 'react';
 import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text } from 'ui';
-import { ChevronDown, ChevronUp, Variable } from '@tamagui/lucide-icons';
+import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { ThemeTintAlt } from '@multiplatform.one/components';
 import { gql } from 'gql';
-import { useGqlQuery, useGqlSubscription, useGqlMutation } from '@multiplatform.one/query';
+import { useGqlQuery, useGqlSubscription } from '@multiplatform.one/query';
 import { useLink } from 'solito/link';
 import { useTranslation } from '@multiplatform.one/locales';
 import { withAuthenticated } from '@multiplatform.one/keycloak';
@@ -53,12 +53,6 @@ const GetUser = gql(`
   }
 `);
 
-// const UpdateUser = gql(`
-//   mutation UpdateUser($id: String!, $name: String!) {
-
-//   }
-// `);
-
 function HomeScreen() {
   const { t } = useTranslation();
   const linkProps = useLink({
@@ -67,17 +61,10 @@ function HomeScreen() {
   const { data, isLoading } = useGqlQuery({ query: AuthQuery, queryKey: ['hello'] });
   const { data: cData } = useGqlSubscription({ query: CountSubscription, queryKey: ['world'] });
 
-  const { data: uData, isLoading: uIsLoading } = useGqlQuery({
-    query: GetUser,
-    variables: { id: 'abc' },
-    queryKey: ['userABC'],
-  });
-
   return (
     <YStack f={1} jc="center" ai="center" p="$4">
       <Text>{cData?.count}</Text>
       {isLoading ? <Spinner /> : <Text>username: {data?.username}</Text>}
-      {uIsLoading ? <Spinner /> : <Text>user: {uData?.user?.name}</Text>}
       <Button>Update name</Button>
       <YStack
         // gap="$4"
