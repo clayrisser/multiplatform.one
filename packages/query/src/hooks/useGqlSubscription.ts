@@ -19,66 +19,77 @@
  * limitations under the License.
  */
 
+import type { AnyVariables } from '@urql/core';
 import type { QueryKey } from '@tanstack/react-query';
+import type { UseSubscriptionArgs, SubscriptionHandler } from 'urql';
+import { useEffect } from 'react';
 import { useKeycloak } from '@multiplatform.one/keycloak';
 import { useQueryClient } from '@tanstack/react-query';
-import { useSubscription } from '@apollo/client';
-import type {
-  DefaultContext,
-  DocumentNode,
-  NoInfer,
-  OperationVariables,
-  SubscriptionHookOptions,
-  SubscriptionResult,
-  TypedDocumentNode,
-} from '@apollo/client';
+import { useSubscription } from 'urql';
 
-export interface UseGqlSubscriptionOptions<
+export type UseGqlSubscriptionOptions<
   TData = any,
-  TVariables extends OperationVariables = OperationVariables,
+  TVariables extends AnyVariables = AnyVariables,
   TQueryKey extends QueryKey = QueryKey,
-> extends Partial<Omit<SubscriptionHookOptions<NoInfer<TData>, NoInfer<TVariables>>, 'skip'>> {
+> = Omit<UseSubscriptionArgs<TVariables, TData>, 'pause'> & {
   enabled?: boolean;
-  query: DocumentNode | TypedDocumentNode<TData, TVariables>;
   queryKey?: TQueryKey;
   updatedAt?: number;
-}
+};
 
-const excludedApolloSubscriptionOptionsKeys = new Set(['query', 'enabled', 'queryKey', 'updatedAt']);
 declare const dataTagSymbol: unique symbol;
 type DataTag<TType, TValue> = TType & {
   [dataTagSymbol]: TValue;
 };
+type NoInfer<T> = [T][T extends any ? 0 : never];
 
 export function useGqlSubscription<
   TData = any,
-  TVariables extends OperationVariables = OperationVariables,
-  TQueryFnData = unknown,
-  TTaggedQueryKey extends QueryKey = QueryKey,
-  TInferredQueryFnData = TTaggedQueryKey extends DataTag<unknown, infer TaggedValue> ? TaggedValue : TQueryFnData,
->(options: UseGqlSubscriptionOptions<TData, TVariables, TTaggedQueryKey>): SubscriptionResult<TData, TVariables> {
+  TResult = TData,
+  TVariables extends AnyVariables = AnyVariables,
+  TQueryKey extends QueryKey = QueryKey,
+>(
+  options: UseGqlSubscriptionOptions<TData, TVariables, TQueryKey>,
+  handler?: SubscriptionHandler<TData, TResult>,
+): TResult {
   const keycloak = useKeycloak();
   const queryClient = useQueryClient();
-  return useSubscription(options.query, {
-    ...Object.entries(options).reduce((options, [key, value]) => {
-      if (!excludedApolloSubscriptionOptionsKeys.has(key)) options[key] = value;
-      return options;
-    }, {}),
-    skip: !(typeof options?.enabled !== 'undefined' ? options.enabled : !!(keycloak?.authenticated && keycloak.token)),
-    onData: ({ client, data }) => {
-      if (options.queryKey) {
-        queryClient.setQueryData(options.queryKey, data as NoInfer<TInferredQueryFnData> | undefined, {
-          updatedAt: options.updatedAt,
-        });
-      }
-      if (options.onData) return options.onData({ client, data });
-    },
-    context: {
-      ...options?.context,
-      headers: {
-        ...((options?.context as DefaultContext)?.headers || {}),
-        authorization: `Bearer ${keycloak?.token}`,
+  const [response] = useSubscription<TData, TResult, TVariables>(
+    {
+      pause: !(typeof options?.enabled !== 'undefined'
+        ? options.enabled
+        : !!(keycloak?.authenticated && keycloak.token)),
+      context: {
+        ...options.context,
+        fetchOptions: {
+          ...options.context?.fetchOptions,
+          headers: {
+            ...(typeof options.context?.fetchOptions === 'function'
+              ? options.context?.fetchOptions()?.headers
+              : options.context?.fetchOptions?.headers),
+            authorization: `Bearer ${keycloak?.token}`,
+          },
+        },
       },
+      query: options.query,
+      variables: options.variables as TVariables,
     },
-  });
+    handler,
+  );
+  useEffect(() => {
+    if (options.queryKey) {
+      queryClient.setQueryData(
+        options.queryKey,
+        response.data as
+          | NoInfer<TQueryKey extends DataTag<unknown, infer TaggedValue> ? TaggedValue : TData>
+          | undefined,
+        {
+          updatedAt: options.updatedAt,
+        },
+      );
+    }
+  }, [response]);
+  if (response.error) throw response.error;
+  if (typeof response.data === 'undefined') throw new Error('no data returned from subscription');
+  return response.data;
 }

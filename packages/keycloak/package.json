@@ -79,7 +79,6 @@
     "lib"
   ],
   "dependencies": {
-    "@apollo/client": "^3.10.4",
     "@multiplatform.one/zustand": "workspace:1.0.3",
     "expo-auth-session": "^5.5.2",
     "expo-crypto": "^13.0.2",
