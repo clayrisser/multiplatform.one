@@ -23,7 +23,7 @@
 import './KcApp.css';
 import Fallback from 'keycloakify/login';
 import Template from './Template';
-import tamaguiConfig from '../../tamagui.config';
+import tamaguiConfig from '../tamagui.config';
 import type { KcContext } from './kcContext';
 import type { PageProps } from 'keycloakify/login';
 import type { ReactNode } from 'react';
