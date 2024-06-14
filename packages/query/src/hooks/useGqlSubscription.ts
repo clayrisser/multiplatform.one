@@ -76,6 +76,7 @@ export function useGqlSubscription<
     },
     handler,
   );
+
   useEffect(() => {
     if (options.queryKey) {
       queryClient.setQueryData(
