@@ -1,16 +1,30 @@
-import {
-  screen,
-  BrowserWindow,
-  BrowserWindowConstructorOptions,
-  Rectangle,
-} from "electron";
-import Store from "electron-store";
+/*
+ * File: /main/helpers/create-window.ts
+ * Project: @platform/electron
+ * File Created: 15-06-2024 14:38:39
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-export const createWindow = (
-  windowName: string,
-  options: BrowserWindowConstructorOptions
-): BrowserWindow => {
-  const key = "window-state";
+import Store from 'electron-store';
+import type { BrowserWindowConstructorOptions, Rectangle } from 'electron';
+import { screen, BrowserWindow } from 'electron';
+
+export function createWindow(windowName: string, options: BrowserWindowConstructorOptions): BrowserWindow {
+  const key = 'window-state';
   const name = `window-state-${windowName}`;
   const store = new Store<Rectangle>({ name });
   const defaultSize = {
@@ -39,10 +53,7 @@ export const createWindow = (
   }
   function resetToDefaults() {
     const bounds = screen.getPrimaryDisplay().bounds;
-    return Object.assign({}, defaultSize, {
-      x: (bounds.width - defaultSize.width) / 2,
-      y: (bounds.height - defaultSize.height) / 2,
-    });
+    return { ...defaultSize, x: (bounds.width - defaultSize.width) / 2, y: (bounds.height - defaultSize.height) / 2 };
   }
   function ensureVisibleOnSomeDisplay(windowState) {
     const visible = screen.getAllDisplays().some((display) => {
@@ -67,6 +78,6 @@ export const createWindow = (
       ...options.webPreferences,
     },
   });
-  win.on("close", saveState);
+  win.on('close', saveState);
   return win;
-};
+}
