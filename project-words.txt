@@ -78,6 +78,7 @@ constructable
 corejs
 coreutils
 cors
+craco
 crossorigin
 cryptr
 cspell

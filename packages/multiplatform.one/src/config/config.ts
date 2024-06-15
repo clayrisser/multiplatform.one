@@ -24,7 +24,7 @@ import type { IConfig } from './types';
 import { MultiPlatform } from '../multiplatform';
 
 const getConfig =
-  typeof nextConfig === 'function' ? nextConfig : (nextConfig as { default: typeof nextConfig }).default;
+  typeof nextConfig === 'function' ? nextConfig : (nextConfig as { default: typeof nextConfig })?.default;
 
 export class Config implements IConfig {
   private _config: Record<string, string | undefined> = {};

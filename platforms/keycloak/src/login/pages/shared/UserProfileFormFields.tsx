@@ -1,5 +1,5 @@
 /**
- * File: /src/keycloak-theme/login/pages/shared/UserProfileFormFields.tsx
+ * File: /src/login/pages/shared/UserProfileFormFields.tsx
  * Project: @platform/keycloak
  * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser

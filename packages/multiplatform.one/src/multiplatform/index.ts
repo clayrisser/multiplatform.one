@@ -24,7 +24,7 @@ import { MultiPlatformBase } from './multiplatformBase';
 import { isChrome, isClient, isWindowDefined, isServer, isWeb, isWebTouchable } from '@tamagui/constants';
 
 const getConfig =
-  typeof nextConfig === 'function' ? nextConfig : (nextConfig as { default: typeof nextConfig }).default;
+  typeof nextConfig === 'function' ? nextConfig : (nextConfig as { default: typeof nextConfig })?.default;
 
 export class MultiPlatform extends MultiPlatformBase {
   static isChrome = isChrome;

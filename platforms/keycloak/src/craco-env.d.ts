@@ -1,5 +1,5 @@
-/**
- * File: /src/keycloak-theme/login/pages/MyExtraPage1.tsx
+/*
+ * File: /src/craco-env.d.ts
  * Project: @platform/keycloak
  * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser
@@ -20,28 +20,9 @@
  * limitations under the License.
  */
 
-import type { I18n } from '../i18n';
-import type { KcContext } from '../kcContext';
-import type { PageProps } from 'keycloakify/login/pages/PageProps';
+/// <reference types="react-scripts" />
 
-export default function MyExtraPage1({
-  kcContext,
-  i18n,
-  doUseDefaultCss,
-  Template,
-  classes,
-}: PageProps<Extract<KcContext, { pageId: 'my-extra-page-1.ftl' }>, I18n>) {
-  return (
-    <Template
-      {...{ kcContext, i18n, doUseDefaultCss, classes }}
-      headerNode={
-        <>
-          Header <i>text</i>
-        </>
-      }
-      infoNode={<span>footer</span>}
-    >
-      <form>{}</form>
-    </Template>
-  );
+declare module '*.md' {
+  const src: string;
+  export default src;
 }

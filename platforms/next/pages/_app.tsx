@@ -34,7 +34,7 @@ import { GlobalProvider } from 'app/providers';
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
 import { appWithTranslation } from 'next-i18next';
 import { config } from 'app/config';
-import { getSession } from '@multiplatform.one/keycloak';
+import { getServerSession } from 'next-auth';
 import { importFonts } from 'app/fonts';
 
 const sentryDsn = config.get('SENTRY_DSN');
@@ -54,7 +54,7 @@ export interface AppProps extends NextAppProps {
 }
 
 function App({ Component, cookies, pageProps, session }: AppProps) {
-  const [theme, setTheme] = useRootTheme();
+  const [rootTheme, setRootTheme] = useRootTheme();
   const contents = useMemo(() => <Component {...pageProps} />, [pageProps, Component]);
   return (
     <>
@@ -66,10 +66,12 @@ function App({ Component, cookies, pageProps, session }: AppProps) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NextThemeProvider onChangeTheme={(name: string) => setTheme(name as ColorScheme)}>
+      <NextThemeProvider onChangeTheme={(name: string) => setRootTheme(name as ColorScheme)}>
         <GlobalProvider
           cookies={cookies}
-          defaultTheme={theme}
+          theme={{
+            root: rootTheme,
+          }}
           disableInjectCSS
           disableRootThemeClass
           tamaguiConfig={tamaguiConfig}
@@ -92,14 +94,14 @@ function App({ Component, cookies, pageProps, session }: AppProps) {
 App.getInitialProps = async ({ ctx }: AppContext) => {
   return {
     cookies: !ctx.req?.headers ? {} : cookie.parse(ctx.req.headers.cookie || ''),
-    session: await getSession(
-      typeof window === 'undefined'
+    session: await getServerSession(
+      ctx.req as any,
+      ctx.res as any,
+      (typeof window === 'undefined'
         ? (await import('@multiplatform.one/keycloak/routes')).createNextAuthOptions(
             (await import('../authOptions')).authHandlerOptions,
           )
-        : undefined,
-      ctx.req,
-      ctx.res,
+        : undefined) as any,
     ),
   };
 };

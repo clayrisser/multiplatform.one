@@ -1,5 +1,5 @@
 /**
- * File: /src/keycloak-theme/account/Template.tsx
+ * File: /src/account/Template.tsx
  * Project: @platform/keycloak
  * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser
@@ -40,14 +40,16 @@ export default function Template({
   const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
   const { locale, url, features, realm, message, referrer } = kcContext;
   const { isReady } = usePrepareTemplate({
+    bodyClassName: clsx('admin-console', 'user', getClassName('kcBodyClass')),
     doFetchDefaultThemeResources: doUseDefaultCss,
+    documentTitle: i18n.msgStr('accountManagementTitle'),
+    htmlClassName: getClassName('kcHtmlClass'),
+    htmlLangProperty: locale?.currentLanguageTag,
     styles: [
       `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
       `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
       `${url.resourcesPath}/css/account.css`,
     ],
-    htmlClassName: getClassName('kcHtmlClass'),
-    bodyClassName: clsx('admin-console', 'user', getClassName('kcBodyClass')),
   });
   if (!isReady) return null;
   return (

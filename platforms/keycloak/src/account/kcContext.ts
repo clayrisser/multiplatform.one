@@ -1,5 +1,5 @@
 /*
- * File: /src/keycloak-theme/account/kcContext.ts
+ * File: /src/account/kcContext.ts
  * Project: @platform/keycloak
  * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser
@@ -22,17 +22,9 @@
 
 import { createGetKcContext } from 'keycloakify/account';
 
-export type KcContextExtension =
-  | { pageId: 'my-extra-page-1.ftl' }
-  | { pageId: 'my-extra-page-2.ftl'; someCustomValue: string };
-
-export const { getKcContext } = createGetKcContext<KcContextExtension>({
-  mockData: [
-    {
-      pageId: 'my-extra-page-2.ftl',
-      someCustomValue: 'foo bar',
-    },
-  ],
+export const { getKcContext } = createGetKcContext({
+  mockData: [],
+  mockProperties: {},
 });
 
 export const { kcContext } = getKcContext({});

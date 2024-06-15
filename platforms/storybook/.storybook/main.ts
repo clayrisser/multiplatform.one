@@ -22,17 +22,33 @@
 import publicConfig from 'app/config/public';
 // import tamaguiModules from '../tamaguiModules';
 import transpileModules from '../../storybook/transpileModules';
-import type { StorybookConfig } from '@storybook/react-webpack5';
-import webpack from 'webpack';
+import type { StorybookConfig } from '@storybook/nextjs';
 import path from 'path';
+import fs from 'fs';
+
+const stories = [
+  '..',
+  '../../../app',
+  ...fs.readdirSync(path.resolve(__dirname, '../../../packages')).map((dir) => `../../../packages/${dir}`),
+]
+  .map((dir) => path.resolve(__dirname, dir))
+  .map((dir) => {
+    return fs
+      .readdirSync(dir, { withFileTypes: true })
+      .filter(
+        (dir) =>
+          dir.isDirectory() &&
+          !['dist', 'lib', 'types', 'bin', 'node_modules'].includes(dir.name) &&
+          !dir.name.startsWith('.') &&
+          !dir.name.startsWith('_') &&
+          !dir.name.startsWith('@'),
+      )
+      .map((dir) => `${dir.parentPath}/${dir.name}`);
+  })
+  .flat();
 
 const config: StorybookConfig = {
-  stories: [
-    {
-      directory: path.resolve(__dirname, '../src'),
-    },
-  ],
-  staticDirs: ['../public'],
+  stories,
   addons: [
     '@etchteam/storybook-addon-status',
     '@storybook/addon-a11y',
@@ -69,7 +85,7 @@ const config: StorybookConfig = {
     disableTelemetry: true,
   },
   framework: {
-    name: '@storybook/react-webpack5',
+    name: '@storybook/nextjs',
     options: {},
   },
   features: {
@@ -107,18 +123,9 @@ const config: StorybookConfig = {
       },
       fallback: {
         ...(config.resolve?.fallback || {}),
-        fs: false,
-        os: false,
-        path: false,
-        util: false,
       },
     },
-    plugins: [
-      ...(config.plugins || []),
-      new webpack.ProvidePlugin({
-        Buffer: ['buffer', 'Buffer'],
-      }),
-    ],
+    plugins: [...(config.plugins || [])],
   }),
   babelDefault: (config, _options) => ({
     ...config,
