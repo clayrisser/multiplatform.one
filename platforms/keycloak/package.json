@@ -2,14 +2,12 @@
   "name": "@platform/keycloak",
   "private": true,
   "scripts": {
-    "build": "react-scripts build && rimraf build/keycloak-resources && keycloakify",
+    "build": "craco build && rm -rf build/keycloak-resources && keycloakify",
     "dev": "copy-keycloak-resources-to-public && TAMAGUI_TARGET=web storybook dev -p 6006"
   },
   "keycloakify": {
-    "themeName": "keycloakify-starter",
-    "extraThemeProperties": [
-      "foo=bar"
-    ]
+    "themeName": "keycloakify",
+    "extraThemeProperties": []
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.18.6",
@@ -23,14 +21,13 @@
     "@storybook/addon-react-native-web": "0.0.23",
     "@storybook/addon-storyshots": "^7.6.17",
     "@storybook/addon-storysource": "~7.6.19",
-    "evt": "^2.5.7",
-    "keycloakify": "^9.6.1",
-    "@storybook/nextjs": "~7.6.19",
     "@storybook/react": "~7.6.19",
     "addon-screen-reader": "^1.8.6",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
+    "evt": "^2.5.7",
     "expo": "^51.0.12",
+    "keycloakify": "^9.7.0",
     "multiplatform.one": "workspace:1.0.11",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -45,6 +42,7 @@
     "@babel/preset-env": "^7.24.7",
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
+    "@craco/craco": "^7.1.0",
     "@loki/target-chrome-core": "0.35.0",
     "@storybook/addon-actions": "~7.6.19",
     "@storybook/addon-essentials": "~7.6.19",
@@ -55,7 +53,6 @@
     "@storybook/builder-webpack5": "~7.6.19",
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/node-logger": "~7.6.19",
-    "@storybook/preset-create-react-app": "~7.6.19",
     "@storybook/react": "~7.6.19",
     "@storybook/react-webpack5": "~7.6.19",
     "@storybook/testing-library": "^0.2.2",
@@ -64,13 +61,18 @@
     "@types/node": "~20.12.13",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
+    "craco-babel-loader": "^1.0.4",
+    "empty-module": "^0.0.2",
     "loki": "^0.35.0",
     "react-native-reanimated": "3.8.1",
     "react-scripts": "5.0.1",
-    "rimraf": "^5.0.5",
     "storybook": "~7.6.19",
     "typescript": "~5.3.3"
   },
+  "transpileModules": [
+    "app",
+    "ui"
+  ],
   "loki": {
     "configurations": {
       "chrome.iphone7": {

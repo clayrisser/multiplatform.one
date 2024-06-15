@@ -20,10 +20,9 @@
  * limitations under the License.
  */
 
-import './KcApp.css';
 import Fallback from 'keycloakify/login';
 import Template from './Template';
-import tamaguiConfig from '../../tamagui.config';
+import tamaguiConfig from '../tamagui.config';
 import type { KcContext } from './kcContext';
 import type { PageProps } from 'keycloakify/login';
 import type { ReactNode } from 'react';
@@ -34,16 +33,10 @@ import { useTheme } from 'multiplatform.one/theme';
 
 const Info = lazy(() => import('keycloakify/login/pages/Info'));
 const Login = lazy(() => import('./pages/Login'));
-const MyExtraPage1 = lazy(() => import('./pages/MyExtraPage1'));
-const MyExtraPage2 = lazy(() => import('./pages/MyExtraPage2'));
 const Register = lazy(() => import('./pages/Register'));
 const RegisterUserProfile = lazy(() => import('./pages/RegisterUserProfile'));
 const Terms = lazy(() => import('./pages/Terms'));
-
-const classes: PageProps<any, any>['classes'] = {
-  kcHtmlClass: 'my-root-class',
-  kcHeaderWrapperClass: 'my-color my-font',
-};
+const classes: PageProps<any, any>['classes'] = {};
 
 function Provider({ children }: { children?: ReactNode }) {
   const [theme] = useTheme();
@@ -70,10 +63,6 @@ export default function KcApp({ kcContext }: { kcContext: KcContext }) {
               return <RegisterUserProfile {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
             case 'terms.ftl':
               return <Terms {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
-            case 'my-extra-page-1.ftl':
-              return <MyExtraPage1 {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
-            case 'my-extra-page-2.ftl':
-              return <MyExtraPage2 {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
             case 'info.ftl':
               return (
                 <Info

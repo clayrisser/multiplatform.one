@@ -21,16 +21,13 @@
 
 import type KeycloakClient from 'keycloak-js';
 import type { AccessTokenParsed, TokenParsed } from '../token';
-import type { AuthOptions } from 'next-auth';
 import type { AuthRequestPromptOptions } from 'expo-auth-session';
 import type { KeycloakMock } from '../types';
-import type { KeycloakProfile } from 'next-auth/providers/keycloak';
-import type { OAuthConfig } from 'next-auth/providers';
 import type { Session } from '../session/session';
 import { KeycloakConfigContext, type KeycloakConfig } from './config';
 import { KeycloakContext } from './context';
 import { MultiPlatform } from 'multiplatform.one';
-import { getSession, useSession } from '../session/session';
+import { useSession } from '../session/session';
 import { jwtDecode } from 'jwt-decode';
 import { signIn, signOut } from 'next-auth/react';
 import { useAuthConfig } from '../hooks';
@@ -214,21 +211,4 @@ export function useKeycloak() {
   } else if (status === 'authenticated' && session?.accessToken) {
     return new Keycloak(keycloakConfig, session as Session);
   }
-}
-
-export async function getKeycloak(options?: AuthOptions, req?: any, res?: any) {
-  const keycloakProvider: OAuthConfig<KeycloakProfile> | undefined = options?.providers.find(
-    (provider) => provider.id === 'keycloak',
-  )?.options;
-  const parts = keycloakProvider?.issuer?.split('/realms/');
-  const keycloakConfig: KeycloakConfig = {
-    realm: parts?.[1]?.split('/')[0] || '',
-    url: parts?.[0] || '',
-    clientId: keycloakProvider?.clientId || '',
-  };
-  const session = await getSession(options, req, res);
-  if (session?.accessToken) {
-    return new Keycloak(keycloakConfig, session as Session);
-  }
-  return new Keycloak(keycloakConfig);
 }

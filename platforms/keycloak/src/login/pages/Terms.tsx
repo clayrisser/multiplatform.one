@@ -1,5 +1,5 @@
 /**
- * File: /src/keycloak-theme/login/pages/Terms.tsx
+ * File: /src/login/pages/Terms.tsx
  * Project: @platform/keycloak
  * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser
@@ -20,7 +20,7 @@
  * limitations under the License.
  */
 
-import tosEnUrl from '../assets/tos_en.md';
+import tosEnUrl from '../assets/tosEn.md';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../kcContext';
 import type { PageProps } from 'keycloakify/login/pages/PageProps';
@@ -31,11 +31,16 @@ import { useDownloadTerms } from 'keycloakify/login';
 import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
 import { useRerenderOnStateChange } from 'evt/hooks';
 
-export default function Terms(props: PageProps<Extract<KcContext, { pageId: 'terms.ftl' }>, I18n>) {
-  const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
+export default function Terms({
+  Template,
+  classes,
+  doUseDefaultCss,
+  i18n,
+  kcContext,
+}: PageProps<Extract<KcContext, { pageId: 'terms.ftl' }>, I18n>) {
   const { getClassName } = useGetClassName({
-    doUseDefaultCss,
     classes,
+    doUseDefaultCss,
   });
   const { msg, msgStr } = i18n;
   useDownloadTerms({
@@ -63,6 +68,10 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: 'ter
       </div>
       <form className="form-actions" action={url.loginAction} method="POST">
         <input
+          id="kc-accept"
+          name="accept"
+          type="submit"
+          value={msgStr('doAccept')}
           className={clsx(
             getClassName('kcButtonClass'),
             getClassName('kcButtonClass'),
@@ -70,21 +79,17 @@ export default function Terms(props: PageProps<Extract<KcContext, { pageId: 'ter
             getClassName('kcButtonLargeClass'),
             getClassName('kcButtonPrimaryClass'),
           )}
-          name="accept"
-          id="kc-accept"
-          type="submit"
-          value={msgStr('doAccept')}
         />
         <input
+          id="kc-decline"
+          name="cancel"
+          type="submit"
+          value={msgStr('doDecline')}
           className={clsx(
             getClassName('kcButtonClass'),
             getClassName('kcButtonDefaultClass'),
             getClassName('kcButtonLargeClass'),
           )}
-          name="cancel"
-          id="kc-decline"
-          type="submit"
-          value={msgStr('doDecline')}
         />
       </form>
       <div className="clearfix" />

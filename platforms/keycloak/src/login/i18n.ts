@@ -1,5 +1,5 @@
 /*
- * File: /src/keycloak-theme/login/i18n.ts
+ * File: /src/login/i18n.ts
  * Project: @platform/keycloak
  * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser
@@ -25,8 +25,8 @@ import { createUseI18n } from 'keycloakify/login';
 export const { useI18n } = createUseI18n({
   en: {
     alphanumericalCharsOnly: 'Only alphanumerical characters',
-    gender: 'Gender',
     doForgotPassword: 'I forgot my password',
+    gender: 'Gender',
     invalidUserMessage: 'Invalid username or password. (this message was overwrite in the theme)',
   },
 });

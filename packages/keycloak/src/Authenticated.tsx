@@ -21,13 +21,12 @@
 
 'use client';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { ComponentType, PropsWithChildren, useEffect } from 'react';
 import { MultiPlatform } from 'multiplatform.one';
 import { Text } from 'tamagui';
 import { useAuthConfig, useTokensFromQuery } from './hooks';
 import { useKeycloak } from './keycloak';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 global.AsyncStorage = AsyncStorage;
 
