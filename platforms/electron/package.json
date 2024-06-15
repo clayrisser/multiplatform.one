@@ -1,38 +1,27 @@
 {
   "name": "@platform/electron",
   "private": true,
-  "version": "0.0.1",
-  "main": ".vite/build/main.js",
+  "main": "app/background.js",
   "scripts": {
-    "dev": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts,.tsx ."
+    "dev": "nextron",
+    "build": "nextron build",
+    "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "@babel/runtime-corejs3": "^7.24.7",
+    "electron-serve": "^1.3.0",
+    "electron-store": "^8.2.0"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.4.0",
-    "@electron-forge/maker-deb": "^7.4.0",
-    "@electron-forge/maker-rpm": "^7.4.0",
-    "@electron-forge/maker-squirrel": "^7.4.0",
-    "@electron-forge/maker-zip": "^7.4.0",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
-    "@electron-forge/plugin-fuses": "^7.4.0",
-    "@electron-forge/plugin-vite": "^7.4.0",
-    "@electron/fuses": "^1.8.0",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
-    "@vitejs/plugin-react-swc": "^3.7.0",
-    "electron": "30.1.0",
-    "eslint": "^8.57.0",
-    "eslint-plugin-import": "^2.25.0",
-    "ts-node": "^10.0.0",
-    "typescript": "~5.3.3",
-    "vite": "^5.2.13"
+    "@react-native/babel-preset": "^0.74.84",
+    "@types/node": "~20.12.13",
+    "@types/react": "^18.3.1",
+    "electron": "^29.3.0",
+    "electron-builder": "^24.13.3",
+    "next": "^14.2.3",
+    "nextron": "^8.15.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "~5.3.3"
   }
 }
