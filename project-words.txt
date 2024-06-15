@@ -177,6 +177,7 @@ inmemory
 instagram
 instrumentations
 interop
+ipc
 iss
 jackspeak
 jaeger
@@ -238,6 +239,7 @@ natively
 nbsp
 nextauth
 nextjs
+nextron
 nixpkgs
 noreferrer
 nosniff
@@ -307,6 +309,7 @@ refactor
 reflectable
 refractor
 refreshable
+regenerator
 rehype
 renderer
 repeaterjs
@@ -394,6 +397,7 @@ typeof
 uint
 umd
 undef
+unimodules
 unist
 unoptimized
 unordered
