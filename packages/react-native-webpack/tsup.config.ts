@@ -36,5 +36,5 @@ export default defineConfig({
   publicDir: './public',
   skipNodeModulesBundle: false,
   splitting: true,
-  target: 'es5',
+  target: 'es2022',
 });

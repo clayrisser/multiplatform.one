@@ -25,12 +25,11 @@ process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = '1';
 
 const privateConfig = require('app/config/private');
 const publicConfig = require('app/config/public');
-const tamaguiModules = require('./tamaguiModules');
-const transpileModules = require('./transpileModules');
 const withBundleAnalyzer = require('@next/bundle-analyzer');
 const withImages = require('next-images');
 const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
 const { i18n } = require('./next-i18next.config');
+const { lookupTranspileModules, lookupTamaguiModules } = require('@multiplatform.one/utils/transpileModules');
 const { supportedLocales, defaultLocale, defaultNamespace } = require('app/i18n/config');
 const { withExpo } = require('@expo/next-adapter');
 const { withTamagui } = require('@tamagui/next-plugin');
@@ -45,17 +44,17 @@ const disableExtraction = boolVals[process.env.DISABLE_EXTRACTION] ?? process.en
 const plugins = [
   withImages,
   withTamagui({
+    components: lookupTamaguiModules([path.resolve(__dirname)]),
     config: './tamagui.config.ts',
-    components: tamaguiModules,
+    disableExtraction,
+    excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
     importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,
-    disableExtraction,
     useReactNativeWebLite: false,
-    // shouldExtract: (filePath) => {
-    //   if (filePath.includes('node_modules')) return false;
-    //   return /^\/app\//.test(filePath.substring(path.resolve(__dirname, '../..').length));
-    // },
-    excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
+    shouldExtract: (filePath) => {
+      if (filePath.includes('node_modules')) return false;
+      return /^\/app\//.test(filePath.substring(path.resolve(__dirname, '../..').length));
+    },
   }),
   withExpo,
 ];
@@ -83,7 +82,7 @@ module.exports = function (phase) {
         skipDefaultConversion: true,
       },
     },
-    transpilePackages: transpileModules,
+    transpilePackages: lookupTranspileModules([path.resolve(__dirname)]),
     experimental: {
       esmExternals: 'loose',
       optimizeCss: phase !== PHASE_DEVELOPMENT_SERVER,

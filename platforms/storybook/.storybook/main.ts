@@ -19,12 +19,11 @@
  * limitations under the License.
  */
 
-import publicConfig from 'app/config/public';
-// import tamaguiModules from '../tamaguiModules';
-import transpileModules from '../../storybook/transpileModules';
-import type { StorybookConfig } from '@storybook/nextjs';
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
+import publicConfig from 'app/config/public';
+import type { StorybookConfig } from '@storybook/nextjs';
+import { lookupTranspileModules, lookupTamaguiModules } from '@multiplatform.one/utils/transpileModules';
 
 const stories = [
   '..',
@@ -65,7 +64,7 @@ const config: StorybookConfig = {
       name: '@storybook/addon-react-native-web',
       options: {
         babelPlugins: ['react-native-reanimated/plugin'],
-        modulesToTranspile: transpileModules,
+        modulesToTranspile: lookupTranspileModules([path.resolve(__dirname, '..')]),
       },
     },
     {
@@ -131,13 +130,18 @@ const config: StorybookConfig = {
     ...config,
     presets: [...(config.presets || []), '@babel/preset-typescript'],
     plugins: [
-      // [
-      //   '@tamagui/babel-plugin',
-      //   {
-      //     components: tamaguiModules,
-      //     config: require.resolve('./tamagui.config.ts'),
-      //   },
-      // ],
+      ...[
+        // TODO: do this only in production
+        Math.random() * 0
+          ? [
+              '@tamagui/babel-plugin',
+              {
+                components: lookupTamaguiModules([path.resolve(__dirname, '..')]),
+                config: require.resolve('../tamagui.config.ts'),
+              },
+            ]
+          : [],
+      ],
       'react-native-reanimated/plugin',
     ],
   }),

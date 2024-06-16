@@ -22,9 +22,9 @@
 // https://github.com/expo/expo-cli/blob/master/packages/webpack-config/src/loaders/createBabelLoader.ts
 
 import path from 'path';
-import webpack from 'webpack';
 import type { Configuration as WebpackConfiguration, RuleSetConditionAbsolute } from 'webpack';
 import type { PluginItem, PluginOptions } from '@babel/core';
+import webpack from 'webpack';
 
 interface RuleSetLogicalConditionsAbsolute {
   and?: RuleSetConditionAbsolute[];

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-const tamaguiModules = require('./tamaguiModules');
+const { lookupTamaguiModules } = require('@multiplatform.one/utils/transpileModules');
 
 process.env.TAMAGUI_TARGET = 'native';
 
@@ -57,7 +57,7 @@ module.exports = function (api) {
           : [
               '@tamagui/babel-plugin',
               {
-                components: tamaguiModules,
+                components: lookupTamaguiModules([path.resolve(__dirname)]),
                 config: require.resolve('./tamagui.config.ts'),
               },
             ]),

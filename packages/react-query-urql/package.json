@@ -1,5 +1,5 @@
 {
-  "name": "@multiplatform.one/react-query-graphql",
+  "name": "@multiplatform.one/react-query-urql",
   "version": "1.0.4",
   "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
   "contributors": [
@@ -8,7 +8,7 @@
       "url": "https://clayrisser.com"
     }
   ],
-  "description": "tanstack react query for graphql",
+  "description": "tanstack react query for graphql using urql",
   "main": "dist/cjs",
   "module": "dist/esm",
   "source": "src/index.ts",

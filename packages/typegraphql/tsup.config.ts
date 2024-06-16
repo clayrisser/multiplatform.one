@@ -19,8 +19,11 @@
  * limitations under the License.
  */
 
+import path from 'path';
 import { defineConfig } from 'tsup';
-import transpileModules from './transpileModules';
+import { lookupTranspileModules } from '@multiplatform.one/utils/transpileModules';
+
+console.log('transpileModules', lookupTranspileModules([path.resolve(__dirname)]));
 
 export default defineConfig({
   bundle: true,
@@ -31,9 +34,8 @@ export default defineConfig({
   format: ['esm'],
   minify: false,
   outDir: 'lib',
-  publicDir: './public',
   skipNodeModulesBundle: true,
-  noExternal: transpileModules,
+  noExternal: lookupTranspileModules([path.resolve(__dirname)]),
   splitting: true,
   target: 'es2022',
 });
