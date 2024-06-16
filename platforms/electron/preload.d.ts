@@ -1,5 +1,5 @@
 /*
- * File: /renderer/preload.d.ts
+ * File: /preload.d.ts
  * Project: @platform/electron
  * File Created: 15-06-2024 14:38:39
  * Author: Clay Risser
@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import type { IpcHandler } from '../main/preload';
+import type { IpcHandler } from './main/preload';
 
 declare global {
   interface Window {

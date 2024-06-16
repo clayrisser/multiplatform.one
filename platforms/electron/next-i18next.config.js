@@ -1,7 +1,7 @@
 /*
- * File: /renderer/next.config.js
+ * File: /next-i18next.config.js
  * Project: @platform/electron
- * File Created: 15-06-2024 14:38:39
+ * File Created: 16-06-2024 07:59:09
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,17 +19,12 @@
  * limitations under the License.
  */
 
-/** @type {import('next').NextConfig} */
-
-const transpileModules = ['electron-serve'];
+const { supportedLocales, defaultLocale } = require('app/i18n/config');
 
 module.exports = {
-  trailingSlash: true,
-  transpilePackages: transpileModules,
-  images: {
-    unoptimized: true,
+  i18n: {
+    defaultLocale,
+    locales: supportedLocales,
   },
-  webpack: (config) => {
-    return config;
-  },
+  localePath: '../../app/i18n/locales',
 };
