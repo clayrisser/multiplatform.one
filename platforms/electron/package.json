@@ -45,6 +45,7 @@
   "devDependencies": {
     "@expo/next-adapter": "^6.0.0",
     "@multiplatform.one/react-native-webpack": "workspace:0.0.1",
+    "@multiplatform.one/utils": "workspace:0.0.1",
     "@react-native/babel-preset": "^0.74.84",
     "@types/cookie": "^0.6.0",
     "@types/node": "~20.12.13",
