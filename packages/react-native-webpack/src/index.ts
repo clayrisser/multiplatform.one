@@ -1,7 +1,7 @@
 /*
- * File: /nextron.config.js
- * Project: @platform/electron
- * File Created: 15-06-2024 14:38:39
+ * File: /src/index.ts
+ * Project: @multiplatform.one/prisma-scripts
+ * File Created: 04-04-2024 15:50:39
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -21,11 +21,29 @@
 
 // https://github.com/expo/expo-cli/blob/master/packages/webpack-config/src/loaders/createBabelLoader.ts
 
-const path = require('path');
-const webpack = require('webpack');
+import path from 'path';
+import webpack from 'webpack';
+import type { Configuration as WebpackConfiguration } from 'webpack';
+import type { PluginItem, PluginOptions } from '@babel/core';
 
-function getModule(name) {
+function getModule(name: string) {
   return path.join('node_modules', name);
+}
+
+export interface ReactNativeWebpackOptions {
+  babel?: {
+    plugins?: PluginItem[] | null | undefined;
+    presets?: PluginItem[] | null | undefined;
+    presetReactNativeOptions?: PluginOptions;
+    presetReactOptions?: PluginOptions;
+    exclude?:
+      | string
+      | RegExp
+      | ((value: string) => boolean)
+      | RuleSetLogicalConditionsAbsolute
+      | webpack.RuleSetConditionAbsolute[];
+  };
+  transpileModules?: string[];
 }
 
 function getBabelPlugins(options) {
@@ -35,7 +53,6 @@ function getBabelPlugins(options) {
   }
   return [reactNativeWeb];
 }
-
 
 const defaultIncludes = [
   getModule('@expo'),
@@ -52,7 +69,7 @@ const defaultIncludes = [
 
 const defaultExcludes = ['/node_modules', '/bower_components', '/.expo/', '(webpack)'];
 
-function isInstalled(name) {
+function isInstalled(name: string) {
   try {
     require(`${name}/package.json`);
     return true;
@@ -60,8 +77,6 @@ function isInstalled(name) {
     return false;
   }
 }
-
-
 
 function getRnPreset() {
   if (isInstalled('@react-native/babel-preset')) {
@@ -72,11 +87,8 @@ function getRnPreset() {
   throw new Error("couldn't find babel-preset-react-native or metro-react-native-babel-preset");
 }
 
-
-
-
-function webpackFinal(config, options) {
-  if (!config.babel) config.babel = {}
+function webpackFinal(config: WebpackConfiguration, options: ReactNativeWebpackOptions) {
+  if (!options.babel) options.babel = {};
   config.plugins.push(
     new webpack.DefinePlugin({
       'process.argv': 'process.argv',
@@ -87,9 +99,9 @@ function webpackFinal(config, options) {
   );
   config.plugins.push(new webpack.DefinePlugin({ process: { env: {} } }));
   const babelPlugins = getBabelPlugins(options);
-  const babelPresetReactNativeOptions = options?.babelPresetReactNativeOptions ?? {};
-  const babelPresetReactOptions = options?.babelPresetReactOptions ?? {};
-  const babelPresets = options?.babelPresets ?? [];
+  const babelPresetReactNativeOptions = options?.babel.presetReactNativeOptions ?? {};
+  const babelPresetReactOptions = options?.babel.presetReactOptions ?? {};
+  const babelPresets = options?.babel.presets ?? [];
   const babelExclude = options?.babelExclude ?? [];
   const userModules = options.modulesToTranspile?.map(getModule) ?? [];
   const modules = [...defaultIncludes, ...userModules];
@@ -182,6 +194,3 @@ module.exports = {
     });
   },
 };
-
-
-

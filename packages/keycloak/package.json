@@ -63,7 +63,6 @@
     "@types/react": "^18.3.1",
     "@types/react-native": "^0.73.0",
     "@vitejs/plugin-react": "^4.3.1",
-    "cspell": "^8.8.4",
     "multiplatform.one": "workspace:1.0.11",
     "next": "^14.2.3",
     "react": "18.2.0",
