@@ -1,6 +1,16 @@
+# app
+/.tamagui
+/debug.json
+/node_modules
+
+# next
+.vercel
+/analyze
+/out
+
 # nextron
 node_modules
 *.log
 .next
-app
+/app
 dist
