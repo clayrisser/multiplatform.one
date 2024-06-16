@@ -13,6 +13,7 @@
     "electron-store": "^8.2.0"
   },
   "devDependencies": {
+    "@multiplatform.one/react-native-webpack": "workspace:0.0.1",
     "@react-native/babel-preset": "^0.74.84",
     "@types/node": "~20.12.13",
     "@types/react": "^18.3.1",

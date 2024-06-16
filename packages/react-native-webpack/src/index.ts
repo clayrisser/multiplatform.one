@@ -23,14 +23,22 @@
 
 import path from 'path';
 import webpack from 'webpack';
-import type { Configuration as WebpackConfiguration } from 'webpack';
+import type { Configuration as WebpackConfiguration, RuleSetConditionAbsolute } from 'webpack';
 import type { PluginItem, PluginOptions } from '@babel/core';
+
+interface RuleSetLogicalConditionsAbsolute {
+  and?: RuleSetConditionAbsolute[];
+  not?: string | RegExp | ((value: string) => boolean) | RuleSetLogicalConditionsAbsolute | RuleSetConditionAbsolute[];
+  or?: RuleSetConditionAbsolute[];
+}
 
 function getModule(name: string) {
   return path.join('node_modules', name);
 }
 
 export interface ReactNativeWebpackOptions {
+  projectRoot?: string;
+  transpileModules?: string[];
   babel?: {
     plugins?: PluginItem[] | null | undefined;
     presets?: PluginItem[] | null | undefined;
@@ -43,11 +51,10 @@ export interface ReactNativeWebpackOptions {
       | RuleSetLogicalConditionsAbsolute
       | webpack.RuleSetConditionAbsolute[];
   };
-  transpileModules?: string[];
 }
 
 function getBabelPlugins(options) {
-  const reactNativeWeb = 'react-native-web';
+  const reactNativeWeb = require.resolve('babel-plugin-react-native-web');
   if (options.babel.plugins && Array.isArray(options.babel.plugins)) {
     return [reactNativeWeb, ...options.babel.plugins];
   }
@@ -69,25 +76,7 @@ const defaultIncludes = [
 
 const defaultExcludes = ['/node_modules', '/bower_components', '/.expo/', '(webpack)'];
 
-function isInstalled(name: string) {
-  try {
-    require(`${name}/package.json`);
-    return true;
-  } catch (err) {
-    return false;
-  }
-}
-
-function getRnPreset() {
-  if (isInstalled('@react-native/babel-preset')) {
-    return 'module:@react-native/babel-preset';
-  } else if (isInstalled('metro-react-native-babel-preset')) {
-    return 'module:metro-react-native-babel-preset';
-  }
-  throw new Error("couldn't find babel-preset-react-native or metro-react-native-babel-preset");
-}
-
-function webpackFinal(config: WebpackConfiguration, options: ReactNativeWebpackOptions) {
+export function reactNativeWebpack(config: WebpackConfiguration, options: ReactNativeWebpackOptions) {
   if (!options.babel) options.babel = {};
   config.plugins.push(
     new webpack.DefinePlugin({
@@ -102,11 +91,10 @@ function webpackFinal(config: WebpackConfiguration, options: ReactNativeWebpackO
   const babelPresetReactNativeOptions = options?.babel.presetReactNativeOptions ?? {};
   const babelPresetReactOptions = options?.babel.presetReactOptions ?? {};
   const babelPresets = options?.babel.presets ?? [];
-  const babelExclude = options?.babelExclude ?? [];
-  const userModules = options.modulesToTranspile?.map(getModule) ?? [];
+  const babelExclude = options?.babel.exclude ?? [];
+  const userModules = options.transpileModules?.map(getModule) ?? [];
   const modules = [...defaultIncludes, ...userModules];
   const root = options.projectRoot ?? process.cwd();
-  const userAliases = options.modulesToAlias ?? {};
   config.module.rules.push({
     test: /\.([jt]sx?)$/,
     loader: 'babel-loader',
@@ -128,14 +116,14 @@ function webpackFinal(config: WebpackConfiguration, options: ReactNativeWebpackO
       root,
       presets: [
         [
-          getRnPreset(),
+          require.resolve('@react-native/babel-preset'),
           {
             useTransformReactJSXExperimental: true,
             ...babelPresetReactNativeOptions,
           },
         ],
         [
-          '@babel/preset-react',
+          require.resolve('@babel/preset-react'),
           {
             runtime: 'automatic',
             ...babelPresetReactOptions,
@@ -146,51 +134,12 @@ function webpackFinal(config: WebpackConfiguration, options: ReactNativeWebpackO
       plugins: [...babelPlugins],
     },
   });
-  config.resolve.extensions = ['.web.js', '.web.jsx', '.web.ts', '.web.tsx', ...config.resolve.extensions];
+  config.resolve.extensions = [
+    ...new Set(['.web.js', '.web.jsx', '.web.ts', '.web.tsx', ...config.resolve.extensions]),
+  ];
   config.resolve.alias = {
     'react-native$': 'react-native-web',
     ...config.resolve.alias,
-    ...userAliases,
   };
   return config;
 }
-
-module.exports = {
-  mainSrcDir: 'main',
-  rendererSrcDir: 'renderer',
-  webpack(config) {
-    config.module.rules = [];
-    return webpackFinal(config, {
-      babelExclude: [path.resolve(__dirname, 'renderer')],
-      babelPresets: [
-        [
-          require('@babel/preset-env'),
-          {
-            targets: {
-              node: true,
-            },
-          },
-        ],
-        require('@babel/preset-typescript'),
-      ],
-      babePlugins: [
-        require('@babel/plugin-transform-class-properties'),
-        [
-          require('@babel/plugin-transform-object-rest-spread'),
-          {
-            useBuiltIns: true,
-          },
-        ],
-        [
-          require('@babel/plugin-transform-runtime'),
-          {
-            corejs: 3,
-            helpers: true,
-            regenerator: true,
-            useESModules: false,
-          },
-        ],
-      ],
-    });
-  },
-};
