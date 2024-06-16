@@ -1,5 +1,5 @@
 /**
- * File: /renderer/pages/home.tsx
+ * File: /src/pages/home.tsx
  * Project: @platform/electron
  * File Created: 15-06-2024 14:38:39
  * Author: Clay Risser
