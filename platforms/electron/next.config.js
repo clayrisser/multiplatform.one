@@ -20,8 +20,8 @@
  */
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true';
-process.env.TAMAGUI_TARGET = 'web';
 process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = '1';
+process.env.TAMAGUI_TARGET = 'web';
 
 const privateConfig = require('app/config/private');
 const publicConfig = require('app/config/public');
@@ -30,18 +30,10 @@ const transpileModules = require('./transpileModules');
 const withBundleAnalyzer = require('@next/bundle-analyzer');
 const withImages = require('next-images');
 const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
-// const { i18n } = require('./next-i18next.config');
-// const { supportedLocales, defaultLocale, defaultNamespace } = require('app/i18n/config');
 const { withExpo } = require('@expo/next-adapter');
 const { withTamagui } = require('@tamagui/next-plugin');
 
-const sharedConfig = { ...publicConfig, ...privateConfig };
-const static = process.env.NEXT_STATIC === '1';
-const boolVals = {
-  true: true,
-  false: false,
-};
-const disableExtraction = boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development';
+const disableExtraction = process.env.NODE_ENV === 'development';
 const plugins = [
   withImages,
   withTamagui({
@@ -51,10 +43,10 @@ const plugins = [
     logTimings: true,
     disableExtraction,
     useReactNativeWebLite: false,
-    // shouldExtract: (filePath) => {
-    //   if (filePath.includes('node_modules')) return false;
-    //   return /^\/app\//.test(filePath.substring(path.resolve(__dirname, '../..').length));
-    // },
+    shouldExtract: (filePath) => {
+      if (filePath.includes('node_modules')) return false;
+      return /^\/app\//.test(filePath.substring(path.resolve(__dirname, '../..').length));
+    },
     excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
   }),
   withExpo,
@@ -64,15 +56,15 @@ module.exports = function (phase) {
   if (phase === PHASE_DEVELOPMENT_SERVER) {
     plugins.push(
       withBundleAnalyzer({
-        enabled: sharedConfig.BUNDLE_ANALYZER === '1',
-        openAnalyzer: false,
+        enabled: process.env.BUNDLE_ANALYZER === '1',
+        openAnalyzer: true,
       }),
     );
   }
-  /** @type {import('next').NextConfig} */
   let nextConfig = {
-    // ...(static ? {} : { i18n }),
     trailingSlash: true,
+    output: 'export',
+    distDir: process.env.NODE_ENV === 'production' ? './app' : '.next',
     typescript: {
       ignoreBuildErrors: true,
     },
@@ -82,7 +74,7 @@ module.exports = function (phase) {
     },
     modularizeImports: {
       '@tamagui/lucide-icons': {
-        transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
+        transform: '@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}',
         skipDefaultConversion: true,
       },
     },
@@ -94,13 +86,7 @@ module.exports = function (phase) {
     },
     publicRuntimeConfig: {
       ...publicConfig,
-      NEXT_STATIC: process.env.NEXT_STATIC,
-      // i18n: {
-      //   languages: supportedLocales,
-      //   defaultLanguage: defaultLocale,
-      //   namespaces: [defaultNamespace],
-      //   defaultNamespace,
-      // },
+      NEXT_STATIC: '1',
     },
     serverRuntimeConfig: {
       ...privateConfig,
@@ -114,4 +100,3 @@ module.exports = function (phase) {
   }
   return nextConfig;
 };
-

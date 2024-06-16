@@ -1,5 +1,5 @@
 /**
- * File: /src/pages/_app.tsx
+ * File: /pages/_app.tsx
  * Project: @platform/next
  * File Created: 23-04-2024 05:52:22
  * Author: Clay Risser
@@ -25,16 +25,13 @@ import 'raf/polyfill';
 import * as Sentry from '@sentry/react';
 import Head from 'next/head';
 import React, { useMemo } from 'react';
-import cookie from 'cookie';
-import tamaguiConfig from '../../tamagui.config';
-import type { AppContext, AppProps as NextAppProps } from 'next/app';
+import tamaguiConfig from '../tamagui.config';
+import type { AppProps as NextAppProps } from 'next/app';
 import type { ColorScheme } from '@tamagui/next-theme';
 import type { Session } from 'next-auth';
 import { GlobalProvider } from 'app/providers';
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
-// import { appWithTranslation } from 'next-i18next';
 import { config } from 'app/config';
-import { getServerSession } from 'next-auth';
 import { importFonts } from 'app/fonts';
 
 const sentryDsn = config.get('SENTRY_DSN');
@@ -44,9 +41,8 @@ if (sentryDsn) {
   });
 }
 
-const nextStatic = config.get('NEXT_STATIC') === '1';
 importFonts();
-if (nextStatic) import('app/i18n').then(({ i18nInit }) => i18nInit());
+import('app/i18n').then(({ i18nInit }) => i18nInit());
 
 export interface AppProps extends NextAppProps {
   cookies?: Record<string, string>;
@@ -91,21 +87,4 @@ function App({ Component, cookies, pageProps, session }: AppProps) {
   );
 }
 
-App.getInitialProps = async ({ ctx }: AppContext) => {
-  return {
-    cookies: !ctx.req?.headers ? {} : cookie.parse(ctx.req.headers.cookie || ''),
-    session: await getServerSession(
-      ctx.req as any,
-      ctx.res as any,
-      (typeof window === 'undefined'
-        ? (await import('@multiplatform.one/keycloak/routes')).createNextAuthOptions(
-            (await import('../authOptions')).authHandlerOptions,
-          )
-        : undefined) as any,
-    ),
-  };
-};
-
 export default App;
-
-// export default nextStatic ? App : appWithTranslation(App);

@@ -4,6 +4,7 @@
   "scripts": {
     "build": "turbo run build --filter '!./platforms/*' --filter '!./api'",
     "dev": "turbo run dev",
+    "format": "prettier --write `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(json)|(yaml)|([jt]sx?)$'`",
     "generate": "turbo run generate",
     "test": "turbo run test"
   },
