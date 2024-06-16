@@ -20,8 +20,6 @@
  */
 
 import { defineConfig } from 'tsup';
-// import transpileModules from './transpileModules';
-const transpileModules = [];
 
 export default defineConfig({
   bundle: true,
@@ -29,13 +27,10 @@ export default defineConfig({
   dts: true,
   entry: ['src/**/*.ts?(x)'],
   entryPoints: ['src/index.ts'],
-  external: ['@prisma/client'],
   format: ['esm', 'cjs'],
   minify: false,
-  noExternal: transpileModules,
   outDir: 'lib',
-  publicDir: './public',
-  skipNodeModulesBundle: false,
+  skipNodeModulesBundle: true,
   splitting: true,
-  target: 'es5',
+  target: 'es2022',
 });

@@ -28,6 +28,10 @@ export interface LookupTranspileModulesOptions {
   log?: boolean;
 }
 
+export interface LookupTamaguiModulesOptions {
+  log?: boolean;
+}
+
 export function lookupTranspileModules(packageDirs?: string[], { log = true }: LookupTranspileModulesOptions = {}) {
   const transpileModules = [
     ...new Set(
@@ -43,4 +47,22 @@ export function lookupTranspileModules(packageDirs?: string[], { log = true }: L
   ];
   if (log) logger.debug('transpileModules:', transpileModules.join(', '));
   return transpileModules;
+}
+
+export function lookupTamaguiModules(packageDirs?: string[], { log = true }: LookupTamaguiModulesOptions = {}) {
+  const tamaguiModules = [
+    ...new Set([
+      'tamagui',
+      ...[
+        ...new Set([
+          projectRoot,
+          path.resolve(projectRoot, 'app'),
+          path.resolve(projectRoot, 'packages', 'ui'),
+          ...(packageDirs || []),
+        ]),
+      ].map((packageDir) => require(`${packageDir}/package.json`).tamaguiModules || []),
+    ]),
+  ];
+  if (log) logger.debug('tamaguiModules:', tamaguiModules.join(', '));
+  return tamaguiModules;
 }

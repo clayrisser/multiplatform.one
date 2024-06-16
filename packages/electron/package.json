@@ -40,6 +40,7 @@
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
   },
   "devDependencies": {
+    "@multiplatform.one/utils": "workspace:0.0.1",
     "tsup": "^8.1.0",
     "typescript": "~5.3.3"
   },

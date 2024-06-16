@@ -16,24 +16,16 @@
   "license": "Apache-2.0",
   "author": "BitSpur <support@risserlabs.com> (https://risserlabs.com)",
   "main": "lib/index.js",
-  "module": "lib/index.mjs",
   "source": "src/index.ts",
-  "types": "lib/index.d.mts",
+  "types": "lib/index.d.ts",
   "exports": {
     ".": {
-      "import": "./lib/index.mjs",
       "require": "./lib/index.js",
-      "types": "./lib/index.d.mts"
+      "types": "./lib/index.d.ts"
     },
     "./transpileModules": {
-      "import": "./lib/transpileModules.mjs",
       "require": "./lib/transpileModules.js",
-      "types": "./lib/transpileModules.d.mts"
-    },
-    "./tamaguiModules": {
-      "import": "./lib/tamaguiModules.mjs",
-      "require": "./lib/tamaguiModules.js",
-      "types": "./lib/tamaguiModules.d.mts"
+      "types": "./lib/transpileModules.d.ts"
     },
     "./package.json": "./package.json"
   },
@@ -43,14 +35,15 @@
   "files": [
     "bin",
     "lib",
-    "src"
+    "src",
+    "transpileModules"
   ],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
   },
-  "dependencies": {},
   "devDependencies": {
+    "@types/node": "~20.12.13",
     "tsup": "^8.1.0",
     "typescript": "~5.3.3"
   },

@@ -1,7 +1,7 @@
 /*
- * File: /transpileModules.js
- * Project: @multiplatform.one/prisma-scripts
- * File Created: 04-04-2024 15:50:39
+ * File: /transpileModules/index.js
+ * Project: @multiplatform.one/utils
+ * File Created: 16-06-2024 14:28:33
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,6 +19,4 @@
  * limitations under the License.
  */
 
-const logger = console;
-module.exports = [...new Set([...(require('./package.json').transpileModules || [])])];
-logger.debug('transpileModules:', module.exports.join(', '));
+export * from '../lib/transpileModules.js';

@@ -13,7 +13,7 @@
     "@multiplatform.one/components": "workspace:2.0.4",
     "@multiplatform.one/keycloak": "workspace:1.0.13",
     "@multiplatform.one/locales": "workspace:1.0.11",
-    "@multiplatform.one/query": "workspace:1.0.4",
+    "@multiplatform.one/react-query-urql": "workspace:1.0.4",
     "@multiplatform.one/zustand": "workspace:1.0.3",
     "@tamagui/font-fira-mono": "^1.100.3",
     "@tamagui/font-glusp": "^1.100.3",

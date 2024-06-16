@@ -24,7 +24,7 @@ import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinne
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { ThemeTintAlt } from '@multiplatform.one/components';
 import { gql } from 'gql';
-import { useGqlQuery, useGqlSubscription } from '@multiplatform.one/query';
+import { useGqlQuery, useGqlSubscription } from '@multiplatform.one/react-query-urql';
 import { useLink } from 'solito/link';
 import { useTranslation } from '@multiplatform.one/locales';
 import { withAuthenticated } from '@multiplatform.one/keycloak';
