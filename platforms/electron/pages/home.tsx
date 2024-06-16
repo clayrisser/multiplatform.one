@@ -1,5 +1,5 @@
 /**
- * File: /renderer/pages/next.tsx
+ * File: /pages/home.tsx
  * Project: @platform/electron
  * File Created: 15-06-2024 14:38:39
  * Author: Clay Risser
@@ -22,17 +22,38 @@
 import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { Button } from 'ui';
+import Image from 'next/image';
 
-export default function NextPage() {
+export default function HomePage() {
+  const [message, setMessage] = React.useState('No message found');
+
+  React.useEffect(() => {
+    window.ipc.on('message', (message: string) => {
+      setMessage(message);
+    });
+  }, []);
+
   return (
     <>
       <Head>
-        <title>Next - Nextron (basic-lang-typescript)</title>
+        <title>Home - Nextron (basic-lang-typescript)</title>
       </Head>
       <div>
         <p>
-          ⚡ Electron + Next.js ⚡ -<Link href="/home">Go to home page</Link>
+          ⚡ Electron + Next.js ⚡ -<Link href="/next">Go to next page</Link>
         </p>
+        <Image src="/images/logo.png" alt="Logo image" width={256} height={256} />
+      </div>
+      <div>
+        <Button
+          onPress={() => {
+            window.ipc.send('message', 'Hello');
+          }}
+        >
+          Test IPC
+        </Button>
+        <p>{message}</p>
       </div>
     </>
   );

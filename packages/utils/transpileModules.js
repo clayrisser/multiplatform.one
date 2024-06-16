@@ -1,7 +1,7 @@
 /*
- * File: /renderer/preload.d.ts
- * Project: @platform/electron
- * File Created: 15-06-2024 14:38:39
+ * File: /transpileModules.js
+ * Project: @multiplatform.one/prisma-scripts
+ * File Created: 04-04-2024 15:50:39
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,10 +19,6 @@
  * limitations under the License.
  */
 
-import type { IpcHandler } from '../main/preload';
-
-declare global {
-  interface Window {
-    ipc: IpcHandler;
-  }
-}
+const logger = console;
+module.exports = [...new Set([...(require('./package.json').transpileModules || [])])];
+logger.debug('transpileModules:', module.exports.join(', '));

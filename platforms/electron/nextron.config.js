@@ -19,14 +19,12 @@
  * limitations under the License.
  */
 
-// https://github.com/expo/expo-cli/blob/master/packages/webpack-config/src/loaders/createBabelLoader.ts
-
 const path = require('path');
 const { reactNativeWebpack } = require('@multiplatform.one/react-native-webpack');
 
 module.exports = {
   mainSrcDir: 'main',
-  rendererSrcDir: 'renderer',
+  rendererSrcDir: './',
   webpack(config) {
     config.module.rules = [];
     config.resolve.extensions = [
@@ -34,7 +32,17 @@ module.exports = {
     ];
     return reactNativeWebpack(config, {
       babel: {
-        exclude: [path.resolve(__dirname, 'renderer')],
+        exclude: [
+          path.resolve(__dirname, 'next-env.d.ts'),
+          path.resolve(__dirname, 'next-i18next.config.js'),
+          path.resolve(__dirname, 'next.config.js'),
+          path.resolve(__dirname, 'pages'),
+          path.resolve(__dirname, 'preload.d.ts'),
+          path.resolve(__dirname, 'public'),
+          path.resolve(__dirname, 'tamagui.config.ts'),
+          path.resolve(__dirname, 'tamaguiModules.js'),
+          path.resolve(__dirname, 'transpileModules.js'),
+        ],
         presets: [
           [
             require.resolve('@babel/preset-env'),
