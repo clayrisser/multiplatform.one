@@ -1,16 +1,14 @@
 {
-  "name": "@multiplatform.one/prisma-scripts",
-  "version": "1.0.10",
-  "description": "scripts for managing prisma orm",
+  "name": "@multiplatform.one/react-native-webpack",
+  "version": "0.0.1",
+  "description": "webpack support for react native web",
   "sideEffects": false,
   "keywords": [
-    "cli-cursor",
-    "database",
-    "db",
-    "orm",
-    "prisma",
-    "prisma-scripts",
-    "scripts"
+    "babel",
+    "react",
+    "react-native",
+    "react-native-web",
+    "webpack"
   ],
   "homepage": "https://multiplatform.one",
   "bugs": {
@@ -51,9 +49,7 @@
     "execa": "^9.2.0",
     "ora": "^8.0.1"
   },
-  "peerDependencies": {
-    "prisma": "~5.12.1"
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "prisma": "~5.12.1",
