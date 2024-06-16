@@ -1,5 +1,5 @@
 /*
- * File: /renderer/next.config.js
+ * File: /preload.d.ts
  * Project: @platform/electron
  * File Created: 15-06-2024 14:38:39
  * Author: Clay Risser
@@ -19,17 +19,10 @@
  * limitations under the License.
  */
 
-/** @type {import('next').NextConfig} */
+import type { IpcHandler } from './main/preload';
 
-const transpileModules = ['electron-serve'];
-
-module.exports = {
-  trailingSlash: true,
-  transpilePackages: transpileModules,
-  images: {
-    unoptimized: true,
-  },
-  webpack: (config) => {
-    return config;
-  },
-};
+declare global {
+  interface Window {
+    ipc: IpcHandler;
+  }
+}

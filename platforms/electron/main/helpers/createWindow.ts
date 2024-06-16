@@ -1,5 +1,5 @@
 /*
- * File: /main/helpers/create-window.ts
+ * File: /main/helpers/createWindow.ts
  * Project: @platform/electron
  * File Created: 15-06-2024 14:38:39
  * Author: Clay Risser
