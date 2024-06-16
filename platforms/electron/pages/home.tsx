@@ -1,5 +1,5 @@
 /**
- * File: /src/pages/home.tsx
+ * File: /pages/home.tsx
  * Project: @platform/electron
  * File Created: 15-06-2024 14:38:39
  * Author: Clay Risser
@@ -22,6 +22,7 @@
 import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { Button } from 'ui';
 import Image from 'next/image';
 
 export default function HomePage() {
@@ -45,13 +46,13 @@ export default function HomePage() {
         <Image src="/images/logo.png" alt="Logo image" width={256} height={256} />
       </div>
       <div>
-        <button
-          onClick={() => {
+        <Button
+          onPress={() => {
             window.ipc.send('message', 'Hello');
           }}
         >
           Test IPC
-        </button>
+        </Button>
         <p>{message}</p>
       </div>
     </>
