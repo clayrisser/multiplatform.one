@@ -1,5 +1,5 @@
 {
-  "name": "@multiplatform.one/query",
+  "name": "@multiplatform.one/react-query-graphql",
   "version": "1.0.4",
   "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
   "contributors": [
@@ -8,7 +8,7 @@
       "url": "https://clayrisser.com"
     }
   ],
-  "description": "simplified tanstack query",
+  "description": "tanstack react query for graphql",
   "main": "dist/cjs",
   "module": "dist/esm",
   "source": "src/index.ts",
