@@ -1,12 +1,16 @@
 {
-  "name": "@multiplatform.one/electron",
+  "name": "@multiplatform.one/react-query-ipc",
   "version": "0.0.1",
-  "description": "electron utilities support for multiplatform.one",
+  "description": "tanstack react query for electron ipc",
   "sideEffects": false,
   "keywords": [
+    "electron",
+    "ipc",
+    "query",
     "react",
     "react-native",
-    "electron"
+    "react-query",
+    "tanstack"
   ],
   "homepage": "https://multiplatform.one",
   "bugs": {
@@ -25,6 +29,11 @@
       "require": "./lib/index.js",
       "types": "./lib/index.d.mts"
     },
+    "./background": {
+      "import": "./lib/background.mjs",
+      "require": "./lib/background.js",
+      "types": "./lib/background.d.mts"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -39,8 +48,17 @@
     "type": "git",
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
   },
+  "dependencies": {
+    "@tanstack/react-query": "^5.45.1",
+    "uuid": "^9.0.1"
+  },
+  "peerDependencies": {
+    "electron": "29.4.2"
+  },
   "devDependencies": {
     "@multiplatform.one/utils": "workspace:0.0.1",
+    "@types/node": "~20.12.13",
+    "electron": "29.4.2",
     "tsup": "^8.1.0",
     "typescript": "~5.3.3"
   },

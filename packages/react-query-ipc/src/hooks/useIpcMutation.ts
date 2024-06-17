@@ -1,5 +1,5 @@
 /*
- * File: /src/hooks/useGqlMutation.ts
+ * File: /src/hooks/useIpcMutation.ts
  * Project: @multiplatform.one/query
  * File Created: 01-06-2024 13:44:49
  * Author: Clay Risser
@@ -19,66 +19,44 @@
  * limitations under the License.
  */
 
-import type { AnyVariables } from '@urql/core';
-import type { DocumentInput, OperationContext } from 'urql';
+import type { IpcRequestOptions } from '../request';
 import type { QueryKey, UseMutationResult, DefaultError, UseMutationOptions, QueryClient } from '@tanstack/react-query';
-import { useKeycloak } from '@multiplatform.one/keycloak';
-import { useMutation } from 'urql';
+import { ipcMutation } from '../request';
 import { useQueryClient, useMutation as useTanstackMutation } from '@tanstack/react-query';
 
-const extraOptionsKeys = new Set(['mutation', 'invalidateQueryKeys', 'context']);
+const extraOptionsKeys = new Set(['handler', 'invalidateQueryKeys', 'timeout']);
 
-interface ExtraOptions<TQueryKeys extends QueryKey[], TData = any, TVariables = AnyVariables> {
-  context?: Partial<OperationContext>;
+interface ExtraOptions<TQueryKeys extends QueryKey[] = QueryKey[], THandler extends string = string> {
+  handler: THandler;
   invalidateQueryKeys?: TQueryKeys;
-  mutation: DocumentInput<TData, TVariables>;
 }
 
 export function useGqlMutation<
   TData = any,
   TError = DefaultError,
-  TVariables extends AnyVariables = AnyVariables,
   TContext = unknown,
   TQueryKeys extends QueryKey[] = QueryKey[],
+  THandler extends string = string,
+  TVariables extends object = {},
 >(
-  options: UseMutationOptions<TData, TError, TVariables, TContext> & ExtraOptions<TQueryKeys, TData, TVariables>,
+  options: UseMutationOptions<TData, TError, TVariables, TContext> &
+    ExtraOptions<TQueryKeys, THandler> &
+    IpcRequestOptions,
   queryClient?: QueryClient,
 ): UseMutationResult<TData, TError, TVariables, TContext> {
-  const extraOptions = [...extraOptionsKeys].reduce((extraOptions, key) => {
-    if (options.hasOwnProperty(key)) extraOptions[key] = options[key];
-    return extraOptions;
-  }, {}) as ExtraOptions<TQueryKeys, TData, TVariables>;
   const tanstackMutationOptions = Object.entries(options).reduce((tanstackMutationOptions, [key, value]) => {
     if (!extraOptionsKeys.has(key)) tanstackMutationOptions[key] = value;
     return tanstackMutationOptions;
   }, {}) as UseMutationOptions<TData, TError, TVariables, TContext>;
-  const keycloak = useKeycloak();
   const tanstackQueryClient = useQueryClient();
-  const [, mutate] = useMutation<TData, TVariables>(extraOptions.mutation);
   return useTanstackMutation<TData, TError, TVariables, TContext>(
     {
       ...tanstackMutationOptions,
       async mutationFn(variables: TVariables): Promise<TData> {
-        const { data, error } = await mutate(variables, {
-          ...extraOptions.context,
-          fetchOptions: {
-            ...extraOptions.context?.fetchOptions,
-            headers: {
-              ...(typeof extraOptions.context?.fetchOptions === 'function'
-                ? extraOptions.context?.fetchOptions()?.headers
-                : extraOptions.context?.fetchOptions?.headers),
-              authorization: `Bearer ${keycloak?.token}`,
-            },
-          },
-        });
-        if (error) throw error;
-        if (!data) throw new Error('no data returned from mutation');
-        return data;
+        return ipcMutation(options.handler, variables, { timeout: options.timeout });
       },
       async onMutate(variables: TVariables) {
-        (extraOptions?.invalidateQueryKeys || []).forEach((queryKey) =>
-          tanstackQueryClient.invalidateQueries({ queryKey }),
-        );
+        (options?.invalidateQueryKeys || []).forEach((queryKey) => tanstackQueryClient.invalidateQueries({ queryKey }));
         if (tanstackMutationOptions.onMutate) return tanstackMutationOptions.onMutate(variables);
         return undefined;
       },
