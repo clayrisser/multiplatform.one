@@ -31,9 +31,9 @@ const stories = [
   ...fs.readdirSync(path.resolve(__dirname, '../../../packages')).map((dir) => `../../../packages/${dir}`),
 ]
   .map((dir) => path.resolve(__dirname, dir))
-  .map((dir) => {
+  .map((parentDir) => {
     return fs
-      .readdirSync(dir, { withFileTypes: true })
+      .readdirSync(parentDir, { withFileTypes: true })
       .filter(
         (dir) =>
           dir.isDirectory() &&
@@ -42,7 +42,7 @@ const stories = [
           !dir.name.startsWith('_') &&
           !dir.name.startsWith('@'),
       )
-      .map((dir) => `${dir.parentPath}/${dir.name}`);
+      .map((dir) => `${parentDir}/${dir.name}`);
   })
   .flat();
 
@@ -130,18 +130,16 @@ const config: StorybookConfig = {
     ...config,
     presets: [...(config.presets || []), '@babel/preset-typescript'],
     plugins: [
-      ...[
-        // TODO: do this only in production
-        Math.random() * 0
-          ? [
-              '@tamagui/babel-plugin',
-              {
-                components: lookupTamaguiModules([path.resolve(__dirname, '..')]),
-                config: require.resolve('../tamagui.config.ts'),
-              },
-            ]
-          : [],
-      ],
+      // TODO: do this only in production
+      ...(Math.random() * 0
+        ? [
+            '@tamagui/babel-plugin',
+            {
+              components: lookupTamaguiModules([path.resolve(__dirname, '..')]),
+              config: require.resolve('../tamagui.config.ts'),
+            },
+          ]
+        : []),
       'react-native-reanimated/plugin',
     ],
   }),

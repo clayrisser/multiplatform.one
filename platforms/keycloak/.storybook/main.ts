@@ -21,9 +21,9 @@
 
 import path from 'path';
 import publicConfig from 'app/config/public';
-import transpileModules from '../../storybook/transpileModules';
 import type { StorybookConfig } from '@storybook/react-webpack5';
 import webpack from 'webpack';
+import { lookupTranspileModules } from '@multiplatform.one/utils/transpileModules';
 
 const config: StorybookConfig = {
   stories: [
@@ -48,7 +48,7 @@ const config: StorybookConfig = {
       name: '@storybook/addon-react-native-web',
       options: {
         babelPlugins: ['react-native-reanimated/plugin'],
-        modulesToTranspile: transpileModules,
+        modulesToTranspile: lookupTranspileModules([path.resolve(__dirname, '..')]),
       },
     },
     {

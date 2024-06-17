@@ -50,18 +50,6 @@ variables:
     --set integrations.keycloak.clientSecretEnabled=${KEYCLOAK_CLIENT_SECRET_ENABLED}
     --set integrations.keycloak.name=${KEYCLOAK_INTEGRATION}
 
-visual-regression:
-  stage: test
-  image: registry.gitlab.com/risserlabs/community/images/loki:0.0.1
-  script:
-    - yarn
-    - make -s storybook/vr-test || true
-  artifacts:
-    paths:
-      - platforms/storybook/.loki
-    expire_in: 1 week
-  when: manual
-
 pages:
   stage: deploy
   image: registry.gitlab.com/risserlabs/community/images/loki:0.0.1

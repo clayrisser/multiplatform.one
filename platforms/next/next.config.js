@@ -23,6 +23,7 @@ process.env.IGNORE_TS_CONFIG_PATHS = 'true';
 process.env.TAMAGUI_TARGET = 'web';
 process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = '1';
 
+const path = require('path');
 const privateConfig = require('app/config/private');
 const publicConfig = require('app/config/public');
 const withBundleAnalyzer = require('@next/bundle-analyzer');
