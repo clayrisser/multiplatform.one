@@ -19,7 +19,6 @@
     "@storybook/addon-links": "~7.6.19",
     "@storybook/addon-notes": "^5.3.21",
     "@storybook/addon-react-native-web": "0.0.23",
-    "@storybook/addon-storyshots": "^7.6.17",
     "@storybook/addon-storysource": "~7.6.19",
     "@storybook/react": "~7.6.19",
     "addon-screen-reader": "^1.8.6",
@@ -43,7 +42,6 @@
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
     "@craco/craco": "^7.1.0",
-    "@loki/target-chrome-core": "0.35.0",
     "@multiplatform.one/utils": "workspace:0.0.1",
     "@storybook/addon-actions": "~7.6.19",
     "@storybook/addon-essentials": "~7.6.19",
@@ -64,7 +62,6 @@
     "@types/react-dom": "^18.3.0",
     "craco-babel-loader": "^1.0.4",
     "empty-module": "^0.0.2",
-    "loki": "^0.35.0",
     "react-native-reanimated": "3.8.1",
     "react-scripts": "5.0.1",
     "storybook": "~7.6.19",
@@ -74,20 +71,6 @@
     "app",
     "ui"
   ],
-  "loki": {
-    "configurations": {
-      "chrome.iphone7": {
-        "target": "chrome.app",
-        "preset": "iPhone 7"
-      }
-    },
-    "diffingEngine": {
-      "gm": {},
-      "looks-same": {},
-      "pixelmatch": {}
-    },
-    "verboseRenderer": true
-  },
   "browserslist": {
     "production": [
       ">0.2%",

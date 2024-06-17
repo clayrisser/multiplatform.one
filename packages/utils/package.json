@@ -16,16 +16,19 @@
   "license": "Apache-2.0",
   "author": "BitSpur <support@risserlabs.com> (https://risserlabs.com)",
   "main": "lib/index.js",
+  "module": "lib/index.js",
   "source": "src/index.ts",
   "types": "lib/index.d.ts",
   "exports": {
     ".": {
       "require": "./lib/index.js",
-      "types": "./lib/index.d.ts"
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js"
     },
     "./transpileModules": {
       "require": "./lib/transpileModules.js",
-      "types": "./lib/transpileModules.d.ts"
+      "types": "./lib/transpileModules.d.ts",
+      "import": "./lib/transpileModules.js"
     },
     "./package.json": "./package.json"
   },

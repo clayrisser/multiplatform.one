@@ -44,7 +44,7 @@ export function lookupTranspileModules(packageDirs?: string[], { log = true }: L
         ]),
       ].map((packageDir) => require(`${packageDir}/package.json`).transpileModules || []),
     ),
-  ];
+  ].flat();
   if (log) logger.debug('transpileModules:', transpileModules.join(', '));
   return transpileModules;
 }
@@ -62,7 +62,7 @@ export function lookupTamaguiModules(packageDirs?: string[], { log = true }: Loo
         ]),
       ].map((packageDir) => require(`${packageDir}/package.json`).tamaguiModules || []),
     ]),
-  ];
+  ].flat();
   if (log) logger.debug('tamaguiModules:', tamaguiModules.join(', '));
   return tamaguiModules;
 }
