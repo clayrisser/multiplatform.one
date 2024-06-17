@@ -36,7 +36,7 @@ import type {
 
 const extraOptionsKeys = new Set(['context', 'query', 'variables']);
 
-export interface ExtraOptions<TQueryFnData = unknown, TData = TQueryFnData, TVariables extends object = {}> {
+interface ExtraOptions<TQueryFnData = unknown, TData = TQueryFnData, TVariables extends object = {}> {
   context?: Partial<OperationContext>;
   query: DocumentNode | TypedDocumentNode<TData, TVariables> | string;
   variables: TVariables;

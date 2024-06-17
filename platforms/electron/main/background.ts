@@ -25,6 +25,7 @@ import { app, ipcMain } from 'electron';
 import { createWindow } from './helpers';
 
 const isProd = process.env.NODE_ENV === 'production';
+const logger = console;
 
 if (isProd) {
   serve({ directory: 'app' });
@@ -52,6 +53,10 @@ if (isProd) {
 
 app.on('window-all-closed', () => {
   app.quit();
+});
+
+ipcMain.on('message', async (event, arg) => {
+  event.reply('message', `${arg} World!`);
 });
 
 ipcMain.on('message', async (event, arg) => {

@@ -39,10 +39,13 @@
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues"
   },
   "keywords": [
+    "graphql",
+    "query",
+    "react",
+    "react-native",
     "react-query",
     "tanstack",
-    "query",
-    "react"
+    "urql"
   ],
   "engines": {
     "node": ">= 16.0"
