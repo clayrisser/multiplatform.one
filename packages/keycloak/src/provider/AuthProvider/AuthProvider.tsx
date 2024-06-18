@@ -264,15 +264,18 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
     }
   }, []);
 
-  return (
-    <SessionProvider {...sessionProvider}>
+  function render() {
+    return (
       <KeycloakConfigContext.Provider value={keycloakConfig}>
         <KeycloakContext.Provider value={keycloak}>
           <AfterAuth>{children}</AfterAuth>
         </KeycloakContext.Provider>
       </KeycloakConfigContext.Provider>
-    </SessionProvider>
-  );
+    );
+  }
+
+  if (MultiPlatform.isElectron) return render();
+  return <SessionProvider {...sessionProvider}>{render()}</SessionProvider>;
 }
 
 const defaultKeycloakInitOptions: KeycloakInitOptions = {
