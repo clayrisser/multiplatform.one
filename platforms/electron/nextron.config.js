@@ -20,7 +20,7 @@
  */
 
 const path = require('path');
-const { lookupTranspileModules, lookupTamaguiModules } = require('@multiplatform.one/utils/transpileModules');
+const { lookupTranspileModules } = require('@multiplatform.one/utils/transpileModules');
 const { reactNativeWebpack } = require('@multiplatform.one/react-native-webpack');
 
 module.exports = {
@@ -32,7 +32,7 @@ module.exports = {
       ...new Set(['.electron.js', '.electron.jsx', '.electron.ts', '.electron.tsx', ...config.resolve.extensions]),
     ];
     return reactNativeWebpack(config, {
-      transpileModules: lookupTranspileModules([path.resolve(__dirname)]),
+      transpileModules: lookupTranspileModules([__dirname]),
       babel: {
         exclude: [
           path.resolve(__dirname, 'next-env.d.ts'),

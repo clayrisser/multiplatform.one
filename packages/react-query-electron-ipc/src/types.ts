@@ -19,16 +19,25 @@
  * limitations under the License.
  */
 
-export interface IpcRequest<THandler extends string = string, TVariables extends object = {}> {
+export type IpcHandler<TVariables extends object = {}, TData extends object = {}> = (
+  variables: TVariables,
+) => TData | Promise<TData>;
+
+export interface IpcHandlers {
+  mutations?: Record<string, IpcHandler>;
+  queries?: Record<string, IpcHandler>;
+}
+
+export interface IpcRequest<THandler extends string = string> {
+  body?: string;
   handler: THandler;
   id: string;
   method: IpcMethod;
-  variables?: TVariables;
 }
 
-export interface IpcResponse<THandler extends string = string, TData = any, TError = Error> {
-  data?: TData;
-  error?: TError;
+export interface IpcResponse<THandler extends string = string> {
+  payload?: string;
+  error?: string;
   handler: THandler;
   id: string;
   method: IpcMethod;

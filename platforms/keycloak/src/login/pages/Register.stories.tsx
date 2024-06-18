@@ -1,8 +1,9 @@
-/*
- * File: /tsup.config.ts
- * Project: @multiplatform.one/typegraphql
- * File Created: 04-04-2024 15:50:39
+/**
+ * File: /src/login/pages/Register.stories.tsx
+ * Project: @platform/keycloak
+ * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser
+ * Author: Joseph Garrone
  * -----
  * BitSpur (c) Copyright 2021 - 2024
  *
@@ -19,20 +20,16 @@
  * limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
-import { lookupTranspileModules } from '@multiplatform.one/utils/transpileModules';
+import type { ComponentStory, ComponentMeta } from '@storybook/react';
+import { createPageStory } from '../createPageStory';
 
-export default defineConfig({
-  bundle: true,
-  clean: true,
-  dts: true,
-  entry: ['src/**/*.ts?(x)'],
-  entryPoints: ['src/index.ts'],
-  format: ['esm'],
-  minify: false,
-  outDir: 'lib',
-  skipNodeModulesBundle: true,
-  noExternal: lookupTranspileModules([__dirname]),
-  splitting: true,
-  target: 'es2022',
+const { PageStory } = createPageStory({
+  pageId: 'register.ftl',
 });
+
+export const Default: ComponentStory<typeof PageStory> = () => <PageStory />;
+
+export default {
+  title: 'login/Register',
+  component: PageStory,
+} as ComponentMeta<typeof PageStory>;

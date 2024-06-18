@@ -27,7 +27,7 @@ module.exports = {
     {
       plugin: cracoBabelLoader,
       options: {
-        includes: lookupTranspileModules([path.resolve(__dirname)]).map((module) =>
+        includes: lookupTranspileModules([__dirname]).map((module) =>
           require.resolve(`${module}/package.json`).slice(0, -13),
         ),
       },
@@ -78,7 +78,7 @@ module.exports = {
         [
           '@tamagui/babel-plugin',
           {
-            components: lookupTamaguiModules([path.resolve(__dirname)]),
+            components: lookupTamaguiModules([__dirname]),
             config: require.resolve('./src/tamagui.config.ts'),
           },
         ],
