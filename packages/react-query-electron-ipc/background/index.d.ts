@@ -1,7 +1,7 @@
 /*
- * File: /tsup.config.ts
- * Project: @multiplatform.one/typegraphql
- * File Created: 04-04-2024 15:50:39
+ * File: /backend/index.d.ts
+ * Project: @multiplatform.one/react-query-electron-ipc
+ * File Created: 17-06-2024 10:45:25
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,20 +19,4 @@
  * limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
-import { lookupTranspileModules } from '@multiplatform.one/utils/transpileModules';
-
-export default defineConfig({
-  bundle: true,
-  clean: true,
-  dts: true,
-  entry: ['src/**/*.ts?(x)'],
-  entryPoints: ['src/index.ts'],
-  format: ['esm'],
-  minify: false,
-  outDir: 'lib',
-  skipNodeModulesBundle: true,
-  noExternal: lookupTranspileModules([__dirname]),
-  splitting: true,
-  target: 'es2022',
-});
+export * from '../lib/background';

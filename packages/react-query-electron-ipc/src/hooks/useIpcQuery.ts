@@ -39,7 +39,7 @@ interface ExtraOptions<THandler extends string = string, TVariables extends obje
 }
 
 export function useIpcQuery<
-  TQueryFnData = unknown,
+  TQueryFnData extends object = {},
   TError = DefaultError,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey,
@@ -66,7 +66,7 @@ export function useIpcQuery<
     {
       ...tanstackQueryOptions,
       async queryFn() {
-        return ipcQuery<THandler, TVariables, TQueryFnData, TError>(options.handler, options.variables);
+        return ipcQuery<THandler, TVariables, TQueryFnData>(options.handler, options.variables);
       },
     },
     queryClient,

@@ -57,7 +57,7 @@ module.exports = function (api) {
           : [
               '@tamagui/babel-plugin',
               {
-                components: lookupTamaguiModules([path.resolve(__dirname)]),
+                components: lookupTamaguiModules([__dirname]),
                 config: require.resolve('./tamagui.config.ts'),
               },
             ]),

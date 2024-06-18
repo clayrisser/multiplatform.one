@@ -28,25 +28,26 @@ export interface IpcRequestOptions {
   timeout?: number;
 }
 
-async function ipcRequest<
-  THandler extends string = string,
-  TVariables extends object = {},
-  TData = any,
-  TError = Error,
->(method: IpcMethod, handler: THandler, variables: TVariables, options?: IpcRequestOptions): Promise<TData> {
+async function ipcRequest<THandler extends string = string, TVariables extends object = {}, TData extends object = {}>(
+  method: IpcMethod,
+  handler: THandler,
+  variables: TVariables,
+  options?: IpcRequestOptions,
+): Promise<TData> {
   return new Promise((resolve, reject) => {
     const id = uuid();
-    function listener(response: IpcResponse<THandler, TData, TError>) {
+    let clearListener: () => void = () => {};
+    function listener(response: IpcResponse<THandler>) {
       if (response.id !== id || response.handler !== handler || response.method !== method) return;
-      window.ipc.off(IpcEvent.Response, listener);
-      if (response.error) return reject(response.error);
-      return resolve(response.data);
+      clearListener();
+      if (response.error) return reject(new Error(response.error));
+      return resolve(JSON.parse(response.payload || '{}'));
     }
-    window.ipc.on(IpcEvent.Response, listener);
-    window.ipc.send(IpcEvent.Request, { handler, variables, id, method });
+    clearListener = window.ipc.on(IpcEvent.Response, listener);
+    window.ipc.send(IpcEvent.Request, { handler, body: JSON.stringify(variables), id, method });
     if (options?.timeout) {
       setTimeout(() => {
-        window.ipc.off(IpcEvent.Response, listener);
+        clearListener();
         reject(new Error(`ipc request handler ${handler} timed out after ${options.timeout}ms`));
       }, options.timeout);
     }
@@ -56,28 +57,24 @@ async function ipcRequest<
 export async function ipcMutation<
   THandler extends string = string,
   TVariables extends object = {},
-  TData = any,
-  TError = Error,
+  TData extends object = {},
 >(handler: THandler, variables?: TVariables, options?: IpcRequestOptions): Promise<TData> {
-  return ipcRequest<THandler, TVariables, TData, TError>(IpcMethod.Mutation, handler, variables, options);
+  return ipcRequest<THandler, TVariables, TData>(IpcMethod.Mutation, handler, variables, options);
 }
 
 export async function ipcQuery<
   THandler extends string = string,
   TVariables extends object = {},
-  TData = any,
-  TError = Error,
+  TData extends object = {},
 >(handler: THandler, variables?: TVariables, options?: IpcRequestOptions): Promise<TData> {
-  return ipcRequest<THandler, TVariables, TData, TError>(IpcMethod.Query, handler, variables, options);
+  return ipcRequest<THandler, TVariables, TData>(IpcMethod.Query, handler, variables, options);
 }
 
 declare global {
   interface Window {
-    ipc: EventEmitter & {
-      send: <THandler extends string = string, TVariables extends object = {}>(
-        channel: string,
-        request: IpcRequest<THandler, TVariables>,
-      ) => void;
+    ipc: {
+      send: <THandler extends string = string>(channel: string, request: IpcRequest<THandler>) => void;
+      on: (event: string, listener: (...args: any[]) => void) => () => void;
     };
   }
 }

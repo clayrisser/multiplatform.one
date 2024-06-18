@@ -19,20 +19,17 @@
  * limitations under the License.
  */
 
-import React from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
-import { Button } from 'ui';
 import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
+import { Button } from 'ui';
+import { useIpcQuery } from '@multiplatform.one/react-query-electron-ipc';
 
 export default function HomePage() {
-  const [message, setMessage] = React.useState('No message found');
-
-  React.useEffect(() => {
-    window.ipc.on('message', (message: string) => {
-      setMessage(message);
-    });
-  }, []);
+  const { data } = useIpcQuery<{ hello: string }>({
+    handler: 'test',
+  });
 
   return (
     <>
@@ -46,14 +43,8 @@ export default function HomePage() {
         <Image src="/images/logo.png" alt="Logo image" width={256} height={256} />
       </div>
       <div>
-        <Button
-          onPress={() => {
-            window.ipc.send('message', 'Hello');
-          }}
-        >
-          Test IPC
-        </Button>
-        <p>{message}</p>
+        <Button>Hello</Button>
+        <div>{data?.hello}</div>
       </div>
     </>
   );

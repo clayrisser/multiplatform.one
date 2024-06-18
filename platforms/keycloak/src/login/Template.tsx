@@ -30,6 +30,7 @@ import { clsx } from 'keycloakify/tools/clsx';
 import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
 import { usePrepareTemplate } from 'keycloakify/lib/usePrepareTemplate';
 import { useState } from 'react';
+import { YStack, Card, Image, XStack, Text } from 'ui';
 
 export default function Template({
   displayInfo = false,
@@ -65,8 +66,20 @@ export default function Template({
   });
   if (!isReady) return null;
   return (
-    <div className={getClassName('kcLoginClass')}>
-      <div id="kc-header" className={getClassName('kcHeaderClass')}>
+    <Card
+      //  className={getClassName('kcLoginClass')}
+      padding={0}
+      als="center"
+    >
+      <Card.Background>{/* <Image src={keycloakifyLogoPngUrl} alt="Keycloakify logo" /> */}</Card.Background>
+      <Card.Header backgroundColor="$backgroundTransparent">
+        <XStack>
+          <Image src={`${PUBLIC_URL}/keycloakify-logo.png`} alt="Keycloakify logo" width={50} />
+          <Text>{msg('loginTitleHtml', realm.displayNameHtml)}!!!</Text>
+          <Image src={keycloakifyLogoPngUrl} alt="Keycloakify logo" width={50} />
+        </XStack>
+      </Card.Header>
+      {/* <div id="kc-header" className={getClassName('kcHeaderClass')}>
         <div
           id="kc-header-wrapper"
           className={getClassName('kcHeaderWrapperClass')}
@@ -76,8 +89,10 @@ export default function Template({
           {msg('loginTitleHtml', realm.displayNameHtml)}!!!
           <img src={keycloakifyLogoPngUrl} alt="Keycloakify logo" width={50} />
         </div>
-      </div>
-      <div className={clsx(getClassName('kcFormCardClass'), displayWide && getClassName('kcFormCardAccountClass'))}>
+      </div> */}
+      <YStack
+      // className={clsx(getClassName('kcFormCardClass'), displayWide && getClassName('kcFormCardAccountClass'))}
+      >
         <header className={getClassName('kcFormHeaderClass')}>
           {realm.internationalizationEnabled && (assert(locale !== undefined), true) && locale.supported.length > 1 && (
             <div id="kc-locale">
@@ -211,7 +226,7 @@ export default function Template({
             )}
           </div>
         </div>
-      </div>
-    </div>
+      </YStack>
+    </Card>
   );
 }
