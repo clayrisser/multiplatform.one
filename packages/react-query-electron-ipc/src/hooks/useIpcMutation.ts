@@ -31,8 +31,8 @@ interface ExtraOptions<TQueryKeys extends QueryKey[] = QueryKey[], THandler exte
   invalidateQueryKeys?: TQueryKeys;
 }
 
-export function useGqlMutation<
-  TData = any,
+export function useIpcMutation<
+  TData extends object = {},
   TError = DefaultError,
   TContext = unknown,
   TQueryKeys extends QueryKey[] = QueryKey[],
@@ -53,7 +53,7 @@ export function useGqlMutation<
     {
       ...tanstackMutationOptions,
       async mutationFn(variables: TVariables): Promise<TData> {
-        return ipcMutation(options.handler, variables, { timeout: options.timeout });
+        return ipcMutation<THandler, TVariables, TData>(options.handler, variables, { timeout: options.timeout });
       },
       async onMutate(variables: TVariables) {
         (options?.invalidateQueryKeys || []).forEach((queryKey) => tanstackQueryClient.invalidateQueries({ queryKey }));

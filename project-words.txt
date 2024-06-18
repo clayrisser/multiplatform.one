@@ -177,7 +177,9 @@ inmemory
 instagram
 instrumentations
 interop
+interprocess
 ipc
+ipcs
 iss
 jackspeak
 jaeger

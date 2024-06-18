@@ -1,7 +1,7 @@
 /*
- * File: /tsup.config.ts
- * Project: @multiplatform.one/typegraphql
- * File Created: 04-04-2024 15:50:39
+ * File: /main/ipc.ts
+ * Project: @platform/electron
+ * File Created: 17-06-2024 10:03:40
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,20 +19,13 @@
  * limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
-import { lookupTranspileModules } from '@multiplatform.one/utils/transpileModules';
+import { createIpcHandlers } from '@multiplatform.one/react-query-electron-ipc/background';
+import fs from 'fs/promises';
 
-export default defineConfig({
-  bundle: true,
-  clean: true,
-  dts: true,
-  entry: ['src/**/*.ts?(x)'],
-  entryPoints: ['src/index.ts'],
-  format: ['esm'],
-  minify: false,
-  outDir: 'lib',
-  skipNodeModulesBundle: true,
-  noExternal: lookupTranspileModules([__dirname]),
-  splitting: true,
-  target: 'es2022',
+export const registerIpcHandlers = createIpcHandlers({
+  queries: {
+    async test() {
+      return { hello: await fs.readdir('/') };
+    },
+  },
 });
