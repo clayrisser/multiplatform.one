@@ -91,6 +91,7 @@ datasource
 datasources
 datetimepicker
 dbateman
+debounce
 decrypt
 dedupe
 defs
