@@ -49,6 +49,8 @@ services:
     restart: unless-stopped
     image: registry.gitlab.com/bitspur/multiplatform.one/multiplatform.one/keycloak
     platform: linux/amd64
+    security_opt:
+      - seccomp=unconfined
     ports:
       - 8080:8080
     volumes:
