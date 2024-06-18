@@ -2,8 +2,8 @@
   "packages": {
     "default": {
       "chain": "0.2.4",
-      "docker": "0.3.8",
-      "dotenv": "0.1.6"
+      "docker": "0.3.9",
+      "dotenv": "0.1.8"
     }
   },
   "repos": {
