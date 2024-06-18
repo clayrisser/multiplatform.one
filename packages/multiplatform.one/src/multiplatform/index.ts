@@ -26,6 +26,12 @@ import { isChrome, isClient, isWindowDefined, isServer, isWeb, isWebTouchable } 
 const getConfig =
   typeof nextConfig === 'function' ? nextConfig : (nextConfig as { default: typeof nextConfig })?.default;
 
+declare global {
+  interface Window {
+    ipc: any;
+  }
+}
+
 export class MultiPlatform extends MultiPlatformBase {
   static isChrome = isChrome;
   static isClient = isClient;
@@ -54,5 +60,5 @@ export class MultiPlatform extends MultiPlatformBase {
   static isElectron =
     MultiPlatform.isElectronRender ||
     MultiPlatform.isElectronMain ||
-    (isWindowDefined && window?.navigator?.userAgent?.indexOf('Electron') >= 0);
+    (isWindowDefined && window.ipc && window?.navigator?.userAgent?.toLowerCase()?.indexOf('electron') >= 0);
 }

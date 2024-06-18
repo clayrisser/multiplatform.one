@@ -19,33 +19,6 @@
  * limitations under the License.
  */
 
-import Head from 'next/head';
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
-import { Button } from 'ui';
-import { useIpcQuery } from '@multiplatform.one/react-query-electron-ipc';
+import HomeScreen from 'app/screens/home';
 
-export default function HomePage() {
-  const { data } = useIpcQuery<{ hello: string }>({
-    handler: 'test',
-  });
-
-  return (
-    <>
-      <Head>
-        <title>Home - Nextron (basic-lang-typescript)</title>
-      </Head>
-      <div>
-        <p>
-          ⚡ Electron + Next.js ⚡ -<Link href="/next">Go to next page</Link>
-        </p>
-        <Image src="/images/logo.png" alt="Logo image" width={256} height={256} />
-      </div>
-      <div>
-        <Button>Hello</Button>
-        <div>{data?.hello}</div>
-      </div>
-    </>
-  );
-}
+export default HomeScreen;

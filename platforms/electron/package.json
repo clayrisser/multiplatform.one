@@ -29,7 +29,6 @@
     "graphql-ws": "^5.16.0",
     "multiplatform.one": "workspace:1.0.11",
     "next": "^14.2.3",
-    "next-auth": "^4.24.7",
     "next-i18next": "^15.3.0",
     "next-images": "^1.8.5",
     "next-themes": "^0.3.0",

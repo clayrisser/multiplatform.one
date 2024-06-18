@@ -28,7 +28,6 @@ import React, { useMemo } from 'react';
 import tamaguiConfig from '../tamagui.config';
 import type { AppProps as NextAppProps } from 'next/app';
 import type { ColorScheme } from '@tamagui/next-theme';
-import type { Session } from 'next-auth';
 import { GlobalProvider } from 'app/providers';
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
 import { config } from 'app/config';
@@ -44,12 +43,7 @@ if (sentryDsn) {
 importFonts();
 import('app/i18n').then(({ i18nInit }) => i18nInit());
 
-export interface AppProps extends NextAppProps {
-  cookies?: Record<string, string>;
-  session?: Session;
-}
-
-function App({ Component, cookies, pageProps, session }: AppProps) {
+function App({ Component, pageProps }: NextAppProps) {
   const [rootTheme, setRootTheme] = useRootTheme();
   const contents = useMemo(() => <Component {...pageProps} />, [pageProps, Component]);
   return (
@@ -64,7 +58,6 @@ function App({ Component, cookies, pageProps, session }: AppProps) {
       </Head>
       <NextThemeProvider onChangeTheme={(name: string) => setRootTheme(name as ColorScheme)}>
         <GlobalProvider
-          cookies={cookies}
           theme={{
             root: rootTheme,
           }}
@@ -77,7 +70,6 @@ function App({ Component, cookies, pageProps, session }: AppProps) {
             messageHandlerKeys: [],
             publicClientId: config.get('KEYCLOAK_PUBLIC_CLIENT_ID'),
             realm: config.get('KEYCLOAK_REALM')!,
-            session,
           }}
         >
           {contents}

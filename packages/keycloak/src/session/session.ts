@@ -32,7 +32,7 @@ let useSession = <R extends boolean>(_options?: UseSessionOptions<R>): SessionCo
   return {};
 };
 
-if (MultiPlatform.isNext) {
+if (MultiPlatform.isNext && !MultiPlatform.isElectron) {
   useSession = <R extends boolean>(options?: UseSessionOptions<R>): SessionContextValue<R> => {
     const nextSession = useNextSession(options);
     return {
