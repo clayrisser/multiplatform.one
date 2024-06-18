@@ -28,7 +28,6 @@ CSPELL ?= $(PNPM) cspell
 ESLINT ?= $(PNPM) eslint
 EXPO ?= $(PNPM) expo
 GM ?= command gm
-LOKI ?= $(PNPM) loki
 NODE ?= node
 PRETTIER ?= $(PNPM) prettier
 SWC ?= $(PNPM) swc

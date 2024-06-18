@@ -1,5 +1,5 @@
 /*
- * File: /main/helpers/create-window.ts
+ * File: /main/helpers/createWindow.ts
  * Project: @platform/electron
  * File Created: 15-06-2024 14:38:39
  * Author: Clay Risser
@@ -53,7 +53,11 @@ export function createWindow(windowName: string, options: BrowserWindowConstruct
   }
   function resetToDefaults() {
     const bounds = screen.getPrimaryDisplay().bounds;
-    return { ...defaultSize, x: (bounds.width - defaultSize.width) / 2, y: (bounds.height - defaultSize.height) / 2 };
+    return {
+      ...defaultSize,
+      x: (bounds.width - (defaultSize.width || 0)) / 2,
+      y: (bounds.height - (defaultSize.height || 0)) / 2,
+    };
   }
   function ensureVisibleOnSomeDisplay(windowState) {
     const visible = screen.getAllDisplays().some((display) => {
@@ -75,6 +79,7 @@ export function createWindow(windowName: string, options: BrowserWindowConstruct
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
+      sandbox: true,
       ...options.webPreferences,
     },
   });

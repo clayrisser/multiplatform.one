@@ -25,7 +25,18 @@ import type { KcContext } from '../kcContext';
 import type { PageProps } from 'keycloakify/login/pages/PageProps';
 import { clsx } from 'keycloakify/tools/clsx';
 import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
+import { Input, YStack, Label, Button } from 'ui';
+import React from 'react';
+import { GestureResponderEvent } from 'react-native';
 
+export interface RegisterForm {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  username?: string;
+  password?: string;
+  passwordConfirm?: string;
+}
 export default function Register({
   kcContext,
   i18n,
@@ -39,170 +50,175 @@ export default function Register({
   });
   const { url, messagesPerField, register, realm, passwordRequired, recaptchaRequired, recaptchaSiteKey } = kcContext;
   const { msg, msgStr } = i18n;
+  const [registerForm, setRegisterForm] = React.useState<RegisterForm>(register.formData);
+  const registerRef = React.useRef<HTMLFormElement | null>(null);
+
+  function handleRegisterFormDateChange(key: string, value: string) {
+    setRegisterForm({
+      ...registerForm,
+      [key]: value,
+    });
+  }
+
+  function handleRegister(e: GestureResponderEvent) {
+    e.preventDefault();
+    if (!registerRef.current || !registerRef.current.onSubmit) return;
+    registerRef.current.onSubmit(registerForm);
+  }
+
   return (
     <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg('registerTitle')}>
-      <form id="kc-register-form" className={getClassName('kcFormClass')} action={url.registrationAction} method="post">
-        <div
+      <form
+        ref={registerRef}
+        id="kc-register-form"
+        className={getClassName('kcFormClass')}
+        action={url.registrationAction}
+        method="post"
+      >
+        <YStack
           className={clsx(
             getClassName('kcFormGroupClass'),
             messagesPerField.printIfExists('firstName', getClassName('kcFormGroupErrorClass')),
           )}
         >
-          <div className={getClassName('kcLabelWrapperClass')}>
-            <label htmlFor="firstName" className={getClassName('kcLabelClass')}>
+          <YStack className={getClassName('kcLabelWrapperClass')}>
+            <Label htmlFor="firstName" className={getClassName('kcLabelClass')}>
               {msg('firstName')}
-            </label>
-          </div>
-          <div className={getClassName('kcInputWrapperClass')}>
-            <input
-              type="text"
-              id="firstName"
-              className={getClassName('kcInputClass')}
-              name="firstName"
-              defaultValue={register.formData.firstName ?? ''}
+            </Label>
+          </YStack>
+          <YStack className={getClassName('kcInputWrapperClass')}>
+            <Input
+              value={registerForm.firstName}
+              onChangeText={(value) => handleRegisterFormDateChange('firstName', value)}
             />
-          </div>
-        </div>
-        <div
+          </YStack>
+        </YStack>
+        <YStack
           className={clsx(
             getClassName('kcFormGroupClass'),
             messagesPerField.printIfExists('lastName', getClassName('kcFormGroupErrorClass')),
           )}
         >
-          <div className={getClassName('kcLabelWrapperClass')}>
-            <label htmlFor="lastName" className={getClassName('kcLabelClass')}>
+          <YStack className={getClassName('kcLabelWrapperClass')}>
+            <Label htmlFor="lastName" className={getClassName('kcLabelClass')}>
               {msg('lastName')}
-            </label>
-          </div>
-          <div className={getClassName('kcInputWrapperClass')}>
-            <input
-              type="text"
-              id="lastName"
-              className={getClassName('kcInputClass')}
-              name="lastName"
-              defaultValue={register.formData.lastName ?? ''}
+            </Label>
+          </YStack>
+          <YStack className={getClassName('kcInputWrapperClass')}>
+            <Input
+              onChangeText={(value) => handleRegisterFormDateChange('lastName', value)}
+              value={registerForm.lastName}
             />
-          </div>
-        </div>
-        <div
+          </YStack>
+        </YStack>
+        <YStack
           className={clsx(
             getClassName('kcFormGroupClass'),
             messagesPerField.printIfExists('email', getClassName('kcFormGroupErrorClass')),
           )}
         >
-          <div className={getClassName('kcLabelWrapperClass')}>
-            <label htmlFor="email" className={getClassName('kcLabelClass')}>
+          <YStack className={getClassName('kcLabelWrapperClass')}>
+            <Label htmlFor="email" className={getClassName('kcLabelClass')}>
               {msg('email')}
-            </label>
-          </div>
-          <div className={getClassName('kcInputWrapperClass')}>
-            <input
-              type="text"
-              id="email"
-              className={getClassName('kcInputClass')}
-              name="email"
-              defaultValue={register.formData.email ?? ''}
+            </Label>
+          </YStack>
+          <YStack className={getClassName('kcInputWrapperClass')}>
+            <Input
               autoComplete="email"
+              onChangeText={(value) => handleRegisterFormDateChange('email', value)}
+              value={registerForm.email}
             />
-          </div>
-        </div>
+          </YStack>
+        </YStack>
         {!realm.registrationEmailAsUsername && (
-          <div
+          <YStack
             className={clsx(
               getClassName('kcFormGroupClass'),
               messagesPerField.printIfExists('username', getClassName('kcFormGroupErrorClass')),
             )}
           >
-            <div className={getClassName('kcLabelWrapperClass')}>
-              <label htmlFor="username" className={getClassName('kcLabelClass')}>
+            <YStack className={getClassName('kcLabelWrapperClass')}>
+              <Label htmlFor="username" className={getClassName('kcLabelClass')}>
                 {msg('username')}
-              </label>
-            </div>
-            <div className={getClassName('kcInputWrapperClass')}>
-              <input
-                type="text"
-                id="username"
-                className={getClassName('kcInputClass')}
-                name="username"
-                defaultValue={register.formData.username ?? ''}
-                autoComplete="username"
+              </Label>
+            </YStack>
+            <YStack className={getClassName('kcInputWrapperClass')}>
+              <Input
+                value={registerForm.username}
+                onChangeText={(value) => handleRegisterFormDateChange('username', value)}
               />
-            </div>
-          </div>
+            </YStack>
+          </YStack>
         )}
         {passwordRequired && (
           <>
-            <div
+            <YStack
               className={clsx(
                 getClassName('kcFormGroupClass'),
                 messagesPerField.printIfExists('password', getClassName('kcFormGroupErrorClass')),
               )}
             >
-              <div className={getClassName('kcLabelWrapperClass')}>
-                <label htmlFor="password" className={getClassName('kcLabelClass')}>
+              <YStack className={getClassName('kcLabelWrapperClass')}>
+                <Label htmlFor="password" className={getClassName('kcLabelClass')}>
                   {msg('password')}
-                </label>
-              </div>
-              <div className={getClassName('kcInputWrapperClass')}>
-                <input
-                  type="password"
-                  id="password"
-                  className={getClassName('kcInputClass')}
-                  name="password"
-                  autoComplete="new-password"
+                </Label>
+              </YStack>
+              <YStack className={getClassName('kcInputWrapperClass')}>
+                <Input
+                  onChangeText={(value) => handleRegisterFormDateChange('password', value)}
+                  value={registerForm.password}
                 />
-              </div>
-            </div>
-            <div
+              </YStack>
+            </YStack>
+            <YStack
               className={clsx(
                 getClassName('kcFormGroupClass'),
                 messagesPerField.printIfExists('password-confirm', getClassName('kcFormGroupErrorClass')),
               )}
             >
-              <div className={getClassName('kcLabelWrapperClass')}>
-                <label htmlFor="password-confirm" className={getClassName('kcLabelClass')}>
+              <YStack className={getClassName('kcLabelWrapperClass')}>
+                <Label htmlFor="password-confirm" className={getClassName('kcLabelClass')}>
                   {msg('passwordConfirm')}
-                </label>
-              </div>
-              <div className={getClassName('kcInputWrapperClass')}>
-                <input
-                  className={getClassName('kcInputClass')}
-                  id="password-confirm"
-                  name="password-confirm"
-                  type="password"
+                </Label>
+              </YStack>
+              <YStack className={getClassName('kcInputWrapperClass')}>
+                <Input
+                  onChangeText={(value) => handleRegisterFormDateChange('passwordConfirm', value)}
+                  value={registerForm.passwordConfirm}
                 />
-              </div>
-            </div>
+              </YStack>
+            </YStack>
           </>
         )}
         {recaptchaRequired && (
-          <div className="form-group">
-            <div className={getClassName('kcInputWrapperClass')}>
-              <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey} />
-            </div>
-          </div>
+          <YStack className="form-group">
+            <YStack className={getClassName('kcInputWrapperClass')}>
+              <YStack className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey} />
+            </YStack>
+          </YStack>
         )}
-        <div className={getClassName('kcFormGroupClass')}>
-          <div id="kc-form-options" className={getClassName('kcFormOptionsClass')}>
-            <div className={getClassName('kcFormOptionsWrapperClass')}>
+        <YStack className={getClassName('kcFormGroupClass')}>
+          <YStack id="kc-form-options" className={getClassName('kcFormOptionsClass')}>
+            <YStack className={getClassName('kcFormOptionsWrapperClass')}>
               <span>
                 <a href={url.loginUrl}>{msg('backToLogin')}</a>
               </span>
-            </div>
-          </div>
-          <div id="kc-form-buttons" className={getClassName('kcFormButtonsClass')}>
-            <input
-              className={clsx(
-                getClassName('kcButtonBlockClass'),
-                getClassName('kcButtonClass'),
-                getClassName('kcButtonLargeClass'),
-                getClassName('kcButtonPrimaryClass'),
-              )}
-              type="submit"
-              value={msgStr('doRegister')}
-            />
-          </div>
-        </div>
+            </YStack>
+          </YStack>
+          <YStack id="kc-form-buttons" className={getClassName('kcFormButtonsClass')}>
+            <Button
+              onPress={handleRegister}
+              // className={clsx(
+              //   getClassName('kcButtonBlockClass'),
+              //   getClassName('kcButtonClass'),
+              //   getClassName('kcButtonLargeClass'),
+              //   getClassName('kcButtonPrimaryClass'),
+              // )}
+            >
+              {msg('doRegister')}
+            </Button>
+          </YStack>
+        </YStack>
       </form>
     </Template>
   );

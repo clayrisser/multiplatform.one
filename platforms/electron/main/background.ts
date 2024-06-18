@@ -21,8 +21,9 @@
 
 import path from 'path';
 import serve from 'electron-serve';
-import { app, ipcMain } from 'electron';
+import { app } from 'electron';
 import { createWindow } from './helpers';
+import { registerIpcHandlers } from './ipc';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -34,6 +35,7 @@ if (isProd) {
 
 (async () => {
   await app.whenReady();
+  registerIpcHandlers();
   const mainWindow = createWindow('main', {
     width: 1000,
     height: 600,
@@ -52,8 +54,4 @@ if (isProd) {
 
 app.on('window-all-closed', () => {
   app.quit();
-});
-
-ipcMain.on('message', async (event, arg) => {
-  event.reply('message', `${arg} World!`);
 });

@@ -89,10 +89,6 @@ prisma/%:
 api/%:
 	@$(call make,api) $*
 
-.PHONY: count
-count:
-	@$(CLOC) $(shell ($(GIT) ls-files && ($(GIT) lfs ls-files | $(CUT) -d' ' -f3)) | $(SORT) | $(UNIQ) -u)
-
 .PHONY: version
 version:
 	@$(CHANGESET)

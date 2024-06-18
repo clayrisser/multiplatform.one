@@ -20,15 +20,16 @@
  */
 
 const cracoBabelLoader = require('craco-babel-loader');
-const tamaguiModules = require('./tamaguiModules');
-const transpileModules = require('./transpileModules');
+const { lookupTranspileModules, lookupTamaguiModules } = require('@multiplatform.one/utils/transpileModules');
 
 module.exports = {
   plugins: [
     {
       plugin: cracoBabelLoader,
       options: {
-        includes: transpileModules.map((module) => require.resolve(`${module}/package.json`).slice(0, -13)),
+        includes: lookupTranspileModules([__dirname]).map((module) =>
+          require.resolve(`${module}/package.json`).slice(0, -13),
+        ),
       },
     },
   ],
@@ -77,7 +78,7 @@ module.exports = {
         [
           '@tamagui/babel-plugin',
           {
-            components: tamaguiModules,
+            components: lookupTamaguiModules([__dirname]),
             config: require.resolve('./src/tamagui.config.ts'),
           },
         ],
