@@ -31,7 +31,7 @@ interface ExtraOptions<TQueryKeys extends QueryKey[] = QueryKey[], THandler exte
   invalidateQueryKeys?: TQueryKeys;
 }
 
-export function useGqlMutation<
+export function useIpcMutation<
   TData extends object = {},
   TError = DefaultError,
   TContext = unknown,
