@@ -37,7 +37,7 @@ const disableExtraction = process.env.NODE_ENV === 'development';
 const plugins = [
   withImages,
   withTamagui({
-    components: lookupTamaguiModules([path.resolve(__dirname)]),
+    components: lookupTamaguiModules([__dirname]),
     config: './tamagui.config.ts',
     disableExtraction,
     excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
@@ -78,7 +78,7 @@ module.exports = function (phase) {
         skipDefaultConversion: true,
       },
     },
-    transpilePackages: lookupTranspileModules([path.resolve(__dirname)]),
+    transpilePackages: lookupTranspileModules([__dirname]),
     experimental: {
       esmExternals: 'loose',
       optimizeCss: phase !== PHASE_DEVELOPMENT_SERVER,
