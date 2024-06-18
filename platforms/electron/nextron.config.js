@@ -20,7 +20,7 @@
  */
 
 const path = require('path');
-const { lookupTranspileModules, lookupTamaguiModules } = require('@multiplatform.one/utils/transpileModules');
+const { lookupTranspileModules } = require('@multiplatform.one/utils/transpileModules');
 const { reactNativeWebpack } = require('@multiplatform.one/react-native-webpack');
 
 module.exports = {
