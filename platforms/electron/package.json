@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps || true"
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.24.7",
