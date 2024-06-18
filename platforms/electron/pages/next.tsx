@@ -1,5 +1,5 @@
 /**
- * File: /src/pages/next.tsx
+ * File: /pages/next.tsx
  * Project: @platform/electron
  * File Created: 15-06-2024 14:38:39
  * Author: Clay Risser
