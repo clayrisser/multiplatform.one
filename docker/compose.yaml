@@ -47,7 +47,7 @@ services:
   keycloak:
     container_name: keycloak
     restart: unless-stopped
-    image: registry.gitlab.com/bitspur/multiplatform.one/keycloak
+    image: registry.gitlab.com/bitspur/multiplatform.one/multiplatform.one/keycloak
     ports:
       - 8080:8080
     volumes:

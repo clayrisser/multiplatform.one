@@ -25,6 +25,6 @@ export NAME := $(shell $(NODE) -e "console.log(require('$(PROJECT_ROOT)/package.
 export VERSION := $(shell $(ECHO) $(GIT_COMMIT))
 export DOCKER_COMPOSE ?= docker-compose
 export CONTEXT := $(PROJECT_ROOT)
-export REGISTRY := registry.gitlab.com/bitspur/multiplatform.one
+export REGISTRY := registry.gitlab.com/bitspur/multiplatform.one/multiplatform.one
 
 include $(MKPM)/docker

@@ -79,6 +79,7 @@ export function createWindow(windowName: string, options: BrowserWindowConstruct
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
+      sandbox: true,
       ...options.webPreferences,
     },
   });
