@@ -62,7 +62,6 @@ services:
       KC_METRICS_ENABLED: 'true'
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: P@ssw0rd
-      KEYCLOAK_IMPORT: /tmp/realm-export.json
     depends_on:
       - postgres-keycloak
 
