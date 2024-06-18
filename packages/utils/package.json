@@ -1,0 +1,59 @@
+{
+  "name": "@multiplatform.one/utils",
+  "version": "0.0.1",
+  "description": "utilities for multiplatform.one",
+  "sideEffects": false,
+  "keywords": [
+    "react",
+    "react-native",
+    "electron"
+  ],
+  "homepage": "https://multiplatform.one",
+  "bugs": {
+    "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues",
+    "email": "support@risserlabs.com"
+  },
+  "license": "Apache-2.0",
+  "author": "BitSpur <support@risserlabs.com> (https://risserlabs.com)",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "source": "src/index.ts",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js"
+    },
+    "./transpileModules": {
+      "require": "./lib/transpileModules.js",
+      "types": "./lib/transpileModules.d.ts",
+      "import": "./lib/transpileModules.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "src",
+    "transpileModules"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
+  },
+  "devDependencies": {
+    "@types/node": "~20.12.13",
+    "tsup": "^8.1.0",
+    "typescript": "~5.3.3"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "eslintIgnore": [
+    "lib"
+  ]
+}

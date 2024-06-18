@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-const tamaguiModules = require('./tamaguiModules');
+const { lookupTamaguiModules } = require('@multiplatform.one/utils/transpileModules');
 
 process.env.TAMAGUI_TARGET = 'native';
 
@@ -41,12 +41,12 @@ module.exports = function (api) {
         require.resolve('babel-plugin-module-resolver'),
         {
           root: ['../..'],
+          extensions: ['.js', '.jsx', '.tsx', '.ios.js', '.android.js'],
           alias: {
             app: '../../app',
             ui: '../../packages/ui',
             ...moduleResolutions.reduce((acc, module) => ({ ...acc, [module]: require.resolve(module) }), {}),
           },
-          extensions: ['.js', '.jsx', '.tsx', '.ios.js', '.android.js'],
         },
       ],
       'react-native-reanimated/plugin',
@@ -57,7 +57,7 @@ module.exports = function (api) {
           : [
               '@tamagui/babel-plugin',
               {
-                components: tamaguiModules,
+                components: lookupTamaguiModules([__dirname]),
                 config: require.resolve('./tamagui.config.ts'),
               },
             ]),

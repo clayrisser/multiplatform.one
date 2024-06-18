@@ -50,7 +50,7 @@
     "url": "https://gitlab.com/risserlabs/community/auto-contrast"
   },
   "peerDependencies": {
-    "@storybook/react": "^7.0.14",
+    "@storybook/react": "~7.6.19",
     "@storybook/react-native": "^6.5.3",
     "@tamagui/constants": "^1.29.3",
     "@tamagui/web": "^1.29.3",
@@ -63,18 +63,16 @@
   "devDependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
     "@storybook/react": "~7.6.19",
-    "@storybook/react-native": "^7.6.19",
+    "@storybook/react-native": "^7.6.20",
     "@tamagui/build": "^1.100.3",
     "@tamagui/constants": "^1.100.3",
     "@tamagui/web": "^1.100.3",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "^15.0.7",
-    "@types/jest": "^29.5.12",
     "@types/react": "^18.3.1",
     "@types/react-native": "^0.73.0",
     "@types/storybook__react-native": "^5.2.1",
     "@vitejs/plugin-react": "^4.3.1",
-    "cspell": "^8.8.4",
     "expo-constants": "~16.0.2",
     "next": "^14.2.3",
     "react": "18.2.0",

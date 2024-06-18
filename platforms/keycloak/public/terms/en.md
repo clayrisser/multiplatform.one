@@ -20,9 +20,9 @@ You may be required to register with the Service to access certain features. Whe
 
 ## User Responsibilities
 
--   **Data Security**: Users are responsible for safeguarding their login credentials and should not disclose their passwords to any third party.
--   **Acceptable Use**: Users are expected to use the Service in a responsible manner that does not infringe upon the rights of others.
--   **Content Ownership**: Users retain all rights to the content they upload to the Service but grant the Company a license to use and distribute this content as part of the Service.
+- **Data Security**: Users are responsible for safeguarding their login credentials and should not disclose their passwords to any third party.
+- **Acceptable Use**: Users are expected to use the Service in a responsible manner that does not infringe upon the rights of others.
+- **Content Ownership**: Users retain all rights to the content they upload to the Service but grant the Company a license to use and distribute this content as part of the Service.
 
 ## Intellectual Property
 

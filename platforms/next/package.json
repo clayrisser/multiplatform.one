@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@expo/next-adapter": "^6.0.0",
+    "@multiplatform.one/utils": "workspace:0.0.1",
     "@types/cookie": "^0.6.0",
     "@types/node": "~20.12.13",
     "@types/node-cleanup": "^2.1.5",

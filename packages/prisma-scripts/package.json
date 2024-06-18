@@ -55,9 +55,7 @@
     "prisma": "~5.12.1"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.12",
-    "cspell": "^8.8.4",
-    "majestic": "^1.8.1",
+    "@multiplatform.one/utils": "workspace:0.0.1",
     "prisma": "~5.12.1",
     "tsup": "^8.1.0",
     "typescript": "~5.3.3"

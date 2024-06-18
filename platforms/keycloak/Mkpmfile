@@ -65,33 +65,6 @@ dev: | ~deps +dev
 +dev:
 	@$(PNPM) run dev -p $(PORT)
 
-.PHONY: vr-update
-vr-update: ~build
-	@$(LOKI) \
-		--requireReference \
-		--diffingEngine $(VR_DIFFING_ENGINE) \
-		--reactUri file:./storybook-static \
-		--chromeFlags="--headless --disable-gpu --hide-scrollbars --no-sandbox" \
-		update
-
-.PHONY: vr-test
-vr-test: ~build
-	@$(LOKI) \
-		--requireReference \
-		--diffingEngine $(VR_DIFFING_ENGINE) \
-		--reactUri file:./storybook-static \
-		--chromeFlags="--headless --disable-gpu --hide-scrollbars --no-sandbox" \
-		test
-
-.PHONY: vr-approve
-vr-approve:
-	@$(LOKI) \
-		--requireReference \
-		--diffingEngine $(VR_DIFFING_ENGINE) \
-		--reactUri file:./storybook-static \
-		--chromeFlags="--headless --disable-gpu --hide-scrollbars --no-sandbox" \
-		approve
-
 .PHONY: postinstall
 postinstall:
 

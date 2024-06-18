@@ -26,12 +26,12 @@ import { Label, Paragraph, YStack } from 'tamagui';
 
 export interface FormFieldProps extends YStackProps {
   children: ReactNode;
+  error?: boolean;
+  helperText?: string;
+  id: string;
   label?: string;
   labelProps?: Omit<LabelProps, 'htmlFor' | 'ref'>;
-  helperText?: string;
   required?: boolean;
-  error?: boolean;
-  id: string;
   size?: SizeTokens;
 }
 
