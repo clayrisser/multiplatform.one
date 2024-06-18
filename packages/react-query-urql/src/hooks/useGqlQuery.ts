@@ -76,7 +76,7 @@ export function useGqlQuery<
   return useTanstackQuery<TQueryFnData, TError, TData, TQueryKey>(
     {
       ...tanstackQueryOptions,
-      queryKey: tanstackQueryOptions.queryKey || options.query,
+      queryKey: (options.queryKey || [options.query.toString()]) as TQueryKey,
       enabled:
         typeof tanstackQueryOptions?.enabled !== 'undefined'
           ? tanstackQueryOptions.enabled

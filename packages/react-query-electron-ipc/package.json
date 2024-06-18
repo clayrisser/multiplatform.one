@@ -1,5 +1,5 @@
 {
-  "name": "@multiplatform.one/react-query-ipc",
+  "name": "@multiplatform.one/react-query-electron-ipc",
   "version": "0.0.1",
   "description": "tanstack react query for electron ipc",
   "sideEffects": false,
@@ -40,7 +40,7 @@
     "build": "tsup"
   },
   "files": [
-    "bin",
+    "background",
     "lib",
     "src"
   ],

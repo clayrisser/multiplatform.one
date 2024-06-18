@@ -91,6 +91,10 @@ module.exports = function (phase) {
     serverRuntimeConfig: {
       ...privateConfig,
     },
+    webpack: (config) => {
+      config.resolve.fallback = { fs: false };
+      return config;
+    },
   };
   for (const plugin of plugins) {
     nextConfig = {
