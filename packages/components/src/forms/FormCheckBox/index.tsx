@@ -105,7 +105,7 @@ export function FormCheckBox({
   }
   return (
     <Controller
-      name={name}
+      name={name as string}
       control={control}
       rules={rules}
       defaultValue={defaultValue}
