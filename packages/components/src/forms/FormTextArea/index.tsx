@@ -100,7 +100,7 @@ export function FormTextArea<
             }}
             onChangeText={(e) => {
               field.handleChange(e as TData);
-              if (textAreaProps.onChangeText) textAreaProps.onChangeText(e);
+              return textAreaProps.onChangeText?.(e);
             }}
           />
         </FormField>

@@ -112,7 +112,7 @@ export function FormRadioGroup<
             value={field.state.value as string}
             onValueChange={(e) => {
               field.handleChange(e as TData);
-              if (radioProps.onValueChange) radioProps.onValueChange(e);
+              return radioProps.onValueChange?.(e);
             }}
           >
             <YStack display="flex" flexDirection={horizontal ? 'row' : 'column'} {...contentStyle}>

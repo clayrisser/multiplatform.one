@@ -94,9 +94,13 @@ export function FormSelectSimple<
           <SelectSimple
             {...selectProps}
             value={field.state.value as string}
+            onBlur={(e) => {
+              field.handleBlur();
+              return selectProps.onBlur?.(e);
+            }}
             onValueChange={(e) => {
               field.handleChange(e as TData);
-              if (selectProps.onValueChange) selectProps.onValueChange(e);
+              return selectProps.onValueChange?.(e);
             }}
           />
         </FormField>
