@@ -144,14 +144,7 @@ export function FormCheckBox<
       validators={validators}
     >
       {(field) => (
-        <FormField
-          id={field.name.toString()}
-          error={!!error}
-          helperText={helperText}
-          label={label}
-          required={required}
-          {...fieldProps}
-        >
+        <FormField id={field.name.toString()} error={!!error} label={label} required={required} {...fieldProps}>
           <YStack>
             <XStack
               alignItems={CheckBoxElementSizing?.ai || 'center'}
