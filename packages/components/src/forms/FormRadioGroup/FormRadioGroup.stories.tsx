@@ -23,7 +23,10 @@ import React from 'react';
 import { FormRadio, FormRadioGroup } from './index';
 import { action } from '@storybook/addon-actions';
 import { SimpleForm } from '../SimpleForm';
-import { Label } from 'tamagui';
+import { Button, Label, YStack } from 'tamagui';
+import { useForm } from '@tanstack/react-form';
+import { FormCheckBox } from '../FormCheckBox';
+import { FormInput } from '../FormInput';
 
 export default {
   title: 'forms/FormRadioGroup',
@@ -63,3 +66,26 @@ main.args = {
   defaultValue: 'option1',
   horizontal: false,
 };
+
+export const form = () => {
+  const form = useForm({
+    defaultValues: {
+      firstName: '',
+      isChecked: false,
+      radioGroup: '',
+    },
+
+    onSubmit: async ({ value }) => {
+      action('onSubmit')(value);
+    },
+  });
+  return (
+    <YStack>
+      <FormCheckBox label="Accept" name="isChecked" form={form} />
+      <FormInput form={form} name="firstName" label="FirstName" />
+      <FormRadioGroup form={form} name="radioGroup" label="radioGroup" />
+      <Button onPress={form.handleSubmit}>Submit</Button>
+    </YStack>
+  );
+};
+
