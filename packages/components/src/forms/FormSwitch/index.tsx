@@ -20,42 +20,61 @@
  */
 
 import React, { useId } from 'react';
-import type { ComponentProps } from 'react';
-import type { FormControllerProps } from '../types';
+import type { FieldComponentProps, FormControllerProps } from '../types';
 import type { FormFieldProps } from '../FormField';
 import type { SwitchProps } from 'tamagui';
-import { Controller, useFormContext } from 'react-hook-form';
 import { FormField } from '../FormField';
 import { Switch } from 'tamagui';
+import { Field, useForm } from '@tanstack/react-form';
+import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
 
-export type FormSwitchProps = SwitchProps &
+export type FormSwitchProps<
+  TParentData,
+  TName extends DeepKeys<TParentData>,
+  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
+  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
+> = SwitchProps &
   FormControllerProps & {
     fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> & {
-    thumbStyle?: ComponentProps<typeof Switch.Thumb>;
+  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> &
+  Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
+    fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
   };
 
-export function FormSwitch({
-  control,
-  defaultValue,
+export function FormSwitch<
+  TParentData,
+  TName extends DeepKeys<TParentData>,
+  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
+  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
+>({
   error,
   fieldProps,
   helperText,
   label,
   name,
+  asyncAlways,
+  asyncDebounceMs,
+  defaultMeta,
+  defaultValue,
+  mode,
+  preserveValue,
+  validatorAdapter,
+  validators,
+  form,
   required,
-  rules,
   thumbStyle,
   ...switchProps
-}: FormSwitchProps) {
+}: FormSwitchProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
   switchProps = {
     size: '$3',
     animation: 'quick',
     ...switchProps,
   };
-  const formContext = useFormContext();
+  form = form || useForm();
   const id = useId();
-  if (!formContext) {
+  if (!form || !name) {
     return (
       <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
         <Switch {...switchProps}>
@@ -65,22 +84,22 @@ export function FormSwitch({
     );
   }
   return (
-    <Controller
-      name={name}
-      control={control}
-      rules={rules}
+    <Field
+      asyncAlways={asyncAlways}
+      asyncDebounceMs={asyncDebounceMs}
+      defaultMeta={defaultMeta}
       defaultValue={defaultValue}
-      render={({ field: { onChange, value }, fieldState: { error } }) => (
-        <FormField
-          id={id}
-          error={!!error}
-          helperText={error ? error.message : helperText}
-          label={label}
-          required={required}
-          {...fieldProps}
-        >
+      form={form}
+      mode={mode}
+      name={name}
+      preserveValue={preserveValue}
+      validatorAdapter={validatorAdapter}
+      validators={validators}
+    >
+      {(field) => (
+        <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
           <Switch
-            checked={value ?? false}
+            checked={field.state.value as boolean}
             id={id}
             {...switchProps}
             onCheckedChange={switchProps.onCheckedChange ?? onChange}
@@ -94,6 +113,6 @@ export function FormSwitch({
           </Switch>
         </FormField>
       )}
-    />
+    </Field>
   );
 }

@@ -16,7 +16,12 @@ export default {
   },
 };
 
-export const vertical = (args) => <FormProgress value={80} size={3} width={20} vertical name="progress" {...args} />;
+export const vertical = (args) => {
+  const form = useForm({
+    defaultValues: 0,
+  });
+  return <FormProgress form={form} value={80} size={3} width={20} vertical name="progress" {...args} />;
+};
 
 export const horizontal = (args) => <FormProgress value={80} size={3} width={20} name="progress" {...args} />;
 
