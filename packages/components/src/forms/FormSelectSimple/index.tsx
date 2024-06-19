@@ -1,8 +1,8 @@
 /**
  * File: /src/forms/FormSelectSimple/index.tsx
  * Project: @multiplatform.one/components
- * File Created: 15-02-2024 09:38:13
- * Author: Lavanya Katari
+ * File Created: 19-06-2024 09:37:30
+ * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
  *
@@ -20,13 +20,14 @@
  */
 
 import React, { useId } from 'react';
-import type { FieldComponentProps, FormControllerProps } from '../types';
-import type { FormFieldProps } from '../FormField';
-import type { SelectSimpleProps } from '../SelectSimple';
-import { FormField } from '../FormField';
-import { SelectSimple } from '../SelectSimple';
-import { Field, useForm } from '@tanstack/react-form';
 import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
+import type { FieldComponentProps } from '../types';
+import type { FormFieldProps } from '../FormField';
+import { FormField } from '../FormField';
+import { useProps } from 'tamagui';
+import { SelectSimple } from '../SelectSimple';
+import type { SelectSimpleProps } from '../SelectSimple';
+import { useForm, Field } from '@tanstack/react-form';
 
 export type FormSelectSimpleProps<
   TParentData,
@@ -34,12 +35,10 @@ export type FormSelectSimpleProps<
   TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
   TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
-> = SelectSimpleProps &
-  FormControllerProps & {
-    fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> &
+> = Omit<FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'field'> &
+  Pick<SelectSimpleProps, 'placeholder' | 'value' | 'onOpenChange' | 'onValueChange'> &
   Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
-    fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
+    selectProps?: Omit<SelectSimpleProps, 'placeholder' | 'value' | 'id' | 'onOpenChange' | 'onValueChange'>;
   };
 
 export function FormSelectSimple<
@@ -48,31 +47,40 @@ export function FormSelectSimple<
   TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
   TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
->({
-  error,
-  fieldProps,
-  helperText,
-  label,
-  name,
-
-  asyncAlways,
-  asyncDebounceMs,
-  defaultMeta,
-  defaultValue,
-  mode,
-  preserveValue,
-  validatorAdapter,
-  validators,
-  form,
-  required,
-  ...selectProps
-}: FormSelectSimpleProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
-  const id = useId();
+>(props: FormSelectSimpleProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+  let {
+    asyncAlways,
+    asyncDebounceMs,
+    children,
+    defaultMeta,
+    defaultValue,
+    form,
+    mode,
+    name,
+    onBlur,
+    onOpenChange,
+    onValueChange,
+    preserveValue,
+    selectProps,
+    validatorAdapter,
+    validators,
+    value,
+    ...fieldProps
+  } = useProps(props);
   form = form || useForm();
+  const id = fieldProps.id || useId();
   if (!form || !name) {
     return (
-      <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
-        <SelectSimple {...selectProps} />
+      <FormField {...fieldProps} id={id} onBlur={onBlur}>
+        <SelectSimple
+          {...selectProps}
+          id={id}
+          onOpenChange={onOpenChange}
+          onValueChange={onValueChange}
+          value={value ?? (defaultValue as string)}
+        >
+          {children}
+        </SelectSimple>
       </FormField>
     );
   }
@@ -89,22 +97,33 @@ export function FormSelectSimple<
       validatorAdapter={validatorAdapter}
       validators={validators}
     >
-      {(field) => (
-        <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
-          <SelectSimple
-            {...selectProps}
-            value={field.state.value as string}
+      {(field) => {
+        const error = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : fieldProps.error;
+        return (
+          <FormField
+            error={error}
+            {...fieldProps}
+            id={id}
             onBlur={(e) => {
               field.handleBlur();
-              return selectProps.onBlur?.(e);
+              return onBlur?.(e);
             }}
-            onValueChange={(e) => {
-              field.handleChange(e as TData);
-              return selectProps.onValueChange?.(e);
-            }}
-          />
-        </FormField>
-      )}
+          >
+            <SelectSimple
+              {...selectProps}
+              id={id}
+              onOpenChange={onOpenChange}
+              value={value ?? (field.state.value as string)}
+              onValueChange={(value) => {
+                field.handleChange(value as TData);
+                return onValueChange?.(value);
+              }}
+            >
+              {children}
+            </SelectSimple>
+          </FormField>
+        );
+      }}
     </Field>
   );
 }

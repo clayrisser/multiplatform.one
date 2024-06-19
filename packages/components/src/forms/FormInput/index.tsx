@@ -24,7 +24,6 @@ import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
 import type { FieldComponentProps } from '../types';
 import type { FormFieldProps } from '../FormField';
 import type { InputProps } from 'tamagui';
-import type { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 import { FormField } from '../FormField';
 import { Input, useProps } from 'tamagui';
 import { useForm, Field } from '@tanstack/react-form';
@@ -35,10 +34,10 @@ export type FormInputProps<
   TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
   TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
-> = Omit<FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children' | 'field' | 'id'> &
-  Pick<InputProps, 'onBlur' | 'onChange' | 'onChangeText'> &
+> = Omit<FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children' | 'field'> &
+  Pick<InputProps, 'value' | 'onChange' | 'onChangeText'> &
   Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
-    inputProps?: Omit<InputProps, 'id' | 'onBlur' | 'onChange' | 'onChangeText'>;
+    inputProps?: Omit<InputProps, 'value' | 'id' | 'onChange' | 'onChangeText'>;
   };
 
 export function FormInput<
@@ -54,6 +53,7 @@ export function FormInput<
     onBlur,
     onChange,
     onChangeText,
+    value,
     // tanstack field props
     asyncAlways,
     asyncDebounceMs,
@@ -68,15 +68,11 @@ export function FormInput<
     ...fieldProps
   } = useProps(props);
   form = form || useForm();
-  const id = useId();
+  const id = fieldProps.id || useId();
   if (!form || !name) {
     return (
-      <FormField id={id} {...fieldProps}>
-        <Input
-          id={id}
-          borderColor={fieldProps.error ? '$red8' : props?.borderColor ?? '$borderColor'}
-          {...inputProps}
-        />
+      <FormField {...fieldProps} id={id} onBlur={onBlur}>
+        <Input {...inputProps} id={id} value={value ?? (defaultValue as string)} onChange={onChange} />
       </FormField>
     );
   }
@@ -96,18 +92,21 @@ export function FormInput<
       {(field) => {
         const error = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : fieldProps.error;
         return (
-          <FormField id={id} error={error} {...fieldProps}>
+          <FormField
+            error={error}
+            {...fieldProps}
+            id={id}
+            onBlur={(e) => {
+              field.handleBlur();
+              return onBlur?.(e);
+            }}
+          >
             <Input
-              id={id}
-              value={field.state.value as string}
-              onChange={onChange}
-              borderColor={error ? '$red8' : props?.borderColor ?? '$borderColor'}
               {...inputProps}
-              onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-                field.handleBlur();
-                return onBlur?.(e);
-              }}
-              onChangeText={(text: string) => {
+              id={id}
+              onChange={onChange}
+              value={value ?? (field.state.value as string)}
+              onChangeText={(text) => {
                 field.handleChange(text as TData);
                 return onChangeText?.(text);
               }}

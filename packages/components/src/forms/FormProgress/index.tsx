@@ -1,11 +1,32 @@
+/**
+ * File: /src/forms/FormProgress/index.tsx
+ * Project: @multiplatform.one/components
+ * File Created: 19-06-2024 09:37:30
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React, { useId } from 'react';
-import type { ProgressProps, SizeTokens } from 'tamagui';
-import { Progress } from 'tamagui';
-import type { FormFieldProps } from '../FormField';
-import { FormField } from '../FormField';
 import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
-import type { FieldComponentProps, FormControllerProps } from '../types';
-import { Field, useForm } from '@tanstack/react-form';
+import type { FieldComponentProps } from '../types';
+import type { FormFieldProps } from '../FormField';
+import type { ProgressProps } from 'tamagui';
+import { FormField } from '../FormField';
+import { Progress, useProps } from 'tamagui';
+import { useForm, Field } from '@tanstack/react-form';
 
 export type FormProgressProps<
   TParentData,
@@ -13,12 +34,10 @@ export type FormProgressProps<
   TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
   TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
-> = ProgressProps &
-  Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> &
-  FormControllerProps & { vertical?: boolean } & Partial<
-    Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>
-  > & {
-    fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
+> = Omit<FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children' | 'field'> &
+  Pick<ProgressProps, 'id' | 'value'> &
+  Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
+    progressProps?: Omit<ProgressProps, 'id' | 'value'>;
   };
 
 export function FormProgress<
@@ -27,43 +46,33 @@ export function FormProgress<
   TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
   TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
->({
-  error,
-  fieldProps,
-  helperText,
-  label,
-  required,
-  // tanstack filedd Props
-  asyncAlways,
-  asyncDebounceMs,
-  defaultMeta,
-  defaultValue,
-  mode,
-  preserveValue,
-  validatorAdapter,
-  validators,
-  form,
-  name,
-
-  size,
-  vertical,
-  ...progressProps
-}: FormProgressProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
-  form = form || useForm();
-  const id = useId();
-  const propSize = typeof size === 'number' ? (size as SizeTokens) : size;
+>(props: FormProgressProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+  let {
+    asyncAlways,
+    asyncDebounceMs,
+    defaultMeta,
+    defaultValue,
+    form,
+    mode,
+    name,
+    value,
+    preserveValue,
+    progressProps,
+    validatorAdapter,
+    validators,
+    ...fieldProps
+  } = useProps(props);
+  form = form ?? useForm();
+  const id = fieldProps.id || useId();
   if (!form || !name) {
     return (
-      <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
+      <FormField {...fieldProps} id={id}>
         <Progress
-          marginTop={vertical ? 86 : undefined}
-          marginLeft={vertical ? -80 : undefined}
-          rotate={vertical ? '270deg' : undefined}
+          borderColor={fieldProps.error ? '$red8' : undefined}
           {...progressProps}
-          size={propSize}
-        >
-          <Progress.Indicator animation="bouncy" />
-        </Progress>
+          id={id}
+          value={value ?? (defaultValue as number)}
+        />
       </FormField>
     );
   }
@@ -80,25 +89,19 @@ export function FormProgress<
       validatorAdapter={validatorAdapter}
       validators={validators}
     >
-      {(field) => (
-        <FormField
-          id={field.name.toString()}
-          error={!!error}
-          helperText={helperText}
-          label={label}
-          required={required}
-          {...fieldProps}
-        >
-          <Progress
-            marginTop={vertical ? 86 : undefined}
-            marginLeft={vertical ? -80 : undefined}
-            rotate={vertical ? '270deg' : undefined}
-            {...progressProps}
-            size={propSize}
-            value={field.state.value as number}
-          />
-        </FormField>
-      )}
+      {(field) => {
+        const error = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : fieldProps.error;
+        return (
+          <FormField error={error} {...fieldProps} id={id}>
+            <Progress
+              borderColor={error ? '$red8' : undefined}
+              {...progressProps}
+              id={id}
+              value={value ?? (field.state.value as number)}
+            />
+          </FormField>
+        );
+      }}
     </Field>
   );
 }

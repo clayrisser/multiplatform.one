@@ -1,10 +1,10 @@
 /**
  * File: /src/forms/FormSwitch/index.tsx
  * Project: @multiplatform.one/components
- * File Created: 18-10-2023 15:23:17
- * Author: Lalit rajak
+ * File Created: 19-06-2024 09:37:30
+ * Author: Clay Risser
  * -----
- * BitSpur (c) Copyright 2021 - 2023
+ * BitSpur (c) Copyright 2021 - 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@
  */
 
 import React, { useId } from 'react';
-import type { FieldComponentProps, FormControllerProps } from '../types';
-import type { FormFieldProps } from '../FormField';
-import type { SliderThumbProps, SwitchProps } from 'tamagui';
-import { FormField } from '../FormField';
-import { Switch } from 'tamagui';
-import { Field, useForm } from '@tanstack/react-form';
 import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
+import type { FieldComponentProps } from '../types';
+import type { FormFieldProps } from '../FormField';
+import type { SwitchProps, SwitchThumbProps } from 'tamagui';
+import { FormField } from '../FormField';
+import { Switch, useProps } from 'tamagui';
+import { useForm, Field } from '@tanstack/react-form';
 
 export type FormSwitchProps<
   TParentData,
@@ -34,13 +34,12 @@ export type FormSwitchProps<
   TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
   TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
-> = SwitchProps &
-  FormControllerProps & {
-    fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> &
+> = Omit<FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children' | 'field'> &
+  Pick<SwitchProps, 'checked' | 'onCheckedChange'> &
   Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
-    fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & { thumbStyle?: SliderThumbProps };
+    switchProps?: Omit<SwitchProps, 'checked' | 'id' | 'onCheckedChange'>;
+    thumbStyle?: SwitchThumbProps;
+  };
 
 export function FormSwitch<
   TParentData,
@@ -48,37 +47,37 @@ export function FormSwitch<
   TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
   TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
->({
-  error,
-  fieldProps,
-  helperText,
-  label,
-  name,
-  asyncAlways,
-  asyncDebounceMs,
-  defaultMeta,
-  defaultValue,
-  mode,
-  preserveValue,
-  validatorAdapter,
-  validators,
-  form,
-  required,
-  thumbStyle,
-  ...switchProps
-}: FormSwitchProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
-  switchProps = {
-    size: '$3',
-    animation: 'quick',
-    ...switchProps,
-  };
+>(props: FormSwitchProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+  let {
+    asyncAlways,
+    asyncDebounceMs,
+    checked,
+    defaultMeta,
+    defaultValue,
+    form,
+    mode,
+    name,
+    onBlur,
+    onCheckedChange,
+    preserveValue,
+    switchProps,
+    thumbStyle,
+    validatorAdapter,
+    validators,
+    ...fieldProps
+  } = useProps(props);
   form = form || useForm();
-  const id = useId();
+  const id = fieldProps.id || useId();
   if (!form || !name) {
     return (
-      <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
-        <Switch {...switchProps}>
-          <Switch.Thumb {...(thumbStyle as any)} />
+      <FormField {...fieldProps} id={id} onBlur={onBlur}>
+        <Switch
+          {...switchProps}
+          checked={checked ?? (defaultValue as boolean)}
+          id={id}
+          onCheckedChange={onCheckedChange}
+        >
+          <Switch.Thumb {...thumbStyle} />
         </Switch>
       </FormField>
     );
@@ -96,23 +95,32 @@ export function FormSwitch<
       validatorAdapter={validatorAdapter}
       validators={validators}
     >
-      {(field) => (
-        <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
-          <Switch
-            checked={field.state.value as boolean}
+      {(field) => {
+        const error = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : fieldProps.error;
+        return (
+          <FormField
+            error={error}
+            {...fieldProps}
             id={id}
-            {...switchProps}
-            onCheckedChange={(checked) => field.handleChange(checked as TData)}
-            onPress={(e) => {
-              e.preventDefault();
-              field.handleChange(e as TData);
-              return switchProps.onPress?.(e);
+            onBlur={(e) => {
+              field.handleBlur();
+              return onBlur?.(e);
             }}
           >
-            <Switch.Thumb {...(thumbStyle as any)} />
-          </Switch>
-        </FormField>
-      )}
+            <Switch
+              {...switchProps}
+              checked={checked ?? (defaultValue as boolean)}
+              id={id}
+              onCheckedChange={(checked) => {
+                field.handleChange(checked as TData);
+                return onCheckedChange?.(checked);
+              }}
+            >
+              <Switch.Thumb {...thumbStyle} />
+            </Switch>
+          </FormField>
+        );
+      }}
     </Field>
   );
 }

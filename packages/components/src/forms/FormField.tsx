@@ -36,7 +36,7 @@ export interface FormFieldProps<
   error?: string | boolean;
   field?: FieldApi<TParentData, TName, TFieldValidator, TFormValidator, TData>;
   helperText?: string;
-  id: string;
+  id?: string;
   label?: string;
   labelProps?: Omit<LabelProps, 'htmlFor' | 'ref'>;
   required?: boolean;

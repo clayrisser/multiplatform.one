@@ -24,7 +24,7 @@ import type { ComponentType, ReactNode } from 'react';
 import type { ThemeName } from 'tamagui';
 import type { WithLayout } from 'multiplatform.one';
 import { Select, YStack, XStack, Adapt, Popover, Circle } from 'tamagui';
-import { SelectSimple } from '../../forms/SelectSimple';
+// import { SelectSimple } from '../../forms/SelectSimple';
 import { createWithLayout } from 'multiplatform.one';
 import { useLocale, useSupportedLocales } from '@multiplatform.one/locales';
 import { useTheme } from 'multiplatform.one/theme';
@@ -122,7 +122,7 @@ export function DebugLayout<DebugViewProps>({
           </Adapt>
           <Popover.Content borderWidth={1} borderColor="$borderColor" elevate>
             <XStack gap>
-              <SelectSimple
+              {/* <SelectSimple
                 id="root-theme"
                 placeholder={theme.root}
                 width={96}
@@ -160,7 +160,7 @@ export function DebugLayout<DebugViewProps>({
                 onValueChange={setFamily}
               >
                 {renderTintFamilyItems()}
-              </SelectSimple>
+              </SelectSimple> */}
             </XStack>
             {DebugView && <DebugView {...(debugViewProps as any)} />}
           </Popover.Content>
