@@ -20,17 +20,26 @@
  */
 
 import React, { useId } from 'react';
-import type { FormControllerProps } from '../types';
+import type { FieldComponentProps, FormControllerProps } from '../types';
 import type { FormFieldProps } from '../FormField';
 import type { SizeTokens, RadioGroupProps, YStackProps } from 'tamagui';
-import { Controller, useFormContext } from 'react-hook-form';
 import { FormField } from '../FormField';
 import { RadioGroup, XStack, YStack } from 'tamagui';
+import { Field, useForm } from '@tanstack/react-form';
+import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
 
-export type FormRadioGroupProps = RadioGroupProps &
-  FormControllerProps & {
+export type FormRadioGroupProps<
+  TParentData,
+  TName extends DeepKeys<TParentData>,
+  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
+  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
+> = RadioGroupProps &
+  FormControllerProps &
+  Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> &
+  Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
     fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> & {
+  } & {
     horizontal?: boolean;
     contentStyle: YStackProps;
   };
@@ -43,10 +52,15 @@ export interface FormRadioProps {
   id?: string;
 }
 
-export function FormRadioGroup({
+export function FormRadioGroup<
+  TParentData,
+  TName extends DeepKeys<TParentData>,
+  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
+  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
+>({
   children,
-  control,
-  defaultValue,
+
   error,
   fieldProps,
   helperText,
@@ -54,13 +68,21 @@ export function FormRadioGroup({
   name,
   required,
   horizontal,
-  rules,
+  asyncAlways,
+  asyncDebounceMs,
+  defaultMeta,
+  defaultValue,
+  form,
+  mode,
+  preserveValue,
+  validatorAdapter,
+  validators,
   contentStyle,
   ...radioProps
-}: FormRadioGroupProps) {
-  const formContext = useFormContext();
+}: FormRadioGroupProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
   const id = useId();
-  if (!formContext) {
+  form = form || useForm();
+  if (!form || !name) {
     return (
       <RadioGroup name={name} {...radioProps}>
         <YStack display="flex" flexDirection={horizontal ? 'row' : 'column'} {...contentStyle}>
@@ -70,26 +92,26 @@ export function FormRadioGroup({
     );
   }
   return (
-    <Controller
-      name={name}
-      control={control}
-      rules={rules}
+    <Field
+      asyncAlways={asyncAlways}
+      asyncDebounceMs={asyncDebounceMs}
+      defaultMeta={defaultMeta}
       defaultValue={defaultValue}
-      render={({ field: { onChange, value }, fieldState: { error } }) => (
-        <FormField
-          id={id}
-          error={!!error}
-          helperText={error ? error.message : helperText}
-          label={label}
-          required={required}
-          {...fieldProps}
-        >
+      form={form}
+      mode={mode}
+      name={name}
+      preserveValue={preserveValue}
+      validatorAdapter={validatorAdapter}
+      validators={validators}
+    >
+      {(field) => (
+        <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
           <RadioGroup
             name={name}
             {...radioProps}
-            value={value}
+            value={field.state.value as string}
             onValueChange={(e) => {
-              onChange(e);
+              field.handleChange(e as TData);
               if (radioProps.onValueChange) radioProps.onValueChange(e);
             }}
           >
@@ -99,7 +121,7 @@ export function FormRadioGroup({
           </RadioGroup>
         </FormField>
       )}
-    />
+    </Field>
   );
 }
 
