@@ -6,7 +6,6 @@ import { Button, YStack } from 'tamagui';
 import { FormCheckBox } from '../FormCheckBox';
 import { FormInput } from '../FormInput';
 
-
 export default {
   title: 'forms/FormTextArea',
   component: FormTextArea,
@@ -16,18 +15,8 @@ export default {
 };
 
 export const main = () => (
-  
-  <FormTextArea
-    label="Description"
-    name="description"
-    defaultValue=""
-    rules={{ required: true }}
-    onChangeText={action('onChangeText')}
-  />
+  <FormTextArea label="Description" name="description" defaultValue="" onChangeText={action('onChangeText')} />
 );
-
-
-
 
 export const form = () => {
   const form = useForm({
@@ -50,4 +39,3 @@ export const form = () => {
     </YStack>
   );
 };
-

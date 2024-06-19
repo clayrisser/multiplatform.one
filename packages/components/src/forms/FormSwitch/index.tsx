@@ -102,11 +102,11 @@ export function FormSwitch<
             checked={field.state.value as boolean}
             id={id}
             {...switchProps}
-            onCheckedChange={switchProps.onCheckedChange ?? onChange}
+            onCheckedChange={(checked) => field.handleChange(checked as TData)}
             onPress={(e) => {
               e.preventDefault();
-              onChange(e);
-              if (switchProps.onPress) switchProps.onPress(e);
+              field.handleChange(e as TData);
+              return switchProps.onPress?.(e);
             }}
           >
             <Switch.Thumb {...(thumbStyle as any)} />
