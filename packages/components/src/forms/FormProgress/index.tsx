@@ -22,34 +22,58 @@
 import React, { useId } from 'react';
 import type { ProgressProps, SizeTokens } from 'tamagui';
 import { Progress } from 'tamagui';
-import { useFormContext, Controller } from 'react-hook-form';
 import type { FormFieldProps } from '../FormField';
 import { FormField } from '../FormField';
-import type { FormControllerProps } from '../types';
+import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
+import type { FieldComponentProps, FormControllerProps } from '../types';
+import { Field, useForm } from '@tanstack/react-form';
 
-export type FormProgressProps = ProgressProps &
-  FormControllerProps & { vertical?: boolean } & {
+export type FormProgressProps<
+  TParentData,
+  TName extends DeepKeys<TParentData>,
+  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
+  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
+> = ProgressProps &
+  Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> &
+  FormControllerProps & { vertical?: boolean } & Partial<
+    Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>
+  > & {
     fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
+  };
 
-export function FormProgress({
-  control,
-  defaultValue,
+export function FormProgress<
+  TParentData,
+  TName extends DeepKeys<TParentData>,
+  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
+  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
+>({
   error,
   fieldProps,
   helperText,
   label,
-  name,
   required,
-  rules,
+  // tanstack filedd Props
+  asyncAlways,
+  asyncDebounceMs,
+  defaultMeta,
+  defaultValue,
+  mode,
+  preserveValue,
+  validatorAdapter,
+  validators,
+  form,
+  name,
+
   size,
   vertical,
   ...progressProps
-}: FormProgressProps) {
-  const formContext = useFormContext();
+}: FormProgressProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+  form = form || useForm();
   const id = useId();
-  const propSize = typeof size === 'number' ? (`$${size}` as SizeTokens) : (size as SizeTokens);
-  if (!formContext) {
+  const propSize = typeof size === 'number' ? (size as SizeTokens) : size;
+  if (!form || !name) {
     return (
       <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
         <Progress
@@ -65,16 +89,23 @@ export function FormProgress({
     );
   }
   return (
-    <Controller
-      name={name}
-      control={control}
-      rules={rules}
+    <Field
+      asyncAlways={asyncAlways}
+      asyncDebounceMs={asyncDebounceMs}
+      defaultMeta={defaultMeta}
       defaultValue={defaultValue}
-      render={({ field: { value }, fieldState: { error } }) => (
+      form={form}
+      mode={mode}
+      name={name}
+      preserveValue={preserveValue}
+      validatorAdapter={validatorAdapter}
+      validators={validators}
+    >
+      {(field) => (
         <FormField
-          id={id}
+          id={field.name.toString()}
           error={!!error}
-          helperText={error ? error.message : helperText}
+          helperText={helperText}
           label={label}
           required={required}
           {...fieldProps}
@@ -85,10 +116,10 @@ export function FormProgress({
             rotate={vertical ? '270deg' : undefined}
             {...progressProps}
             size={propSize}
-            value={value ?? 0}
+            value={field.state.value as number}
           />
         </FormField>
       )}
-    />
+    </Field>
   );
 }

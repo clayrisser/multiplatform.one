@@ -1,20 +1,56 @@
+/**
+ * File: /src/forms/FormSlider/index.tsx
+ * Project: @multiplatform.one/components
+ * File Created: 15-02-2024 09:38:13
+ * Author: Lavanya Katari
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 import React, { useId } from 'react';
-import { SliderProps, SliderThumbProps } from 'tamagui';
+import { SliderProps } from 'tamagui';
 import { Slider } from 'tamagui';
-import { FormControllerProps } from '../types';
+import { FieldComponentProps, FormControllerProps } from '../types';
 import { FormFieldProps } from '../FormField';
-import { Controller, useFormContext } from 'react-hook-form';
 import { FormField } from '../FormField';
+import { Field, useForm } from '@tanstack/react-form';
+import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
 
-export type FormSliderProps = SliderProps &
+export type FormSliderProps<
+  TParentData,
+  TName extends DeepKeys<TParentData>,
+  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
+  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
+> = SliderProps &
   FormControllerProps & {
     fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> & { thumbStyle?: SliderThumbProps };
+  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> &
+  Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
+    fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
+  };
 
-export function FormSlider({
+export function FormSlider<
+  TParentData,
+  TName extends DeepKeys<TParentData>,
+  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
+  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
+>({
   children,
-  control,
   defaultValue,
   error,
   fieldProps,
@@ -23,12 +59,20 @@ export function FormSlider({
   name,
   required,
   thumbStyle,
-  rules,
+  // tanstack field props
+  asyncAlways,
+  asyncDebounceMs,
+  defaultMeta,
+  mode,
+  preserveValue,
+  validatorAdapter,
+  validators,
+  form,
   ...switchProps
-}: FormSliderProps) {
-  const formContext = useFormContext();
+}: FormSliderProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+  form = form || useForm();
   const id = useId();
-  if (!formContext) {
+  if (!form || !name) {
     return (
       <Slider>
         <Slider.Track>
@@ -48,21 +92,26 @@ export function FormSlider({
     );
   }
   return (
-    <Controller
-      name={name}
-      control={control}
-      rules={rules}
+    <Field
+      asyncAlways={asyncAlways}
+      asyncDebounceMs={asyncDebounceMs}
+      defaultMeta={defaultMeta}
       defaultValue={defaultValue}
-      render={({ field: { onChange, value }, fieldState: { error } }) => (
-        <FormField
-          id={id}
-          error={!!error}
-          helperText={error ? error.message : helperText}
-          label={label}
-          required={required}
-          {...fieldProps}
-        >
-          <Slider defaultValue={defaultValue} value={value} onValueChange={onChange} {...switchProps}>
+      form={form}
+      mode={mode}
+      name={name}
+      preserveValue={preserveValue}
+      validatorAdapter={validatorAdapter}
+      validators={validators}
+    >
+      {(field) => (
+        <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
+          <Slider
+            defaultValue={defaultValue}
+            value={field.state.value as number[]}
+            onValueChange={onChange}
+            {...switchProps}
+          >
             <Slider.Track>
               <Slider.TrackActive />
             </Slider.Track>
@@ -76,12 +125,12 @@ export function FormSlider({
               index={0}
               {...thumbStyle}
             >
-              {value[0]}
+              {field.state.value[0]}
             </Slider.Thumb>
             {children}
           </Slider>
         </FormField>
       )}
-    />
+    </Field>
   );
 }
