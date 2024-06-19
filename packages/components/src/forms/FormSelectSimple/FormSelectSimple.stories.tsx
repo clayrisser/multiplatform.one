@@ -1,6 +1,11 @@
 import React from 'react';
 import { FormSelectSimple } from './index';
-import { Select } from 'tamagui';
+import { Button, Select, YStack } from 'tamagui';
+import { useForm } from '@tanstack/react-form';
+import { action } from '@storybook/addon-actions';
+import { FormCheckBox } from '../FormCheckBox';
+import { FormInput } from '../FormInput';
+
 
 export default {
   title: 'forms/FormSelectSimple',
@@ -26,3 +31,25 @@ export const main = () => (
     </Select.Item>
   </FormSelectSimple>
 );
+
+export const form = () => {
+  const form = useForm({
+    defaultValues: {
+      firstName: '',
+      isChecked: false,
+      selectSimple: '',
+    },
+
+    onSubmit: async ({ value }) => {
+      action('onSubmit')(value);
+    },
+  });
+  return (
+    <YStack>
+      <FormCheckBox label="Accept" name="isChecked" form={form} />
+      <FormInput form={form} name="firstName" label="FirstName" />
+      <FormSelectSimple form={form} name='selectSimple' label='selectSimple' />
+      <Button onPress={form.handleSubmit}>Submit</Button>
+    </YStack>
+  );
+};

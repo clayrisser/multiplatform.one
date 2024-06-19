@@ -24,6 +24,10 @@ import { FormSwitch } from './index';
 import { action } from '@storybook/addon-actions';
 import { SimpleForm } from '../SimpleForm';
 import { FormSubmitButton } from '../FormSubmitButton';
+import { useForm } from '@tanstack/react-form';
+import { Button, YStack } from 'tamagui';
+import { FormCheckBox } from '../FormCheckBox';
+import { FormInput } from '../FormInput';
 
 export default {
   title: 'forms/FormSwitch',
@@ -34,6 +38,8 @@ export default {
 };
 
 export const main = () => (
+  
+
   <SimpleForm>
     <FormSwitch
       label="Example Switch"
@@ -46,3 +52,24 @@ export const main = () => (
     <FormSubmitButton onSubmit={action('onSubmit')}>Submit</FormSubmitButton>
   </SimpleForm>
 );
+export const form = () => {
+  const form = useForm({
+    defaultValues: {
+      firstName: '',
+      isChecked: false,
+      switch: false,
+    },
+
+    onSubmit: async ({ value }) => {
+      action('onSubmit')(value);
+    },
+  });
+  return (
+    <YStack>
+      <FormCheckBox label="Accept" name="isChecked" form={form} />
+      <FormInput form={form} name="firstName" label="FirstName" />
+      <FormSwitch form={form} name="switch" label="switch" />
+      <Button onPress={form.handleSubmit}>Submit</Button>
+    </YStack>
+  );
+};
