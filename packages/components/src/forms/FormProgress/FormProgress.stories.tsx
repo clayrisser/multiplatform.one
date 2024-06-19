@@ -16,22 +16,16 @@ export default {
   },
 };
 
-export const vertical = (args) => {
-  const form = useForm({
-    defaultValues: 0,
-  });
-  return <FormProgress form={form} value={80} size={3} width={20} vertical name="progress" {...args} />;
-};
+export const vertical = (args) => <FormProgress value={80} size={3} width={20} vertical name="progress" {...args} />;
 
 export const horizontal = (args) => <FormProgress value={80} size={3} width={20} name="progress" {...args} />;
-
 
 export const form = () => {
   const form = useForm({
     defaultValues: {
       firstName: '',
       isChecked: false,
-      progress: 0
+      progress: 0,
     },
 
     onSubmit: async ({ value }) => {
@@ -42,7 +36,7 @@ export const form = () => {
     <YStack>
       <FormCheckBox label="Accept" name="isChecked" form={form} />
       <FormInput form={form} name="firstName" label="FirstName" />
-      <FormProgress form={form} name='progress' label='progress' />
+      <FormProgress form={form} name="progress" label="progress" />
       <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>
   );
