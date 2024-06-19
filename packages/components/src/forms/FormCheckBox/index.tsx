@@ -97,7 +97,7 @@ export function FormCheckBox<
   LabelStyle,
   ...checkProps
 }: FormCheckBoxProps<TParentData, TName, TFieldValidator, TFormValidator, TData> & {
-  checkBoxElement: CheckBoxElement;
+  checkBoxElement?: CheckBoxElement;
 } & { CheckBoxElementSizing?: CheckBoxElementSizing }) {
   form = form || useForm();
   const id = useId();
@@ -113,9 +113,9 @@ export function FormCheckBox<
         >
           <Checkbox
             id={id}
-            size={checkBoxElement.size}
-            defaultChecked={checkBoxElement.defaultChecked}
-            value={checkBoxElement.value}
+            size={checkBoxElement?.size}
+            defaultChecked={checkBoxElement?.defaultChecked}
+            value={checkBoxElement?.value}
             {...checkProps}
           >
             <Checkbox.Indicator>
@@ -123,8 +123,8 @@ export function FormCheckBox<
             </Checkbox.Indicator>
           </Checkbox>
 
-          <Label size={checkBoxElement.size} htmlFor={id}>
-            {checkBoxElement.label || checkBoxElement.value}
+          <Label size={checkBoxElement?.size} htmlFor={id}>
+            {checkBoxElement?.label || checkBoxElement?.value}
           </Label>
         </XStack>
       </YStack>
@@ -154,9 +154,9 @@ export function FormCheckBox<
             >
               <Checkbox
                 id={field.name.toString()}
-                size={checkBoxElement.size}
-                defaultChecked={checkBoxElement.defaultChecked}
-                value={checkBoxElement.value}
+                size={checkBoxElement?.size}
+                defaultChecked={checkBoxElement?.defaultChecked}
+                value={checkBoxElement?.value}
                 checked={field.state.value as boolean}
                 {...checkProps}
                 onCheckedChange={(e) => {
@@ -168,8 +168,8 @@ export function FormCheckBox<
                   <CheckIcon />
                 </Checkbox.Indicator>
               </Checkbox>
-              <Label size={checkBoxElement.size} htmlFor={id} {...LabelStyle}>
-                {checkBoxElement.label || checkBoxElement.value}
+              <Label size={checkBoxElement?.size} htmlFor={id} {...LabelStyle}>
+                {checkBoxElement?.label || checkBoxElement?.value}
               </Label>
             </XStack>
           </YStack>
