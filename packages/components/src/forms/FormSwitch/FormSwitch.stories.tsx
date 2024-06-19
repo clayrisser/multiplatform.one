@@ -1,10 +1,10 @@
 /**
  * File: /src/forms/FormSwitch/FormSwitch.stories.tsx
  * Project: @multiplatform.one/components
- * File Created: 18-10-2023 15:23:17
- * Author: Lalit rajak
+ * File Created: 19-06-2024 09:37:30
+ * Author: Clay Risser
  * -----
- * BitSpur (c) Copyright 2021 - 2023
+ * BitSpur (c) Copyright 2021 - 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,11 @@
 import React from 'react';
 import { FormSwitch } from './index';
 import { action } from '@storybook/addon-actions';
-import { SimpleForm } from '../SimpleForm';
-import { FormSubmitButton } from '../FormSubmitButton';
+// import { SimpleForm } from '../SimpleForm';
+// import { FormSubmitButton } from '../FormSubmitButton';
 import { useForm } from '@tanstack/react-form';
 import { Button, YStack } from 'tamagui';
-import { FormCheckBox } from '../FormCheckbox';
+import { FormCheckbox } from '../FormCheckbox';
 import { FormInput } from '../FormInput';
 
 export default {
@@ -38,7 +38,8 @@ export default {
 };
 
 export const main = () => (
-  <SimpleForm>
+  // <SimpleForm>
+  <>
     <FormSwitch
       label="Example Switch"
       name="exampleSwitch"
@@ -47,8 +48,9 @@ export const main = () => (
       onCheckedChange={action('onChange')}
       onPress={action('onPress')}
     />
-    <FormSubmitButton onSubmit={action('onSubmit')}>Submit</FormSubmitButton>
-  </SimpleForm>
+    {/* <FormSubmitButton onSubmit={action('onSubmit')}>Submit</FormSubmitButton> */}
+  </>
+  // </SimpleForm>
 );
 export const form = () => {
   const form = useForm({
@@ -64,7 +66,7 @@ export const form = () => {
   });
   return (
     <YStack>
-      <FormCheckBox label="Accept" name="isChecked" form={form} />
+      <FormCheckbox label="Accept" name="isChecked" form={form} />
       <FormInput form={form} name="firstName" label="FirstName" />
       <FormSwitch form={form} name="switch" label="switch" />
       <Button onPress={form.handleSubmit}>Submit</Button>

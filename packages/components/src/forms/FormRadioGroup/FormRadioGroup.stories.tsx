@@ -20,13 +20,11 @@
  */
 
 import React from 'react';
-import { FormRadio, FormRadioGroup } from './index';
-import { action } from '@storybook/addon-actions';
-import { SimpleForm } from '../SimpleForm';
-import { Button, Label, YStack } from 'tamagui';
-import { useForm } from '@tanstack/react-form';
-import { FormCheckBox } from '../FormCheckbox';
+import { Button, YStack, Text } from 'tamagui';
 import { FormInput } from '../FormInput';
+import { FormRadioGroup } from './index';
+import { action } from '@storybook/addon-actions';
+import { useForm } from '@tanstack/react-form';
 
 export default {
   title: 'forms/FormRadioGroup',
@@ -34,44 +32,42 @@ export default {
   parameters: { status: { type: 'beta' } },
 };
 
-export const main = (args) => (
-  <SimpleForm>
-    <FormRadioGroup
-      name="radio group"
-      label="radio group"
-      helperText="select an option"
-      contentStyle={{ gap: '$4' }}
-      required
-      onValueChange={action('onValueChange')}
-      gap
-      {...args}
-    >
-      <FormRadio size="$4" value="option1">
-        <Label htmlFor="option1">option 1</Label>
-      </FormRadio>
-      <FormRadio size="$4" value="option2">
-        <Label htmlFor="option2">option 2</Label>
-      </FormRadio>
-      <FormRadio size="$4" value="option3">
-        <Label htmlFor="option3">option 3</Label>
-      </FormRadio>
-      <FormRadio size="$4" value="option4">
-        <Label htmlFor="option4">option 4</Label>
-      </FormRadio>
-    </FormRadioGroup>
-  </SimpleForm>
-);
+// export const main = (args) => (
+//   <SimpleForm>
+//     <FormRadioGroup
+//       name="radio group"
+//       label="radio group"
+//       helperText="select an option"
+//       contentStyle={{ gap: '$4' }}
+//       required
+//       onValueChange={action('onValueChange')}
+//       gap
+//       {...args}
+//     >
+//       <FormRadio size="$4" value="option1">
+//         <Label htmlFor="option1">option 1</Label>
+//       </FormRadio>
+//       <FormRadio size="$4" value="option2">
+//         <Label htmlFor="option2">option 2</Label>
+//       </FormRadio>
+//       <FormRadio size="$4" value="option3">
+//         <Label htmlFor="option3">option 3</Label>
+//       </FormRadio>
+//       <FormRadio size="$4" value="option4">
+//         <Label htmlFor="option4">option 4</Label>
+//       </FormRadio>
+//     </FormRadioGroup>
+//   </SimpleForm>
+// );
 
-main.args = {
-  defaultValue: 'option1',
-  horizontal: false,
-};
+// main.args = {
+//   defaultValue: 'option1',
+//   horizontal: false,
+// };
 
 export const form = () => {
   const form = useForm({
     defaultValues: {
-      firstName: '',
-      isChecked: false,
       radioGroup: '',
     },
 
@@ -81,9 +77,28 @@ export const form = () => {
   });
   return (
     <YStack>
-      <FormCheckBox label="Accept" name="isChecked" form={form} />
-      <FormInput form={form} name="firstName" label="FirstName" />
-      <FormRadioGroup form={form} name="radioGroup" label="radioGroup" />
+      <FormRadioGroup
+        form={form}
+        gap
+        helperText="select an option"
+        label="radio group"
+        name="radioGroup"
+        onValueChange={action('onValueChange')}
+        required
+      >
+        <FormRadioGroup.Item size="$4" value="option1">
+          <Text htmlFor="option1">option 1</Text>
+        </FormRadioGroup.Item>
+        <FormRadioGroup.Item size="$4" value="option2">
+          <Text htmlFor="option2">option 2</Text>
+        </FormRadioGroup.Item>
+        <FormRadioGroup.Item size="$4" value="option3">
+          <Text htmlFor="option3">option 3</Text>
+        </FormRadioGroup.Item>
+        <FormRadioGroup.Item size="$4" value="option4">
+          <Text htmlFor="option4">option 4</Text>
+        </FormRadioGroup.Item>
+      </FormRadioGroup>
       <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>
   );

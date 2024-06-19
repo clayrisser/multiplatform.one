@@ -53,7 +53,7 @@ export const form = () => {
   });
   return (
     <YStack>
-      <FormCheckbox label="Accept" name="isChecked" form={form} />
+      <FormCheckbox label="Accept" name="isChecked" error="Abc 123" form={form} />
       <FormInput form={form} name="firstName" label="FirstName" />
       <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>

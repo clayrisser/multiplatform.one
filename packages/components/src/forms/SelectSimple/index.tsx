@@ -33,12 +33,12 @@ export type SelectSimpleProps = SelectTriggerProps &
 
 export function SelectSimple({
   children,
-  placeholder,
+  defaultValue,
+  id,
   onOpenChange,
   onValueChange,
-  defaultValue,
+  placeholder,
   value,
-  id,
   ...triggerProps
 }: SelectSimpleProps) {
   return (

@@ -1,8 +1,8 @@
 /**
  * File: /src/forms/FormTextArea/index.tsx
  * Project: @multiplatform.one/components
- * File Created: 15-02-2024 09:38:13
- * Author: Lavanya Katari
+ * File Created: 19-06-2024 09:37:30
+ * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
  *
@@ -20,14 +20,13 @@
  */
 
 import React, { useId } from 'react';
-import type { FieldComponentProps, FormControllerProps } from '../types';
+import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
+import type { FieldComponentProps } from '../types';
 import type { FormFieldProps } from '../FormField';
 import type { TextAreaProps } from 'tamagui';
 import { FormField } from '../FormField';
-import { TextArea } from 'tamagui';
-import type { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
-import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
-import { Field, useForm } from '@tanstack/react-form';
+import { useForm, Field } from '@tanstack/react-form';
+import { useProps, TextArea } from 'tamagui';
 
 export type FormTextAreaProps<
   TParentData,
@@ -35,12 +34,10 @@ export type FormTextAreaProps<
   TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
   TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
-> = TextAreaProps &
-  FormControllerProps & {
-    fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> &
+> = Omit<FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children' | 'field'> &
+  Pick<TextAreaProps, 'value' | 'onChange' | 'onChangeText'> &
   Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
-    fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
+    textAreaProps?: Omit<TextAreaProps, 'value' | 'id' | 'onChange' | 'onChangeText'>;
   };
 
 export function FormTextArea<
@@ -49,30 +46,36 @@ export function FormTextArea<
   TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
   TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
->({
-  defaultValue,
-  error,
-  form,
-  fieldProps,
-  helperText,
-  label,
-  name,
-  asyncAlways,
-  asyncDebounceMs,
-  defaultMeta,
-  mode,
-  preserveValue,
-  validatorAdapter,
-  validators,
-  required,
-  ...textAreaProps
-}: FormTextAreaProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+>(props: FormTextAreaProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+  let {
+    asyncAlways,
+    asyncDebounceMs,
+    defaultMeta,
+    defaultValue,
+    form,
+    mode,
+    name,
+    onBlur,
+    onChange,
+    onChangeText,
+    preserveValue,
+    textAreaProps,
+    validatorAdapter,
+    validators,
+    value,
+    ...fieldProps
+  } = useProps(props);
   form = form || useForm();
-  const id = useId();
+  const id = fieldProps.id || useId();
   if (!form || !name) {
     return (
-      <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
-        <TextArea {...textAreaProps} />
+      <FormField {...fieldProps} id={id} onBlur={onBlur}>
+        <TextArea
+          {...textAreaProps}
+          value={value ?? (defaultValue as string)}
+          onChange={onChange}
+          onChangeText={onChangeText}
+        />
       </FormField>
     );
   }
@@ -89,22 +92,30 @@ export function FormTextArea<
       validatorAdapter={validatorAdapter}
       validators={validators}
     >
-      {(field) => (
-        <FormField id={id} error={!!error} helperText={helperText} label={label} required={required} {...fieldProps}>
-          <TextArea
-            {...textAreaProps}
-            value={field.state.value as string}
-            onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+      {(field) => {
+        const error = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : fieldProps.error;
+        return (
+          <FormField
+            error={error}
+            {...fieldProps}
+            id={id}
+            onBlur={(e) => {
               field.handleBlur();
-              return textAreaProps.onBlur?.(e);
+              return onBlur?.(e);
             }}
-            onChangeText={(e) => {
-              field.handleChange(e as TData);
-              return textAreaProps.onChangeText?.(e);
-            }}
-          />
-        </FormField>
-      )}
+          >
+            <TextArea
+              {...textAreaProps}
+              value={field.state.value as string}
+              onChange={onChange}
+              onChangeText={(text) => {
+                field.handleChange(text as TData);
+                return onChangeText?.(text);
+              }}
+            />
+          </FormField>
+        );
+      }}
     </Field>
   );
 }
