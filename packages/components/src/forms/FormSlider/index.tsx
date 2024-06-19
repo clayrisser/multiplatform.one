@@ -109,8 +109,16 @@ export function FormSlider<
           <Slider
             defaultValue={defaultValue}
             value={field.state.value as number[]}
-            onValueChange={onChange}
             {...switchProps}
+            // onValueChange={onChange}
+            onBlur={(e) => {
+              field.handleBlur();
+              return switchProps.onBlur?.(e);
+            }}
+            onValueChange={(e) => {
+              field.handleChange(e as TData);
+              return switchProps.onValueChange?.(e);
+            }}
           >
             <Slider.Track>
               <Slider.TrackActive />
