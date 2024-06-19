@@ -25,6 +25,7 @@ import type { FormFieldProps } from '../FormField';
 import type { TextAreaProps } from 'tamagui';
 import { FormField } from '../FormField';
 import { TextArea } from 'tamagui';
+import type { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
 import { Field, useForm } from '@tanstack/react-form';
 
@@ -93,9 +94,9 @@ export function FormTextArea<
           <TextArea
             {...textAreaProps}
             value={field.state.value as string}
-            onBlur={(e) => {
-              onBlur();
-              if (textAreaProps.onBlur) textAreaProps.onBlur(e);
+            onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+              field.handleBlur();
+              return textAreaProps.onBlur?.(e);
             }}
             onChangeText={(e) => {
               field.handleChange(e as TData);
