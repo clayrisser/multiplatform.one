@@ -1,9 +1,8 @@
 /*
- * File: /src/account/i18n.ts
- * Project: @platform/keycloak
- * File Created: 12-06-2024 09:07:27
+ * File: /src/icons/index.ts
+ * Project: @multiplatform.one/components
+ * File Created: 19-06-2024 10:33:36
  * Author: Clay Risser
- * Author: Joseph Garrone
  * -----
  * BitSpur (c) Copyright 2021 - 2024
  *
@@ -20,8 +19,5 @@
  * limitations under the License.
  */
 
-import { createUseI18n } from 'keycloakify/account';
-
-export const { useI18n } = createUseI18n({});
-
-export type I18n = NonNullable<ReturnType<typeof useI18n>>;
+export * from './CheckRegular';
+export * from './MinusRegular';

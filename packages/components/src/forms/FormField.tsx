@@ -20,13 +20,21 @@
  */
 
 import React from 'react';
+import type { DeepKeys, DeepValue, Validator, FieldApi } from '@tanstack/form-core';
 import type { LabelProps, YStackProps, SizeTokens, FontSizeTokens } from 'tamagui';
 import type { ReactNode } from 'react';
-import { Label, Paragraph, YStack } from 'tamagui';
+import { Label, Paragraph, YStack, useProps } from 'tamagui';
 
-export interface FormFieldProps extends YStackProps {
+export interface FormFieldProps<
+  TParentData,
+  TName extends DeepKeys<TParentData>,
+  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
+  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
+> extends YStackProps {
   children: ReactNode;
-  error?: boolean;
+  error?: string | boolean;
+  field?: FieldApi<TParentData, TName, TFieldValidator, TFormValidator, TData>;
   helperText?: string;
   id: string;
   label?: string;
@@ -35,11 +43,20 @@ export interface FormFieldProps extends YStackProps {
   size?: SizeTokens;
 }
 
-export function FormField({ children, label, error, helperText, labelProps, id, size, required }: FormFieldProps) {
+export function FormField<
+  TParentData,
+  TName extends DeepKeys<TParentData>,
+  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
+  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
+>(props: FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+  let { children, error, field, helperText, id, label, labelProps, required, size, ...stackProps } = useProps(props);
+  error = field?.state.meta.errors.length ? field.state.meta.errors.join(', ') : error;
+  helperText = typeof error === 'string' ? error : helperText;
   return (
-    <YStack>
+    <YStack theme={error ? 'red' : undefined} {...stackProps}>
       {label && (
-        <Label htmlFor={id} size={size || '$3'} {...labelProps} color={error ? '$red10' : undefined}>
+        <Label htmlFor={id} size={size || '$3'} color={error ? '$red10' : undefined} {...labelProps}>
           {label}
           {required && ` *`}
         </Label>

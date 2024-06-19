@@ -3,7 +3,7 @@ import { FormSelectSimple } from './index';
 import { Button, Select, YStack } from 'tamagui';
 import { useForm } from '@tanstack/react-form';
 import { action } from '@storybook/addon-actions';
-import { FormCheckBox } from '../FormCheckBox';
+import { FormCheckBox } from '../FormCheckbox';
 import { FormInput } from '../FormInput';
 
 export default {

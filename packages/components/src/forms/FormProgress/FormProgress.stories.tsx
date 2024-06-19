@@ -3,7 +3,7 @@ import { useForm } from '@tanstack/react-form';
 import { FormProgress } from './index';
 import { action } from '@storybook/addon-actions';
 import { Button, YStack } from 'tamagui';
-import { FormCheckBox } from '../FormCheckBox';
+import { FormCheckBox } from '../FormCheckbox';
 import { FormInput } from '../FormInput';
 
 export default {

@@ -19,11 +19,6 @@
  * limitations under the License.
  */
 
-// import type { ControllerProps } from 'react-hook-form';
-
-// export type FormControllerProps = Pick<ControllerProps, 'name' | 'control' | 'rules' | 'defaultValue'>;
-export interface FormControllerProps {}
-
 import type { FieldApi, DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
 import type { UseFieldOptions, NodeType } from '@tanstack/react-form/dist/esm/types';
 
