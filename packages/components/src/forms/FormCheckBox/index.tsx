@@ -159,6 +159,10 @@ export function FormCheckBox<
                 value={checkBoxElement?.value}
                 checked={field.state.value as boolean}
                 {...checkProps}
+                onBlur={(e) => {
+                  field.handleBlur();
+                  return checkProps.onBlur?.(e);
+                }}
                 onCheckedChange={(e) => {
                   field.handleChange(e as TData);
                   if (checkProps.onCheckedChange) checkProps.onCheckedChange(e);
