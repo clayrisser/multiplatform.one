@@ -21,18 +21,28 @@
 
 import type { SizeTokens, CheckboxProps, CheckboxIndicatorProps, LabelProps, ThemeName, ThemeKeys } from 'tamagui';
 import { Label, Checkbox, XStack, YStack } from 'tamagui';
-import { Controller, useFormContext } from 'react-hook-form';
-import type { FormControllerProps } from '../types';
+import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
+import type { FieldComponentProps, FormControllerProps } from '../types';
 import type { FormFieldProps } from '../FormField';
 import { FormField } from '../FormField';
 import React, { useId } from 'react';
 import type { FlexAlignType } from 'react-native';
 import { Check as CheckIcon } from '@tamagui/lucide-icons';
+import { Field, useForm } from '@tanstack/react-form';
 
-export type FormCheckBoxProps = CheckboxProps &
+export type FormCheckBoxProps<
+  TParentData,
+  TName extends DeepKeys<TParentData>,
+  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
+  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
+> = CheckboxProps &
   FormControllerProps & {
     fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> & {
+  } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> &
+  Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
+    fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
+  } & {
     IndicatorStyle?: CheckboxIndicatorProps;
     LabelStyle?: Omit<LabelProps, 'ref'>;
     iconColor?: string | ThemeName | ThemeKeys;
@@ -54,27 +64,44 @@ export interface CheckBoxElementSizing {
   ai?: FlexAlignType;
 }
 
-export function FormCheckBox({
+export function FormCheckBox<
+  TParentData,
+  TName extends DeepKeys<TParentData>,
+  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
+  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
+>({
   children,
-  control,
-  defaultValue,
+
   error,
   fieldProps,
   helperText,
   label,
-  name,
+
   required,
-  rules,
+  // tanstack field props
+  asyncAlways,
+  asyncDebounceMs,
+  defaultMeta,
+  defaultValue,
+  mode,
+  preserveValue,
+  validatorAdapter,
+  validators,
+  form,
+  name,
   checkBoxElement,
   CheckBoxElementSizing,
   IndicatorStyle,
   iconColor,
   LabelStyle,
   ...checkProps
-}: FormCheckBoxProps & { checkBoxElement: CheckBoxElement } & { CheckBoxElementSizing?: CheckBoxElementSizing }) {
-  const formContext = useFormContext();
+}: FormCheckBoxProps<TParentData, TName, TFieldValidator, TFormValidator, TData> & {
+  checkBoxElement: CheckBoxElement;
+} & { CheckBoxElementSizing?: CheckBoxElementSizing }) {
+  form = form || useForm();
   const id = useId();
-  if (!formContext) {
+  if (!form || !name) {
     return (
       <YStack gap>
         <XStack
@@ -104,16 +131,23 @@ export function FormCheckBox({
     );
   }
   return (
-    <Controller
-      name={name as string}
-      control={control}
-      rules={rules}
+    <Field
+      asyncAlways={asyncAlways}
+      asyncDebounceMs={asyncDebounceMs}
+      defaultMeta={defaultMeta}
       defaultValue={defaultValue}
-      render={({ field: { onChange, value }, fieldState: { error } }) => (
+      form={form}
+      mode={mode}
+      name={name}
+      preserveValue={preserveValue}
+      validatorAdapter={validatorAdapter}
+      validators={validators}
+    >
+      {(field) => (
         <FormField
-          id={id}
+          id={field.name.toString()}
           error={!!error}
-          helperText={error ? error.message : helperText}
+          helperText={helperText}
           label={label}
           required={required}
           {...fieldProps}
@@ -126,14 +160,14 @@ export function FormCheckBox({
               width={CheckBoxElementSizing?.width || '300'}
             >
               <Checkbox
-                id={id}
+                id={field.name.toString()}
                 size={checkBoxElement.size}
                 defaultChecked={checkBoxElement.defaultChecked}
                 value={checkBoxElement.value}
-                checked={value}
+                checked={field.state.value as boolean}
                 {...checkProps}
                 onCheckedChange={(e) => {
-                  onChange(e);
+                  field.handleChange(e as TData);
                   if (checkProps.onCheckedChange) checkProps.onCheckedChange(e);
                 }}
               >
@@ -148,6 +182,6 @@ export function FormCheckBox({
           </YStack>
         </FormField>
       )}
-    />
+    </Field>
   );
 }
