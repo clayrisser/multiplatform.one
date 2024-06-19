@@ -22,7 +22,7 @@
 import React, { useId } from 'react';
 import type { FieldComponentProps, FormControllerProps } from '../types';
 import type { FormFieldProps } from '../FormField';
-import type { SwitchProps } from 'tamagui';
+import type { SliderThumbProps, SwitchProps } from 'tamagui';
 import { FormField } from '../FormField';
 import { Switch } from 'tamagui';
 import { Field, useForm } from '@tanstack/react-form';
@@ -40,7 +40,7 @@ export type FormSwitchProps<
   } & Pick<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'> &
   Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
     fieldProps?: Omit<FormFieldProps, 'helperText' | 'required' | 'error' | 'label'>;
-  };
+  } & { thumbStyle?: SliderThumbProps };
 
 export function FormSwitch<
   TParentData,

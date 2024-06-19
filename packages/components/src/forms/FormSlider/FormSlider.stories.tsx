@@ -29,7 +29,7 @@ export const form = () => {
     },
   });
   return (
-    <YStack>
+    <YStack space>
       <FormCheckBox label="Accept" name="isChecked" form={form} />
       <FormInput form={form} name="firstName" label="FirstName" />
       <FormSlider form={form} name="slider" label="slider" />
