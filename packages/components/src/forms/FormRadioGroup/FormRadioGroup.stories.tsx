@@ -25,7 +25,7 @@ import { action } from '@storybook/addon-actions';
 import { SimpleForm } from '../SimpleForm';
 import { Button, Label, YStack } from 'tamagui';
 import { useForm } from '@tanstack/react-form';
-import { FormCheckBox } from '../FormCheckBox';
+import { FormCheckBox } from '../FormCheckbox';
 import { FormInput } from '../FormInput';
 
 export default {

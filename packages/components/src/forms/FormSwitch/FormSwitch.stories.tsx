@@ -26,7 +26,7 @@ import { SimpleForm } from '../SimpleForm';
 import { FormSubmitButton } from '../FormSubmitButton';
 import { useForm } from '@tanstack/react-form';
 import { Button, YStack } from 'tamagui';
-import { FormCheckBox } from '../FormCheckBox';
+import { FormCheckBox } from '../FormCheckbox';
 import { FormInput } from '../FormInput';
 
 export default {
@@ -38,8 +38,6 @@ export default {
 };
 
 export const main = () => (
-  
-
   <SimpleForm>
     <FormSwitch
       label="Example Switch"

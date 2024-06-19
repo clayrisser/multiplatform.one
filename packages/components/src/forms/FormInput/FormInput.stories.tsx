@@ -52,7 +52,6 @@ function Form() {
       action('onSubmit')(value);
     },
   });
-
   return (
     <YStack padding="$4" gap>
       <FormInput form={form} name="lastName" label="First Name" />
