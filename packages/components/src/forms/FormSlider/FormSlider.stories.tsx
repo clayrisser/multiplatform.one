@@ -21,7 +21,7 @@ export const form = () => {
     defaultValues: {
       firstName: '',
       isChecked: false,
-      slider: 0,
+      slider: [],
     },
 
     onSubmit: async ({ value }) => {
@@ -32,8 +32,8 @@ export const form = () => {
     <YStack>
       <FormCheckBox label="Accept" name="isChecked" form={form} />
       <FormInput form={form} name="firstName" label="FirstName" />
-      <Button onPress={form.handleSubmit}>Submit</Button>
       <FormSlider form={form} name="slider" label="slider" />
+      <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>
   );
 };
