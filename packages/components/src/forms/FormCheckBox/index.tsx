@@ -28,7 +28,7 @@ import { CheckRegular, MinusRegular } from '../../icons';
 import { Checkbox, useProps, XStack, Label, Paragraph, YStack } from 'tamagui';
 import { Field, useForm } from '@tanstack/react-form';
 
-export type FormCheckboxProps<
+export type FormCheckBoxProps<
   TParentData,
   TName extends DeepKeys<TParentData>,
   TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
@@ -40,13 +40,13 @@ export type FormCheckboxProps<
     checkboxProps?: Omit<CheckboxProps, 'children' | 'checked' | 'id' | 'onCheckedChange'>;
   };
 
-export function FormCheckbox<
+export function FormCheckBox<
   TParentData,
   TName extends DeepKeys<TParentData>,
   TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
   TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
->(props: FormCheckboxProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+>(props: FormCheckBoxProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
   let {
     asyncAlways,
     asyncDebounceMs,
