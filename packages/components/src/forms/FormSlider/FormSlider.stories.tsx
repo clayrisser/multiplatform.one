@@ -21,7 +21,7 @@
 
 import React from 'react';
 import { Button, YStack } from 'tamagui';
-import { FormCheckbox } from '../FormCheckbox';
+import { FormCheckBox } from '../FormCheckBox';
 import { FormInput } from '../FormInput';
 import { FormSlider } from './index';
 import { action } from '@storybook/addon-actions';
@@ -50,7 +50,7 @@ export const form = () => {
   });
   return (
     <YStack gap>
-      <FormCheckbox label="Accept" name="isChecked" form={form} />
+      <FormCheckBox label="Accept" name="isChecked" form={form} />
       <FormInput form={form} name="firstName" label="FirstName" />
       <FormSlider form={form} name="slider" label="slider" />
       <Button onPress={form.handleSubmit}>Submit</Button>

@@ -21,23 +21,23 @@
 
 import React from 'react';
 import { Button, YStack } from 'tamagui';
-import { FormCheckbox } from './index';
+import { FormCheckBox } from './index';
 import { FormInput } from '../FormInput';
 import { action } from '@storybook/addon-actions';
 import { useForm } from '@tanstack/react-form';
 
 export default {
-  title: 'forms/FormCheckbox',
-  component: FormCheckbox,
+  title: 'forms/FormCheckBox',
+  component: FormCheckBox,
   parameters: { status: { type: 'beta' } },
 };
 
 export const main = () => (
   <YStack>
-    <FormCheckbox name="checkbox" onCheckedChange={action('onCheckedChange')} />
-    <FormCheckbox name="checkbox" onCheckedChange={action('onCheckedChange')} />
-    <FormCheckbox name="checkbox" onCheckedChange={action('onCheckedChange')} />
-    <FormCheckbox name="checkbox" onCheckedChange={action('onCheckedChange')} />
+    <FormCheckBox name="checkbox" onCheckedChange={action('onCheckedChange')} />
+    <FormCheckBox name="checkbox" onCheckedChange={action('onCheckedChange')} />
+    <FormCheckBox name="checkbox" onCheckedChange={action('onCheckedChange')} />
+    <FormCheckBox name="checkbox" onCheckedChange={action('onCheckedChange')} />
   </YStack>
 );
 
@@ -53,7 +53,7 @@ export const form = () => {
   });
   return (
     <YStack>
-      <FormCheckbox label="Accept" name="isChecked" error="Abc 123" form={form} />
+      <FormCheckBox label="Accept" name="isChecked" error="Abc 123" form={form} />
       <FormInput form={form} name="firstName" label="FirstName" />
       <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>

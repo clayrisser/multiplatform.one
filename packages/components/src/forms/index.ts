@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-export * from './FormCheckbox';
+export * from './FormCheckBox';
 export * from './FormField';
 export * from './FormInput';
 export * from './FormRadioGroup';

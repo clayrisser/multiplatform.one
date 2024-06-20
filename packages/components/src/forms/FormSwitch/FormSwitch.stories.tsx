@@ -26,7 +26,7 @@ import { action } from '@storybook/addon-actions';
 // import { FormSubmitButton } from '../FormSubmitButton';
 import { useForm } from '@tanstack/react-form';
 import { Button, YStack } from 'tamagui';
-import { FormCheckbox } from '../FormCheckbox';
+import { FormCheckBox } from '../FormCheckBox';
 import { FormInput } from '../FormInput';
 
 export default {
@@ -66,7 +66,7 @@ export const form = () => {
   });
   return (
     <YStack>
-      <FormCheckbox label="Accept" name="isChecked" form={form} />
+      <FormCheckBox label="Accept" name="isChecked" form={form} />
       <FormInput form={form} name="firstName" label="FirstName" />
       <FormSwitch form={form} name="switch" label="switch" />
       <Button onPress={form.handleSubmit}>Submit</Button>
