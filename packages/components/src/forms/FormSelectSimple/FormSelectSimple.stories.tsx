@@ -22,6 +22,7 @@
 import React from 'react';
 import { FormSelectSimple } from './index';
 import { Select } from 'tamagui';
+import type { FormSelectSimpleProps } from './index';
 
 export default {
   title: 'forms/FormSelectSimple',
@@ -31,8 +32,8 @@ export default {
   },
 };
 
-export const main = () => (
-  <FormSelectSimple name="FormSelectSimple" placeholder="select one of these">
+export const main = (args) => (
+  <FormSelectSimple name="FormSelectSimple" placeholder="select one of these" {...args}>
     <Select.Item index={0} value="bmw">
       <Select.ItemText>BMW</Select.ItemText>
     </Select.Item>
@@ -47,3 +48,10 @@ export const main = () => (
     </Select.Item>
   </FormSelectSimple>
 );
+const mainArgs = {
+  label: 'Hello',
+  helperText: 'please check this box',
+  value: undefined,
+  mode: undefined,
+};
+main.args = mainArgs;
