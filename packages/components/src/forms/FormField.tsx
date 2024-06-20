@@ -52,7 +52,7 @@ export function FormField<
 >(props: FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
   let { children, error, field, helperText, id, label, labelProps, required, size, ...stackProps } = useProps(props);
   error = field?.state.meta.errors.length ? field.state.meta.errors.join(', ') : error;
-  helperText = typeof error === 'string' ? error : helperText;
+  helperText = error && typeof error === 'string' ? error : helperText;
   return (
     <YStack theme={error ? 'red' : undefined} {...stackProps}>
       {label && (

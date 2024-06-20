@@ -25,6 +25,7 @@ import { FormCheckBox } from './index';
 import { FormInput } from '../FormInput';
 import { action } from '@storybook/addon-actions';
 import { useForm } from '@tanstack/react-form';
+import type { FormCheckBoxProps } from './index';
 
 export default {
   title: 'forms/FormCheckBox',
@@ -32,20 +33,20 @@ export default {
   parameters: { status: { type: 'beta' } },
 };
 
-export const main = () => (
-  <YStack>
-    <FormCheckBox name="checkbox" onCheckedChange={action('onCheckedChange')} />
-    <FormCheckBox name="checkbox" onCheckedChange={action('onCheckedChange')} />
-    <FormCheckBox name="checkbox" onCheckedChange={action('onCheckedChange')} />
-    <FormCheckBox name="checkbox" onCheckedChange={action('onCheckedChange')} />
-  </YStack>
-);
+export const main = (args) => <FormCheckBox onCheckedChange={action('onCheckedChange')} {...args} />;
+const mainArgs: FormCheckBoxProps<any, any> = {
+  label: 'Hello',
+  error: undefined,
+  helperText: 'please check this box',
+  checked: undefined,
+};
+main.args = mainArgs;
 
 export const form = () => {
   const form = useForm({
     defaultValues: {
-      firstName: '',
-      isChecked: false,
+      foo: false,
+      bar: true,
     },
     onSubmit: async ({ value }) => {
       action('onSubmit')(value);
@@ -53,8 +54,8 @@ export const form = () => {
   });
   return (
     <YStack>
-      <FormCheckBox label="Accept" name="isChecked" error="Abc 123" form={form} />
-      <FormInput form={form} name="firstName" label="FirstName" />
+      <FormCheckBox label="Accept" name="foo" form={form} />
+      <FormCheckBox label="Accept" name="bar" form={form} />
       <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>
   );
