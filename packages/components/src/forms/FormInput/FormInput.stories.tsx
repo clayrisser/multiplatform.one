@@ -25,6 +25,7 @@ import { FormInput } from './index';
 import { YStack } from 'tamagui';
 import { action } from '@storybook/addon-actions';
 import { useForm } from '@tanstack/react-form';
+import { FormInputProps } from './index';
 
 export default {
   title: 'forms/FormInput',
@@ -34,29 +35,31 @@ export default {
   },
 };
 
-export const main = () => (
-  <YStack padding="$4" gap>
-    <FormInput onChangeText={action('onTextChange')} name="firstName" label="First Name" />
-    <FormInput onChangeText={action('onTextChange')} name="lastName" label="Last Name" />
-  </YStack>
-);
+export const main = (args) => <FormInput onCheckedChange={action('onCheckedChange')} {...args} />;
+const mainArgs: FormInputProps<any, any> = {
+  label: 'Hi',
+  error: undefined,
+  helperText: 'please check this input',
+  mode: undefined,
+  size: '$1',
+};
+main.args = mainArgs;
 
-export const form = () => <Form />;
-function Form() {
+export const form = () => {
   const form = useForm({
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      none: false,
+      auto: true,
     },
     onSubmit: async ({ value }) => {
       action('onSubmit')(value);
     },
   });
   return (
-    <YStack padding="$4" gap>
-      <FormInput form={form} name="lastName" label="First Name" />
-      <FormInput form={form} name="lastName" label="Last Name" />
-      <Button onPress={form.handleSubmit} />
+    <YStack>
+      <FormInput label="Accept" name="none" form={form} />
+      <FormInput label="Accept" name="auto" form={form} />
+      <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>
   );
-}
+};
