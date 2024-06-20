@@ -1,7 +1,7 @@
 /*
- * File: /src/forms/index.ts
+ * File: /src/forms/Checkbox/Checkbox.ts
  * Project: @multiplatform.one/components
- * File Created: 18-06-2024 18:02:12
+ * File Created: 20-06-2024 10:44:00
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,16 +19,5 @@
  * limitations under the License.
  */
 
-export * from './Button';
-export * from './Button';
-export * from './Checkbox';
-export * from './FormField';
-export * from './Input';
-export * from './Progress';
-export * from './RadioGroup';
-export * from './RadioGroup';
-export * from './Select';
-export * from './SelectButton';
-export * from './Slider';
-export * from './Switch';
-export * from './TextArea';
+export type { CheckboxProps } from 'tamagui';
+export { Checkbox } from 'tamagui';
