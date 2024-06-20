@@ -31,3 +31,4 @@ export * from './organize';
 export * from './panels';
 export * from './table';
 export * from './tints';
+export { Sheet, Toast } from 'tamagui'
