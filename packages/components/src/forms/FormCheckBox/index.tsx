@@ -73,6 +73,7 @@ export function FormCheckBox<
   } = useProps(props);
   form = form || useForm();
   const id = fieldProps.id || useId();
+  helperText = error && typeof error === 'string' ? error : helperText;
   if (!form || !name) {
     return (
       <YStack theme={error ? 'red' : undefined} {...fieldProps} onBlur={onBlur}>
