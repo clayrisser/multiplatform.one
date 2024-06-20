@@ -25,6 +25,7 @@ import { FormInput } from '../FormInput';
 import { FormRadioGroup } from './index';
 import { action } from '@storybook/addon-actions';
 import { useForm } from '@tanstack/react-form';
+import type { FormRadioGroupProps } from './index';
 
 export default {
   title: 'forms/FormRadioGroup',
@@ -32,6 +33,16 @@ export default {
   parameters: { status: { type: 'beta' } },
 };
 
+export const main = (args) => <FormRadioGroup {...args} />;
+const mainArgs: FormRadioGroupProps<any, any> = {
+  label: 'radio group',
+  error: undefined,
+  helperText: 'Select an option',
+  mode: undefined,
+  size: 'SizeToken',
+  value: 'option1',
+};
+main.args = mainArgs;
 // export const main = (args) => (
 //   <SimpleForm>
 //     <FormRadioGroup
@@ -68,7 +79,8 @@ export default {
 export const form = () => {
   const form = useForm({
     defaultValues: {
-      radioGroup: '',
+      size: 'SizeToken',
+      option1: '',
     },
 
     onSubmit: async ({ value }) => {
@@ -82,14 +94,16 @@ export const form = () => {
         gap
         helperText="select an option"
         label="radio group"
+        value="option1"
+        size="SizeToken"
         name="radioGroup"
         onValueChange={action('onValueChange')}
         required
       >
-        <FormRadioGroup.Item size="$4" value="option1">
+        <FormRadioGroup.Item size="SizeToken" value="option1">
           <Text htmlFor="option1">option 1</Text>
         </FormRadioGroup.Item>
-        <FormRadioGroup.Item size="$4" value="option2">
+        {/* <FormRadioGroup.Item size="$4" value="option2">
           <Text htmlFor="option2">option 2</Text>
         </FormRadioGroup.Item>
         <FormRadioGroup.Item size="$4" value="option3">
@@ -97,7 +111,7 @@ export const form = () => {
         </FormRadioGroup.Item>
         <FormRadioGroup.Item size="$4" value="option4">
           <Text htmlFor="option4">option 4</Text>
-        </FormRadioGroup.Item>
+        </FormRadioGroup.Item> */}
       </FormRadioGroup>
       <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>
