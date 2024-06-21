@@ -475,6 +475,9 @@ export {
   withStaticProperties,
   wrapChildrenInText,
 } from '@multiplatform.one/components';
+
+export * from './tamagui.config';
+
 export type {
   AdaptProps,
   AccordionContentProps,
@@ -576,10 +579,6 @@ export type {
   RemoveScrollProps,
   useInputProps,
   useProps,
-} from '@multiplatform.one/components';
-export * from './tamagui.config';
-
-export type {
   ScopedProps,
   SelectItemExtraProps,
   SelectImplProps,
