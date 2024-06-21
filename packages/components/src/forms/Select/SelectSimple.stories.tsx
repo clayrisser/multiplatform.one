@@ -32,19 +32,34 @@ export default {
   },
 };
 
-export const main = () => (
-  <SelectSimple onValueChange={action('onValueChange')}>
-    <Select.Item index={0} value="bmw">
-      <Select.ItemText>BMW</Select.ItemText>
-    </Select.Item>
-    <Select.Item index={1} value="audi">
-      <Select.ItemText>AUDI</Select.ItemText>
-    </Select.Item>
-    <Select.Item index={2} value="ford">
-      <Select.ItemText>FORD</Select.ItemText>
-    </Select.Item>
-    <Select.Item index={3} value="suzuki">
-      <Select.ItemText>SUZUKI</Select.ItemText>
-    </Select.Item>
-  </SelectSimple>
-);
+export const main = (args) => {
+  return <SelectSimple {...args}>{args.children}</SelectSimple>;
+};
+const mainArgs = {
+  name: 'FormSelectSimple',
+  placeholder: 'select one of these',
+  defaultValue: 'bmw',
+  value: 'bmw',
+  onValueChange: 'string',
+  children: [
+    <SelectSimple onValueChange={action('onValueChange')}>
+      <Select.Item key="bmw" index={0} value="bmw">
+        <Select.ItemText>BMW</Select.ItemText>
+      </Select.Item>
+      ,
+      <Select.Item key="audi" index={1} value="audi">
+        <Select.ItemText>AUDI</Select.ItemText>
+      </Select.Item>
+      ,
+      <Select.Item key="ford" index={2} value="ford">
+        <Select.ItemText>FORD</Select.ItemText>
+      </Select.Item>
+      ,
+      <Select.Item key="suzuki" index={3} value="suzuki">
+        <Select.ItemText>SUZUKI</Select.ItemText>
+      </Select.Item>
+      ,
+    </SelectSimple>,
+  ],
+};
+main.args = mainArgs;
