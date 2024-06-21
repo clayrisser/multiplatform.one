@@ -11,5 +11,7 @@ export {
   Switch,
   TextArea,
   FormField,
+  Toast,
+  AArrowDown,
 } from '@multiplatform.one/components';
 export * from './tamagui.config';

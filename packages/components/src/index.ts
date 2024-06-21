@@ -12,3 +12,4 @@ export * from './table';
 export * from './tints';
 export { Sheet } from 'tamagui';
 export { Toast } from '@tamagui/toast';
+export { AArrowDown } from '@tamagui/lucide-icons';
