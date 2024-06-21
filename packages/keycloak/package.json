@@ -50,7 +50,7 @@
     "multiplatform.one": "workspace:1.0.11",
     "next": "^13.0.5",
     "react": "18.2.0",
-    "react-native": "0.74.1"
+    "react-native": "0.74.2"
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
@@ -65,7 +65,7 @@
     "multiplatform.one": "workspace:1.0.11",
     "next": "^14.2.3",
     "react": "18.2.0",
-    "react-native": "0.74.1",
+    "react-native": "0.74.2",
     "typescript": "~5.3.3",
     "vitest": "^1.6.0",
     "vitest-react-native": "^0.1.5"
