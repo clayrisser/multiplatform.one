@@ -24,13 +24,12 @@ import type { FormEventHandler } from 'react';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../kcContext';
 import type { PageProps } from 'keycloakify/login/pages/PageProps';
-import { clsx } from 'keycloakify/tools/clsx';
-import { useConstCallback } from 'keycloakify/tools/useConstCallback';
-import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
-import { useState } from 'react';
 import { Anchor, Button, Checkbox, FieldCheckbox, FieldInput, Label, Text, XStack, YStack } from 'ui';
 import { Check } from '@tamagui/lucide-icons';
+import { clsx } from 'keycloakify/tools/clsx';
+import { useConstCallback } from 'keycloakify/tools/useConstCallback';
 import { useForm } from '@tanstack/react-form';
+import { useState } from 'react';
 
 export default function Login({
   kcContext,
@@ -39,11 +38,7 @@ export default function Login({
   Template,
   classes,
 }: PageProps<Extract<KcContext, { pageId: 'login.ftl' }>, I18n>) {
-  const { getClassName } = useGetClassName({
-    doUseDefaultCss,
-    classes,
-  });
-  const { social, realm, url, usernameHidden, login, auth, registrationDisabled } = kcContext;
+  const { social, realm, url, usernameHidden, registrationDisabled } = kcContext;
   const { msg, msgStr } = i18n;
   const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
   const onSubmit = useConstCallback<FormEventHandler<HTMLFormElement>>((e) => {
@@ -54,17 +49,12 @@ export default function Login({
     formElement.submit();
   });
   const [showPassword, setShowPassword] = useState(false);
-
   const form = useForm({
     defaultValues: {
       userName: '',
       password: '',
     },
     onSubmit: async ({ value }) => {
-      // action('onSubmit')(value);
-      console.log('====================================');
-      console.log(value);
-      console.log('====================================');
       console.log(value);
     },
   });
@@ -187,6 +177,3 @@ export default function Login({
     </Template>
   );
 }
-/*
-
-*/

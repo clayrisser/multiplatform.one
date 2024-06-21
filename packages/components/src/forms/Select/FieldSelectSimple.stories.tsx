@@ -35,7 +35,7 @@ export default {
 export const main = (args) => {
   return <FieldSelectSimple {...args}>{args.children}</FieldSelectSimple>;
 };
-const mainArgs: FieldSelectSimpleProps<any, any> = {
+const mainArgs: FieldSelectSimpleProps = {
   name: 'FormSelectSimple',
   placeholder: 'select one of these',
   defaultValue: 'bmw',
