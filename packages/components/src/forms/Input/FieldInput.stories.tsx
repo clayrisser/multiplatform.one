@@ -36,7 +36,7 @@ export default {
 };
 
 export const main = (args) => <FieldInput onCheckedChange={action('onCheckedChange')} {...args} />;
-const mainArgs: FieldInputProps<any, any> = {
+const mainArgs: FieldInputProps = {
   label: 'Hi',
   error: undefined,
   helperText: 'please check this input',

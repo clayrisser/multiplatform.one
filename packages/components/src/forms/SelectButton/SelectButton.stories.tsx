@@ -23,7 +23,6 @@ import React from 'react';
 import { SelectButton } from './SelectButton';
 import { Text } from 'tamagui';
 import { action } from '@storybook/addon-actions';
-import type { SelectButtonProps } from 'ui';
 
 export default {
   title: 'forms/SelectButton',

@@ -30,8 +30,8 @@ import type { SelectSimpleProps } from './SelectSimple';
 import { useForm, Field } from '@tanstack/react-form';
 
 export type FieldSelectSimpleProps<
-  TParentData,
-  TName extends DeepKeys<TParentData>,
+  TParentData = any,
+  TName extends DeepKeys<TParentData> = any,
   TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
   TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,

@@ -34,7 +34,7 @@ export default {
 };
 
 export const main = (args) => <FieldRadioGroup {...args} />;
-const mainArgs: FieldRadioGroupProps<any, any> = {
+const mainArgs: FieldRadioGroupProps = {
   label: 'radio group',
   error: undefined,
   helperText: 'Select an option',

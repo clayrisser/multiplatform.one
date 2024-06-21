@@ -20,14 +20,12 @@
  * limitations under the License.
  */
 
+import React from 'react';
+import type { GestureResponderEvent } from 'react-native';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../kcContext';
 import type { PageProps } from 'keycloakify/login/pages/PageProps';
-import { clsx } from 'keycloakify/tools/clsx';
-import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
-import { Input, YStack, Label, Button, Anchor, Text, FieldInput } from 'ui';
-import React from 'react';
-import { GestureResponderEvent } from 'react-native';
+import { YStack, Button, Anchor, Text, FieldInput } from 'ui';
 import { useForm } from '@tanstack/react-form';
 
 export interface RegisterForm {
@@ -45,29 +43,17 @@ export default function Register({
   Template,
   classes,
 }: PageProps<Extract<KcContext, { pageId: 'register.ftl' }>, I18n>) {
-  const { getClassName } = useGetClassName({
-    doUseDefaultCss,
-    classes,
-  });
-  const { url, messagesPerField, register, realm, passwordRequired, recaptchaRequired, recaptchaSiteKey } = kcContext;
-  const { msg, msgStr } = i18n;
-  const [registerForm, setRegisterForm] = React.useState<RegisterForm>(register.formData);
+  const { url, register, realm, passwordRequired, recaptchaRequired, recaptchaSiteKey } = kcContext;
+  const { msg } = i18n;
+  const [registerForm] = React.useState<RegisterForm>(register.formData);
   const registerRef = React.useRef<HTMLFormElement | null>(null);
   const [showPassword, setShowPassword] = React.useState(false);
   const form = useForm({
     defaultValues: register.formData,
     onSubmit: async ({ value }) => {
-      // action('onSubmit')(value);
       console.log(value);
     },
   });
-
-  function handleRegisterFormDateChange(key: string, value: string) {
-    setRegisterForm({
-      ...registerForm,
-      [key]: value,
-    });
-  }
 
   function handleRegister(e: GestureResponderEvent) {
     e.preventDefault();
