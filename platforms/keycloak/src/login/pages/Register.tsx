@@ -25,9 +25,10 @@ import type { KcContext } from '../kcContext';
 import type { PageProps } from 'keycloakify/login/pages/PageProps';
 import { clsx } from 'keycloakify/tools/clsx';
 import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
-import { Input, YStack, Label, Button, Anchor, Text, FormInput } from 'ui';
+import { Input, YStack, Label, Button, Anchor, Text, FieldInput } from 'ui';
 import React from 'react';
 import { GestureResponderEvent } from 'react-native';
+import { useForm } from '@tanstack/react-form';
 
 export interface RegisterForm {
   firstName?: string;
@@ -53,6 +54,13 @@ export default function Register({
   const [registerForm, setRegisterForm] = React.useState<RegisterForm>(register.formData);
   const registerRef = React.useRef<HTMLFormElement | null>(null);
   const [showPassword, setShowPassword] = React.useState(false);
+  const form = useForm({
+    defaultValues: register.formData,
+    onSubmit: async ({ value }) => {
+      // action('onSubmit')(value);
+      console.log(value);
+    },
+  });
 
   function handleRegisterFormDateChange(key: string, value: string) {
     setRegisterForm({
@@ -70,130 +78,28 @@ export default function Register({
   return (
     <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg('registerTitle')}>
       <form ref={registerRef} id="kc-register-form" action={url.registrationAction} method="post">
-        {/* <YStack>
-          <YStack>
-            <Label htmlFor="firstName">{msg('firstName')}*</Label>
-          </YStack>
-          <YStack>
-            <Input
-              value={registerForm.firstName}
-              onChangeText={(value) => handleRegisterFormDateChange('firstName', value)}
-            />
-          </YStack>
-        </YStack>
         <YStack>
-          <YStack>
-            <Label htmlFor="lastName">{msg('lastName')}*</Label>
-          </YStack>
-          <YStack>
-            <Input
-              onChangeText={(value) => handleRegisterFormDateChange('lastName', value)}
-              value={registerForm.lastName}
-            />
-          </YStack>
-        </YStack>
-        <YStack>
-          <YStack>
-            <Label htmlFor="email">{msg('email')}*</Label>
-          </YStack>
-          <YStack>
-            <Input
-              autoComplete="email"
-              onChangeText={(value) => handleRegisterFormDateChange('email', value)}
-              value={registerForm.email}
-            />
-          </YStack>
-        </YStack>
-        {!realm.registrationEmailAsUsername && (
-          <YStack>
-            <YStack>
-              <Label htmlFor="username">{msg('username')}*</Label>
-            </YStack>
-            <YStack>
-              <Input
-                value={registerForm.username}
-                onChangeText={(value) => handleRegisterFormDateChange('username', value)}
-              />
-            </YStack>
-          </YStack>
-        )}
-        {passwordRequired && (
-          <YStack>
-            <YStack>
-              <YStack>
-                <Label htmlFor="password">{msg('password')}*</Label>
-              </YStack>
-              <YStack>
-                <Input
-                  secureTextEntry={!showPassword}
-                  onChangeText={(value) => handleRegisterFormDateChange('password', value)}
-                  value={registerForm.password}
-                />
-              </YStack>
-            </YStack>
-            <YStack>
-              <YStack>
-                <Label htmlFor="password-confirm">{msg('passwordConfirm')}*</Label>
-              </YStack>
-              <YStack>
-                <Input
-                  secureTextEntry={!showPassword}
-                  onChangeText={(value) => handleRegisterFormDateChange('passwordConfirm', value)}
-                  value={registerForm.passwordConfirm}
-                />
-              </YStack>
-            </YStack>
-            <YStack>
-              <Text
-                marginVertical="$2"
-                cursor="pointer"
-                onPress={() => setShowPassword(!showPassword)}
-                textAlign="right"
-              >
-                {showPassword ? 'hide' : 'show'}
-              </Text>
-            </YStack>
-          </YStack>
-        )} */}
-        <YStack>
-          <FormInput
-            label={msg('firstName') as unknown as string}
-            value={registerForm.firstName}
-            onChangeText={(value) => handleRegisterFormDateChange('firstName', value)}
-          />
-          <FormInput
-            label={msg('lastName') as unknown as string}
-            onChangeText={(value) => handleRegisterFormDateChange('lastName', value)}
-            value={registerForm.lastName}
-          />{' '}
-          <FormInput
-            label={msg('email') as unknown as string}
-            onChangeText={(value) => handleRegisterFormDateChange('email', value)}
-            value={registerForm.email}
-          />{' '}
+          <FieldInput form={form} label={msg('firstName') as unknown as string} name="firstName" />
+          <FieldInput form={form} label={msg('lastName') as unknown as string} value={registerForm.lastName} />
+          <FieldInput label={msg('email') as unknown as string} name="email" form={form} />
           {!realm.registrationEmailAsUsername && (
-            <FormInput
-              label={msg('username') as unknown as string}
-              value={registerForm.username}
-              onChangeText={(value) => handleRegisterFormDateChange('username', value)}
-            />
+            <FieldInput label={msg('username') as unknown as string} name="username" form={form} />
           )}
           {passwordRequired && (
             <YStack>
-              {' '}
-              <FormInput
+              <FieldInput
                 label={msg('password') as unknown as string}
-                onChangeText={(value) => handleRegisterFormDateChange('password', value)}
-                value={registerForm.password}
+                name="password"
+                form={form}
                 inputProps={{
                   secureTextEntry: !showPassword,
                   autoFocus: true,
                 }}
-              />{' '}
-              <FormInput
+              />
+              <FieldInput
                 label={msg('passwordConfirm') as unknown as string}
-                onChangeText={(value) => handleRegisterFormDateChange('passwordConfirm', value)}
-                value={registerForm.passwordConfirm}
+                name="passwordConfirm"
+                form={form}
                 inputProps={{
                   secureTextEntry: !showPassword,
                   autoFocus: true,
@@ -218,7 +124,7 @@ export default function Register({
           </YStack>
         )}
         <YStack>
-          <YStack id="kc-form-options" marginVertical="$4">
+          <YStack id="kc-form-options" ai="flex-start" marginVertical="$4">
             <Text>
               <Anchor href={url.loginUrl}>{msg('backToLogin')}</Anchor>
             </Text>

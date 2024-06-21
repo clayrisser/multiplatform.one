@@ -28,8 +28,9 @@ import { clsx } from 'keycloakify/tools/clsx';
 import { useConstCallback } from 'keycloakify/tools/useConstCallback';
 import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
 import { useState } from 'react';
-import { Anchor, Button, Checkbox, FormInput, Input, Label, Text, XStack, YStack } from 'ui';
+import { Anchor, Button, Checkbox, FieldCheckbox, FieldInput, Label, Text, XStack, YStack } from 'ui';
 import { Check } from '@tamagui/lucide-icons';
+import { useForm } from '@tanstack/react-form';
 
 export default function Login({
   kcContext,
@@ -53,6 +54,20 @@ export default function Login({
     formElement.submit();
   });
   const [showPassword, setShowPassword] = useState(false);
+
+  const form = useForm({
+    defaultValues: {
+      userName: '',
+      password: '',
+    },
+    onSubmit: async ({ value }) => {
+      // action('onSubmit')(value);
+      console.log('====================================');
+      console.log(value);
+      console.log('====================================');
+      console.log(value);
+    },
+  });
 
   return (
     <Template
@@ -88,49 +103,49 @@ export default function Login({
                       const autoCompleteHelper: typeof label = label === 'usernameOrEmail' ? 'username' : label;
                       return (
                         <YStack>
-                          <FormInput
-                            inputProps={{
-                              autoFocus: true,
-                            }}
+                          <FieldInput
+                            form={form}
+                            // @ts-ignore
+                            name={autoCompleteHelper}
                             label={msg(label) as unknown as string}
-                            id={autoCompleteHelper}
-                            tabIndex={0}
                           />
                         </YStack>
                       );
                     })()}
                 </YStack>
                 <YStack>
-                  <FormInput
+                  <FieldInput
                     label={msg('password') as unknown as string}
+                    name="password"
+                    form={form}
                     inputProps={{
                       secureTextEntry: !showPassword,
                       autoFocus: true,
                     }}
-                    id="password"
-                    tabIndex={0}
                   />
-                  <Text
-                    marginVertical="$2"
-                    cursor="pointer"
-                    onPress={() => setShowPassword(!showPassword)}
-                    textAlign="right"
-                  >
-                    {showPassword ? 'hide' : 'show'}
-                  </Text>
+                  <YStack ai="flex-end">
+                    <Text
+                      marginVertical="$2"
+                      cursor="pointer"
+                      onPress={() => setShowPassword(!showPassword)}
+                      textAlign="right"
+                    >
+                      {showPassword ? 'hide' : 'show'}
+                    </Text>
+                  </YStack>
                 </YStack>
                 <XStack ai="center" jc="space-between">
                   <YStack id="kc-form-options">
                     {realm.rememberMe && !usernameHidden && (
                       <XStack jc="center" ai="center" gap="$2">
-                        <Checkbox
+                        <FieldCheckbox
                           // checked={login.rememberMe === 'on'}
                           size="$4"
                         >
                           <Checkbox.Indicator>
                             <Check />
                           </Checkbox.Indicator>
-                        </Checkbox>
+                        </FieldCheckbox>
                         <Label>{msg('rememberMe')}</Label>
                       </XStack>
                     )}
@@ -172,3 +187,6 @@ export default function Login({
     </Template>
   );
 }
+/*
+
+*/
