@@ -28,6 +28,8 @@ import { clsx } from 'keycloakify/tools/clsx';
 import { useConstCallback } from 'keycloakify/tools/useConstCallback';
 import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
 import { useState } from 'react';
+import { Anchor, Button, Checkbox, FormInput, Input, Label, Text, XStack, YStack } from 'ui';
+import { Check } from '@tamagui/lucide-icons';
 
 export default function Login({
   kcContext,
@@ -50,6 +52,8 @@ export default function Login({
     formElement.querySelector("input[name='email']")?.setAttribute('name', 'username');
     formElement.submit();
   });
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <Template
       {...{ kcContext, i18n, doUseDefaultCss, classes }}
@@ -57,155 +61,114 @@ export default function Login({
       displayWide={realm.password && social.providers !== undefined}
       headerNode={msg('doLogIn')}
       infoNode={
-        <div id="kc-registration">
-          <span>
+        <XStack als="center" marginVertical="$5" id="kc-registration">
+          <Text>
             {msg('noAccount')}
-            <a tabIndex={6} href={url.registrationUrl}>
+            {'  '}
+            <Anchor fontSize={12} tabIndex={6} href={url.registrationUrl}>
               {msg('doRegister')}
-            </a>
-          </span>
-        </div>
+            </Anchor>
+          </Text>
+        </XStack>
       }
     >
-      <div
-        id="kc-form"
-        className={clsx(realm.password && social.providers !== undefined && getClassName('kcContentWrapperClass'))}
-      >
-        <div
-          id="kc-form-wrapper"
-          className={clsx(
-            realm.password &&
-              social.providers && [
-                getClassName('kcFormSocialAccountContentClass'),
-                getClassName('kcFormSocialAccountClass'),
-              ],
-          )}
-        >
+      <YStack id="kc-form" gap="$4" width="100%">
+        <YStack id="kc-form-wrapper" width="100%">
           {realm.password && (
-            <form id="kc-form-login" onSubmit={onSubmit} action={url.loginAction} method="post">
-              <div className={getClassName('kcFormGroupClass')}>
-                {!usernameHidden &&
-                  (() => {
-                    const label = !realm.loginWithEmailAllowed
-                      ? 'username'
-                      : realm.registrationEmailAsUsername
-                        ? 'email'
-                        : 'usernameOrEmail';
-                    const autoCompleteHelper: typeof label = label === 'usernameOrEmail' ? 'username' : label;
-                    return (
-                      <>
-                        <label htmlFor={autoCompleteHelper} className={getClassName('kcLabelClass')}>
-                          {msg(label)}
-                        </label>
-                        <input
-                          autoComplete="off"
-                          autoFocus={true}
-                          className={getClassName('kcInputClass')}
-                          defaultValue={login.username ?? ''}
-                          id={autoCompleteHelper}
-                          name={autoCompleteHelper}
-                          tabIndex={1}
-                          type="text"
-                        />
-                      </>
-                    );
-                  })()}
-              </div>
-              <div className={getClassName('kcFormGroupClass')}>
-                <label htmlFor="password" className={getClassName('kcLabelClass')}>
-                  {msg('password')}
-                </label>
-                <input
-                  autoComplete="off"
-                  className={getClassName('kcInputClass')}
-                  id="password"
-                  name="password"
-                  tabIndex={2}
-                  type="password"
-                />
-              </div>
-              <div className={clsx(getClassName('kcFormGroupClass'), getClassName('kcFormSettingClass'))}>
-                <div id="kc-form-options">
-                  {realm.rememberMe && !usernameHidden && (
-                    <div className="checkbox">
-                      <label>
-                        <input
-                          tabIndex={3}
-                          id="rememberMe"
-                          name="rememberMe"
-                          type="checkbox"
-                          {...(login.rememberMe === 'on'
-                            ? {
-                                checked: true,
-                              }
-                            : {})}
-                        />
-                        {msg('rememberMe')}
-                      </label>
-                    </div>
-                  )}
-                </div>
-                <div className={getClassName('kcFormOptionsWrapperClass')}>
-                  {realm.resetPasswordAllowed && (
-                    <span>
-                      <a tabIndex={5} href={url.loginResetCredentialsUrl}>
+            <YStack>
+              <form id="kc-form-login" onSubmit={onSubmit} action={url.loginAction} method="post">
+                <YStack>
+                  {!usernameHidden &&
+                    (() => {
+                      const label = !realm.loginWithEmailAllowed
+                        ? 'username'
+                        : realm.registrationEmailAsUsername
+                          ? 'email'
+                          : 'usernameOrEmail';
+                      const autoCompleteHelper: typeof label = label === 'usernameOrEmail' ? 'username' : label;
+                      return (
+                        <YStack>
+                          <FormInput
+                            inputProps={{
+                              autoFocus: true,
+                            }}
+                            label={msg(label) as unknown as string}
+                            id={autoCompleteHelper}
+                            tabIndex={0}
+                          />
+                        </YStack>
+                      );
+                    })()}
+                </YStack>
+                <YStack>
+                  <FormInput
+                    label={msg('password') as unknown as string}
+                    inputProps={{
+                      secureTextEntry: !showPassword,
+                      autoFocus: true,
+                    }}
+                    id="password"
+                    tabIndex={0}
+                  />
+                  <Text
+                    marginVertical="$2"
+                    cursor="pointer"
+                    onPress={() => setShowPassword(!showPassword)}
+                    textAlign="right"
+                  >
+                    {showPassword ? 'hide' : 'show'}
+                  </Text>
+                </YStack>
+                <XStack ai="center" jc="space-between">
+                  <YStack id="kc-form-options">
+                    {realm.rememberMe && !usernameHidden && (
+                      <XStack jc="center" ai="center" gap="$2">
+                        <Checkbox
+                          // checked={login.rememberMe === 'on'}
+                          size="$4"
+                        >
+                          <Checkbox.Indicator>
+                            <Check />
+                          </Checkbox.Indicator>
+                        </Checkbox>
+                        <Label>{msg('rememberMe')}</Label>
+                      </XStack>
+                    )}
+                  </YStack>
+                  <YStack>
+                    {realm.resetPasswordAllowed && (
+                      <Anchor tabIndex={5} href={url.loginResetCredentialsUrl}>
                         {msg('doForgotPassword')}
-                      </a>
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div id="kc-form-buttons" className={getClassName('kcFormGroupClass')}>
-                <input
-                  type="hidden"
-                  id="id-hidden-input"
-                  name="credentialId"
-                  {...(auth?.selectedCredential !== undefined
-                    ? {
-                        value: auth.selectedCredential,
-                      }
-                    : {})}
-                />
-                <input
-                  tabIndex={4}
-                  className={clsx(
-                    getClassName('kcButtonBlockClass'),
-                    getClassName('kcButtonClass'),
-                    getClassName('kcButtonLargeClass'),
-                    getClassName('kcButtonPrimaryClass'),
-                  )}
-                  name="login"
-                  id="kc-login"
-                  type="submit"
-                  value={msgStr('doLogIn')}
-                  disabled={isLoginButtonDisabled}
-                />
-              </div>
-            </form>
+                      </Anchor>
+                    )}
+                  </YStack>
+                </XStack>
+                <YStack id="kc-form-buttons">
+                  <Button bg="$backgroundFocus" disabled={isLoginButtonDisabled}>
+                    {msgStr('doLogIn')}
+                  </Button>
+                </YStack>
+              </form>
+            </YStack>
           )}
-        </div>
+        </YStack>
         {realm.password && social.providers !== undefined && (
-          <div
-            id="kc-social-providers"
-            className={clsx(getClassName('kcFormSocialAccountContentClass'), getClassName('kcFormSocialAccountClass'))}
-          >
-            <ul
-              className={clsx(
-                getClassName('kcFormSocialAccountListClass'),
-                social.providers.length > 4 && getClassName('kcFormSocialAccountDoubleListClass'),
-              )}
-            >
-              {social.providers.map((p) => (
-                <li key={p.providerId} className={getClassName('kcFormSocialAccountListLinkClass')}>
-                  <a href={p.loginUrl} id={`zocial-${p.alias}`} className={clsx('zocial', p.providerId)}>
-                    <span>{p.displayName}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <YStack width="100%" gap="$4" id="kc-social-providers">
+            {social.providers.map((p) => (
+              <YStack key={p.providerId}>
+                <Anchor
+                  borderRadius="$2"
+                  href={p.loginUrl}
+                  id={`zocial-${p.alias}`}
+                  className={clsx('zocial', p.providerId)}
+                >
+                  <Text marginHorizontal="$2">{p.displayName}</Text>
+                </Anchor>
+              </YStack>
+            ))}
+          </YStack>
         )}
-      </div>
+      </YStack>
     </Template>
   );
 }
