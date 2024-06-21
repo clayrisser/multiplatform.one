@@ -20,7 +20,7 @@
  */
 
 import React from 'react';
-import { SelectButton } from './index';
+import { SelectButton } from './SelectButton';
 import { Text } from 'tamagui';
 import { action } from '@storybook/addon-actions';
 

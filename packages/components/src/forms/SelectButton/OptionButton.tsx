@@ -20,11 +20,12 @@
  */
 
 import React, { useContext, useState, useEffect, useCallback } from 'react';
-import type { ButtonProps } from 'tamagui';
+import type { ButtonProps } from '../Button';
 import type { ComponentProps } from 'react';
 import type { GestureResponderEvent } from 'react-native';
-import { Button, styled } from 'tamagui';
+import { Button } from '../Button';
 import { SelectButtonContext } from './context';
+import { styled } from 'tamagui';
 
 const defaultSelectedStyle: ButtonProps = {
   backgroundColor: '$color7',

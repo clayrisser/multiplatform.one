@@ -1,5 +1,5 @@
-/*
- * File: /src/forms/index.ts
+/**
+ * File: /src/forms/Button/SubmitButton.stories.tsx
  * Project: @multiplatform.one/components
  * File Created: 18-06-2024 18:02:12
  * Author: Clay Risser
@@ -19,16 +19,29 @@
  * limitations under the License.
  */
 
-export * from './Button';
-export * from './Button';
-export * from './Checkbox';
-export * from './FormField';
-export * from './Input';
-export * from './Progress';
-export * from './RadioGroup';
-export * from './RadioGroup';
-export * from './Select';
-export * from './SelectButton';
-export * from './Slider';
-export * from './Switch';
-export * from './TextArea';
+import React from 'react';
+import { SubmitButton } from './SubmitButton';
+import { action } from '@storybook/addon-actions';
+import { useForm } from '@tanstack/react-form';
+
+export default {
+  title: 'forms/SubmitButton',
+  component: SubmitButton,
+  parameters: {
+    status: { type: 'beta' },
+  },
+};
+
+export const main = () => <Main />;
+function Main() {
+  const form = useForm({
+    onSubmit(data) {
+      action('onSubmit')(data);
+    },
+  });
+  return (
+    <SubmitButton form={form} onPress={action('onClick')}>
+      Click here
+    </SubmitButton>
+  );
+}
