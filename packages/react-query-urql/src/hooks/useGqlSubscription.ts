@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import type { AnyVariables } from '@urql/core';
+import type { AnyVariables } from '../types';
 import type { QueryKey } from '@tanstack/react-query';
 import type { UseSubscriptionArgs, SubscriptionHandler } from 'urql';
 import { useEffect } from 'react';
