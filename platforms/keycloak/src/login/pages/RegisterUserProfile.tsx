@@ -55,7 +55,6 @@ export default function RegisterUserProfile({
       >
         <YStack
           id="kc-register-form"
-          // className={getClassName('kcFormClass')}
           // @ts-ignore
           action={url.registrationAction}
           method="post"
@@ -67,26 +66,15 @@ export default function RegisterUserProfile({
             getClassName={getClassName}
           />
           {recaptchaRequired && (
-            <YStack
-            //  className="form-group"
-            >
-              <YStack
-              // className={getClassName('kcInputWrapperClass')}
-              >
-                <YStack
-                  // className="g-recaptcha" data-size="compact"
-                  data-sitekey={recaptchaSiteKey}
-                />
+            <YStack>
+              <YStack>
+                <YStack data-sitekey={recaptchaSiteKey} />
               </YStack>
             </YStack>
           )}
-          <YStack
-          // className={getClassName('kcFormGroupClass')} style={{ marginBottom: 30 }}
-          >
+          <YStack>
             <YStack id="kc-form-options" className={getClassName('kcFormOptionsClass')}>
-              <YStack
-              // className={getClassName('kcFormOptionsWrapperClass')}
-              >
+              <YStack>
                 <Text>
                   <Anchor color="$backgroundFocus" href={url.loginUrl}>
                     {msg('backToLogin')}
@@ -95,22 +83,12 @@ export default function RegisterUserProfile({
               </YStack>
             </YStack>
             <YStack id="kc-form-buttons" className={getClassName('kcFormButtonsClass')}>
-              {/* <input
-                className={clsx(
-                  getClassName('kcButtonBlockClass'),
-                  getClassName('kcButtonClass'),
-                  getClassName('kcButtonLargeClass'),
-                  getClassName('kcButtonPrimaryClass'),
-                )}
-                type="submit"
-                value={msgStr('doRegister')}
-                disabled={!isFormSubmittable}
-              /> */}
               <Button
                 // @ts-ignore
                 value={msgStr('doRegister')}
                 disabled={!isFormSubmittable}
                 cursor="pointer"
+                bg="$backgroundFocus"
               >
                 {msgStr('doRegister')}
               </Button>
