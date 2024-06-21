@@ -23,6 +23,7 @@ import React from 'react';
 import { SelectButton } from './SelectButton';
 import { Text } from 'tamagui';
 import { action } from '@storybook/addon-actions';
+import type { SelectButtonProps } from 'ui';
 
 export default {
   title: 'forms/SelectButton',
@@ -32,22 +33,33 @@ export default {
   },
 };
 
-export const main = () => (
-  <SelectButton onValueChange={action('onValueChange')} gap>
-    <SelectButton.OptionButton index={0} value="bmw">
-      <Text>BMW</Text>
-    </SelectButton.OptionButton>
-    <SelectButton.OptionButton index={1} value="audi">
-      <Text>AUDI</Text>
-    </SelectButton.OptionButton>
-    <SelectButton.OptionButton index={2} value="ford">
-      <Text>FORD</Text>
-    </SelectButton.OptionButton>
-    <SelectButton.OptionButton index={3} value="suzuki">
-      <Text>SUZUKI</Text>
-    </SelectButton.OptionButton>
-  </SelectButton>
-);
+export const main = (args) => {
+  return <SelectButton {...args}>{args.children}</SelectButton>;
+};
+
+const mainArgs = {
+  value: 'bmw',
+  selectedValue: 'bmw',
+  onValueChange: 'value',
+  children: (
+    <SelectButton onValueChange={action('onValueChange')} gap>
+      <SelectButton.OptionButton index={0} value="bmw">
+        <Text>BMW</Text>
+      </SelectButton.OptionButton>
+      <SelectButton.OptionButton index={1} value="audi">
+        <Text>AUDI</Text>
+      </SelectButton.OptionButton>
+      <SelectButton.OptionButton index={2} value="ford">
+        <Text>FORD</Text>
+      </SelectButton.OptionButton>
+      <SelectButton.OptionButton index={3} value="suzuki">
+        <Text>SUZUKI</Text>
+      </SelectButton.OptionButton>
+    </SelectButton>
+  ),
+};
+
+main.args = mainArgs;
 
 export const x = () => (
   <SelectButton onValueChange={action('onValueChange')} gap xStack>
