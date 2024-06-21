@@ -1,5 +1,5 @@
-/*
- * File: /src/forms/Button/Button.ts
+/**
+ * File: /src/forms/Button/Button.tsx
  * Project: @multiplatform.one/components
  * File Created: 20-06-2024 10:42:25
  * Author: Clay Risser
