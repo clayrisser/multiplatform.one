@@ -1,4 +1,6 @@
-FROM registry.gitlab.com/bitspur/rock8s/images/keycloak-builder:latest AS build
+ARG KEYCLOAK_VERSION=25.0.1
+
+FROM registry.gitlab.com/bitspur/rock8s/images/keycloak-builder:${KEYCLOAK_VERSION} AS build
 USER root
 WORKDIR /tmp/app
 ENV PNPM_HOME="/pnpm"
@@ -15,11 +17,11 @@ RUN pnpm run build
 RUN cd platforms/keycloak && \
     pnpm run build
 
-FROM registry.gitlab.com/bitspur/rock8s/images/keycloak-builder:25.0.0 as keycloak
+FROM registry.gitlab.com/bitspur/rock8s/images/keycloak-builder:${KEYCLOAK_VERSION} as keycloak
 COPY --from=build /tmp/app/platforms/keycloak/build_keycloak/target/keycloakify-keycloak-theme-0.0.0.jar /opt/keycloak/providers/theme.jar
 RUN /opt/keycloak/bin/kc.sh build
 
-FROM quay.io/keycloak/keycloak:25.0.0
+FROM quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
 COPY --from=keycloak /opt/keycloak/ /opt/keycloak/
 ENV KC_DB=postgres \
     KC_DB_PASSWORD=postgres \
