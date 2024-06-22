@@ -75,6 +75,7 @@ commonjs
 compat
 consolas
 constructable
+cookiecutter
 corejs
 coreutils
 cors
