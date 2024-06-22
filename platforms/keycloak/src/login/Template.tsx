@@ -20,18 +20,15 @@
  * limitations under the License.
  */
 
-import keycloakifyLogoPngUrl from './assets/keycloakify-logo.png';
 import type { I18n } from './i18n';
 import type { KcContext } from './kcContext';
 import type { TemplateProps } from 'keycloakify/login/TemplateProps';
-import { PUBLIC_URL } from 'keycloakify/PUBLIC_URL';
-import { assert } from 'keycloakify/tools/assert';
+import { Share, Info } from '@tamagui/lucide-icons';
+import { YStack, Card, XStack, Text, Anchor, Label, Input, H5, SimplePopover, Button, H1 } from 'ui';
 import { clsx } from 'keycloakify/tools/clsx';
 import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
 import { usePrepareTemplate } from 'keycloakify/lib/usePrepareTemplate';
 import { useState } from 'react';
-import { Share, Info } from '@tamagui/lucide-icons';
-import { YStack, Card, XStack, Text, Anchor, Label, Input, H3, H5, SimplePopover, Button, H1 } from 'ui';
 
 export default function Template({
   displayInfo = false,
@@ -49,8 +46,8 @@ export default function Template({
   children,
 }: TemplateProps<KcContext, I18n>) {
   const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
-  const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
-  const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
+  const { msg } = i18n;
+  const { realm, auth, url, message, isAppInitiatedAction } = kcContext;
   const { isReady } = usePrepareTemplate({
     doFetchDefaultThemeResources: doUseDefaultCss,
     styles: [
@@ -128,7 +125,6 @@ export default function Template({
             )}
           </YStack>
         </Card.Header>
-
         <YStack>
           <YStack width="100%" padding="$4" id="kc-content">
             <YStack id="kc-content-wrapper">
