@@ -1,0 +1,64 @@
+{
+  "name": "@multiplatform.one/cli",
+  "version": "1.0.15",
+  "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
+  "contributors": [
+    {
+      "name": "Clay Risser",
+      "url": "https://clayrisser.com"
+    }
+  ],
+  "description": "typegraphql for multiplatform.one",
+  "module": "lib/index.mjs",
+  "source": "src/index.ts",
+  "types": "lib/index.d.mts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",
+      "types": "./lib/index.d.mts"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "multiplatform.one": "./bin/multiplatformOne.mjs"
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "src",
+    "update"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues"
+  },
+  "keywords": [
+    "type-graphql",
+    "graphql"
+  ],
+  "engines": {
+    "node": ">= 16.0"
+  },
+  "devDependencies": {
+    "@multiplatform.one/utils": "workspace:^",
+    "@types/node": "~20.12.13",
+    "tsup": "^8.1.0",
+    "typescript": "~5.3.3"
+  },
+  "dependencies": {
+    "commander": "^9.5.0",
+    "execa": "^9.2.0"
+  },
+  "transpileModules": [
+    "#ansi-styles",
+    "#supports-color",
+    "chalk"
+  ]
+}
