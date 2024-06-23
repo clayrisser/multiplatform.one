@@ -31,4 +31,3 @@ done <<EOF
 platforms/storybook/.lostpixel/baseline
 pnpm-lock.yaml
 EOF
-pnpm install
