@@ -39,26 +39,26 @@ program.version(
 
 program
   .command('init')
-  .argument('[remote]', 'the remote to use', 'https://gitlab.com/bitspur/multiplatform.one/cookiecutter')
-  .option('--name <name>', 'the name of the project')
+  .option('-r, --remote <remote>', 'the remote to use', 'https://gitlab.com/bitspur/multiplatform.one/cookiecutter')
+  .option('-c, --checkout <branch>', 'branch, tag or commit to checkout', 'main')
+  .argument('[name]', 'the name of the project', '')
   .description('init multiplatform.one')
-  .action(async (remote) => {
+  .action(async (name, options) => {
     if ((await execa('git', ['rev-parse', '--is-inside-work-tree'], { reject: false })).exitCode === 0) {
       throw new Error('multiplatform.one cannot be initialized inside a git repository');
     }
-    const cookieCutterConfig: CookieCutterConfig = {
-      name:
-        program.opts().name ||
-        (
-          await inquirer.prompt([
-            {
-              message: 'What is the project name?',
-              name: 'name',
-              type: 'input',
-            },
-          ])
-        )?.name,
-    };
+    if (!name) {
+      name = (
+        await inquirer.prompt([
+          {
+            message: 'What is the project name?',
+            name: 'name',
+            type: 'input',
+          },
+        ])
+      ).name;
+    }
+    const cookieCutterConfig: CookieCutterConfig = { default_context: { name } };
     const cookieCutterConfigFile = path.join(await fs.mkdtemp(path.join(os.tmpdir(), 'multiplatform-')), 'config.json');
     try {
       await fs.writeFile(cookieCutterConfigFile, JSON.stringify(cookieCutterConfig, null, 2));
@@ -70,7 +70,9 @@ program
           '-f',
           '--config-file',
           cookieCutterConfigFile,
-          remote,
+          '--checkout',
+          options.checkout,
+          options.remote,
         ],
         {
           stdio: 'inherit',
@@ -83,9 +85,10 @@ program
 
 program
   .command('update')
-  .argument('[remote]', 'the remote to use', 'https://gitlab.com/bitspur/multiplatform.one/cookiecutter')
+  .option('-r, --remote <remote>', 'the remote to use', 'https://gitlab.com/bitspur/multiplatform.one/cookiecutter')
+  .option('-c, --checkout <branch>', 'branch, tag or commit to checkout', 'main')
   .description('update multiplatform.one')
-  .action(async (remote) => {
+  .action(async (options) => {
     if ((await execa('git', ['rev-parse', '--is-inside-work-tree'], { reject: false })).exitCode !== 0) {
       throw new Error('multiplatform.one cannot be updated outside of a git repository');
     }
@@ -108,7 +111,7 @@ program
       ]?.length
     ) {
       const name = JSON.parse(await fs.readFile(path.resolve(projectRoot, 'package.json'), 'utf8'))?.name;
-      if (name) cookieCutterConfig = { name };
+      if (name) cookieCutterConfig = { default_context: { name } };
     }
     if (!cookieCutterConfig) throw new Error('not a multiplatform.one project');
     const cookieCutterConfigFile = path.join(await fs.mkdtemp(path.join(os.tmpdir(), 'multiplatform-')), 'config.json');
@@ -122,7 +125,9 @@ program
           '-f',
           '--config-file',
           cookieCutterConfigFile,
-          remote,
+          '--checkout',
+          options.checkout,
+          options.remote,
         ],
         {
           cwd: projectRoot,

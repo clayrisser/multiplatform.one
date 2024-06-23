@@ -20,5 +20,7 @@
  */
 
 export interface CookieCutterConfig {
-  name: string;
+  default_context: {
+    name: string;
+  };
 }
