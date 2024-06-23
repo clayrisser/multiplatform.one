@@ -40,7 +40,8 @@ fi
 while IFS= read -r pattern; do
     find . -name "$pattern" -exec git checkout "$INITIAL_COMMIT" -- '{}' +
 done <<EOF
-pnpm-lock.yaml
 .mkpm/cache.tar.gz
+platforms/storybook/.lostpixel/baseline
+pnpm-lock.yaml
 EOF
 pnpm install

@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.5",
+    "@multiplatform.one/cli": "workspace:1.0.18",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
     "app": "workspace:*",
