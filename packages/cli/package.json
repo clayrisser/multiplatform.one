@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/cli",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
   "contributors": [
     {
@@ -20,7 +20,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "multiplatform.one": "./bin/multiplatformOne.mjs"
+    "multiplatform-one": "./bin/multiplatformOne.mjs"
   },
   "scripts": {
     "build": "tsup"
