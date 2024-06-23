@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/cli",
-  "version": "1.0.20",
+  "version": "1.0.36",
   "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
   "contributors": [
     {
@@ -17,10 +17,14 @@
       "import": "./lib/index.mjs",
       "types": "./lib/index.d.mts"
     },
+    "./bin/multiplatformOne": {
+      "import": "./lib/bin/multiplatformOne.mjs",
+      "types": "./lib/bin/multiplatformOne.d.mts"
+    },
     "./package.json": "./package.json"
   },
   "bin": {
-    "multiplatform-one": "./bin/multiplatformOne.mjs"
+    "multiplatform.one": "./bin/multiplatformOne.mjs"
   },
   "scripts": {
     "build": "tsup"
@@ -28,8 +32,8 @@
   "files": [
     "bin",
     "lib",
-    "src",
-    "update"
+    "scripts",
+    "src"
   ],
   "license": "Apache-2.0",
   "repository": {
@@ -48,13 +52,15 @@
   },
   "devDependencies": {
     "@multiplatform.one/utils": "workspace:^",
+    "@types/inquirer": "^9.0.7",
     "@types/node": "~20.12.13",
     "tsup": "^8.1.0",
     "typescript": "~5.3.3"
   },
   "dependencies": {
     "commander": "^9.5.0",
-    "execa": "^9.2.0"
+    "execa": "^9.2.0",
+    "inquirer": "^9.2.23"
   },
   "transpileModules": [
     "#ansi-styles",
