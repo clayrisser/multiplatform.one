@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/prisma-scripts",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "scripts for managing prisma orm",
   "sideEffects": false,
   "keywords": [
@@ -55,7 +55,7 @@
     "prisma": "~5.12.1"
   },
   "devDependencies": {
-    "@multiplatform.one/utils": "workspace:0.0.1",
+    "@multiplatform.one/utils": "workspace:0.0.2",
     "prisma": "~5.12.1",
     "tsup": "^8.1.0",
     "typescript": "~5.3.3"
