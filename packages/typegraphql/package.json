@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/typegraphql",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
   "contributors": [
     {
@@ -46,7 +46,7 @@
     "node": ">= 16.0"
   },
   "devDependencies": {
-    "@multiplatform.one/utils": "workspace:0.0.3",
+    "@multiplatform.one/utils": "workspace:0.0.4",
     "@prisma/client": "~5.12.1",
     "@types/body-parser": "^1.19.5",
     "@types/lodash.startcase": "^4.4.9",
