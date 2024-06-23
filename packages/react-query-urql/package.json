@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/react-query-urql",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
   "contributors": [
     {
@@ -58,7 +58,7 @@
     "vite": "^5.2.13"
   },
   "dependencies": {
-    "@multiplatform.one/keycloak": "workspace:1.0.14",
+    "@multiplatform.one/keycloak": "workspace:1.0.15",
     "@tanstack/react-query": "^5.45.1",
     "@urql/core": "^5.0.4",
     "graphql": "^16.8.1",
