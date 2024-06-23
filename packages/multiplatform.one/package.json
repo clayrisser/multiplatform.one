@@ -1,6 +1,6 @@
 {
   "name": "multiplatform.one",
-  "version": "1.0.15",
+  "version": "1.0.31",
   "description": "multiplatform.one ecosystem",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -87,7 +87,7 @@
     "types"
   ],
   "dependencies": {
-    "@multiplatform.one/zustand": "workspace:1.0.7",
+    "@multiplatform.one/zustand": "workspace:1.0.23",
     "cookies-next": "^4.2.1",
     "react-cookie": "^7.1.4"
   }

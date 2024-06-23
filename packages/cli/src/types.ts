@@ -1,7 +1,7 @@
 /*
- * File: /tsup.config.ts
- * Project: @multiplatform.one/prisma-scripts
- * File Created: 04-04-2024 15:50:39
+ * File: /src/types.ts
+ * Project: @multiplatform.one/cli
+ * File Created: 23-06-2024 10:13:38
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,21 +19,6 @@
  * limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
-import transpileModules from './transpileModules';
-
-export default defineConfig({
-  bundle: true,
-  clean: true,
-  dts: true,
-  entry: ['src/**/*.ts?(x)'],
-  entryPoints: ['src/index.ts'],
-  external: ['@prisma/client'],
-  format: ['cjs'],
-  minify: false,
-  noExternal: transpileModules,
-  outDir: 'lib',
-  skipNodeModulesBundle: false,
-  splitting: true,
-  target: 'es2022',
-});
+export interface CookieCutterConfig {
+  name: string;
+}

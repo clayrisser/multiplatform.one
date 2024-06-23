@@ -22,5 +22,5 @@
  */
 
 if (typeof require !== 'undefined' && require.main === module) {
-  require('../lib/bin/generate.js');
+  require('@multiplatform.one/prisma-scripts/lib/bin/generate.js');
 }

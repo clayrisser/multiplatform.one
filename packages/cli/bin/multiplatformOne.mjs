@@ -1,7 +1,9 @@
+#!/usr/bin/env node
+
 /*
- * File: /bin/buildSchema.mjs
- * Project: @multiplatform.one/typegraphql
- * File Created: 26-05-2024 18:07:44
+ * File: /bin/multiplatformOne.mjs
+ * Project: @multiplatform.one/cli
+ * File Created: 22-06-2024 14:11:12
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,4 +21,4 @@
  * limitations under the License.
  */
 
-import '../lib/multiplatformOne.mjs';
+import '@multiplatform.one/cli/bin/multiplatformOne';

@@ -2,26 +2,13 @@
 
 set -e
 
-if ! (cat app/package.json | grep -q multiplatform.one); then
-    echo "\033[0;31mError:\033[0m not a multiplatform.one project" >&2
-    exit 1
-fi
-if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-    echo "\033[0;31mError:\033[0m not inside a git repository" >&2
-    exit 1
-fi
-cd "$(git rev-parse --show-toplevel)"
-if ! git diff --cached --exit-code > /dev/null; then
-    echo "\033[0;31mError:\033[0m there are uncommitted changes" >&2
-    exit 1
-fi
 git clean -fxd
 PROJECT_DIR="$(pwd)"
 TEMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TEMP_DIR"' EXIT
 echo "TEMP_DIR $TEMP_DIR"
 cd "$TEMP_DIR"
-cookiecutter "$@"
+$COOKIECUTTER "$@"
 COOKIECUTTER_DIR="$TEMP_DIR/$(ls "$TEMP_DIR")"
 cd "$COOKIECUTTER_DIR"
 git add .

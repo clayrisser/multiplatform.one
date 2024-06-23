@@ -8,8 +8,8 @@
   "dependencies": {
     "@graphiql/plugin-explorer": "^3.0.1",
     "@graphiql/toolkit": "^0.9.1",
-    "@multiplatform.one/components": "2.0.8",
-    "@multiplatform.one/keycloak": "workspace:1.0.17",
+    "@multiplatform.one/components": "2.0.24",
+    "@multiplatform.one/keycloak": "workspace:1.0.33",
     "@next/bundle-analyzer": "^14.2.3",
     "@sentry/react": "^8.8.0",
     "@tamagui/next-plugin": "^1.100.3",
@@ -21,7 +21,7 @@
     "graphiql-ws": "^0.1.7",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.16.0",
-    "multiplatform.one": "workspace:1.0.15",
+    "multiplatform.one": "workspace:1.0.31",
     "next": "^14.2.3",
     "next-auth": "^4.24.7",
     "next-i18next": "^15.3.0",
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@expo/next-adapter": "^6.0.0",
-    "@multiplatform.one/utils": "workspace:0.0.5",
+    "@multiplatform.one/utils": "workspace:0.0.21",
     "@types/cookie": "^0.6.0",
     "@types/node": "~20.12.13",
     "@types/node-cleanup": "^2.1.5",
