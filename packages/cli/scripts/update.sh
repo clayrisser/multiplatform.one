@@ -2,7 +2,6 @@
 
 set -e
 
-git clean -fxd
 PROJECT_DIR="$(pwd)"
 TEMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TEMP_DIR"' EXIT
@@ -14,6 +13,7 @@ cd "$COOKIECUTTER_DIR"
 git add .
 git commit -m "Updated multiplatform.one"
 cd "$PROJECT_DIR"
+git clean -fxd
 INITIAL_COMMIT="$(git rev-parse HEAD)"
 git remote add multiplatform.one "$COOKIECUTTER_DIR"
 git fetch multiplatform.one
