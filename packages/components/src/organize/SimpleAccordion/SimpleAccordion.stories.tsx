@@ -32,36 +32,32 @@ export default {
   },
 };
 
-export const main = (args) => (
-  <SimpleAccordion {...args}>
-    <AccordionItem trigger={() => <Text>Trigger Apple </Text>} value="apple">
-      <YStack padding="$4">
-        <Text> Apple Content</Text>
-      </YStack>
-    </AccordionItem>
-    <AccordionItem trigger={() => <Text>Trigger Banana </Text>} value="banana">
-      <YStack padding="$4">
-        <Text>Banana Content</Text>
-      </YStack>
-    </AccordionItem>
-    <AccordionItem
-      trigger={(open) => (
-        <XStack>
-          <YStack animation="quick" rotate={open ? '90deg' : '0deg'}>
-            <ChevronRight />
-          </YStack>
-          <H5 color="$color10">Folders</H5>
-        </XStack>
-      )}
-      value="orange"
-    >
-      <YStack padding="$4">
-        <Text>Orange Content</Text>
-      </YStack>
-    </AccordionItem>
-    <Accordion.Item value="pipe">
-      <Accordion.Trigger flexDirection="row" justifyContent="space-between">
-        {({ open }) => (
+export const main = (args) => {
+  return <SimpleAccordion {...args}>{args.children}</SimpleAccordion>;
+};
+
+const mainArgs = {
+  defaultValue: [],
+  onValueChange: (value) => console.log('Expanded items:', value),
+  collapsible: true,
+  disabled: false,
+  overflow: 'visible',
+  type: 'multiple',
+
+  children: (
+    <SimpleAccordion>
+      <AccordionItem trigger={() => <Text>Trigger Apple </Text>} value="apple">
+        <YStack padding="$4">
+          <Text> Apple Content</Text>
+        </YStack>
+      </AccordionItem>
+      <AccordionItem trigger={() => <Text>Trigger Banana </Text>} value="banana">
+        <YStack padding="$4">
+          <Text>Banana Content</Text>
+        </YStack>
+      </AccordionItem>
+      <AccordionItem
+        trigger={(open) => (
           <XStack>
             <YStack animation="quick" rotate={open ? '90deg' : '0deg'}>
               <ChevronRight />
@@ -69,12 +65,30 @@ export const main = (args) => (
             <H5 color="$color10">Folders</H5>
           </XStack>
         )}
-      </Accordion.Trigger>
-      <Accordion.Content>
+        value="orange"
+      >
         <YStack padding="$4">
           <Text>Orange Content</Text>
         </YStack>
-      </Accordion.Content>
-    </Accordion.Item>
-  </SimpleAccordion>
-);
+      </AccordionItem>
+      <Accordion.Item value="pipe">
+        <Accordion.Trigger flexDirection="row" justifyContent="space-between">
+          {({ open }) => (
+            <XStack>
+              <YStack animation="quick" rotate={open ? '90deg' : '0deg'}>
+                <ChevronRight />
+              </YStack>
+              <H5 color="$color10">Folders</H5>
+            </XStack>
+          )}
+        </Accordion.Trigger>
+        <Accordion.Content>
+          <YStack padding="$4">
+            <Text>Orange Content</Text>
+          </YStack>
+        </Accordion.Content>
+      </Accordion.Item>
+    </SimpleAccordion>
+  ),
+};
+main.args = mainArgs;
