@@ -11,14 +11,12 @@ import { withDefaultLayout } from 'app/layouts/Default';
 
 const AuthQuery = gql(`
   query AuthQuery {
-    accessToken
     username
-    userId
   }
 `);
 
 const CountSubscription = gql(`
-  subscription CountSubscription {
+  subscription countSubscription{
     count
   }
 `);
@@ -37,15 +35,14 @@ function HomeScreen() {
   const linkProps = useLink({
     href: '/user/alice',
   });
-  const { data, isLoading } = useGqlQuery({ query: AuthQuery, queryKey: ['hello'], variables: {} });
+  const { data, isLoading } = useGqlQuery({ query: AuthQuery, queryKey: ['userAuth'], variables: {} });
 
-  const countData = useGqlSubscription({ query: CountSubscription, queryKey: ['count'] });
+  const countResponse = useGqlSubscription({ query: CountSubscription, queryKey: ['count'] });
 
   return (
     <YStack f={1} jc="center" ai="center" p="$4">
-      <Text>{JSON.stringify(countData, null, 2)}</Text>
+      {countResponse?.isFetching ? <Spinner /> : <Text>{countResponse?.data?.count}</Text>}
       {isLoading ? <Spinner /> : <Text>username: {data?.username}</Text>}
-      <Button>Update name</Button>
       <YStack
         // gap="$4"
         maw={600}
