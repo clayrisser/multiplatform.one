@@ -20,11 +20,12 @@
  * limitations under the License.
  */
 
+import keycloakifyLogoPngUrl from './assets/keycloakify-logo.png';
 import type { I18n } from './i18n';
 import type { KcContext } from './kcContext';
 import type { TemplateProps } from 'keycloakify/login/TemplateProps';
-import { Share, Info } from '@tamagui/lucide-icons';
-import { YStack, Card, XStack, Text, Anchor, Label, Input, H5, SimplePopover, Button, H1 } from 'ui';
+import { PUBLIC_URL } from 'keycloakify/PUBLIC_URL';
+import { assert } from 'keycloakify/tools/assert';
 import { clsx } from 'keycloakify/tools/clsx';
 import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
 import { usePrepareTemplate } from 'keycloakify/lib/usePrepareTemplate';
@@ -46,8 +47,8 @@ export default function Template({
   children,
 }: TemplateProps<KcContext, I18n>) {
   const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
-  const { msg } = i18n;
-  const { realm, auth, url, message, isAppInitiatedAction } = kcContext;
+  const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
+  const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
   const { isReady } = usePrepareTemplate({
     doFetchDefaultThemeResources: doUseDefaultCss,
     styles: [
@@ -64,124 +65,153 @@ export default function Template({
   });
   if (!isReady) return null;
   return (
-    <YStack position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
-      <H1 marginVertical="$6" textTransform="capitalize" letterSpacing={0.5} textAlign="center">
-        {msg('loginTitleHtml', realm.displayNameHtml)}!!!
-      </H1>
-
-      <Card width={450} elevation="$4">
-        <Card.Background>{/* <Image src={keycloakifyLogoPngUrl} alt="Keycloakify logo" /> */}</Card.Background>
-        <Card.Header>
-          <YStack>
-            {!(auth !== undefined && auth.showUsername && !auth.showResetCredentials) ? (
-              displayRequiredFields ? (
-                <XStack>
-                  <XStack>
-                    <Text className="required">*</Text>
+    <div className={getClassName('kcLoginClass')}>
+      <div id="kc-header" className={getClassName('kcHeaderClass')}>
+        <div
+          id="kc-header-wrapper"
+          className={getClassName('kcHeaderWrapperClass')}
+          style={{ fontFamily: '"Work Sans"' }}
+        >
+          <img src={`${PUBLIC_URL}/keycloakify-logo.png`} alt="Keycloakify logo" width={50} />
+          {msg('loginTitleHtml', realm.displayNameHtml)}!!!
+          <img src={keycloakifyLogoPngUrl} alt="Keycloakify logo" width={50} />
+        </div>
+      </div>
+      <div className={clsx(getClassName('kcFormCardClass'), displayWide && getClassName('kcFormCardAccountClass'))}>
+        <header className={getClassName('kcFormHeaderClass')}>
+          {realm.internationalizationEnabled && (assert(locale !== undefined), true) && locale.supported.length > 1 && (
+            <div id="kc-locale">
+              <div id="kc-locale-wrapper" className={getClassName('kcLocaleWrapperClass')}>
+                <div className="kc-dropdown" id="kc-locale-dropdown">
+                  <a href="#" id="kc-current-locale-link">
+                    {labelBySupportedLanguageTag[currentLanguageTag]}
+                  </a>
+                  <ul>
+                    {locale.supported.map(({ languageTag }) => (
+                      <li key={languageTag} className="kc-dropdown-item">
+                        <a href="#" onClick={() => changeLocale(languageTag)}>
+                          {labelBySupportedLanguageTag[languageTag]}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+          {!(auth !== undefined && auth.showUsername && !auth.showResetCredentials) ? (
+            displayRequiredFields ? (
+              <div className={getClassName('kcContentWrapperClass')}>
+                <div className={clsx(getClassName('kcLabelWrapperClass'), 'subtitle')}>
+                  <span className="subtitle">
+                    <span className="required">*</span>
                     {msg('requiredFields')}
-                  </XStack>
-
-                  <Text id="kc-page-title">{headerNode}</Text>
-                </XStack>
-              ) : (
-                <H5 fontSize={24} textAlign="center" id="kc-page-title">
-                  {headerNode}
-                </H5>
-              )
-            ) : displayRequiredFields ? (
-              <YStack>
-                <YStack>
-                  <Text>*</Text> {msg('requiredFields')}
-                </YStack>
-                <YStack>
-                  {showUsernameNode}
-                  <YStack>
-                    <YStack id="kc-username">
-                      <Label id="kc-attempted-username">{auth?.attemptedUsername}</Label>
-                      <Anchor id="reset-login" href={url.loginRestartFlowUrl}>
-                        <Share />
-                        <Text>{msg('restartLoginTooltip')}</Text>
-                      </Anchor>
-                    </YStack>
-                  </YStack>
-                </YStack>
-              </YStack>
+                  </span>
+                </div>
+                <div className="col-md-10">
+                  <h1 id="kc-page-title">{headerNode}</h1>
+                </div>
+              </div>
             ) : (
-              <YStack>
+              <h1 id="kc-page-title">{headerNode}</h1>
+            )
+          ) : displayRequiredFields ? (
+            <div className={getClassName('kcContentWrapperClass')}>
+              <div className={clsx(getClassName('kcLabelWrapperClass'), 'subtitle')}>
+                <span className="subtitle">
+                  <span className="required">*</span> {msg('requiredFields')}
+                </span>
+              </div>
+              <div className="col-md-10">
                 {showUsernameNode}
-                <YStack>
-                  <XStack als="center" id="kc-username">
-                    <Label id="kc-attempted-username">{auth?.attemptedUsername}</Label>
-                    <Anchor als="center" id="reset-login" href={url.loginRestartFlowUrl}>
-                      <XStack ai="center" gap="$2" className="kc-login-tooltip">
-                        <SimplePopover hoverable trigger={<Button unstyled iconAfter={<Share size={20} />} />}>
-                          {msg('restartLoginTooltip')}
-                        </SimplePopover>
-                      </XStack>
-                    </Anchor>
-                  </XStack>
-                </YStack>
-              </YStack>
+                <div className={getClassName('kcFormGroupClass')}>
+                  <div id="kc-username">
+                    <label id="kc-attempted-username">{auth?.attemptedUsername}</label>
+                    <a id="reset-login" href={url.loginRestartFlowUrl}>
+                      <div className="kc-login-tooltip">
+                        <i className={getClassName('kcResetFlowIcon')} />
+                        <span className="kc-tooltip-text">{msg('restartLoginTooltip')}</span>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              {showUsernameNode}
+              <div className={getClassName('kcFormGroupClass')}>
+                <div id="kc-username">
+                  <label id="kc-attempted-username">{auth?.attemptedUsername}</label>
+                  <a id="reset-login" href={url.loginRestartFlowUrl}>
+                    <div className="kc-login-tooltip">
+                      <i className={getClassName('kcResetFlowIcon')} />
+                      <span className="kc-tooltip-text">{msg('restartLoginTooltip')}</span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </>
+          )}
+        </header>
+        <div id="kc-content">
+          <div id="kc-content-wrapper">
+            {displayMessage && message !== undefined && (message.type !== 'warning' || !isAppInitiatedAction) && (
+              <div className={clsx('alert', `alert-${message.type}`)}>
+                {message.type === 'success' && <span className={getClassName('kcFeedbackSuccessIcon')} />}
+                {message.type === 'warning' && <span className={getClassName('kcFeedbackWarningIcon')} />}
+                {message.type === 'error' && <span className={getClassName('kcFeedbackErrorIcon')} />}
+                {message.type === 'info' && <span className={getClassName('kcFeedbackInfoIcon')} />}
+                <span
+                  className="kc-feedback-text"
+                  dangerouslySetInnerHTML={{
+                    __html: message.summary,
+                  }}
+                />
+              </div>
             )}
-          </YStack>
-        </Card.Header>
-        <YStack>
-          <YStack width="100%" padding="$4" id="kc-content">
-            <YStack id="kc-content-wrapper">
-              {displayMessage && message !== undefined && (message.type !== 'warning' || !isAppInitiatedAction) && (
-                <XStack ai="center" gap="$1" bg="$backgroundFocus" borderRadius="$4" padding="$4">
-                  <Info size={18} />
-                  {message.type === 'success' && <Text />}
-                  {message.type === 'warning' && <Text />}
-                  {message.type === 'error' && <Text />}
-                  {message.type === 'info' && <Text />}
-                  <Text
-                    dangerouslySetInnerHTML={{
-                      __html: message.summary,
-                    }}
-                  />
-                </XStack>
-              )}
-              {children}
-              {auth !== undefined && auth.showTryAnotherWayLink && showAnotherWayIfPresent && (
-                <form
-                  id="kc-select-try-another-way-form"
-                  action={url.loginAction}
-                  method="post"
-                  className={clsx(displayWide && getClassName('kcContentWrapperClass'))}
+            {children}
+            {auth !== undefined && auth.showTryAnotherWayLink && showAnotherWayIfPresent && (
+              <form
+                id="kc-select-try-another-way-form"
+                action={url.loginAction}
+                method="post"
+                className={clsx(displayWide && getClassName('kcContentWrapperClass'))}
+              >
+                <div
+                  className={clsx(
+                    displayWide && [
+                      getClassName('kcFormSocialAccountContentClass'),
+                      getClassName('kcFormSocialAccountClass'),
+                    ],
+                  )}
                 >
-                  <YStack>
-                    <YStack>
-                      <Input
-                        // @ts-ignore
-                        type="hidden"
-                        name="tryAnotherWay"
-                        value="on"
-                      />
-                      <Anchor
-                        href="#"
-                        id="try-another-way"
-                        // @ts-ignore
-                        onClick={() => {
-                          document.forms['kc-select-try-another-way-form' as never].submit();
-                          return false;
-                        }}
-                      >
-                        {msg('doTryAnotherWay')}
-                      </Anchor>
-                    </YStack>
-                  </YStack>
-                </form>
-              )}
-              {displayInfo && (
-                <YStack id="kc-info">
-                  <YStack id="kc-info-wrapper">{infoNode}</YStack>
-                </YStack>
-              )}
-            </YStack>
-          </YStack>
-        </YStack>
-      </Card>
-    </YStack>
+                  <div className={getClassName('kcFormGroupClass')}>
+                    <input type="hidden" name="tryAnotherWay" value="on" />
+                    <a
+                      href="#"
+                      id="try-another-way"
+                      onClick={() => {
+                        document.forms['kc-select-try-another-way-form' as never].submit();
+                        return false;
+                      }}
+                    >
+                      {msg('doTryAnotherWay')}
+                    </a>
+                  </div>
+                </div>
+              </form>
+            )}
+            {displayInfo && (
+              <div id="kc-info" className={getClassName('kcSignUpClass')}>
+                <div id="kc-info-wrapper" className={getClassName('kcInfoAreaWrapperClass')}>
+                  {infoNode}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
