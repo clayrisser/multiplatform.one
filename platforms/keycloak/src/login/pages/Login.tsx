@@ -31,6 +31,7 @@ import { useState } from 'react';
 import { Anchor, Button, Checkbox, FieldCheckbox, FieldInput, Label, Text, XStack, YStack } from 'ui';
 import { Check } from '@tamagui/lucide-icons';
 import { useForm } from '@tanstack/react-form';
+import { Eye, EyeOff } from '@tamagui/lucide-icons';
 
 export default function Login({
   kcContext,
@@ -54,6 +55,11 @@ export default function Login({
     formElement.submit();
   });
   const [showPassword, setShowPassword] = useState(false);
+
+  function handlePassword(e) {
+    e.preventDefault();
+    setShowPassword(!showPassword);
+  }
 
   const form = useForm({
     defaultValues: {
@@ -123,7 +129,42 @@ export default function Login({
                       autoFocus: true,
                     }}
                   />
-                  <YStack ai="flex-end">
+                  <FieldInput
+                    label={msg('password') as unknown as string}
+                    name="password"
+                    form={form}
+                    inputProps={{
+                      secureTextEntry: !showPassword,
+                      autoFocus: true,
+                    }}
+                  />
+
+                  {showPassword ? (
+                    <Button
+                      unstyled
+                      marginTop="$15"
+                      position="absolute"
+                      right="$-6"
+                      top="$-1.5"
+                      cursor="pointer"
+                      onPress={handlePassword}
+                      iconAfter={EyeOff}
+                      size="$8"
+                    ></Button>
+                  ) : (
+                    <Button
+                      unstyled
+                      marginTop="$15"
+                      position="absolute"
+                      right="$-6"
+                      top="$-1.5"
+                      cursor="pointer"
+                      onPress={handlePassword}
+                      iconAfter={Eye}
+                      size="$8"
+                    ></Button>
+                  )}
+                  {/* <YStack ai="flex-end">
                     <Text
                       marginVertical="$2"
                       cursor="pointer"
@@ -132,7 +173,7 @@ export default function Login({
                     >
                       {showPassword ? 'hide' : 'show'}
                     </Text>
-                  </YStack>
+                  </YStack> */}
                 </YStack>
                 <XStack ai="center" jc="space-between">
                   <YStack id="kc-form-options">
