@@ -20,12 +20,22 @@
  * limitations under the License.
  */
 
+import React from 'react';
+import type { GestureResponderEvent } from 'react-native';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../kcContext';
 import type { PageProps } from 'keycloakify/login/pages/PageProps';
-import { clsx } from 'keycloakify/tools/clsx';
-import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
+import { YStack, Button, Anchor, Text, FieldInput } from 'ui';
+import { useForm } from '@tanstack/react-form';
 
+export interface RegisterForm {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  username?: string;
+  password?: string;
+  passwordConfirm?: string;
+}
 export default function Register({
   kcContext,
   i18n,
@@ -33,176 +43,84 @@ export default function Register({
   Template,
   classes,
 }: PageProps<Extract<KcContext, { pageId: 'register.ftl' }>, I18n>) {
-  const { getClassName } = useGetClassName({
-    doUseDefaultCss,
-    classes,
+  const { url, register, realm, passwordRequired, recaptchaRequired, recaptchaSiteKey } = kcContext;
+  const { msg } = i18n;
+  const [registerForm] = React.useState<RegisterForm>(register.formData);
+  const registerRef = React.useRef<HTMLFormElement | null>(null);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const form = useForm({
+    defaultValues: register.formData,
+    onSubmit: async ({ value }) => {
+      console.log(value);
+    },
   });
-  const { url, messagesPerField, register, realm, passwordRequired, recaptchaRequired, recaptchaSiteKey } = kcContext;
-  const { msg, msgStr } = i18n;
+
+  function handleRegister(e: GestureResponderEvent) {
+    e.preventDefault();
+    if (!registerRef.current || !registerRef.current.onSubmit) return;
+    registerRef.current.onSubmit(registerForm);
+  }
+
   return (
     <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg('registerTitle')}>
-      <form id="kc-register-form" className={getClassName('kcFormClass')} action={url.registrationAction} method="post">
-        <div
-          className={clsx(
-            getClassName('kcFormGroupClass'),
-            messagesPerField.printIfExists('firstName', getClassName('kcFormGroupErrorClass')),
+      <form ref={registerRef} id="kc-register-form" action={url.registrationAction} method="post">
+        <YStack>
+          <FieldInput form={form} label={msg('firstName') as unknown as string} name="firstName" />
+          <FieldInput form={form} label={msg('lastName') as unknown as string} value={registerForm.lastName} />
+          <FieldInput label={msg('email') as unknown as string} name="email" form={form} />
+          {!realm.registrationEmailAsUsername && (
+            <FieldInput label={msg('username') as unknown as string} name="username" form={form} />
           )}
-        >
-          <div className={getClassName('kcLabelWrapperClass')}>
-            <label htmlFor="firstName" className={getClassName('kcLabelClass')}>
-              {msg('firstName')}
-            </label>
-          </div>
-          <div className={getClassName('kcInputWrapperClass')}>
-            <input
-              type="text"
-              id="firstName"
-              className={getClassName('kcInputClass')}
-              name="firstName"
-              defaultValue={register.formData.firstName ?? ''}
-            />
-          </div>
-        </div>
-        <div
-          className={clsx(
-            getClassName('kcFormGroupClass'),
-            messagesPerField.printIfExists('lastName', getClassName('kcFormGroupErrorClass')),
-          )}
-        >
-          <div className={getClassName('kcLabelWrapperClass')}>
-            <label htmlFor="lastName" className={getClassName('kcLabelClass')}>
-              {msg('lastName')}
-            </label>
-          </div>
-          <div className={getClassName('kcInputWrapperClass')}>
-            <input
-              type="text"
-              id="lastName"
-              className={getClassName('kcInputClass')}
-              name="lastName"
-              defaultValue={register.formData.lastName ?? ''}
-            />
-          </div>
-        </div>
-        <div
-          className={clsx(
-            getClassName('kcFormGroupClass'),
-            messagesPerField.printIfExists('email', getClassName('kcFormGroupErrorClass')),
-          )}
-        >
-          <div className={getClassName('kcLabelWrapperClass')}>
-            <label htmlFor="email" className={getClassName('kcLabelClass')}>
-              {msg('email')}
-            </label>
-          </div>
-          <div className={getClassName('kcInputWrapperClass')}>
-            <input
-              type="text"
-              id="email"
-              className={getClassName('kcInputClass')}
-              name="email"
-              defaultValue={register.formData.email ?? ''}
-              autoComplete="email"
-            />
-          </div>
-        </div>
-        {!realm.registrationEmailAsUsername && (
-          <div
-            className={clsx(
-              getClassName('kcFormGroupClass'),
-              messagesPerField.printIfExists('username', getClassName('kcFormGroupErrorClass')),
-            )}
-          >
-            <div className={getClassName('kcLabelWrapperClass')}>
-              <label htmlFor="username" className={getClassName('kcLabelClass')}>
-                {msg('username')}
-              </label>
-            </div>
-            <div className={getClassName('kcInputWrapperClass')}>
-              <input
-                type="text"
-                id="username"
-                className={getClassName('kcInputClass')}
-                name="username"
-                defaultValue={register.formData.username ?? ''}
-                autoComplete="username"
+          {passwordRequired && (
+            <YStack>
+              <FieldInput
+                label={msg('password') as unknown as string}
+                name="password"
+                form={form}
+                inputProps={{
+                  secureTextEntry: !showPassword,
+                  autoFocus: true,
+                }}
               />
-            </div>
-          </div>
-        )}
-        {passwordRequired && (
-          <>
-            <div
-              className={clsx(
-                getClassName('kcFormGroupClass'),
-                messagesPerField.printIfExists('password', getClassName('kcFormGroupErrorClass')),
-              )}
-            >
-              <div className={getClassName('kcLabelWrapperClass')}>
-                <label htmlFor="password" className={getClassName('kcLabelClass')}>
-                  {msg('password')}
-                </label>
-              </div>
-              <div className={getClassName('kcInputWrapperClass')}>
-                <input
-                  type="password"
-                  id="password"
-                  className={getClassName('kcInputClass')}
-                  name="password"
-                  autoComplete="new-password"
-                />
-              </div>
-            </div>
-            <div
-              className={clsx(
-                getClassName('kcFormGroupClass'),
-                messagesPerField.printIfExists('password-confirm', getClassName('kcFormGroupErrorClass')),
-              )}
-            >
-              <div className={getClassName('kcLabelWrapperClass')}>
-                <label htmlFor="password-confirm" className={getClassName('kcLabelClass')}>
-                  {msg('passwordConfirm')}
-                </label>
-              </div>
-              <div className={getClassName('kcInputWrapperClass')}>
-                <input
-                  className={getClassName('kcInputClass')}
-                  id="password-confirm"
-                  name="password-confirm"
-                  type="password"
-                />
-              </div>
-            </div>
-          </>
-        )}
+              <FieldInput
+                label={msg('passwordConfirm') as unknown as string}
+                name="passwordConfirm"
+                form={form}
+                inputProps={{
+                  secureTextEntry: !showPassword,
+                  autoFocus: true,
+                }}
+              />
+              <Text
+                marginVertical="$2"
+                cursor="pointer"
+                onPress={() => setShowPassword(!showPassword)}
+                textAlign="right"
+              >
+                {showPassword ? 'hide' : 'show'}
+              </Text>
+            </YStack>
+          )}
+        </YStack>
         {recaptchaRequired && (
-          <div className="form-group">
-            <div className={getClassName('kcInputWrapperClass')}>
-              <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey} />
-            </div>
-          </div>
+          <YStack>
+            <YStack>
+              <YStack className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey} />
+            </YStack>
+          </YStack>
         )}
-        <div className={getClassName('kcFormGroupClass')}>
-          <div id="kc-form-options" className={getClassName('kcFormOptionsClass')}>
-            <div className={getClassName('kcFormOptionsWrapperClass')}>
-              <span>
-                <a href={url.loginUrl}>{msg('backToLogin')}</a>
-              </span>
-            </div>
-          </div>
-          <div id="kc-form-buttons" className={getClassName('kcFormButtonsClass')}>
-            <input
-              className={clsx(
-                getClassName('kcButtonBlockClass'),
-                getClassName('kcButtonClass'),
-                getClassName('kcButtonLargeClass'),
-                getClassName('kcButtonPrimaryClass'),
-              )}
-              type="submit"
-              value={msgStr('doRegister')}
-            />
-          </div>
-        </div>
+        <YStack>
+          <YStack id="kc-form-options" ai="flex-start" marginVertical="$4">
+            <Text>
+              <Anchor href={url.loginUrl}>{msg('backToLogin')}</Anchor>
+            </Text>
+          </YStack>
+          <YStack id="kc-form-buttons">
+            <Button onPress={handleRegister} bg="$backgroundFocus">
+              {msg('doRegister')}
+            </Button>
+          </YStack>
+        </YStack>
       </form>
     </Template>
   );
