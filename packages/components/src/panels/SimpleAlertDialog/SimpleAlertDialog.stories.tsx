@@ -23,6 +23,7 @@ import React from 'react';
 import { SimpleAlertDialog } from './index';
 import type { Meta } from '@storybook/react';
 import { AlertDialog, Button, XStack, YStack } from 'tamagui';
+import type { AlterDialogSimpleProps } from './index';
 
 const meta: Meta = {
   title: 'panels/SimpleAlertDialog',
@@ -30,16 +31,24 @@ const meta: Meta = {
   parameters: { status: { type: 'beta' } },
 };
 
-export const Main = () => (
+export const main = (args) => (
   <SimpleAlertDialog
     title="Are you sure?"
     description="This action cannot be undone"
     cancel="Cancel"
     accept="Delete"
     trigger={<Button>Get Alert</Button>}
+    {...args}
   />
 );
 
+const mainArgs: AlterDialogSimpleProps = {
+  title: 'Are you sure?',
+  description: 'This action cannot be undone',
+  cancel: 'Cancel',
+  accept: 'Delete',
+};
+main.args = mainArgs;
 export const Custom = () => (
   <SimpleAlertDialog
     title="Are you sure?"
