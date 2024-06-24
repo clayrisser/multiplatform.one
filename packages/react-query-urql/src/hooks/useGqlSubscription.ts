@@ -1,3 +1,24 @@
+/*
+ * File: /src/hooks/useGqlSubscription.ts
+ * Project: @multiplatform.one/react-query-urql
+ * File Created: 24-06-2024 12:03:41
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import { useMemo } from 'react';
 import type { AnyVariables } from '../types';
 import type { QueryKey } from '@tanstack/react-query';
@@ -23,6 +44,11 @@ type DataTag<TType, TValue> = TType & {
 };
 type NoInfer<T> = [T][T extends any ? 0 : never];
 
+export interface UseGqlSubscriptionResponse<TData = any, TVariables extends AnyVariables = AnyVariables>
+  extends Omit<UseSubscriptionState<TData, TVariables>, 'fetching'> {
+  isFetching: boolean;
+}
+
 export function useGqlSubscription<
   TData = any,
   TResult = TData,
@@ -31,10 +57,9 @@ export function useGqlSubscription<
 >(
   options: UseGqlSubscriptionOptions<TData, TVariables, TQueryKey>,
   handler?: SubscriptionHandler<TData, TResult>,
-): UseSubscriptionState<TResult, TVariables> {
+): UseGqlSubscriptionResponse<TResult, TVariables> {
   const keycloak = useKeycloak();
   const queryClient = useQueryClient();
-
   const [response] = useSubscription<TData, TResult, TVariables>(
     {
       pause: !(typeof options?.enabled !== 'undefined'
@@ -62,7 +87,6 @@ export function useGqlSubscription<
     },
     handler,
   );
-
   useEffect(() => {
     if (options.queryKey) {
       queryClient.setQueryData(
@@ -76,8 +100,9 @@ export function useGqlSubscription<
       );
     }
   }, [response]);
-
-  if (response.error) throw response.error;
-
-  return response;
+  delete (response as { fetching: any }).fetching;
+  return {
+    ...response,
+    isFetching: response.fetching,
+  };
 }
