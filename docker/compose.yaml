@@ -49,7 +49,6 @@ services:
     restart: unless-stopped
     image: ${REGISTRY}/keycloak
     # image: registry.gitlab.com/bitspur/rock8s/images/keycloak:25.0.1
-    platform: linux/arm64
     ports:
       - 8080:8080
     volumes:
