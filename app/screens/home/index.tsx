@@ -43,7 +43,6 @@ function HomeScreen() {
     <YStack f={1} jc="center" ai="center" p="$4">
       {countResponse?.isFetching ? <Spinner /> : <Text>{countResponse?.data?.count}</Text>}
       {isLoading ? <Spinner /> : <Text>username: {data?.username}</Text>}
-      <Button>Update name</Button>
       <YStack
         // gap="$4"
         maw={600}
