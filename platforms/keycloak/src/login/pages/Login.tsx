@@ -24,14 +24,13 @@ import type { FormEventHandler } from 'react';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../kcContext';
 import type { PageProps } from 'keycloakify/login/pages/PageProps';
-import { clsx } from 'keycloakify/tools/clsx';
-import { useConstCallback } from 'keycloakify/tools/useConstCallback';
-import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
-import { useState } from 'react';
 import { Anchor, Button, Checkbox, FieldCheckbox, FieldInput, Label, Text, XStack, YStack } from 'ui';
 import { Check } from '@tamagui/lucide-icons';
+import { clsx } from 'keycloakify/tools/clsx';
+import { useConstCallback } from 'keycloakify/tools/useConstCallback';
 import { useForm } from '@tanstack/react-form';
 import { Eye, EyeOff } from '@tamagui/lucide-icons';
+import { useState } from 'react';
 
 export default function Login({
   kcContext,
@@ -40,11 +39,7 @@ export default function Login({
   Template,
   classes,
 }: PageProps<Extract<KcContext, { pageId: 'login.ftl' }>, I18n>) {
-  const { getClassName } = useGetClassName({
-    doUseDefaultCss,
-    classes,
-  });
-  const { social, realm, url, usernameHidden, login, auth, registrationDisabled } = kcContext;
+  const { social, realm, url, usernameHidden, registrationDisabled } = kcContext;
   const { msg, msgStr } = i18n;
   const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
   const onSubmit = useConstCallback<FormEventHandler<HTMLFormElement>>((e) => {
@@ -55,22 +50,12 @@ export default function Login({
     formElement.submit();
   });
   const [showPassword, setShowPassword] = useState(false);
-
-  function handlePassword(e) {
-    e.preventDefault();
-    setShowPassword(!showPassword);
-  }
-
   const form = useForm({
     defaultValues: {
       userName: '',
       password: '',
     },
     onSubmit: async ({ value }) => {
-      // action('onSubmit')(value);
-      console.log('====================================');
-      console.log(value);
-      console.log('====================================');
       console.log(value);
     },
   });
@@ -129,42 +114,7 @@ export default function Login({
                       autoFocus: true,
                     }}
                   />
-                  <FieldInput
-                    label={msg('password') as unknown as string}
-                    name="password"
-                    form={form}
-                    inputProps={{
-                      secureTextEntry: !showPassword,
-                      autoFocus: true,
-                    }}
-                  />
-
-                  {showPassword ? (
-                    <Button
-                      unstyled
-                      marginTop="$15"
-                      position="absolute"
-                      right="$-6"
-                      top="$-1.5"
-                      cursor="pointer"
-                      onPress={handlePassword}
-                      iconAfter={EyeOff}
-                      size="$8"
-                    ></Button>
-                  ) : (
-                    <Button
-                      unstyled
-                      marginTop="$15"
-                      position="absolute"
-                      right="$-6"
-                      top="$-1.5"
-                      cursor="pointer"
-                      onPress={handlePassword}
-                      iconAfter={Eye}
-                      size="$8"
-                    ></Button>
-                  )}
-                  {/* <YStack ai="flex-end">
+                  <YStack ai="flex-end">
                     <Text
                       marginVertical="$2"
                       cursor="pointer"
@@ -173,7 +123,7 @@ export default function Login({
                     >
                       {showPassword ? 'hide' : 'show'}
                     </Text>
-                  </YStack> */}
+                  </YStack>
                 </YStack>
                 <XStack ai="center" jc="space-between">
                   <YStack id="kc-form-options">
@@ -228,6 +178,3 @@ export default function Login({
     </Template>
   );
 }
-/*
-
-*/

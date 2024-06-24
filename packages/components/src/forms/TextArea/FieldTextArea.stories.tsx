@@ -20,6 +20,7 @@
  */
 
 import React from 'react';
+import type { FieldTextAreaProps } from './FieldTextArea';
 import { Button, YStack } from 'tamagui';
 import { FieldTextArea } from './FieldTextArea';
 import { action } from '@storybook/addon-actions';
@@ -28,9 +29,7 @@ import { useForm } from '@tanstack/react-form';
 export default {
   title: 'forms/FieldTextArea',
   component: FieldTextArea,
-  parameters: {
-    status: { type: 'beta' },
-  },
+  parameters: { status: { type: 'beta' } },
 };
 
 export const main = () => (

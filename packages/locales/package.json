@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/locales",
-  "version": "1.0.11",
+  "version": "1.0.31",
   "description": "multiplatform.one locales",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -50,7 +50,7 @@
     "next-i18next": "^15.3.0",
     "react": "18.2.0",
     "react-i18next": "^12.3.1",
-    "react-native": "0.74.1",
+    "react-native": "0.74.2",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
@@ -69,7 +69,7 @@
     "next-i18next": "^15.3.0",
     "react": "18.2.0",
     "react-i18next": "^12.3.1",
-    "react-native": "0.74.1",
+    "react-native": "0.74.2",
     "ts-jest": "^29.1.4",
     "typescript": "~5.3.3",
     "zustand": "^4.5.2"
@@ -81,7 +81,7 @@
   "dependencies": {
     "cookies-next": "^4.2.1",
     "merge-options": "^3.0.4",
-    "multiplatform.one": "workspace:1.0.11",
+    "multiplatform.one": "workspace:1.0.31",
     "react-cookie": "^7.1.4"
   }
 }

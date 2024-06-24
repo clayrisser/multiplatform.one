@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/prisma-scripts",
-  "version": "1.0.10",
+  "version": "1.0.30",
   "description": "scripts for managing prisma orm",
   "sideEffects": false,
   "keywords": [
@@ -19,12 +19,12 @@
   },
   "license": "Apache-2.0",
   "author": "BitSpur <support@risserlabs.com> (https://risserlabs.com)",
-  "module": "lib/index.mjs",
+  "main": "lib/index.js",
   "source": "src/index.ts",
-  "types": "lib/index.d.mts",
+  "types": "lib/index.d.ts",
   "exports": {
     ".": {
-      "import": "./lib/index.mjs",
+      "require": "./lib/index.js",
       "types": "./lib/index.d.mts"
     },
     "./package.json": "./package.json"
@@ -55,7 +55,7 @@
     "prisma": "~5.12.1"
   },
   "devDependencies": {
-    "@multiplatform.one/utils": "workspace:0.0.1",
+    "@multiplatform.one/utils": "workspace:0.0.21",
     "prisma": "~5.12.1",
     "tsup": "^8.1.0",
     "typescript": "~5.3.3"
