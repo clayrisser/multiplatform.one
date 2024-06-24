@@ -1,27 +1,7 @@
-/*
- * File: /src/hooks/useGqlSubscription.ts
- * Project: @multiplatform.one/query
- * File Created: 01-06-2024 13:44:49
- * Author: Clay Risser
- * -----
- * BitSpur (c) Copyright 2021 - 2024
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+import { useMemo } from 'react';
 import type { AnyVariables } from '../types';
 import type { QueryKey } from '@tanstack/react-query';
-import type { UseSubscriptionArgs, SubscriptionHandler } from 'urql';
+import type { UseSubscriptionArgs, SubscriptionHandler, UseSubscriptionState } from 'urql';
 import { useEffect } from 'react';
 import { useKeycloak } from '@multiplatform.one/keycloak';
 import { useQueryClient } from '@tanstack/react-query';
@@ -51,26 +31,32 @@ export function useGqlSubscription<
 >(
   options: UseGqlSubscriptionOptions<TData, TVariables, TQueryKey>,
   handler?: SubscriptionHandler<TData, TResult>,
-): TResult {
+): UseSubscriptionState<TResult, TVariables> {
   const keycloak = useKeycloak();
   const queryClient = useQueryClient();
+
   const [response] = useSubscription<TData, TResult, TVariables>(
     {
       pause: !(typeof options?.enabled !== 'undefined'
         ? options.enabled
         : !!(keycloak?.authenticated && keycloak.token)),
-      context: {
-        ...options.context,
-        fetchOptions: {
-          ...options.context?.fetchOptions,
-          headers: {
+      context: useMemo(
+        () => ({
+          ...options.context,
+          fetchOptions: {
             ...(typeof options.context?.fetchOptions === 'function'
-              ? options.context?.fetchOptions()?.headers
-              : options.context?.fetchOptions?.headers),
-            authorization: `Bearer ${keycloak?.token}`,
+              ? options.context.fetchOptions()
+              : options.context?.fetchOptions),
+            headers: {
+              ...(typeof options.context?.fetchOptions === 'function'
+                ? options.context.fetchOptions()?.headers
+                : options.context?.fetchOptions?.headers),
+              authorization: `Bearer ${keycloak?.token}`,
+            },
           },
-        },
-      },
+        }),
+        [keycloak?.token, options.context],
+      ),
       query: options.query,
       variables: options.variables as TVariables,
     },
@@ -90,7 +76,8 @@ export function useGqlSubscription<
       );
     }
   }, [response]);
+
   if (response.error) throw response.error;
-  if (typeof response.data === 'undefined') throw new Error('no data returned from subscription');
-  return response.data;
+
+  return response;
 }
