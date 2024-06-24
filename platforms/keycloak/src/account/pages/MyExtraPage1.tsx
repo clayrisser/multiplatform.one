@@ -1,5 +1,5 @@
-/*
- * File: /src/keycloak-theme/account/i18n.ts
+/**
+ * File: /src/keycloak-theme/account/pages/MyExtraPage1.tsx
  * Project: @platform/keycloak
  * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser
@@ -20,8 +20,16 @@
  * limitations under the License.
  */
 
-import { createUseI18n } from 'keycloakify/account';
+import type { PageProps } from 'keycloakify/account/pages/PageProps';
+import type { KcContext } from '../kcContext';
+import type { I18n } from '../i18n';
 
-export const { useI18n } = createUseI18n({});
+export default function MyExtraPage1(props: PageProps<Extract<KcContext, { pageId: 'my-extra-page-1.ftl' }>, I18n>) {
+  const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
-export type I18n = NonNullable<ReturnType<typeof useI18n>>;
+  return (
+    <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="my-extra-page-1">
+      <h1>Hello world 1</h1>
+    </Template>
+  );
+}

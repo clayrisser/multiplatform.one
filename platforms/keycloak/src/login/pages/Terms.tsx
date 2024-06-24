@@ -30,7 +30,6 @@ import { evtTermMarkdown } from 'keycloakify/login/lib/useDownloadTerms';
 import { useDownloadTerms } from 'keycloakify/login';
 import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
 import { useRerenderOnStateChange } from 'evt/hooks';
-import { Button, XStack, YStack } from 'ui';
 
 export default function Terms({
   Template,
@@ -64,18 +63,34 @@ export default function Terms({
   if (termMarkdown === undefined) return;
   return (
     <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg('termsTitle')}>
-      <YStack id="kc-terms-text">
+      <div id="kc-terms-text">
         <Markdown>{termMarkdown}</Markdown>
-      </YStack>
+      </div>
       <form className="form-actions" action={url.loginAction} method="POST">
-        <XStack gap="$2">
-          <Button bg="$backgroundFocus" fontWeight="bold">
-            {msgStr('doAccept')}
-          </Button>
-          <Button bg="$background" fontWeight="bold">
-            {msgStr('doDecline')}
-          </Button>
-        </XStack>
+        <input
+          id="kc-accept"
+          name="accept"
+          type="submit"
+          value={msgStr('doAccept')}
+          className={clsx(
+            getClassName('kcButtonClass'),
+            getClassName('kcButtonClass'),
+            getClassName('kcButtonClass'),
+            getClassName('kcButtonLargeClass'),
+            getClassName('kcButtonPrimaryClass'),
+          )}
+        />
+        <input
+          id="kc-decline"
+          name="cancel"
+          type="submit"
+          value={msgStr('doDecline')}
+          className={clsx(
+            getClassName('kcButtonClass'),
+            getClassName('kcButtonDefaultClass'),
+            getClassName('kcButtonLargeClass'),
+          )}
+        />
       </form>
       <div className="clearfix" />
     </Template>
