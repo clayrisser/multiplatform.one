@@ -1,6 +1,6 @@
 {
   "name": "multiplatform.one",
-  "version": "1.0.11",
+  "version": "1.0.31",
   "description": "multiplatform.one ecosystem",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -58,7 +58,7 @@
     "expo-constants": "~15.4.6",
     "next": "^13.4.3",
     "react": "18.2.0",
-    "react-native": "0.74.1"
+    "react-native": "0.74.2"
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
@@ -76,7 +76,7 @@
     "expo-constants": "~16.0.2",
     "next": "^14.2.3",
     "react": "18.2.0",
-    "react-native": "0.74.1",
+    "react-native": "0.74.2",
     "ts-jest": "^29.1.4",
     "typescript": "~5.3.3",
     "vitest": "^1.6.0",
@@ -87,7 +87,7 @@
     "types"
   ],
   "dependencies": {
-    "@multiplatform.one/zustand": "workspace:1.0.3",
+    "@multiplatform.one/zustand": "workspace:1.0.23",
     "cookies-next": "^4.2.1",
     "react-cookie": "^7.1.4"
   }

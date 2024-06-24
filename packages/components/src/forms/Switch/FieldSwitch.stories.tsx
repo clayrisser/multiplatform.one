@@ -20,6 +20,7 @@
  */
 
 import React from 'react';
+import type { FieldSwitchProps } from './FieldSwitch';
 import { FieldSwitch } from './FieldSwitch';
 import { action } from '@storybook/addon-actions';
 import { useForm } from '@tanstack/react-form';
@@ -33,16 +34,14 @@ export default {
   },
 };
 
-export const main = () => (
-  <FieldSwitch
-    label="Example Switch"
-    name="exampleSwitch"
-    helperText="This is an example switch"
-    defaultValue={false}
-    onCheckedChange={action('onChange')}
-    onPress={action('onPress')}
-  />
-);
+export const main = (args) => <FieldSwitch onCheckedChange={action('onCheckedChange')} {...args} />;
+const mainArgs: FieldSwitchProps<any, any> = {
+  asyncAlways: true,
+  asyncDebounceMs: 500,
+  defaultValue: false,
+  mode: 'array',
+};
+main.args = mainArgs;
 
 export const form = () => {
   const form = useForm({

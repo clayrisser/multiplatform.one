@@ -20,6 +20,7 @@
  */
 
 import React from 'react';
+import type { FieldProgressProps } from './FieldProgress';
 import { Button, YStack } from 'tamagui';
 import { FieldProgress } from './FieldProgress';
 import { action } from '@storybook/addon-actions';
@@ -35,14 +36,19 @@ export default {
   },
 };
 
-export const vertical = (args) => <FieldProgress value={80} size={3} width={20} vertical name="progress" {...args} />;
-
-export const horizontal = (args) => <FieldProgress value={80} size={3} width={20} name="progress" {...args} />;
-
+export const main = (args) => <FieldProgress onProgressChange={action('onProgressChange')} {...args} />;
+const mainArgs: FieldProgressProps = {
+  label: 'john',
+  error: undefined,
+  helperText: 'please check this progress',
+  size: '$2',
+};
+main.args = mainArgs;
 export const form = () => {
   const form = useForm({
     defaultValues: {
-      progress: 50,
+      foo: false,
+      bar: true,
     },
     onSubmit: async ({ value }) => {
       action('onSubmit')(value);
@@ -50,7 +56,6 @@ export const form = () => {
   });
   return (
     <YStack>
-      <FieldProgress form={form} value={50} name="progress" label="progress" />
       <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>
   );

@@ -25,6 +25,7 @@ import { Button, Input, Dialog, YStack } from 'tamagui';
 import { SimpleDialog } from './index';
 import { action } from '@storybook/addon-actions';
 import { Text } from 'tamagui';
+import type { SimpleDialogProps } from './index';
 
 const meta: Meta = {
   title: 'panels/SimpleDialog',
@@ -32,12 +33,13 @@ const meta: Meta = {
   parameters: { status: { type: 'beta' } },
 };
 
-export const main = () => (
+export const main = (args) => (
   <SimpleDialog
     onOpenChange={action('onOpenChange')}
     trigger={<Button>Press Me</Button>}
     title="Fill the details"
     withoutCloseButton
+    {...args}
   >
     <Input placeholder="Enter your first name" />
     <Input placeholder="Enter your last name" />
@@ -46,6 +48,12 @@ export const main = () => (
     </Dialog.Close>
   </SimpleDialog>
 );
+const mainArgs: SimpleDialogProps = {
+  title: 'Simple Dialog Example',
+  description: 'This is a simple dialog example.',
+  withoutCloseButton: false,
+};
+main.args = mainArgs;
 
 function OpenWithFunction() {
   const [open, setOpen] = useState(false);
@@ -72,7 +80,7 @@ function OpenWithFunction() {
     </YStack>
   );
 }
-export const openWithFunction = () => <OpenWithFunction />;
+export const openWithFunction = (args) => <OpenWithFunction {...args} />;
 
 export default meta;
 

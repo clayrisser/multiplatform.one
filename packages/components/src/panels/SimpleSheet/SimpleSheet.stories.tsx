@@ -23,11 +23,25 @@ import React from 'react';
 import { SimpleSheet } from './index';
 import type { Meta } from '@storybook/react';
 import { YStack, Button } from 'tamagui';
+import type { SimpleSheetProps } from './index';
+import { action } from '@storybook/addon-actions';
 
 const meta: Meta = {
   title: 'panels/SimpleSheet',
   component: SimpleSheet,
   parameters: { status: { type: 'beta' } },
+};
+export const main = (args) => <SimpleSheet onSheetChange={action('onSheetChange')} {...args} />;
+const mainArgs: SimpleSheetProps = {
+  forceRemoveScrollEnabled: true,
+  modal: true,
+  open: true,
+  onOpenChange: () => {},
+  snapPoints: [0, 100],
+  dismissOnSnapToBottom: true,
+  position: 0,
+  onPositionChange: () => {},
+  zIndex: 100_000,
 };
 
 function Sheet() {
@@ -43,5 +57,5 @@ function Sheet() {
   );
 }
 
-export const main = () => <Sheet />;
+// export const main = () => <Sheet />;
 export default meta;

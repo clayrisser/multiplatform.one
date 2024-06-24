@@ -45,6 +45,7 @@ import { Button, YStack } from 'tamagui';
 import { FieldSlider } from './FieldSlider';
 import { action } from '@storybook/addon-actions';
 import { useForm } from '@tanstack/react-form';
+import type { FieldSliderProps } from './FieldSlider';
 
 export default {
   title: 'forms/FieldSlider',
@@ -54,13 +55,20 @@ export default {
   },
 };
 
-export const main = () => <FieldSlider onValueChange={action(`onValueChange`)} />;
+export const main = (args) => <FieldSlider onValueChange={action(`onValueChange`)} {...args} />;
+const mainArgs: FieldSliderProps = {
+  label: 'film',
+  error: undefined,
+  helperText: 'please check this slider',
+  value: undefined,
+};
+main.args = mainArgs;
 
 export const form = () => {
   const form = useForm({
     defaultValues: {
-      firstName: '',
-      isChecked: false,
+      none: false,
+      auto: true,
       slider: [],
     },
     onSubmit: async ({ value }) => {
@@ -69,7 +77,8 @@ export const form = () => {
   });
   return (
     <YStack gap>
-      <FieldSlider form={form} name="slider" label="slider" />
+      <FieldSlider form={form} name="none" label="slider" />
+      <FieldSlider form={form} name="auto" label="slider" />
       <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>
   );

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import type { AnyVariables } from '@urql/core';
+import type { AnyVariables } from '../types';
 import type { DocumentInput, OperationContext } from 'urql';
 import type { QueryKey, UseMutationResult, DefaultError, UseMutationOptions, QueryClient } from '@tanstack/react-query';
 import { useKeycloak } from '@multiplatform.one/keycloak';

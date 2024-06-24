@@ -75,6 +75,7 @@ commonjs
 compat
 consolas
 constructable
+cookiecutter
 corejs
 coreutils
 cors
@@ -232,6 +233,7 @@ minurl
 miw
 mjs
 mkchain
+mkdtemp
 mkpm
 modularize
 modulz
@@ -387,11 +389,13 @@ textgroup
 thead
 themeable
 tldr
+tmpdir
 todos
 toggler
 toolbars
 toolshown
 tooltip
+toplevel
 tos
 totp
 transpile

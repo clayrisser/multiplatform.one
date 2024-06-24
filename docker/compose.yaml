@@ -47,22 +47,20 @@ services:
   keycloak:
     container_name: keycloak
     restart: unless-stopped
-    image: registry.gitlab.com/bitspur/multiplatform.one/multiplatform.one/keycloak
-    platform: linux/amd64
-    security_opt:
-      - seccomp=unconfined
+    image: ${REGISTRY}/keycloak
+    # image: registry.gitlab.com/bitspur/rock8s/images/keycloak:25.0.1
+    platform: linux/arm64
     ports:
       - 8080:8080
     volumes:
-      - ../platforms/keycloak/docker/realm-export.json:/tmp/realm-export.json:ro
+      - ../platforms/keycloak/docker/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
     command:
       - start
+      - --import-realm
       - --optimized
     environment:
       KC_DB_URL_DATABASE: postgres
       KC_DB_URL_HOST: postgres-keycloak
-      KC_HEALTH_ENABLED: 'true'
-      KC_METRICS_ENABLED: 'true'
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: P@ssw0rd
     depends_on:

@@ -20,6 +20,8 @@
  */
 
 const cracoBabelLoader = require('craco-babel-loader');
+const publicConfig = require('app/config/public');
+const webpack = require('webpack');
 const { lookupTranspileModules, lookupTamaguiModules } = require('@multiplatform.one/utils/transpileModules');
 
 module.exports = {
@@ -54,6 +56,12 @@ module.exports = {
             ...(config.resolve?.fallback || {}),
           },
         },
+        plugins: [
+          ...(config.plugins || []),
+          new webpack.EnvironmentPlugin({
+            ...publicConfig,
+          }),
+        ],
         module: {
           ...config.module,
           rules: [

@@ -33,7 +33,7 @@ export default {
 };
 
 export const main = (args) => <FieldCheckbox onCheckedChange={action('onCheckedChange')} {...args} />;
-const mainArgs: FieldCheckboxProps<any, any> = {
+const mainArgs: FieldCheckboxProps = {
   label: 'Hello',
   error: undefined,
   helperText: 'please check this box',

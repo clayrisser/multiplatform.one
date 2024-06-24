@@ -22,5 +22,5 @@
  */
 
 if (typeof require !== 'undefined' && require.main === module) {
-  require('../lib/bin/waitForPostgres.js');
+  require('@multiplatform.one/prisma-scripts/lib/bin/waitForPostgres.js');
 }
