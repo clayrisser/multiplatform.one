@@ -18,10 +18,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+import React, { useMemo } from 'react';
 import type { AnyVariables } from '../types';
 import type { QueryKey } from '@tanstack/react-query';
-import type { UseSubscriptionArgs, SubscriptionHandler } from 'urql';
+import type { UseSubscriptionArgs, SubscriptionHandler, UseSubscriptionState } from 'urql';
 import { useEffect } from 'react';
 import { useKeycloak } from '@multiplatform.one/keycloak';
 import { useQueryClient } from '@tanstack/react-query';
@@ -51,26 +51,32 @@ export function useGqlSubscription<
 >(
   options: UseGqlSubscriptionOptions<TData, TVariables, TQueryKey>,
   handler?: SubscriptionHandler<TData, TResult>,
-): TResult {
+): UseSubscriptionState<TResult, TVariables> {
   const keycloak = useKeycloak();
   const queryClient = useQueryClient();
+
   const [response] = useSubscription<TData, TResult, TVariables>(
     {
       pause: !(typeof options?.enabled !== 'undefined'
         ? options.enabled
         : !!(keycloak?.authenticated && keycloak.token)),
-      context: {
-        ...options.context,
-        fetchOptions: {
-          ...options.context?.fetchOptions,
-          headers: {
+      context: useMemo(
+        () => ({
+          ...options.context,
+          fetchOptions: {
             ...(typeof options.context?.fetchOptions === 'function'
-              ? options.context?.fetchOptions()?.headers
-              : options.context?.fetchOptions?.headers),
-            authorization: `Bearer ${keycloak?.token}`,
+              ? options.context.fetchOptions()
+              : options.context?.fetchOptions),
+            headers: {
+              ...(typeof options.context?.fetchOptions === 'function'
+                ? options.context.fetchOptions()?.headers
+                : options.context?.fetchOptions?.headers),
+              authorization: `Bearer ${keycloak?.token}`,
+            },
           },
-        },
-      },
+        }),
+        [keycloak?.token, options.context],
+      ),
       query: options.query,
       variables: options.variables as TVariables,
     },
@@ -90,7 +96,7 @@ export function useGqlSubscription<
       );
     }
   }, [response]);
+
   if (response.error) throw response.error;
-  if (typeof response.data === 'undefined') throw new Error('no data returned from subscription');
-  return response.data;
+  return response;
 }
