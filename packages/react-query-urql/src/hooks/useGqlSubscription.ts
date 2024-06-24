@@ -85,9 +85,15 @@ export function useGqlSubscription<
 
   useEffect(() => {
     if (options.queryKey) {
-      queryClient.setQueryData(options.queryKey, response.data as any, {
-        updatedAt: options.updatedAt,
-      });
+      queryClient.setQueryData(
+        options.queryKey,
+        response.data as
+          | NoInfer<TQueryKey extends DataTag<unknown, infer TaggedValue> ? TaggedValue : TData>
+          | undefined,
+        {
+          updatedAt: options.updatedAt,
+        },
+      );
     }
   }, [response]);
 
