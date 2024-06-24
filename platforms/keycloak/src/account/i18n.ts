@@ -1,5 +1,5 @@
 /*
- * File: /src/keycloak-theme/account/i18n.ts
+ * File: /src/account/i18n.ts
  * Project: @platform/keycloak
  * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser
