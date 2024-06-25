@@ -24,6 +24,15 @@ import { createRoot } from 'react-dom/client';
 import { kcContext as kcAccountThemeContext } from './account/kcContext';
 import { kcContext as kcLoginThemeContext } from './login/kcContext';
 
+declare global {
+  interface Window {
+    process: any;
+  }
+}
+
+if (!window.process) window.process = {};
+if (!window.process.env) window.process.env = {};
+
 const KcAccountThemeApp = lazy(() => import('./account/KcApp'));
 const KcLoginThemeApp = lazy(() => import('./login/KcApp'));
 

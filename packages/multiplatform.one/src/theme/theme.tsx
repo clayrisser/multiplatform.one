@@ -122,16 +122,19 @@ export function ThemeProvider({ children, cookies: nextCookies, theme }: ThemePr
     setTheme({ root, sub });
   }, [defaultThemeValue.root, defaultThemeValue.sub]);
 
-  return (
-    <ThemeContext.Provider value={value}>
-      <NextThemeProvider
-        onChangeTheme={(root: TamaguiColorScheme) => {
-          setRootTheme(root);
-        }}
-        forcedTheme={root && root !== 'system' ? root : undefined}
-      >
-        {children}
-      </NextThemeProvider>
-    </ThemeContext.Provider>
-  );
+  if (MultiPlatform.isNext) {
+    return (
+      <ThemeContext.Provider value={value}>
+        <NextThemeProvider
+          onChangeTheme={(root: TamaguiColorScheme) => {
+            setRootTheme(root);
+          }}
+          forcedTheme={root && root !== 'system' ? root : undefined}
+        >
+          {children}
+        </NextThemeProvider>
+      </ThemeContext.Provider>
+    );
+  }
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }

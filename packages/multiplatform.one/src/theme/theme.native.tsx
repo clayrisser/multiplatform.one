@@ -75,7 +75,6 @@ export function ThemeProvider({ children, theme }: ThemeProviderProps) {
     }),
     [theme?.root, theme?.sub],
   );
-  // const [, setRootTheme] = useRootTheme();
   const [, setTheme] = useTheme();
   const themeState = useThemeState();
   const root = themeState.root || defaultThemeValue.root;
