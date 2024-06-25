@@ -22,6 +22,7 @@
 import React from 'react';
 import { SimpleTabs, TabsList, TabsContent } from './index';
 import { H5, SizableText, Tabs, Separator, YStack, Switch, XStack, Text } from 'tamagui';
+import { SimpleTabsProps } from './index';
 
 export default {
   title: 'organize/SimpleTabs',
@@ -33,13 +34,17 @@ export default {
   },
 };
 
-const Main = () => {
-  const [orientation, setOrientation] = React.useState<'horizontal' | 'vertical'>('horizontal');
+export const Main = (args: SimpleTabsProps) => {
+  const [orientation, setOrientation] = React.useState(args.orientation === 'horizontal');
   const [isHorizontal, setIsHorizontal] = React.useState(true);
 
   React.useEffect(() => {
-    setOrientation(isHorizontal ? 'horizontal' : 'vertical');
-  }, [isHorizontal]);
+    if (args.orientation === 'horizontal') {
+      setOrientation(true);
+    } else {
+      setOrientation(false);
+    }
+  }, [args.orientation]);
 
   return (
     <YStack gap padding="$4">
@@ -47,10 +52,10 @@ const Main = () => {
         <Switch size="$3" checked={isHorizontal} onCheckedChange={setIsHorizontal}>
           <Switch.Thumb animation="bouncy" />
         </Switch>
-        <Text>{orientation}</Text>
+        <Text>{orientation ? 'Horizontal' : 'Vertical'}</Text>
       </XStack>
-      <SimpleTabs orientation={orientation} defaultValue="home">
-        <TabsList justifyContent="space-between" orientation={orientation}>
+      <SimpleTabs orientation={orientation ? 'horizontal' : 'vertical'} defaultValue="home">
+        <TabsList justifyContent="space-between" orientation={orientation ? 'horizontal' : 'vertical'}>
           <Tabs.Tab value="home" flex={1}>
             <SizableText textAlign="center">Home</SizableText>
           </Tabs.Tab>
@@ -61,7 +66,7 @@ const Main = () => {
             <SizableText textAlign="center">Contact</SizableText>
           </Tabs.Tab>
         </TabsList>
-        <Separator vertical={orientation === 'vertical'} />
+        <Separator vertical={!orientation} />
         <TabsContent value="home">
           <H5>Home</H5>
         </TabsContent>
@@ -76,4 +81,11 @@ const Main = () => {
   );
 };
 
-export const main = () => <Main />;
+export const main = (args) => {
+  return <Main {...args} />;
+};
+
+const mainArgs = {
+  orientation: 'horizontal',
+};
+main.args = mainArgs;
