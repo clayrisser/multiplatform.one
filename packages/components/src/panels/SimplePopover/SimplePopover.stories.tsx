@@ -21,16 +21,21 @@
 
 import React, { useState } from 'react';
 import { SimplePopover } from './index';
-import { Text, YStack, XStack, Switch, Label, Button } from 'tamagui';
-import type { Meta } from '@storybook/react';
+import { Text, YStack, XStack, Switch, Label, Button, Input, Popover } from 'tamagui';
+import type { SimplePopoverProps } from './index';
 
-const meta: Meta = {
+export default {
   title: 'panels/SimplePopover',
   component: SimplePopover,
   parameters: { status: { type: 'beta' } },
 };
+export const Main = (args) => (
+  <SimplePopover trigger={<Button>Click here to get a Popover</Button>} title="Popover content" {...args}>
+    <Text>Popover content</Text>
+  </SimplePopover>
+);
 
-function Hoverable() {
+function Hoverable(args) {
   const [hoverable, setHoverable] = useState(true);
   return (
     <YStack>
@@ -40,7 +45,7 @@ function Hoverable() {
           <Switch.Thumb animation="bouncy" />
         </Switch>
       </XStack>
-      <SimplePopover hoverable={hoverable} trigger={<Button>Click here to get a Popover</Button>}>
+      <SimplePopover hoverable={hoverable} trigger={<Button>Click here to get a Popover</Button>} {...args}>
         <YStack>
           <Text>popover content</Text>
         </YStack>
@@ -49,6 +54,13 @@ function Hoverable() {
   );
 }
 
-export const main = () => <Hoverable />;
+export const hoverable = (args) => <Hoverable {...args} />;
 
-export default meta;
+const mainArgs: Partial<SimplePopoverProps> = {
+  open: false,
+  arrow: true,
+  size: 'medium',
+  placement: 'bottom',
+  defaultOpen: false,
+  hoverable: true,
+};
