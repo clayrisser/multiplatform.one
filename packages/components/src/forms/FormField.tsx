@@ -37,7 +37,7 @@ export interface FormFieldProps<
   field?: FieldApi<TParentData, TName, TFieldValidator, TFormValidator, TData>;
   helperText?: string;
   id?: string;
-  label?: string;
+  label?: ReactNode;
   labelProps?: Omit<LabelProps, 'htmlFor' | 'ref'>;
   required?: boolean;
   size?: SizeTokens;

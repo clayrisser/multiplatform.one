@@ -11,6 +11,8 @@
     "ms-azuretools.vscode-docker",
     "prisma.prisma",
     "psioniq.psi-header",
-    "streetsidesoftware.code-spell-checker"
+    "streetsidesoftware.code-spell-checker",
+    "yoavbls.pretty-ts-errors",
+    "wmanth.jar-viewer"
   ]
 }
