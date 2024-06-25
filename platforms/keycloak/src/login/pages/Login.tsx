@@ -50,6 +50,10 @@ export default function Login({
     formElement.submit();
   });
   const [showPassword, setShowPassword] = useState(false);
+  function handlePassword(e) {
+    e.preventDefault();
+    setShowPassword(!showPassword);
+  }
   const form = useForm({
     defaultValues: {
       userName: '',
@@ -114,7 +118,31 @@ export default function Login({
                       autoFocus: true,
                     }}
                   />
-                  <YStack ai="flex-end">
+
+                  {showPassword ? (
+                    <Button
+                      unstyled
+                      marginTop="$8"
+                      position="absolute"
+                      right="$-6"
+                      cursor="pointer"
+                      onPress={handlePassword}
+                      iconAfter={EyeOff}
+                      size="$8"
+                    ></Button>
+                  ) : (
+                    <Button
+                      unstyled
+                      marginTop="$8"
+                      position="absolute"
+                      right="$-6"
+                      cursor="pointer"
+                      onPress={handlePassword}
+                      iconAfter={Eye}
+                      size="$8"
+                    ></Button>
+                  )}
+                  {/* <YStack ai="flex-end">
                     <Text
                       marginVertical="$2"
                       cursor="pointer"
@@ -123,7 +151,7 @@ export default function Login({
                     >
                       {showPassword ? 'hide' : 'show'}
                     </Text>
-                  </YStack>
+                  </YStack> */}
                 </YStack>
                 <XStack ai="center" jc="space-between">
                   <YStack id="kc-form-options">
