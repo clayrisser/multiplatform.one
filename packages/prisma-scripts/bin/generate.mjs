@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /*
- * File: /bin/waitForPostgres.js
+ * File: /bin/generate.js
  * Project: @multiplatform.one/prisma-scripts
  * File Created: 04-04-2024 15:50:39
  * Author: Clay Risser
@@ -21,6 +21,4 @@
  * limitations under the License.
  */
 
-if (typeof require !== 'undefined' && require.main === module) {
-  require('@multiplatform.one/prisma-scripts/lib/bin/waitForPostgres.js');
-}
+import '@multiplatform.one/prisma-scripts/bin/generate';
