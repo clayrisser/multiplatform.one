@@ -22,9 +22,9 @@
 import React, { useState } from 'react';
 import { SimplePopover } from './index';
 import { Text, YStack, XStack, Switch, Label, Button } from 'tamagui';
-import type { Meta } from '@storybook/react';
+import type { SimplePopoverProps } from './index';
 
-const meta: Meta = {
+export default {
   title: 'panels/SimplePopover',
   component: SimplePopover,
   parameters: { status: { type: 'beta' } },
@@ -49,6 +49,27 @@ function Hoverable() {
   );
 }
 
-export const main = () => <Hoverable />;
+export const main = (args) => {
+  return (
+    <Hoverable
+      onPopoverChange={() => {}}
+      trigger={
+        <SimplePopover trigger={<Button>Click Here</Button>}>
+          <Button>Click here to get a Popover</Button>
+        </SimplePopover>
+      }
+      title="Popover content"
+      {...args}
+    />
+  );
+};
 
-export default meta;
+const mainArgs: Partial<SimplePopoverProps> = {
+  open: false,
+  arrow: true,
+  size: 'medium',
+  placement: 'bottom',
+  defaultOpen: false,
+  hoverable: true,
+};
+main.args = mainArgs;
