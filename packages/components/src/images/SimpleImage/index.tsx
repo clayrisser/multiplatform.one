@@ -30,7 +30,7 @@ import { Stack, createComponent } from 'tamagui';
 import { StyleSheet } from 'react-native';
 import { useAssets } from '../../hooks/useAssets';
 
-type Props = Omit<SolitoImageProps, 'height' | 'width' | 'src' | 'fill' | 'style' | 'alt'> &
+export type Props = Omit<SolitoImageProps, 'height' | 'width' | 'src' | 'fill' | 'style' | 'alt'> &
   Omit<StackProps, 'height' | 'width'> & {
     alt?: string;
     height?: number | string;

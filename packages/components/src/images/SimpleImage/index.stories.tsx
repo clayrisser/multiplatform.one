@@ -21,7 +21,7 @@
 
 import React from 'react';
 import { useAssets } from '../../hooks';
-import { SimpleImage } from './index';
+import { Props, SimpleImage } from './index';
 import { YStack } from 'tamagui';
 
 export default {
@@ -75,27 +75,45 @@ export default {
 // }
 // export const withRequire = () => <WithRequire />;
 
-export const withYStack = () => (
+export const withYStack = (args: Props) => (
   <YStack>
-    <YStack width="50%" height={200} backgroundColor="red" />
-    <YStack width="50%" height={200} backgroundColor="blue" />
+    <YStack {...args} />
+    <YStack {...args} backgroundColor="blue" />
     <SimpleImage
       backgroundColor="green"
       height={200}
       resizeMode="stretch"
       src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Inukshuk_Park_05.jpg/500px-Inukshuk_Park_05.jpg"
       width="50%"
+      {...args}
     />
   </YStack>
 );
 
-export const withTamagui = () => (
+withYStack.args = {
+  height: 200,
+  width: '50%',
+  backgroundColor: 'green',
+  // loader: 'ImageLoader',
+  loading: 'lazy',
+};
+
+export const withTamagui = (args: Props) => (
   <YStack>
     <SimpleImage
       backgroundColor="$green9"
       height="$19"
       src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Inukshuk_Park_05.jpg/500px-Inukshuk_Park_05.jpg"
       width="100%"
+      {...args}
     />
   </YStack>
 );
+
+withTamagui.args = {
+  height: '$20',
+  width: '100%',
+  backgroundColor: '$red8',
+  // loader: 'ImageLoader',
+  loading: 'lazy',
+};
