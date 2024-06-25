@@ -31,6 +31,7 @@ import { useConstCallback } from 'keycloakify/tools/useConstCallback';
 import { useForm } from '@tanstack/react-form';
 import { Eye, EyeOff } from '@tamagui/lucide-icons';
 import { useState } from 'react';
+import type { GestureResponderEvent } from 'react-native';
 
 export default function Login({
   kcContext,
@@ -50,7 +51,7 @@ export default function Login({
     formElement.submit();
   });
   const [showPassword, setShowPassword] = useState(false);
-  function handlePassword(e) {
+  function handlePassword(e: GestureResponderEvent) {
     e.preventDefault();
     setShowPassword(!showPassword);
   }
@@ -74,7 +75,6 @@ export default function Login({
         <XStack als="center" marginVertical="$5" id="kc-registration">
           <Text>
             {msg('noAccount')}
-            {'  '}
             <Anchor fontSize={12} tabIndex={6} href={url.registrationUrl}>
               {msg('doRegister')}
             </Anchor>
@@ -119,39 +119,17 @@ export default function Login({
                     }}
                   />
 
-                  {showPassword ? (
-                    <Button
-                      unstyled
-                      marginTop="$8"
-                      position="absolute"
-                      right="$-6"
-                      cursor="pointer"
-                      onPress={handlePassword}
-                      iconAfter={EyeOff}
-                      size="$8"
-                    ></Button>
-                  ) : (
-                    <Button
-                      unstyled
-                      marginTop="$8"
-                      position="absolute"
-                      right="$-6"
-                      cursor="pointer"
-                      onPress={handlePassword}
-                      iconAfter={Eye}
-                      size="$8"
-                    ></Button>
-                  )}
-                  {/* <YStack ai="flex-end">
-                    <Text
-                      marginVertical="$2"
-                      cursor="pointer"
-                      onPress={() => setShowPassword(!showPassword)}
-                      textAlign="right"
-                    >
-                      {showPassword ? 'hide' : 'show'}
-                    </Text>
-                  </YStack> */}
+                  <Button
+                    unstyled
+                    position="absolute"
+                    cursor="pointer"
+                    onPress={handlePassword}
+                    padding="$2"
+                    als="flex-end"
+                    bottom={0}
+                  >
+                    {showPassword ? <EyeOff size="$2" /> : <Eye size="$2" />}
+                  </Button>
                 </YStack>
                 <XStack ai="center" jc="space-between">
                   <YStack id="kc-form-options">
