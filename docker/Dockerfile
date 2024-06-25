@@ -63,8 +63,6 @@ RUN mkdir -p /opt/app/api && \
     mv /tmp/app/platforms/next/next.config.js /opt/app/platforms/next/next.config.js && \
     mv /tmp/app/platforms/next/node_modules /opt/app/platforms/next/node_modules && \
     mv /tmp/app/platforms/next/package.json /opt/app/platforms/next/package.json && \
-    mv /tmp/app/platforms/next/tamaguiModules.js /opt/app/platforms/next/tamaguiModules.js && \
-    mv /tmp/app/platforms/next/transpileModules.js /opt/app/platforms/next/transpileModules.js && \
     for p in $(ls /tmp/app/packages); do \
     mkdir -p /opt/app/packages/$p && \
     if [ -d /tmp/app/packages/$p/dist ]; then mv /tmp/app/packages/$p/dist /opt/app/packages/$p/dist; fi; \

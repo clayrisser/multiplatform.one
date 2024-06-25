@@ -1,3 +1,24 @@
+/**
+ * File: /screens/home/index.tsx
+ * Project: app
+ * File Created: 24-06-2024 12:03:41
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React, { useState } from 'react';
 import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
@@ -11,24 +32,13 @@ import { withDefaultLayout } from 'app/layouts/Default';
 
 const AuthQuery = gql(`
   query AuthQuery {
-    accessToken
     username
-    userId
   }
 `);
 
 const CountSubscription = gql(`
-  subscription CountSubscription {
+  subscription countSubscription{
     count
-  }
-`);
-
-const GetUser = gql(`
-  query GetUser($id:String!){
-    user(where:{id: $id}){
-      name
-
-    }
   }
 `);
 
@@ -37,19 +47,15 @@ function HomeScreen() {
   const linkProps = useLink({
     href: '/user/alice',
   });
-  const { data, isLoading } = useGqlQuery({ query: AuthQuery, queryKey: ['hello'], variables: {} });
+  const { data, isLoading } = useGqlQuery({ query: AuthQuery, queryKey: ['userAuth'], variables: {} });
 
-  const countData = useGqlSubscription({ query: CountSubscription, queryKey: ['count'] });
+  const countResponse = useGqlSubscription({ query: CountSubscription, queryKey: ['count'] });
 
   return (
     <YStack f={1} jc="center" ai="center" p="$4">
-      <Text>{JSON.stringify(countData, null, 2)}</Text>
+      {countResponse.isFetching ? <Spinner /> : <Text>{countResponse?.data?.count}</Text>}
       {isLoading ? <Spinner /> : <Text>username: {data?.username}</Text>}
-      <Button>Update name</Button>
-      <YStack
-        // gap="$4"
-        maw={600}
-      >
+      <YStack gap="$4" maw={600}>
         <H1 ta="center">{t('screens.home.welcome')}</H1>
         <Paragraph fontFamily="$silkscreen" ta="center">
           {t('screens.home.message')}
