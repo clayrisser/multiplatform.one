@@ -24,7 +24,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons';
 import type { IconProps } from '@tamagui/helpers-icon';
 
-type CarouselProps = YStackProps & {
+export type CarouselProps = YStackProps & {
   children: React.ReactNode;
   speed?: number;
   showCenterIndicator?: boolean;
