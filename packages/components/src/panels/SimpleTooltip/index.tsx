@@ -23,7 +23,7 @@ import React from 'react';
 import type { TooltipProps, ThemeProps, PopoverContentProps, PopoverTriggerProps, PopoverArrowProps } from 'tamagui';
 import { Theme, Tooltip } from 'tamagui';
 
-type SimpleToolTipProps = TooltipProps & {
+export type SimpleToolTipProps = TooltipProps & {
   trigger: React.ReactNode;
   themeStyle?: ThemeProps;
   contentStyle?: PopoverContentProps;
