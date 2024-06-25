@@ -25,10 +25,10 @@ import type { GlobalTamaguiProviderProps } from './tamagui';
 import type { PropsWithChildren } from 'react';
 import type { TamaguiInternalConfig } from 'ui';
 import type { ThemeProviderProps } from 'multiplatform.one/theme';
-import { GlobalUrqlProvider } from './urql';
 import { GlobalKeycloakProvider } from './keycloak';
 import { GlobalTamaguiProvider } from './tamagui';
 import { GlobalTanstackProvider } from './tanstack';
+import { GlobalUrqlProvider } from './urql';
 import { ThemeProvider } from 'multiplatform.one/theme';
 import { config } from 'app/config';
 
