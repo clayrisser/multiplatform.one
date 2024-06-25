@@ -21,7 +21,7 @@
 
 import React, { useState } from 'react';
 import { SimplePopover } from './index';
-import { Text, YStack, XStack, Switch, Label, Button } from 'tamagui';
+import { Text, YStack, XStack, Switch, Label, Button, Input, Popover } from 'tamagui';
 import type { SimplePopoverProps } from './index';
 
 export default {
@@ -29,18 +29,17 @@ export default {
   component: SimplePopover,
   parameters: { status: { type: 'beta' } },
 };
+export const main = (args) => (
+  <SimplePopover trigger={<Button>Click here to get a Popover</Button>} title="Popover content" {...args}>
+    <Text>Popover content</Text>
+  </SimplePopover>
+);
 
-function Hoverable() {
+function Hoverable(args) {
   const [hoverable, setHoverable] = useState(true);
   return (
     <YStack>
-      <XStack gap padding="$4" alignItems="center">
-        <Label>Hoverable</Label>
-        <Switch size="$3" checked={hoverable} onCheckedChange={setHoverable}>
-          <Switch.Thumb animation="bouncy" />
-        </Switch>
-      </XStack>
-      <SimplePopover hoverable={hoverable} trigger={<Button>Click here to get a Popover</Button>}>
+      <SimplePopover hoverable={hoverable} trigger={<Button>Click here to get a Popover</Button>} {...args}>
         <YStack>
           <Text>popover content</Text>
         </YStack>
@@ -49,23 +48,4 @@ function Hoverable() {
   );
 }
 
-export const main = (args) => {
-  return (
-    <Hoverable
-      onPopoverChange={() => {}}
-      trigger={<Button>Click here to get a Popover</Button>}
-      title="Popover content"
-      {...args}
-    />
-  );
-};
-
-const mainArgs: Partial<SimplePopoverProps> = {
-  open: false,
-  arrow: true,
-  size: 'medium',
-  placement: 'bottom',
-  defaultOpen: false,
-  hoverable: true,
-};
-main.args = mainArgs;
+export const hoverable = (args) => <Hoverable {...args} />;
