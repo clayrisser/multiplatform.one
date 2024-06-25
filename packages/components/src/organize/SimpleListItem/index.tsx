@@ -23,8 +23,8 @@ import type { ListItemProps, YStackProps } from 'tamagui';
 import { YGroup, ListItem, XGroup } from 'tamagui';
 import React, { useMemo } from 'react';
 
-type SimpleListProps = YStackProps & { orientation?: 'horizontal' | 'vertical'; bg?: any };
-type SimpleListItemProps = ListItemProps & {};
+export type SimpleListProps = YStackProps & { orientation?: 'horizontal' | 'vertical'; bg?: any };
+export type SimpleListItemProps = ListItemProps & {};
 
 const ListContext = React.createContext<SimpleListProps | null>(null);
 

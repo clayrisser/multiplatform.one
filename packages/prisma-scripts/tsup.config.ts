@@ -29,7 +29,7 @@ export default defineConfig({
   entry: ['src/**/*.ts?(x)'],
   entryPoints: ['src/index.ts'],
   external: ['@prisma/client'],
-  format: ['cjs'],
+  format: ['esm'],
   minify: false,
   noExternal: transpileModules,
   outDir: 'lib',

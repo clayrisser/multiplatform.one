@@ -20,7 +20,7 @@
  */
 
 import React from 'react';
-import { SimpleTooltip } from './index';
+import { SimpleToolTipProps, SimpleTooltip } from './index';
 import { Button, Label, Switch, Text, XStack, YStack } from 'tamagui';
 import type { Meta } from '@storybook/react';
 
@@ -30,8 +30,12 @@ const meta: Meta = {
   parameters: { status: { type: 'beta' } },
 };
 
-function Tooltip() {
-  const [arrow, setArrow] = React.useState(true);
+function Tooltip(args: SimpleToolTipProps) {
+  const [arrow, setArrow] = React.useState(args.arrow);
+
+  React.useEffect(() => {
+    setArrow(args.arrow);
+  }, [args.arrow]);
   return (
     <YStack gap="$4">
       <XStack gap padding="$4" alignItems="center">
@@ -39,7 +43,7 @@ function Tooltip() {
           <Switch.Thumb animation="bouncy" />
         </Switch>
         <Label>arrow</Label>
-        <SimpleTooltip arrow={arrow} trigger={<Button>?</Button>}>
+        <SimpleTooltip {...args} arrow={arrow} trigger={<Button>?</Button>}>
           <Text>tooltip content</Text>
         </SimpleTooltip>
       </XStack>
@@ -47,5 +51,13 @@ function Tooltip() {
   );
 }
 
-export const main = () => <Tooltip />;
+export const main = (args) => <Tooltip {...args} />;
+main.args = {
+  arrow: true,
+  themeStyle: { background: 'black', color: 'white' },
+  triggerStyle: { background: 'black', color: 'white' },
+  contentStyle: { background: 'black', color: 'white' },
+  arrowStyle: { background: 'black' },
+};
+
 export default meta;

@@ -19,13 +19,17 @@
   },
   "license": "Apache-2.0",
   "author": "BitSpur <support@risserlabs.com> (https://risserlabs.com)",
-  "main": "lib/index.js",
+  "module": "lib/index.mjs",
   "source": "src/index.ts",
-  "types": "lib/index.d.ts",
+  "types": "lib/index.d.mts",
   "exports": {
     ".": {
-      "require": "./lib/index.js",
+      "import": "./lib/index.mjs",
       "types": "./lib/index.d.mts"
+    },
+    "./bin/*": {
+      "import": "./lib/bin/*.mjs",
+      "types": "./lib/bin/*.d.mts"
     },
     "./package.json": "./package.json"
   },
