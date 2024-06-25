@@ -53,11 +53,7 @@ export const main = (args) => {
   return (
     <Hoverable
       onPopoverChange={() => {}}
-      trigger={
-        <SimplePopover trigger={<Button>Click Here</Button>}>
-          <Button>Click here to get a Popover</Button>
-        </SimplePopover>
-      }
+      trigger={<Button>Click here to get a Popover</Button>}
       title="Popover content"
       {...args}
     />
