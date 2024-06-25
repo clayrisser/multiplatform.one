@@ -21,11 +21,10 @@
 
 import React from 'react';
 import { SimpleAlertDialog } from './index';
-import type { Meta } from '@storybook/react';
 import { AlertDialog, Button, XStack, YStack } from 'tamagui';
 import type { AlterDialogSimpleProps } from './index';
 
-const meta: Meta = {
+export default {
   title: 'panels/SimpleAlertDialog',
   component: SimpleAlertDialog,
   parameters: { status: { type: 'beta' } },
@@ -49,13 +48,14 @@ const mainArgs: AlterDialogSimpleProps = {
   accept: 'Delete',
 };
 main.args = mainArgs;
-export const Custom = () => (
+export const Custom = (args) => (
   <SimpleAlertDialog
     title="Are you sure?"
-    description="This action cannot be undone"
     cancel="Cancel"
     accept="Yes, Delete"
     trigger={<Button>Get Alert</Button>}
+    {...mainArgs}
+    {...args}
   >
     <YStack gap width={400}>
       <AlertDialog.Title>Custom Alert</AlertDialog.Title>
@@ -72,7 +72,7 @@ export const Custom = () => (
   </SimpleAlertDialog>
 );
 
-const Open = () => {
+const Open = (args) => {
   const [open, setOpen] = React.useState(true);
   return (
     <YStack>
@@ -83,12 +83,11 @@ const Open = () => {
         accept="Yes, Delete"
         open={open}
         onOpenChange={setOpen}
+        {...args}
       />
       <Button onPress={() => setOpen((prev) => !prev)}>{open ? 'close' : 'open'}</Button>
     </YStack>
   );
 };
 
-export const OpenClose = () => <Open />;
-
-export default meta;
+export const OpenClose = (args) => <Open {...mainArgs} {...args} />;
