@@ -20,10 +20,9 @@
  */
 
 import React from 'react';
-import { SimpleList, SimpleListItem } from './index';
+import { SimpleList, SimpleListItem, SimpleListProps, SimpleListItemProps } from './index';
 import { ChevronRight, Star } from '@tamagui/lucide-icons';
 import { Label, Separator, Switch, XStack, YStack } from 'tamagui';
-
 export default {
   title: 'organize/SimpleListItem',
   component: SimpleList,
@@ -32,8 +31,15 @@ export default {
   },
 };
 
-function Main() {
-  const [orientation, setOrientation] = React.useState(true);
+function Main(args: SimpleListProps & SimpleListItemProps) {
+  const [orientation, setOrientation] = React.useState(args.orientation === 'horizontal');
+  React.useEffect(() => {
+    if (args.orientation === 'horizontal') {
+      setOrientation(true);
+    } else {
+      setOrientation(false);
+    }
+  }, [args.orientation]);
   return (
     <YStack fullscreen>
       <XStack width={200} alignItems="center" gap="$4" alignSelf="flex-start">
@@ -41,11 +47,11 @@ function Main() {
           {orientation ? 'Horizontal' : 'Vertical'}
         </Label>
         <Separator minHeight={20} vertical />
-        <Switch size="$2" defaultChecked={orientation} onCheckedChange={setOrientation}>
+        <Switch size="$2" checked={orientation} onCheckedChange={setOrientation}>
           <Switch.Thumb animation="quick" />
         </Switch>
       </XStack>
-      <SimpleList orientation={orientation ? 'horizontal' : 'vertical'}>
+      <SimpleList orientation={args.orientation}>
         <SimpleListItem title="hello" icon={Star} subTitle="how are you" iconAfter={ChevronRight} width={200} />
         <SimpleListItem title="hello" icon={Star} subTitle="how are you" iconAfter={ChevronRight} width={200} />
         <SimpleListItem title="hello" icon={Star} subTitle="how are you" iconAfter={ChevronRight} width={200} />
@@ -56,4 +62,8 @@ function Main() {
   );
 }
 
-export const main = () => <Main />;
+export const main = (args: SimpleListProps & SimpleListItemProps) => <Main {...args} />;
+
+main.args = {
+  orientation: 'horizontal',
+};

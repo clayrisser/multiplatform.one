@@ -32,16 +32,28 @@ export default {
   },
 };
 
-export const main = () => <Main />;
-function Main() {
+export const main = (args) => <Main {...args} />;
+function Main({ firstName, isChecked, textArea }) {
+  const defaultValues = {
+    firstName: firstName || '',
+    isChecked: isChecked || false,
+    textArea: textArea || '',
+  };
   const form = useForm({
-    onSubmit(data) {
-      action('onSubmit')(data);
+    defaultValues,
+    onSubmit: async ({ value }) => {
+      action('onSubmit')(value);
     },
   });
   return (
-    <SubmitButton form={form} onPress={action('onClick')}>
+    <SubmitButton form={form} onPress={() => action('onClick')(defaultValues)}>
       Click here
     </SubmitButton>
   );
 }
+
+main.args = {
+  firstName: '',
+  isChecked: false,
+  textArea: '',
+};
