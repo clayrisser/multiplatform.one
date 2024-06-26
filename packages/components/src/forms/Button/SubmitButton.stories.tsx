@@ -1,8 +1,8 @@
 /**
  * File: /src/forms/Button/SubmitButton.stories.tsx
  * Project: @multiplatform.one/components
- * File Created: 18-06-2024 18:02:12
- * Author: Clay Risser
+ * File Created: 25-06-2024 16:50:25
+ * Author: Lavanya Katari
  * -----
  * BitSpur (c) Copyright 2021 - 2024
  *
@@ -20,11 +20,12 @@
  */
 
 import React from 'react';
-import { SubmitButton } from './SubmitButton';
+import { SubmitButton, SubmitButtonProps } from './SubmitButton';
 import { action } from '@storybook/addon-actions';
 import { useForm } from '@tanstack/react-form';
+import { Meta } from '@storybook/react';
 
-export default {
+const meta: Meta = {
   title: 'forms/SubmitButton',
   component: SubmitButton,
   parameters: {
@@ -32,28 +33,25 @@ export default {
   },
 };
 
-export const main = (args) => <Main {...args} />;
-function Main({ firstName, isChecked, textArea }) {
-  const defaultValues = {
-    firstName: firstName || '',
-    isChecked: isChecked || false,
-    textArea: textArea || '',
-  };
+export const main = (args) => {
   const form = useForm({
-    defaultValues,
-    onSubmit: async ({ value }) => {
-      action('onSubmit')(value);
+    defaultValues: {
+      firstName: 'Hello',
+      lastName: 'Bob',
+      age: 24,
+      isGraduate: true,
     },
+    // onSubmit: async ({ value }) => {
+    //   action('onSubmit')(value);
+    // },
   });
-  return (
-    <SubmitButton form={form} onPress={() => action('onClick')(defaultValues)}>
-      Click here
-    </SubmitButton>
-  );
-}
-
-main.args = {
-  firstName: '',
-  isChecked: false,
-  textArea: '',
+  return <SubmitButton form={form} {...args} />;
 };
+
+const mainArgs: Partial<SubmitButtonProps> = {
+  children: 'Submit',
+};
+
+main.args = mainArgs;
+
+export default meta;
