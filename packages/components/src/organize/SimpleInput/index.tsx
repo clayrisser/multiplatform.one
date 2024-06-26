@@ -13,28 +13,28 @@ export function SimpleInput({ inputType = 'TEXT', xStackProps, buttonProps, ...p
   const [hideText, setHideText] = React.useState<boolean>(
     props?.secureTextEntry || inputType === 'PASSWORD' ? true : false,
   );
-  const [isValidEmail, seIsValidEmail] = React.useState<boolean>(true);
-
-  const isEmail = inputType === 'EMAIL';
+  const [isValidText, setIsValidText] = React.useState<boolean>(true);
 
   useEffect(() => {
     props.secureTextEntry ? setHideText(true) : setHideText(false);
   }, [props.secureTextEntry]);
 
   const handleInputChange = (text: string) => {
-    if (isEmail) {
+    if (inputType === 'EMAIL') {
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailPattern.test(text)) {
-        seIsValidEmail(false);
+        setIsValidText(false);
         return;
       } else {
-        seIsValidEmail(true);
+        setIsValidText(true);
       }
+    } else {
+      setIsValidText(true);
     }
   };
 
   return (
-    <XStack theme={isValidEmail ? 'system' : 'red'} space="$1" {...xStackProps}>
+    <XStack theme={isValidText ? 'system' : 'red'} space="$1" {...xStackProps}>
       <Input {...props} secureTextEntry={hideText} onChangeText={handleInputChange} />
       {inputType === 'PASSWORD' && (
         <Button onPress={() => setHideText(!hideText)}>
