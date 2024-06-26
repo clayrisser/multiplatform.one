@@ -25,18 +25,18 @@ import { TableCol } from '../TableCol';
 import { TableContext } from '../TableContext';
 import { styled, XStack, ThemeableStack, withStaticProperties } from 'tamagui';
 
-const StyledTableFrame = styled(ThemeableStack, {
+export const StyledTableFrame = styled(ThemeableStack, {
   name: 'Table',
   context: TableContext,
   bordered: true,
   borderRadius: '$4',
-  overflow: 'hidden',
+  overflow: 'scroll' as 'scroll' | 'hidden' | 'visible',
   marginVertical: '$4',
 });
 
 export const TableFrame = ({ heading, children, ...props }) => {
   return (
-    <StyledTableFrame overflow={'scroll' as any} {...props}>
+    <StyledTableFrame overflow={'scroll' as 'scroll' | 'hidden' | 'visible'} {...props}>
       {!!heading && (
         <TableCell size="$4" backgroundColor="$color1" fontWeight="500" color="$color9">
           {heading}
