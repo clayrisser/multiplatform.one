@@ -149,11 +149,11 @@ export default function Login({
                     bottom={0}
                     cursor="pointer"
                     onPress={handlePassword}
-                    padding="$2"
+                    padding="$2.5"
                     position="absolute"
                     tabIndex={-1}
                   >
-                    {showPassword ? <EyeOff size="$2" /> : <Eye size="$2" />}
+                    {showPassword ? <EyeOff size="$1.5" /> : <Eye size="$1.5" />}
                   </YStack>
                 </YStack>
                 <XStack ai="center" jc="space-between">
