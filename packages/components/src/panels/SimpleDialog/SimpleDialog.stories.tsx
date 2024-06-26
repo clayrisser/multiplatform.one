@@ -82,6 +82,8 @@ function OpenWithFunction() {
 }
 export const openWithFunction = (args) => <OpenWithFunction {...args} />;
 
+openWithFunction.args = mainArgs;
+
 export default meta;
 
 export const customPosition = (args) => (
@@ -92,10 +94,14 @@ export const customPosition = (args) => (
     portalStyle={{ jc: 'flex-start', paddingTop: 10 }}
   >
     <YStack width={800} height={400}>
-      <Input placeholder="search" />
+      <Input placeholder={args.search} />
     </YStack>
   </SimpleDialog>
 );
+
+customPosition.args = {
+  search: 'search',
+};
 
 export const rightSideDialog = (args) => (
   <SimpleDialog
@@ -115,6 +121,12 @@ export const rightSideDialog = (args) => (
   </SimpleDialog>
 );
 
+rightSideDialog.args = {
+  asRightSideSheet: true,
+  contentStyle: { animation: 'quick' },
+  transitionWidth: 400,
+};
+
 export const leftSideDialog = (args) => (
   <SimpleDialog
     trigger={<Button>open side dialog</Button>}
@@ -132,3 +144,9 @@ export const leftSideDialog = (args) => (
     </YStack>
   </SimpleDialog>
 );
+
+leftSideDialog.args = {
+  asLeftSideSheet: true,
+  contentStyle: { animation: 'lazy' },
+  transitionWidth: 300,
+};
