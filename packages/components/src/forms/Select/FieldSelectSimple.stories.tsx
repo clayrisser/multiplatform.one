@@ -18,11 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import React from 'react';
 import { FieldSelectSimple } from './FieldSelectSimple';
-import { Select } from 'tamagui';
+import { Select, SelectSimple, SubmitButton, YStack } from 'ui';
 import type { FieldSelectSimpleProps } from './FieldSelectSimple';
+import { useForm } from '@tanstack/react-form';
+import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'forms/FieldSelectSimple',
@@ -33,26 +34,34 @@ export default {
 };
 
 export const main = (args) => {
-  return <FieldSelectSimple {...args}>{args.children}</FieldSelectSimple>;
+  const form = useForm({
+    defaultValues: {
+      car: 'ford',
+    },
+    onSubmit: async ({ value }) => {
+      action('onSubmit')(value);
+    },
+  });
+  return (
+    <YStack>
+      <FieldSelectSimple label="SELECT VEHICLE" name="car" form={form} {...args}>
+        <Select.Item key="bmw" index={0} value="bmw">
+          <Select.ItemText>BMW</Select.ItemText>
+        </Select.Item>
+        <Select.Item key="audi" index={1} value="audi">
+          <Select.ItemText>AUDI</Select.ItemText>
+        </Select.Item>
+        <Select.Item key="ford" index={2} value="ford">
+          <Select.ItemText>FORD</Select.ItemText>
+        </Select.Item>
+        <Select.Item key="suzuki" index={3} value="suzuki">
+          <Select.ItemText>SUZUKI</Select.ItemText>
+        </Select.Item>
+      </FieldSelectSimple>
+      <SubmitButton form={form}> Submit</SubmitButton>
+    </YStack>
+  );
 };
-const mainArgs: FieldSelectSimpleProps = {
-  name: 'FormSelectSimple',
-  placeholder: 'select one of these',
-  defaultValue: 'bmw',
-  value: 'bmw',
-  children: [
-    <Select.Item key="bmw" index={0} value="bmw">
-      <Select.ItemText>BMW</Select.ItemText>
-    </Select.Item>,
-    <Select.Item key="audi" index={1} value="audi">
-      <Select.ItemText>AUDI</Select.ItemText>
-    </Select.Item>,
-    <Select.Item key="ford" index={2} value="ford">
-      <Select.ItemText>FORD</Select.ItemText>
-    </Select.Item>,
-    <Select.Item key="suzuki" index={3} value="suzuki">
-      <Select.ItemText>SUZUKI</Select.ItemText>
-    </Select.Item>,
-  ],
-};
+
+const mainArgs = {};
 main.args = mainArgs;
