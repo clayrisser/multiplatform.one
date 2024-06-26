@@ -49,7 +49,7 @@ export const Main = (args: SimpleTabsProps) => {
   return (
     <YStack gap padding="$4">
       <XStack gap>
-        <Switch size="$3" checked={isHorizontal} onCheckedChange={setIsHorizontal}>
+        <Switch size="$3" checked={orientation} onCheckedChange={setIsHorizontal}>
           <Switch.Thumb animation="bouncy" />
         </Switch>
         <Text>{orientation ? 'Horizontal' : 'Vertical'}</Text>
