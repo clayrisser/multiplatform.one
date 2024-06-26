@@ -23,12 +23,7 @@
 import { createUseI18n } from 'keycloakify/login';
 
 export const { useI18n } = createUseI18n({
-  en: {
-    alphanumericalCharsOnly: 'Only alphanumerical characters',
-    doForgotPassword: 'I forgot my password',
-    gender: 'Gender',
-    invalidUserMessage: 'Invalid username or password. (this message was overwrite in the theme)',
-  },
+  en: {},
 });
 
 export type I18n = NonNullable<ReturnType<typeof useI18n>>;

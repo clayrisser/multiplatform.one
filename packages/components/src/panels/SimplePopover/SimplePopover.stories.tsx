@@ -29,7 +29,7 @@ export default {
   component: SimplePopover,
   parameters: { status: { type: 'beta' } },
 };
-export const Main = (args) => (
+export const main = (args) => (
   <SimplePopover trigger={<Button>Click here to get a Popover</Button>} title="Popover content" {...args}>
     <Text>Popover content</Text>
   </SimplePopover>
@@ -39,12 +39,6 @@ function Hoverable(args) {
   const [hoverable, setHoverable] = useState(true);
   return (
     <YStack>
-      <XStack gap padding="$4" alignItems="center">
-        <Label>Hoverable</Label>
-        <Switch size="$3" checked={hoverable} onCheckedChange={setHoverable}>
-          <Switch.Thumb animation="bouncy" />
-        </Switch>
-      </XStack>
       <SimplePopover hoverable={hoverable} trigger={<Button>Click here to get a Popover</Button>} {...args}>
         <YStack>
           <Text>popover content</Text>
@@ -55,12 +49,3 @@ function Hoverable(args) {
 }
 
 export const hoverable = (args) => <Hoverable {...args} />;
-
-const mainArgs: Partial<SimplePopoverProps> = {
-  open: false,
-  arrow: true,
-  size: 'medium',
-  placement: 'bottom',
-  defaultOpen: false,
-  hoverable: true,
-};
