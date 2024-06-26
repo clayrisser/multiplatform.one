@@ -1,8 +1,8 @@
 import React from 'react';
 import { SimpleInput, SimpleInputProps } from '.';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta } from '@storybook/react';
 
-export default {
+const meta: Meta = {
   title: 'organize/SimpleInput',
   component: SimpleInput,
   parameters: { status: { type: 'beta' } },
@@ -30,3 +30,5 @@ const passwordInputTypeArgs: SimpleInputProps = {
 passwordInputType.args = passwordInputTypeArgs;
 
 main.args = mainArgs;
+
+export default meta;
