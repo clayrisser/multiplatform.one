@@ -25,6 +25,7 @@ export const passwordInputType = (args: SimpleInputProps) => <SimpleInput {...ar
 
 const passwordInputTypeArgs: SimpleInputProps = {
   inputType: 'PASSWORD',
+  secureTextEntry: true,
 };
 
 passwordInputType.args = passwordInputTypeArgs;
