@@ -20,10 +20,9 @@
  */
 
 import React from 'react';
-import { FieldSelectSimple } from './FieldSelectSimple';
-import { Select } from './Select';
+import { FieldSelectSimple } from './index';
+import { Select, YStack } from 'tamagui';
 import { SubmitButton } from '../Button';
-import { YStack } from 'tamagui';
 import { action } from '@storybook/addon-actions';
 import { useForm } from '@tanstack/react-form';
 
