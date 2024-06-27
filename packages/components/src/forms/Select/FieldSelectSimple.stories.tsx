@@ -19,11 +19,12 @@
  * limitations under the License.
  */
 import React from 'react';
-import { FieldSelectSimple } from './FieldSelectSimple';
-import { Select, SelectSimple, SubmitButton, YStack } from 'ui';
-import type { FieldSelectSimpleProps } from './FieldSelectSimple';
+import { FieldSelectSimple } from './index';
+import { Select, YStack } from 'tamagui';
+
 import { useForm } from '@tanstack/react-form';
 import { action } from '@storybook/addon-actions';
+import { SubmitButton } from '../Button';
 
 export default {
   title: 'forms/FieldSelectSimple',
