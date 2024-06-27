@@ -25,8 +25,11 @@ import type { GestureResponderEvent } from 'react-native';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../kcContext';
 import type { PageProps } from 'keycloakify/login/pages/PageProps';
-import { YStack, Button, Anchor, Text, FieldInput } from 'ui';
+import { YStack, Button, Anchor, Text, FieldInput, SubmitButton, FieldCheckbox } from 'ui';
 import { useForm } from '@tanstack/react-form';
+import { Eye, EyeOff } from '@tamagui/lucide-icons';
+import { clsx } from 'keycloakify/tools/clsx';
+import { useState, useRef, useCallback } from 'react';
 
 export interface RegisterForm {
   firstName?: string;
@@ -61,6 +64,14 @@ export default function Register({
     registerRef.current.onSubmit(registerForm);
   }
 
+  const handlePassword = useCallback(
+    (e: GestureResponderEvent) => {
+      e.preventDefault();
+      setShowPassword(!showPassword);
+    },
+    [showPassword],
+  );
+
   return (
     <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg('registerTitle')}>
       <form ref={registerRef} id="kc-register-form" action={url.registrationAction} method="post">
@@ -82,6 +93,19 @@ export default function Register({
                   autoFocus: true,
                 }}
               />
+              <YStack
+                als="flex-end"
+                backgroundColor="transparent"
+                borderWidth={0}
+                top={36}
+                cursor="pointer"
+                onPress={handlePassword}
+                padding="$2.5"
+                position="absolute"
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff size="$1.5" /> : <Eye size="$1.5" />}
+              </YStack>
               <FieldInput
                 label={msg('passwordConfirm') as unknown as string}
                 name="passwordConfirm"
@@ -91,14 +115,27 @@ export default function Register({
                   autoFocus: true,
                 }}
               />
-              <Text
+              <YStack
+                als="flex-end"
+                backgroundColor="transparent"
+                borderWidth={0}
+                top={116}
+                cursor="pointer"
+                onPress={handlePassword}
+                padding="$2.5"
+                position="absolute"
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff size="$1.5" /> : <Eye size="$1.5" />}
+              </YStack>
+              {/* <Text
                 marginVertical="$2"
                 cursor="pointer"
                 onPress={() => setShowPassword(!showPassword)}
                 textAlign="right"
               >
                 {showPassword ? 'hide' : 'show'}
-              </Text>
+              </Text> */}
             </YStack>
           )}
         </YStack>
