@@ -27,11 +27,26 @@ export default {
   title: 'mdx/UL',
   component: UL,
   parameters: { status: { type: 'beta' } },
-  controls: true,
+  controls: {
+    argTypes: {
+      marginVertical: {
+        description: 'Sets the vertical margin of the unordered list',
+        defaultValue: '$1',
+      },
+      marginLeft: {
+        description: 'Sets the left margin of the unordered list',
+        defaultValue: '$4',
+      },
+      marginRight: {
+        description: 'Sets the right margin of the unordered list',
+        defaultValue: '$2',
+      },
+    },
+  },
 };
 
 export const main = (args) => (
-  <UL>
+  <UL {...args}>
     <Text>Hello world</Text>
   </UL>
 );
