@@ -49,20 +49,37 @@ export default function Register({
   const { url, register, realm, passwordRequired, recaptchaRequired, recaptchaSiteKey } = kcContext;
   const { msg } = i18n;
   const [registerForm] = React.useState<RegisterForm>(register.formData);
-  const registerRef = React.useRef<HTMLFormElement | null>(null);
   const [showPassword, setShowPassword] = React.useState(false);
+  const formRef = useRef<HTMLFormElement | null>(null);
+
   const form = useForm({
-    defaultValues: register.formData,
+    defaultValues: {
+      firstName: registerForm.firstName,
+      lastName: registerForm.lastName,
+      email: registerForm.email,
+      username: registerForm.username,
+      password: '',
+      passwordConfirm: '',
+    },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      Object.entries(value).forEach(([name, value]) => {
+        if (!value) return;
+        const input = document.createElement('input');
+        input.name = name;
+        input.value = value;
+        input.type = 'hidden';
+        input.style.display = 'none';
+        formRef.current?.appendChild(input);
+      });
+      formRef.current?.submit();
     },
   });
 
-  function handleRegister(e: GestureResponderEvent) {
-    e.preventDefault();
-    if (!registerRef.current || !registerRef.current.onSubmit) return;
-    registerRef.current.onSubmit(registerForm);
-  }
+  // function handleRegister(e: GestureResponderEvent) {
+  //   e.preventDefault();
+  //   if (!registerRef.current || !registerRef.current.onSubmit) return;
+  //   registerRef.current.onSubmit(registerForm);
+  // }
 
   const handlePassword = useCallback(
     (e: GestureResponderEvent) => {
@@ -74,23 +91,62 @@ export default function Register({
 
   return (
     <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg('registerTitle')}>
-      <form ref={registerRef} id="kc-register-form" action={url.registrationAction} method="post">
+      <form ref={formRef} id="kc-register-form" action={url.registrationAction} method="post">
         <YStack>
-          <FieldInput form={form} label={msg('firstName') as unknown as string} name="firstName" />
-          <FieldInput form={form} label={msg('lastName') as unknown as string} value={registerForm.lastName} />
-          <FieldInput label={msg('email') as unknown as string} name="email" form={form} />
+          <FieldInput
+            form={form}
+            id="firstName"
+            label={msg('firstName')}
+            name="firstName"
+            tabIndex={1}
+            inputProps={{
+              autoComplete: 'off',
+              autoFocus: true,
+            }}
+          />
+          <FieldInput
+            form={form}
+            id="lastName"
+            label={msg('lastName')}
+            name="lastName"
+            tabIndex={2}
+            inputProps={{
+              autoComplete: 'off',
+            }}
+          />
+          <FieldInput
+            form={form}
+            id="email"
+            label={msg('email')}
+            name="email"
+            tabIndex={3}
+            inputProps={{
+              autoComplete: 'off',
+            }}
+          />
           {!realm.registrationEmailAsUsername && (
-            <FieldInput label={msg('username') as unknown as string} name="username" form={form} />
+            <FieldInput
+              form={form}
+              id="username"
+              label={msg('username')}
+              name="username"
+              tabIndex={4}
+              inputProps={{
+                autoComplete: 'off',
+              }}
+            />
           )}
           {passwordRequired && (
             <YStack>
               <FieldInput
-                label={msg('password') as unknown as string}
-                name="password"
                 form={form}
+                id="password"
+                label={msg('password')}
+                name="password"
+                tabIndex={4}
                 inputProps={{
+                  autoComplete: 'off',
                   secureTextEntry: !showPassword,
-                  autoFocus: true,
                 }}
               />
               <YStack
@@ -107,12 +163,15 @@ export default function Register({
                 {showPassword ? <EyeOff size="$1.5" /> : <Eye size="$1.5" />}
               </YStack>
               <FieldInput
-                label={msg('passwordConfirm') as unknown as string}
-                name="passwordConfirm"
                 form={form}
+                id="password-confirm"
+                label={msg('passwordConfirm')}
+                // @ts-ignore
+                name="password-confirm"
+                tabIndex={5}
                 inputProps={{
+                  autoComplete: 'off',
                   secureTextEntry: !showPassword,
-                  autoFocus: true,
                 }}
               />
               <YStack
@@ -128,14 +187,6 @@ export default function Register({
               >
                 {showPassword ? <EyeOff size="$1.5" /> : <Eye size="$1.5" />}
               </YStack>
-              {/* <Text
-                marginVertical="$2"
-                cursor="pointer"
-                onPress={() => setShowPassword(!showPassword)}
-                textAlign="right"
-              >
-                {showPassword ? 'hide' : 'show'}
-              </Text> */}
             </YStack>
           )}
         </YStack>
@@ -153,9 +204,7 @@ export default function Register({
             </Text>
           </YStack>
           <YStack id="kc-form-buttons">
-            <Button onPress={handleRegister} bg="$backgroundFocus">
-              {msg('doRegister')}
-            </Button>
+            <Button bg="$backgroundFocus">{msg('doRegister')}</Button>
           </YStack>
         </YStack>
       </form>

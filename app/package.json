@@ -10,7 +10,7 @@
     "@expo-google-fonts/silkscreen": "^0.2.3",
     "@fontsource/rock-salt": "^5.0.19",
     "@fontsource/silkscreen": "^5.0.20",
-    "@multiplatform.one/components": "workspace:2.0.24",
+    "@multiplatform.one/components": "workspace:3.0.0",
     "@multiplatform.one/keycloak": "workspace:1.0.33",
     "@multiplatform.one/locales": "workspace:1.0.31",
     "@multiplatform.one/react-query-urql": "workspace:1.0.24",
