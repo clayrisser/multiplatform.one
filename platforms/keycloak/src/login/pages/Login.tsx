@@ -97,12 +97,12 @@ export default function Login({
       headerNode={msg('doLogIn')}
       infoNode={
         <XStack als="center" marginVertical="$5" id="kc-registration">
-          {/* <Text>
-            {msg('noAccount')}
+          <Text>
+            {msg('noAccount')}{' '}
             <Anchor fontSize={12} tabIndex={6} href={url.registrationUrl}>
               {msg('doRegister')}
             </Anchor>
-          </Text> */}
+          </Text>
         </XStack>
       }
     >

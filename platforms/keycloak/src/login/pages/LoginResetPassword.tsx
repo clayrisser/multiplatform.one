@@ -24,20 +24,37 @@ import type { PageProps } from 'keycloakify/login/pages/PageProps';
 import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
 import type { KcContext } from '../kcContext';
 import type { I18n } from '../i18n';
+import { YStack, FieldInput, Anchor, SubmitButton } from 'ui';
+import { useForm } from '@tanstack/react-form';
+import { useRef } from 'react';
 
 export default function LoginResetPassword(
   props: PageProps<Extract<KcContext, { pageId: 'login-reset-password.ftl' }>, I18n>,
 ) {
   const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
-
+  const formRef = useRef<HTMLFormElement | null>(null);
   const { getClassName } = useGetClassName({
     doUseDefaultCss,
     classes,
   });
-
   const { url, realm, auth } = kcContext;
-
   const { msg, msgStr } = i18n;
+  const form = useForm({
+    defaultValues: {
+      username: '',
+    },
+    onSubmit: async ({ value }) => {
+      Object.entries(value).forEach(([name, value]) => {
+        const input = document.createElement('input');
+        input.name = name;
+        input.value = value || '';
+        input.type = 'hidden';
+        input.style.display = 'none';
+        formRef.current?.appendChild(input);
+      });
+      formRef.current?.submit();
+    },
+  });
 
   return (
     <Template
@@ -46,50 +63,33 @@ export default function LoginResetPassword(
       headerNode={msg('emailForgotTitle')}
       infoNode={msg('emailInstruction')}
     >
-      <form id="kc-reset-password-form" className={getClassName('kcFormClass')} action={url.loginAction} method="post">
-        <div className={getClassName('kcFormGroupClass')}>
-          <div className={getClassName('kcLabelWrapperClass')}>
-            <label htmlFor="username" className={getClassName('kcLabelClass')}>
-              {!realm.loginWithEmailAllowed
+      <form ref={formRef} id="kc-reset-password-form" action={url.loginAction} method="post">
+        <YStack>
+          <FieldInput
+            form={form}
+            label={
+              !realm.loginWithEmailAllowed
                 ? msg('username')
                 : !realm.registrationEmailAsUsername
                   ? msg('usernameOrEmail')
-                  : msg('email')}
-            </label>
-          </div>
-          <div className={getClassName('kcInputWrapperClass')}>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              className={getClassName('kcInputClass')}
-              autoFocus
-              defaultValue={auth !== undefined && auth.showUsername ? auth.attemptedUsername : undefined}
-            />
-          </div>
-        </div>
-        <div className={clsx(getClassName('kcFormGroupClass'), getClassName('kcFormSettingClass'))}>
-          <div id="kc-form-options" className={getClassName('kcFormOptionsClass')}>
-            <div className={getClassName('kcFormOptionsWrapperClass')}>
-              <span>
-                <a href={url.loginUrl}>{msg('backToLogin')}</a>
-              </span>
-            </div>
-          </div>
+                  : msg('email')
+            }
+            id="username"
+            name="username"
+            defaultValue={auth !== undefined && auth.showUsername ? auth.attemptedUsername : undefined}
+          />
+        </YStack>
+        <YStack>
+          <YStack marginVertical="$4" id="kc-form-options">
+            <Anchor href={url.loginUrl}>{msg('backToLogin')}</Anchor>
+          </YStack>
 
-          <div id="kc-form-buttons" className={getClassName('kcFormButtonsClass')}>
-            <input
-              className={clsx(
-                getClassName('kcButtonClass'),
-                getClassName('kcButtonPrimaryClass'),
-                getClassName('kcButtonBlockClass'),
-                getClassName('kcButtonLargeClass'),
-              )}
-              type="submit"
-              value={msgStr('doSubmit')}
-            />
-          </div>
-        </div>
+          <YStack id="kc-form-buttons">
+            <SubmitButton form={form} bg="$backgroundFocus">
+              {msgStr('doSubmit')}
+            </SubmitButton>
+          </YStack>
+        </YStack>
       </form>
     </Template>
   );
