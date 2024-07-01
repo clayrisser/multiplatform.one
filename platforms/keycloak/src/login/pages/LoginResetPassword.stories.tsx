@@ -1,5 +1,5 @@
 /**
- * File: /src/keycloak-theme/login/pages/LoginResetPassword.stories.tsx
+ * File: /src/login/pages/LoginResetPassword.stories.tsx
  * Project: @platform/keycloak
  * File Created: 12-06-2024 09:07:27
  * Author: Clay Risser
@@ -26,8 +26,6 @@ import { createPageStory } from '../createPageStory';
 const { PageStory } = createPageStory({
   pageId: 'login-reset-password.ftl',
 });
-
-export const Default: ComponentStory<typeof PageStory> = () => <PageStory />;
 
 export const WithEmailAsUsername: ComponentStory<typeof PageStory> = () => (
   <PageStory
