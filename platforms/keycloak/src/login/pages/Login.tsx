@@ -42,6 +42,7 @@ export default function Login({
   const { msg, msgStr } = i18n;
   const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [userInput, setUserInput] = useState('');
   const form = useForm({
     defaultValues: {
       email: '',
@@ -52,6 +53,9 @@ export default function Login({
       usernameOrEmail: '',
     },
     onSubmit: ({ value }) => {
+      console.log(form.fieldInfo.username.instance?.prevState.value, 'form-field info before');
+      console.log(form.fieldInfo.username.instance?.prevState.value.length, 'length');
+
       setIsLoginButtonDisabled(true);
       Object.entries(value).forEach(([name, value]) => {
         if (!value) return;
@@ -72,9 +76,12 @@ export default function Login({
         input.style.display = 'none';
         formRef.current?.appendChild(input);
       }
-      formRef.current?.submit();
+      console.log(form.fieldInfo.username.instance?.prevState.value, 'form-field info');
+
+      // formRef.current?.submit();
     },
   });
+
   const handlePassword = useCallback(
     (e: GestureResponderEvent) => {
       e.preventDefault();
@@ -125,6 +132,7 @@ export default function Login({
                               autoComplete: 'off',
                               autoFocus: true,
                             }}
+                            required
                           />
                         </YStack>
                       );
@@ -141,6 +149,7 @@ export default function Login({
                       autoComplete: 'off',
                       secureTextEntry: !showPassword,
                     }}
+                    required
                   />
                   <YStack
                     als="flex-end"
@@ -152,30 +161,31 @@ export default function Login({
                     padding="$2.5"
                     position="absolute"
                     tabIndex={-1}
+                    paddingLeft={4}
                   >
                     {showPassword ? <EyeOff size="$1.5" /> : <Eye size="$1.5" />}
                   </YStack>
                 </YStack>
                 <XStack ai="center" jc="space-between">
                   <YStack id="kc-form-options">
-                    {realm.rememberMe && !usernameHidden && (
-                      <XStack jc="center" ai="center" gap="$2">
-                        <FieldCheckbox
-                          form={form}
-                          id="rememberMe"
-                          label={msg('rememberMe')}
-                          name="rememberMe"
-                          tabIndex={3}
-                        />
-                      </XStack>
-                    )}
+                    {/* {realm.rememberMe && !usernameHidden && ( */}
+                    <XStack jc="center" ai="center" gap="$2">
+                      <FieldCheckbox
+                        form={form}
+                        id="rememberMe"
+                        label={msg('rememberMe')}
+                        name="rememberMe"
+                        tabIndex={3}
+                      />
+                    </XStack>
+                    {/* )} */}
                   </YStack>
                   <YStack>
-                    {realm.resetPasswordAllowed && (
-                      <Anchor tabIndex={5} href={url.loginResetCredentialsUrl}>
-                        {msg('doForgotPassword')}
-                      </Anchor>
-                    )}
+                    {/* {realm.resetPasswordAllowed && ( */}
+                    <Anchor tabIndex={5} href={url.loginResetCredentialsUrl}>
+                      {msg('doForgotPassword')}
+                    </Anchor>
+                    {/* )} */}
                   </YStack>
                 </XStack>
                 <YStack id="kc-form-buttons">
