@@ -62,11 +62,11 @@ export default function Register({
       passwordConfirm: '',
     },
     onSubmit: async ({ value }) => {
+      console.log('submit', value);
       Object.entries(value).forEach(([name, value]) => {
-        if (!value) return;
         const input = document.createElement('input');
         input.name = name;
-        input.value = value;
+        input.value = value || '';
         input.type = 'hidden';
         input.style.display = 'none';
         formRef.current?.appendChild(input);
@@ -74,12 +74,6 @@ export default function Register({
       formRef.current?.submit();
     },
   });
-
-  // function handleRegister(e: GestureResponderEvent) {
-  //   e.preventDefault();
-  //   if (!registerRef.current || !registerRef.current.onSubmit) return;
-  //   registerRef.current.onSubmit(registerForm);
-  // }
 
   const handlePassword = useCallback(
     (e: GestureResponderEvent) => {
@@ -204,7 +198,9 @@ export default function Register({
             </Text>
           </YStack>
           <YStack id="kc-form-buttons">
-            <Button bg="$backgroundFocus">{msg('doRegister')}</Button>
+            <SubmitButton bg="$backgroundFocus" form={form} id="kc-register" tabIndex={6}>
+              {msg('doRegister')}
+            </SubmitButton>
           </YStack>
         </YStack>
       </form>
