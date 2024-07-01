@@ -30,6 +30,7 @@ import { GlobalProvider } from 'app/providers';
 import { lazy, Suspense } from 'react';
 import { useI18n } from './i18n';
 import { useTheme } from 'multiplatform.one/theme';
+import LoginResetPassword from './pages/LoginResetPassword';
 
 const Info = lazy(() => import('keycloakify/login/pages/Info'));
 const Login = lazy(() => import('./pages/Login'));
@@ -71,6 +72,8 @@ export default function KcApp({ kcContext }: { kcContext: KcContext }) {
                   doUseDefaultCss={true}
                 />
               );
+            case 'login-reset-password.ftl':
+              return <LoginResetPassword {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
             default:
               return <Fallback {...{ kcContext, i18n, classes }} Template={Template} doUseDefaultCss={true} />;
           }
