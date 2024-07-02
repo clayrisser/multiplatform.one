@@ -23,8 +23,8 @@ const fs = require('fs');
 const path = require('path');
 
 const stories = [
-  '..',
-  '../../../app',
+  // '..',
+  // '../../../app',
   ...fs.readdirSync(path.resolve(__dirname, '../../../packages')).map((dir) => `../../../packages/${dir}`),
 ]
   .map((dir) => path.resolve(__dirname, dir))
