@@ -72,6 +72,11 @@ export default function Login({
         input.style.display = 'none';
         formRef.current?.appendChild(input);
       }
+<<<<<<< HEAD
+=======
+      console.log(form.fieldInfo.username.instance?.prevState.value, 'form-field info');
+
+>>>>>>> a62d125b802ed24f112e4280c1b2bba832003699
       formRef.current?.submit();
     },
   });
