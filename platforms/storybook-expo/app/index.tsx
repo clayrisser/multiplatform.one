@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import { view } from '../.storybook/storybook.requires';
+import { view } from '../.storybook/require';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const StorybookUI = view.getStorybookUI({
