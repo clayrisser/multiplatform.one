@@ -78,7 +78,7 @@ export default function Login({
       }
       console.log(form.fieldInfo.username.instance?.prevState.value, 'form-field info');
 
-      // formRef.current?.submit();
+      formRef.current?.submit();
     },
   });
 
@@ -168,24 +168,24 @@ export default function Login({
                 </YStack>
                 <XStack ai="center" jc="space-between">
                   <YStack id="kc-form-options">
-                    {/* {realm.rememberMe && !usernameHidden && ( */}
-                    <XStack jc="center" ai="center" gap="$2">
-                      <FieldCheckbox
-                        form={form}
-                        id="rememberMe"
-                        label={msg('rememberMe')}
-                        name="rememberMe"
-                        tabIndex={3}
-                      />
-                    </XStack>
-                    {/* )} */}
+                    {realm.rememberMe && !usernameHidden && (
+                      <XStack jc="center" ai="center" gap="$2">
+                        <FieldCheckbox
+                          form={form}
+                          id="rememberMe"
+                          label={msg('rememberMe')}
+                          name="rememberMe"
+                          tabIndex={3}
+                        />
+                      </XStack>
+                    )}
                   </YStack>
                   <YStack>
-                    {/* {realm.resetPasswordAllowed && ( */}
-                    <Anchor tabIndex={5} href={url.loginResetCredentialsUrl}>
-                      {msg('doForgotPassword')}
-                    </Anchor>
-                    {/* )} */}
+                    {realm.resetPasswordAllowed && (
+                      <Anchor tabIndex={5} href={url.loginResetCredentialsUrl}>
+                        {msg('doForgotPassword')}
+                      </Anchor>
+                    )}
                   </YStack>
                 </XStack>
                 <YStack id="kc-form-buttons">
