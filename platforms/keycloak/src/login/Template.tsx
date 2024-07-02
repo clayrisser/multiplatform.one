@@ -67,9 +67,9 @@ export default function Template({
     <>
       <XStack fullscreen backgroundColor="$background" />
       <YStack position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
-        <H1 marginVertical="$6" textTransform="capitalize" letterSpacing={0.5} textAlign="center">
+        {/* <H1 marginVertical="$6" textTransform="capitalize" letterSpacing={0.5} textAlign="center">
           {msg('loginTitleHtml', realm.displayNameHtml)}!!!
-        </H1>
+        </H1> */}
         <Card width={450} elevation="$4">
           <Card.Background>{/* <Image src={keycloakifyLogoPngUrl} alt="Keycloakify logo" /> */}</Card.Background>
           <Card.Header>

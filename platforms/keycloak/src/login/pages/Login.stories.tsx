@@ -90,6 +90,23 @@ export const WithImmutablePresetUsername: ComponentStory<typeof PageStory> = () 
   />
 );
 
+export const WithRememberMe: ComponentStory<typeof PageStory> = () => (
+  <PageStory
+    kcContext={{
+      login: { rememberMe: 'on' },
+      realm: { rememberMe: true },
+    }}
+  />
+);
+
+export const WithForgetPassword: ComponentStory<typeof PageStory> = () => (
+  <PageStory
+    kcContext={{
+      realm: { resetPasswordAllowed: true },
+    }}
+  />
+);
+
 export const WithSocialProviders: ComponentStory<typeof PageStory> = () => (
   <PageStory
     kcContext={{
