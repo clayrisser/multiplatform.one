@@ -64,19 +64,19 @@ const normalizedStories = [
       /^\.(?:(?:^|\/|(?:(?:(?!(?:^|\/)\.).)*?)\/)(?!\.)(?=.)[^/]*?\.(mdx|stories\.(js|jsx|mjs|ts|tsx)))$/
     ),
   },
-  // {
-  //   titlePrefix: "",
-  //   directory: "../../packages/components/src",
-  //   files: "**/*.@(mdx|stories.@(js|jsx|mjs|ts|tsx))",
-  //   importPathMatcher:
-  //     /^\.(?:(?:^|\/|(?:(?:(?!(?:^|\/)\.).)*?)\/)(?!\.)(?=.)[^/]*?\.(mdx|stories\.(js|jsx|mjs|ts|tsx)))$/,
+  {
+    titlePrefix: "",
+    directory: "../../packages/components/src",
+    files: "**/*.@(mdx|stories.@(js|jsx|mjs|ts|tsx))",
+    importPathMatcher:
+      /^\.(?:(?:^|\/|(?:(?:(?!(?:^|\/)\.).)*?)\/)(?!\.)(?=.)[^/]*?\.(mdx|stories\.(js|jsx|mjs|ts|tsx)))$/,
 
-  //   req: require.context(
-  //     "../../../packages/components/src",
-  //     true,
-  //     /^\.(?:(?:^|\/|(?:(?:(?!(?:^|\/)\.).)*?)\/)(?!\.)(?=.)[^/]*?\.(mdx|stories\.(js|jsx|mjs|ts|tsx)))$/
-  //   ),
-  // },
+    req: require.context(
+      "../../../packages/components/src",
+      true,
+      /^\.(?:(?:^|\/|(?:(?:(?!(?:^|\/)\.).)*?)\/)(?!\.)(?=.)[^/]*?\.(mdx|stories\.(js|jsx|mjs|ts|tsx)))$/
+    ),
+  },
   {
     titlePrefix: "",
     directory: "../../packages/keycloak/routes",
