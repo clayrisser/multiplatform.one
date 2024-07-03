@@ -199,7 +199,7 @@ export default function Register({
           </YStack>
           <YStack id="kc-form-buttons">
             <SubmitButton bg="$backgroundFocus" form={form} id="kc-register" tabIndex={6}>
-              {msg('doRegister')}
+              <Text fontSize={16}>{msg('doRegister')}</Text>
             </SubmitButton>
           </YStack>
         </YStack>

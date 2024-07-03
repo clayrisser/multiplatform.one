@@ -6,7 +6,7 @@
  * Author: Joseph Garrone
  * -----
  * BitSpur (c) Copyright 2021 - 2024
- *
+ *````````````````````
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -91,9 +91,10 @@ export default function Login({
       headerNode={msg('doLogIn')}
       infoNode={
         <XStack als="center" marginVertical="$5" id="kc-registration">
-          <Text>
-            {msg('noAccount')}{' '}
-            <Anchor fontSize={12} tabIndex={6} href={url.registrationUrl}>
+          <Text fontSize={16}>
+            {msg('noAccount')}
+            {'  '}
+            <Anchor fontSize={16} tabIndex={6} href={url.registrationUrl}>
               {msg('doRegister')}
             </Anchor>
           </Text>
