@@ -21,7 +21,6 @@
 
 import React from 'react';
 import { SubmitButton, SubmitButtonProps } from './SubmitButton';
-import { action } from '@storybook/addon-actions';
 import { useForm } from '@tanstack/react-form';
 import { Meta } from '@storybook/react';
 
@@ -41,9 +40,6 @@ export const main = (args) => {
       age: 24,
       isGraduate: true,
     },
-    // onSubmit: async ({ value }) => {
-    //   action('onSubmit')(value);
-    // },
   });
   return <SubmitButton form={form} {...args} />;
 };
