@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.24.7",
-    "@multiplatform.one/components": "workspace:3.0.0",
+    "@multiplatform.one/components": "workspace:4.0.0",
     "@storybook/addon-actions": "~7.6.19",
     "@storybook/addon-ondevice-actions": "7.6.19",
     "@storybook/addon-ondevice-backgrounds": "7.6.19",
