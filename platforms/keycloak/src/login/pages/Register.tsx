@@ -25,7 +25,7 @@ import type { GestureResponderEvent } from 'react-native';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../kcContext';
 import type { PageProps } from 'keycloakify/login/pages/PageProps';
-import { YStack, Button, Anchor, Text, FieldInput, SubmitButton, FieldCheckbox } from 'ui';
+import { YStack, Button, Anchor, Text, FieldInput, SubmitButton, FieldCheckbox, Paragraph } from 'ui';
 import { useForm } from '@tanstack/react-form';
 import { Eye, EyeOff } from '@tamagui/lucide-icons';
 import { clsx } from 'keycloakify/tools/clsx';
@@ -39,6 +39,7 @@ export interface RegisterForm {
   password?: string;
   passwordConfirm?: string;
 }
+
 export default function Register({
   kcContext,
   i18n,
@@ -51,6 +52,17 @@ export default function Register({
   const [registerForm] = React.useState<RegisterForm>(register.formData);
   const [showPassword, setShowPassword] = React.useState(false);
   const formRef = useRef<HTMLFormElement | null>(null);
+  const [error, setError] = useState<{ [key: string]: boolean }>({});
+  // const [disableRegisterButton, setDisableRegisterButton] = useState(false);
+
+  // if (
+  //   !register.formData.displayName ||
+  //   !register.formData.email ||
+  //   !register.formData.firstName ||
+  //   !register.formData.lastName ||
+  //   !register.formData.username
+  // )
+  //   return setDisableRegisterButton(false);
 
   const form = useForm({
     defaultValues: {
@@ -63,6 +75,55 @@ export default function Register({
     },
     onSubmit: async ({ value }) => {
       console.log('submit', value);
+
+      let hasError = false;
+      const newErrorState: { [key: string]: boolean } = {};
+
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,15}$/;
+
+      switch (true) {
+        case !value.email:
+          newErrorState.email = true;
+          hasError = true;
+          break;
+        case !value.firstName:
+          newErrorState.firstName = true;
+          hasError = true;
+          break;
+        case !value.lastName:
+          newErrorState.lastName = true;
+          hasError = true;
+          break;
+        case !value.username:
+          newErrorState.username = true;
+          hasError = true;
+          break;
+        case !value.password:
+          newErrorState.password = true;
+          hasError = true;
+          break;
+        // case !passwordRegex.test(value.password):
+        //   newErrorState.password = true;
+        //   hasError = true;
+        //   break;
+        // case !value.passwordConfirm:
+        //   newErrorState.passwordConfirm = true;
+        //   hasError = true;
+        //   break;
+        // case value.password !== value.passwordConfirm:
+        //   newErrorState.passwordConfirm = true;
+        //   hasError = true;
+        //   break;
+        default:
+          break;
+      }
+
+      setError(newErrorState);
+
+      if (hasError) {
+        return;
+      }
+
       Object.entries(value).forEach(([name, value]) => {
         const input = document.createElement('input');
         input.name = name;
@@ -98,6 +159,7 @@ export default function Register({
               autoFocus: true,
             }}
           />
+          {error.firstName && <Paragraph color="$red9">First Name is Required</Paragraph>}
           <FieldInput
             form={form}
             id="lastName"
@@ -108,6 +170,7 @@ export default function Register({
               autoComplete: 'off',
             }}
           />
+          {error.lastName && <Paragraph color="$red9">Last Name is Required</Paragraph>}
           <FieldInput
             form={form}
             id="email"
@@ -118,6 +181,7 @@ export default function Register({
               autoComplete: 'off',
             }}
           />
+          {error.email && <Paragraph color="$red9">Email is Required</Paragraph>}
           {!realm.registrationEmailAsUsername && (
             <FieldInput
               form={form}
@@ -130,6 +194,7 @@ export default function Register({
               }}
             />
           )}
+          {error.username && <Paragraph color="$red9">User Name is Required</Paragraph>}
           {passwordRequired && (
             <YStack>
               <FieldInput
@@ -143,6 +208,11 @@ export default function Register({
                   secureTextEntry: !showPassword,
                 }}
               />
+              {error.password && (
+                <Paragraph color="$yellow9">
+                  Password must be 6-15 characters long and include a-z, A-Z, 0-9, and a special character
+                </Paragraph>
+              )}
               <YStack
                 als="flex-end"
                 backgroundColor="transparent"
@@ -168,6 +238,7 @@ export default function Register({
                   secureTextEntry: !showPassword,
                 }}
               />
+              {error.passwordConfirm && <Paragraph color="$red9">Passwords do not match</Paragraph>}
               <YStack
                 als="flex-end"
                 backgroundColor="transparent"
@@ -184,6 +255,7 @@ export default function Register({
             </YStack>
           )}
         </YStack>
+
         {recaptchaRequired && (
           <YStack>
             <YStack>
@@ -198,7 +270,13 @@ export default function Register({
             </Text>
           </YStack>
           <YStack id="kc-form-buttons">
-            <SubmitButton bg="$backgroundFocus" form={form} id="kc-register" tabIndex={6}>
+            <SubmitButton
+              // disabled={disableRegisterButton}
+              bg="$backgroundFocus"
+              form={form}
+              id="kc-register"
+              tabIndex={6}
+            >
               <Text fontSize={16}>{msg('doRegister')}</Text>
             </SubmitButton>
           </YStack>
