@@ -137,7 +137,9 @@ export function SimpleDialog({
           })}
           {...contentStyle}
         >
-          {title && <Dialog.Title {...titleStyle}>{title}</Dialog.Title>}
+          <Dialog.Title disabled={!title} {...titleStyle}>
+            {title}
+          </Dialog.Title>
           {description && <Dialog.Description {...descriptionStyle}>{description}</Dialog.Description>}
           {children}
           {!withoutCloseButton && (
