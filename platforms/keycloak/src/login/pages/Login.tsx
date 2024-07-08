@@ -6,7 +6,7 @@
  * Author: Joseph Garrone
  * -----
  * BitSpur (c) Copyright 2021 - 2024
- *````````````````````
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@ import type { GestureResponderEvent } from 'react-native';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../kcContext';
 import type { PageProps } from 'keycloakify/login/pages/PageProps';
-import { Anchor, SubmitButton, FieldCheckbox, FieldInput, Text, XStack, YStack } from 'ui';
+import { Anchor, SubmitButton, FieldCheckbox, FieldInput, Text, XStack, YStack, Paragraph } from 'ui';
 import { Eye, EyeOff } from '@tamagui/lucide-icons';
 import { clsx } from 'keycloakify/tools/clsx';
 import { useForm } from '@tanstack/react-form';
@@ -42,6 +42,8 @@ export default function Login({
   const { msg, msgStr } = i18n;
   const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState<{ [key: string]: boolean }>({});
+  const [userInput, setUserInput] = useState('');
   const form = useForm({
     defaultValues: {
       email: '',
@@ -52,6 +54,41 @@ export default function Login({
       usernameOrEmail: '',
     },
     onSubmit: ({ value }) => {
+      console.log(value, 'value');
+      let hasError = false;
+      const newErrorState: { [key: string]: boolean } = {};
+
+      if (!value.username) {
+        console.log(value.username, 'condition true');
+        newErrorState.username = true;
+        hasError = true;
+        setLoginError(newErrorState);
+        console.log(newErrorState, 'condition true');
+        return;
+      } else {
+        console.log(value.username, 'condition false');
+        newErrorState.username = false;
+        hasError = false;
+        setLoginError(newErrorState);
+        console.log(newErrorState, 'condition false');
+      }
+      if (!value.password) {
+        newErrorState.password = true;
+        hasError = true;
+        setLoginError(newErrorState);
+        return;
+      } else {
+        newErrorState.password = false;
+        hasError = false;
+        setLoginError(newErrorState);
+      }
+
+      // setLoginError(newErrorState);
+
+      if (hasError) {
+        return;
+      }
+
       setIsLoginButtonDisabled(true);
       Object.entries(value).forEach(([name, value]) => {
         if (!value) return;
@@ -72,6 +109,7 @@ export default function Login({
         input.style.display = 'none';
         formRef.current?.appendChild(input);
       }
+
       formRef.current?.submit();
     },
   });
@@ -91,10 +129,9 @@ export default function Login({
       headerNode={msg('doLogIn')}
       infoNode={
         <XStack als="center" marginVertical="$5" id="kc-registration">
-          <Text fontSize={16}>
+          <Text>
             {msg('noAccount')}
-            {'  '}
-            <Anchor fontSize={16} tabIndex={6} href={url.registrationUrl}>
+            <Anchor fontSize={12} tabIndex={6} href={url.registrationUrl}>
               {msg('doRegister')}
             </Anchor>
           </Text>
@@ -129,11 +166,12 @@ export default function Login({
                             }}
                             required
                           />
+                          {loginError.username && <Paragraph color="$red9">Email/ User name Required</Paragraph>}
                         </YStack>
                       );
                     })()}
                 </YStack>
-                <YStack>
+                <YStack position="relative">
                   <FieldInput
                     form={form}
                     id="password"
@@ -146,11 +184,12 @@ export default function Login({
                     }}
                     required
                   />
+                  {loginError.password && <Paragraph color="$red9">Password is Required</Paragraph>}
                   <YStack
                     als="flex-end"
                     backgroundColor="transparent"
                     borderWidth={0}
-                    bottom={0}
+                    bottom={loginError.password ? 24 : 0}
                     cursor="pointer"
                     onPress={handlePassword}
                     padding="$2.5"
@@ -163,24 +202,24 @@ export default function Login({
                 </YStack>
                 <XStack ai="center" jc="space-between">
                   <YStack id="kc-form-options">
-                    {realm.rememberMe && !usernameHidden && (
-                      <XStack jc="center" ai="center" gap="$2">
-                        <FieldCheckbox
-                          form={form}
-                          id="rememberMe"
-                          label={msg('rememberMe')}
-                          name="rememberMe"
-                          tabIndex={3}
-                        />
-                      </XStack>
-                    )}
+                    {/* {realm.rememberMe && !usernameHidden && ( */}
+                    <XStack jc="center" ai="center" gap="$2">
+                      <FieldCheckbox
+                        form={form}
+                        id="rememberMe"
+                        label={msg('rememberMe')}
+                        name="rememberMe"
+                        tabIndex={3}
+                      />
+                    </XStack>
+                    {/* )} */}
                   </YStack>
                   <YStack>
-                    {realm.resetPasswordAllowed && (
-                      <Anchor tabIndex={5} href={url.loginResetCredentialsUrl}>
-                        {msg('doForgotPassword')}
-                      </Anchor>
-                    )}
+                    {/* {realm.resetPasswordAllowed && ( */}
+                    <Anchor tabIndex={5} href={url.loginResetCredentialsUrl}>
+                      {msg('doForgotPassword')}
+                    </Anchor>
+                    {/* )} */}
                   </YStack>
                 </XStack>
                 <YStack id="kc-form-buttons">
