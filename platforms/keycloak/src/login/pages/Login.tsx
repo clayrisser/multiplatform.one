@@ -54,23 +54,18 @@ export default function Login({
       usernameOrEmail: '',
     },
     onSubmit: ({ value }) => {
-      console.log(value, 'value');
       let hasError = false;
       const newErrorState: { [key: string]: boolean } = {};
 
       if (!value.username) {
-        console.log(value.username, 'condition true');
         newErrorState.username = true;
         hasError = true;
         setLoginError(newErrorState);
-        console.log(newErrorState, 'condition true');
         return;
       } else {
-        console.log(value.username, 'condition false');
         newErrorState.username = false;
         hasError = false;
         setLoginError(newErrorState);
-        console.log(newErrorState, 'condition false');
       }
       if (!value.password) {
         newErrorState.password = true;
@@ -166,7 +161,7 @@ export default function Login({
                             }}
                             required
                           />
-                          {loginError.username && <Paragraph color="$red9">Email/ User name Required</Paragraph>}
+                          {loginError.username && <Paragraph color="$red9">Email/Username is Required</Paragraph>}
                         </YStack>
                       );
                     })()}
