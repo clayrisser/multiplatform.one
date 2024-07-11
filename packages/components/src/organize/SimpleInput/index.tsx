@@ -22,6 +22,7 @@ export function SimpleInput({ inputType = 'TEXT', xStackProps, buttonProps, ...p
   const handleInputChange = (text: string) => {
     if (inputType === 'EMAIL') {
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      // const emailPattern = /^[\w+\.]+@\w+(\.\w+)+$/;
       if (!emailPattern.test(text)) {
         setIsValidText(false);
         return;
