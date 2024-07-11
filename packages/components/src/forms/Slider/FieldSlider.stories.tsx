@@ -41,7 +41,7 @@
  */
 
 import React from 'react';
-import { Button, YStack } from 'tamagui';
+import { Button, Text, YStack } from 'tamagui';
 import { FieldSlider } from './FieldSlider';
 import { action } from '@storybook/addon-actions';
 import { useForm } from '@tanstack/react-form';
@@ -65,20 +65,20 @@ const mainArgs: FieldSliderProps = {
 main.args = mainArgs;
 
 export const form = () => {
+  const [sliderValue, setSliderValue] = React.useState<number[]>([0]);
+
   const form = useForm({
     defaultValues: {
-      none: false,
-      auto: true,
-      slider: [],
+      sliderValue: [0],
     },
     onSubmit: async ({ value }) => {
       action('onSubmit')(value);
     },
   });
   return (
-    <YStack gap>
-      <FieldSlider form={form} name="none" label="slider" />
-      <FieldSlider form={form} name="auto" label="slider" />
+    <YStack padding="$4" justifyContent="center" space>
+      <Text>{[sliderValue]}</Text>
+      <FieldSlider form={form} name="sliderValue" label="formSlider" onValueChange={(e) => setSliderValue(e)} />
       <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>
   );
