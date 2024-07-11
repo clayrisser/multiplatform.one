@@ -46,8 +46,6 @@ main.args = mainArgs;
 export const form = () => {
   const form = useForm({
     defaultValues: {
-      firstName: '',
-      isChecked: false,
       switch: false,
     },
     onSubmit: async ({ value }) => {
@@ -56,7 +54,7 @@ export const form = () => {
   });
   return (
     <YStack>
-      <FieldSwitch form={form} name="switch" label="switch" />
+      <FieldSwitch form={form} name="switch" label="Switch" />
       <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>
   );

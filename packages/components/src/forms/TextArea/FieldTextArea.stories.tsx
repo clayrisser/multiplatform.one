@@ -39,8 +39,6 @@ export const main = () => (
 export const form = (args: FieldTextAreaProps) => {
   const form = useForm({
     defaultValues: {
-      firstName: '',
-      isChecked: false,
       textArea: '',
     },
     onSubmit: async ({ value }) => {
@@ -49,7 +47,7 @@ export const form = (args: FieldTextAreaProps) => {
   });
   return (
     <YStack>
-      <FieldTextArea form={form} {...args} />
+      <FieldTextArea form={form} name="textArea" {...args} />
       <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>
   );
@@ -57,7 +55,6 @@ export const form = (args: FieldTextAreaProps) => {
 
 form.args = {
   label: 'Sample Text Area',
-  name: 'sampleTextArea',
   defaultValue: 'This is a sample text area',
   onChangeText: action('onChangeText'),
   textAreaProps: {
