@@ -48,8 +48,8 @@ main.args = mainArgs;
 export const form = () => {
   const form = useForm({
     defaultValues: {
-      none: false,
-      auto: true,
+      firstName: '',
+      lastName: '',
     },
     onSubmit: async ({ value }) => {
       action('onSubmit')(value);
@@ -57,8 +57,8 @@ export const form = () => {
   });
   return (
     <YStack>
-      <FieldInput label="Accept" name="none" form={form} />
-      <FieldInput label="Accept" name="auto" form={form} />
+      <FieldInput label="FIRST NAME" name="firstName" form={form} />
+      <FieldInput label="LAST NAME" name="lastName" form={form} />
       <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>
   );
