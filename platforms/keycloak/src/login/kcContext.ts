@@ -85,6 +85,10 @@ export const { getKcContext } = createGetKcContext<KcContextExtension>({
         exists: (fieldName: string) => fieldName === 'email',
       },
     },
+    {
+      pageId: 'login-update-password.ftl',
+      username: 'test',
+    },
   ],
   mockProperties: {},
 });
