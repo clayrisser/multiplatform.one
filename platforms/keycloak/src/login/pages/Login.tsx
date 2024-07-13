@@ -1,26 +1,4 @@
-/**
- * File: /src/login/pages/Login.tsx
- * Project: @platform/keycloak
- * File Created: 12-06-2024 09:07:27
- * Author: Clay Risser
- * Author: Joseph Garrone
- * -----
- * BitSpur (c) Copyright 2021 - 2024
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-import type { GestureResponderEvent } from 'react-native';
+import { FlatList, type GestureResponderEvent } from 'react-native';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../kcContext';
 import type { PageProps } from 'keycloakify/login/pages/PageProps';
@@ -29,6 +7,11 @@ import { Eye, EyeOff } from '@tamagui/lucide-icons';
 import { clsx } from 'keycloakify/tools/clsx';
 import { useForm } from '@tanstack/react-form';
 import { useState, useRef, useCallback } from 'react';
+
+export interface FormError {
+  username?: string;
+  password?: string;
+}
 
 export default function Login({
   kcContext,
@@ -42,50 +25,26 @@ export default function Login({
   const { msg, msgStr } = i18n;
   const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [loginError, setLoginError] = useState<{ [key: string]: boolean }>({});
-  const [userInput, setUserInput] = useState('');
+  const [error, setError] = useState<FormError>({});
   const form = useForm({
     defaultValues: {
-      email: '',
       credentialId: auth.selectedCredential,
       password: '',
       rememberMe: realm.rememberMe && !usernameHidden ? login.rememberMe === 'on' : undefined,
       username: login.username ?? '',
-      usernameOrEmail: '',
     },
     onSubmit: ({ value }) => {
-      let hasError = false;
-      const newErrorState: { [key: string]: boolean } = {};
-
-      if (!value.username) {
-        newErrorState.username = true;
-        hasError = true;
-        setLoginError(newErrorState);
-        return;
-      } else {
-        newErrorState.username = false;
-        hasError = false;
-        setLoginError(newErrorState);
-      }
-      if (!value.password) {
-        newErrorState.password = true;
-        hasError = true;
-        setLoginError(newErrorState);
-        return;
-      } else {
-        newErrorState.password = false;
-        hasError = false;
-        setLoginError(newErrorState);
-      }
-
-      // setLoginError(newErrorState);
-
-      if (hasError) {
-        return;
-      }
-
       setIsLoginButtonDisabled(true);
+      setError({});
+      let flag = false;
       Object.entries(value).forEach(([name, value]) => {
+        if (name === 'username' || name === 'password') {
+          if (!value || value === '') {
+            flag = true;
+            setError((prev) => ({ ...prev, [name]: `${name} is required` }));
+          }
+        }
+        if (flag) return;
         if (!value) return;
         if (name === 'email' || name === 'usernameOrEmail') name = 'username';
         if (name === 'username' && formRef.current?.querySelector('input[name="username"]')) return;
@@ -104,7 +63,7 @@ export default function Login({
         input.style.display = 'none';
         formRef.current?.appendChild(input);
       }
-
+      if (flag) return;
       formRef.current?.submit();
     },
   });
@@ -116,6 +75,21 @@ export default function Login({
     },
     [showPassword],
   );
+
+  const handleChangeUsername = (value: string) => {
+    if (!value || value === '') {
+      return setError((prev) => ({ ...prev, username: 'user name is required' }));
+    }
+    setError((prev) => ({ ...prev, username: '' }));
+  };
+
+  const handleChangePassword = (value: string) => {
+    if (!value || value === '') {
+      return setError((prev) => ({ ...prev, password: 'password is required' }));
+    }
+    setError((prev) => ({ ...prev, password: '' }));
+  };
+
   return (
     <Template
       {...{ kcContext, i18n, doUseDefaultCss, classes }}
@@ -124,9 +98,10 @@ export default function Login({
       headerNode={msg('doLogIn')}
       infoNode={
         <XStack als="center" marginVertical="$5" id="kc-registration">
-          <Text>
+          <Text fontSize={16}>
             {msg('noAccount')}
-            <Anchor fontSize={12} tabIndex={6} href={url.registrationUrl}>
+            <Anchor fontSize={16} tabIndex={6} href={url.registrationUrl}>
+              {' '}
               {msg('doRegister')}
             </Anchor>
           </Text>
@@ -153,15 +128,17 @@ export default function Login({
                             form={form}
                             id={autoCompleteHelper}
                             label={msg(label)}
+                            // @ts-ignore
                             name={autoCompleteHelper}
                             tabIndex={1}
                             inputProps={{
                               autoComplete: 'off',
                               autoFocus: true,
                             }}
+                            onChangeText={handleChangeUsername}
                             required
                           />
-                          {loginError.username && <Paragraph color="$red9">Email/Username is Required</Paragraph>}
+                          {error.username && <Paragraph color="$red9">{error.username}</Paragraph>}
                         </YStack>
                       );
                     })()}
@@ -178,13 +155,14 @@ export default function Login({
                       secureTextEntry: !showPassword,
                     }}
                     required
+                    onChangeText={handleChangePassword}
                   />
-                  {loginError.password && <Paragraph color="$red9">Password is Required</Paragraph>}
+                  {error.password && <Paragraph color="$red9">{error.password}</Paragraph>}
                   <YStack
                     als="flex-end"
                     backgroundColor="transparent"
                     borderWidth={0}
-                    bottom={loginError.password ? 24 : 0}
+                    top={36}
                     cursor="pointer"
                     onPress={handlePassword}
                     padding="$2.5"
@@ -197,30 +175,30 @@ export default function Login({
                 </YStack>
                 <XStack ai="center" jc="space-between">
                   <YStack id="kc-form-options">
-                    {/* {realm.rememberMe && !usernameHidden && ( */}
-                    <XStack jc="center" ai="center" gap="$2">
-                      <FieldCheckbox
-                        form={form}
-                        id="rememberMe"
-                        label={msg('rememberMe')}
-                        name="rememberMe"
-                        tabIndex={3}
-                      />
-                    </XStack>
-                    {/* )} */}
+                    {realm.rememberMe && !usernameHidden && (
+                      <XStack jc="center" ai="center" gap="$2">
+                        <FieldCheckbox
+                          form={form}
+                          id="rememberMe"
+                          label={msg('rememberMe')}
+                          name="rememberMe"
+                          tabIndex={3}
+                        />
+                      </XStack>
+                    )}
                   </YStack>
                   <YStack>
-                    {/* {realm.resetPasswordAllowed && ( */}
-                    <Anchor tabIndex={5} href={url.loginResetCredentialsUrl}>
-                      {msg('doForgotPassword')}
-                    </Anchor>
-                    {/* )} */}
+                    {realm.resetPasswordAllowed && (
+                      <Anchor tabIndex={5} href={url.loginResetCredentialsUrl}>
+                        {msg('doForgotPassword')}
+                      </Anchor>
+                    )}
                   </YStack>
                 </XStack>
                 <YStack id="kc-form-buttons">
                   <SubmitButton
                     bg="$backgroundFocus"
-                    disabled={isLoginButtonDisabled}
+                    // disabled={isLoginButtonDisabled}
                     form={form}
                     id="kc-login"
                     tabIndex={4}

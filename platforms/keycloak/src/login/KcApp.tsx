@@ -30,13 +30,18 @@ import { GlobalProvider } from 'app/providers';
 import { lazy, Suspense } from 'react';
 import { useI18n } from './i18n';
 import { useTheme } from 'multiplatform.one/theme';
-import LoginResetPassword from './pages/LoginResetPassword';
+// import LoginResetPassword from './pages/LoginResetPassword';
+// import LoginUpdatePassword from './pages/LoginUpdatePassword';
+// import LoginUpdateProfile from './pages/LoginUpdateProfile';
 
 const Info = lazy(() => import('keycloakify/login/pages/Info'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const RegisterUserProfile = lazy(() => import('./pages/RegisterUserProfile'));
 const Terms = lazy(() => import('./pages/Terms'));
+const LoginResetPassword = lazy(() => import('./pages/LoginResetPassword'));
+const LoginUpdatePassword = lazy(() => import('./pages/LoginUpdatePassword'));
+const LoginUpdateProfile = lazy(() => import('./pages/LoginUpdateProfile'));
 const classes: PageProps<any, any>['classes'] = {};
 
 function Provider({ children }: { children?: ReactNode }) {
@@ -49,6 +54,7 @@ function Provider({ children }: { children?: ReactNode }) {
 }
 
 export default function KcApp({ kcContext }: { kcContext: KcContext }) {
+  console.log('KcContextId =====>>>>', kcContext.pageId);
   const i18n = useI18n({ kcContext });
   if (i18n === null) return <Provider />;
   return (
@@ -74,6 +80,12 @@ export default function KcApp({ kcContext }: { kcContext: KcContext }) {
               );
             case 'login-reset-password.ftl':
               return <LoginResetPassword {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
+
+            case 'login-update-password.ftl':
+              return <LoginUpdatePassword {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
+
+            case 'login-update-profile.ftl':
+              return <LoginUpdateProfile {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
             default:
               return <Fallback {...{ kcContext, i18n, classes }} Template={Template} doUseDefaultCss={true} />;
           }
