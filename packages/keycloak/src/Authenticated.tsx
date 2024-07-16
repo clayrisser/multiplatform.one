@@ -41,14 +41,20 @@ export function Authenticated({ children, disabled, loggedOutComponent, loadingC
   const keycloak = useKeycloak();
   const tokensFromQuery = useTokensFromQuery();
 
+  console.log('outSide useEffect---------------');
+  console.log('-------redirectURI', authConfig?.loginRedirectUri);
   useEffect(() => {
+    console.log('-------------CALLING before checking platform--------------------');
     if (!keycloak || MultiPlatform.isIframe || MultiPlatform.isServer || keycloak.authenticated || tokensFromQuery) {
       return;
     }
-    keycloak.login({
+    console.log('---------------CALLING LOGIN-------------------');
+    keycloak?.login({
       redirectUri: authConfig.loginRedirectUri,
     });
   }, [keycloak?.authenticated]);
+
+  console.log('Login called----------------------');
 
   if (typeof disabled === 'undefined') disabled = authConfig.disabled;
   if (disabled) return <>{children}</>;
