@@ -38,13 +38,14 @@ export function KeycloakProvider({
   baseUrl,
   children,
   clientId,
+  loginRedirectUri,
   debug,
   disabled,
   publicClientId,
   realm,
   session,
 }: KeycloakProviderProps) {
-  const authConfig = useMemo(() => ({ debug, disabled }), [debug, disabled]);
+  const authConfig = useMemo(() => ({ debug, disabled, loginRedirectUri }), [debug, disabled, loginRedirectUri]);
   return (
     <AuthConfigContext.Provider value={authConfig}>
       {disabled ? (
