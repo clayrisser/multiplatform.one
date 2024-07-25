@@ -43,6 +43,7 @@ export type GlobalProviderProps = PropsWithChildren &
 export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, theme, ...props }: GlobalProviderProps) {
   const debug = config.get('DEBUG') === '1';
   const keycloakDisabled = !keycloak || config.get('KEYCLOAK_ENABLED') !== '1';
+
   return (
     <GlobalTanstackProvider debug={debug}>
       <ThemeProvider cookies={cookies} theme={theme}>

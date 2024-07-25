@@ -45,7 +45,7 @@ export function Authenticated({ children, disabled, loggedOutComponent, loadingC
     if (!keycloak || MultiPlatform.isIframe || MultiPlatform.isServer || keycloak.authenticated || tokensFromQuery) {
       return;
     }
-    keycloak.login({
+    keycloak?.login({
       redirectUri: authConfig.loginRedirectUri,
     });
   }, [keycloak?.authenticated]);
