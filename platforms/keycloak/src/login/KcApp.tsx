@@ -54,7 +54,6 @@ function Provider({ children }: { children?: ReactNode }) {
 }
 
 export default function KcApp({ kcContext }: { kcContext: KcContext }) {
-  console.log('KcContextId =====>>>>', kcContext.pageId);
   const i18n = useI18n({ kcContext });
   if (i18n === null) return <Provider />;
   return (

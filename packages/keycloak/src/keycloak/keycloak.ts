@@ -158,7 +158,6 @@ export class Keycloak {
     this.idToken = undefined;
     this.refreshToken = undefined;
     this.token = undefined;
-    console.log('------------NOW CALLING------');
     if (this.keycloakClient) {
       await this.keycloakClient.login(options);
     } else if (MultiPlatform.isNext && !MultiPlatform.isServer) {

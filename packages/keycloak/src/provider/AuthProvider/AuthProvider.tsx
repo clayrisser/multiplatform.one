@@ -255,11 +255,11 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
           try {
             await keycloakClient.updateToken(5);
           } catch (err) {
-            setKeycloak(new Keycloak(keycloakConfig));
+            setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
           }
         };
         const authenticated = await keycloakClient.init(initOptions);
-        setKeycloak(new Keycloak(keycloakConfig, authenticated ? keycloakClient : undefined));
+        setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
       })();
     }
   }, []);
