@@ -3,139 +3,268 @@ import type { PageProps } from 'keycloakify/login/pages/PageProps';
 import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
 import type { KcContext } from '../kcContext';
 import type { I18n } from '../i18n';
+import { FieldCheckbox, FieldInput, Paragraph, SubmitButton, YStack } from 'ui';
+import { useForm } from '@tanstack/react-form';
+import { useCallback, useRef, useState } from 'react';
+import { Eye, EyeOff } from '@tamagui/lucide-icons';
+import { FlatList, type GestureResponderEvent } from 'react-native';
+
+export interface LoginUpdatePasswordForm {
+  username: string;
+  password: string;
+  'password-new': string;
+  'password-confirm': string;
+  'logout-sessions': boolean;
+}
 
 export default function LoginUpdatePassword(
   props: PageProps<Extract<KcContext, { pageId: 'login-update-password.ftl' }>, I18n>,
 ) {
   const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
-
+  const formRef = useRef<HTMLFormElement | null>(null);
   const { getClassName } = useGetClassName({
     doUseDefaultCss,
     classes,
   });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handlePassword = useCallback(
+    (e: GestureResponderEvent) => {
+      e.preventDefault();
+      setShowPassword(!showPassword);
+    },
+    [showPassword],
+  );
 
   const { msg, msgStr } = i18n;
 
   const { url, messagesPerField, isAppInitiatedAction, username } = kcContext;
 
+  const [error, setError] = useState<{ newPassword?: string; confirmNewPassword?: string }>({});
+
+  const form = useForm({
+    defaultValues: {
+      username,
+      password: '',
+      'password-new': '',
+      'password-confirm': '',
+      ...(isAppInitiatedAction ? { 'logout-sessions': true } : {}),
+    },
+    onSubmit: ({ value }) => {
+      Object.entries(value).forEach(([name, value]) => {
+        if (!value) return;
+        const input = document.createElement('input');
+        input.name = name;
+        input.value = value === true ? 'on' : value;
+        input.type = 'hidden';
+        input.style.display = 'none';
+        formRef.current?.appendChild(input);
+      });
+      formRef.current?.submit();
+    },
+  });
+
+  function handleNewPassword(text: string) {
+    let errorMessage = '';
+
+    if (!text) {
+      errorMessage = 'Password is required';
+    } else {
+      const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\]{};':"\\|,.<>?])[A-Za-z\d!@#$%^&*()_+\-=\]{};':"\\|,.<>?]{6,15}$/;
+
+      if (!passwordRegex.test(text)) {
+        errorMessage =
+          'Password must have at least one lowercase letter, one uppercase letter, one number, one special character, and be between 6 and 15 characters long';
+      }
+    }
+
+    setError((prev) => ({ ...prev, newPassword: errorMessage }));
+  }
+
+  function handleConfirmPassword(text: string) {
+    if (!text) {
+      return setError((prev) => ({
+        ...prev,
+        confirmNewPassword: 'confirm password is required',
+      }));
+    }
+    if (text !== form.state.values['password-new']) {
+      return setError((prev) => ({
+        ...prev,
+        confirmNewPassword: 'password is not matching',
+      }));
+    }
+    return setError((prev) => ({
+      ...prev,
+      confirmNewPassword: '',
+    }));
+  }
+
   return (
     <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg('updatePasswordTitle')}>
-      <form id="kc-passwd-update-form" className={getClassName('kcFormClass')} action={url.loginAction} method="post">
-        <input
+      <form
+        id="kc-passwd-update-form"
+        ref={formRef}
+        className={getClassName('kcFormClass')}
+        action={url.loginAction}
+        method="post"
+      >
+        <FieldInput
+          // @ts-ignore
           type="text"
           id="username"
           name="username"
-          value={username}
           readOnly={true}
           autoComplete="username"
-          style={{ display: 'none' }}
+          display="none"
         />
-        <input
+
+        <FieldInput
+          // @ts-ignore
           type="password"
           id="password"
           name="password"
           autoComplete="current-password"
-          style={{ display: 'none' }}
+          display="none"
+          form={form}
+          required
         />
 
-        <div
-          className={clsx(
-            getClassName('kcFormGroupClass'),
-            messagesPerField.printIfExists('password', getClassName('kcFormGroupErrorClass')),
-          )}
+        <YStack
+        // className={clsx(
+        //   getClassName('kcFormGroupClass'),
+        //   messagesPerField.printIfExists('password', getClassName('kcFormGroupErrorClass')),
+        // )}
         >
-          <div className={getClassName('kcLabelWrapperClass')}>
-            <label htmlFor="password-new" className={getClassName('kcLabelClass')}>
-              {msg('passwordNew')}
-            </label>
-          </div>
-          <div className={getClassName('kcInputWrapperClass')}>
-            <input
+          <YStack position="relative">
+            <FieldInput
+              label={msg('passwordNew')}
+              // @ts-ignore
               type="password"
               id="password-new"
               name="password-new"
               autoFocus
+              form={form}
+              required
               autoComplete="new-password"
-              className={getClassName('kcInputClass')}
+              onChangeText={handleNewPassword}
+              inputProps={{
+                autoComplete: 'off',
+                secureTextEntry: !showPassword,
+              }}
             />
-          </div>
-        </div>
-
-        <div
-          className={clsx(
-            getClassName('kcFormGroupClass'),
-            messagesPerField.printIfExists('password-confirm', getClassName('kcFormGroupErrorClass')),
-          )}
+            <YStack
+              als="flex-end"
+              backgroundColor="transparent"
+              borderWidth={0}
+              top={36}
+              cursor="pointer"
+              onPress={handlePassword}
+              padding="$2.5"
+              position="absolute"
+              tabIndex={-1}
+              paddingLeft={4}
+            >
+              {showPassword ? <EyeOff size="$1.5" /> : <Eye size="$1.5" />}
+            </YStack>
+          </YStack>
+        </YStack>
+        {/* {error.newPassword && <Paragraph color="$red9">{error.newPassword}</Paragraph>} */}
+        {error.newPassword && (
+          <Paragraph color={error.newPassword === 'Password is required' ? '$red9' : '$yellow9'}>
+            {error.newPassword}
+          </Paragraph>
+        )}
+        <YStack
+        // className={clsx(
+        //   getClassName('kcFormGroupClass'),
+        //   messagesPerField.printIfExists('password-confirm', getClassName('kcFormGroupErrorClass')),
+        // )}
         >
-          <div className={getClassName('kcLabelWrapperClass')}>
-            <label htmlFor="password-confirm" className={getClassName('kcLabelClass')}>
-              {msg('passwordConfirm')}
-            </label>
-          </div>
-          <div className={getClassName('kcInputWrapperClass')}>
-            <input
+          <YStack position="relative">
+            <FieldInput
+              label={msg('passwordConfirm')}
+              // @ts-ignore
               type="password"
               id="password-confirm"
               name="password-confirm"
+              form={form}
               autoComplete="new-password"
-              className={getClassName('kcInputClass')}
+              onChangeText={handleConfirmPassword}
+              inputProps={{
+                autoComplete: 'off',
+                secureTextEntry: !showPassword,
+              }}
             />
-          </div>
-        </div>
+            <YStack
+              als="flex-end"
+              backgroundColor="transparent"
+              borderWidth={0}
+              top={36}
+              cursor="pointer"
+              onPress={handlePassword}
+              padding="$2.5"
+              position="absolute"
+              tabIndex={-1}
+              paddingLeft={4}
+            >
+              {showPassword ? <EyeOff size="$1.5" /> : <Eye size="$1.5" />}
+            </YStack>
+          </YStack>
+          {error.confirmNewPassword && <Paragraph color="$red9">{error.confirmNewPassword}</Paragraph>}
+        </YStack>
 
-        <div className={getClassName('kcFormGroupClass')}>
-          <div id="kc-form-options" className={getClassName('kcFormOptionsClass')}>
-            <div className={getClassName('kcFormOptionsWrapperClass')}>
+        <YStack className={getClassName('kcFormGroupClass')}>
+          <YStack id="kc-form-options" className={getClassName('kcFormOptionsClass')}>
+            <YStack className={getClassName('kcFormOptionsWrapperClass')}>
               {isAppInitiatedAction && (
-                <div className="checkbox">
-                  <label>
-                    <input type="checkbox" id="logout-sessions" name="logout-sessions" value="on" checked />
-                    {msgStr('logoutOtherSessions')}
-                  </label>
-                </div>
+                <YStack className="checkbox">
+                  <FieldCheckbox
+                    form={form}
+                    id="logout-sessions"
+                    name="logout-sessions"
+                    label={msgStr('logoutOtherSessions')}
+                    // @ts-ignore
+                    value="on"
+                    checked
+                  />
+                </YStack>
               )}
-            </div>
-          </div>
+            </YStack>
+          </YStack>
 
-          <div id="kc-form-buttons" className={getClassName('kcFormButtonsClass')}>
+          <YStack id="kc-form-buttons" className={getClassName('kcFormButtonsClass')}>
             {isAppInitiatedAction ? (
               <>
-                <input
-                  className={clsx(
-                    getClassName('kcButtonClass'),
-                    getClassName('kcButtonPrimaryClass'),
-                    getClassName('kcButtonLargeClass'),
-                  )}
-                  type="submit"
-                  defaultValue={msgStr('doSubmit')}
-                />
-                <button
-                  className={clsx(
-                    getClassName('kcButtonClass'),
-                    getClassName('kcButtonDefaultClass'),
-                    getClassName('kcButtonLargeClass'),
-                  )}
+                <SubmitButton form={form}>{msgStr('doSubmit')}</SubmitButton>
+                <SubmitButton
+                  form={form}
+                  // @ts-ignore
                   type="submit"
                   name="cancel-aia"
                   value="true"
                 >
                   {msg('doCancel')}
-                </button>
+                </SubmitButton>
               </>
             ) : (
-              <input
-                className={clsx(
-                  getClassName('kcButtonClass'),
-                  getClassName('kcButtonPrimaryClass'),
-                  getClassName('kcButtonBlockClass'),
-                  getClassName('kcButtonLargeClass'),
-                )}
-                type="submit"
-                value={msgStr('doSubmit')}
-              />
+              // <input
+              //   className={clsx(
+              //     getClassName('kcButtonClass'),
+              //     getClassName('kcButtonPrimaryClass'),
+              //     getClassName('kcButtonBlockClass'),
+              //     getClassName('kcButtonLargeClass'),
+              //   )}
+              //   type="submit"
+              //   value={msgStr('doSubmit')}
+              // />
+              <SubmitButton bg="$backgroundFocus" form={form}>
+                {msgStr('doSubmit')}
+              </SubmitButton>
             )}
-          </div>
-        </div>
+          </YStack>
+        </YStack>
       </form>
     </Template>
   );
