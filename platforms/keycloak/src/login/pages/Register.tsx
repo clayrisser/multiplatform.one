@@ -26,26 +26,31 @@ export default function Register({
 }: PageProps<Extract<KcContext, { pageId: 'register.ftl' }>, I18n>) {
   const { url, register, realm, passwordRequired, recaptchaRequired, recaptchaSiteKey } = kcContext;
   const { msg } = i18n;
-  const [registerForm] = React.useState<RegisterForm>(register.formData);
   const [showPassword, setShowPassword] = React.useState(false);
   const formRef = useRef<HTMLFormElement | null>(null);
   const [error, setError] = useState<RegisterForm>({});
 
+  const mainFields = ['firstName', 'lastName', 'email', 'username', 'password', 'password-confirm'];
+  // @ts-ignore
+  const extraFields = Object.keys(register?.attributesByName || {}).filter((field) => !mainFields.includes(field));
+
   const form = useForm({
     defaultValues: {
-      firstName: registerForm.firstName,
-      lastName: registerForm.lastName,
-      email: registerForm.email,
-      username: registerForm.username,
+      firstName: register.formData.firstName || '',
+      lastName: register.formData.lastName || '',
+      email: register.formData.email || '',
+      username: register.formData.username || '',
+      ...Object.fromEntries(extraFields.map((field) => [field, ''])),
       password: '',
       'password-confirm': '',
     },
+
     onSubmit: async ({ value }) => {
       if (!validateForm(value)) return;
       Object.entries(value).forEach(([name, value]) => {
         const input = document.createElement('input');
         input.name = name;
-        input.value = value || '';
+        input.value = value.trim() || '';
         input.type = 'hidden';
         input.style.display = 'none';
         formRef.current?.appendChild(input);
@@ -60,12 +65,6 @@ export default function Register({
         return 'first name';
       case 'lastName':
         return 'last name';
-      case 'email':
-        return 'email';
-      case 'username':
-        return 'username';
-      case 'password':
-        return 'password';
       case 'password-confirm':
         return 'confirm password';
       default:
@@ -76,11 +75,14 @@ export default function Register({
   function validateForm(value: RegisterForm) {
     let flag = true;
     Object.entries(value).forEach(([name, value]) => {
-      if (!value || value === '') {
-        setError((prev) => ({ ...prev, [name]: `${lookupField(name)} is required` }));
-        flag = false;
-      }
+      if (typeof value === 'string')
+        if (!value || value.trim() === '') {
+          setError((prev) => ({ ...prev, [name]: `${lookupField(name)} is required` }));
+          flag = false;
+        }
     });
+    console.log('value', value);
+    console.log('error', error);
     return flag;
   }
 
@@ -151,6 +153,7 @@ export default function Register({
       setError((prev) => ({ ...prev, 'password-confirm': '' }));
     }
   }
+  console.log('register component');
 
   return (
     <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg('registerTitle')}>
@@ -270,6 +273,23 @@ export default function Register({
               </YStack>
             </YStack>
           )}
+
+          {extraFields.map((field, index) => {
+            return (
+              <FieldInput
+                key={field}
+                form={form}
+                id={field}
+                label={field}
+                // @ts-ignore
+                name={field}
+                tabIndex={mainFields.length + 2 + (index + 1)}
+                inputProps={{
+                  autoComplete: 'off',
+                }}
+              />
+            );
+          })}
         </YStack>
 
         {recaptchaRequired && (
