@@ -8,7 +8,7 @@
   "dependencies": {
     "@graphiql/plugin-explorer": "^3.0.1",
     "@graphiql/toolkit": "^0.9.1",
-    "@multiplatform.one/components": "4.0.2",
+    "@multiplatform.one/components": "4.0.3",
     "@multiplatform.one/keycloak": "workspace:1.0.35",
     "@next/bundle-analyzer": "^14.2.3",
     "@sentry/react": "^8.8.0",
