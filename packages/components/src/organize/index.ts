@@ -24,3 +24,4 @@ export * from './SimpleCarousel';
 export * from './SimpleInput';
 export * from './SimpleListItem';
 export * from './SimpleTabs';
+export * from './SimpleParagraph';
