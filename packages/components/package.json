@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/components",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "sideEffects": [
     "*.css"
   ],
@@ -41,7 +41,7 @@
   "dependencies": {
     "@mdx-js/mdx": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
-    "@multiplatform.one/locales": "workspace:1.0.33",
+    "@multiplatform.one/locales": "workspace:1.0.34",
     "@tamagui/font-inter": "^1.100.3",
     "@tamagui/logo": "^1.100.3",
     "@tamagui/react-native-media-driver": "^1.100.3",
@@ -54,7 +54,7 @@
     "gray-matter": "^4.0.3",
     "hast-util-to-html": "8.0.4",
     "immer": "^10.1.1",
-    "multiplatform.one": "workspace:1.0.33",
+    "multiplatform.one": "workspace:1.0.34",
     "parse-numeric-range": "^1.3.0",
     "react-native-svg": "15.2.0",
     "refractor": "^4.8.1",
