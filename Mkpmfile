@@ -89,6 +89,10 @@ prisma/%:
 api/%:
 	@$(call make,api) $*
 
+.PHONY: frappe/%
+frappe/%:
+	@$(call make,frappe) $*
+
 .PHONY: version
 version:
 	@$(CHANGESET)

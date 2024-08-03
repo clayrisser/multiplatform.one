@@ -1,0 +1,38 @@
+include $(MKPM)/mkpm
+include $(MKPM)/chain
+include $(MKPM)/dotenv
+
+FRAPPE_BRANCH ?= version-15-hotfix
+# APP_NAME := $(shell eval "echo $$(cat /app/pyproject.toml 2>/dev/null | grep -E "^name\s*=" | cut -d'=' -f2)")
+
+.PHONY: install
+ifeq (,$(APP_NAME))
+install: frappe-bench/Procfile
+else
+install: frappe-bench/apps/$(APP_NAME)/pyproject.toml
+endif
+frappe-bench/apps/$(APP_NAME)/pyproject.toml: frappe-bench/Procfile
+	@if [ ! -d "frappe-bench/apps/$(APP_NAME)" ]; then \
+		ln -s /app frappe-bench/apps/$(APP_NAME); fi
+	@(cat frappe-bench/sites/apps.txt && echo "\n$(APP_NAME)") | uniq > frappe-bench/sites/_apps.txt && \
+		mv frappe-bench/sites/_apps.txt frappe-bench/sites/apps.txt
+	@frappe-bench/env/bin/python -m pip install --quiet --upgrade -e frappe-bench/apps/$(APP_NAME)
+	@cd frappe-bench && bench build --app scrum
+	@cd frappe-bench && bench --site localhost install-app $(APP_NAME)
+frappe-bench/Procfile:
+	@frappe-installer --apps-json apps.json --site-name localhost --frappe-branch $(FRAPPE_BRANCH)
+
+.PHONY: uninstall
+uninstall:
+	@rm -rf frappe-bench
+	@echo "SELECT CONCAT('DROP DATABASE \`', SCHEMA_NAME, '\`;') FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME LIKE '\\_%';" | \
+		mysql -hmariadb -uroot -p123 -N | mysql -hmariadb -uroot -p123
+
+.PHONY: reinstall
+reinstall: uninstall install
+
+.PHONY: dev
+dev:
+	@cd frappe/frappe-bench; \
+		. frappe/frappe-bench/env/bin/activate; \
+		honcho start web socketio watch schedule worker
