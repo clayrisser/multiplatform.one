@@ -23,6 +23,9 @@ include $(MKPM)/dotenv
 
 FRAPPE_BRANCH ?= version-15-hotfix
 APP_NAME := $(shell cat setup.py pyproject.toml 2>/dev/null | grep name | sed "s|['\",]||g" | sed 's|^[^=]*= *||g')
+FRAPPE_DATABASE_ENGINE := postgres
+FRAPPE_DATABASE_HOST := $(FRAPPE_DATABASE_ENGINE)
+FRAPPE_DATABASE_PASSWORD := P@ssw0rd
 SITE_NAME := localhost
 
 .PHONY: install
@@ -38,7 +41,13 @@ install: frappe-bench/Procfile
 		(cd "frappe-bench" && bench --site $(SITE_NAME) install-app "$(APP_NAME)"); \
 	fi
 frappe-bench/Procfile:
-	@frappe-installer --apps-json apps.json --site-name $(SITE_NAME) --frappe-branch $(FRAPPE_BRANCH)
+	@frappe-installer \
+		--apps-json apps.json \
+		--db-host $(FRAPPE_DATABASE_HOST) \
+		--db-root-password $(FRAPPE_DATABASE_PASSWORD) \
+		--db-type $(FRAPPE_DATABASE_ENGINE) \
+		--frappe-branch $(FRAPPE_BRANCH) \
+		--site-name $(SITE_NAME)
 	@cd frappe-bench && \
 		bench --site $(SITE_NAME) set-config -g developer_mode 1 && \
 		bench --site $(SITE_NAME) clear-cache
@@ -46,8 +55,13 @@ frappe-bench/Procfile:
 .PHONY: uninstall
 uninstall:
 	@rm -rf frappe-bench
+ifeq (postgres,$(FRAPPE_DATABASE_ENGINE))
+	@echo "SELECT 'DROP DATABASE ' || quote_ident(datname) || ';' FROM pg_database WHERE datname LIKE '%\_%' ESCAPE '\' AND datistemplate = false;" | \
+		PGPASSWORD=$(FRAPPE_DATABASE_PASSWORD) psql -hpostgres -Upostgres -t -A
+else
 	@echo "SELECT CONCAT('DROP DATABASE \`', SCHEMA_NAME, '\`;') FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME LIKE '\\_%';" | \
-		mysql -hmariadb -uroot -p123 -N | mysql -hmariadb -uroot -p123
+		mysql -hmariadb -uroot -p$(FRAPPE_DATABASE_PASSWORD) -N | mysql -hmariadb -uroot -p$(FRAPPE_DATABASE_PASSWORD)
+endif
 
 .PHONY: reinstall
 reinstall: uninstall install
