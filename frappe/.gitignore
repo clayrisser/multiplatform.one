@@ -1,1 +1,8 @@
+*.egg-info
+*.pyc
+*.swp
+.DS_Store
 /frappe-bench
+__pycache__
+node_modules
+tags

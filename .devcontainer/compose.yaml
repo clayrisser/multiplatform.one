@@ -2,7 +2,6 @@ services:
   devcontainer:
     image: registry.gitlab.com/bitspur/rock8s/images/frappe-devcontainer:latest
     command: sleep infinity
-    env_file: ../.env
     working_dir: /workspace/development
     volumes:
       - ..:/workspace/development:rw
