@@ -13,6 +13,7 @@
   "postAttachCommand": "sh ${containerWorkspaceFolder}/.devcontainer/postattach.sh",
   "shutdownAction": "stopCompose",
   "mounts": [
+    "source=profile,target=/home/frappe,type=volume",
     "source=${localEnv:HOME}/.ssh,target=/home/frappe/.ssh,type=bind,consistency=cached"
   ],
   "customizations": {
@@ -24,6 +25,7 @@
         "ms-vscode.live-server"
       ],
       "settings": {
+        "extensions.verifySignature": false,
         "terminal.integrated.defaultProfile.linux": "zsh",
         "terminal.integrated.profiles.linux": {
           "zsh": {
