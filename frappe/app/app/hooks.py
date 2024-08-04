@@ -1,8 +1,8 @@
-app_name = "core"
-app_title = "Core"
+app_name = "app"
+app_title = "App"
 app_publisher = "BitSpur"
-app_description = "core"
-app_email = "support@bitspur.com"
+app_description = "Frappe multiplatform.one app"
+app_email = "email@bitspur.com"
 app_license = "apache-2.0"
 # required_apps = []
 
@@ -10,15 +10,15 @@ app_license = "apache-2.0"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/core/css/core.css"
-# app_include_js = "/assets/core/js/core.js"
+# app_include_css = "/assets/app/css/app.css"
+# app_include_js = "/assets/app/js/app.js"
 
 # include js, css files in header of web template
-# web_include_css = "/assets/core/css/core.css"
-# web_include_js = "/assets/core/js/core.js"
+# web_include_css = "/assets/app/css/app.css"
+# web_include_js = "/assets/app/js/app.js"
 
 # include custom scss in every website theme (without file extension ".scss")
-# website_theme_scss = "core/public/scss/website"
+# website_theme_scss = "app/public/scss/website"
 
 # include js, css files in header of web form
 # webform_include_js = {"doctype": "public/js/doctype.js"}
@@ -36,7 +36,7 @@ app_license = "apache-2.0"
 # Svg Icons
 # ------------------
 # include app icons in desk
-# app_include_icons = "core/public/icons.svg"
+# app_include_icons = "app/public/icons.svg"
 
 # Home Pages
 # ----------
@@ -60,43 +60,43 @@ app_license = "apache-2.0"
 
 # add methods and filters to jinja environment
 # jinja = {
-# 	"methods": "core.utils.jinja_methods",
-# 	"filters": "core.utils.jinja_filters"
+# 	"methods": "app.utils.jinja_methods",
+# 	"filters": "app.utils.jinja_filters"
 # }
 
 # Installation
 # ------------
 
-# before_install = "core.install.before_install"
-# after_install = "core.install.after_install"
+# before_install = "app.install.before_install"
+# after_install = "app.install.after_install"
 
 # Uninstallation
 # ------------
 
-# before_uninstall = "core.uninstall.before_uninstall"
-# after_uninstall = "core.uninstall.after_uninstall"
+# before_uninstall = "app.uninstall.before_uninstall"
+# after_uninstall = "app.uninstall.after_uninstall"
 
 # Integration Setup
 # ------------------
 # To set up dependencies/integrations with other apps
 # Name of the app being installed is passed as an argument
 
-# before_app_install = "core.utils.before_app_install"
-# after_app_install = "core.utils.after_app_install"
+# before_app_install = "app.utils.before_app_install"
+# after_app_install = "app.utils.after_app_install"
 
 # Integration Cleanup
 # -------------------
 # To clean up dependencies/integrations with other apps
 # Name of the app being uninstalled is passed as an argument
 
-# before_app_uninstall = "core.utils.before_app_uninstall"
-# after_app_uninstall = "core.utils.after_app_uninstall"
+# before_app_uninstall = "app.utils.before_app_uninstall"
+# after_app_uninstall = "app.utils.after_app_uninstall"
 
 # Desk Notifications
 # ------------------
 # See frappe.core.notifications.get_notification_config
 
-# notification_config = "core.notifications.get_notification_config"
+# notification_config = "app.notifications.get_notification_config"
 
 # Permissions
 # -----------
@@ -135,39 +135,39 @@ app_license = "apache-2.0"
 
 # scheduler_events = {
 # 	"all": [
-# 		"core.tasks.all"
+# 		"app.tasks.all"
 # 	],
 # 	"daily": [
-# 		"core.tasks.daily"
+# 		"app.tasks.daily"
 # 	],
 # 	"hourly": [
-# 		"core.tasks.hourly"
+# 		"app.tasks.hourly"
 # 	],
 # 	"weekly": [
-# 		"core.tasks.weekly"
+# 		"app.tasks.weekly"
 # 	],
 # 	"monthly": [
-# 		"core.tasks.monthly"
+# 		"app.tasks.monthly"
 # 	],
 # }
 
 # Testing
 # -------
 
-# before_tests = "core.install.before_tests"
+# before_tests = "app.install.before_tests"
 
 # Overriding Methods
 # ------------------------------
 #
 # override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "core.event.get_events"
+# 	"frappe.desk.doctype.event.event.get_events": "app.event.get_events"
 # }
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
 # along with any modifications made in other Frappe apps
 # override_doctype_dashboards = {
-# 	"Task": "core.task.get_dashboard_data"
+# 	"Task": "app.task.get_dashboard_data"
 # }
 
 # exempt linked doctypes from being automatically cancelled
@@ -181,13 +181,13 @@ app_license = "apache-2.0"
 
 # Request Events
 # ----------------
-# before_request = ["core.utils.before_request"]
-# after_request = ["core.utils.after_request"]
+# before_request = ["app.utils.before_request"]
+# after_request = ["app.utils.after_request"]
 
 # Job Events
 # ----------
-# before_job = ["core.utils.before_job"]
-# after_job = ["core.utils.after_job"]
+# before_job = ["app.utils.before_job"]
+# after_job = ["app.utils.after_job"]
 
 # User Data Protection
 # --------------------
@@ -217,7 +217,7 @@ app_license = "apache-2.0"
 # --------------------------------
 
 # auth_hooks = [
-# 	"core.auth.validate"
+# 	"app.auth.validate"
 # ]
 
 # Automatically update python controller files with type annotations for this app.

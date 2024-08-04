@@ -3,22 +3,22 @@ include $(MKPM)/chain
 include $(MKPM)/dotenv
 
 FRAPPE_BRANCH ?= version-15-hotfix
-# APP_NAME := $(shell eval "echo $$(cat /app/pyproject.toml 2>/dev/null | grep -E "^name\s*=" | cut -d'=' -f2)")
 
 .PHONY: install
-ifeq (,$(APP_NAME))
 install: frappe-bench/Procfile
-else
-install: frappe-bench/apps/$(APP_NAME)/pyproject.toml
-endif
-frappe-bench/apps/$(APP_NAME)/pyproject.toml: frappe-bench/Procfile
-	@if [ ! -d "frappe-bench/apps/$(APP_NAME)" ]; then \
-		ln -s /app frappe-bench/apps/$(APP_NAME); fi
-	@(cat frappe-bench/sites/apps.txt && echo "\n$(APP_NAME)") | uniq > frappe-bench/sites/_apps.txt && \
-		mv frappe-bench/sites/_apps.txt frappe-bench/sites/apps.txt
-	@frappe-bench/env/bin/python -m pip install --quiet --upgrade -e frappe-bench/apps/$(APP_NAME)
-	@cd frappe-bench && bench build --app scrum
-	@cd frappe-bench && bench --site localhost install-app $(APP_NAME)
+	@for p in /workspace/development/frappe/*; do \
+		if [ -d "$$p" ] && [ "$$(basename "$$p")" != "frappe-bench" ]; then \
+			_NAME="$$(basename "$$p")"; \
+			if [ ! -L "/workspace/development/frappe/frappe-bench/apps/$$_NAME" ]; then \
+				ln -s "$$p" "/workspace/development/frappe/frappe-bench/apps/$$_NAME"; \
+			fi; \
+			frappe-bench/env/bin/python -m pip install --upgrade -e "/workspace/development/frappe/frappe-bench/apps/$$_NAME"; \
+			(echo "$$_NAME" && cat "/workspace/development/frappe/frappe-bench/sites/apps.txt") | sort | uniq > "/workspace/development/frappe/frappe-bench/sites/_apps.txt"; \
+			mv "/workspace/development/frappe/frappe-bench/sites/_apps.txt" "/workspace/development/frappe/frappe-bench/sites/apps.txt"; \
+			(cd "/workspace/development/frappe/frappe-bench" && bench build --app "$$_NAME"); \
+			(cd "/workspace/development/frappe/frappe-bench" && bench --site localhost install-app "$$_NAME"); \
+		fi; \
+	done
 frappe-bench/Procfile:
 	@frappe-installer --apps-json apps.json --site-name localhost --frappe-branch $(FRAPPE_BRANCH)
 
