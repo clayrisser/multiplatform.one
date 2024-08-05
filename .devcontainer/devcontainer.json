@@ -1,0 +1,39 @@
+{
+  "name": "Frappe Bench",
+  "forwardPorts": [
+    8000,
+    9000,
+    6787
+  ],
+  "remoteUser": "frappe",
+  "dockerComposeFile": "compose.yaml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspace/development",
+  "features": {},
+  "postAttachCommand": "sh ${containerWorkspaceFolder}/.devcontainer/postattach.sh",
+  "shutdownAction": "stopCompose",
+  "mounts": [
+    "source=profile-frappe,target=/home/frappe,type=volume",
+    "source=${localEnv:HOME}/.ssh,target=/home/frappe/.ssh,type=bind,consistency=cached"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.black-formatter",
+        "ms-python.debugpy",
+        "ms-python.python",
+        "ms-vscode.live-server"
+      ],
+      "settings": {
+        "extensions.verifySignature": false,
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/bin/zsh"
+          }
+        },
+        "debug.node.autoAttach": "disabled"
+      }
+    }
+  }
+}
