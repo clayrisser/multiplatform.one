@@ -1,0 +1,13 @@
+[project]
+name = "app"
+authors = []
+description = "Frappe multiplatform.one app"
+requires-python = ">=3.10"
+dynamic = ["version"]
+dependencies = []
+
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.bench.dev-dependencies]

@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/utils",
-  "version": "0.0.21",
+  "version": "0.1.0",
   "description": "utilities for multiplatform.one",
   "sideEffects": false,
   "keywords": [

@@ -49,7 +49,7 @@ export const main = (args) => (
   </SimpleDialog>
 );
 const mainArgs: SimpleDialogProps = {
-  title: 'Simple Dialog Example',
+  // title: 'Simple Dialog Example',
   description: 'This is a simple dialog example.',
   withoutCloseButton: false,
 };

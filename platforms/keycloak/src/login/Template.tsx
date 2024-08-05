@@ -23,8 +23,8 @@
 import type { I18n } from './i18n';
 import type { KcContext } from './kcContext';
 import type { TemplateProps } from 'keycloakify/login/TemplateProps';
-import { Share, Info } from '@tamagui/lucide-icons';
-import { YStack, Card, XStack, Text, Anchor, Label, Input, H5, SimplePopover, Button, H1 } from 'ui';
+import { Share, Info, AlertTriangle, CheckCircle, XCircle } from '@tamagui/lucide-icons';
+import { YStack, Card, XStack, Text, Anchor, Label, Input, H5, SimplePopover, Button, H1, ScrollView } from 'ui';
 import { clsx } from 'keycloakify/tools/clsx';
 import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
 import { usePrepareTemplate } from 'keycloakify/lib/usePrepareTemplate';
@@ -61,16 +61,16 @@ export default function Template({
   });
   useState(() => {
     document.title = i18n.msgStr('loginTitle', kcContext.realm.displayName);
+    document.body.className = '';
   });
   if (!isReady) return null;
   return (
-    <>
-      <XStack fullscreen backgroundColor="$background" />
-      <YStack position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
-        <H1 marginVertical="$6" textTransform="capitalize" letterSpacing={0.5} textAlign="center">
+    <YStack fullscreen>
+      <ScrollView justifyContent="center" alignItems="center" backgroundColor="$background" padding="$4">
+        {/* <H1 marginVertical="$6" textTransform="capitalize" letterSpacing={0.5} textAlign="center">
           {msg('loginTitleHtml', realm.displayNameHtml)}!!!
-        </H1>
-        <Card width={450} elevation="$4">
+        </H1> */}
+        <Card $sm={{ width: '100%' }} width={450} elevation="$4">
           <Card.Background>{/* <Image src={keycloakifyLogoPngUrl} alt="Keycloakify logo" /> */}</Card.Background>
           <Card.Header>
             <YStack>
@@ -130,12 +130,11 @@ export default function Template({
             <YStack width="100%" padding="$4" id="kc-content">
               <YStack id="kc-content-wrapper">
                 {displayMessage && message !== undefined && (message.type !== 'warning' || !isAppInitiatedAction) && (
-                  <XStack ai="center" gap="$1" bg="$backgroundFocus" borderRadius="$4" padding="$4">
-                    <Info size={18} />
-                    {message.type === 'success' && <Text />}
-                    {message.type === 'warning' && <Text />}
-                    {message.type === 'error' && <Text />}
-                    {message.type === 'info' && <Text />}
+                  <XStack ai="center" gap="$1" bg="$backgroundFocus" borderRadius="$4" padding="$4" width="100%">
+                    {message.type === 'success' && <CheckCircle size={18} />}
+                    {message.type === 'warning' && <AlertTriangle size={18} />}
+                    {message.type === 'error' && <XCircle size={18} />}
+                    {message.type === 'info' && <Info size={18} />}
                     <Text
                       dangerouslySetInnerHTML={{
                         __html: message.summary,
@@ -183,7 +182,7 @@ export default function Template({
             </YStack>
           </YStack>
         </Card>
-      </YStack>
-    </>
+      </ScrollView>
+    </YStack>
   );
 }

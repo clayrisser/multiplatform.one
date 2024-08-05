@@ -62,7 +62,7 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
         MultiPlatform.isIframe
           ? ('refreshToken' in query && (query.refreshToken?.toString() || true)) ||
               (persist && authState.refreshToken) ||
-              false
+              undefined
           : undefined,
       ),
     [],
@@ -71,13 +71,13 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
     refreshToken: initialRefreshToken,
     token: validOrRefreshableToken(
       MultiPlatform.isIframe
-        ? ('token' in query && (query.token?.toString() || true)) || (persist && authState.token) || false
+        ? ('token' in query && (query.token?.toString() || true)) || (persist && authState.token) || undefined
         : undefined,
       initialRefreshToken,
     ),
     idToken: validOrRefreshableToken(
       MultiPlatform.isIframe
-        ? ('idToken' in query && (query.idToken?.toString() || true)) || (persist && authState.idToken) || false
+        ? ('idToken' in query && (query.idToken?.toString() || true)) || (persist && authState.idToken) || undefined
         : undefined,
       initialRefreshToken,
     ),
@@ -194,7 +194,7 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
 
   const keycloakClient = useMemo(
     () =>
-      MultiPlatform.isIframe && keycloakConfig
+      (!MultiPlatform.isNext || MultiPlatform.isElectron || MultiPlatform.isIframe) && keycloakConfig
         ? new KeycloakClient({
             url: keycloakConfig.url,
             realm: keycloakConfig.realm,
@@ -205,7 +205,7 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
   );
 
   const initOptions = useMemo(() => {
-    if (!MultiPlatform.isIframe) return;
+    if (MultiPlatform.isNext && !MultiPlatform.isElectron && !MultiPlatform.isIframe) return;
     const initOptions: KeycloakInitOptions = {
       ...defaultKeycloakInitOptions,
       ...keycloakInitOptions,
@@ -255,11 +255,11 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
           try {
             await keycloakClient.updateToken(5);
           } catch (err) {
-            setKeycloak(new Keycloak(keycloakConfig));
+            setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
           }
         };
         const authenticated = await keycloakClient.init(initOptions);
-        setKeycloak(new Keycloak(keycloakConfig, authenticated ? keycloakClient : undefined));
+        setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
       })();
     }
   }, []);
@@ -274,8 +274,10 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
     );
   }
 
-  if (MultiPlatform.isElectron) return render();
-  return <SessionProvider {...sessionProvider}>{render()}</SessionProvider>;
+  if (MultiPlatform.isNext && !MultiPlatform.isElectron) {
+    return <SessionProvider {...sessionProvider}>{render()}</SessionProvider>;
+  }
+  return render();
 }
 
 const defaultKeycloakInitOptions: KeycloakInitOptions = {

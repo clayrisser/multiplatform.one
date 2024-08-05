@@ -1,34 +1,11 @@
-/**
- * File: /src/login/pages/Register.tsx
- * Project: @platform/keycloak
- * File Created: 12-06-2024 09:07:27
- * Author: Clay Risser
- * Author: Joseph Garrone
- * -----
- * BitSpur (c) Copyright 2021 - 2024
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import React from 'react';
 import type { GestureResponderEvent } from 'react-native';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../kcContext';
 import type { PageProps } from 'keycloakify/login/pages/PageProps';
-import { YStack, Button, Anchor, Text, FieldInput, SubmitButton, FieldCheckbox } from 'ui';
+import { YStack, Anchor, Text, FieldInput, SubmitButton, Paragraph } from 'ui';
 import { useForm } from '@tanstack/react-form';
 import { Eye, EyeOff } from '@tamagui/lucide-icons';
-import { clsx } from 'keycloakify/tools/clsx';
 import { useState, useRef, useCallback } from 'react';
 
 export interface RegisterForm {
@@ -37,8 +14,9 @@ export interface RegisterForm {
   email?: string;
   username?: string;
   password?: string;
-  passwordConfirm?: string;
+  'password-confirm'?: string;
 }
+
 export default function Register({
   kcContext,
   i18n,
@@ -48,25 +26,31 @@ export default function Register({
 }: PageProps<Extract<KcContext, { pageId: 'register.ftl' }>, I18n>) {
   const { url, register, realm, passwordRequired, recaptchaRequired, recaptchaSiteKey } = kcContext;
   const { msg } = i18n;
-  const [registerForm] = React.useState<RegisterForm>(register.formData);
   const [showPassword, setShowPassword] = React.useState(false);
   const formRef = useRef<HTMLFormElement | null>(null);
+  const [error, setError] = useState<RegisterForm>({});
+
+  const mainFields = ['firstName', 'lastName', 'email', 'username', 'password', 'password-confirm'];
+  // @ts-ignore
+  const extraFields = Object.keys(register?.attributesByName || {}).filter((field) => !mainFields.includes(field));
 
   const form = useForm({
     defaultValues: {
-      firstName: registerForm.firstName,
-      lastName: registerForm.lastName,
-      email: registerForm.email,
-      username: registerForm.username,
+      firstName: register.formData.firstName || '',
+      lastName: register.formData.lastName || '',
+      email: register.formData.email || '',
+      username: register.formData.username || '',
+      ...Object.fromEntries(extraFields.map((field) => [field, ''])),
       password: '',
-      passwordConfirm: '',
+      'password-confirm': '',
     },
+
     onSubmit: async ({ value }) => {
+      if (!validateForm(value)) return;
       Object.entries(value).forEach(([name, value]) => {
-        if (!value) return;
         const input = document.createElement('input');
         input.name = name;
-        input.value = value;
+        input.value = value.trim() || '';
         input.type = 'hidden';
         input.style.display = 'none';
         formRef.current?.appendChild(input);
@@ -75,11 +59,32 @@ export default function Register({
     },
   });
 
-  // function handleRegister(e: GestureResponderEvent) {
-  //   e.preventDefault();
-  //   if (!registerRef.current || !registerRef.current.onSubmit) return;
-  //   registerRef.current.onSubmit(registerForm);
-  // }
+  function lookupField(field: string) {
+    switch (field) {
+      case 'firstName':
+        return 'first name';
+      case 'lastName':
+        return 'last name';
+      case 'password-confirm':
+        return 'confirm password';
+      default:
+        return field;
+    }
+  }
+
+  function validateForm(value: RegisterForm) {
+    let flag = true;
+    Object.entries(value).forEach(([name, value]) => {
+      if (typeof value === 'string')
+        if (!value || value.trim() === '') {
+          setError((prev) => ({ ...prev, [name]: `${lookupField(name)} is required` }));
+          flag = false;
+        }
+    });
+    console.log('value', value);
+    console.log('error', error);
+    return flag;
+  }
 
   const handlePassword = useCallback(
     (e: GestureResponderEvent) => {
@@ -88,6 +93,67 @@ export default function Register({
     },
     [showPassword],
   );
+
+  function handleChangeFirstName(value: string) {
+    if (!value || value === '') {
+      setError((prev) => ({ ...prev, firstName: 'first name is required' }));
+    } else {
+      setError((prev) => ({ ...prev, firstName: '' }));
+    }
+  }
+
+  function handleChangeLastName(value: string) {
+    if (!value || value === '') {
+      setError((prev) => ({ ...prev, lastName: 'last name is required' }));
+    } else {
+      setError((prev) => ({ ...prev, lastName: '' }));
+    }
+  }
+
+  function handleChangeEmail(value: string) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!value || value === '') {
+      setError((prev) => ({ ...prev, email: 'email is required' }));
+    } else if (!emailRegex.test(value)) {
+      setError((prev) => ({ ...prev, email: 'invalid email format' }));
+    } else {
+      setError((prev) => ({ ...prev, email: '' }));
+    }
+  }
+
+  function handleChangeUsername(value: string) {
+    if (!value || value === '') {
+      setError((prev) => ({ ...prev, username: 'username is required' }));
+    } else {
+      setError((prev) => ({ ...prev, username: '' }));
+    }
+  }
+
+  function handleChangePassword(value: string) {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,15}$/;
+    if (!value || value === '') {
+      setError((prev) => ({ ...prev, password: 'password is required' }));
+    } else if (!passwordRegex.test(value)) {
+      setError((prev) => ({
+        ...prev,
+        password:
+          'Password must have min 6 and max 15 characters, one special character, one lowercase, one uppercase, and at least one number',
+      }));
+    } else {
+      setError((prev) => ({ ...prev, password: '' }));
+    }
+  }
+
+  function handleChangePasswordConfirm(value: string) {
+    if (!value || value === '') {
+      setError((prev) => ({ ...prev, 'password-confirm': 'confirm password is required' }));
+    } else if (value !== form.state.values.password) {
+      setError((prev) => ({ ...prev, 'password-confirm': 'passwords do not match' }));
+    } else {
+      setError((prev) => ({ ...prev, 'password-confirm': '' }));
+    }
+  }
+  console.log('register component');
 
   return (
     <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg('registerTitle')}>
@@ -103,7 +169,9 @@ export default function Register({
               autoComplete: 'off',
               autoFocus: true,
             }}
+            onChangeText={handleChangeFirstName}
           />
+          {error.firstName && <Paragraph color="$red9">{error.firstName}</Paragraph>}
           <FieldInput
             form={form}
             id="lastName"
@@ -113,7 +181,9 @@ export default function Register({
             inputProps={{
               autoComplete: 'off',
             }}
+            onChangeText={handleChangeLastName}
           />
+          {error.lastName && <Paragraph color="$red9">{error.lastName}</Paragraph>}
           <FieldInput
             form={form}
             id="email"
@@ -123,7 +193,9 @@ export default function Register({
             inputProps={{
               autoComplete: 'off',
             }}
+            onChangeText={handleChangeEmail}
           />
+          {error.email && <Paragraph color="$red9">{error.email}</Paragraph>}
           {!realm.registrationEmailAsUsername && (
             <FieldInput
               form={form}
@@ -134,8 +206,10 @@ export default function Register({
               inputProps={{
                 autoComplete: 'off',
               }}
+              onChangeText={handleChangeUsername}
             />
           )}
+          {error.username && <Paragraph color="$red9">{error.username}</Paragraph>}
           {passwordRequired && (
             <YStack>
               <FieldInput
@@ -148,7 +222,13 @@ export default function Register({
                   autoComplete: 'off',
                   secureTextEntry: !showPassword,
                 }}
+                onChangeText={handleChangePassword}
               />
+              {error.password && (
+                <Paragraph color={error.password === 'password is required' ? '$red9' : '$yellow9'}>
+                  {error.password}
+                </Paragraph>
+              )}
               <YStack
                 als="flex-end"
                 backgroundColor="transparent"
@@ -162,34 +242,56 @@ export default function Register({
               >
                 {showPassword ? <EyeOff size="$1.5" /> : <Eye size="$1.5" />}
               </YStack>
-              <FieldInput
-                form={form}
-                id="password-confirm"
-                label={msg('passwordConfirm')}
-                // @ts-ignore
-                name="password-confirm"
-                tabIndex={5}
-                inputProps={{
-                  autoComplete: 'off',
-                  secureTextEntry: !showPassword,
-                }}
-              />
-              <YStack
-                als="flex-end"
-                backgroundColor="transparent"
-                borderWidth={0}
-                top={116}
-                cursor="pointer"
-                onPress={handlePassword}
-                padding="$2.5"
-                position="absolute"
-                tabIndex={-1}
-              >
-                {showPassword ? <EyeOff size="$1.5" /> : <Eye size="$1.5" />}
+              <YStack position="relative">
+                <FieldInput
+                  form={form}
+                  id="password-confirm"
+                  label={msg('passwordConfirm')}
+                  // @ts-ignore
+                  name="password-confirm"
+                  tabIndex={5}
+                  inputProps={{
+                    autoComplete: 'off',
+                    secureTextEntry: !showPassword,
+                  }}
+                  onChangeText={handleChangePasswordConfirm}
+                />
+                {error['password-confirm'] && <Paragraph color="$red9">{error['password-confirm']}</Paragraph>}
+                <YStack
+                  als="flex-end"
+                  backgroundColor="transparent"
+                  borderWidth={0}
+                  top={36}
+                  cursor="pointer"
+                  onPress={handlePassword}
+                  padding="$2.5"
+                  position="absolute"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size="$1.5" /> : <Eye size="$1.5" />}
+                </YStack>
               </YStack>
             </YStack>
           )}
+
+          {extraFields.map((field, index) => {
+            return (
+              <FieldInput
+                key={field}
+                form={form}
+                id={field}
+                label={field}
+                // @ts-ignore
+                name={field}
+                tabIndex={mainFields.length + 2 + (index + 1)}
+                inputProps={{
+                  autoComplete: 'off',
+                }}
+              />
+            );
+          })}
         </YStack>
+
         {recaptchaRequired && (
           <YStack>
             <YStack>
@@ -204,7 +306,15 @@ export default function Register({
             </Text>
           </YStack>
           <YStack id="kc-form-buttons">
-            <Button bg="$backgroundFocus">{msg('doRegister')}</Button>
+            <SubmitButton
+              // disabled={disableRegisterButton}
+              bg="$backgroundFocus"
+              form={form}
+              id="kc-register"
+              tabIndex={6}
+            >
+              <Text fontSize={16}>{msg('doRegister')}</Text>
+            </SubmitButton>
           </YStack>
         </YStack>
       </form>

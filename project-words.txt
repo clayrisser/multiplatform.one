@@ -93,9 +93,11 @@ datasources
 datetimepicker
 dbateman
 debounce
+debugpy
 decrypt
 dedupe
 defs
+devcontainer
 devlop
 devtool
 devtools
@@ -295,6 +297,7 @@ plusplus
 pnpm
 polyline
 pos
+postattach
 postgres
 postgresql
 powerhooks
