@@ -38,7 +38,7 @@ export type AlterDialogSimpleProps = AlertDialogProps & {
   cancel?: string;
   title?: ReactNode;
   trigger?: JSX.Element | undefined;
-  description: ReactNode;
+  description?: ReactNode;
   titleStyle?: AlertDialogTitleProps;
   descriptionStyle?: AlertDialogDescriptionProps;
   contentStyle?: AlertDialogContentProps;
