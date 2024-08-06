@@ -48,8 +48,12 @@ function HomeScreen() {
     href: '/user/alice',
   });
   const authProps = useLink({
-    href: 'auth'
-  })
+    href: 'auth',
+  });
+
+  const formProps = useLink({
+    href: 'form',
+  });
   const { data, isLoading } = useGqlQuery({ query: AuthQuery, queryKey: ['userAuth'], variables: {} });
 
   const countResponse = useGqlSubscription({ query: CountSubscription, queryKey: ['count'] });
@@ -74,6 +78,7 @@ function HomeScreen() {
         <Button {...linkProps}>{t('screens.home.link')}</Button>
       </XStack>
       <Button {...authProps}>Auth</Button>
+      <Button {...formProps}>Form</Button>
       <SheetDemo />
     </YStack>
   );
@@ -117,4 +122,4 @@ function SheetDemo() {
   );
 }
 
-export default (withDefaultLayout(HomeScreen));
+export default withDefaultLayout(HomeScreen);

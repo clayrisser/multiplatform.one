@@ -87,8 +87,8 @@ const FormScreen = () => {
       const email = value.email;
       console.log(email);
       if (!isEmailValid(email)) {
-        // toastController.show('Invalid email address');
-        setOpen(true);
+        toastController.show('Invalid email address');
+        // setOpen(true);
         return; // Prevent form submission
       }
 
@@ -143,7 +143,7 @@ const FormScreen = () => {
           </YStack>
         </YStack>
       </YStack>
-      <SimpleAlertDialog
+      {/* <SimpleAlertDialog
         // onAccept={() => console.log('hello')}
         // open={open}
         // onOpenChange={setOpen}
@@ -160,7 +160,7 @@ const FormScreen = () => {
             <Button>Submit</Button>
           </AlertDialog.Action>
         </YStack>
-      </SimpleAlertDialog>
+      </SimpleAlertDialog> */}
     </ScrollView>
   );
 };
