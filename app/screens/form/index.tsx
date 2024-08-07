@@ -1,6 +1,27 @@
 /**
  * File: /screens/form/index.tsx
  * Project: app
+ * File Created: 07-08-2024 11:44:41
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * File: /screens/form/index.tsx
+ * Project: app
  * File Created: 06-08-2024 15:43:30
  * Author: Clay Risser
  * -----
@@ -20,9 +41,10 @@
  */
 import React, { useState } from 'react';
 import {
-  AlertDialog,
-  Button,
   Card,
+  // AlertDialog,
+  // Button,
+  // Card,
   FieldCheckbox,
   FieldInput,
   FieldRadioGroup,
@@ -33,7 +55,7 @@ import {
   Label,
   ScrollView,
   Select,
-  SimpleAlertDialog,
+  // SimpleAlertDialog,
   SubmitButton,
   YStack,
 } from 'ui';
@@ -61,7 +83,7 @@ export interface RegisterForm {
 // Form component
 const FormScreen = () => {
   const toastController = useToastController();
-  const [open, setOpen] = useState<boolean>(false);
+  // const [open, setOpen] = useState<boolean>(false);
   const isEmailValid = (email: string) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
@@ -82,14 +104,33 @@ const FormScreen = () => {
       javaScript: false,
     },
     onSubmit: ({ value }) => {
-      console.log('Form values on submit:', value);
-
       const email = value.email;
+      const firstName = value.firstName;
+      const lastName = value.lastName;
+      const gender = value.gender;
+      const introduction = value.introduction;
+      if (!firstName || !lastName || !email || !gender || !introduction) {
+        toastController.show('Enter all Required details');
+        return;
+      }
+
       console.log(email);
       if (!isEmailValid(email)) {
         toastController.show('Invalid email address');
         // setOpen(true);
         return; // Prevent form submission
+      }
+      if (value.c) {
+        value.languages.push('C');
+      }
+      if (value.java) {
+        value.languages.push('Java');
+      }
+      if (value.python) {
+        value.languages.push('Python');
+      }
+      if (value.javaScript) {
+        value.languages.push('JavaScript');
       }
 
       console.log('Form submitted with values:', value);
@@ -98,52 +139,64 @@ const FormScreen = () => {
   });
 
   return (
-    <ScrollView alignItems="center">
-      <YStack>
-        <YStack w={600} marginTop="$2">
-          <Heading color="white" bg="$blue10">
-            Fill The Form
-          </Heading>
-          <YStack gap="$4" flexWrap="wrap">
-            <FieldInput form={form} label="Enter firstName" name="firstName" required />
-            <FieldInput form={form} label="Enter lastName" name="lastName" required />
-            <FieldInput form={form} label="Enter email" name="email" required />
-            <FieldRadioGroup gap="$0.8" label="Select gender" name="gender" required form={form}>
-              <YStack paddingLeft="$6" gap="$2">
-                <FieldRadioGroupItem value="male">
-                  <Label>Male</Label>
-                </FieldRadioGroupItem>
-                <FieldRadioGroupItem value="female">
-                  <Label>Female</Label>
-                </FieldRadioGroupItem>
+    <YStack bg="$gray10Light" ai="center" jc="center">
+      <Card w={600} margin="$2">
+        <ScrollView alignItems="center">
+          <YStack>
+            <YStack w={500} marginTop="$2">
+              <YStack w={590} bg="$blue10" margin="$2" marginLeft="$-8" marginRight="$-1">
+                <Heading color="white" ai="center" jc="center" marginLeft="$20">
+                  Fill The Form
+                </Heading>
               </YStack>
-            </FieldRadioGroup>
-            <Label>Select language</Label>
-            <YStack paddingLeft="$6" marginTop="$-6">
-              <FieldCheckbox label="C" name="c" form={form} />
-              <FieldCheckbox label="Java" name="java" form={form} />
-              <FieldCheckbox label="Python" name="python" form={form} />
-              <FieldCheckbox label="JavaScript" name="javaScript" form={form} />
+              <YStack gap="$4" flexWrap="wrap">
+                <FieldInput form={form} label="Enter firstName" name="firstName" required />
+                <FieldInput form={form} label="Enter lastName" name="lastName" required />
+                <FieldInput form={form} label="Enter email" name="email" required />
+                <FieldRadioGroup gap="$0.8" label="Select gender" name="gender" required form={form}>
+                  <YStack paddingLeft="$6" gap="$2">
+                    <FieldRadioGroupItem value="male">
+                      <Label>Male</Label>
+                    </FieldRadioGroupItem>
+                    <FieldRadioGroupItem value="female">
+                      <Label>Female</Label>
+                    </FieldRadioGroupItem>
+                  </YStack>
+                </FieldRadioGroup>
+                <Label>Select language</Label>
+                <YStack paddingLeft="$6" marginTop="$-6">
+                  <FieldCheckbox label="C" name="c" form={form} />
+                  <FieldCheckbox label="Java" name="java" form={form} />
+                  <FieldCheckbox label="Python" name="python" form={form} />
+                  <FieldCheckbox label="JavaScript" name="javaScript" form={form} />
+                </YStack>
+                <FieldTextArea label="Introduce yourself" name="introduction" form={form} required margin="$0.5" />
+                <FieldSelectSimple label="Select one role" name="role" form={form}>
+                  <Select.Item value="Software Developer" index={0}>
+                    <Select.ItemText>Software Developer</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="Data Analyst" index={1}>
+                    <Select.ItemText>Data Analyst</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="Web Developer" index={2}>
+                    <Select.ItemText>Web Developer</Select.ItemText>
+                  </Select.Item>
+                </FieldSelectSimple>
+                <SubmitButton
+                  form={form}
+                  bg="$blue10"
+                  color="white"
+                  w="$9"
+                  marginBottom="$2"
+                  left={410}
+                  hoverStyle={{ bg: '$red10' }}
+                >
+                  Submit
+                </SubmitButton>
+              </YStack>
             </YStack>
-            <FieldTextArea label="Introduce yourself" name="introduction" form={form} required margin="$0.5" />
-            <FieldSelectSimple label="Select one role" name="role" form={form}>
-              <Select.Item value="Software Developer" index={0}>
-                <Select.ItemText>Software Developer</Select.ItemText>
-              </Select.Item>
-              <Select.Item value="Data Analyst" index={1}>
-                <Select.ItemText>Data Analyst</Select.ItemText>
-              </Select.Item>
-              <Select.Item value="Web Developer" index={2}>
-                <Select.ItemText>Web Developer</Select.ItemText>
-              </Select.Item>
-            </FieldSelectSimple>
-            <SubmitButton form={form} left={500} bg="$blue10" color="white" w="$9">
-              Submit
-            </SubmitButton>
           </YStack>
-        </YStack>
-      </YStack>
-      {/* <SimpleAlertDialog
+          {/* <SimpleAlertDialog
         // onAccept={() => console.log('hello')}
         // open={open}
         // onOpenChange={setOpen}
@@ -161,8 +214,11 @@ const FormScreen = () => {
           </AlertDialog.Action>
         </YStack>
       </SimpleAlertDialog> */}
-    </ScrollView>
+        </ScrollView>
+      </Card>
+    </YStack>
   );
 };
 
 export default withDefaultLayout(FormScreen);
+
