@@ -19,26 +19,6 @@
  * limitations under the License.
  */
 
-/**
- * File: /screens/form/index.tsx
- * Project: app
- * File Created: 06-08-2024 15:43:30
- * Author: Clay Risser
- * -----
- * BitSpur (c) Copyright 2021 - 2024
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 import React, { useState } from 'react';
 import {
   Card,
@@ -57,12 +37,12 @@ import {
   Select,
   // SimpleAlertDialog,
   SubmitButton,
+  Theme,
   YStack,
 } from 'ui';
 import { useForm } from '@tanstack/react-form';
 import { useToastController } from '@tamagui/toast';
 import { withDefaultLayout } from 'app/layouts/Default';
-
 // Define the shape of your form data
 export interface RegisterForm {
   firstName: string;
@@ -139,21 +119,44 @@ const FormScreen = () => {
   });
 
   return (
-    <YStack bg="$gray10Light" ai="center" jc="center">
-      <Card w={600} margin="$2">
+    <YStack ai="center" jc="center">
+      <Card w={600} margin="$2" elevate padding="$1">
         <ScrollView alignItems="center">
           <YStack>
             <YStack w={500} marginTop="$2">
-              <YStack w={590} bg="$blue10" margin="$2" marginLeft="$-8" marginRight="$-1">
-                <Heading color="white" ai="center" jc="center" marginLeft="$20">
-                  Fill The Form
-                </Heading>
+              <YStack w={590} bg="$background" margin="$2" marginLeft="$-8" marginRight="$-1">
+                <Theme name="dark_blue_active">
+                  <Heading ai="center" jc="center" marginLeft={220} color="$blue10">
+                    Registration Form
+                  </Heading>
+                </Theme>
               </YStack>
               <YStack gap="$4" flexWrap="wrap">
-                <FieldInput form={form} label="Enter firstName" name="firstName" required />
-                <FieldInput form={form} label="Enter lastName" name="lastName" required />
-                <FieldInput form={form} label="Enter email" name="email" required />
-                <FieldRadioGroup gap="$0.8" label="Select gender" name="gender" required form={form}>
+                <FieldInput
+                  form={form}
+                  name="firstName"
+                  required
+                  inputProps={{
+                    placeholder: 'FirstName',
+                  }}
+                />
+                <FieldInput
+                  form={form}
+                  name="lastName"
+                  inputProps={{
+                    placeholder: 'LastName',
+                  }}
+                  required
+                />
+                <FieldInput
+                  form={form}
+                  name="email"
+                  inputProps={{
+                    placeholder: 'Email',
+                  }}
+                  required
+                />
+                <FieldRadioGroup gap="$0.8" name="gender" label="gender" required form={form}>
                   <YStack paddingLeft="$6" gap="$2">
                     <FieldRadioGroupItem value="male">
                       <Label>Male</Label>
@@ -163,15 +166,23 @@ const FormScreen = () => {
                     </FieldRadioGroupItem>
                   </YStack>
                 </FieldRadioGroup>
-                <Label>Select language</Label>
+                <Label>languages</Label>
                 <YStack paddingLeft="$6" marginTop="$-6">
                   <FieldCheckbox label="C" name="c" form={form} />
                   <FieldCheckbox label="Java" name="java" form={form} />
                   <FieldCheckbox label="Python" name="python" form={form} />
                   <FieldCheckbox label="JavaScript" name="javaScript" form={form} />
                 </YStack>
-                <FieldTextArea label="Introduce yourself" name="introduction" form={form} required margin="$0.5" />
-                <FieldSelectSimple label="Select one role" name="role" form={form}>
+                <FieldTextArea
+                  textAreaProps={{
+                    placeholder: 'Write something about yourself...',
+                  }}
+                  name="introduction"
+                  form={form}
+                  required
+                  margin="$0.5"
+                />
+                <FieldSelectSimple label="role" name="role" form={form}>
                   <Select.Item value="Software Developer" index={0}>
                     <Select.ItemText>Software Developer</Select.ItemText>
                   </Select.Item>
@@ -189,7 +200,7 @@ const FormScreen = () => {
                   w="$9"
                   marginBottom="$2"
                   left={410}
-                  hoverStyle={{ bg: '$red10' }}
+                  hoverStyle={{ bg: '$backgroundHover' }}
                 >
                   Submit
                 </SubmitButton>
@@ -221,4 +232,3 @@ const FormScreen = () => {
 };
 
 export default withDefaultLayout(FormScreen);
-
