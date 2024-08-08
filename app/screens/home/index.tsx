@@ -1,12 +1,32 @@
+/**
+ * File: /screens/home/index.tsx
+ * Project: app
+ * File Created: 07-08-2024 11:44:41
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React, { useState } from 'react';
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text } from 'ui';
+import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text, Theme } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { ThemeTintAlt } from '@multiplatform.one/components';
 import { gql } from 'gql';
 import { useGqlQuery, useGqlSubscription } from '@multiplatform.one/react-query-urql';
 import { useLink } from 'solito/link';
 import { useTranslation } from '@multiplatform.one/locales';
-import { withAuthenticated } from '@multiplatform.one/keycloak';
 import { withDefaultLayout } from 'app/layouts/Default';
 
 const AuthQuery = gql(`
@@ -37,31 +57,49 @@ function HomeScreen() {
 
   const countResponse = useGqlSubscription({ query: CountSubscription, queryKey: ['count'] });
 
-
-
   return (
-    <YStack f={1} jc="center" ai="center" p="$4" bg='lavender'>
+    <YStack f={1} jc='center' ai="center">
       {countResponse.isFetching ? <Spinner /> : <Text>{countResponse?.data?.count}</Text>}
       {isLoading ? <Spinner /> : <Text>username: {data?.username}</Text>}
       <YStack gap="$4" maw={600}>
-        <H1 ta="center">{t('screens.home.welcome')}</H1>
-        <Paragraph fontFamily="$silkscreen" ta="center">
-          {t('screens.home.message')}
-        </Paragraph>
-        <Separator />
-        <Paragraph ta="center">
-          <Anchor fontFamily="$rockSalt" color="$color12" href="https://multiplatform.one" target="_blank">
-            multiplatform.one
-          </Anchor>
-        </Paragraph>
+        <Theme name="dark_blue_active">
+          <H1 color="$backgroundFocus" ta="center">
+            {t('screens.home.welcome')}
+          </H1>
+        </Theme>
+        <Theme name="dark">
+          <Paragraph fontFamily="$silkscreen" ta="center" color="$backgroundFocus">
+            {t('screens.home.message')}
+          </Paragraph>
+          <Separator />
+        </Theme>
+        <Theme name="dark_blue_active">
+          <Paragraph ta="center">
+            <Anchor fontFamily="$rockSalt" color="$backgroundFocus" href="https://multiplatform.one" target="_blank">
+              multiplatform.one
+            </Anchor>
+          </Paragraph>
+        </Theme>
       </YStack>
-      <YStack gap="$3">
-        <Button {...linkProps}
-          bg='$green8'
-          hoverStyle={{ backgroundColor: '$green8' }}>{t('screens.home.link')}</Button>
-
-        <Button bg='$green8' hoverStyle={{ backgroundColor: '$green8' }} {...authProps}>Auth</Button>
-        <Button bg='$green8' hoverStyle={{ backgroundColor: '$green8' }} {...formProps}>Form</Button>
+      <YStack gap="$3" marginTop="$4" padding="$6" width={500}>
+        <XStack padding="$5" gap="$3" jc="space-between" ai="center">
+          <Paragraph>Access the user details here</Paragraph>
+          <Button variant='outlined' {...linkProps}>
+            <Text color="$blue10">{t('screens.home.link')}</Text>
+          </Button>
+        </XStack>
+        <XStack padding="$5" gap="$3" jc="space-between" ai="center">
+          <Paragraph>Access this section if you are authorized</Paragraph>
+          <Button variant='outlined' {...authProps}>
+            <Text right="$8" color="$blue10">Auth</Text>
+          </Button>
+        </XStack>
+        <XStack padding="$5" gap="$3" jc="space-between" ai="center">
+          <Paragraph>Register here to create your account</Paragraph>
+          <Button variant='outlined'{...formProps}>
+            <Text color="$blue10">Register</Text>
+          </Button>
+        </XStack>
       </YStack>
       <SheetDemo />
     </YStack>
@@ -107,4 +145,3 @@ function SheetDemo() {
 }
 
 export default withDefaultLayout(HomeScreen);
-

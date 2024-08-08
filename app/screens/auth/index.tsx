@@ -1,17 +1,21 @@
 import { useKeycloak, withAuthenticated } from "@multiplatform.one/keycloak";
 import { withDefaultLayout } from "app/layouts/Default";
-import { useTranslation } from '@multiplatform.one/locales';
 
 import React from "react";
-import { YStack, H1, Paragraph, XStack, Button, Avatar, Popover, Separator, SimplePopover, SimpleDialog, Dialog, H2, Card, Text, Theme } from "ui";
-import { BREAK } from "graphql";
+import { YStack, H1, Paragraph, XStack, Button, Avatar, Separator, SimpleDialog, Dialog, H2, Card, Text, SimpleList, SimpleListItem, H3, Circle, Image } from "ui";
+import { ChevronRight } from "@tamagui/lucide-icons";
 
 function Auth() {
-    const { t } = useTranslation();
     const keycloak = useKeycloak();
     console.log("keycloak", keycloak)
     return (
         <YStack fullscreen jc='center' alignItems="center" padding="$4">
+
+            <XStack position="absolute" top="$9" left="$9" ai='flex-start'>
+                <H3>
+                    Hello <Text color='$blue10Dark'>{keycloak?.username}</Text>.....
+                </H3>
+            </XStack>
             <XStack position="absolute" top="$9" right="$6" ai='flex-start'>
                 {/* <SimplePopover hoverable trigger={<Button size="$4"
                     circular
@@ -33,7 +37,9 @@ function Auth() {
                     <Button bg="$gray11Dark"> Set status </Button>
                     <Button bg="$gray11Dark">Sign out </Button>
                 </SimplePopover> */}
+
                 <SimpleDialog asRightSideSheet withoutCloseButton trigger={
+
                     <Button size="$4"
                         circular
                     >
@@ -44,23 +50,34 @@ function Auth() {
                         </Avatar>
                     </Button>
                 }
+                    contentStyle={{
+                        padding: "$0",
+                        gap: "$4",
+                        jc: 'flex-start',
+                        ai: 'center'
+                    }}
                 >
-                    <YStack gap="$4">
-                        Username : {keycloak?.username}
-                        <Separator marginVertical />
-                        <Button bg="$gray11Dark">Edit Profile </Button>
-                        <Button bg="$gray11Dark"> Set status </Button>
-                        <Dialog.Close asChild>
-                            <Button bg="$gray11Dark" onPress={() => keycloak?.logout()}>Sign out </Button>
-                        </Dialog.Close>
-                    </YStack>
+                    {keycloak?.username}
+                    <Separator marginHorizontal />
+                    <Button iconAfter={ChevronRight} >Edit Profile </Button>
+                    <Button iconAfter={ChevronRight}> Set status </Button>
+                    <Dialog.Close asChild>
+                        <Button iconAfter={ChevronRight} onPress={() => keycloak?.logout()}>Sign out </Button>
+                    </Dialog.Close>
+                    <SimpleList>
+                        <SimpleListItem title="logout" iconAfter={ChevronRight} />
+                    </SimpleList>
                 </SimpleDialog>
+
 
             </XStack>
             <YStack f={1} jc="center" ai="center" >
-                <Card elevation="$10" padding="$15" bg='$backgroundHover'>
+                <YStack marginBottom="$9">
+                    <H2 fontFamily='$heading'>Keycloak Authentication</H2>
+                </YStack>
+                <Card elevation="$10" padding="$15" bg="$backgroundTransparent">
                     <YStack gap="$9" maw={600} >
-                        <YStack gap="$-9" ai='center'>
+                        <YStack ai='center'>
                             <H1>Welcome <Text color="$blue9">{keycloak?.username}</Text> to </H1>
                             <H1 >keycloak Authentication</H1>
                         </YStack>
