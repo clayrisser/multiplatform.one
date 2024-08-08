@@ -3,15 +3,16 @@ import { withDefaultLayout } from "app/layouts/Default";
 import { useTranslation } from '@multiplatform.one/locales';
 
 import React from "react";
-import { YStack, H1, Paragraph, XStack, Button, Avatar, Popover, Separator, SimplePopover, SimpleDialog, Dialog, H2 } from "ui";
+import { YStack, H1, Paragraph, XStack, Button, Avatar, Popover, Separator, SimplePopover, SimpleDialog, Dialog, H2, Card, Text, Theme } from "ui";
+import { BREAK } from "graphql";
 
 function Auth() {
     const { t } = useTranslation();
     const keycloak = useKeycloak();
     console.log("keycloak", keycloak)
     return (
-        <YStack>
-            <XStack jc="flex-end" padding="$4" bg="$gray12Dark">
+        <YStack fullscreen jc='center' alignItems="center" padding="$4">
+            <XStack position="absolute" top="$9" right="$6" ai='flex-start'>
                 {/* <SimplePopover hoverable trigger={<Button size="$4"
                     circular
                 // onClick={ }
@@ -35,7 +36,6 @@ function Auth() {
                 <SimpleDialog asRightSideSheet withoutCloseButton trigger={
                     <Button size="$4"
                         circular
-                    // onClick={ }
                     >
                         <Avatar circular size="$4">
                             <Avatar.Image
@@ -44,9 +44,6 @@ function Auth() {
                         </Avatar>
                     </Button>
                 }
-                // contentStyle={{
-                //     gap: "$4"
-                // }}
                 >
                     <YStack gap="$4">
                         Username : {keycloak?.username}
@@ -60,17 +57,21 @@ function Auth() {
                 </SimpleDialog>
 
             </XStack>
-            <YStack f={1} jc="center" ai="center" p="$4" >
-                <YStack gap="$4" maw={600}>
-                    <H1 ta="center">Welcome to multiplatform.one keycloak Authentication</H1>
+            <YStack f={1} jc="center" ai="center" >
+                <Card elevation="$10" padding="$15" bg='$backgroundHover'>
+                    <YStack gap="$9" maw={600} >
+                        <YStack gap="$-9" ai='center'>
+                            <H1>Welcome <Text color="$blue9">{keycloak?.username}</Text> to </H1>
+                            <H1 >keycloak Authentication</H1>
+                        </YStack>
+                        <Separator marginHorizontal={6} />
 
-                    <Paragraph fontFamily="$silkscreen" ta="center">
-                        you have sucessfully login in keycloak with client id {keycloak?.clientId} using {keycloak?.realm} with {keycloak?.email}
-                    </Paragraph>
-                    <Separator />
+                        <Paragraph fontFamily="$silkscreen" ta="center">
+                            you have sucessfully login in keycloak with client id {keycloak?.clientId} using {keycloak?.realm} with {keycloak?.email}
+                        </Paragraph>
 
-
-                </YStack>
+                    </YStack>
+                </Card>
             </YStack>
         </YStack>
     )
