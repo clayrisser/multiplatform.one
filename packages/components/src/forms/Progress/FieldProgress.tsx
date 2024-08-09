@@ -27,7 +27,7 @@ import type { ProgressProps } from './Progress';
 import { FormField } from '../FormField';
 import { Progress } from './Progress';
 import { useForm, Field } from '@tanstack/react-form';
-import { useProps } from 'tamagui';
+import { ProgressIndicatorProps, useProps } from 'tamagui';
 
 export type FieldProgressProps<
   TParentData = any,
@@ -39,6 +39,7 @@ export type FieldProgressProps<
   Pick<ProgressProps, 'id' | 'value'> &
   Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
     progressProps?: Omit<ProgressProps, 'id' | 'value'>;
+    indicatorProps?: ProgressIndicatorProps
   };
 
 export function FieldProgress<
@@ -61,6 +62,7 @@ export function FieldProgress<
     progressProps,
     validatorAdapter,
     validators,
+    indicatorProps,
     ...fieldProps
   } = useProps(props);
   form = form ?? useForm();
@@ -73,7 +75,9 @@ export function FieldProgress<
           {...progressProps}
           id={id}
           value={value ?? (defaultValue as number)}
-        />
+        >
+          <Progress.Indicator animation='bouncy' {...indicatorProps}/>
+        </Progress>
       </FormField>
     );
   }
@@ -99,7 +103,10 @@ export function FieldProgress<
               {...progressProps}
               id={id}
               value={value ?? (field.state.value as number)}
-            />
+           >
+            <Progress.Indicator animation='bouncy' {...indicatorProps} />
+
+           </Progress>
           </FormField>
         );
       }}
