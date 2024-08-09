@@ -35,6 +35,11 @@ const AuthQuery = gql(`
   }
 `);
 
+// Define the type for the AuthQuery response
+interface AuthQueryResponse {
+  username: string;
+}
+
 const CountSubscription = gql(`
   subscription countSubscription{
     count
@@ -53,22 +58,25 @@ function HomeScreen() {
   const formProps = useLink({
     href: 'form',
   });
-  const { data, isLoading } = useGqlQuery({ query: AuthQuery, queryKey: ['userAuth'], variables: {} });
+  // Use the defined type in the useGqlQuery hook
+  const { data, isLoading } = useGqlQuery<AuthQueryResponse>({ query: AuthQuery, queryKey: ['userAuth'], variables: {} });
+
 
   const countResponse = useGqlSubscription({ query: CountSubscription, queryKey: ['count'] });
 
   return (
-    <YStack f={1} jc='center' ai="center">
+
+    <YStack fullscreen f={1} jc='center' flexWrap='wrap' ai='center'>
       {countResponse.isFetching ? <Spinner /> : <Text>{countResponse?.data?.count}</Text>}
       {isLoading ? <Spinner /> : <Text>username: {data?.username}</Text>}
-      <YStack gap="$4" maw={600}>
-        <Theme name="dark_blue_active">
-          <H1 color="$backgroundFocus" ta="center">
+      <YStack gap="$4" maw={800} >
+        <Theme name="dark">
+          <H1 color="$backgroundFocus" ta="center" $sm={{ fontSize: "$6", letterSpacing: 1 }} >
             {t('screens.home.welcome')}
           </H1>
         </Theme>
         <Theme name="dark">
-          <Paragraph fontFamily="$silkscreen" ta="center" color="$backgroundFocus">
+          <Paragraph fontFamily="$silkscreen" ta="center" color="$backgroundFocus" $sm={{ fontSize: "$1" }}>
             {t('screens.home.message')}
           </Paragraph>
           <Separator />
@@ -81,8 +89,8 @@ function HomeScreen() {
           </Paragraph>
         </Theme>
       </YStack>
-      <YStack gap="$3" marginTop="$4" padding="$6" width={500}>
-        <XStack padding="$5" gap="$3" jc="space-between" ai="center">
+      <YStack gap="$3" marginTop="$4" padding="$6" width="100%" maxWidth={500} flexWrap='wrap'>
+        <XStack padding="$5" gap="$3" jc="space-between" ai="center" flexWrap='wrap'>
           <Paragraph>Access the user details here</Paragraph>
           <Button variant='outlined' {...linkProps}>
             <Text color="$blue10">{t('screens.home.link')}</Text>
