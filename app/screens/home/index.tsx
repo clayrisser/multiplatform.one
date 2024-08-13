@@ -66,90 +66,90 @@ function HomeScreen() {
 
   return (
 
-    <YStack fullscreen f={1} jc='center' flexWrap='wrap' ai='center'>
+    <YStack fullscreen jc='center' flexWrap='wrap' ai='center'>
       {countResponse.isFetching ? <Spinner /> : <Text>{countResponse?.data?.count}</Text>}
       {isLoading ? <Spinner /> : <Text>username: {data?.username}</Text>}
       <YStack gap="$4" maw={800} >
-        <Theme name="dark">
-          <H1 color="$backgroundFocus" ta="center" $sm={{ fontSize: "$6", letterSpacing: 1 }} >
+        <Theme>
+          <H1 ta="center" $sm={{ fontSize: "$5", letterSpacing: 1 }} >
             {t('screens.home.welcome')}
           </H1>
         </Theme>
-        <Theme name="dark">
-          <Paragraph fontFamily="$silkscreen" ta="center" color="$backgroundFocus" $sm={{ fontSize: "$1" }}>
+        <Theme>
+          <Paragraph fontFamily="$silkscreen" ta="center" $sm={{ fontSize: "$1" }}>
             {t('screens.home.message')}
           </Paragraph>
           <Separator />
         </Theme>
         <Theme name="dark_blue_active">
           <Paragraph ta="center">
-            <Anchor fontFamily="$rockSalt" color="$backgroundFocus" href="https://multiplatform.one" target="_blank">
+            <Anchor fontFamily="$rockSalt" href="https://multiplatform.one" target="_blank">
               multiplatform.one
             </Anchor>
           </Paragraph>
         </Theme>
       </YStack>
-      <YStack gap="$3" marginTop="$4" padding="$6" width="100%" maxWidth={500} flexWrap='wrap'>
-        <XStack padding="$5" gap="$3" jc="space-between" ai="center" flexWrap='wrap'>
+      <YStack gap="$3" marginTop="$4" padding="$6" maxWidth={500} flexWrap='wrap'>
+        <XStack padding="$5" gap="$3" jc="space-between" ai="center">
           <Paragraph>Access the user details here</Paragraph>
-          <Button variant='outlined' {...linkProps}>
+          <Button {...linkProps}>
             <Text color="$blue10">{t('screens.home.link')}</Text>
           </Button>
         </XStack>
         <XStack padding="$5" gap="$3" jc="space-between" ai="center">
           <Paragraph>Access this section if you are authorized</Paragraph>
-          <Button variant='outlined' {...authProps}>
+          <Button  {...authProps}>
             <Text right="$8" color="$blue10">Auth</Text>
           </Button>
         </XStack>
         <XStack padding="$5" gap="$3" jc="space-between" ai="center">
           <Paragraph>Register here to create your account</Paragraph>
-          <Button variant='outlined'{...formProps}>
+          <Button {...formProps}>
             <Text color="$blue10">Register</Text>
           </Button>
         </XStack>
       </YStack>
-      <SheetDemo />
+      {/* <SheetDemo /> */}
     </YStack>
   );
 }
 
-function SheetDemo() {
-  const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState(0);
-  return (
-    <ThemeTintAlt offset={1}>
-      <>
-        <Button size="$6" icon={open ? ChevronDown : ChevronUp} circular onPress={() => setOpen((x) => !x)} />
-        <ThemeTintAlt offset={2}>
-          <Sheet
-            modal
-            open={open}
-            onOpenChange={setOpen}
-            snapPoints={[80]}
-            position={position}
-            onPositionChange={setPosition}
-            dismissOnSnapToBottom
-          >
-            <Sheet.Overlay />
-            <Sheet.Frame ai="center" jc="center">
-              <ThemeTintAlt offset={3}>
-                <Sheet.Handle />
-                <Button
-                  size="$6"
-                  circular
-                  icon={ChevronDown}
-                  onPress={() => {
-                    setOpen(false);
-                  }}
-                />
-              </ThemeTintAlt>
-            </Sheet.Frame>
-          </Sheet>
-        </ThemeTintAlt>
-      </>
-    </ThemeTintAlt>
-  );
-}
+// function SheetDemo() {
+//   const [open, setOpen] = useState(false);
+//   const [position, setPosition] = useState(0);
+//   return (
+//     <ThemeTintAlt offset={1}>
+//       <>
+//         <Button size="$6" icon={open ? ChevronDown : ChevronUp} circular onPress={() => setOpen((x) => !x)} />
+//         <ThemeTintAlt offset={2}>
+//           <Sheet
+//             modal
+//             open={open}
+//             onOpenChange={setOpen}
+//             snapPoints={[80]}
+//             position={position}
+//             onPositionChange={setPosition}
+//             dismissOnSnapToBottom
+//           >
+//             <Sheet.Overlay />
+//             <Sheet.Frame ai="center" jc="center">
+//               <ThemeTintAlt offset={3}>
+//                 <Sheet.Handle />
+//                 <Button
+//                   size="$6"
+//                   circular
+//                   icon={ChevronDown}
+//                   onPress={() => {
+//                     setOpen(false);
+//                   }}
+//                 />
+//               </ThemeTintAlt>
+//             </Sheet.Frame>
+//           </Sheet>
+//         </ThemeTintAlt>
+//       </>
+//     </ThemeTintAlt>
+//   );
+// }
 
 export default withDefaultLayout(HomeScreen);
