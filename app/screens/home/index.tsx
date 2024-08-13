@@ -58,6 +58,8 @@ function HomeScreen() {
   const formProps = useLink({
     href: 'form',
   });
+
+
   // Use the defined type in the useGqlQuery hook
   const { data, isLoading } = useGqlQuery<AuthQueryResponse>({ query: AuthQuery, queryKey: ['userAuth'], variables: {} });
 
