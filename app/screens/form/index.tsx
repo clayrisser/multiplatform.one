@@ -278,10 +278,7 @@ const FormScreen = () => {
     if (hasDigit) progress += 20;
     if (hasSpecialChar) progress += 20;
 
-    if (password.length === 0) {
-      message = 'Password is required.';
-      progressColor = 'red';
-    } else if (password.length < 8 || !(hasUppercase && hasLowercase && hasDigit && hasSpecialChar)) {
+    if (password.length < 8 || !(hasUppercase && hasLowercase && hasDigit && hasSpecialChar)) {
       message =
         'Password must be at least 8 characters long and include uppercase, lowercase, digit, and special character.';
       progressColor = 'red';
@@ -381,7 +378,6 @@ const FormScreen = () => {
                   />
                   <Paragraph
                     onPress={() => setShowPassword(!showPassword)}
-                    bg="$red"
                     style={{
                       position: 'absolute',
                       right: 10,
@@ -411,7 +407,7 @@ const FormScreen = () => {
                     <FieldRadioGroupItem value="male">
                       <Label
                         style={{
-                          color: errors.gender ? 'red' : 'black', // Conditional styling for label color
+                          color: errors.gender ? 'red' : '', // Conditional styling for label color
                         }}
                       >
                         Male
@@ -420,10 +416,19 @@ const FormScreen = () => {
                     <FieldRadioGroupItem value="female">
                       <Label
                         style={{
-                          color: errors.gender ? 'red' : 'black', // Conditional styling for label color
+                          color: errors.gender ? 'red' : '', // Conditional styling for label color
                         }}
                       >
                         Female
+                      </Label>
+                    </FieldRadioGroupItem>
+                    <FieldRadioGroupItem value="other">
+                      <Label
+                        style={{
+                          color: errors.gender ? 'red' : '', // Conditional styling for label color
+                        }}
+                      >
+                        Other
                       </Label>
                     </FieldRadioGroupItem>
                   </YStack>
