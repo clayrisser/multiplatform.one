@@ -20,7 +20,7 @@
  */
 
 import React, { useState } from 'react';
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text, Theme } from 'ui';
+import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text, Theme, ScrollView } from 'ui';
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 import { ThemeTintAlt } from '@multiplatform.one/components';
 import { gql } from 'gql';
@@ -59,45 +59,63 @@ function HomeScreen() {
     href: 'form',
   });
 
-
   // Use the defined type in the useGqlQuery hook
-  const { data, isLoading } = useGqlQuery<AuthQueryResponse>({ query: AuthQuery, queryKey: ['userAuth'], variables: {} });
-
+  const { data, isLoading } = useGqlQuery<AuthQueryResponse>({
+    query: AuthQuery,
+    queryKey: ['userAuth'],
+    variables: {},
+  });
 
   const countResponse = useGqlSubscription({ query: CountSubscription, queryKey: ['count'] });
 
   return (
-
-    <YStack fullscreen jc='center' flexWrap='wrap' ai='center'>
-      {countResponse.isFetching ? <Spinner /> : <Text>{countResponse?.data?.count}</Text>}
-      {isLoading ? <Spinner /> : <Text>username: {data?.username}</Text>}
-      <YStack gap="$4" maw={800} >
-        <Theme>
-          <H1 ta="center" $sm={{ fontSize: "$5", letterSpacing: 1 }} >
+    <YStack fullscreen jc="center" flexWrap="wrap" ai="center" gap="$3">
+      {/* {countResponse.isFetching ? <Spinner /> : <Text>{countResponse?.data?.count}</Text>} */}
+      {/* {isLoading ? <Spinner /> : <Text>username: {data?.username}</Text>} */}
+      <YStack gap="$4" maw={800}>
+        <Theme name="dark">
+          <H1
+            ta="center"
+            $sm={{ fontSize: '$5', letterSpacing: 5 }}
+            theme="blue_active"
+            color="$backgroundFocus"
+            style={{ textTransform: 'uppercase', wordSpacing: '0.2em' }}
+          >
             {t('screens.home.welcome')}
           </H1>
         </Theme>
         <Theme>
-          <Paragraph fontFamily="$silkscreen" ta="center" $sm={{ fontSize: "$1" }}>
+          <Paragraph fontFamily="$silkscreen" ta="center" $sm={{ fontSize: '$1' }}>
             {t('screens.home.message')}
           </Paragraph>
           <Separator />
         </Theme>
-        <Theme name="dark_blue_active">
-          <Paragraph ta="center">
-            <Anchor fontFamily="$rockSalt" href="https://multiplatform.one" target="_blank">
+        <Theme name="dark">
+          <Paragraph ta="center" theme="blue_active">
+            <Anchor fontFamily="$rockSalt" href="https://multiplatform.one" target="_blank" color="$backgroundFocus">
               multiplatform.one
             </Anchor>
           </Paragraph>
         </Theme>
       </YStack>
-      <YStack gap="$3" marginTop="$4" padding="$6" maxWidth={500} flexWrap='wrap'>
-        <XStack padding="$5" gap="$3" jc="space-between" ai="center">
-          <Paragraph>Access the user details here</Paragraph>
+      <YStack gap="$3" marginTop="$2" padding="$4" flexWrap="wrap" jc="space-between">
+        <XStack
+          padding="$3"
+          gap="$3"
+          jc="space-between"
+          ai="center"
+          borderWidth={1}
+          borderColor="$borderColor"
+          borderRadius="$2"
+          backgroundColor="$cardBackgroundColor"
+          style={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}
+        >
+          <Paragraph>View user details here</Paragraph>
           <Button {...linkProps}>
             <Text color="$blue10">{t('screens.home.link')}</Text>
           </Button>
         </XStack>
+<<<<<<< HEAD
         <XStack padding="$5" gap="$3" jc="space-between" ai="center">
           <Paragraph>KeyCloak Authentication</Paragraph>
           <Button  {...authProps}>
@@ -106,6 +124,38 @@ function HomeScreen() {
         </XStack>
         <XStack padding="$5" gap="$3" jc="space-between" ai="center">
           <Paragraph>Registration Form</Paragraph>
+=======
+        <XStack
+          padding="$3"
+          gap="$3"
+          jc="space-between"
+          ai="center"
+          borderWidth={1}
+          borderColor="$borderColor"
+          borderRadius="$2"
+          backgroundColor="$cardBackgroundColor"
+          style={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}
+        >
+          <Paragraph>KeyClock Authentication</Paragraph>
+          <Button {...authProps}>
+            <Text right="$8" color="$blue10">
+              Auth
+            </Text>
+          </Button>
+        </XStack>
+        <XStack
+          padding="$3"
+          gap="$3"
+          jc="space-between"
+          ai="center"
+          borderWidth={1}
+          borderColor="$borderColor"
+          borderRadius="$2"
+          backgroundColor="$cardBackgroundColor"
+          style={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}
+        >
+          <Paragraph>Register here to create your account</Paragraph>
+>>>>>>> f255375d559f23cf82ee54a20474f57fae1fc189
           <Button {...formProps}>
             <Text color="$blue10">Register</Text>
           </Button>
@@ -116,4 +166,46 @@ function HomeScreen() {
   );
 }
 
+<<<<<<< HEAD
 export default withDefaultLayout(HomeScreen);
+=======
+// function SheetDemo() {
+//   const [open, setOpen] = useState(false);
+//   const [position, setPosition] = useState(0);
+//   return (
+//     <ThemeTintAlt offset={1}>
+//       <>
+//         <Button size="$6" icon={open ? ChevronDown : ChevronUp} circular onPress={() => setOpen((x) => !x)} />
+//         <ThemeTintAlt offset={2}>
+//           <Sheet
+//             modal
+//             open={open}
+//             onOpenChange={setOpen}
+//             snapPoints={[80]}
+//             position={position}
+//             onPositionChange={setPosition}
+//             dismissOnSnapToBottom
+//           >
+//             <Sheet.Overlay />
+//             <Sheet.Frame ai="center" jc="center">
+//               <ThemeTintAlt offset={3}>
+//                 <Sheet.Handle />
+//                 <Button
+//                   size="$6"
+//                   circular
+//                   icon={ChevronDown}
+//                   onPress={() => {
+//                     setOpen(false);
+//                   }}
+//                 />
+//               </ThemeTintAlt>
+//             </Sheet.Frame>
+//           </Sheet>
+//         </ThemeTintAlt>
+//       </>
+//     </ThemeTintAlt>
+//   );
+// }
+
+export default withDefaultLayout(HomeScreen);
+>>>>>>> f255375d559f23cf82ee54a20474f57fae1fc189
