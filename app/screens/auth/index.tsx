@@ -1,16 +1,23 @@
 import { useKeycloak, withAuthenticated } from "@multiplatform.one/keycloak";
 import { withDefaultLayout } from "app/layouts/Default";
-import { YStack, H1, Paragraph, XStack, Button, Avatar, Separator, SimpleDialog, Dialog, Card, Text, H3, Theme, Anchor, Label } from "ui";
-import { ChevronRight, Home } from "@tamagui/lucide-icons";
+import { YStack, H1, Paragraph, XStack, Button, Avatar, Separator, SimpleDialog, Dialog, Card, Text, H3, Theme, Anchor, Label, SimpleList, SimpleListItem, DialogClose } from "ui";
+import { ChevronRight, } from "@tamagui/lucide-icons";
 import { useLink } from 'solito/link';
+import { useRouter } from "solito/router";
 
 
 function Auth() {
     const keycloak = useKeycloak();
-
+    const router = useRouter()
     // if (!keycloak) {
     //     return null;
     // }
+    const homeProps = useLink({
+        href: '/'
+    })
+    function handleGoToHome() {
+        router.push('/')
+    }
     console.log("keycloak", keycloak)
     return (
 
@@ -22,12 +29,10 @@ function Auth() {
                     flexDirection="row-reverse"
                     flexWrap="wrap"
                     alignItems="flex-end"
-
                 >
                     <Theme>
                         <SimpleDialog asRightSideSheet withoutCloseButton trigger={
                             <Button size="$4" circular>
-
                                 <Theme name='light'>
                                     <Avatar theme='active' bg="$backgroundFocus" circular size="$4">
                                         <Avatar.Image
@@ -35,32 +40,26 @@ function Auth() {
                                         />
                                     </Avatar>
                                 </Theme>
-
-
                             </Button>
                         }
-                            contentStyle={{
-                                padding: "$0",
-                                gap: "$1",
-                                jc: 'flex-start',
-                                ai: 'center'
-                            }}
                         >
-                            <YStack >
-                                {keycloak?.username}
-                                <Button iconAfter={ChevronRight} onPress={() => { window.location.href = "/" }}>Home</Button>
-                                <Button iconAfter={ChevronRight} >Edit Profile</Button>
-                                <Button iconAfter={ChevronRight}>Set status</Button>
-                                <Button iconAfter={ChevronRight} onPress={() => keycloak?.logout()}>Sign out</Button>
-                            </YStack>
-
+                            <SimpleList>
+                                <SimpleListItem title='Home' iconAfter={ChevronRight} {...homeProps} />
+                                <SimpleListItem title='Edit Profile' iconAfter={ChevronRight} />
+                                <SimpleListItem title='Set Status' iconAfter={ChevronRight} />
+                                <Dialog.Close>
+                                    <SimpleListItem title='Sign Out' onPress={() => keycloak?.logout()} iconAfter={ChevronRight} />
+                                </Dialog.Close>
+                            </SimpleList>
+                            {/* <Button iconAfter={ChevronRight} onPress={() => { window.location.href = "/" }}>Home</Button>
+                            <Button iconAfter={ChevronRight} >Edit Profile</Button>
+                            <Button iconAfter={ChevronRight}>Set status</Button>
+                            <Button iconAfter={ChevronRight} onPress={() => keycloak?.logout()}>Sign out</Button> */}
                         </SimpleDialog>
                     </Theme>
-
                     <H3>
                         Welcome <Text color='$blue10Dark'>{keycloak?.username}</Text>!
                     </H3>
-
                 </XStack>
                 <YStack
                     f={1}
@@ -75,13 +74,10 @@ function Auth() {
                         padded
                         paddingVertical="$10"
                         $sm={{ paddingVertical: "$7" }}
-
                     >
                         <YStack gap="$9" flexWrap="wrap">
-
                             <H1 $sm={{ fontSize: "$8" }} ta='center'>Keycloak Authentication</H1>
                             <Separator />
-
                             <Paragraph
                                 fontFamily="$silkscreen"
                                 ta="center"
@@ -93,18 +89,12 @@ function Auth() {
                                 <Anchor marginBottom="$1" alignContent="flex-end" href="https://www.keycloak.org/documentation" target="blank" >
                                     <Button>Docs</Button>
                                 </Anchor>
-
                             </XStack>
-
-
                         </YStack>
-
                     </Card>
                 </YStack>
             </Theme>
         </YStack>
     )
 }
-
-
 export default withAuthenticated(withDefaultLayout(Auth))

@@ -99,13 +99,13 @@ function HomeScreen() {
           </Button>
         </XStack>
         <XStack padding="$5" gap="$3" jc="space-between" ai="center">
-          <Paragraph>Access this section if you are authorized</Paragraph>
+          <Paragraph>KeyCloak Authentication</Paragraph>
           <Button  {...authProps}>
             <Text right="$8" color="$blue10">Auth</Text>
           </Button>
         </XStack>
         <XStack padding="$5" gap="$3" jc="space-between" ai="center">
-          <Paragraph>Register here to create your account</Paragraph>
+          <Paragraph>Registration Form</Paragraph>
           <Button {...formProps}>
             <Text color="$blue10">Register</Text>
           </Button>
@@ -115,43 +115,5 @@ function HomeScreen() {
     </YStack>
   );
 }
-
-// function SheetDemo() {
-//   const [open, setOpen] = useState(false);
-//   const [position, setPosition] = useState(0);
-//   return (
-//     <ThemeTintAlt offset={1}>
-//       <>
-//         <Button size="$6" icon={open ? ChevronDown : ChevronUp} circular onPress={() => setOpen((x) => !x)} />
-//         <ThemeTintAlt offset={2}>
-//           <Sheet
-//             modal
-//             open={open}
-//             onOpenChange={setOpen}
-//             snapPoints={[80]}
-//             position={position}
-//             onPositionChange={setPosition}
-//             dismissOnSnapToBottom
-//           >
-//             <Sheet.Overlay />
-//             <Sheet.Frame ai="center" jc="center">
-//               <ThemeTintAlt offset={3}>
-//                 <Sheet.Handle />
-//                 <Button
-//                   size="$6"
-//                   circular
-//                   icon={ChevronDown}
-//                   onPress={() => {
-//                     setOpen(false);
-//                   }}
-//                 />
-//               </ThemeTintAlt>
-//             </Sheet.Frame>
-//           </Sheet>
-//         </ThemeTintAlt>
-//       </>
-//     </ThemeTintAlt>
-//   );
-// }
 
 export default withDefaultLayout(HomeScreen);
