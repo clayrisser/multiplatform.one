@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-import React, { useState } from 'react';
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, Spinner, Text, Theme, ScrollView } from 'ui';
-import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
-import { ThemeTintAlt } from '@multiplatform.one/components';
+import React from 'react';
+import { Anchor, Button, H1, Paragraph, Separator, XStack, YStack, Text, Theme } from 'ui';
+// import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
+// import { ThemeTintAlt } from '@multiplatform.one/components';
 import { gql } from 'gql';
 import { useGqlQuery, useGqlSubscription } from '@multiplatform.one/react-query-urql';
 import { useLink } from 'solito/link';
@@ -34,8 +34,6 @@ const AuthQuery = gql(`
     username
   }
 `);
-
-// Define the type for the AuthQuery response
 interface AuthQueryResponse {
   username: string;
 }
@@ -59,7 +57,6 @@ function HomeScreen() {
     href: 'form',
   });
 
-  // Use the defined type in the useGqlQuery hook
   const { data, isLoading } = useGqlQuery<AuthQueryResponse>({
     query: AuthQuery,
     queryKey: ['userAuth'],
@@ -72,15 +69,14 @@ function HomeScreen() {
     <YStack fullscreen jc="center" flexWrap="wrap" ai="center" gap="$3">
       {/* {countResponse.isFetching ? <Spinner /> : <Text>{countResponse?.data?.count}</Text>} */}
       {/* {isLoading ? <Spinner /> : <Text>username: {data?.username}</Text>} */}
-      <YStack gap="$4" maw={800}>
+      <YStack gap="$4" maxWidth={800}>
         <Theme name="dark">
           <H1
             ta="center"
             $sm={{ fontSize: '$5', letterSpacing: 5 }}
             theme="blue_active"
             color="$backgroundFocus"
-            style={{ textTransform: 'uppercase', wordSpacing: '0.2em' }}
-          >
+            textTransform='uppercase'>
             {t('screens.home.welcome')}
           </H1>
         </Theme>
@@ -108,23 +104,12 @@ function HomeScreen() {
           borderColor="$borderColor"
           borderRadius="$2"
           backgroundColor="$cardBackgroundColor"
-          style={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}
-        >
-          <Paragraph>View user details here</Paragraph>
+          elevation="$2">
+          <Paragraph>view user information here</Paragraph>
           <Button {...linkProps}>
             <Text color="$blue10">{t('screens.home.link')}</Text>
           </Button>
         </XStack>
-<<<<<<< HEAD
-        <XStack padding="$5" gap="$3" jc="space-between" ai="center">
-          <Paragraph>KeyCloak Authentication</Paragraph>
-          <Button  {...authProps}>
-            <Text right="$8" color="$blue10">Auth</Text>
-          </Button>
-        </XStack>
-        <XStack padding="$5" gap="$3" jc="space-between" ai="center">
-          <Paragraph>Registration Form</Paragraph>
-=======
         <XStack
           padding="$3"
           gap="$3"
@@ -134,9 +119,8 @@ function HomeScreen() {
           borderColor="$borderColor"
           borderRadius="$2"
           backgroundColor="$cardBackgroundColor"
-          style={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}
-        >
-          <Paragraph>KeyClock Authentication</Paragraph>
+          elevation="$2">
+          <Paragraph>keycloak authentication</Paragraph>
           <Button {...authProps}>
             <Text right="$8" color="$blue10">
               Auth
@@ -152,60 +136,15 @@ function HomeScreen() {
           borderColor="$borderColor"
           borderRadius="$2"
           backgroundColor="$cardBackgroundColor"
-          style={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}
-        >
-          <Paragraph>Register here to create your account</Paragraph>
->>>>>>> f255375d559f23cf82ee54a20474f57fae1fc189
+          elevation="$2">
+          <Paragraph>register here to create an account</Paragraph>
           <Button {...formProps}>
             <Text color="$blue10">Register</Text>
           </Button>
         </XStack>
       </YStack>
-      {/* <SheetDemo /> */}
     </YStack>
   );
 }
 
-<<<<<<< HEAD
 export default withDefaultLayout(HomeScreen);
-=======
-// function SheetDemo() {
-//   const [open, setOpen] = useState(false);
-//   const [position, setPosition] = useState(0);
-//   return (
-//     <ThemeTintAlt offset={1}>
-//       <>
-//         <Button size="$6" icon={open ? ChevronDown : ChevronUp} circular onPress={() => setOpen((x) => !x)} />
-//         <ThemeTintAlt offset={2}>
-//           <Sheet
-//             modal
-//             open={open}
-//             onOpenChange={setOpen}
-//             snapPoints={[80]}
-//             position={position}
-//             onPositionChange={setPosition}
-//             dismissOnSnapToBottom
-//           >
-//             <Sheet.Overlay />
-//             <Sheet.Frame ai="center" jc="center">
-//               <ThemeTintAlt offset={3}>
-//                 <Sheet.Handle />
-//                 <Button
-//                   size="$6"
-//                   circular
-//                   icon={ChevronDown}
-//                   onPress={() => {
-//                     setOpen(false);
-//                   }}
-//                 />
-//               </ThemeTintAlt>
-//             </Sheet.Frame>
-//           </Sheet>
-//         </ThemeTintAlt>
-//       </>
-//     </ThemeTintAlt>
-//   );
-// }
-
-export default withDefaultLayout(HomeScreen);
->>>>>>> f255375d559f23cf82ee54a20474f57fae1fc189

@@ -1,35 +1,40 @@
 import { useKeycloak, withAuthenticated } from "@multiplatform.one/keycloak";
 import { withDefaultLayout } from "app/layouts/Default";
-import { YStack, H1, Paragraph, XStack, Button, Avatar, Separator, SimpleDialog, Dialog, Card, Text, H3, Theme, Anchor, Label, SimpleList, SimpleListItem, DialogClose } from "ui";
+import {
+    YStack,
+    H1,
+    Paragraph,
+    XStack,
+    Button,
+    Avatar,
+    Separator,
+    SimpleDialog,
+    Dialog,
+    Card,
+    Text,
+    H3,
+    Theme,
+    Anchor,
+    SimpleList,
+    SimpleListItem,
+} from "ui";
 import { ChevronRight, } from "@tamagui/lucide-icons";
 import { useLink } from 'solito/link';
-import { useRouter } from "solito/router";
-
 
 function Auth() {
     const keycloak = useKeycloak();
-    const router = useRouter()
-    // if (!keycloak) {
-    //     return null;
-    // }
     const homeProps = useLink({
         href: '/'
     })
-    function handleGoToHome() {
-        router.push('/')
-    }
     console.log("keycloak", keycloak)
     return (
-
         <YStack fullscreen padding="$4" >
             <Theme >
-
                 <XStack
                     justifyContent="space-between"
                     flexDirection="row-reverse"
                     flexWrap="wrap"
-                    alignItems="flex-end"
-                >
+                    alignItems="flex-end">
                     <Theme>
                         <SimpleDialog asRightSideSheet withoutCloseButton trigger={
                             <Button size="$4" circular>
@@ -41,8 +46,7 @@ function Auth() {
                                     </Avatar>
                                 </Theme>
                             </Button>
-                        }
-                        >
+                        }>
                             <SimpleList>
                                 <SimpleListItem title='Home' iconAfter={ChevronRight} {...homeProps} />
                                 <SimpleListItem title='Edit Profile' iconAfter={ChevronRight} />
@@ -58,7 +62,7 @@ function Auth() {
                         </SimpleDialog>
                     </Theme>
                     <H3>
-                        Welcome <Text color='$blue10Dark'>{keycloak?.username}</Text>!
+                        Welcome <Text color='$blue10'>{keycloak?.username}</Text>!
                     </H3>
                 </XStack>
                 <YStack
@@ -66,22 +70,19 @@ function Auth() {
                     jc="center"
                     ai="center"
                     width='100%'
-                    flexWrap="wrap"
-                >
+                    flexWrap="wrap">
                     <Card
                         elevation="$10"
                         maw={700}
                         padded
                         paddingVertical="$10"
-                        $sm={{ paddingVertical: "$7" }}
-                    >
+                        $sm={{ paddingVertical: "$7" }}>
                         <YStack gap="$9" flexWrap="wrap">
                             <H1 $sm={{ fontSize: "$8" }} ta='center'>Keycloak Authentication</H1>
                             <Separator />
                             <Paragraph
                                 fontFamily="$silkscreen"
-                                ta="center"
-                            >
+                                ta="center">
                                 you have sucessfully login in keycloak with client id {keycloak?.clientId} using {keycloak?.realm} with {keycloak?.email}
                             </Paragraph>
                             <XStack alignItems="flex-end" jc='flex-end' gap="$2" flexWrap="wrap">
