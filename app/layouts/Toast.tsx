@@ -19,11 +19,17 @@
  * limitations under the License.
  */
 
-import { useToastState, Toast as TamaguiToast } from '@tamagui/toast';
+import { useToastState, Toast as TamaguiToast, useToastController } from '@tamagui/toast';
+import { useEffect } from 'react';
 import { YStack } from 'tamagui';
 
 export function Toast() {
   const toastState = useToastState();
+  const toastController = useToastController();
+
+  useEffect(() => {
+    toastController.hide();
+  }, []);
 
   return (
     toastState && (
