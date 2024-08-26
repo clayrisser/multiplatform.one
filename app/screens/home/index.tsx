@@ -50,11 +50,11 @@ function HomeScreen() {
     href: '/user/alice',
   });
   const authProps = useLink({
-    href: 'auth',
+    href: '/auth',
   });
 
   const formProps = useLink({
-    href: 'form',
+    href: '/form',
   });
 
   const { data, isLoading } = useGqlQuery<AuthQueryResponse>({

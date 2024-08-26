@@ -1,8 +1,8 @@
 /**
- * File: /pages/form/index.tsx
- * Project: @platform/next
- * File Created: 06-08-2024 15:41:25
- * Author: Clay Risser
+ * File: /pages/user/[id].tsx
+ * Project: @platform/electron
+ * File Created: 26-08-2024 15:23:01
+ * Author: Lalit rajak
  * -----
  * BitSpur (c) Copyright 2021 - 2024
  *
@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { getServerSideProps } from 'multiplatform.one/next';
-import FormScreen from 'app/screens/form';
 
-export default FormScreen;
+import UserScreen from 'app/screens/user';
+
+export default UserScreen;
