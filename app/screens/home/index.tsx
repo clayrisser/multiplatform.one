@@ -76,7 +76,8 @@ function HomeScreen() {
             $sm={{ fontSize: '$5', letterSpacing: 5 }}
             theme="blue_active"
             color="$backgroundFocus"
-            textTransform='uppercase'>
+            textTransform="uppercase"
+          >
             {t('screens.home.welcome')}
           </H1>
         </Theme>
@@ -104,7 +105,8 @@ function HomeScreen() {
           borderColor="$borderColor"
           borderRadius="$2"
           backgroundColor="$cardBackgroundColor"
-          elevation="$2">
+          elevation="$2"
+        >
           <Paragraph>view user information here</Paragraph>
           <Button {...linkProps}>
             <Text color="$blue10">{t('screens.home.link')}</Text>
@@ -119,7 +121,8 @@ function HomeScreen() {
           borderColor="$borderColor"
           borderRadius="$2"
           backgroundColor="$cardBackgroundColor"
-          elevation="$2">
+          elevation="$2"
+        >
           <Paragraph>keycloak authentication</Paragraph>
           <Button {...authProps}>
             <Text right="$8" color="$blue10">
@@ -136,7 +139,8 @@ function HomeScreen() {
           borderColor="$borderColor"
           borderRadius="$2"
           backgroundColor="$cardBackgroundColor"
-          elevation="$2">
+          elevation="$2"
+        >
           <Paragraph>register here to create an account</Paragraph>
           <Button {...formProps}>
             <Text color="$blue10">Register</Text>

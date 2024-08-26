@@ -1,3 +1,24 @@
+/**
+ * File: /screens/form/index.tsx
+ * Project: app
+ * File Created: 15-08-2024 18:25:08
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 /* eslint-disable max-lines-per-function */
 /**
  * File: /screens/form/index.tsx
@@ -46,6 +67,7 @@ import { useForm } from '@tanstack/react-form';
 import { useToastController } from '@tamagui/toast';
 import { withDefaultLayout } from 'app/layouts/Default';
 import { Eye, EyeOff } from '@tamagui/lucide-icons';
+import { Link } from 'solito/link';
 
 export interface RegisterForm {
   firstName: string;
@@ -62,8 +84,6 @@ export interface RegisterForm {
   travelPercentage: number[];
   currentlyWorking: boolean;
   phoneNumber: string;
-  // companyName?: string;
-  // jobTitle?: string;
   password: string;
 }
 export interface ErrorProps {
@@ -113,8 +133,6 @@ const FormScreen = () => {
       travelPercentage: [0],
       currentlyWorking: false,
       phoneNumber: '',
-      // companyName: '',
-      // jobTitle: '',
       password: '',
     },
     onSubmit: ({ value }) => {
@@ -129,7 +147,7 @@ const FormScreen = () => {
         ...(value.phoneNumber && !isPhoneNumberValid(value.phoneNumber) && { phoneNumber: 'invalid phone number.' }),
         ...(!value.password && { password: 'password is required.' }),
         ...(value.password && !isPasswordValid(value.password) && { password: 'invalid password' }),
-      }
+      };
       setErrors(_errors);
       if (Object.values(_errors).some((error) => error)) {
         toastController.show('please fill all required fields');
@@ -144,9 +162,10 @@ const FormScreen = () => {
 
       form.reset();
       setProgressValue(0);
-      setProgressColor('black');
+      setProgressColor('red');
       setIsWorking(false);
       setErrors({});
+      setSliderValue([0]);
     },
   });
   const handleFirstName = (value: string) => {
@@ -170,7 +189,7 @@ const FormScreen = () => {
     const hasAtSymbol = atSymbolCount === 1;
     const domainPart = email.split('@')[1];
     const dotCount = ((domainPart && domainPart.match(/\./g)) || []).length;
-    const hasDotAfterAt = dotCount === 1 && /^[a-zA-Z]+\.[a-zA-Z]+$/.test(domainPart || '');
+    const hasDotAfterAt = dotCount === 1 && /^[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/.test(domainPart || '');
     const endsWithValidChar = /[a-zA-Z]$/.test(email);
 
     if (!startsWithValidChar) {
@@ -182,10 +201,10 @@ const FormScreen = () => {
     } else if (!endsWithValidChar) {
       message = 'email must end with a letter';
     }
-    setErrors(prev => ({
+    setErrors((prev) => ({
       ...prev,
-      email: message
-    }))
+      email: message,
+    }));
     form.setFieldValue('email', email);
   };
   const handlePhoneNumberChange = (value: string) => {
@@ -221,10 +240,10 @@ const FormScreen = () => {
     }
     progress = Math.min(progress, 100);
     setProgressValue(progress);
-    setErrors(prev => ({
+    setErrors((prev) => ({
       ...prev,
-      password: message
-    }))
+      password: message,
+    }));
     form.setFieldValue('password', password);
   };
 
@@ -246,8 +265,6 @@ const FormScreen = () => {
                   required
                   inputProps={{
                     placeholder: 'First Name *',
-                    borderColor: errors.firstName ? 'red' : undefined,
-                    borderWidth: errors.firstName ? 2 : 1
                   }}
                   onChangeText={handleFirstName}
                 />
@@ -260,8 +277,6 @@ const FormScreen = () => {
                   required
                   inputProps={{
                     placeholder: 'Last Name *',
-                    borderColor: errors.lastName ? 'red' : undefined,
-                    borderWidth: errors.lastName ? 2 : 1
                   }}
                   onChangeText={handleLastName}
                 />
@@ -274,8 +289,6 @@ const FormScreen = () => {
                   required
                   inputProps={{
                     placeholder: 'Email*',
-                    borderColor: errors.email ? 'red' : undefined,
-                    borderWidth: errors.email ? 2 : 1
                   }}
                   onChangeText={handleChangeEmail}
                 />
@@ -289,8 +302,6 @@ const FormScreen = () => {
                   inputProps={{
                     placeholder: 'Phone Number*',
                     keyboardType: 'numeric',
-                    borderColor: errors.phoneNumber ? 'red' : undefined,
-                    borderWidth: errors.phoneNumber ? 2 : 1
                   }}
                   onChangeText={handlePhoneNumberChange}
                 />
@@ -305,8 +316,6 @@ const FormScreen = () => {
                     inputProps={{
                       placeholder: 'Password*',
                       secureTextEntry: !showPassword,
-                      borderColor: errors.password ? progressColor : undefined,
-                      borderWidth: errors.password ? 2 : 1
                     }}
                     onChangeText={handlePasswordChange}
                     width="100%"
@@ -315,24 +324,24 @@ const FormScreen = () => {
                   />
                   <Paragraph
                     onPress={() => setShowPassword(!showPassword)}
-
-                    position='absolute'
+                    position="absolute"
                     right={10}
-                    top='50%'
+                    top="50%"
                     transform={[{ translateY: -12 }]}
-
                   >
                     {showPassword ? <EyeOff /> : <Eye />}
                   </Paragraph>
                 </XStack>
-                {errors.password && <FieldProgress
-                  value={progressValue}
-                  size="$1"
-                  animation="bouncy"
-                  padding="$0.5"
-                  borderColor={progressColor}
-                  indicatorProps={{ bg: progressColor }}
-                />}
+                {errors.password && (
+                  <FieldProgress
+                    value={progressValue}
+                    size="$1"
+                    animation="bouncy"
+                    padding="$0.5"
+                    borderColor={progressColor}
+                    indicatorProps={{ bg: progressColor }}
+                  />
+                )}
                 <Paragraph gap="$1" color={progressColor}>
                   {errors.password}
                 </Paragraph>
@@ -341,25 +350,13 @@ const FormScreen = () => {
                 <FieldRadioGroup gap="$0.8" name="gender" label="Gender" required form={form}>
                   <YStack>
                     <FieldRadioGroupItem value="male">
-                      <Label
-                        color={errors.gender ? 'red' : undefined}
-                      >
-                        Male
-                      </Label>
+                      <Label>Male</Label>
                     </FieldRadioGroupItem>
                     <FieldRadioGroupItem value="female">
-                      <Label
-                        color={errors.gender ? 'red' : undefined}
-                      >
-                        Female
-                      </Label>
+                      <Label>Female</Label>
                     </FieldRadioGroupItem>
                     <FieldRadioGroupItem value="other">
-                      <Label
-                        color={errors.gender ? 'red' : undefined}
-                      >
-                        Other
-                      </Label>
+                      <Label>Other</Label>
                     </FieldRadioGroupItem>
                   </YStack>
                 </FieldRadioGroup>
@@ -378,8 +375,6 @@ const FormScreen = () => {
                 <FieldTextArea
                   textAreaProps={{
                     placeholder: 'Write something about yourself... *',
-                    borderColor: errors.introduction ? 'red' : undefined,
-                    borderWidth: errors.introduction ? 2 : 1
                   }}
                   name="introduction"
                   form={form}
@@ -406,6 +401,7 @@ const FormScreen = () => {
                 label="Travel Percentage"
                 padding="$2"
                 onValueChange={setSliderValue}
+                value={[60]}
               />
               <Paragraph>Travel Percentage: {sliderValue}%</Paragraph>
               <FieldSwitch
@@ -415,17 +411,8 @@ const FormScreen = () => {
                 onCheckedChange={handleSwitchChange}
                 checked={isWorking}
               />
-              {
-                isWorking ? <Text>Working</Text> : <Text>Not Working</Text>
-              }
-              {/* {isWorking && (
-                <YStack gap="$4" flexWrap="wrap" w="100%">
-
-                  <FieldInput form={form} name="companyName" inputProps={{ placeholder: 'Company Name' }} />
-                  <FieldInput form={form} name="jobTitle" inputProps={{ placeholder: 'Job Title' }} />
-                </YStack>
-              )} */}
-              <YStack flex={1} jc="flex-end" ai="flex-end">
+              {isWorking ? <Text>Working</Text> : <Text>Not Working</Text>}
+              <XStack flex={1} jc="flex-end">
                 <Theme name="dark_blue_active">
                   <SubmitButton
                     form={form}
@@ -438,11 +425,17 @@ const FormScreen = () => {
                     Submit
                   </SubmitButton>
                 </Theme>
-              </YStack>
+              </XStack>
             </YStack>
           </YStack>
         </ScrollView>
       </Card>
+      <XStack>
+        <Paragraph>already registered?</Paragraph>
+        <Link href="/" color="$blue10">
+          <Paragraph color="$blue10">home</Paragraph>
+        </Link>
+      </XStack>
     </YStack>
   );
 };
