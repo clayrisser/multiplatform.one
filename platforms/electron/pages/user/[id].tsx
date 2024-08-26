@@ -1,8 +1,8 @@
 /**
- * File: /pages/home.tsx
+ * File: /pages/user/[id].tsx
  * Project: @platform/electron
- * File Created: 15-06-2024 14:38:39
- * Author: Clay Risser
+ * File Created: 26-08-2024 15:23:01
+ * Author: Lalit rajak
  * -----
  * BitSpur (c) Copyright 2021 - 2024
  *
@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-import HomeScreen from 'app/screens/home';
+import UserScreen from 'app/screens/user';
 
-export default HomeScreen;
+export default UserScreen;
