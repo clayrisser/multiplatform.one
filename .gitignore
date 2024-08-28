@@ -39,6 +39,7 @@ debug.json
 .nyc_output
 .parcel-cache
 .pnp.*
+.pnpm*
 .pnpm-debug.log*
 .rpt2_cache/
 .rts2_cache_cjs/
