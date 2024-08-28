@@ -67,7 +67,8 @@ import { useForm } from '@tanstack/react-form';
 import { useToastController } from '@tamagui/toast';
 import { withDefaultLayout } from 'app/layouts/Default';
 import { Eye, EyeOff } from '@tamagui/lucide-icons';
-import { Link } from 'solito/link';
+// import { Link } from 'solito/link';
+import { HomeNavigation } from 'app/components/homeNavigation';
 
 export interface RegisterForm {
   firstName: string;
@@ -168,18 +169,27 @@ const FormScreen = () => {
       setSliderValue([0]);
     },
   });
+  const clearError = (fieldName: keyof ErrorProps) => {
+    setErrors((prev) => ({
+      ...prev,
+      [fieldName]: undefined,
+    }));
+  };
   const handleFirstName = (value: string) => {
     const firstName = value.replace(/\s+/g, '');
     form.setFieldValue('firstName', firstName);
+    clearError('firstName');
   };
   const handleLastName = (value: string) => {
     const lastName = value.replace(/\s+/g, '');
     form.setFieldValue('lastName', lastName);
+    clearError('lastName');
   };
   const handleIntroduction = (value: string) => {
     const trimmedValue = value.replace(/^\s+/, '');
     const introduction = trimmedValue.length > 0 ? ` ${trimmedValue}` : ' ';
     form.setFieldValue('introduction', introduction);
+    clearError('introduction');
   };
   const handleChangeEmail = (value: string) => {
     const email = value.replace(/\s+/g, '');
@@ -210,6 +220,7 @@ const FormScreen = () => {
   const handlePhoneNumberChange = (value: string) => {
     const formattedValue = value.replace(/\D/g, '').slice(0, 10);
     form.setFieldValue('phoneNumber', formattedValue);
+    clearError('phoneNumber');
   };
   const handleSwitchChange = (checked: boolean) => {
     setIsWorking(checked);
@@ -322,14 +333,12 @@ const FormScreen = () => {
                     minWidth={250}
                     maxWidth={550}
                   />
-                  <Paragraph
-                    onPress={() => setShowPassword(!showPassword)}
-                    position="absolute"
-                    right={10}
-                    top="50%"
-                    transform={[{ translateY: -12 }]}
-                  >
-                    {showPassword ? <EyeOff /> : <Eye />}
+                  <Paragraph onPress={() => setShowPassword(!showPassword)} position="absolute" right="5%" top="25%">
+                    {showPassword ? (
+                      <EyeOff $sm={{ size: '$2' }} bg="green" color="red" />
+                    ) : (
+                      <Eye $sm={{ size: '$2' }} bg="green" color="red" />
+                    )}
                   </Paragraph>
                 </XStack>
                 {errors.password && (
@@ -430,12 +439,13 @@ const FormScreen = () => {
           </YStack>
         </ScrollView>
       </Card>
-      <XStack>
+      <HomeNavigation />
+      {/* <XStack>
         <Paragraph>already registered?</Paragraph>
         <Link href="/" color="$blue10">
           <Paragraph color="$blue10">home</Paragraph>
         </Link>
-      </XStack>
+      </XStack> */}
     </YStack>
   );
 };

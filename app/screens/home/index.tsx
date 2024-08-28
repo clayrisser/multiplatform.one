@@ -125,9 +125,7 @@ function HomeScreen() {
         >
           <Paragraph>keycloak authentication</Paragraph>
           <Button {...authProps}>
-            <Text right="$8" color="$blue10">
-              Auth
-            </Text>
+            <Text color="$blue10">Auth</Text>
           </Button>
         </XStack>
         <XStack
