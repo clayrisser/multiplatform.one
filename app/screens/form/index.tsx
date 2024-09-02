@@ -414,12 +414,6 @@ function FormScreen() {
         </ScrollView>
       </Card>
       <HomeNavigation />
-      {/* <XStack>
-        <Paragraph>already registered?</Paragraph>
-        <Link href="/" color="$blue10">
-          <Paragraph color="$blue10">home</Paragraph>
-        </Link>
-      </XStack> */}
     </YStack>
   );
 }
