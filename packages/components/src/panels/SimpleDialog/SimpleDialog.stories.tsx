@@ -19,23 +19,23 @@
  * limitations under the License.
  */
 
-import React, { useState } from 'react';
-import type { Meta } from '@storybook/react';
-import { Button, Input, Dialog, YStack } from 'tamagui';
-import { SimpleDialog } from './index';
-import { action } from '@storybook/addon-actions';
-import { Text } from 'tamagui';
-import type { SimpleDialogProps } from './index';
+import { action } from "@storybook/addon-actions";
+import type { Meta } from "@storybook/react";
+import React, { useState } from "react";
+import { Button, Dialog, Input, YStack } from "tamagui";
+import { Text } from "tamagui";
+import { SimpleDialog } from "./index";
+import type { SimpleDialogProps } from "./index";
 
 const meta: Meta = {
-  title: 'panels/SimpleDialog',
+  title: "panels/SimpleDialog",
   component: SimpleDialog,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: "beta" } },
 };
 
 export const main = (args) => (
   <SimpleDialog
-    onOpenChange={action('onOpenChange')}
+    onOpenChange={action("onOpenChange")}
     trigger={<Button>Press Me</Button>}
     title="Fill the details"
     withoutCloseButton
@@ -50,7 +50,7 @@ export const main = (args) => (
 );
 const mainArgs: SimpleDialogProps = {
   // title: 'Simple Dialog Example',
-  description: 'This is a simple dialog example.',
+  description: "This is a simple dialog example.",
   withoutCloseButton: false,
 };
 main.args = mainArgs;
@@ -63,14 +63,18 @@ function OpenWithFunction() {
   }
 
   function handleOpenChange(open) {
-    action('onOpenChange')();
+    action("onOpenChange")();
     setOpen(open);
   }
 
   return (
     <YStack alignItems="flex-start">
       <Button onPress={handlePress}>Press Me</Button>
-      <SimpleDialog open={open} onOpenChange={handleOpenChange} title="Fill the details">
+      <SimpleDialog
+        open={open}
+        onOpenChange={handleOpenChange}
+        title="Fill the details"
+      >
         <Input placeholder="Enter your first name" />
         <Input placeholder="Enter your last name" />
         <Dialog.Close>
@@ -91,7 +95,7 @@ export const customPosition = (args) => (
     {...args}
     trigger={<Button>open Dialog</Button>}
     withoutCloseButton
-    portalStyle={{ jc: 'flex-start', paddingTop: 10 }}
+    portalStyle={{ jc: "flex-start", paddingTop: 10 }}
   >
     <YStack width={800} height={400}>
       <Input placeholder={args.search} />
@@ -100,7 +104,7 @@ export const customPosition = (args) => (
 );
 
 customPosition.args = {
-  search: 'search',
+  search: "search",
 };
 
 export const rightSideDialog = (args) => (
@@ -109,7 +113,7 @@ export const rightSideDialog = (args) => (
     asRightSideSheet
     withoutCloseButton
     transitionWidth={400}
-    contentStyle={{ animation: 'quick' }}
+    contentStyle={{ animation: "quick" }}
     {...args}
   >
     <YStack width={400}>
@@ -123,7 +127,7 @@ export const rightSideDialog = (args) => (
 
 rightSideDialog.args = {
   asRightSideSheet: true,
-  contentStyle: { animation: 'quick' },
+  contentStyle: { animation: "quick" },
   transitionWidth: 400,
 };
 
@@ -133,7 +137,7 @@ export const leftSideDialog = (args) => (
     asLeftSideSheet
     withoutCloseButton
     transitionWidth={300}
-    contentStyle={{ animation: 'lazy' }}
+    contentStyle={{ animation: "lazy" }}
     {...args}
   >
     <YStack width={300}>
@@ -147,6 +151,6 @@ export const leftSideDialog = (args) => (
 
 leftSideDialog.args = {
   asLeftSideSheet: true,
-  contentStyle: { animation: 'lazy' },
+  contentStyle: { animation: "lazy" },
   transitionWidth: 300,
 };

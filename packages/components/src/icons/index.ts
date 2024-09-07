@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export * from './CheckRegular';
-export * from './MinusRegular';
+export * from "./CheckRegular";
+export * from "./MinusRegular";

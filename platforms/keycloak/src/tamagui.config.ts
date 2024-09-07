@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-import config from 'app/tamagui.config';
+import config from "app/tamagui.config";
 config.disableSSR = true;
 export default config;

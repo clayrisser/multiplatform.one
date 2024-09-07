@@ -19,12 +19,15 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { KeycloakProviderProps } from '@multiplatform.one/keycloak';
-import { KeycloakProvider } from '@multiplatform.one/keycloak';
+import type { KeycloakProviderProps } from "@multiplatform.one/keycloak";
+import { KeycloakProvider } from "@multiplatform.one/keycloak";
+import React from "react";
 
 export interface GlobalKeycloakProviderProps extends KeycloakProviderProps {}
 
-export function GlobalKeycloakProvider({ children, ...props }: KeycloakProviderProps) {
+export function GlobalKeycloakProvider({
+  children,
+  ...props
+}: KeycloakProviderProps) {
   return <KeycloakProvider {...props}>{children}</KeycloakProvider>;
 }

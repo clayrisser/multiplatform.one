@@ -19,13 +19,13 @@
  * limitations under the License.
  */
 
-import { Stack } from 'expo-router';
-import { XStack } from 'ui';
-import { useStyle } from 'tamagui';
+import { Stack } from "expo-router";
+import { useStyle } from "tamagui";
+import { XStack } from "ui";
 
 export function Layout() {
   const contentStyle = useStyle({
-    backgroundColor: '$background',
+    backgroundColor: "$background",
   });
 
   return (

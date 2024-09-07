@@ -21,9 +21,9 @@
 
 // https://github.com/tamagui/tamagui/blob/086f4d0a3ffb1767547e1ab9f51502c59a098504/apps/site/lib/rehype-highlight-line.ts
 
-import parse from 'rehype-parse';
-import { toHtml } from 'hast-util-to-html';
-import { unified } from 'unified';
+import { toHtml } from "hast-util-to-html";
+import parse from "rehype-parse";
+import { unified } from "unified";
 
 export function rehypeHighlightLine(ast: any, lines: any[]) {
   const formattedAst = applyMultilineFix(ast);
@@ -35,18 +35,18 @@ function lineNumberify(ast: any, lineNum = 1) {
   let lineNumber = lineNum;
   return ast.reduce(
     (result: any, node: any) => {
-      if (node.type === 'text') {
-        if (node.value.indexOf('\n') === -1) {
+      if (node.type === "text") {
+        if (node.value.indexOf("\n") === -1) {
           node.lineNumber = lineNumber;
           result.nodes.push(node);
           return result;
         }
-        const lines = node.value.split('\n');
+        const lines = node.value.split("\n");
         for (let i = 0; i < lines.length; i++) {
           if (i !== 0) ++lineNumber;
           if (i === lines.length - 1 && lines[i].length === 0) continue;
           result.nodes.push({
-            type: 'text',
+            type: "text",
             value: i === lines.length - 1 ? lines[i] : `${lines[i]}\n`,
             lineNumber: lineNumber,
           });
@@ -70,7 +70,8 @@ function lineNumberify(ast: any, lineNum = 1) {
 }
 
 function wrapLines(ast: any[], linesToHighlight: any) {
-  const highlightAll = linesToHighlight.length === 1 && linesToHighlight[0] === 0;
+  const highlightAll =
+    linesToHighlight.length === 1 && linesToHighlight[0] === 0;
   const allLines: any[] = Array.from(new Set(ast.map((x) => x.lineNumber)));
   let i = 0;
   const wrapped = allLines.reduce((nodes, marker) => {
@@ -90,12 +91,13 @@ function wrapLines(ast: any[], linesToHighlight: any) {
       }
     }
     nodes.push({
-      type: 'element',
-      tagName: 'div',
+      type: "element",
+      tagName: "div",
       properties: {
         dataLine: line,
-        className: 'highlight-line',
-        dataHighlighted: linesToHighlight.includes(line) || highlightAll ? 'true' : 'false',
+        className: "highlight-line",
+        dataHighlighted:
+          linesToHighlight.includes(line) || highlightAll ? "true" : "false",
       },
       children,
       lineNumber: line,
@@ -106,7 +108,8 @@ function wrapLines(ast: any[], linesToHighlight: any) {
 }
 
 // https://github.com/gatsbyjs/gatsby/pull/26161/files
-const MULTILINE_TOKEN_SPAN = /<span class="token ([^"]+)">[^<]*\n[^<]*<\/span>/g;
+const MULTILINE_TOKEN_SPAN =
+  /<span class="token ([^"]+)">[^<]*\n[^<]*<\/span>/g;
 
 function applyMultilineFix(ast: any) {
   // AST to HTML

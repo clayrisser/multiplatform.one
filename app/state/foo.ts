@@ -19,9 +19,9 @@
  * limitations under the License.
  */
 
-import { createStateStore } from '@multiplatform.one/zustand';
+import { createStateStore } from "@multiplatform.one/zustand";
 
-const { useStore } = createStateStore('foo', { bar: 'baz' });
+const { useStore } = createStateStore("foo", { bar: "baz" });
 
 export function useThemeState() {
   return useStore();

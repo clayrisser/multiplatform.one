@@ -19,18 +19,31 @@
  * limitations under the License.
  */
 
-import React, { useState } from 'react';
-import { SimplePopover } from './index';
-import { Text, YStack, XStack, Switch, Label, Button, Input, Popover } from 'tamagui';
-import type { SimplePopoverProps } from './index';
+import React, { useState } from "react";
+import {
+  Button,
+  Input,
+  Label,
+  Popover,
+  Switch,
+  Text,
+  XStack,
+  YStack,
+} from "tamagui";
+import { SimplePopover } from "./index";
+import type { SimplePopoverProps } from "./index";
 
 export default {
-  title: 'panels/SimplePopover',
+  title: "panels/SimplePopover",
   component: SimplePopover,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: "beta" } },
 };
 export const main = (args) => (
-  <SimplePopover trigger={<Button>Click here to get a Popover</Button>} title="Popover content" {...args}>
+  <SimplePopover
+    trigger={<Button>Click here to get a Popover</Button>}
+    title="Popover content"
+    {...args}
+  >
     <Text>Popover content</Text>
   </SimplePopover>
 );
@@ -39,7 +52,11 @@ function Hoverable(args) {
   const [hoverable, setHoverable] = useState(true);
   return (
     <YStack>
-      <SimplePopover hoverable={hoverable} trigger={<Button>Click here to get a Popover</Button>} {...args}>
+      <SimplePopover
+        hoverable={hoverable}
+        trigger={<Button>Click here to get a Popover</Button>}
+        {...args}
+      >
         <YStack>
           <Text>popover content</Text>
         </YStack>

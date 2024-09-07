@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export * from './FieldProgress';
-export * from './Progress';
+export * from "./FieldProgress";
+export * from "./Progress";

@@ -19,9 +19,9 @@
  * limitations under the License.
  */
 
-import type { ComponentType } from 'react';
-import { useCompileMdx } from './useCompileMdx';
-import { useEvaluateMdx } from './useEvaluateMdx';
+import type { ComponentType } from "react";
+import { useCompileMdx } from "./useCompileMdx";
+import { useEvaluateMdx } from "./useEvaluateMdx";
 
 export function useCompileAndEvaluateMdx(
   source: string,

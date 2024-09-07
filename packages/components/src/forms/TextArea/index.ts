@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export * from './FieldTextArea';
-export * from './TextArea';
+export * from "./FieldTextArea";
+export * from "./TextArea";

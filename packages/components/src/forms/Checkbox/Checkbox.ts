@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export type { CheckboxProps } from 'tamagui';
-export { Checkbox } from 'tamagui';
+export type { CheckboxProps } from "tamagui";
+export { Checkbox } from "tamagui";

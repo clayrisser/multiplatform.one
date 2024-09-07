@@ -20,11 +20,11 @@
  * limitations under the License.
  */
 
-import type { ComponentStory, ComponentMeta } from '@storybook/react';
-import { createPageStory } from '../createPageStory';
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
+import { createPageStory } from "../createPageStory";
 
 const { PageStory } = createPageStory({
-  pageId: 'register-user-profile.ftl',
+  pageId: "register-user-profile.ftl",
 });
 
 export const Default: ComponentStory<typeof PageStory> = () => <PageStory />;
@@ -120,6 +120,6 @@ export const Default: ComponentStory<typeof PageStory> = () => <PageStory />;
 // );
 
 export default {
-  title: 'login/RegisterUserProfile',
+  title: "login/RegisterUserProfile",
   component: PageStory,
 } as ComponentMeta<typeof PageStory>;

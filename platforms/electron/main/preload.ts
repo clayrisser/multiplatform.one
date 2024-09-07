@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import type { IpcRendererEvent } from 'electron';
-import { contextBridge, ipcRenderer } from 'electron';
+import type { IpcRendererEvent } from "electron";
+import { contextBridge, ipcRenderer } from "electron";
 
 const handler = {
   send(channel: string, value: unknown) {
@@ -37,6 +37,6 @@ const handler = {
   },
 };
 
-contextBridge.exposeInMainWorld('ipc', handler);
+contextBridge.exposeInMainWorld("ipc", handler);
 
 export type IpcHandler = typeof handler;

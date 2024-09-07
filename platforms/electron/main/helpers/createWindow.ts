@@ -19,12 +19,15 @@
  * limitations under the License.
  */
 
-import Store from 'electron-store';
-import type { BrowserWindowConstructorOptions, Rectangle } from 'electron';
-import { screen, BrowserWindow } from 'electron';
+import type { BrowserWindowConstructorOptions, Rectangle } from "electron";
+import { BrowserWindow, screen } from "electron";
+import Store from "electron-store";
 
-export function createWindow(windowName: string, options: BrowserWindowConstructorOptions): BrowserWindow {
-  const key = 'window-state';
+export function createWindow(
+  windowName: string,
+  options: BrowserWindowConstructorOptions,
+): BrowserWindow {
+  const key = "window-state";
   const name = `window-state-${windowName}`;
   const store = new Store<Rectangle>({ name });
   const defaultSize = {
@@ -83,6 +86,6 @@ export function createWindow(windowName: string, options: BrowserWindowConstruct
       ...options.webPreferences,
     },
   });
-  win.on('close', saveState);
+  win.on("close", saveState);
   return win;
 }

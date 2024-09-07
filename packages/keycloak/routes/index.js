@@ -19,4 +19,4 @@
  * limitations under the License.
  */
 
-module.exports = require('../dist/cjs/routes.js');
+module.exports = require("../dist/cjs/routes.js");

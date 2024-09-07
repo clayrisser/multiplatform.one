@@ -19,38 +19,38 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { FieldRadioGroupProps } from './FieldRadioGroup';
-import { FieldRadioGroup } from './FieldRadioGroup';
-import { SubmitButton } from '../Button';
-import { YStack, Text } from 'tamagui';
-import { action } from '@storybook/addon-actions';
-import { useForm } from '@tanstack/react-form';
+import { action } from "@storybook/addon-actions";
+import { useForm } from "@tanstack/react-form";
+import React from "react";
+import { Text, YStack } from "tamagui";
+import { SubmitButton } from "../Button";
+import type { FieldRadioGroupProps } from "./FieldRadioGroup";
+import { FieldRadioGroup } from "./FieldRadioGroup";
 
 export default {
-  title: 'forms/FieldRadioGroup',
+  title: "forms/FieldRadioGroup",
   component: FieldRadioGroup,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: "beta" } },
 };
 
 export const main = (args) => <FieldRadioGroup {...args} />;
 const mainArgs: FieldRadioGroupProps = {
-  label: 'radio group',
+  label: "radio group",
   error: undefined,
-  helperText: 'Select an option',
+  helperText: "Select an option",
   mode: undefined,
-  size: 'SizeToken',
-  value: 'option1',
+  size: "SizeToken",
+  value: "option1",
 };
 main.args = mainArgs;
 
 export const form = () => {
   const form = useForm({
     defaultValues: {
-      option: 'option1',
+      option: "option1",
     },
     onSubmit: async ({ value }) => {
-      action('onSubmit')(value);
+      action("onSubmit")(value);
     },
   });
   return (
@@ -62,7 +62,7 @@ export const form = () => {
         label="radio group"
         size="SizeToken"
         name="option"
-        onValueChange={action('onValueChange')}
+        onValueChange={action("onValueChange")}
         required
       >
         <FieldRadioGroup.Item size="SizeToken" value="option1">

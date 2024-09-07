@@ -19,33 +19,59 @@
  * limitations under the License.
  */
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import type { AuthProviderProps, Tokens } from './AuthProvider';
-import type { KeycloakLoginOptions, KeycloakLogoutOptions } from '../../keycloak';
-import { AfterAuth } from '../AfterAuth';
-import { Keycloak, KeycloakConfigContext } from '../../keycloak';
-import { KeycloakContext } from '../../keycloak/context';
-import { makeRedirectUri, useAuthRequest, useAutoDiscovery, refreshAsync, exchangeCodeAsync } from 'expo-auth-session';
-import { persist, useAuthState } from '../../state';
-import { validOrRefreshableToken, isTokenExpired } from '../../token';
+import {
+  exchangeCodeAsync,
+  makeRedirectUri,
+  refreshAsync,
+  useAuthRequest,
+  useAutoDiscovery,
+} from "expo-auth-session";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import type {
+  KeycloakLoginOptions,
+  KeycloakLogoutOptions,
+} from "../../keycloak";
+import { Keycloak, KeycloakConfigContext } from "../../keycloak";
+import { KeycloakContext } from "../../keycloak/context";
+import { persist, useAuthState } from "../../state";
+import { isTokenExpired, validOrRefreshableToken } from "../../token";
+import { AfterAuth } from "../AfterAuth";
+import type { AuthProviderProps, Tokens } from "./AuthProvider";
 
 const REFRESH_THRESHOLD = 5;
 
 export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
   const [keycloak, setKeycloak] = useState<Keycloak>();
   const authState = useAuthState();
-  const initialRefreshToken = useMemo(() => validOrRefreshableToken((persist && authState.refreshToken) || false), []);
+  const initialRefreshToken = useMemo(
+    () => validOrRefreshableToken((persist && authState.refreshToken) || false),
+    [],
+  );
   const keycloakUrl = `${keycloakConfig?.url}/realms/${keycloakConfig?.realm}`;
-  const clientId = keycloakConfig.publicClientId || keycloakConfig?.clientId || '';
+  const clientId =
+    keycloakConfig.publicClientId || keycloakConfig?.clientId || "";
   const discovery = useAutoDiscovery(keycloakUrl);
   const redirectUri = makeRedirectUri();
   const [tokens, setTokens] = useState<Tokens<false>>({
     refreshToken: initialRefreshToken,
-    token: validOrRefreshableToken((persist && authState.token) || false, initialRefreshToken),
-    idToken: validOrRefreshableToken((persist && authState.idToken) || false, initialRefreshToken),
+    token: validOrRefreshableToken(
+      (persist && authState.token) || false,
+      initialRefreshToken,
+    ),
+    idToken: validOrRefreshableToken(
+      (persist && authState.idToken) || false,
+      initialRefreshToken,
+    ),
   });
   const scopes = useMemo(
-    () => [...new Set(['email', 'openid', 'profile', ...(keycloakConfig.scopes || [])])],
+    () => [
+      ...new Set([
+        "email",
+        "openid",
+        "profile",
+        ...(keycloakConfig.scopes || []),
+      ]),
+    ],
     [keycloakConfig.scopes],
   );
   const [request, response, promptAsync] = useAuthRequest(
@@ -58,9 +84,14 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
   );
 
   useEffect(() => {
-    if (!discovery || !response?.type || !request?.codeVerifier || !clientId) return;
+    if (!discovery || !response?.type || !request?.codeVerifier || !clientId)
+      return;
     (async () => {
-      if (response?.type === 'success' && request.codeVerifier && response.params.code) {
+      if (
+        response?.type === "success" &&
+        request.codeVerifier &&
+        response.params.code
+      ) {
         const tokenResponse = await exchangeCodeAsync(
           {
             clientId,
@@ -85,16 +116,16 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
   }, [
     !discovery,
     request?.codeVerifier,
-    response?.type === 'success' ? response?.params?.code : undefined,
+    response?.type === "success" ? response?.params?.code : undefined,
     clientId,
     scopes,
     redirectUri,
   ]);
 
   const resetTokens = useCallback(() => {
-    authState.setIdToken('');
-    authState.setRefreshToken('');
-    authState.setToken('');
+    authState.setIdToken("");
+    authState.setRefreshToken("");
+    authState.setToken("");
     setTokens({
       refreshToken: undefined,
       token: undefined,
@@ -104,7 +135,7 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
 
   const refreshTokens = useCallback(async () => {
     if (!discovery) return;
-    if (typeof tokens.refreshToken === 'string') {
+    if (typeof tokens.refreshToken === "string") {
       if (!isTokenExpired(tokens.refreshToken)) {
         const tokenResponse = await refreshAsync(
           {
@@ -128,7 +159,7 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
       }
     } else if (
       authState.refreshToken &&
-      typeof authState.refreshToken === 'string' &&
+      typeof authState.refreshToken === "string" &&
       isTokenExpired(authState.refreshToken)
     ) {
       resetTokens();
@@ -162,7 +193,10 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
         if (_keycloak.tokenParsed?.exp) {
           const timeout =
             Math.max(
-              Math.min(_keycloak.tokenParsed.exp, _keycloak.refreshTokenParsed?.exp || 0) -
+              Math.min(
+                _keycloak.tokenParsed.exp,
+                _keycloak.refreshTokenParsed?.exp || 0,
+              ) -
                 Math.floor(Date.now() / 1000) -
                 REFRESH_THRESHOLD,
               REFRESH_THRESHOLD,
@@ -172,7 +206,10 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
               refreshTokens();
             }, timeout);
           } else {
-            setTimeout(() => _keycloak.logout(), Math.max(0, timeout + REFRESH_THRESHOLD) * 1000);
+            setTimeout(
+              () => _keycloak.logout(),
+              Math.max(0, timeout + REFRESH_THRESHOLD) * 1000,
+            );
             return;
           }
         }
@@ -182,7 +219,13 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
     return () => {
       if (refreshHandle) clearTimeout(refreshHandle);
     };
-  }, [!request, tokens.token, tokens.idToken, tokens.refreshToken, refreshTokens]);
+  }, [
+    !request,
+    tokens.token,
+    tokens.idToken,
+    tokens.refreshToken,
+    refreshTokens,
+  ]);
 
   return (
     <KeycloakConfigContext.Provider value={keycloakConfig}>

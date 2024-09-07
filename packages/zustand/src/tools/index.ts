@@ -4,6 +4,6 @@
  * MIT License
  */
 
-export * from './createSimple';
-export * from './types';
-export * from './utils';
+export * from "./createSimple";
+export * from "./types";
+export * from "./utils";

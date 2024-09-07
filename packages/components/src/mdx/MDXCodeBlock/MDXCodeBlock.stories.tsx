@@ -19,23 +19,23 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { MDXCodeBlock } from './index';
-import { XStack, Text } from 'tamagui';
+import type { Meta, StoryObj } from "@storybook/react";
+import React from "react";
+import { Text, XStack } from "tamagui";
+import { MDXCodeBlock } from "./index";
 
 const meta: Meta = {
-  title: 'mdx/MDXCodeBlock',
+  title: "mdx/MDXCodeBlock",
   component: MDXCodeBlock,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
 export const main: StoryObj<typeof MDXCodeBlock> = {
   args: {
     isCollapsible: false,
-    background: '$color3',
+    background: "$color3",
   },
   render: (args) => (
     <MDXCodeBlock {...args}>

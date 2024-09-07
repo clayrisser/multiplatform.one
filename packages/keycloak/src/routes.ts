@@ -19,20 +19,22 @@
  * limitations under the License.
  */
 
-import type { AccessTokenParsed } from './token';
-import type { AuthOptions, CallbacksOptions } from 'next-auth';
-import type { JWT } from 'next-auth/jwt';
-import type { OAuthUserConfig } from 'next-auth/providers';
-import type { Session } from './session';
-import { getServerSession } from 'next-auth';
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
+import type { AuthOptions, CallbacksOptions } from "next-auth";
+import { getServerSession } from "next-auth";
+import type { JWT } from "next-auth/jwt";
+import type { OAuthUserConfig } from "next-auth/providers";
+import type { Session } from "./session";
+import type { AccessTokenParsed } from "./token";
 
-const NextAuth = require('next-auth').default as typeof import('next-auth').default;
-const NextResponse = require('next/server').NextResponse as typeof import('next/server').NextResponse;
+const NextAuth = require("next-auth")
+  .default as typeof import("next-auth").default;
+const NextResponse = require("next/server")
+  .NextResponse as typeof import("next/server").NextResponse;
 const logger = console;
 let _nextAuth: AuthOptions | undefined;
-const KeycloakProvider = require('next-auth/providers/keycloak')
-  .default as typeof import('next-auth/providers/keycloak').default;
+const KeycloakProvider = require("next-auth/providers/keycloak")
+  .default as typeof import("next-auth/providers/keycloak").default;
 
 export function createAuthHandler(options: AuthHandlerOptions) {
   return NextAuth(createNextAuthOptions(options));
@@ -40,15 +42,17 @@ export function createAuthHandler(options: AuthHandlerOptions) {
 
 const defaults = {
   keycloak: {
-    baseUrl: 'http://localhost:8080',
-    realm: 'master',
+    baseUrl: "http://localhost:8080",
+    realm: "master",
   },
 };
 
 export function createLogoutHandler(options: AuthHandlerOptions) {
   return {
     async GET() {
-      const idToken = ((await getServerSession(createNextAuthOptions(options))) as Session)?.idToken;
+      const idToken = (
+        (await getServerSession(createNextAuthOptions(options))) as Session
+      )?.idToken;
       if (idToken) {
         try {
           await fetch(
@@ -57,7 +61,7 @@ export function createLogoutHandler(options: AuthHandlerOptions) {
             }/protocol/openid-connect/logout?id_token_hint=${idToken}&post_logout_redirect_uri=${encodeURIComponent(
               options.baseUrl,
             )}`,
-            { method: 'GET' },
+            { method: "GET" },
           );
         } catch (err) {
           logger.error(err);
@@ -72,7 +76,8 @@ export function createLogoutHandler(options: AuthHandlerOptions) {
 export function createNextAuthOptions(options: AuthHandlerOptions) {
   if (_nextAuth) return _nextAuth;
   const authorization =
-    options.keycloak.authorization && typeof options.keycloak.authorization === 'object'
+    options.keycloak.authorization &&
+    typeof options.keycloak.authorization === "object"
       ? options.keycloak.authorization
       : {};
   _nextAuth = {
@@ -85,13 +90,13 @@ export function createNextAuthOptions(options: AuthHandlerOptions) {
           params: {
             scope: [
               ...new Set([
-                'email',
-                'openid',
-                'profile',
-                ...(authorization.params?.scope?.split(' ') || []),
+                "email",
+                "openid",
+                "profile",
+                ...(authorization.params?.scope?.split(" ") || []),
                 ...(options.scopes || []),
               ]),
-            ].join(' '),
+            ].join(" "),
           },
         },
         ...options.keycloak,
@@ -101,12 +106,14 @@ export function createNextAuthOptions(options: AuthHandlerOptions) {
     callbacks: {
       ...options.nextAuth?.callbacks,
       async jwt(params) {
-        if (typeof options.nextAuth?.callbacks?.jwt === 'function') {
+        if (typeof options.nextAuth?.callbacks?.jwt === "function") {
           return options.nextAuth?.callbacks.jwt(params);
         }
         const { token, account } = params;
         if (account) {
-          const decoded = jwtDecode(account.access_token || '') as AccessTokenParsed;
+          const decoded = jwtDecode(
+            account.access_token || "",
+          ) as AccessTokenParsed;
           token.decoded = decoded;
           token.accessToken = account.access_token;
           token.idToken = account.id_token;
@@ -114,18 +121,18 @@ export function createNextAuthOptions(options: AuthHandlerOptions) {
           token.refreshToken = account.refresh_token;
           token.roles = decoded.realm_access?.roles;
           return token;
-        } else if (Math.floor(Date.now() / 1000) < Number(token.expiresAt)) {
+        }
+        if (Math.floor(Date.now() / 1000) < Number(token.expiresAt)) {
           return token;
-        } else {
-          try {
-            return refreshAccessToken(options, token as NextToken);
-          } catch (err) {
-            return { ...token, err };
-          }
+        }
+        try {
+          return refreshAccessToken(options, token as NextToken);
+        } catch (err) {
+          return { ...token, err };
         }
       },
       async session(params) {
-        if (typeof options.nextAuth?.callbacks?.session === 'function') {
+        if (typeof options.nextAuth?.callbacks?.session === "function") {
           return options.nextAuth.callbacks.session(params);
         }
         const { session: nextSession, token: nextToken } = params;
@@ -165,20 +172,23 @@ export interface NextToken extends JWT {
   roles: string[];
 }
 
-async function refreshAccessToken(options: AuthHandlerOptions, nextToken: NextToken) {
+async function refreshAccessToken(
+  options: AuthHandlerOptions,
+  nextToken: NextToken,
+) {
   const res = await fetch(
     `${options.keycloak?.baseUrl || defaults.keycloak.baseUrl}/realms/${
       options.keycloak?.realm || defaults.keycloak.realm
     }/protocol/openid-connect/token`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
         client_id: options.keycloak.clientId,
         client_secret: options.keycloak.clientSecret,
-        grant_type: 'refresh_token',
+        grant_type: "refresh_token",
         refresh_token: nextToken.refreshToken,
       }),
     },

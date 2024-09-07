@@ -19,8 +19,7 @@
  * limitations under the License.
  */
 
-import { ipcQuery } from '../request';
-import { useQuery as useTanstackQuery } from '@tanstack/react-query';
+import { useQuery as useTanstackQuery } from "@tanstack/react-query";
 import type {
   DefaultError,
   DefinedInitialDataOptions,
@@ -29,11 +28,15 @@ import type {
   UndefinedInitialDataOptions,
   UseQueryOptions,
   UseQueryResult,
-} from '@tanstack/react-query';
+} from "@tanstack/react-query";
+import { ipcQuery } from "../request";
 
-const extraOptionsKeys = new Set(['handler', 'variables']);
+const extraOptionsKeys = new Set(["handler", "variables"]);
 
-interface ExtraOptions<THandler extends string = string, TVariables extends object = {}> {
+interface ExtraOptions<
+  THandler extends string = string,
+  TVariables extends object = {},
+> {
   handler: THandler;
   variables?: TVariables;
 }
@@ -50,15 +53,18 @@ export function useIpcQuery<
     | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
     | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
     | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
-    'queryFn' | 'queryKey'
+    "queryFn" | "queryKey"
   > &
     ExtraOptions<THandler, TVariables>,
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> {
-  const tanstackQueryOptions = Object.entries(options).reduce((tanstackQueryOptions, [key, value]) => {
-    if (!extraOptionsKeys.has(key)) tanstackQueryOptions[key] = value;
-    return tanstackQueryOptions;
-  }, {}) as
+  const tanstackQueryOptions = Object.entries(options).reduce(
+    (tanstackQueryOptions, [key, value]) => {
+      if (!extraOptionsKeys.has(key)) tanstackQueryOptions[key] = value;
+      return tanstackQueryOptions;
+    },
+    {},
+  ) as
     | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
     | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
     | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>;
@@ -66,7 +72,10 @@ export function useIpcQuery<
     {
       ...tanstackQueryOptions,
       async queryFn() {
-        return ipcQuery<THandler, TVariables, TQueryFnData>(options.handler, options.variables);
+        return ipcQuery<THandler, TVariables, TQueryFnData>(
+          options.handler,
+          options.variables,
+        );
       },
     },
     queryClient,

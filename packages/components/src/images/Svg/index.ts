@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-import type { Svg as RNSvg } from 'react-native-svg';
-import type { ComponentType } from 'react';
-import { Svg as TSvg } from '@tamagui/react-native-svg';
-import { styled } from 'tamagui';
+import { Svg as TSvg } from "@tamagui/react-native-svg";
+import type { ComponentType } from "react";
+import type { Svg as RNSvg } from "react-native-svg";
+import { styled } from "tamagui";
 
 export const Svg = styled(TSvg as typeof RNSvg, {});
 

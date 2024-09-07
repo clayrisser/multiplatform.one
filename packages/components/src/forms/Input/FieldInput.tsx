@@ -19,35 +19,65 @@
  * limitations under the License.
  */
 
-import React, { useId } from 'react';
-import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
-import type { FieldComponentProps } from '../types';
-import type { FormFieldProps } from '../FormField';
-import type { InputProps } from './Input';
-import { FormField } from '../FormField';
-import { Input } from './Input';
-import { useForm, Field } from '@tanstack/react-form';
-import { useProps } from 'tamagui';
+import type { DeepKeys, DeepValue, Validator } from "@tanstack/form-core";
+import { Field, useForm } from "@tanstack/react-form";
+import React, { useId } from "react";
+import { useProps } from "tamagui";
+import type { FormFieldProps } from "../FormField";
+import { FormField } from "../FormField";
+import type { FieldComponentProps } from "../types";
+import type { InputProps } from "./Input";
+import { Input } from "./Input";
 
 export type FieldInputProps<
   TParentData = any,
   TName extends DeepKeys<TParentData> = any,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
-> = Omit<FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children' | 'field'> &
-  Pick<InputProps, 'value' | 'onChange' | 'onChangeText'> &
-  Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
-    inputProps?: Omit<InputProps, 'value' | 'id' | 'onChange' | 'onChangeText'>;
+> = Omit<
+  FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>,
+  "children" | "field"
+> &
+  Pick<InputProps, "value" | "onChange" | "onChangeText"> &
+  Partial<
+    Omit<
+      FieldComponentProps<
+        TParentData,
+        TName,
+        TFieldValidator,
+        TFormValidator,
+        TData
+      >,
+      "children"
+    >
+  > & {
+    inputProps?: Omit<InputProps, "value" | "id" | "onChange" | "onChangeText">;
   };
 
 export function FieldInput<
   TParentData,
   TName extends DeepKeys<TParentData>,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
->(props: FieldInputProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+>(
+  props: FieldInputProps<
+    TParentData,
+    TName,
+    TFieldValidator,
+    TFormValidator,
+    TData
+  >,
+) {
   let {
     asyncAlways,
     asyncDebounceMs,
@@ -71,7 +101,12 @@ export function FieldInput<
   if (!form || !name) {
     return (
       <FormField {...fieldProps} id={id} onBlur={onBlur}>
-        <Input {...inputProps} id={id} value={value ?? (defaultValue as string)} onChange={onChange} />
+        <Input
+          {...inputProps}
+          id={id}
+          value={value ?? (defaultValue as string)}
+          onChange={onChange}
+        />
       </FormField>
     );
   }
@@ -89,7 +124,9 @@ export function FieldInput<
       validators={validators}
     >
       {(field) => {
-        const error = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : fieldProps.error;
+        const error = field.state.meta.errors.length
+          ? field.state.meta.errors.join(", ")
+          : fieldProps.error;
         return (
           <FormField
             error={error}

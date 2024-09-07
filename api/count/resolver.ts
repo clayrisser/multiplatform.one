@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-import { Authorized } from '@multiplatform.one/keycloak-typegraphql';
-import { CountService } from './service';
-import { Injectable } from '@multiplatform.one/typegraphql';
-import { PING_PONG_EVENTS, pubSub } from '../pubSub';
-import { Resolver, Subscription, Root, Query, Mutation } from 'type-graphql';
+import { Authorized } from "@multiplatform.one/keycloak-typegraphql";
+import { Injectable } from "@multiplatform.one/typegraphql";
+import { Mutation, Query, Resolver, Root, Subscription } from "type-graphql";
+import { PING_PONG_EVENTS, pubSub } from "../pubSub";
+import type { CountService } from "./service";
 
 @Authorized()
 @Injectable()

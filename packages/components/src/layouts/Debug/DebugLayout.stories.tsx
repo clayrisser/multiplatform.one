@@ -19,17 +19,19 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { Button } from 'tamagui';
-import { action } from '@storybook/addon-actions';
-import { withDebugLayout } from './index';
+import { action } from "@storybook/addon-actions";
+import React from "react";
+import { Button } from "tamagui";
+import { withDebugLayout } from "./index";
 
 export default {
-  title: 'layouts/Debug',
+  title: "layouts/Debug",
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
-const Main = withDebugLayout(() => <Button onPress={action('onPress')}>Hello, world!</Button>);
+const Main = withDebugLayout(() => (
+  <Button onPress={action("onPress")}>Hello, world!</Button>
+));
 export const main = () => <Main />;

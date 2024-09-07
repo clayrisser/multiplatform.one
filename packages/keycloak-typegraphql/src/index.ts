@@ -19,12 +19,12 @@
  * limitations under the License.
  */
 
-export * from './addon';
-export * from './authGuard';
-export * from './decorators';
-export * from './initialize';
-export * from './keycloakService';
-export * from './register';
-export * from './token';
-export * from './types';
-export * from '@keycloak/keycloak-admin-client';
+export * from "./addon";
+export * from "./authGuard";
+export * from "./decorators";
+export * from "./initialize";
+export * from "./keycloakService";
+export * from "./register";
+export * from "./token";
+export * from "./types";
+export * from "@keycloak/keycloak-admin-client";

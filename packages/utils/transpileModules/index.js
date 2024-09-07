@@ -19,4 +19,4 @@
  * limitations under the License.
  */
 
-export * from '../lib/transpileModules.js';
+export * from "../lib/transpileModules.js";

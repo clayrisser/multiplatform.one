@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import type { GenericFont } from '@tamagui/web';
-import { createFont } from '@tamagui/web';
+import type { GenericFont } from "@tamagui/web";
+import { createFont } from "@tamagui/web";
 
 const defaults = {
   size: {
@@ -50,15 +50,20 @@ const defaults = {
     12: -4,
   } as const,
   weight: {
-    4: '300',
+    4: "300",
   } as const,
 };
 
-export function createDefaultFont<A extends GenericFont>(font: Partial<A> & { family: A['family'] }): A {
+export function createDefaultFont<A extends GenericFont>(
+  font: Partial<A> & { family: A["family"] },
+): A {
   const size = font.size || defaults.size;
   return createFont({
     lineHeight: Object.fromEntries(
-      Object.entries(size).map(([k, v]) => [k, typeof v === 'number' ? v * 1.2 + 6 : v]),
+      Object.entries(size).map(([k, v]) => [
+        k,
+        typeof v === "number" ? v * 1.2 + 6 : v,
+      ]),
     ) as typeof size,
     letterSpacing: defaults.letterSpacing,
     weight: defaults.weight,

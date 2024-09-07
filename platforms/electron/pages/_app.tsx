@@ -19,21 +19,21 @@
  * limitations under the License.
  */
 
-import '@multiplatform.one/components/css/code-highlight.css';
-import '@tamagui/core/reset.css';
-import 'raf/polyfill';
-import * as Sentry from '@sentry/react';
-import Head from 'next/head';
-import React, { useMemo } from 'react';
-import tamaguiConfig from '../tamagui.config';
-import type { AppProps as NextAppProps } from 'next/app';
-import type { ColorScheme } from '@tamagui/next-theme';
-import { GlobalProvider } from 'app/providers';
-import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
-import { config } from 'app/config';
-import { importFonts } from 'app/fonts';
+import "@multiplatform.one/components/css/code-highlight.css";
+import "@tamagui/core/reset.css";
+import "raf/polyfill";
+import * as Sentry from "@sentry/react";
+import type { ColorScheme } from "@tamagui/next-theme";
+import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
+import { config } from "app/config";
+import { importFonts } from "app/fonts";
+import { GlobalProvider } from "app/providers";
+import type { AppProps as NextAppProps } from "next/app";
+import Head from "next/head";
+import React, { useMemo } from "react";
+import tamaguiConfig from "../tamagui.config";
 
-const sentryDsn = config.get('SENTRY_DSN');
+const sentryDsn = config.get("SENTRY_DSN");
 if (sentryDsn) {
   Sentry.init({
     dsn: sentryDsn,
@@ -41,11 +41,14 @@ if (sentryDsn) {
 }
 
 importFonts();
-import('app/i18n').then(({ i18nInit }) => i18nInit());
+import("app/i18n").then(({ i18nInit }) => i18nInit());
 
 function App({ Component, pageProps }: NextAppProps) {
   const [rootTheme, setRootTheme] = useRootTheme();
-  const contents = useMemo(() => <Component {...pageProps} />, [pageProps, Component]);
+  const contents = useMemo(
+    () => <Component {...pageProps} />,
+    [pageProps, Component],
+  );
   return (
     <>
       <Head>
@@ -56,7 +59,9 @@ function App({ Component, pageProps }: NextAppProps) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NextThemeProvider onChangeTheme={(name: string) => setRootTheme(name as ColorScheme)}>
+      <NextThemeProvider
+        onChangeTheme={(name: string) => setRootTheme(name as ColorScheme)}
+      >
         <GlobalProvider
           theme={{
             root: rootTheme,
@@ -65,11 +70,11 @@ function App({ Component, pageProps }: NextAppProps) {
           disableRootThemeClass
           tamaguiConfig={tamaguiConfig}
           keycloak={{
-            baseUrl: config.get('KEYCLOAK_BASE_URL'),
-            clientId: config.get('KEYCLOAK_CLIENT_ID'),
+            baseUrl: config.get("KEYCLOAK_BASE_URL"),
+            clientId: config.get("KEYCLOAK_CLIENT_ID"),
             messageHandlerKeys: [],
-            publicClientId: config.get('KEYCLOAK_PUBLIC_CLIENT_ID'),
-            realm: config.get('KEYCLOAK_REALM')!,
+            publicClientId: config.get("KEYCLOAK_PUBLIC_CLIENT_ID"),
+            realm: config.get("KEYCLOAK_REALM")!,
           }}
         >
           {contents}

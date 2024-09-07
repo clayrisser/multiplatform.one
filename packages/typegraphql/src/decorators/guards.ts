@@ -19,19 +19,22 @@
  * limitations under the License.
  */
 
-import type { Ctx } from '../types';
-import type { MiddlewareInterface, NextFn, ResolverData } from 'type-graphql';
-import { DecorateAll } from './decorateAll';
-import { RegisterClass } from './registerClass';
-import { RegisterHandler } from './registerHandler';
-import { applyClassDecorators, createMethodDecorator } from '../decorate';
-import { combineMiddlewares } from '../middleware';
+import type { MiddlewareInterface, NextFn, ResolverData } from "type-graphql";
+import { applyClassDecorators, createMethodDecorator } from "../decorate";
+import { combineMiddlewares } from "../middleware";
+import type { Ctx } from "../types";
+import { DecorateAll } from "./decorateAll";
+import { RegisterClass } from "./registerClass";
+import { RegisterHandler } from "./registerHandler";
 
 class GuardsDecorator implements MiddlewareInterface<Ctx> {
   async use(data: ResolverData<Ctx>, next: NextFn) {
     const ctx = data.context;
     if (!ctx.typegraphqlMeta?.deferredMiddlewares?.length) return next();
-    return combineMiddlewares(ctx.typegraphqlMeta.deferredMiddlewares)(data, next);
+    return combineMiddlewares(ctx.typegraphqlMeta.deferredMiddlewares)(
+      data,
+      next,
+    );
   }
 }
 

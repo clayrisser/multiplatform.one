@@ -19,18 +19,18 @@
  * limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
+import { defineConfig } from "tsup";
 
 export default defineConfig({
   bundle: false,
   clean: true,
   dts: false,
-  entry: ['prisma/seed.ts'],
-  format: ['esm'],
+  entry: ["prisma/seed.ts"],
+  format: ["esm"],
   minify: false,
-  outDir: 'dist/scripts',
+  outDir: "dist/scripts",
   shims: true,
   skipNodeModulesBundle: true,
   splitting: true,
-  target: 'es2022',
+  target: "es2022",
 });

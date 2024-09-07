@@ -20,13 +20,13 @@
  * limitations under the License.
  */
 
-import type { I18n } from './i18n';
-import type { KcContext } from './kcContext';
-import type { TemplateProps } from 'keycloakify/account/TemplateProps';
-import { assert } from 'keycloakify/tools/assert';
-import { clsx } from 'keycloakify/tools/clsx';
-import { useGetClassName } from 'keycloakify/account/lib/useGetClassName';
-import { usePrepareTemplate } from 'keycloakify/lib/usePrepareTemplate';
+import type { TemplateProps } from "keycloakify/account/TemplateProps";
+import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
+import { usePrepareTemplate } from "keycloakify/lib/usePrepareTemplate";
+import { assert } from "keycloakify/tools/assert";
+import { clsx } from "keycloakify/tools/clsx";
+import type { I18n } from "./i18n";
+import type { KcContext } from "./kcContext";
 
 export default function Template({
   kcContext,
@@ -37,13 +37,14 @@ export default function Template({
   children,
 }: TemplateProps<KcContext, I18n>) {
   const { getClassName } = useGetClassName({ doUseDefaultCss, classes });
-  const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
+  const { msg, changeLocale, labelBySupportedLanguageTag, currentLanguageTag } =
+    i18n;
   const { locale, url, features, realm, message, referrer } = kcContext;
   const { isReady } = usePrepareTemplate({
-    bodyClassName: clsx('admin-console', 'user', getClassName('kcBodyClass')),
+    bodyClassName: clsx("admin-console", "user", getClassName("kcBodyClass")),
     doFetchDefaultThemeResources: doUseDefaultCss,
-    documentTitle: i18n.msgStr('accountManagementTitle'),
-    htmlClassName: getClassName('kcHtmlClass'),
+    documentTitle: i18n.msgStr("accountManagementTitle"),
+    htmlClassName: getClassName("kcHtmlClass"),
     htmlLangProperty: locale?.currentLanguageTag,
     styles: [
       `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
@@ -55,7 +56,7 @@ export default function Template({
   return (
     <>
       <header className="navbar navbar-default navbar-pf navbar-main header">
-        <nav className="navbar" role="navigation">
+        <nav className="navbar">
           <div className="navbar-header">
             <div className="container">
               <h1 className="navbar-title">Keycloak</h1>
@@ -75,7 +76,10 @@ export default function Template({
                         <ul>
                           {locale.supported.map(({ languageTag }) => (
                             <li key={languageTag} className="kc-dropdown-item">
-                              <a href="#" onClick={() => changeLocale(languageTag)}>
+                              <a
+                                href="#"
+                                onClick={() => changeLocale(languageTag)}
+                              >
                                 {labelBySupportedLanguageTag[languageTag]}
                               </a>
                             </li>
@@ -87,12 +91,12 @@ export default function Template({
                 {referrer?.url && (
                   <li>
                     <a href={referrer.url} id="referrer">
-                      {msg('backTo', referrer.name)}
+                      {msg("backTo", referrer.name)}
                     </a>
                   </li>
                 )}
                 <li>
-                  <a href={url.getLogoutUrl()}>{msg('doSignOut')}</a>
+                  <a href={url.getLogoutUrl()}>{msg("doSignOut")}</a>
                 </li>
               </ul>
             </div>
@@ -102,45 +106,49 @@ export default function Template({
       <div className="container">
         <div className="bs-sidebar col-sm-3">
           <ul>
-            <li className={clsx(active === 'account' && 'active')}>
-              <a href={url.accountUrl}>{msg('account')}</a>
+            <li className={clsx(active === "account" && "active")}>
+              <a href={url.accountUrl}>{msg("account")}</a>
             </li>
             {features.passwordUpdateSupported && (
-              <li className={clsx(active === 'password' && 'active')}>
-                <a href={url.passwordUrl}>{msg('password')}</a>
+              <li className={clsx(active === "password" && "active")}>
+                <a href={url.passwordUrl}>{msg("password")}</a>
               </li>
             )}
-            <li className={clsx(active === 'totp' && 'active')}>
-              <a href={url.totpUrl}>{msg('authenticator')}</a>
+            <li className={clsx(active === "totp" && "active")}>
+              <a href={url.totpUrl}>{msg("authenticator")}</a>
             </li>
             {features.identityFederation && (
-              <li className={clsx(active === 'social' && 'active')}>
-                <a href={url.socialUrl}>{msg('federatedIdentity')}</a>
+              <li className={clsx(active === "social" && "active")}>
+                <a href={url.socialUrl}>{msg("federatedIdentity")}</a>
               </li>
             )}
-            <li className={clsx(active === 'sessions' && 'active')}>
-              <a href={url.sessionsUrl}>{msg('sessions')}</a>
+            <li className={clsx(active === "sessions" && "active")}>
+              <a href={url.sessionsUrl}>{msg("sessions")}</a>
             </li>
-            <li className={clsx(active === 'applications' && 'active')}>
-              <a href={url.applicationsUrl}>{msg('applications')}</a>
+            <li className={clsx(active === "applications" && "active")}>
+              <a href={url.applicationsUrl}>{msg("applications")}</a>
             </li>
             {features.log && (
-              <li className={clsx(active === 'log' && 'active')}>
-                <a href={url.logUrl}>{msg('log')}</a>
+              <li className={clsx(active === "log" && "active")}>
+                <a href={url.logUrl}>{msg("log")}</a>
               </li>
             )}
             {realm.userManagedAccessAllowed && features.authorization && (
-              <li className={clsx(active === 'authorization' && 'active')}>
-                <a href={url.resourceUrl}>{msg('myResources')}</a>
+              <li className={clsx(active === "authorization" && "active")}>
+                <a href={url.resourceUrl}>{msg("myResources")}</a>
               </li>
             )}
           </ul>
         </div>
         <div className="col-sm-9 content-area">
           {message !== undefined && (
-            <div className={clsx('alert', `alert-${message.type}`)}>
-              {message.type === 'success' && <span className="pficon pficon-ok" />}
-              {message.type === 'error' && <span className="pficon pficon-error-circle-o" />}
+            <div className={clsx("alert", `alert-${message.type}`)}>
+              {message.type === "success" && (
+                <span className="pficon pficon-ok" />
+              )}
+              {message.type === "error" && (
+                <span className="pficon pficon-error-circle-o" />
+              )}
               <span className="kc-feedback-text">{message.summary}</span>
             </div>
           )}

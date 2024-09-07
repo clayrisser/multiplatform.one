@@ -20,7 +20,7 @@
  */
 
 export function useLsFiles() {
-  window.ipc.on('message', (message: string) => {
+  window.ipc.on("message", (message: string) => {
     setMessage(message);
   });
 }

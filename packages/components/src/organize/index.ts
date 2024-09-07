@@ -19,9 +19,9 @@
  * limitations under the License.
  */
 
-export * from './SimpleAccordion';
-export * from './SimpleCarousel';
-export * from './SimpleInput';
-export * from './SimpleListItem';
-export * from './SimpleTabs';
-export * from './SimpleParagraph';
+export * from "./SimpleAccordion";
+export * from "./SimpleCarousel";
+export * from "./SimpleInput";
+export * from "./SimpleListItem";
+export * from "./SimpleTabs";
+export * from "./SimpleParagraph";

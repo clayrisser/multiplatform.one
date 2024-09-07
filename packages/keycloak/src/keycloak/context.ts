@@ -19,9 +19,9 @@
  * limitations under the License.
  */
 
-'use client';
+"use client";
 
-import type { Keycloak } from './keycloak';
-import { createContext } from 'react';
+import { createContext } from "react";
+import type { Keycloak } from "./keycloak";
 
 export const KeycloakContext = createContext<Keycloak | undefined>(undefined);

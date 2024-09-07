@@ -19,4 +19,4 @@
  * limitations under the License.
  */
 
-export { useTranslation } from 'react-i18next';
+export { useTranslation } from "react-i18next";

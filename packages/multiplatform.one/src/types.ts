@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-import type { StyleProp as RNStyleProp } from 'react-native';
+import type { StyleProp as RNStyleProp } from "react-native";
 
 export type StyleProp = RNStyleProp<any>;

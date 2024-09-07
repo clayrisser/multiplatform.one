@@ -19,24 +19,26 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { FieldCheckboxProps } from './FieldCheckbox';
-import { Button, YStack } from 'tamagui';
-import { FieldCheckbox } from './FieldCheckbox';
-import { action } from '@storybook/addon-actions';
-import { useForm } from '@tanstack/react-form';
+import { action } from "@storybook/addon-actions";
+import { useForm } from "@tanstack/react-form";
+import React from "react";
+import { Button, YStack } from "tamagui";
+import type { FieldCheckboxProps } from "./FieldCheckbox";
+import { FieldCheckbox } from "./FieldCheckbox";
 
 export default {
-  title: 'forms/FieldCheckBox',
+  title: "forms/FieldCheckBox",
   component: FieldCheckbox,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: "beta" } },
 };
 
-export const main = (args) => <FieldCheckbox onCheckedChange={action('onCheckedChange')} {...args} />;
+export const main = (args) => (
+  <FieldCheckbox onCheckedChange={action("onCheckedChange")} {...args} />
+);
 const mainArgs: FieldCheckboxProps = {
-  label: 'Hello',
+  label: "Hello",
   error: undefined,
-  helperText: 'please check this box',
+  helperText: "please check this box",
   checked: undefined,
 };
 main.args = mainArgs;
@@ -48,7 +50,7 @@ export const form = () => {
       bar: true,
     },
     onSubmit: async ({ value }) => {
-      action('onSubmit')(value);
+      action("onSubmit")(value);
     },
   });
   return (

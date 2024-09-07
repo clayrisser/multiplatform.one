@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import { SetMetadata } from '@multiplatform.one/typegraphql';
+import { SetMetadata } from "@multiplatform.one/typegraphql";
 
-export const RESOURCE = 'KEYCLOAK_RESOURCE';
+export const RESOURCE = "KEYCLOAK_RESOURCE";
 
 export const Resource = (resource: string) => SetMetadata(RESOURCE, resource);

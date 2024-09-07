@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import { authHandlerOptions } from '../../../../authOptions';
-import { createAuthHandler } from '@multiplatform.one/keycloak/routes';
+import { createAuthHandler } from "@multiplatform.one/keycloak/routes";
+import { authHandlerOptions } from "../../../../authOptions";
 
 const handler = createAuthHandler(authHandlerOptions);
 

@@ -1,5 +1,10 @@
-import { Authorized, InjectAccessToken, InjectUsername, InjectUserId } from '@multiplatform.one/keycloak-typegraphql';
-import { Query, Resolver } from 'type-graphql';
+import {
+  Authorized,
+  InjectAccessToken,
+  InjectUserId,
+  InjectUsername,
+} from "@multiplatform.one/keycloak-typegraphql";
+import { Query, Resolver } from "type-graphql";
 
 @Authorized()
 @Resolver((_of) => String)

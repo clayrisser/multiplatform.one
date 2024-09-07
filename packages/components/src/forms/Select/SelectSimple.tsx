@@ -19,19 +19,22 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { ReactNode } from 'react';
-import type { SelectProps } from './Select';
-import type { SelectTriggerProps } from 'tamagui';
-import { Select } from './Select';
-import { styled } from 'tamagui';
+import React from "react";
+import type { ReactNode } from "react";
+import type { SelectTriggerProps } from "tamagui";
+import { styled } from "tamagui";
+import type { SelectProps } from "./Select";
+import { Select } from "./Select";
 
 const StyledSelectTrigger = styled(Select.Trigger, {
   paddingVertical: 0,
 });
 
 export type SelectSimpleProps = SelectTriggerProps &
-  Pick<SelectProps, 'onOpenChange' | 'onValueChange' | 'id' | 'value' | 'defaultValue'> & { placeholder?: ReactNode };
+  Pick<
+    SelectProps,
+    "onOpenChange" | "onValueChange" | "id" | "value" | "defaultValue"
+  > & { placeholder?: ReactNode };
 
 export function SelectSimple({
   children,
@@ -44,11 +47,17 @@ export function SelectSimple({
   ...triggerProps
 }: SelectSimpleProps) {
   return (
-    <Select id={id} onOpenChange={onOpenChange} onValueChange={onValueChange} value={value} defaultValue={defaultValue}>
+    <Select
+      id={id}
+      onOpenChange={onOpenChange}
+      onValueChange={onValueChange}
+      value={value}
+      defaultValue={defaultValue}
+    >
       <StyledSelectTrigger {...triggerProps}>
         <Select.Value placeholder={placeholder} />
       </StyledSelectTrigger>
-      <Select.Adapt when={'sm' as any} platform="touch">
+      <Select.Adapt when={"sm" as any} platform="touch">
         <Select.Sheet modal dismissOnSnapToBottom>
           <Select.Sheet.Frame>
             <Select.Sheet.ScrollView>

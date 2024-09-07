@@ -32,9 +32,5 @@
   },
   "prisma": {
     "seed": "node dist/scripts/seed.mjs"
-  },
-  "eslintIgnore": [
-    "dist",
-    "generated"
-  ]
+  }
 }

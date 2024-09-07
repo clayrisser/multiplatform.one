@@ -19,17 +19,20 @@
  * limitations under the License.
  */
 
-import React, { createContext, useContext, useEffect, useMemo } from 'react';
-import type { Actions } from '@multiplatform.one/zustand';
-import type { ThemeState, ThemeProviderProps } from './theme';
-import { createStateStore } from '@multiplatform.one/zustand';
+import type { Actions } from "@multiplatform.one/zustand";
+import { createStateStore } from "@multiplatform.one/zustand";
+import React, { createContext, useContext, useEffect, useMemo } from "react";
+import type { ThemeProviderProps, ThemeState } from "./theme";
 
-const defaultThemeState: ThemeState = { root: 'system', sub: 'gray' };
+const defaultThemeState: ThemeState = { root: "system", sub: "gray" };
 
 const ThemeContext = createContext<ThemeState>(defaultThemeState);
 
-const { useStore: useThemeState } = createStateStore<ThemeState, Actions<ThemeState>>(
-  'theme',
+const { useStore: useThemeState } = createStateStore<
+  ThemeState,
+  Actions<ThemeState>
+>(
+  "theme",
   {
     root: null,
     sub: null,
@@ -40,23 +43,26 @@ const { useStore: useThemeState } = createStateStore<ThemeState, Actions<ThemeSt
   },
 );
 
-export function useTheme(): [ThemeState, (theme: Partial<ThemeState>) => undefined] {
+export function useTheme(): [
+  ThemeState,
+  (theme: Partial<ThemeState>) => undefined,
+] {
   const themeContextValue = useContext(ThemeContext);
   const themeState = useThemeState();
   return [
     {
-      root: themeContextValue.root || 'system',
+      root: themeContextValue.root || "system",
       sub: themeContextValue.sub,
     },
     (theme: Partial<ThemeState>) => {
-      if (typeof theme.root !== 'undefined') {
-        if (theme.root === null || theme.root === 'system') {
+      if (typeof theme.root !== "undefined") {
+        if (theme.root === null || theme.root === "system") {
           themeState.setRoot(null);
         } else {
           themeState.setRoot(theme.root);
         }
       }
-      if (typeof theme.sub !== 'undefined') {
+      if (typeof theme.sub !== "undefined") {
         if (theme.sub === null) {
           themeState.setSub(null);
         } else {
@@ -85,5 +91,7 @@ export function ThemeProvider({ children, theme }: ThemeProviderProps) {
     setTheme({ root, sub });
   }, [defaultThemeValue.root, defaultThemeValue.sub]);
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  );
 }

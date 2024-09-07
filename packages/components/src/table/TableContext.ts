@@ -1,3 +1,3 @@
-import { createStyledContext } from 'tamagui';
+import { createStyledContext } from "tamagui";
 
 export const TableContext = createStyledContext({});

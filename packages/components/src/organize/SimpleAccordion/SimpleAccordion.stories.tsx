@@ -1,13 +1,13 @@
-import React from 'react';
-import { AccordionItem, SimpleAccordion } from './index';
-import { YStack, Text, XStack, H5, Accordion } from 'tamagui';
-import { ChevronRight } from '@tamagui/lucide-icons';
+import { ChevronRight } from "@tamagui/lucide-icons";
+import React from "react";
+import { Accordion, H5, Text, XStack, YStack } from "tamagui";
+import { AccordionItem, SimpleAccordion } from "./index";
 
 export default {
-  title: 'organize/SimpleAccordion',
+  title: "organize/SimpleAccordion",
   component: SimpleAccordion,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
@@ -19,7 +19,10 @@ export const main = (args) => {
           <Text> Apple Content</Text>
         </YStack>
       </AccordionItem>
-      <AccordionItem trigger={() => <Text>Trigger Banana </Text>} value="banana">
+      <AccordionItem
+        trigger={() => <Text>Trigger Banana </Text>}
+        value="banana"
+      >
         <YStack padding="$4">
           <Text>Banana Content</Text>
         </YStack>
@@ -27,7 +30,7 @@ export const main = (args) => {
       <AccordionItem
         trigger={(open) => (
           <XStack>
-            <YStack animation="quick" rotate={open ? '90deg' : '0deg'}>
+            <YStack animation="quick" rotate={open ? "90deg" : "0deg"}>
               <ChevronRight />
             </YStack>
             <H5 color="$color10">Folders</H5>
@@ -43,7 +46,7 @@ export const main = (args) => {
         <Accordion.Trigger flexDirection="row" justifyContent="space-between">
           {({ open }) => (
             <XStack>
-              <YStack animation="quick" rotate={open ? '90deg' : '0deg'}>
+              <YStack animation="quick" rotate={open ? "90deg" : "0deg"}>
                 <ChevronRight />
               </YStack>
               <H5 color="$color10">Folders</H5>

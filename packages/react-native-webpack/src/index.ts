@@ -21,19 +21,27 @@
 
 // https://github.com/expo/expo-cli/blob/master/packages/webpack-config/src/loaders/createBabelLoader.ts
 
-import path from 'path';
-import webpack from 'webpack';
-import type { Configuration as WebpackConfiguration, RuleSetConditionAbsolute } from 'webpack';
-import type { PluginItem, PluginOptions } from '@babel/core';
+import path from "node:path";
+import type { PluginItem, PluginOptions } from "@babel/core";
+import webpack from "webpack";
+import type {
+  RuleSetConditionAbsolute,
+  Configuration as WebpackConfiguration,
+} from "webpack";
 
 interface RuleSetLogicalConditionsAbsolute {
   and?: RuleSetConditionAbsolute[];
-  not?: string | RegExp | ((value: string) => boolean) | RuleSetLogicalConditionsAbsolute | RuleSetConditionAbsolute[];
+  not?:
+    | string
+    | RegExp
+    | ((value: string) => boolean)
+    | RuleSetLogicalConditionsAbsolute
+    | RuleSetConditionAbsolute[];
   or?: RuleSetConditionAbsolute[];
 }
 
 function getModule(name: string) {
-  return path.join('node_modules', name);
+  return path.join("node_modules", name);
 }
 
 export interface ReactNativeWebpackOptions {
@@ -54,7 +62,7 @@ export interface ReactNativeWebpackOptions {
 }
 
 function getBabelPlugins(options) {
-  const reactNativeWeb = require.resolve('babel-plugin-react-native-web');
+  const reactNativeWeb = require.resolve("babel-plugin-react-native-web");
   if (options.babel.plugins && Array.isArray(options.babel.plugins)) {
     return [reactNativeWeb, ...options.babel.plugins];
   }
@@ -62,33 +70,44 @@ function getBabelPlugins(options) {
 }
 
 const defaultIncludes = [
-  getModule('@expo'),
-  getModule('@react'),
-  getModule('@unimodules'),
-  getModule('@use-expo'),
-  getModule('expo'),
-  getModule('native-base'),
-  getModule('react-native'),
-  getModule('react-navigation'),
-  getModule('styled-components'),
-  getModule('unimodules'),
+  getModule("@expo"),
+  getModule("@react"),
+  getModule("@unimodules"),
+  getModule("@use-expo"),
+  getModule("expo"),
+  getModule("native-base"),
+  getModule("react-native"),
+  getModule("react-navigation"),
+  getModule("styled-components"),
+  getModule("unimodules"),
 ];
 
-const defaultExcludes = ['/node_modules', '/bower_components', '/.expo/', '(webpack)'];
+const defaultExcludes = [
+  "/node_modules",
+  "/bower_components",
+  "/.expo/",
+  "(webpack)",
+];
 
-export function reactNativeWebpack(config: WebpackConfiguration, options: ReactNativeWebpackOptions) {
+export function reactNativeWebpack(
+  config: WebpackConfiguration,
+  options: ReactNativeWebpackOptions,
+) {
   if (!options.babel) options.babel = {};
   config.plugins.push(
     new webpack.DefinePlugin({
-      'process.argv': 'process.argv',
-      'process.env': 'process.env',
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-      __DEV__: process.env.NODE_ENV !== 'production' || true,
+      "process.argv": "process.argv",
+      "process.env": "process.env",
+      "process.env.NODE_ENV": JSON.stringify(
+        process.env.NODE_ENV || "development",
+      ),
+      __DEV__: process.env.NODE_ENV !== "production" || true,
     }),
   );
   config.plugins.push(new webpack.DefinePlugin({ process: { env: {} } }));
   const babelPlugins = getBabelPlugins(options);
-  const babelPresetReactNativeOptions = options?.babel.presetReactNativeOptions ?? {};
+  const babelPresetReactNativeOptions =
+    options?.babel.presetReactNativeOptions ?? {};
   const babelPresetReactOptions = options?.babel.presetReactOptions ?? {};
   const babelPresets = options?.babel.presets ?? [];
   const babelExclude = options?.babel.exclude ?? [];
@@ -97,7 +116,7 @@ export function reactNativeWebpack(config: WebpackConfiguration, options: ReactN
   const root = options.projectRoot ?? process.cwd();
   config.module.rules.push({
     test: /\.([jt]sx?)$/,
-    loader: 'babel-loader',
+    loader: "babel-loader",
     include(filename) {
       if (!filename) return false;
       for (const possibleModule of modules) {
@@ -116,16 +135,16 @@ export function reactNativeWebpack(config: WebpackConfiguration, options: ReactN
       root,
       presets: [
         [
-          require.resolve('@react-native/babel-preset'),
+          require.resolve("@react-native/babel-preset"),
           {
             useTransformReactJSXExperimental: true,
             ...babelPresetReactNativeOptions,
           },
         ],
         [
-          require.resolve('@babel/preset-react'),
+          require.resolve("@babel/preset-react"),
           {
-            runtime: 'automatic',
+            runtime: "automatic",
             ...babelPresetReactOptions,
           },
         ],
@@ -135,10 +154,16 @@ export function reactNativeWebpack(config: WebpackConfiguration, options: ReactN
     },
   });
   config.resolve.extensions = [
-    ...new Set(['.web.js', '.web.jsx', '.web.ts', '.web.tsx', ...config.resolve.extensions]),
+    ...new Set([
+      ".web.js",
+      ".web.jsx",
+      ".web.ts",
+      ".web.tsx",
+      ...config.resolve.extensions,
+    ]),
   ];
   config.resolve.alias = {
-    'react-native$': 'react-native-web',
+    "react-native$": "react-native-web",
     ...config.resolve.alias,
   };
   return config;

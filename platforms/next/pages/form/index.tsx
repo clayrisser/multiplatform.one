@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-export { getStaticProps } from 'multiplatform.one/next';
+export { getStaticProps } from "multiplatform.one/next";
 
-import FormScreen from 'app/screens/form';
+import FormScreen from "app/screens/form";
 
 export default FormScreen;

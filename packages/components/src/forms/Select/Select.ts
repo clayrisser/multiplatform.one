@@ -29,5 +29,5 @@ export type {
   SelectTriggerProps,
   SelectValueExtraProps,
   SelectViewportProps,
-} from 'tamagui';
-export { Select } from 'tamagui';
+} from "tamagui";
+export { Select } from "tamagui";

@@ -19,34 +19,34 @@
  * limitations under the License.
  */
 
-import { TableContext } from '../TableContext';
-import { styled, Paragraph } from 'tamagui';
+import { Paragraph, styled } from "tamagui";
+import { TableContext } from "../TableContext";
 
 export const TableCell = styled(Paragraph, {
-  name: 'TableCell',
+  name: "TableCell",
   context: TableContext,
   borderWidth: 1,
-  borderColor: '$borderColor',
-  flexDirection: 'row',
-  alignItems: 'center',
-  position: 'relative',
+  borderColor: "$borderColor",
+  flexDirection: "row",
+  alignItems: "center",
+  position: "relative",
   flex: 1,
-  justifyContent: 'center',
-  textAlign: 'center',
-  height: '$4',
-  padding: '$2',
-  paddingHorizontal: '$3',
-  fontSize: '$5',
+  justifyContent: "center",
+  textAlign: "center",
+  height: "$4",
+  padding: "$2",
+  paddingHorizontal: "$3",
+  fontSize: "$5",
   ellipse: true,
   variants: {
     head: {
       true: {
-        bc: '$color1',
+        bc: "$color1",
       },
     },
     highlight: {
       true: {
-        bc: '$yellow2',
+        bc: "$yellow2",
       },
     },
   } as const,

@@ -19,21 +19,43 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { MDXComponents } from '@mdx-js/react/lib';
-import type { XStackProps } from 'tamagui';
-import { CodeInline } from '../code/Code';
-import { H1, H2, H3, H4, H5, H6, Paragraph, XStack, Text, YStack, styled } from 'tamagui';
-import { HR } from './HR';
-import { LI } from './LI';
-import { Link as IconLink } from '@tamagui/lucide-icons';
-import { Link } from 'solito/link';
-import { MDXCodeBlock } from './MDXCodeBlock';
-import { Platform } from 'react-native';
-import { UL } from './UL';
-import { unwrapText } from '../utils/unwrapText';
+import type { MDXComponents } from "@mdx-js/react/lib";
+import { Link as IconLink } from "@tamagui/lucide-icons";
+import React from "react";
+import { Platform } from "react-native";
+import { Link } from "solito/link";
+import type { XStackProps } from "tamagui";
+import {
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  H6,
+  Paragraph,
+  Text,
+  XStack,
+  YStack,
+  styled,
+} from "tamagui";
+import { CodeInline } from "../code/Code";
+import { unwrapText } from "../utils/unwrapText";
+import { HR } from "./HR";
+import { LI } from "./LI";
+import { MDXCodeBlock } from "./MDXCodeBlock";
+import { UL } from "./UL";
 
-const code = ({ hero, line, scrollable, className, children, id, showLineNumbers, collapsible, ...props }) => {
+const code = ({
+  hero,
+  line,
+  scrollable,
+  className,
+  children,
+  id,
+  showLineNumbers,
+  collapsible,
+  ...props
+}) => {
   if (!className) return <CodeInline>{unwrapText(children)}</CodeInline>;
   return (
     <YStack marginTop="$3">
@@ -50,13 +72,21 @@ const code = ({ hero, line, scrollable, className, children, id, showLineNumbers
 };
 
 export const TableHighlight = styled(YStack, {
-  backgroundColor: '$yellow1',
+  backgroundColor: "$yellow1",
   fullscreen: true,
 });
 
 export const mdxComponents: MDXComponents = {
   h1: (props) => <H1 marginBottom="$2" {...sanitizeProps(props)} />,
-  h2: (props) => <H2 paddingTop="$8" marginTop="$-4" marginBottom="$2" data-heading {...sanitizeProps(props)} />,
+  h2: (props) => (
+    <H2
+      paddingTop="$8"
+      marginTop="$-4"
+      marginBottom="$2"
+      data-heading
+      {...sanitizeProps(props)}
+    />
+  ),
   h3: ({ children, id, ...props }) => (
     <LinkHeading paddingTop="$8" marginTop="$-4" marginBottom="$1" id={id}>
       <H3 nativeID={id} {...sanitizeProps(props)}>
@@ -65,15 +95,24 @@ export const mdxComponents: MDXComponents = {
       {getNonTextChildren(children)}
     </LinkHeading>
   ),
-  h4: (props) => <H4 marginTop="$4" marginBottom="$3" {...sanitizeProps(props)} />,
+  h4: (props) => (
+    <H4 marginTop="$4" marginBottom="$3" {...sanitizeProps(props)} />
+  ),
   h5: (props) => <H5 marginTop="$4" {...sanitizeProps(props)} />,
   h6: (props) => <H6 marginTop="$4" {...sanitizeProps(props)} />,
-  p: (props) => <Paragraph size="$6" marginVertical="$2.5" {...sanitizeProps(props)} />,
-  a: ({ href = '', children, ...props }) => {
+  p: (props) => (
+    <Paragraph size="$6" marginVertical="$2.5" {...sanitizeProps(props)} />
+  ),
+  a: ({ href = "", children, ...props }) => {
     return (
       <Link href={href}>
         {/* @ts-ignore */}
-        <Paragraph fontSize="inherit" display="inline" cursor="pointer" {...sanitizeProps(props)}>
+        <Paragraph
+          fontSize="inherit"
+          display="inline"
+          cursor="pointer"
+          {...sanitizeProps(props)}
+        >
           {children}
           {/* {typeof href === 'string' && href.startsWith('http') ? (
             <>
@@ -90,7 +129,11 @@ export const mdxComponents: MDXComponents = {
   hr: (props) => <HR {...sanitizeProps(props)} />,
   ul: ({ children }) => (
     // @ts-ignore
-    <UL marginVertical="$4">{React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}</UL>
+    <UL marginVertical="$4">
+      {React.Children.toArray(children).map((x) =>
+        typeof x === "string" ? null : x,
+      )}
+    </UL>
   ),
   ol: (props) => <YStack {...sanitizeProps(props)} marginBottom="$3" />,
   li: (props) => (
@@ -99,7 +142,9 @@ export const mdxComponents: MDXComponents = {
     </LI>
   ),
   // @ts-ignore
-  strong: (props) => <Paragraph fontSize="inherit" {...sanitizeProps(props)} fontWeight="700" />,
+  strong: (props) => (
+    <Paragraph fontSize="inherit" {...sanitizeProps(props)} fontWeight="700" />
+  ),
   img: ({ ...props }) => (
     <YStack marginVertical="$6">
       <YStack {...sanitizeProps(props)} maxWidth="100%" />
@@ -132,22 +177,34 @@ export const mdxComponents: MDXComponents = {
       </Paragraph>
     </YStack>
   ),
-  ...(Platform.OS === 'web'
+  ...(Platform.OS === "web"
     ? {}
     : {
         div: (props) => <Text {...sanitizeProps(props)} />,
         span: (props: any) => {
           let color: string | undefined;
-          if (/^token punctuation/g.test(props?.className || '')) {
-            color = '$red10';
+          if (/^token punctuation/g.test(props?.className || "")) {
+            color = "$red10";
           }
           return <Text color={color} {...sanitizeProps(props)} />;
         },
       }),
 };
 
-const LinkHeading = ({ id, children, ...props }: { id?: string } & XStackProps) => (
-  <XStack href={`#${id}`} id={id} data-id={id} display="inline-flex" alignItems="center" gap {...sanitizeProps(props)}>
+const LinkHeading = ({
+  id,
+  children,
+  ...props
+}: { id?: string } & XStackProps) => (
+  <XStack
+    href={`#${id}`}
+    id={id}
+    data-id={id}
+    display="inline-flex"
+    alignItems="center"
+    gap
+    {...sanitizeProps(props)}
+  >
     {children}
     <YStack opacity={0.3}>
       <IconLink size={12} color="var(--color)" aria-hidden />
@@ -157,13 +214,13 @@ const LinkHeading = ({ id, children, ...props }: { id?: string } & XStackProps) 
 
 const getNonTextChildren = (children) => {
   return React.Children.map(children, (x) => {
-    if (typeof x === 'string') return null;
-    if (x['type'] === code) return null;
+    if (typeof x === "string") return null;
+    if (x.type === code) return null;
     return x;
   }).flat();
 };
 
 function sanitizeProps<P>(props: any): P {
-  if (Platform.OS !== 'web') return props;
+  if (Platform.OS !== "web") return props;
   return props;
 }

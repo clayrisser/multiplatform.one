@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { getStaticProps } from 'multiplatform.one/next';
+export { getStaticProps } from "multiplatform.one/next";
 
-import Auth from 'app/screens/auth';
+import Auth from "app/screens/auth";
 
 export default Auth;

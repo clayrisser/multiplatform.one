@@ -19,15 +19,15 @@
  * limitations under the License.
  */
 
-import { MultiPlatformBase } from './multiplatformBase';
-import { isWeb } from '@tamagui/constants';
+import { isWeb } from "@tamagui/constants";
+import { MultiPlatformBase } from "./multiplatformBase";
 
 export class MultiPlatform extends MultiPlatformBase {
   static isExpo = true;
   static isWeb = isWeb;
 
   static isIframe = (() => {
-    if (typeof window === 'undefined') return false;
+    if (typeof window === "undefined") return false;
     try {
       return window.self !== window.top;
     } catch (e) {

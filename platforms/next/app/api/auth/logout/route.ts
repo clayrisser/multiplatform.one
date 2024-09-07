@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import { authHandlerOptions } from '../../../../authOptions';
-import { createLogoutHandler } from '@multiplatform.one/keycloak/routes';
+import { createLogoutHandler } from "@multiplatform.one/keycloak/routes";
+import { authHandlerOptions } from "../../../../authOptions";
 
 const { GET } = createLogoutHandler(authHandlerOptions);
 

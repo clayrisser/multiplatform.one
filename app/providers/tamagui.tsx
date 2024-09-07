@@ -19,22 +19,32 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import config from '../tamagui.config';
-import type { TamaguiProviderProps, ThemeName } from 'ui';
-import { TamaguiProvider, Theme, tintFamilies } from 'ui';
-import { TintFamiliesProvider } from '@multiplatform.one/components';
-import { ToastProvider } from '@tamagui/toast';
-import { useTheme } from 'multiplatform.one/theme';
+import { TintFamiliesProvider } from "@multiplatform.one/components";
+import { ToastProvider } from "@tamagui/toast";
+import { useTheme } from "multiplatform.one/theme";
+import React from "react";
+import type { TamaguiProviderProps, ThemeName } from "ui";
+import { TamaguiProvider, Theme, tintFamilies } from "ui";
+import config from "../tamagui.config";
 
-export type GlobalTamaguiProviderProps = Omit<TamaguiProviderProps, 'config' | 'defaultTheme'> &
-  Partial<Pick<TamaguiProviderProps, 'config'>>;
+export type GlobalTamaguiProviderProps = Omit<
+  TamaguiProviderProps,
+  "config" | "defaultTheme"
+> &
+  Partial<Pick<TamaguiProviderProps, "config">>;
 
-export function GlobalTamaguiProvider({ children, ...props }: GlobalTamaguiProviderProps) {
+export function GlobalTamaguiProvider({
+  children,
+  ...props
+}: GlobalTamaguiProviderProps) {
   const [theme] = useTheme();
   return (
-    <TamaguiProvider disableInjectCSS={false} {...props} config={config || props.config}>
-      <Theme name={theme.sub || ('gray' as ThemeName)}>
+    <TamaguiProvider
+      disableInjectCSS={false}
+      {...props}
+      config={config || props.config}
+    >
+      <Theme name={theme.sub || ("gray" as ThemeName)}>
         <TintFamiliesProvider families={tintFamilies}>
           <ToastProvider>{children}</ToastProvider>
         </TintFamiliesProvider>

@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export type { RadioGroupProps } from 'tamagui';
-export { RadioGroup } from 'tamagui';
+export type { RadioGroupProps } from "tamagui";
+export { RadioGroup } from "tamagui";

@@ -1,3 +1,5 @@
+import React from "react";
+import { SimpleImage } from "../../images/SimpleImage";
 /**
  * File: /src/organize/SimpleCarousel/Carousel.stories.tsx
  * Project: @multiplatform.one/components
@@ -18,22 +20,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { SimpleCarousel, CarouselProps } from './index';
-import React from 'react';
-import { SimpleImage } from '../../images/SimpleImage';
+import { type CarouselProps, SimpleCarousel } from "./index";
 
 export default {
-  title: 'organize/SimpleCarousel',
+  title: "organize/SimpleCarousel",
   component: SimpleCarousel,
   parameters: {
     status: {
-      type: 'beta',
+      type: "beta",
     },
   },
 };
 
-const mail = require('../../../assets/mail.png');
-const pentagon = require('../../../assets/pentagon.svg');
+const mail = require("../../../assets/mail.png");
+const pentagon = require("../../../assets/pentagon.svg");
 
 export const Main = (args: CarouselProps) => (
   <SimpleCarousel speed={args.speed} {...args} defaultSlide={4}>

@@ -19,17 +19,20 @@
  * limitations under the License.
  */
 
-import get from 'lodash.get';
-import type { Ctx } from '@multiplatform.one/typegraphql';
-import type { ResolverData, NextFn, MiddlewareInterface } from 'type-graphql';
-import { DecorateAll, createMethodDecorator } from '@multiplatform.one/typegraphql';
-import { GraphQLError } from 'graphql';
-import { KeycloakService } from '../keycloakService';
+import type { Ctx } from "@multiplatform.one/typegraphql";
+import {
+  DecorateAll,
+  createMethodDecorator,
+} from "@multiplatform.one/typegraphql";
+import { GraphQLError } from "graphql";
+import get from "lodash.get";
+import type { MiddlewareInterface, NextFn, ResolverData } from "type-graphql";
+import { KeycloakService } from "../keycloakService";
 
 export function OnlyOwner(
-  resultUserIdPath: string | string[] = 'userId',
-  grantSubPath: string | string[] = 'content.sub',
-  skipRoles: (string | string[])[] = ['realm:admin'],
+  resultUserIdPath: string | string[] = "userId",
+  grantSubPath: string | string[] = "content.sub",
+  skipRoles: (string | string[])[] = ["realm:admin"],
 ) {
   return DecorateAll(
     createMethodDecorator(
@@ -39,9 +42,15 @@ export function OnlyOwner(
           const result = await next();
           if (
             !keycloakService ||
-            !(await isOwner(keycloakService, result, resultUserIdPath, grantSubPath, skipRoles))
+            !(await isOwner(
+              keycloakService,
+              result,
+              resultUserIdPath,
+              grantSubPath,
+              skipRoles,
+            ))
           ) {
-            throw new GraphQLError('Unauthorized');
+            throw new GraphQLError("Unauthorized");
           }
           return result;
         }
@@ -53,19 +62,24 @@ export function OnlyOwner(
 export async function isOwner(
   keycloakService: KeycloakService,
   result: unknown,
-  resultUserIdPath: string | string[] = 'userId',
-  grantSubPath: string | string[] = 'content.sub',
-  skipRoles: (string | string[])[] = ['realm:admin'],
+  resultUserIdPath: string | string[] = "userId",
+  grantSubPath: string | string[] = "content.sub",
+  skipRoles: (string | string[])[] = ["realm:admin"],
 ) {
   if (await keycloakService.isAuthorizedByRoles(skipRoles)) return true;
-  if (typeof result !== 'object') return false;
-  const resultUserId = get(result, Array.isArray(resultUserIdPath) ? resultUserIdPath.join('.') : resultUserIdPath)
+  if (typeof result !== "object") return false;
+  const resultUserId = get(
+    result,
+    Array.isArray(resultUserIdPath)
+      ? resultUserIdPath.join(".")
+      : resultUserIdPath,
+  )
     ?.toString()
     ?.trim()
     ?.toLowerCase();
   const grantSub = get(
     await keycloakService.getGrant(),
-    Array.isArray(grantSubPath) ? grantSubPath.join('.') : grantSubPath,
+    Array.isArray(grantSubPath) ? grantSubPath.join(".") : grantSubPath,
   )
     ?.toString()
     ?.trim()

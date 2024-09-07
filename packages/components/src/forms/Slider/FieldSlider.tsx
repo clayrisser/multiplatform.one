@@ -19,37 +19,67 @@
  * limitations under the License.
  */
 
-import React, { useId } from 'react';
-import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
-import type { FieldComponentProps } from '../types';
-import type { FormFieldProps } from '../FormField';
-import type { SliderProps } from './Slider';
-import type { SliderThumbProps } from 'tamagui';
-import { FormField } from '../FormField';
-import { Slider } from './Slider';
-import { useForm, Field } from '@tanstack/react-form';
-import { useProps } from 'tamagui';
+import type { DeepKeys, DeepValue, Validator } from "@tanstack/form-core";
+import { Field, useForm } from "@tanstack/react-form";
+import React, { useId } from "react";
+import type { SliderThumbProps } from "tamagui";
+import { useProps } from "tamagui";
+import type { FormFieldProps } from "../FormField";
+import { FormField } from "../FormField";
+import type { FieldComponentProps } from "../types";
+import type { SliderProps } from "./Slider";
+import { Slider } from "./Slider";
 
 export type FieldSliderProps<
   TParentData = any,
   TName extends DeepKeys<TParentData> = any,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
-> = Omit<FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children' | 'field'> &
-  Pick<SliderProps, 'value' | 'onValueChange'> &
-  Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
-    sliderProps?: Omit<SliderProps, 'value' | 'id' | 'onValueChange'>;
+> = Omit<
+  FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>,
+  "children" | "field"
+> &
+  Pick<SliderProps, "value" | "onValueChange"> &
+  Partial<
+    Omit<
+      FieldComponentProps<
+        TParentData,
+        TName,
+        TFieldValidator,
+        TFormValidator,
+        TData
+      >,
+      "children"
+    >
+  > & {
+    sliderProps?: Omit<SliderProps, "value" | "id" | "onValueChange">;
     thumbProps?: SliderThumbProps;
   };
 
 export function FieldSlider<
   TParentData,
   TName extends DeepKeys<TParentData>,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
->(props: FieldSliderProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+>(
+  props: FieldSliderProps<
+    TParentData,
+    TName,
+    TFieldValidator,
+    TFormValidator,
+    TData
+  >,
+) {
   let {
     asyncAlways,
     asyncDebounceMs,
@@ -73,11 +103,23 @@ export function FieldSlider<
   if (!form || !name) {
     return (
       <FormField {...fieldProps} id={id} onBlur={onBlur}>
-        <Slider {...sliderProps} id={id} defaultValue={defaultValue as number[]} onValueChange={onValueChange}>
+        <Slider
+          {...sliderProps}
+          id={id}
+          defaultValue={defaultValue as number[]}
+          onValueChange={onValueChange}
+        >
           <Slider.Track>
             <Slider.TrackActive />
           </Slider.Track>
-          <Slider.Thumb bordered circular elevate size="$2" index={0} {...thumbProps} />
+          <Slider.Thumb
+            bordered
+            circular
+            elevate
+            size="$2"
+            index={0}
+            {...thumbProps}
+          />
         </Slider>
       </FormField>
     );
@@ -96,7 +138,9 @@ export function FieldSlider<
       validators={validators}
     >
       {(field) => {
-        const error = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : fieldProps.error;
+        const error = field.state.meta.errors.length
+          ? field.state.meta.errors.join(", ")
+          : fieldProps.error;
         return (
           <FormField
             error={error}
@@ -119,7 +163,14 @@ export function FieldSlider<
               <Slider.Track>
                 <Slider.TrackActive />
               </Slider.Track>
-              <Slider.Thumb bordered circular elevate size="$2" index={0} {...thumbProps} />
+              <Slider.Thumb
+                bordered
+                circular
+                elevate
+                size="$2"
+                index={0}
+                {...thumbProps}
+              />
             </Slider>
           </FormField>
         );

@@ -19,14 +19,14 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { AnimationDriver } from '@tamagui/web';
-import type { PropsWithChildren } from 'react';
-import type { TamaguiInternalConfig } from 'tamagui';
-import { createAnimations as createAnimationsCss } from '@tamagui/animations-css';
-import { createContext, useMemo, useState } from 'react';
+import { createAnimations as createAnimationsCss } from "@tamagui/animations-css";
+import type { AnimationDriver } from "@tamagui/web";
+import React from "react";
+import type { PropsWithChildren } from "react";
+import { createContext, useMemo, useState } from "react";
+import type { TamaguiInternalConfig } from "tamagui";
 
-const ANIMATION_DRIVERS = ['css', 'react-native'] as const;
+const ANIMATION_DRIVERS = ["css", "react-native"] as const;
 
 export const AnimationDriverTogglerContext = createContext<{
   driver: AnimationDriver;
@@ -35,7 +35,8 @@ export const AnimationDriverTogglerContext = createContext<{
   setDriverName: (driverName: (typeof ANIMATION_DRIVERS)[number]) => void;
 } | null>(null);
 
-export interface AnimationDriverTogglerContextProviderProps extends PropsWithChildren {
+export interface AnimationDriverTogglerContextProviderProps
+  extends PropsWithChildren {
   tamaguiConfig: TamaguiInternalConfig;
 }
 
@@ -43,29 +44,32 @@ export const AnimationDriverTogglerContextProvider = ({
   children,
   tamaguiConfig,
 }: AnimationDriverTogglerContextProviderProps) => {
-  const [driverName, setDriverName] = useState<(typeof ANIMATION_DRIVERS)[number]>('react-native');
+  const [driverName, setDriverName] =
+    useState<(typeof ANIMATION_DRIVERS)[number]>("react-native");
 
   const nextDriver = () => {
-    const nextIndex = (ANIMATION_DRIVERS.indexOf(driverName) + 1) % ANIMATION_DRIVERS.length;
+    const nextIndex =
+      (ANIMATION_DRIVERS.indexOf(driverName) + 1) % ANIMATION_DRIVERS.length;
     const nextDriverName = ANIMATION_DRIVERS[nextIndex];
     setDriverName(nextDriverName as (typeof ANIMATION_DRIVERS)[number]);
   };
 
   const driver = useMemo(() => {
-    if (driverName === 'css')
+    if (driverName === "css")
       return createAnimationsCss({
-        bouncy: 'ease-in 200ms',
-        lazy: 'ease-in 600ms',
-        slow: 'ease-in 500ms',
-        quick: 'ease-in 100ms',
-        tooltip: 'ease-in 400ms',
+        bouncy: "ease-in 200ms",
+        lazy: "ease-in 600ms",
+        slow: "ease-in 500ms",
+        quick: "ease-in 100ms",
+        tooltip: "ease-in 400ms",
       });
     return tamaguiConfig.animations;
   }, [driverName]);
 
   return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <AnimationDriverTogglerContext.Provider value={{ driverName, nextDriver, setDriverName, driver }}>
+    <AnimationDriverTogglerContext.Provider
+      value={{ driverName, nextDriver, setDriverName, driver }}
+    >
       {children}
     </AnimationDriverTogglerContext.Provider>
   );

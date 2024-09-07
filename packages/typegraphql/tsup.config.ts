@@ -19,20 +19,20 @@
  * limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
-import { lookupTranspileModules } from '@multiplatform.one/utils/transpileModules';
+import { lookupTranspileModules } from "@multiplatform.one/utils/transpileModules";
+import { defineConfig } from "tsup";
 
 export default defineConfig({
   bundle: true,
   clean: true,
   dts: true,
-  entry: ['src/**/*.ts?(x)'],
-  entryPoints: ['src/index.ts'],
-  format: ['esm'],
+  entry: ["src/**/*.ts?(x)"],
+  entryPoints: ["src/index.ts"],
+  format: ["esm"],
   minify: false,
-  outDir: 'lib',
+  outDir: "lib",
   skipNodeModulesBundle: true,
   noExternal: lookupTranspileModules([__dirname]),
   splitting: true,
-  target: 'es2022',
+  target: "es2022",
 });

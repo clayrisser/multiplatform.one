@@ -1,11 +1,11 @@
-import { clsx } from 'keycloakify/tools/clsx';
-import type { PageProps } from 'keycloakify/login/pages/PageProps';
-import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
-import type { KcContext } from '../kcContext';
-import type { I18n } from '../i18n';
-import { FieldInput, Paragraph, SubmitButton, YStack } from 'ui';
-import { useForm } from '@tanstack/react-form';
-import { useRef, useState } from 'react';
+import { useForm } from "@tanstack/react-form";
+import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import type { PageProps } from "keycloakify/login/pages/PageProps";
+import { clsx } from "keycloakify/tools/clsx";
+import { useRef, useState } from "react";
+import { FieldInput, Paragraph, SubmitButton, YStack } from "ui";
+import type { I18n } from "../i18n";
+import type { KcContext } from "../kcContext";
 
 export interface FormError {
   firstName?: string;
@@ -15,7 +15,10 @@ export interface FormError {
 }
 
 export default function LoginUpdateProfile(
-  props: PageProps<Extract<KcContext, { pageId: 'login-update-profile.ftl' }>, I18n>,
+  props: PageProps<
+    Extract<KcContext, { pageId: "login-update-profile.ftl" }>,
+    I18n
+  >,
 ) {
   const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -28,14 +31,14 @@ export default function LoginUpdateProfile(
 
   const { url, user, messagesPerField, isAppInitiatedAction } = kcContext;
 
-  console.log('user', user);
-  console.log('kc context--->', kcContext);
+  console.log("user", user);
+  console.log("kc context--->", kcContext);
 
-  const mainFields = ['firstName', 'lastName', 'email', 'username'];
+  const mainFields = ["firstName", "lastName", "email", "username"];
   // @ts-ignore
-  const extraFields = Object.keys(kcContext?.profile?.attributesByName || {}).filter(
-    (field) => !mainFields.includes(field),
-  );
+  const extraFields = Object.keys(
+    kcContext?.profile?.attributesByName || {},
+  ).filter((field) => !mainFields.includes(field));
   const [error, setError] = useState<FormError>({});
   const form = useForm({
     defaultValues: {
@@ -43,16 +46,21 @@ export default function LoginUpdateProfile(
       lastName: user.lastName,
       email: user.email,
       username: user.username,
-      ...Object.fromEntries(extraFields.map((field) => [field, ''])),
+      ...Object.fromEntries(extraFields.map((field) => [field, ""])),
     },
     onSubmit: ({ value }) => {
-      console.log('form submited');
+      console.log("form submited");
       let flag = false;
       setError({});
 
       Object.entries(value).forEach(([name, value]) => {
-        if (name === 'firstName' || name === 'lastName' || name === 'email' || name === 'userName') {
-          if (!value || value === '') {
+        if (
+          name === "firstName" ||
+          name === "lastName" ||
+          name === "email" ||
+          name === "userName"
+        ) {
+          if (!value || value === "") {
             flag = true;
             setError((prev) => ({ ...prev, [name]: `${name} is required` }));
           }
@@ -60,11 +68,15 @@ export default function LoginUpdateProfile(
         if (flag) return;
         if (!value) return;
 
-        const input = document.createElement('input');
+        const input = document.createElement("input");
         input.name = name;
-        typeof value === 'boolean' ? (input.checked = value) : (input.value = value || '');
-        input.type = 'hidden';
-        input.style.display = 'none';
+        if (typeof value === "boolean") {
+          input.checked = value;
+        } else {
+          input.value = value || "";
+        }
+        input.type = "hidden";
+        input.style.display = "none";
         formRef.current?.appendChild(input);
       });
       formRef.current?.submit();
@@ -72,36 +84,53 @@ export default function LoginUpdateProfile(
   });
 
   const handleChangeFirstName = (value: string) => {
-    if (!value || value === '') {
-      return setError((prev) => ({ ...prev, firstName: 'first name is required' }));
+    if (!value || value === "") {
+      return setError((prev) => ({
+        ...prev,
+        firstName: "first name is required",
+      }));
     }
-    setError((prev) => ({ ...prev, firstName: '' }));
+    setError((prev) => ({ ...prev, firstName: "" }));
   };
 
   const handleChangeLastName = (value: string) => {
-    if (!value || value === '') {
-      return setError((prev) => ({ ...prev, lastName: 'last name is required' }));
+    if (!value || value === "") {
+      return setError((prev) => ({
+        ...prev,
+        lastName: "last name is required",
+      }));
     }
-    setError((prev) => ({ ...prev, lastName: '' }));
+    setError((prev) => ({ ...prev, lastName: "" }));
   };
 
   const handleChangeEmail = (value: string) => {
-    if (!value || value === '') {
-      return setError((prev) => ({ ...prev, email: 'email is required' }));
+    if (!value || value === "") {
+      return setError((prev) => ({ ...prev, email: "email is required" }));
     }
-    setError((prev) => ({ ...prev, email: '' }));
+    setError((prev) => ({ ...prev, email: "" }));
   };
 
   const handleChangeUserName = (value: string) => {
-    if (!value || value === '') {
-      return setError((prev) => ({ ...prev, username: 'user name is required' }));
+    if (!value || value === "") {
+      return setError((prev) => ({
+        ...prev,
+        username: "user name is required",
+      }));
     }
-    setError((prev) => ({ ...prev, username: '' }));
+    setError((prev) => ({ ...prev, username: "" }));
   };
 
   return (
-    <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg('loginProfileTitle')}>
-      <form ref={formRef} id="kc-update-profile-form" action={url.loginAction} method="post">
+    <Template
+      {...{ kcContext, i18n, doUseDefaultCss, classes }}
+      headerNode={msg("loginProfileTitle")}
+    >
+      <form
+        ref={formRef}
+        id="kc-update-profile-form"
+        action={url.loginAction}
+        method="post"
+      >
         {user.editUsernameAllowed && (
           // <div
           //   className={clsx(
@@ -128,15 +157,17 @@ export default function LoginUpdateProfile(
             form={form}
             id="username"
             name="username"
-            label={msg('username')}
+            label={msg("username")}
             // @ts-ignore
             type="text"
             onChangeText={handleChangeUserName}
             required
-            defaultValue={user.username ?? ''}
+            defaultValue={user.username ?? ""}
           />
         )}
-        {error.username && <Paragraph color="$red9">{error.username}</Paragraph>}
+        {error.username && (
+          <Paragraph color="$red9">{error.username}</Paragraph>
+        )}
 
         {/* <div
           className={clsx(
@@ -161,14 +192,14 @@ export default function LoginUpdateProfile(
         </div> */}
         <FieldInput
           form={form}
-          label={msg('email')}
+          label={msg("email")}
           id="email"
           name="email"
           onChangeText={handleChangeEmail}
           required
           // @ts-ignore
           type="text"
-          defaultValue={user.email ?? ''}
+          defaultValue={user.email ?? ""}
         />
         {error.email && <Paragraph color="$red9">{error.email}</Paragraph>}
         {/* <div
@@ -195,16 +226,18 @@ export default function LoginUpdateProfile(
 
         <FieldInput
           form={form}
-          label={msg('firstName')}
+          label={msg("firstName")}
           id="firstName"
           name="firstName"
           onChangeText={handleChangeFirstName}
           required
           // @ts-ignore
           type="text"
-          defaultValue={user.firstName ?? ''}
+          defaultValue={user.firstName ?? ""}
         />
-        {error.firstName && <Paragraph color="$red9">{error.username}</Paragraph>}
+        {error.firstName && (
+          <Paragraph color="$red9">{error.username}</Paragraph>
+        )}
         {/* <div
           className={clsx(
             getClassName('kcFormGroupClass'),
@@ -229,16 +262,18 @@ export default function LoginUpdateProfile(
 
         <FieldInput
           form={form}
-          label={msg('lastName')}
+          label={msg("lastName")}
           id="lastName"
           name="lastName"
           onChangeText={handleChangeLastName}
           required
           // @ts-ignore
           type="text"
-          defaultValue={user.lastName ?? ''}
+          defaultValue={user.lastName ?? ""}
         />
-        {error.lastName && <Paragraph color="$red9">{error.lastName}</Paragraph>}
+        {error.lastName && (
+          <Paragraph color="$red9">{error.lastName}</Paragraph>
+        )}
         {extraFields.map((field, index) => {
           return (
             <FieldInput
@@ -250,7 +285,7 @@ export default function LoginUpdateProfile(
               name={field}
               tabIndex={mainFields.length + 2 + (index + 1)}
               inputProps={{
-                autoComplete: 'off',
+                autoComplete: "off",
               }}
             />
           );
@@ -282,7 +317,7 @@ export default function LoginUpdateProfile(
                   type="submit"
                   defaultValue={msgStr('doSubmit')}
                 /> */}
-                <SubmitButton form={form}>{msgStr('doSubmit')}</SubmitButton>
+                <SubmitButton form={form}>{msgStr("doSubmit")}</SubmitButton>
                 {/* <button
                   className={clsx(
                     getClassName('kcButtonClass'),
@@ -302,7 +337,7 @@ export default function LoginUpdateProfile(
                   name="cancel-aia"
                   value="true"
                 >
-                  {msg('doCancel')}
+                  {msg("doCancel")}
                 </SubmitButton>
               </>
             ) : (
@@ -317,7 +352,7 @@ export default function LoginUpdateProfile(
               //   defaultValue={msgStr('doSubmit')}
               // />
               <SubmitButton form={form} bg="$backgroundFocus">
-                {msgStr('doSubmit')}
+                {msgStr("doSubmit")}
               </SubmitButton>
             )}
           </YStack>

@@ -19,12 +19,13 @@
  * limitations under the License.
  */
 
-import type { Ctx } from './types';
-import type { MiddlewareFn, ResolverData, NextFn } from 'type-graphql';
+import type { MiddlewareFn, NextFn, ResolverData } from "type-graphql";
+import type { Ctx } from "./types";
 
 export function deferMiddleware(ctx: Ctx, middleware: MiddlewareFn<Ctx>) {
   if (!ctx.typegraphqlMeta) ctx.typegraphqlMeta = {};
-  if (!ctx.typegraphqlMeta.deferredMiddlewares) ctx.typegraphqlMeta.deferredMiddlewares = [];
+  if (!ctx.typegraphqlMeta.deferredMiddlewares)
+    ctx.typegraphqlMeta.deferredMiddlewares = [];
   ctx.typegraphqlMeta.deferredMiddlewares.push(middleware);
 }
 
@@ -32,6 +33,9 @@ export function combineMiddlewares(middlewares: MiddlewareFn<Ctx>[]) {
   const middleware = middlewares.pop();
   return (data: ResolverData<Ctx>, next: NextFn) => {
     if (!middleware) return next();
-    return middleware(data, (): Promise<any> => combineMiddlewares(middlewares)(data, next)!);
+    return middleware(
+      data,
+      (): Promise<any> => combineMiddlewares(middlewares)(data, next)!,
+    );
   };
 }

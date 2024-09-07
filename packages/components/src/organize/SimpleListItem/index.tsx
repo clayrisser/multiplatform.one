@@ -19,38 +19,60 @@
  * limitations under the License.
  */
 
-import type { ListItemProps, YStackProps } from 'tamagui';
-import { YGroup, ListItem, XGroup } from 'tamagui';
-import React, { useMemo } from 'react';
+import React, { useMemo } from "react";
+import type { ListItemProps, YStackProps } from "tamagui";
+import { ListItem, XGroup, YGroup } from "tamagui";
 
-export type SimpleListProps = YStackProps & { orientation?: 'horizontal' | 'vertical'; bg?: any };
+export type SimpleListProps = YStackProps & {
+  orientation?: "horizontal" | "vertical";
+  bg?: any;
+};
 export type SimpleListItemProps = ListItemProps & {};
 
 const ListContext = React.createContext<SimpleListProps | null>(null);
 
-export function SimpleList({ children, orientation = 'vertical', backgroundColor, bg, ...props }: SimpleListProps) {
-  const contextValue = useMemo(() => ({ orientation, backgroundColor, bg }), [orientation, backgroundColor, bg]);
+export function SimpleList({
+  children,
+  orientation = "vertical",
+  backgroundColor,
+  bg,
+  ...props
+}: SimpleListProps) {
+  const contextValue = useMemo(
+    () => ({ orientation, backgroundColor, bg }),
+    [orientation, backgroundColor, bg],
+  );
 
   const renderView = () => {
-    if (orientation === 'horizontal') {
+    if (orientation === "horizontal") {
       return <XGroup {...props}>{children}</XGroup>;
     }
     return <YGroup {...props}>{children}</YGroup>;
   };
-  return <ListContext.Provider value={contextValue}>{renderView()}</ListContext.Provider>;
+  return (
+    <ListContext.Provider value={contextValue}>
+      {renderView()}
+    </ListContext.Provider>
+  );
 }
 
 export function SimpleListItem({ ...props }: SimpleListItemProps) {
   const context = React.useContext(ListContext);
   if (!context) {
-    throw new Error('SimpleListItem must be used within a SimpleList');
+    throw new Error("SimpleListItem must be used within a SimpleList");
   }
 
   function renderItem() {
-    return <ListItem hoverTheme backgroundColor={context?.backgroundColor || (context as any)?.bg} {...props} />;
+    return (
+      <ListItem
+        hoverTheme
+        backgroundColor={context?.backgroundColor || (context as any)?.bg}
+        {...props}
+      />
+    );
   }
 
-  if (context.orientation === 'horizontal') {
+  if (context.orientation === "horizontal") {
     return <XGroup.Item>{renderItem()}</XGroup.Item>;
   }
   return <YGroup.Item>{renderItem()}</YGroup.Item>;

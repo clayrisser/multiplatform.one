@@ -19,9 +19,12 @@
  * limitations under the License.
  */
 
-import type { CustomDecorator } from '../types';
+import type { CustomDecorator } from "../types";
 
-export const SetMetadata = <K = string, V = any>(metadataKey: K, metadataValue: V): CustomDecorator<K> => {
+export const SetMetadata = <K = string, V = any>(
+  metadataKey: K,
+  metadataValue: V,
+): CustomDecorator<K> => {
   const decoratorFactory = (target: object, _key?: any, descriptor?: any) => {
     if (descriptor) {
       Reflect.defineMetadata(metadataKey, metadataValue, descriptor.value);

@@ -9,4 +9,4 @@ export const toggleTinted = () => {
   setTinted(!isTinted);
 };
 
-export const listeners = new Set<Function>();
+export const listeners = new Set<(...args: any[]) => any>();

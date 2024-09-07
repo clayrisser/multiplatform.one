@@ -19,53 +19,66 @@
  * limitations under the License.
  */
 
-const path = require('path');
-const { lookupTranspileModules } = require('@multiplatform.one/utils/transpileModules');
-const { reactNativeWebpack } = require('@multiplatform.one/react-native-webpack');
+const path = require("node:path");
+const {
+  lookupTranspileModules,
+} = require("@multiplatform.one/utils/transpileModules");
+const {
+  reactNativeWebpack,
+} = require("@multiplatform.one/react-native-webpack");
 
 module.exports = {
-  mainSrcDir: 'main',
-  rendererSrcDir: './',
+  mainSrcDir: "main",
+  rendererSrcDir: "./",
   webpack(config) {
     config.module.rules = [];
     config.resolve.extensions = [
-      ...new Set(['.electron.js', '.electron.jsx', '.electron.ts', '.electron.tsx', ...config.resolve.extensions]),
+      ...new Set([
+        ".electron.js",
+        ".electron.jsx",
+        ".electron.ts",
+        ".electron.tsx",
+        ...config.resolve.extensions,
+      ]),
     ];
     return reactNativeWebpack(config, {
       transpileModules: lookupTranspileModules([__dirname]),
       babel: {
         exclude: [
-          path.resolve(__dirname, 'next-env.d.ts'),
-          path.resolve(__dirname, 'next-i18next.config.js'),
-          path.resolve(__dirname, 'next.config.js'),
-          path.resolve(__dirname, 'pages'),
-          path.resolve(__dirname, 'preload.d.ts'),
-          path.resolve(__dirname, 'public'),
-          path.resolve(__dirname, 'tamagui.config.ts'),
-          path.resolve(__dirname, 'tamaguiModules.js'),
-          path.resolve(__dirname, 'transpileModules.js'),
+          path.resolve(__dirname, "next-env.d.ts"),
+          path.resolve(__dirname, "next-i18next.config.js"),
+          path.resolve(__dirname, "next.config.js"),
+          path.resolve(__dirname, "pages"),
+          path.resolve(__dirname, "preload.d.ts"),
+          path.resolve(__dirname, "public"),
+          path.resolve(__dirname, "tamagui.config.ts"),
+          path.resolve(__dirname, "tamaguiModules.js"),
+          path.resolve(__dirname, "transpileModules.js"),
         ],
         presets: [
           [
-            require.resolve('@babel/preset-env'),
+            require.resolve("@babel/preset-env"),
             {
               targets: {
                 node: true,
               },
             },
           ],
-          require.resolve('@babel/preset-typescript'),
+          require.resolve("@babel/preset-typescript"),
         ],
         plugins: [
-          [require.resolve('@babel/plugin-transform-class-properties'), { loose: true }],
           [
-            require.resolve('@babel/plugin-transform-object-rest-spread'),
+            require.resolve("@babel/plugin-transform-class-properties"),
+            { loose: true },
+          ],
+          [
+            require.resolve("@babel/plugin-transform-object-rest-spread"),
             {
               useBuiltIns: true,
             },
           ],
           [
-            require.resolve('@babel/plugin-transform-runtime'),
+            require.resolve("@babel/plugin-transform-runtime"),
             {
               corejs: 3,
               helpers: true,

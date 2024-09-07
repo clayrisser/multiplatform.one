@@ -74,10 +74,6 @@
     "typescript": "~5.3.3",
     "zustand": "^4.5.2"
   },
-  "eslintIgnore": [
-    "dist",
-    "types"
-  ],
   "dependencies": {
     "cookies-next": "^4.2.1",
     "merge-options": "^3.0.4",

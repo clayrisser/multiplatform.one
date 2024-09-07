@@ -19,15 +19,15 @@
  * limitations under the License.
  */
 
-import { TableContext } from '../TableContext';
-import { styled, ThemeableStack } from 'tamagui';
+import { ThemeableStack, styled } from "tamagui";
+import { TableContext } from "../TableContext";
 
 export const TableCol = styled(ThemeableStack, {
-  name: 'TableCol',
+  name: "TableCol",
   context: TableContext,
   borderWidth: 1,
-  borderColor: '$borderColor',
+  borderColor: "$borderColor",
   flex: 1,
   marginRight: -1,
-  flexDirection: 'column',
+  flexDirection: "column",
 });

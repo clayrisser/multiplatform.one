@@ -19,12 +19,21 @@
  * limitations under the License.
  */
 
-import nextConfig from 'next/config';
-import { MultiPlatformBase } from './multiplatformBase';
-import { isChrome, isClient, isWindowDefined, isServer, isWeb, isWebTouchable } from '@tamagui/constants';
+import {
+  isChrome,
+  isClient,
+  isServer,
+  isWeb,
+  isWebTouchable,
+  isWindowDefined,
+} from "@tamagui/constants";
+import nextConfig from "next/config";
+import { MultiPlatformBase } from "./multiplatformBase";
 
 const getConfig =
-  typeof nextConfig === 'function' ? nextConfig : (nextConfig as { default: typeof nextConfig })?.default;
+  typeof nextConfig === "function"
+    ? nextConfig
+    : (nextConfig as { default: typeof nextConfig })?.default;
 
 declare global {
   interface Window {
@@ -36,16 +45,23 @@ export class MultiPlatform extends MultiPlatformBase {
   static isChrome = isChrome;
   static isClient = isClient;
   static isElectronMain = isWindowDefined && (window as any).versions?.electron;
-  static isElectronRender = isWindowDefined && (window as any).process?.type === 'renderer';
-  static isFirefox = isWindowDefined && window?.navigator?.userAgent?.toLowerCase().indexOf('firefox') > -1;
+  static isElectronRender =
+    isWindowDefined && (window as any).process?.type === "renderer";
+  static isFirefox =
+    isWindowDefined &&
+    window?.navigator?.userAgent?.toLowerCase().indexOf("firefox") > -1;
   static isWeb = isWeb;
-  static isNext = MultiPlatform.isWeb && (!isWindowDefined || typeof window.__NEXT_DATA__ === 'object');
+  static isNext =
+    MultiPlatform.isWeb &&
+    (!isWindowDefined || typeof window.__NEXT_DATA__ === "object");
   static isServer = isServer;
-  static isTest = process?.env?.NODE_ENV === 'test' || process?.env?.JEST_WORKER_ID !== undefined;
+  static isTest =
+    process?.env?.NODE_ENV === "test" ||
+    process?.env?.JEST_WORKER_ID !== undefined;
   static isWebTouchable = isWebTouchable;
 
   static isIframe = (() => {
-    if (typeof window === 'undefined') return false;
+    if (typeof window === "undefined") return false;
     try {
       return window.self !== window.top;
     } catch (e) {
@@ -55,10 +71,13 @@ export class MultiPlatform extends MultiPlatformBase {
 
   static isStatic =
     MultiPlatform.isNext &&
-    (typeof getConfig === 'function' ? getConfig() : {})?.publicRuntimeConfig?.NEXT_STATIC === '1';
+    (typeof getConfig === "function" ? getConfig() : {})?.publicRuntimeConfig
+      ?.NEXT_STATIC === "1";
 
   static isElectron =
     MultiPlatform.isElectronRender ||
     MultiPlatform.isElectronMain ||
-    (isWindowDefined && window.ipc && window?.navigator?.userAgent?.toLowerCase()?.indexOf('electron') >= 0);
+    (isWindowDefined &&
+      window.ipc &&
+      window?.navigator?.userAgent?.toLowerCase()?.indexOf("electron") >= 0);
 }

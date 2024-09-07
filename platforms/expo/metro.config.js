@@ -23,32 +23,32 @@
  * @type {import('expo/metro-config')}
  */
 
-const { getDefaultConfig } = require('@expo/metro-config');
-const path = require('path');
+const { getDefaultConfig } = require("@expo/metro-config");
+const path = require("node:path");
 
 const projectRoot = __dirname;
-const workspaceRoot = path.resolve(__dirname, '../..');
+const workspaceRoot = path.resolve(__dirname, "../..");
 const config = getDefaultConfig(projectRoot);
-config.resolver.resolverMainFields.unshift('sbmodern');
+config.resolver.resolverMainFields.unshift("sbmodern");
 config.watchFolders = [workspaceRoot];
 config.transformer = config.transformer || {};
-config.transformer.minifierPath = require.resolve('metro-minify-terser');
+config.transformer.minifierPath = require.resolve("metro-minify-terser");
 config.resolver.nodeModulesPaths = [
-  path.resolve(projectRoot, 'node_modules'),
-  path.resolve(workspaceRoot, 'node_modules'),
+  path.resolve(projectRoot, "node_modules"),
+  path.resolve(workspaceRoot, "node_modules"),
 ];
 config.resolver.extraNodeModules = {
   ...config.resolver.extraNodeModules,
-  'node:path': require.resolve('path-browserify'),
-  'node:process': require.resolve('process/browser'),
-  'node:url': require.resolve('url-polyfill'),
-  buffer: require.resolve('buffer/'),
-  fs: require.resolve('browserify-fs'),
-  path: require.resolve('path-browserify'),
-  process: require.resolve('process/browser'),
-  stream: require.resolve('readable-stream'),
-  url: require.resolve('url-polyfill'),
-  zlib: require.resolve('browserify-zlib'),
+  "node:path": require.resolve("path-browserify"),
+  "node:process": require.resolve("process/browser"),
+  "node:url": require.resolve("url-polyfill"),
+  buffer: require.resolve("buffer/"),
+  fs: require.resolve("browserify-fs"),
+  path: require.resolve("path-browserify"),
+  process: require.resolve("process/browser"),
+  stream: require.resolve("readable-stream"),
+  url: require.resolve("url-polyfill"),
+  zlib: require.resolve("browserify-zlib"),
 };
 config.resetCache = true;
 config.transformer.unstable_allowRequireContext = true;

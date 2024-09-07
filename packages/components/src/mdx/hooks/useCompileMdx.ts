@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from "react";
 
 export function useCompileMdx(
   source: string,
@@ -29,7 +29,9 @@ export function useCompileMdx(
   frontmatter?: Record<string, any>;
 } {
   const [code, setCode] = useState<string | undefined>();
-  const [frontmatter, setFrontmatter] = useState<Record<string, any> | undefined>();
+  const [frontmatter, setFrontmatter] = useState<
+    Record<string, any> | undefined
+  >();
 
   useEffect(() => {
     (async () => {
@@ -43,23 +45,23 @@ export function useCompileMdx(
         { rehypeHighlightCode },
         { rehypeMetaAttributes },
       ] = await Promise.all([
-        import('@mdx-js/mdx'),
-        import('gray-matter'),
-        import('rehype-autolink-headings'),
-        import('rehype-slug'),
-        import('remark-frontmatter'),
-        import('remark-mdx-frontmatter'),
-        import('../util/rehypeHighlightCode'),
-        import('../util/rehypeMetaAttributes'),
+        import("@mdx-js/mdx"),
+        import("gray-matter"),
+        import("rehype-autolink-headings"),
+        import("rehype-slug"),
+        import("remark-frontmatter"),
+        import("remark-mdx-frontmatter"),
+        import("../util/rehypeHighlightCode"),
+        import("../util/rehypeMetaAttributes"),
       ]);
       const { value } = await compile(source, {
         ...options,
         development: false,
-        outputFormat: 'function-body',
+        outputFormat: "function-body",
         // useDynamicImport: true,
         remarkPlugins: [
           ...(options?.remarkPlugins || []),
-          [remarkMdxFrontmatter, { name: 'frontmatter' }],
+          [remarkMdxFrontmatter, { name: "frontmatter" }],
           remarkFrontmatter,
         ],
         rehypePlugins: [

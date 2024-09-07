@@ -19,14 +19,18 @@
  * limitations under the License.
  */
 
-'use client';
+"use client";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { ComponentType, PropsWithChildren, useEffect } from 'react';
-import { MultiPlatform } from 'multiplatform.one';
-import { Text } from 'tamagui';
-import { useAuthConfig, useTokensFromQuery } from './hooks';
-import { useKeycloak } from './keycloak';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MultiPlatform } from "multiplatform.one";
+import React, {
+  type ComponentType,
+  type PropsWithChildren,
+  useEffect,
+} from "react";
+import { Text } from "tamagui";
+import { useAuthConfig, useTokensFromQuery } from "./hooks";
+import { useKeycloak } from "./keycloak";
 
 global.AsyncStorage = AsyncStorage;
 
@@ -36,13 +40,24 @@ export interface AuthenticatedProps extends PropsWithChildren {
   loggedOutComponent?: ComponentType;
 }
 
-export function Authenticated({ children, disabled, loggedOutComponent, loadingComponent }: AuthenticatedProps) {
+export function Authenticated({
+  children,
+  disabled,
+  loggedOutComponent,
+  loadingComponent,
+}: AuthenticatedProps) {
   const authConfig = useAuthConfig();
   const keycloak = useKeycloak();
   const tokensFromQuery = useTokensFromQuery();
 
   useEffect(() => {
-    if (!keycloak || MultiPlatform.isIframe || MultiPlatform.isServer || keycloak.authenticated || tokensFromQuery) {
+    if (
+      !keycloak ||
+      MultiPlatform.isIframe ||
+      MultiPlatform.isServer ||
+      keycloak.authenticated ||
+      tokensFromQuery
+    ) {
       return;
     }
     keycloak?.login({
@@ -50,18 +65,28 @@ export function Authenticated({ children, disabled, loggedOutComponent, loadingC
     });
   }, [keycloak?.authenticated]);
 
-  if (typeof disabled === 'undefined') disabled = authConfig.disabled;
+  if (typeof disabled === "undefined") disabled = authConfig.disabled;
   if (disabled) return <>{children}</>;
-  if (typeof keycloak === 'undefined') {
+  if (typeof keycloak === "undefined") {
     const LoadingComponent = loadingComponent;
-    return LoadingComponent ? <LoadingComponent /> : <Text>{authConfig.debug ? 'loading' : null}</Text>;
+    return LoadingComponent ? (
+      <LoadingComponent />
+    ) : (
+      <Text>{authConfig.debug ? "loading" : null}</Text>
+    );
   }
   if (keycloak === null || keycloak.authenticated) return <>{children}</>;
   const LoggedOutComponent = loggedOutComponent;
-  return LoggedOutComponent ? <LoggedOutComponent /> : <Text>{authConfig.debug ? 'not authenticated' : null}</Text>;
+  return LoggedOutComponent ? (
+    <LoggedOutComponent />
+  ) : (
+    <Text>{authConfig.debug ? "not authenticated" : null}</Text>
+  );
 }
 
-export function withAuthenticated<P extends object>(Component: ComponentType<P>) {
+export function withAuthenticated<P extends object>(
+  Component: ComponentType<P>,
+) {
   return (props: P) => (
     <Authenticated>
       <Component {...props} />

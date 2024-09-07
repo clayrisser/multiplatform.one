@@ -19,27 +19,29 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { FieldSwitchProps } from './FieldSwitch';
-import { FieldSwitch } from './FieldSwitch';
-import { action } from '@storybook/addon-actions';
-import { useForm } from '@tanstack/react-form';
-import { Button, YStack } from 'tamagui';
+import { action } from "@storybook/addon-actions";
+import { useForm } from "@tanstack/react-form";
+import React from "react";
+import { Button, YStack } from "tamagui";
+import type { FieldSwitchProps } from "./FieldSwitch";
+import { FieldSwitch } from "./FieldSwitch";
 
 export default {
-  title: 'forms/FieldSwitch',
+  title: "forms/FieldSwitch",
   component: FieldSwitch,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
-export const main = (args) => <FieldSwitch onCheckedChange={action('onCheckedChange')} {...args} />;
+export const main = (args) => (
+  <FieldSwitch onCheckedChange={action("onCheckedChange")} {...args} />
+);
 const mainArgs: FieldSwitchProps<any, any> = {
   asyncAlways: true,
   asyncDebounceMs: 500,
   defaultValue: false,
-  mode: 'array',
+  mode: "array",
 };
 main.args = mainArgs;
 
@@ -49,7 +51,7 @@ export const form = () => {
       switch: false,
     },
     onSubmit: async ({ value }) => {
-      action('onSubmit')(value);
+      action("onSubmit")(value);
     },
   });
   return (

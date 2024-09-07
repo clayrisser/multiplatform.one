@@ -19,19 +19,19 @@
  * limitations under the License.
  */
 
-import React, { useEffect } from 'react';
+import { X } from "@tamagui/lucide-icons";
+import React, { useEffect } from "react";
+import type { ReactNode } from "react";
 import type {
+  DialogContentProps,
+  DialogDescriptionProps,
+  DialogOverlayProps,
+  DialogPortalProps,
   DialogProps,
   DialogTitleProps,
-  DialogDescriptionProps,
-  DialogContentProps,
-  DialogPortalProps,
-  DialogOverlayProps,
   SizeTokens,
-} from 'tamagui';
-import type { ReactNode } from 'react';
-import { Adapt, Button, Dialog, Sheet, Unspaced } from 'tamagui';
-import { X } from '@tamagui/lucide-icons';
+} from "tamagui";
+import { Adapt, Button, Dialog, Sheet, Unspaced } from "tamagui";
 
 export type SimpleDialogProps = DialogProps & {
   contentStyle?: DialogContentProps;
@@ -69,7 +69,7 @@ export function SimpleDialog({
   const [open, setOpen] = React.useState(props.open);
 
   useEffect(() => {
-    if (typeof props.open === 'undefined' || props.open === open) return;
+    if (typeof props.open === "undefined" || props.open === open) return;
     setOpen(props.open);
   }, [props.open]);
 
@@ -84,7 +84,7 @@ export function SimpleDialog({
       }}
     >
       {trigger && <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>}
-      <Adapt when={'sm' as any} platform="touch">
+      <Adapt when={"sm" as any} platform="touch">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" gap>
             <Adapt.Contents />
@@ -93,8 +93,8 @@ export function SimpleDialog({
         </Sheet>
       </Adapt>
       <Dialog.Portal
-        {...(asRightSideSheet && { jc: 'flex-start', ai: 'flex-end' })}
-        {...(asLeftSideSheet && { jc: 'flex-start', ai: 'flex-start' })}
+        {...(asRightSideSheet && { jc: "flex-start", ai: "flex-end" })}
+        {...(asLeftSideSheet && { jc: "flex-start", ai: "flex-start" })}
         {...portalStyle}
       >
         <Dialog.Overlay
@@ -110,7 +110,7 @@ export function SimpleDialog({
           elevate
           key="content"
           animation={[
-            'quick',
+            "quick",
             {
               opacity: {
                 overshootClamping: true,
@@ -123,15 +123,15 @@ export function SimpleDialog({
           {...(asRightSideSheet && {
             enterStyle: { x: transitionWidth || 200, opacity: 0 },
             exitStyle: { x: transitionWidth || 200, opacity: 0 },
-            position: 'absolute',
+            position: "absolute",
             top: 0,
             bottom: 0,
           })}
           {...(asLeftSideSheet && {
             enterStyle: { x: -(transitionWidth || 100), opacity: 0 },
             exitStyle: { x: -(transitionWidth || 100), opacity: 0 },
-            animation: 'bouncy',
-            position: 'absolute',
+            animation: "bouncy",
+            position: "absolute",
             top: 0,
             bottom: 0,
           })}
@@ -140,12 +140,24 @@ export function SimpleDialog({
           <Dialog.Title disabled={!title} {...titleStyle}>
             {title}
           </Dialog.Title>
-          {description && <Dialog.Description {...descriptionStyle}>{description}</Dialog.Description>}
+          {description && (
+            <Dialog.Description {...descriptionStyle}>
+              {description}
+            </Dialog.Description>
+          )}
           {children}
           {!withoutCloseButton && (
             <Unspaced>
               <Dialog.Close asChild gap>
-                <Button position="absolute" top="$3" right="$3" size="$2" circular gap icon={X} />
+                <Button
+                  position="absolute"
+                  top="$3"
+                  right="$3"
+                  size="$2"
+                  circular
+                  gap
+                  icon={X}
+                />
               </Dialog.Close>
             </Unspaced>
           )}

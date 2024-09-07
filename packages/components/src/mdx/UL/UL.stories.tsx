@@ -19,27 +19,27 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { Text } from 'tamagui';
-import { UL } from './index';
+import React from "react";
+import { Text } from "tamagui";
+import { UL } from "./index";
 
 export default {
-  title: 'mdx/UL',
+  title: "mdx/UL",
   component: UL,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: "beta" } },
   controls: {
     argTypes: {
       marginVertical: {
-        description: 'Sets the vertical margin of the unordered list',
-        defaultValue: '$1',
+        description: "Sets the vertical margin of the unordered list",
+        defaultValue: "$1",
       },
       marginLeft: {
-        description: 'Sets the left margin of the unordered list',
-        defaultValue: '$4',
+        description: "Sets the left margin of the unordered list",
+        defaultValue: "$4",
       },
       marginRight: {
-        description: 'Sets the right margin of the unordered list',
-        defaultValue: '$2',
+        description: "Sets the right margin of the unordered list",
+        defaultValue: "$2",
       },
     },
   },

@@ -19,13 +19,14 @@
  * limitations under the License.
  */
 
-import * as jsxRuntime from 'react/jsx-runtime';
-import type { ComponentType } from 'react';
-import type { MDXComponents } from '@mdx-js/react/lib';
-import { useState, useEffect } from 'react';
+import type { MDXComponents } from "@mdx-js/react/lib";
+import type { ComponentType } from "react";
+import { useEffect, useState } from "react";
+import * as jsxRuntime from "react/jsx-runtime";
 
 export function useEvaluateMdx(code?: string, options?: Record<string, any>) {
-  const [Component, setComponent] = useState<ComponentType<{ components?: Record<string, any> }>>();
+  const [Component, setComponent] =
+    useState<ComponentType<{ components?: Record<string, any> }>>();
 
   useEffect(() => {
     if (!code) return;

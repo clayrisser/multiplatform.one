@@ -19,52 +19,58 @@
  * limitations under the License.
  */
 
-const { lookupTamaguiModules } = require('@multiplatform.one/utils/transpileModules');
+const {
+  lookupTamaguiModules,
+} = require("@multiplatform.one/utils/transpileModules");
 
-process.env.TAMAGUI_TARGET = 'native';
+process.env.TAMAGUI_TARGET = "native";
 
 const moduleResolutions = [
-  'devlop',
-  'estree-util-visit/do-not-use-color',
-  'unist-util-visit-parents/do-not-use-color',
-  'vfile/do-not-use-conditional-minpath',
-  'vfile/do-not-use-conditional-minproc',
-  'vfile/do-not-use-conditional-minurl',
+  "devlop",
+  "estree-util-visit/do-not-use-color",
+  "unist-util-visit-parents/do-not-use-color",
+  "vfile/do-not-use-conditional-minpath",
+  "vfile/do-not-use-conditional-minproc",
+  "vfile/do-not-use-conditional-minurl",
 ];
 
-module.exports = function (api) {
+module.exports = (api) => {
   api.cache(true);
   return {
-    presets: [['babel-preset-expo', { jsxRuntime: 'automatic' }]],
+    presets: [["babel-preset-expo", { jsxRuntime: "automatic" }]],
     plugins: [
       [
-        require.resolve('babel-plugin-module-resolver'),
+        require.resolve("babel-plugin-module-resolver"),
         {
-          root: ['../..'],
-          extensions: ['.js', '.jsx', '.tsx', '.ios.js', '.android.js'],
+          root: ["../.."],
+          extensions: [".js", ".jsx", ".tsx", ".ios.js", ".android.js"],
           alias: {
-            app: '../../app',
-            ui: '../../packages/ui',
-            ...moduleResolutions.reduce((acc, module) => ({ ...acc, [module]: require.resolve(module) }), {}),
+            app: "../../app",
+            ui: "../../packages/ui",
+            ...moduleResolutions.reduce(
+              (acc, module) =>
+                Object.assign(acc, { [module]: require.resolve(module) }),
+              {},
+            ),
           },
         },
       ],
-      'react-native-reanimated/plugin',
-      ...(process.env.EAS_BUILD_PLATFORM === 'android'
+      "react-native-reanimated/plugin",
+      ...(process.env.EAS_BUILD_PLATFORM === "android"
         ? []
-        : process.env.DEBUG === '1'
+        : process.env.DEBUG === "1"
           ? []
           : [
-              '@tamagui/babel-plugin',
+              "@tamagui/babel-plugin",
               {
                 components: lookupTamaguiModules([__dirname]),
-                config: require.resolve('./tamagui.config.ts'),
+                config: require.resolve("./tamagui.config.ts"),
               },
             ]),
       [
-        'transform-inline-environment-variables',
+        "transform-inline-environment-variables",
         {
-          include: 'TAMAGUI_TARGET',
+          include: "TAMAGUI_TARGET",
         },
       ],
     ],

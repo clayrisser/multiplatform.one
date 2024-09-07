@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-export * from './useAuthConfig';
-export * from './useTokensFromQuery';
-export * from './useTokensFromState';
+export * from "./useAuthConfig";
+export * from "./useTokensFromQuery";
+export * from "./useTokensFromState";

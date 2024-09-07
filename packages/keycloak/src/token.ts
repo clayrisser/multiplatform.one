@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import type { KeycloakTokenParsed } from 'keycloak-js';
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
+import type { KeycloakTokenParsed } from "keycloak-js";
 
 export function validOrRefreshableToken(
   token?: string | false,
@@ -30,10 +30,13 @@ export function validOrRefreshableToken(
   token?: string | boolean,
   refreshToken?: string | boolean,
 ): string | boolean | undefined;
-export function validOrRefreshableToken(token?: string | boolean, refreshToken?: string | boolean) {
-  if (typeof token === 'undefined') return;
+export function validOrRefreshableToken(
+  token?: string | boolean,
+  refreshToken?: string | boolean,
+) {
+  if (typeof token === "undefined") return;
   if (!token) return false;
-  if (typeof token !== 'string') return token;
+  if (typeof token !== "string") return token;
   if (refreshToken) {
     if (refreshToken === true || !isTokenExpired(refreshToken)) return token;
     return false;
@@ -50,7 +53,7 @@ export function isTokenExpired(token: string) {
 export interface TokenParsed extends KeycloakTokenParsed {
   jti?: string;
   sid?: string;
-  typ?: 'Bearer' | string;
+  typ?: "Bearer" | string;
 }
 
 export interface AccessTokenParsed extends TokenParsed {

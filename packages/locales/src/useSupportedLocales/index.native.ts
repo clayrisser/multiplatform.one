@@ -20,7 +20,7 @@
  */
 
 // @ts-ignore
-import { supportedLocales } from 'app/i18n';
+import { supportedLocales } from "app/i18n";
 
 export function useSupportedLocales(): string[] | undefined {
   return supportedLocales;

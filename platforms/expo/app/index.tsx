@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-import HomeScreen from 'app/screens/home';
+import HomeScreen from "app/screens/home";
 
 export default HomeScreen;

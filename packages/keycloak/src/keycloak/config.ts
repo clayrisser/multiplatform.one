@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-'use client';
+"use client";
 
-import type { KeycloakConfig as KeycloakJsConfig } from 'keycloak-js';
-import { createContext } from 'react';
+import type { KeycloakConfig as KeycloakJsConfig } from "keycloak-js";
+import { createContext } from "react";
 
 export interface KeycloakConfig extends KeycloakJsConfig {
   publicClientId?: string;
@@ -30,7 +30,7 @@ export interface KeycloakConfig extends KeycloakJsConfig {
 }
 
 export const KeycloakConfigContext = createContext<KeycloakConfig>({
-  clientId: '',
-  realm: '',
-  url: '',
+  clientId: "",
+  realm: "",
+  url: "",
 });

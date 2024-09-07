@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-import waitForPostgres from '../waitForPostgres';
+import waitForPostgres from "../waitForPostgres";
 
 waitForPostgres();

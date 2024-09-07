@@ -1,10 +1,10 @@
-import type { ThemeName } from 'tamagui';
-import { animations } from './animations';
-import { createMedia } from '@tamagui/react-native-media-driver';
-import { createTamagui } from 'tamagui';
-import { fonts } from './fonts';
-import { shorthands } from '@tamagui/shorthands';
-import { themes, tokens } from '@tamagui/themes';
+import { createMedia } from "@tamagui/react-native-media-driver";
+import { shorthands } from "@tamagui/shorthands";
+import { themes, tokens } from "@tamagui/themes";
+import type { ThemeName } from "tamagui";
+import { createTamagui } from "tamagui";
+import { animations } from "./animations";
+import { fonts } from "./fonts";
 
 export const config = createTamagui({
   animations,
@@ -28,16 +28,48 @@ export const config = createTamagui({
     gtLg: { minWidth: 1280 + 1 },
     short: { maxHeight: 820 },
     tall: { minHeight: 820 },
-    hoverNone: { hover: 'none' },
-    pointerCoarse: { pointer: 'coarse' },
+    hoverNone: { hover: "none" },
+    pointerCoarse: { pointer: "coarse" },
   }),
 });
 
 export const tintFamilies = {
-  easter: ['yellow', 'pink', 'yellow', 'pink', 'yellow', 'pink', 'yellow'] as ThemeName[],
-  halloween: ['orange', 'gray', 'orange', 'gray', 'orange', 'gray', 'orange'] as ThemeName[],
-  lunar: ['yellow', 'red', 'red', 'red', 'red', 'red', 'yellow'] as ThemeName[],
-  tamagui: ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red'] as ThemeName[],
-  valentine: ['pink', 'red', 'pink', 'red', 'pink', 'red', 'pink'] as ThemeName[],
-  xmas: ['red', 'green', 'red', 'green', 'red', 'green', 'red'] as ThemeName[],
+  easter: [
+    "yellow",
+    "pink",
+    "yellow",
+    "pink",
+    "yellow",
+    "pink",
+    "yellow",
+  ] as ThemeName[],
+  halloween: [
+    "orange",
+    "gray",
+    "orange",
+    "gray",
+    "orange",
+    "gray",
+    "orange",
+  ] as ThemeName[],
+  lunar: ["yellow", "red", "red", "red", "red", "red", "yellow"] as ThemeName[],
+  tamagui: [
+    "orange",
+    "yellow",
+    "green",
+    "blue",
+    "purple",
+    "pink",
+    "red",
+  ] as ThemeName[],
+  valentine: [
+    "pink",
+    "red",
+    "pink",
+    "red",
+    "pink",
+    "red",
+    "pink",
+  ] as ThemeName[],
+  xmas: ["red", "green", "red", "green", "red", "green", "red"] as ThemeName[],
 };

@@ -19,7 +19,13 @@
  * limitations under the License.
  */
 
-import React, { useState } from 'react';
+import { Eye, EyeOff } from "@tamagui/lucide-icons";
+import { useToastController } from "@tamagui/toast";
+import { useForm } from "@tanstack/react-form";
+// import { Link } from 'solito/link';
+import { HomeNavigation } from "app/components/homeNavigation";
+import { withDefaultLayout } from "app/layouts/Default";
+import React, { useState } from "react";
 import {
   Card,
   FieldCheckbox,
@@ -41,19 +47,13 @@ import {
   Theme,
   XStack,
   YStack,
-} from 'ui';
-import { useForm } from '@tanstack/react-form';
-import { useToastController } from '@tamagui/toast';
-import { withDefaultLayout } from 'app/layouts/Default';
-import { Eye, EyeOff } from '@tamagui/lucide-icons';
-// import { Link } from 'solito/link';
-import { HomeNavigation } from 'app/components/homeNavigation';
+} from "ui";
 
 export interface RegisterForm {
   firstName: string;
   lastName: string;
   email: string;
-  gender: 'male' | 'female' | '';
+  gender: "male" | "female" | "";
   languages: string[];
   introduction: string;
   role: string;
@@ -80,7 +80,7 @@ function FormScreen() {
   const [sliderValue, setSliderValue] = useState<number[]>([0]);
   const [isWorking, setIsWorking] = useState<boolean>(false);
   const [progressValue, setProgressValue] = useState<number>(0);
-  const [progressColor, setProgressColor] = useState('red');
+  const [progressColor, setProgressColor] = useState("red");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [errors, setErrors] = useState<ErrorProps>({});
 
@@ -89,7 +89,8 @@ function FormScreen() {
     return emailPattern.test(email);
   };
   const isPasswordValid = (password: string) => {
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordPattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return passwordPattern.test(password);
   };
   const isPhoneNumberValid = (phoneNumber: string) => {
@@ -98,50 +99,57 @@ function FormScreen() {
   };
   const form = useForm<RegisterForm>({
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      gender: '',
+      firstName: "",
+      lastName: "",
+      email: "",
+      gender: "",
       languages: [],
-      introduction: '',
-      role: '',
+      introduction: "",
+      role: "",
       c: false,
       java: false,
       python: false,
       javaScript: false,
       travelPercentage: [0],
       currentlyWorking: false,
-      phoneNumber: '',
-      password: '',
+      phoneNumber: "",
+      password: "",
     },
     onSubmit: ({ value }) => {
       const _errors = {
-        ...(!value.firstName && { firstName: 'first name is required.' }),
-        ...(!value.lastName && { lastName: 'last name is required.' }),
-        ...(!value.email && { email: 'email is required.' }),
-        ...(value.email && !isEmailValid(value.email) && { email: 'invalid email address.' }),
-        ...(!value.gender && { gender: 'gender is required.' }),
-        ...(!value.introduction && { introduction: 'introduction is required.' }),
-        ...(!value.phoneNumber && { phoneNumber: 'phone number is required.' }),
-        ...(value.phoneNumber && !isPhoneNumberValid(value.phoneNumber) && { phoneNumber: 'invalid phone number.' }),
-        ...(!value.password && { password: 'password is required.' }),
-        ...(value.password && !isPasswordValid(value.password) && { password: 'invalid password' }),
+        ...(!value.firstName && { firstName: "first name is required." }),
+        ...(!value.lastName && { lastName: "last name is required." }),
+        ...(!value.email && { email: "email is required." }),
+        ...(value.email &&
+          !isEmailValid(value.email) && { email: "invalid email address." }),
+        ...(!value.gender && { gender: "gender is required." }),
+        ...(!value.introduction && {
+          introduction: "introduction is required.",
+        }),
+        ...(!value.phoneNumber && { phoneNumber: "phone number is required." }),
+        ...(value.phoneNumber &&
+          !isPhoneNumberValid(value.phoneNumber) && {
+            phoneNumber: "invalid phone number.",
+          }),
+        ...(!value.password && { password: "password is required." }),
+        ...(value.password &&
+          !isPasswordValid(value.password) && { password: "invalid password" }),
       };
       setErrors(_errors);
       if (Object.values(_errors).some((error) => error)) {
-        toastController.show('please fill all required fields');
+        toastController.show("please fill all required fields");
         return;
       }
-      if (value.c) value.languages.push('C');
-      if (value.java) value.languages.push('Java');
-      if (value.python) value.languages.push('Python');
-      if (value.javaScript) value.languages.push('JavaScript');
+      if (value.c) value.languages.push("C");
+      if (value.java) value.languages.push("Java");
+      if (value.python) value.languages.push("Python");
+      if (value.javaScript) value.languages.push("JavaScript");
 
-      console.log('form submitted with values:', value);
+      console.log("form submitted with values:", value);
 
       form.reset();
       setProgressValue(0);
-      setProgressColor('red');
+      setProgressColor("red");
       setIsWorking(false);
       setErrors({});
       setSliderValue([0]);
@@ -154,57 +162,59 @@ function FormScreen() {
     }));
   };
   const handleFirstName = (value: string) => {
-    const firstName = value.replace(/\s+/g, '');
-    form.setFieldValue('firstName', firstName);
-    clearError('firstName');
+    const firstName = value.replace(/\s+/g, "");
+    form.setFieldValue("firstName", firstName);
+    clearError("firstName");
   };
   const handleLastName = (value: string) => {
-    const lastName = value.replace(/\s+/g, '');
-    form.setFieldValue('lastName', lastName);
-    clearError('lastName');
+    const lastName = value.replace(/\s+/g, "");
+    form.setFieldValue("lastName", lastName);
+    clearError("lastName");
   };
   const handleIntroduction = (value: string) => {
-    const trimmedValue = value.replace(/^\s+/, '');
-    const introduction = trimmedValue.length > 0 ? ` ${trimmedValue}` : ' ';
-    form.setFieldValue('introduction', introduction);
-    clearError('introduction');
+    const trimmedValue = value.replace(/^\s+/, "");
+    const introduction = trimmedValue.length > 0 ? ` ${trimmedValue}` : " ";
+    form.setFieldValue("introduction", introduction);
+    clearError("introduction");
   };
   const handleChangeEmail = (value: string) => {
-    const email = value.replace(/\s+/g, '');
+    const email = value.replace(/\s+/g, "");
     let message: string | undefined;
     const startsWithValidChar = /^[a-zA-Z]/.test(email);
     const atSymbolCount = (email.match(/@/g) || []).length;
     const hasAtSymbol = atSymbolCount === 1;
-    const domainPart = email.split('@')[1];
-    const dotCount = ((domainPart && domainPart.match(/\./g)) || []).length;
-    const hasDotAfterAt = dotCount === 1 && /^[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/.test(domainPart || '');
+    const domainPart = email.split("@")[1];
+    const dotCount = (domainPart?.match(/\./g) || []).length;
+    const hasDotAfterAt =
+      dotCount === 1 && /^[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/.test(domainPart || "");
     const endsWithValidChar = /[a-zA-Z]$/.test(email);
 
     if (!startsWithValidChar) {
-      message = 'email must start with a letter';
+      message = "email must start with a letter";
     } else if (!hasAtSymbol) {
       message = 'email must contain "@" symbol';
     } else if (!hasDotAfterAt) {
-      message = 'email must contain exactly one "." in the domain part, with letters before and after the "."';
+      message =
+        'email must contain exactly one "." in the domain part, with letters before and after the "."';
     } else if (!endsWithValidChar) {
-      message = 'email must end with a letter';
+      message = "email must end with a letter";
     }
     setErrors((prev) => ({
       ...prev,
       email: message,
     }));
-    form.setFieldValue('email', email);
+    form.setFieldValue("email", email);
   };
   const handlePhoneNumberChange = (value: string) => {
-    const formattedValue = value.replace(/\D/g, '').slice(0, 10);
-    form.setFieldValue('phoneNumber', formattedValue);
-    clearError('phoneNumber');
+    const formattedValue = value.replace(/\D/g, "").slice(0, 10);
+    form.setFieldValue("phoneNumber", formattedValue);
+    clearError("phoneNumber");
   };
   const handleSwitchChange = (checked: boolean) => {
     setIsWorking(checked);
   };
   const handlePasswordChange = (value: string) => {
-    const password = value.replace(/\s+/g, '');
+    const password = value.replace(/\s+/g, "");
     let message: string | undefined;
     let progress = 0;
     const hasUppercase = /[A-Z]/.test(password);
@@ -220,12 +230,16 @@ function FormScreen() {
     if (hasDigit) progress += 20;
     if (hasSpecialChar) progress += 20;
 
-    if (password.length < 8 || !(hasUppercase && hasLowercase && hasDigit && hasSpecialChar)) {
-      message = 'password must contains at least 8 chars with uppercase, lowercase, digit, and special char';
-      setProgressColor('red');
+    if (
+      password.length < 8 ||
+      !(hasUppercase && hasLowercase && hasDigit && hasSpecialChar)
+    ) {
+      message =
+        "password must contains at least 8 chars with uppercase, lowercase, digit, and special char";
+      setProgressColor("red");
     } else {
-      message = 'strong password';
-      setProgressColor('green');
+      message = "strong password";
+      setProgressColor("green");
     }
     progress = Math.min(progress, 100);
     setProgressValue(progress);
@@ -233,16 +247,27 @@ function FormScreen() {
       ...prev,
       password: message,
     }));
-    form.setFieldValue('password', password);
+    form.setFieldValue("password", password);
   };
 
   return (
     <YStack width="100%" jc="center" ai="center">
-      <Card width="100%" minWidth={320} maxWidth={550} padding="$4" elevate margin="$2">
+      <Card
+        width="100%"
+        minWidth={320}
+        maxWidth={550}
+        padding="$4"
+        elevate
+        margin="$2"
+      >
         <ScrollView>
           <YStack gap="$3">
             <Theme name="dark">
-              <H1 theme="blue_active" textAlign="center" color="$backgroundFocus">
+              <H1
+                theme="blue_active"
+                textAlign="center"
+                color="$backgroundFocus"
+              >
                 Registration Form
               </H1>
             </Theme>
@@ -253,11 +278,13 @@ function FormScreen() {
                   name="firstName"
                   required
                   inputProps={{
-                    placeholder: 'First Name *',
+                    placeholder: "First Name *",
                   }}
                   onChangeText={handleFirstName}
                 />
-                {errors.firstName && <Paragraph color="red">{errors.firstName}</Paragraph>}
+                {errors.firstName && (
+                  <Paragraph color="red">{errors.firstName}</Paragraph>
+                )}
               </YStack>
               <YStack gap="$0.5">
                 <FieldInput
@@ -265,11 +292,13 @@ function FormScreen() {
                   name="lastName"
                   required
                   inputProps={{
-                    placeholder: 'Last Name *',
+                    placeholder: "Last Name *",
                   }}
                   onChangeText={handleLastName}
                 />
-                {errors.lastName && <Paragraph color="red">{errors.lastName}</Paragraph>}
+                {errors.lastName && (
+                  <Paragraph color="red">{errors.lastName}</Paragraph>
+                )}
               </YStack>
               <YStack gap="$1">
                 <FieldInput
@@ -277,11 +306,13 @@ function FormScreen() {
                   name="email"
                   required
                   inputProps={{
-                    placeholder: 'Email*',
+                    placeholder: "Email*",
                   }}
                   onChangeText={handleChangeEmail}
                 />
-                {errors.email && <Paragraph color="red">{errors.email}</Paragraph>}
+                {errors.email && (
+                  <Paragraph color="red">{errors.email}</Paragraph>
+                )}
               </YStack>
               <YStack gap="$0.5">
                 <FieldInput
@@ -289,12 +320,14 @@ function FormScreen() {
                   name="phoneNumber"
                   required
                   inputProps={{
-                    placeholder: 'Phone Number*',
-                    keyboardType: 'numeric',
+                    placeholder: "Phone Number*",
+                    keyboardType: "numeric",
                   }}
                   onChangeText={handlePhoneNumberChange}
                 />
-                {errors.phoneNumber && <Paragraph color="red">{errors.phoneNumber}</Paragraph>}
+                {errors.phoneNumber && (
+                  <Paragraph color="red">{errors.phoneNumber}</Paragraph>
+                )}
               </YStack>
               <YStack gap="$2">
                 <XStack>
@@ -303,7 +336,7 @@ function FormScreen() {
                     name="password"
                     required
                     inputProps={{
-                      placeholder: 'Password*',
+                      placeholder: "Password*",
                       secureTextEntry: !showPassword,
                     }}
                     onChangeText={handlePasswordChange}
@@ -311,8 +344,17 @@ function FormScreen() {
                     minWidth={250}
                     maxWidth={550}
                   />
-                  <YStack onPress={() => setShowPassword(!showPassword)} position="absolute" right="5%" top="25%">
-                    {showPassword ? <EyeOff $sm={{ size: '$2' }} /> : <Eye $sm={{ size: '$2' }} />}
+                  <YStack
+                    onPress={() => setShowPassword(!showPassword)}
+                    position="absolute"
+                    right="5%"
+                    top="25%"
+                  >
+                    {showPassword ? (
+                      <EyeOff $sm={{ size: "$2" }} />
+                    ) : (
+                      <Eye $sm={{ size: "$2" }} />
+                    )}
                   </YStack>
                 </XStack>
                 {errors.password && (
@@ -330,7 +372,13 @@ function FormScreen() {
                 </Paragraph>
               </YStack>
               <YStack gap="$0">
-                <FieldRadioGroup gap="$0.8" name="gender" label="Gender" required form={form}>
+                <FieldRadioGroup
+                  gap="$0.8"
+                  name="gender"
+                  label="Gender"
+                  required
+                  form={form}
+                >
                   <YStack>
                     <FieldRadioGroupItem value="male">
                       <Label>Male</Label>
@@ -343,21 +391,27 @@ function FormScreen() {
                     </FieldRadioGroupItem>
                   </YStack>
                 </FieldRadioGroup>
-                {errors.gender && <Paragraph color="red">{errors.gender}</Paragraph>}
+                {errors.gender && (
+                  <Paragraph color="red">{errors.gender}</Paragraph>
+                )}
                 <YStack>
                   <Label>Languages</Label>
                   <YStack>
                     <FieldCheckbox label="C" name="c" form={form} />
                     <FieldCheckbox label="Java" name="java" form={form} />
                     <FieldCheckbox label="Python" name="python" form={form} />
-                    <FieldCheckbox label="JavaScript" name="javaScript" form={form} />
+                    <FieldCheckbox
+                      label="JavaScript"
+                      name="javaScript"
+                      form={form}
+                    />
                   </YStack>
                 </YStack>
               </YStack>
               <YStack gap="$0.5">
                 <FieldTextArea
                   textAreaProps={{
-                    placeholder: 'Write something about yourself... *',
+                    placeholder: "Write something about yourself... *",
                   }}
                   name="introduction"
                   form={form}
@@ -365,7 +419,9 @@ function FormScreen() {
                   margin="$0.5"
                   onChangeText={handleIntroduction}
                 />
-                {errors.introduction && <Paragraph color="red">{errors.introduction}</Paragraph>}
+                {errors.introduction && (
+                  <Paragraph color="red">{errors.introduction}</Paragraph>
+                )}
               </YStack>
               <FieldSelectSimple label="Role" name="role" form={form}>
                 <Select.Item value="Software Developer" index={0}>
@@ -403,7 +459,7 @@ function FormScreen() {
                     color="white"
                     w="$9"
                     marginBottom="$2"
-                    hoverStyle={{ bg: '$backgroundHover' }}
+                    hoverStyle={{ bg: "$backgroundHover" }}
                   >
                     Submit
                   </SubmitButton>

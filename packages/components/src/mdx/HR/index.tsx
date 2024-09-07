@@ -19,11 +19,17 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { EnsureFlexed, YStack } from 'tamagui';
+import React from "react";
+import { EnsureFlexed, YStack } from "tamagui";
 
 export const HR = () => (
-  <YStack marginTop="$10" marginBottom="$10" marginLeft="auto" marginRight="auto" maxWidth="50%">
+  <YStack
+    marginTop="$10"
+    marginBottom="$10"
+    marginLeft="auto"
+    marginRight="auto"
+    maxWidth="50%"
+  >
     <EnsureFlexed />
     <YStack borderBottomColor="$borderColor" borderBottomWidth={1} flex={1} />
   </YStack>

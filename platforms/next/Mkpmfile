@@ -33,23 +33,17 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call make,$(PROJECT_ROOT)) \~deps DEPS_ARGS=$(DEPS_ARGS)
 	@$(call done,$@)
 
-ACTIONS += format~deps
-$(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
-#	-@$(call eslint_format,$?)
-	-@$(call prettier,$?,$(FORMAT_ARGS))
-	@$(call done,$@)
-
-ACTIONS += spellcheck~format
+ACTIONS += spellcheck~deps
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
+	-@$(call cspell,$?,$(ARGS))
 	@$(call done,$@)
 
-ACTIONS += lint~spellcheck
-$(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
-	-@$(call eslint,$?,$(LINT_ARGS))
-	@$(call done, $@)
+ACTIONS += check~spellcheck
+$(ACTION)/check: $(call git_deps,\.([jt]sx?)$$)
+	$(BIOME) check --fix --unsafe $?
+	@$(call done,$@)
 
-ACTIONS += test~lint
+ACTIONS += test~check
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call jest,$?,$(TEST_ARGS))
 	@$(call done, $@)

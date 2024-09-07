@@ -82,10 +82,6 @@
     "vitest": "^1.6.0",
     "vitest-react-native": "^0.1.5"
   },
-  "eslintIgnore": [
-    "dist",
-    "types"
-  ],
   "dependencies": {
     "@multiplatform.one/zustand": "workspace:1.1.0",
     "cookies-next": "^4.2.1",

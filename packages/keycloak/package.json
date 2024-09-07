@@ -73,9 +73,6 @@
   "engines": {
     "node": ">=6.0.0"
   },
-  "eslintIgnore": [
-    "lib"
-  ],
   "dependencies": {
     "@multiplatform.one/zustand": "workspace:1.1.0",
     "expo-auth-session": "^5.5.2",

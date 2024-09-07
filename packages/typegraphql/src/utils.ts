@@ -19,10 +19,14 @@
  * limitations under the License.
  */
 
-import startCase from 'lodash.startcase';
-import { randomUUID } from 'crypto';
+import { randomUUID } from "node:crypto";
+import startCase from "lodash.startcase";
 
-export function getReqHeader(req: any, name: string, headers: Record<string, string> = {}) {
+export function getReqHeader(
+  req: any,
+  name: string,
+  headers: Record<string, string> = {},
+) {
   headers = Object.entries(headers).reduce(
     (headers, [key, value]: [string, string]) => {
       headers[key.toLowerCase()] = value;
@@ -32,29 +36,29 @@ export function getReqHeader(req: any, name: string, headers: Record<string, str
   );
   name = name.toLowerCase();
   let header: string | string[] | undefined;
-  if (typeof req?.headers?.get === 'function') {
+  if (typeof req?.headers?.get === "function") {
     header = req.headers.get(name);
   }
-  if (!header && typeof req?.get === 'function') {
+  if (!header && typeof req?.get === "function") {
     header = req.headers.get(name);
   }
   if (!header && req.headers) header = req.headers?.[name];
   if (!header) {
     header = headers[name];
   }
-  if (Array.isArray(header)) return header.join(', ');
+  if (Array.isArray(header)) return header.join(", ");
   return (header as string) || undefined;
 }
 
 export function setResHeader(res: any, name: string, value: string) {
-  name = startCase(name).replace(/\s/g, '-');
-  if (typeof res?.headers?.set === 'function') {
+  name = startCase(name).replace(/\s/g, "-");
+  if (typeof res?.headers?.set === "function") {
     res.headers.set(name, value);
-  } else if (typeof res?.setHeader === 'function') {
+  } else if (typeof res?.setHeader === "function") {
     res.setHeader(name, value);
-  } else if (typeof res?.set === 'function') {
+  } else if (typeof res?.set === "function") {
     res.set(name, value);
-  } else if (typeof res?.headers === 'object') {
+  } else if (typeof res?.headers === "object") {
     res.headers[name] = value;
   }
 }
@@ -62,8 +66,10 @@ export function setResHeader(res: any, name: string, value: string) {
 export function generateRequestId(req: any, res: any): string {
   if ((req as any).requestId) return (req as any).requestId;
   const requestId =
-    (req as any).requestId || typeof req.id === 'string' ? req.id : getReqHeader(req, 'X-Request-Id') || randomUUID();
+    (req as any).requestId || typeof req.id === "string"
+      ? req.id
+      : getReqHeader(req, "X-Request-Id") || randomUUID();
   (req as any).requestId = requestId;
-  setResHeader(res, 'X-Request-Id', requestId);
+  setResHeader(res, "X-Request-Id", requestId);
   return requestId;
 }

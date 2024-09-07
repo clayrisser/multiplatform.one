@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import { SetMetadata } from '@multiplatform.one/typegraphql';
+import { SetMetadata } from "@multiplatform.one/typegraphql";
 
-export const SCOPES = 'KEYCLOAK_SCOPES';
+export const SCOPES = "KEYCLOAK_SCOPES";
 
 export const Scopes = (...scopes: string[]) => SetMetadata(SCOPES, scopes);

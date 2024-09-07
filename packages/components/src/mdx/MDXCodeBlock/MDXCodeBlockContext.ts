@@ -1,5 +1,5 @@
-import type { CodeProps } from '../../code/Code';
-import { createContext } from 'react';
+import { createContext } from "react";
+import type { CodeProps } from "../../code/Code";
 
 export interface MDXCodeBlockContextValue extends CodeProps {
   disableCopy?: boolean;

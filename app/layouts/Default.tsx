@@ -19,13 +19,13 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { YStack } from 'ui';
-import type { ReactNode } from 'react';
-import { createWithLayout } from 'multiplatform.one';
-import { withDebugLayout } from './Debug';
-import { Toast } from './Toast';
-import { ToastViewport, useToastController } from '@tamagui/toast';
+import { ToastViewport, useToastController } from "@tamagui/toast";
+import { createWithLayout } from "multiplatform.one";
+import React from "react";
+import type { ReactNode } from "react";
+import { YStack } from "ui";
+import { withDebugLayout } from "./Debug";
+import { Toast } from "./Toast";
 
 export interface DefaultLayoutProps {
   children: ReactNode;
@@ -36,10 +36,18 @@ export function DefaultLayout({ children }: DefaultLayoutProps) {
   return (
     <YStack fullscreen>
       <Toast />
-      <ToastViewport flexDirection="column-reverse" top={0} right={0} cursor="pointer" onPress={() => toastController.hide()} />
+      <ToastViewport
+        flexDirection="column-reverse"
+        top={0}
+        right={0}
+        cursor="pointer"
+        onPress={() => toastController.hide()}
+      />
       {children}
     </YStack>
   );
 }
 
-export const withDefaultLayout = createWithLayout(DefaultLayout, [withDebugLayout]);
+export const withDefaultLayout = createWithLayout(DefaultLayout, [
+  withDebugLayout,
+]);

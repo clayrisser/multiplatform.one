@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export type { TextAreaProps } from 'tamagui';
-export { TextArea } from 'tamagui';
+export type { TextAreaProps } from "tamagui";
+export { TextArea } from "tamagui";

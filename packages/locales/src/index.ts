@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-export * from './useLocale';
-export * from './useSupportedLocales';
-export * from './useTranslation';
-export { initReactI18next } from 'react-i18next';
+export * from "./useLocale";
+export * from "./useSupportedLocales";
+export * from "./useTranslation";
+export { initReactI18next } from "react-i18next";

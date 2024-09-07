@@ -20,19 +20,19 @@
  * limitations under the License.
  */
 
-import type { Attribute } from 'keycloakify/login/kcContext/KcContext';
-import type { ClassKey } from 'keycloakify/login/TemplateProps';
-import type { I18n } from '../../i18n';
-import { clsx } from 'keycloakify/tools/clsx';
-import { useEffect, Fragment } from 'react';
-import { useFormValidation } from 'keycloakify/login/lib/useFormValidation';
+import type { ClassKey } from "keycloakify/login/TemplateProps";
+import type { Attribute } from "keycloakify/login/kcContext/KcContext";
+import { useFormValidation } from "keycloakify/login/lib/useFormValidation";
+import { clsx } from "keycloakify/tools/clsx";
+import { Fragment, useEffect } from "react";
+import type { I18n } from "../../i18n";
 
 export interface UserProfileFormFieldsProps {
   AfterField?: (props: { attribute: Attribute }) => JSX.Element | null;
   BeforeField?: (props: { attribute: Attribute }) => JSX.Element | null;
   getClassName: (classKey: ClassKey) => string;
   i18n: I18n;
-  kcContext: Parameters<typeof useFormValidation>[0]['kcContext'];
+  kcContext: Parameters<typeof useFormValidation>[0]["kcContext"];
   onIsFormSubmittableValueChange: (isFormSubmittable: boolean) => void;
 }
 
@@ -56,15 +56,21 @@ export function UserProfileFormFields({
   useEffect(() => {
     onIsFormSubmittableValueChange(isFormSubmittable);
   }, [isFormSubmittable]);
-  let currentGroup = '';
+  let currentGroup = "";
   return (
     <>
       {attributesWithPassword.map((attribute, i) => {
-        const { group = '', groupDisplayHeader = '', groupDisplayDescription = '' } = attribute;
-        const { value, displayableErrors } = fieldStateByAttributeName[attribute.name];
+        const {
+          group = "",
+          groupDisplayHeader = "",
+          groupDisplayDescription = "",
+        } = attribute;
+        const { value, displayableErrors } =
+          fieldStateByAttributeName[attribute.name];
         const formGroupClassName = clsx(
-          getClassName('kcFormGroupClass'),
-          displayableErrors.length !== 0 && getClassName('kcFormGroupErrorClass'),
+          getClassName("kcFormGroupClass"),
+          displayableErrors.length !== 0 &&
+            getClassName("kcFormGroupErrorClass"),
         );
         const groupChanged = group !== currentGroup;
         if (groupChanged) {
@@ -72,16 +78,22 @@ export function UserProfileFormFields({
         }
         return (
           <Fragment key={i}>
-            {groupChanged && currentGroup !== '' && (
+            {groupChanged && currentGroup !== "" && (
               <div className={formGroupClassName}>
-                <div className={getClassName('kcContentWrapperClass')}>
-                  <label id={`header-${group}`} className={getClassName('kcFormGroupHeader')}>
+                <div className={getClassName("kcContentWrapperClass")}>
+                  <label
+                    id={`header-${group}`}
+                    className={getClassName("kcFormGroupHeader")}
+                  >
                     {advancedMsg(groupDisplayHeader) || currentGroup}
                   </label>
                 </div>
-                {groupDisplayDescription !== '' && (
-                  <div className={getClassName('kcLabelWrapperClass')}>
-                    <label id={`description-${group}`} className={getClassName('kcLabelClass')}>
+                {groupDisplayDescription !== "" && (
+                  <div className={getClassName("kcLabelWrapperClass")}>
+                    <label
+                      id={`description-${group}`}
+                      className={getClassName("kcLabelClass")}
+                    >
                       {advancedMsg(groupDisplayDescription)}
                     </label>
                   </div>
@@ -90,13 +102,16 @@ export function UserProfileFormFields({
             )}
             {BeforeField && <BeforeField attribute={attribute} />}
             <div className={formGroupClassName}>
-              <div className={getClassName('kcLabelWrapperClass')}>
-                <label htmlFor={attribute.name} className={getClassName('kcLabelClass')}>
-                  {advancedMsg(attribute.displayName ?? '')}
+              <div className={getClassName("kcLabelWrapperClass")}>
+                <label
+                  htmlFor={attribute.name}
+                  className={getClassName("kcLabelClass")}
+                >
+                  {advancedMsg(attribute.displayName ?? "")}
                 </label>
-                {attribute.required && <>*</>}
+                {attribute.required && "*"}
               </div>
-              <div className={getClassName('kcInputWrapperClass')}>
+              <div className={getClassName("kcInputWrapperClass")}>
                 {(() => {
                   const { options } = attribute.validators;
                   if (options !== undefined) {
@@ -106,21 +121,21 @@ export function UserProfileFormFields({
                         name={attribute.name}
                         onChange={(event) =>
                           formValidationDispatch({
-                            action: 'update value',
+                            action: "update value",
                             name: attribute.name,
                             newValue: event.target.value,
                           })
                         }
                         onBlur={() =>
                           formValidationDispatch({
-                            action: 'focus lost',
+                            action: "focus lost",
                             name: attribute.name,
                           })
                         }
                         value={value}
                       >
                         <option value="" selected disabled hidden>
-                          {msg('selectAnOption')}
+                          {msg("selectAnOption")}
                         </option>
                         {options.options.map((option) => (
                           <option key={option} value={option}>
@@ -134,11 +149,11 @@ export function UserProfileFormFields({
                     <input
                       type={(() => {
                         switch (attribute.name) {
-                          case 'password-confirm':
-                          case 'password':
-                            return 'password';
+                          case "password-confirm":
+                          case "password":
+                            return "password";
                           default:
-                            return 'text';
+                            return "text";
                         }
                       })()}
                       id={attribute.name}
@@ -146,18 +161,18 @@ export function UserProfileFormFields({
                       value={value}
                       onChange={(event) =>
                         formValidationDispatch({
-                          action: 'update value',
+                          action: "update value",
                           name: attribute.name,
                           newValue: event.target.value,
                         })
                       }
                       onBlur={() =>
                         formValidationDispatch({
-                          action: 'focus lost',
+                          action: "focus lost",
                           name: attribute.name,
                         })
                       }
-                      className={getClassName('kcInputClass')}
+                      className={getClassName("kcInputClass")}
                       aria-invalid={displayableErrors.length !== 0}
                       disabled={attribute.readOnly}
                       autoComplete={attribute.autocomplete}
@@ -172,13 +187,18 @@ export function UserProfileFormFields({
                         <style>{`#${divId} > span: { display: block; }`}</style>
                         <span
                           id={divId}
-                          className={getClassName('kcInputErrorMessageClass')}
+                          className={getClassName("kcInputErrorMessageClass")}
                           style={{
-                            position: displayableErrors.length === 1 ? 'absolute' : undefined,
+                            position:
+                              displayableErrors.length === 1
+                                ? "absolute"
+                                : undefined,
                           }}
                           aria-live="polite"
                         >
-                          {displayableErrors.map(({ errorMessage }) => errorMessage)}
+                          {displayableErrors.map(
+                            ({ errorMessage }) => errorMessage,
+                          )}
                         </span>
                       </>
                     );

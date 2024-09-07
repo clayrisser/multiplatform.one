@@ -20,9 +20,15 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { FC } from 'react';
-import { getTokens, getVariable, getVariableValue, useProps, useTheme } from 'tamagui';
+import React from "react";
+import type { FC } from "react";
+import {
+  getTokens,
+  getVariable,
+  getVariableValue,
+  useProps,
+  useTheme,
+} from "tamagui";
 
 export function themed<A extends FC>(Component: A) {
   return ((props: any) => {
@@ -32,9 +38,16 @@ export function themed<A extends FC>(Component: A) {
       <Component
         {...props}
         color={getVariable(
-          (color in theme ? theme[color] : undefined) || color || (!disableTheme ? theme.color : null) || '#000',
+          (color in theme ? theme[color] : undefined) ||
+            color ||
+            (!disableTheme ? theme.color : null) ||
+            "#000",
         )}
-        size={typeof size === 'string' ? getVariableValue(getTokens().size[size] || size) : size}
+        size={
+          typeof size === "string"
+            ? getVariableValue(getTokens().size[size] || size)
+            : size
+        }
       />
     );
   }) as A;

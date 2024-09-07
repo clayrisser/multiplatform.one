@@ -19,9 +19,9 @@
  * limitations under the License.
  */
 
+import type { Token as IToken } from "keycloak-connect";
 // @ts-ignore
-import token from 'keycloak-connect/middleware/auth-utils/token.js';
-import type { Token as IToken } from 'keycloak-connect';
+import token from "keycloak-connect/middleware/auth-utils/token.js";
 
 export interface TokenContentRealmAccess {
   roles: string[];
@@ -43,7 +43,7 @@ export interface TokenHeader {
 }
 
 export interface TokenContent {
-  'allowed-origins'?: string[];
+  "allowed-origins"?: string[];
   acr?: string;
   azp?: string;
   email_verified?: boolean;
@@ -72,7 +72,7 @@ class CToken implements IToken {
   hasRole!: (roleName: string) => boolean;
   hasApplicationRole!: (appName: string, roleName: string) => boolean;
   hasRealmRole!: (roleName: string) => boolean;
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+  // biome-ignore lint/complexity/noUselessConstructor:
   constructor(_accessToken: string, _clientId: string) {}
 }
 

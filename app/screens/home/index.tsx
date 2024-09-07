@@ -19,15 +19,28 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { Anchor, Button, H1, Paragraph, Separator, XStack, YStack, Text, Theme } from 'ui';
+import { useTranslation } from "@multiplatform.one/locales";
+import {
+  useGqlQuery,
+  useGqlSubscription,
+} from "@multiplatform.one/react-query-urql";
+import { withDefaultLayout } from "app/layouts/Default";
 // import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
 // import { ThemeTintAlt } from '@multiplatform.one/components';
-import { gql } from 'gql';
-import { useGqlQuery, useGqlSubscription } from '@multiplatform.one/react-query-urql';
-import { useLink } from 'solito/link';
-import { useTranslation } from '@multiplatform.one/locales';
-import { withDefaultLayout } from 'app/layouts/Default';
+import { gql } from "gql";
+import React from "react";
+import { useLink } from "solito/link";
+import {
+  Anchor,
+  Button,
+  H1,
+  Paragraph,
+  Separator,
+  Text,
+  Theme,
+  XStack,
+  YStack,
+} from "ui";
 
 const AuthQuery = gql(`
   query AuthQuery {
@@ -47,23 +60,26 @@ const CountSubscription = gql(`
 function HomeScreen() {
   const { t } = useTranslation();
   const linkProps = useLink({
-    href: '/user/alice',
+    href: "/user/alice",
   });
   const authProps = useLink({
-    href: '/auth',
+    href: "/auth",
   });
 
   const formProps = useLink({
-    href: '/form',
+    href: "/form",
   });
 
   const { data, isLoading } = useGqlQuery<AuthQueryResponse>({
     query: AuthQuery,
-    queryKey: ['userAuth'],
+    queryKey: ["userAuth"],
     variables: {},
   });
 
-  const countResponse = useGqlSubscription({ query: CountSubscription, queryKey: ['count'] });
+  const countResponse = useGqlSubscription({
+    query: CountSubscription,
+    queryKey: ["count"],
+  });
 
   return (
     <YStack fullscreen jc="center" flexWrap="wrap" ai="center" gap="$3">
@@ -73,29 +89,44 @@ function HomeScreen() {
         <Theme name="dark">
           <H1
             ta="center"
-            $sm={{ fontSize: '$5', letterSpacing: 5 }}
+            $sm={{ fontSize: "$5", letterSpacing: 5 }}
             theme="blue_active"
             color="$backgroundFocus"
             textTransform="uppercase"
           >
-            {t('screens.home.welcome')}
+            {t("screens.home.welcome")}
           </H1>
         </Theme>
         <Theme>
-          <Paragraph fontFamily="$silkscreen" ta="center" $sm={{ fontSize: '$1' }}>
-            {t('screens.home.message')}
+          <Paragraph
+            fontFamily="$silkscreen"
+            ta="center"
+            $sm={{ fontSize: "$1" }}
+          >
+            {t("screens.home.message")}
           </Paragraph>
           <Separator />
         </Theme>
         <Theme name="dark">
           <Paragraph ta="center" theme="blue_active">
-            <Anchor fontFamily="$rockSalt" href="https://multiplatform.one" target="_blank" color="$backgroundFocus">
+            <Anchor
+              fontFamily="$rockSalt"
+              href="https://multiplatform.one"
+              target="_blank"
+              color="$backgroundFocus"
+            >
               multiplatform.one
             </Anchor>
           </Paragraph>
         </Theme>
       </YStack>
-      <YStack gap="$3" marginTop="$2" padding="$4" flexWrap="wrap" jc="space-between">
+      <YStack
+        gap="$3"
+        marginTop="$2"
+        padding="$4"
+        flexWrap="wrap"
+        jc="space-between"
+      >
         <XStack
           padding="$3"
           gap="$3"
@@ -109,7 +140,7 @@ function HomeScreen() {
         >
           <Paragraph>view user information here</Paragraph>
           <Button {...linkProps}>
-            <Text color="$blue10">{t('screens.home.link')}</Text>
+            <Text color="$blue10">{t("screens.home.link")}</Text>
           </Button>
         </XStack>
         <XStack

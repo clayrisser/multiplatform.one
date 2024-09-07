@@ -20,11 +20,11 @@
  * limitations under the License.
  */
 
-import { Line, Rect, Svg } from 'react-native-svg';
-import { memo } from 'react';
-import { themed } from './themed';
+import { memo } from "react";
+import { Line, Rect, Svg } from "react-native-svg";
+import { themed } from "./themed";
 
-function Icon({ color = 'black', size = 24, ...otherProps }) {
+function Icon({ color = "black", size = 24, ...otherProps }) {
   return (
     <Svg viewBox="0 0 256 256" {...otherProps} height={size} width={size}>
       <Rect width="256" height="256" fill="none" />
@@ -42,6 +42,6 @@ function Icon({ color = 'black', size = 24, ...otherProps }) {
     </Svg>
   );
 }
-Icon.displayName = 'MinusRegular';
+Icon.displayName = "MinusRegular";
 const MinusRegular = memo(themed(Icon));
 export { MinusRegular };

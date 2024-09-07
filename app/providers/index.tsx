@@ -19,37 +19,49 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { GlobalKeycloakProviderProps } from './keycloak';
-import type { GlobalTamaguiProviderProps } from './tamagui';
-import type { PropsWithChildren } from 'react';
-import type { TamaguiInternalConfig } from 'ui';
-import type { ThemeProviderProps } from 'multiplatform.one/theme';
-import { GlobalKeycloakProvider } from './keycloak';
-import { GlobalTamaguiProvider } from './tamagui';
-import { GlobalTanstackProvider } from './tanstack';
-import { GlobalUrqlProvider } from './urql';
-import { ThemeProvider } from 'multiplatform.one/theme';
-import { config } from 'app/config';
+import { config } from "app/config";
+import type { ThemeProviderProps } from "multiplatform.one/theme";
+import { ThemeProvider } from "multiplatform.one/theme";
+import React from "react";
+import type { PropsWithChildren } from "react";
+import type { TamaguiInternalConfig } from "ui";
+import type { GlobalKeycloakProviderProps } from "./keycloak";
+import { GlobalKeycloakProvider } from "./keycloak";
+import type { GlobalTamaguiProviderProps } from "./tamagui";
+import { GlobalTamaguiProvider } from "./tamagui";
+import { GlobalTanstackProvider } from "./tanstack";
+import { GlobalUrqlProvider } from "./urql";
 
-export type GlobalProviderKeycloak = Omit<GlobalKeycloakProviderProps, 'disabled' | 'children'>;
+export type GlobalProviderKeycloak = Omit<
+  GlobalKeycloakProviderProps,
+  "disabled" | "children"
+>;
 
 export type GlobalProviderProps = PropsWithChildren &
-  Omit<GlobalTamaguiProviderProps, 'config'> & {
+  Omit<GlobalTamaguiProviderProps, "config"> & {
     keycloak?: GlobalProviderKeycloak;
     tamaguiConfig?: TamaguiInternalConfig;
   } & ThemeProviderProps;
 
-export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, theme, ...props }: GlobalProviderProps) {
-  const debug = config.get('DEBUG') === '1';
-  const keycloakDisabled = !keycloak || config.get('KEYCLOAK_ENABLED') !== '1';
+export function GlobalProvider({
+  children,
+  keycloak,
+  tamaguiConfig,
+  cookies,
+  theme,
+  ...props
+}: GlobalProviderProps) {
+  const debug = config.get("DEBUG") === "1";
+  const keycloakDisabled = !keycloak || config.get("KEYCLOAK_ENABLED") !== "1";
 
   return (
     <GlobalTanstackProvider debug={debug}>
       <ThemeProvider cookies={cookies} theme={theme}>
         <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
           <GlobalKeycloakProvider disabled={keycloakDisabled} {...keycloak}>
-            <GlobalUrqlProvider keycloakDisabled={keycloakDisabled}>{children}</GlobalUrqlProvider>
+            <GlobalUrqlProvider keycloakDisabled={keycloakDisabled}>
+              {children}
+            </GlobalUrqlProvider>
           </GlobalKeycloakProvider>
         </GlobalTamaguiProvider>
       </ThemeProvider>
@@ -57,7 +69,7 @@ export function GlobalProvider({ children, keycloak, tamaguiConfig, cookies, the
   );
 }
 
-export * from './urql';
-export * from './keycloak';
-export * from './tamagui';
-export * from './tanstack';
+export * from "./urql";
+export * from "./keycloak";
+export * from "./tamagui";
+export * from "./tanstack";

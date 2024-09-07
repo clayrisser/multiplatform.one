@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-import path from 'path';
+import path from "node:path";
 
 const logger = console;
-const projectRoot = require.resolve('react/package.json').slice(0, -32);
+const projectRoot = require.resolve("react/package.json").slice(0, -32);
 
 export interface LookupTranspileModulesOptions {
   log?: boolean;
@@ -32,37 +32,49 @@ export interface LookupTamaguiModulesOptions {
   log?: boolean;
 }
 
-export function lookupTranspileModules(packageDirs?: string[], { log = true }: LookupTranspileModulesOptions = {}) {
+export function lookupTranspileModules(
+  packageDirs?: string[],
+  { log = true }: LookupTranspileModulesOptions = {},
+) {
   const transpileModules = [
     ...new Set(
       [
         ...new Set([
           projectRoot,
-          path.resolve(projectRoot, 'app'),
-          path.resolve(projectRoot, 'packages', 'ui'),
+          path.resolve(projectRoot, "app"),
+          path.resolve(projectRoot, "packages", "ui"),
           ...(packageDirs || []),
         ]),
-      ].map((packageDir) => require(`${packageDir}/package.json`).transpileModules || []),
+      ].map(
+        (packageDir) =>
+          require(`${packageDir}/package.json`).transpileModules || [],
+      ),
     ),
   ].flat();
-  if (log) logger.debug('transpileModules:', transpileModules.join(', '));
+  if (log) logger.debug("transpileModules:", transpileModules.join(", "));
   return transpileModules;
 }
 
-export function lookupTamaguiModules(packageDirs?: string[], { log = true }: LookupTamaguiModulesOptions = {}) {
+export function lookupTamaguiModules(
+  packageDirs?: string[],
+  { log = true }: LookupTamaguiModulesOptions = {},
+) {
   const tamaguiModules = [
     ...new Set([
-      'tamagui',
+      "tamagui",
       ...[
         ...new Set([
           projectRoot,
-          path.resolve(projectRoot, 'app'),
-          path.resolve(projectRoot, 'packages', 'ui'),
+          path.resolve(projectRoot, "app"),
+          path.resolve(projectRoot, "packages", "ui"),
           ...(packageDirs || []),
         ]),
-      ].map((packageDir) => require(`${packageDir}/package.json`).tamaguiModules || []),
+      ].map(
+        (packageDir) =>
+          require(`${packageDir}/package.json`).tamaguiModules || [],
+      ),
     ]),
   ].flat();
-  if (log) logger.debug('tamaguiModules:', tamaguiModules.join(', '));
+  if (log) logger.debug("tamaguiModules:", tamaguiModules.join(", "));
   return tamaguiModules;
 }

@@ -19,15 +19,15 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { SimpleAlertDialog } from './index';
-import { AlertDialog, Button, XStack, YStack } from 'tamagui';
-import type { AlterDialogSimpleProps } from './index';
+import React from "react";
+import { AlertDialog, Button, XStack, YStack } from "tamagui";
+import { SimpleAlertDialog } from "./index";
+import type { AlterDialogSimpleProps } from "./index";
 
 export default {
-  title: 'panels/SimpleAlertDialog',
+  title: "panels/SimpleAlertDialog",
   component: SimpleAlertDialog,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: "beta" } },
 };
 
 export const main = (args) => (
@@ -42,10 +42,10 @@ export const main = (args) => (
 );
 
 const mainArgs: AlterDialogSimpleProps = {
-  title: 'Are you sure?',
-  description: 'This action cannot be undone',
-  cancel: 'Cancel',
-  accept: 'Delete',
+  title: "Are you sure?",
+  description: "This action cannot be undone",
+  cancel: "Cancel",
+  accept: "Delete",
 };
 main.args = mainArgs;
 export const Custom = (args) => (
@@ -85,7 +85,9 @@ const Open = (args) => {
         onOpenChange={setOpen}
         {...args}
       />
-      <Button onPress={() => setOpen((prev) => !prev)}>{open ? 'close' : 'open'}</Button>
+      <Button onPress={() => setOpen((prev) => !prev)}>
+        {open ? "close" : "open"}
+      </Button>
     </YStack>
   );
 };

@@ -1,3 +1,6 @@
+import type { IconProps } from "@tamagui/helpers-icon";
+import { ChevronLeft, ChevronRight } from "@tamagui/lucide-icons";
+import React, { useEffect, useState, useRef } from "react";
 /**
  * File: /src/organize/SimpleCarousel/index.tsx
  * Project: @multiplatform.one/components
@@ -18,11 +21,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { YStackProps } from 'tamagui';
-import { Stack, Text, XStack, YStack } from 'tamagui';
-import React, { useEffect, useState, useRef } from 'react';
-import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons';
-import type { IconProps } from '@tamagui/helpers-icon';
+import type { YStackProps } from "tamagui";
+import { Stack, Text, XStack, YStack } from "tamagui";
 
 export type CarouselProps = YStackProps & {
   children: React.ReactNode;
@@ -67,7 +67,9 @@ export function SimpleCarousel({
   }
 
   function handlePressPrev() {
-    setCurrentSlide((prevSlide) => (prevSlide - 1 + childrenCount) % childrenCount);
+    setCurrentSlide(
+      (prevSlide) => (prevSlide - 1 + childrenCount) % childrenCount,
+    );
   }
 
   function renderSideArrows() {
@@ -131,7 +133,11 @@ export function SimpleCarousel({
   return (
     <YStack overflow="hidden">
       <XStack
-        transform={[{ translateX: -currentSlide * (carouselRef.current?.clientWidth || 1) }]}
+        transform={[
+          {
+            translateX: -currentSlide * (carouselRef.current?.clientWidth || 1),
+          },
+        ]}
         width="100%"
         animation="lazy"
         {...props}

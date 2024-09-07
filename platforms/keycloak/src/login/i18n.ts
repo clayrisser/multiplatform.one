@@ -20,7 +20,7 @@
  * limitations under the License.
  */
 
-import { createUseI18n } from 'keycloakify/login';
+import { createUseI18n } from "keycloakify/login";
 
 export const { useI18n } = createUseI18n({
   en: {},

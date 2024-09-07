@@ -19,17 +19,17 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import tamaguiConfig from '../tamagui.config';
-import { GlobalProvider } from 'app/providers';
-import { Layout } from '../layout';
-import { SplashScreen } from 'expo-router';
-import { View } from 'react-native';
-import { config } from 'app/config';
-import { i18nInit } from 'app/i18n';
-import { importFonts } from 'app/fonts';
-import { useCallback } from 'react';
-import { useFonts } from 'expo-font';
+import { config } from "app/config";
+import { importFonts } from "app/fonts";
+import { i18nInit } from "app/i18n";
+import { GlobalProvider } from "app/providers";
+import { useFonts } from "expo-font";
+import { SplashScreen } from "expo-router";
+import React from "react";
+import { useCallback } from "react";
+import { View } from "react-native";
+import { Layout } from "../layout";
+import tamaguiConfig from "../tamagui.config";
 
 const fonts = importFonts();
 const logger = console;
@@ -47,12 +47,12 @@ export default function HomeLayout() {
     <GlobalProvider
       tamaguiConfig={tamaguiConfig}
       keycloak={{
-        baseUrl: config.get('KEYCLOAK_BASE_URL'),
-        clientId: config.get('KEYCLOAK_PUBLIC_CLIENT_ID'),
-        realm: config.get('KEYCLOAK_REALM'),
+        baseUrl: config.get("KEYCLOAK_BASE_URL"),
+        clientId: config.get("KEYCLOAK_PUBLIC_CLIENT_ID"),
+        realm: config.get("KEYCLOAK_REALM"),
       }}
     >
-      <View style={{ flex: 1, height: '100%' }} onLayout={handleLayoutRootView}>
+      <View style={{ flex: 1, height: "100%" }} onLayout={handleLayoutRootView}>
         <Layout />
       </View>
     </GlobalProvider>

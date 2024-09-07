@@ -19,13 +19,13 @@
  * limitations under the License.
  */
 
-import { createIpcHandlers } from '@multiplatform.one/react-query-electron-ipc/background';
-import fs from 'fs/promises';
+import fs from "node:fs/promises";
+import { createIpcHandlers } from "@multiplatform.one/react-query-electron-ipc/background";
 
 export const registerIpcHandlers = createIpcHandlers({
   queries: {
     async test() {
-      return { hello: await fs.readdir('/') };
+      return { hello: await fs.readdir("/") };
     },
   },
 });

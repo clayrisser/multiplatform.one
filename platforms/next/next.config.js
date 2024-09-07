@@ -19,58 +19,75 @@
  * limitations under the License.
  */
 
-process.env.IGNORE_TS_CONFIG_PATHS = 'true';
-process.env.TAMAGUI_TARGET = 'web';
-process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = '1';
+process.env.IGNORE_TS_CONFIG_PATHS = "true";
+process.env.TAMAGUI_TARGET = "web";
+process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = "1";
 
-const path = require('path');
-const privateConfig = require('app/config/private');
-const publicConfig = require('app/config/public');
-const withBundleAnalyzer = require('@next/bundle-analyzer');
-const withImages = require('next-images');
-const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
-const { i18n } = require('./next-i18next.config');
-const { lookupTranspileModules, lookupTamaguiModules } = require('@multiplatform.one/utils/transpileModules');
-const { supportedLocales, defaultLocale, defaultNamespace } = require('app/i18n/config');
-const { withExpo } = require('@expo/next-adapter');
-const { withTamagui } = require('@tamagui/next-plugin');
+const path = require("node:path");
+const privateConfig = require("app/config/private");
+const publicConfig = require("app/config/public");
+const withBundleAnalyzer = require("@next/bundle-analyzer");
+const withImages = require("next-images");
+const { PHASE_DEVELOPMENT_SERVER } = require("next/constants");
+const { i18n } = require("./next-i18next.config");
+const {
+  lookupTranspileModules,
+  lookupTamaguiModules,
+} = require("@multiplatform.one/utils/transpileModules");
+const {
+  supportedLocales,
+  defaultLocale,
+  defaultNamespace,
+} = require("app/i18n/config");
+const { withExpo } = require("@expo/next-adapter");
+const { withTamagui } = require("@tamagui/next-plugin");
 
 const sharedConfig = { ...publicConfig, ...privateConfig };
-const static = process.env.NEXT_STATIC === '1';
+const nextStatic = process.env.NEXT_STATIC === "1";
 const boolVals = {
   true: true,
   false: false,
 };
-const disableExtraction = boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development';
+const disableExtraction =
+  boolVals[process.env.DISABLE_EXTRACTION] ??
+  process.env.NODE_ENV === "development";
 const plugins = [
   withImages,
   withTamagui({
     components: lookupTamaguiModules([__dirname]),
-    config: './tamagui.config.ts',
+    config: "./tamagui.config.ts",
     disableExtraction,
-    excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
-    importsWhitelist: ['constants.js', 'colors.js'],
+    excludeReactNativeWebExports: [
+      "Switch",
+      "ProgressBar",
+      "Picker",
+      "CheckBox",
+      "Touchable",
+    ],
+    importsWhitelist: ["constants.js", "colors.js"],
     logTimings: true,
     useReactNativeWebLite: false,
     shouldExtract: (filePath) => {
-      if (filePath.includes('node_modules')) return false;
-      return /^\/app\//.test(filePath.substring(path.resolve(__dirname, '../..').length));
+      if (filePath.includes("node_modules")) return false;
+      return /^\/app\//.test(
+        filePath.substring(path.resolve(__dirname, "../..").length),
+      );
     },
   }),
   withExpo,
 ];
 
-module.exports = function (phase) {
+module.exports = (phase) => {
   if (phase === PHASE_DEVELOPMENT_SERVER) {
     plugins.push(
       withBundleAnalyzer({
-        enabled: sharedConfig.BUNDLE_ANALYZER === '1',
+        enabled: sharedConfig.BUNDLE_ANALYZER === "1",
         openAnalyzer: false,
       }),
     );
   }
   let nextConfig = {
-    ...(static ? {} : { i18n }),
+    ...(nextStatic ? {} : { i18n }),
     typescript: {
       ignoreBuildErrors: true,
     },
@@ -78,14 +95,14 @@ module.exports = function (phase) {
       disableStaticImages: true,
     },
     modularizeImports: {
-      '@tamagui/lucide-icons': {
-        transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
+      "@tamagui/lucide-icons": {
+        transform: "@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}",
         skipDefaultConversion: true,
       },
     },
     transpilePackages: lookupTranspileModules([__dirname]),
     experimental: {
-      esmExternals: 'loose',
+      esmExternals: "loose",
       optimizeCss: phase !== PHASE_DEVELOPMENT_SERVER,
       scrollRestoration: true,
     },

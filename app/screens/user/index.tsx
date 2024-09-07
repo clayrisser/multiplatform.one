@@ -19,26 +19,26 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { Button, Paragraph, YStack } from 'ui';
-import { ChevronLeft } from '@tamagui/lucide-icons';
-import { createParam } from 'solito';
-import { useLink } from 'solito/link';
-import { useTranslation } from '@multiplatform.one/locales';
-import { withDefaultLayout } from 'app/layouts/Default';
+import { useTranslation } from "@multiplatform.one/locales";
+import { ChevronLeft } from "@tamagui/lucide-icons";
+import { withDefaultLayout } from "app/layouts/Default";
+import React from "react";
+import { createParam } from "solito";
+import { useLink } from "solito/link";
+import { Button, Paragraph, YStack } from "ui";
 
 const { useParam } = createParam<{ id: string }>();
 
 function UserScreen() {
-  const [id] = useParam('id');
-  const linkProps = useLink({ href: '/' });
+  const [id] = useParam("id");
+  const linkProps = useLink({ href: "/" });
   const { t } = useTranslation();
 
   return (
     <YStack f={1} jc="center" ai="center" gap="$4">
       <Paragraph ta="center" fow="800">{`User ID: ${id}`}</Paragraph>
       <Button {...linkProps} icon={ChevronLeft}>
-        {t('screens.user.goHome')}
+        {t("screens.user.goHome")}
       </Button>
     </YStack>
   );

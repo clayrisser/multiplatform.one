@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import 'core-js/stable/atob';
-import 'react-native-url-polyfill/auto';
-import { Buffer } from 'buffer';
+import "core-js/stable/atob";
+import "react-native-url-polyfill/auto";
+import { Buffer } from "node:buffer";
 global.Buffer = global.Buffer || Buffer;
-import 'expo-router/entry';
+import "expo-router/entry";

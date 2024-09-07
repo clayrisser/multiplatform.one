@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import { view } from 'platforms/storybook-expo/.storybook/storybook.requires.js';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { view } from "platforms/storybook-expo/.storybook/storybook.requires.js";
 
 const StorybookUI = view.getStorybookUI({
   storage: {
@@ -28,8 +28,8 @@ const StorybookUI = view.getStorybookUI({
     setItem: AsyncStorage.setItem,
   },
   initialSelection: {
-    kind: 'welcome',
-    name: 'welcome',
+    kind: "welcome",
+    name: "welcome",
   },
 });
 

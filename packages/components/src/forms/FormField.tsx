@@ -19,17 +19,31 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { DeepKeys, DeepValue, Validator, FieldApi } from '@tanstack/form-core';
-import type { LabelProps, YStackProps, SizeTokens, FontSizeTokens } from 'tamagui';
-import type { ReactNode } from 'react';
-import { Label, Paragraph, YStack, useProps } from 'tamagui';
+import type {
+  DeepKeys,
+  DeepValue,
+  FieldApi,
+  Validator,
+} from "@tanstack/form-core";
+import React from "react";
+import type { ReactNode } from "react";
+import type {
+  FontSizeTokens,
+  LabelProps,
+  SizeTokens,
+  YStackProps,
+} from "tamagui";
+import { Label, Paragraph, YStack, useProps } from "tamagui";
 
 export interface FormFieldProps<
   TParentData,
   TName extends DeepKeys<TParentData>,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
 > extends YStackProps {
   children: ReactNode;
@@ -38,7 +52,7 @@ export interface FormFieldProps<
   helperText?: string;
   id?: string;
   label?: ReactNode;
-  labelProps?: Omit<LabelProps, 'htmlFor' | 'ref'>;
+  labelProps?: Omit<LabelProps, "htmlFor" | "ref">;
   required?: boolean;
   size?: SizeTokens;
 }
@@ -46,25 +60,59 @@ export interface FormFieldProps<
 export function FormField<
   TParentData,
   TName extends DeepKeys<TParentData>,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
->(props: FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
-  let { children, error, field, helperText, id, label, labelProps, required, size, ...stackProps } = useProps(props);
-  error = field?.state.meta.errors.length ? field.state.meta.errors.join(', ') : error;
-  helperText = error && typeof error === 'string' ? error : helperText;
+>(
+  props: FormFieldProps<
+    TParentData,
+    TName,
+    TFieldValidator,
+    TFormValidator,
+    TData
+  >,
+) {
+  let {
+    children,
+    error,
+    field,
+    helperText,
+    id,
+    label,
+    labelProps,
+    required,
+    size,
+    ...stackProps
+  } = useProps(props);
+  error = field?.state.meta.errors.length
+    ? field.state.meta.errors.join(", ")
+    : error;
+  helperText = error && typeof error === "string" ? error : helperText;
   return (
-    <YStack theme={error ? 'red' : undefined} {...stackProps}>
+    <YStack theme={error ? "red" : undefined} {...stackProps}>
       {label && (
-        <Label htmlFor={id} size={size || '$3'} color={error ? '$red10' : undefined} {...labelProps}>
+        <Label
+          htmlFor={id}
+          size={size || "$3"}
+          color={error ? "$red10" : undefined}
+          {...labelProps}
+        >
           {label}
-          {required && ` *`}
+          {required && " *"}
         </Label>
       )}
       <YStack>
         {children}
         {helperText && (
-          <Paragraph paddingLeft="$2" size={size as FontSizeTokens} color={error ? '$red10' : undefined}>
+          <Paragraph
+            paddingLeft="$2"
+            size={size as FontSizeTokens}
+            color={error ? "$red10" : undefined}
+          >
             {helperText}
           </Paragraph>
         )}

@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-import { config } from 'ui';
+import { config } from "ui";
 
 export type AppConfig = typeof config;
 
-declare module '@tamagui/core' {
+declare module "@tamagui/core" {
   interface TamaguiCustomConfig extends AppConfig {}
   interface ThemeFallbackValue {}
 }

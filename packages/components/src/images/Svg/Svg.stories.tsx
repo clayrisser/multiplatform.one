@@ -1,12 +1,12 @@
-import React from 'react';
-import { Path } from 'react-native-svg';
-import { Svg } from './index';
+import React from "react";
+import { Path } from "react-native-svg";
+import { Svg } from "./index";
 
 export default {
-  title: 'images/Svg',
+  title: "images/Svg",
   component: Svg,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 

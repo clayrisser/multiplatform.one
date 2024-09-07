@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import { MultiPlatformBase } from './multiplatformBase';
+import { MultiPlatformBase } from "./multiplatformBase";
 
 export class MultiPlatform extends MultiPlatformBase {
   static isNative = true;

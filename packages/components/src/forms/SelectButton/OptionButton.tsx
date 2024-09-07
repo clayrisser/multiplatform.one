@@ -19,16 +19,16 @@
  * limitations under the License.
  */
 
-import React, { useContext, useState, useEffect, useCallback } from 'react';
-import type { ButtonProps } from '../Button';
-import type { ComponentProps } from 'react';
-import type { GestureResponderEvent } from 'react-native';
-import { Button } from '../Button';
-import { SelectButtonContext } from './context';
-import { styled } from 'tamagui';
+import React, { useContext, useState, useEffect, useCallback } from "react";
+import type { ComponentProps } from "react";
+import type { GestureResponderEvent } from "react-native";
+import { styled } from "tamagui";
+import type { ButtonProps } from "../Button";
+import { Button } from "../Button";
+import { SelectButtonContext } from "./context";
 
 const defaultSelectedStyle: ButtonProps = {
-  backgroundColor: '$color7',
+  backgroundColor: "$color7",
 };
 
 const StyledButton = styled(Button, {
@@ -51,7 +51,13 @@ export type OptionButtonProps = ButtonProps & {
   value: string;
 };
 
-export function OptionButton({ index, value, selectedStyle, onPress, ...buttonProps }: OptionButtonProps) {
+export function OptionButton({
+  index,
+  value,
+  selectedStyle,
+  onPress,
+  ...buttonProps
+}: OptionButtonProps) {
   const [selected, setSelected] = useState(false);
   const context = useContext(SelectButtonContext);
   const mergedSelectedStyle = {
@@ -68,7 +74,10 @@ export function OptionButton({ index, value, selectedStyle, onPress, ...buttonPr
   }, [context.setValues]);
 
   useEffect(() => {
-    setSelected(typeof context.selectedIndex !== 'undefined' && context.selectedIndex === index);
+    setSelected(
+      typeof context.selectedIndex !== "undefined" &&
+        context.selectedIndex === index,
+    );
   }, [context.selectedIndex]);
 
   const handlePress = useCallback(

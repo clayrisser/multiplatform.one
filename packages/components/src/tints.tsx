@@ -21,11 +21,11 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { Dispatch, SetStateAction } from 'react';
-import type { ThemeName, ThemeProps } from 'tamagui';
-import { Theme } from 'tamagui';
-import { useState, createContext, useContext, useMemo } from 'react';
+import type React from "react";
+import type { Dispatch, SetStateAction } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
+import type { ThemeName, ThemeProps } from "tamagui";
+import { Theme } from "tamagui";
 
 export type TintFamily = string | number | symbol;
 
@@ -54,19 +54,29 @@ const defaultTintFamiliesContextValue: TintFamiliesContextValue = {
   setTintIndex: (_next: number) => {
     return;
   },
-  family: 'tamagui',
+  family: "tamagui",
   tintIndex: -3,
   families: {
-    easter: ['yellow', 'pink', 'yellow', 'pink', 'yellow', 'pink', 'yellow'],
-    halloween: ['orange', 'gray', 'orange', 'gray', 'orange', 'gray', 'orange'] as ThemeName[],
-    lunar: ['yellow', 'red', 'red', 'red', 'red', 'red', 'yellow'],
-    tamagui: ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red'],
-    valentine: ['pink', 'red', 'pink', 'red', 'pink', 'red', 'pink'],
-    xmas: ['red', 'green', 'red', 'green', 'red', 'green', 'red'],
+    easter: ["yellow", "pink", "yellow", "pink", "yellow", "pink", "yellow"],
+    halloween: [
+      "orange",
+      "gray",
+      "orange",
+      "gray",
+      "orange",
+      "gray",
+      "orange",
+    ] as ThemeName[],
+    lunar: ["yellow", "red", "red", "red", "red", "red", "yellow"],
+    tamagui: ["orange", "yellow", "green", "blue", "purple", "pink", "red"],
+    valentine: ["pink", "red", "pink", "red", "pink", "red", "pink"],
+    xmas: ["red", "green", "red", "green", "red", "green", "red"],
   },
 };
 
-const TintFamiliesContext = createContext<TintFamiliesContextValue>(defaultTintFamiliesContextValue);
+const TintFamiliesContext = createContext<TintFamiliesContextValue>(
+  defaultTintFamiliesContextValue,
+);
 
 export interface TintFamiliesProviderProps {
   children: React.ReactNode;
@@ -76,8 +86,12 @@ export interface TintFamiliesProviderProps {
 }
 
 export function TintFamiliesProvider(props: TintFamiliesProviderProps) {
-  const [family, setFamily] = useState<TintFamily>(props.defaultFamily || defaultTintFamiliesContextValue.family);
-  const [tintIndex, setTintIndex] = useState<number>(props.defaultIndex || defaultTintFamiliesContextValue.tintIndex);
+  const [family, setFamily] = useState<TintFamily>(
+    props.defaultFamily || defaultTintFamiliesContextValue.family,
+  );
+  const [tintIndex, setTintIndex] = useState<number>(
+    props.defaultIndex || defaultTintFamiliesContextValue.tintIndex,
+  );
   const families = props.families || defaultTintFamiliesContextValue.families;
   const value = useMemo(
     () => ({
@@ -91,11 +105,16 @@ export function TintFamiliesProvider(props: TintFamiliesProviderProps) {
     }),
     [family, setFamily, families, tintIndex, setTintIndex],
   );
-  return <TintFamiliesContext.Provider value={value}>{props.children}</TintFamiliesContext.Provider>;
+  return (
+    <TintFamiliesContext.Provider value={value}>
+      {props.children}
+    </TintFamiliesContext.Provider>
+  );
 }
 
 export function useTint(altOffset = -1) {
-  const { families, family, setFamily, setTintIndex, tintIndex } = useContext(TintFamiliesContext);
+  const { families, family, setFamily, setTintIndex, tintIndex } =
+    useContext(TintFamiliesContext);
   const tints = families[family];
   const tintAltIndex = Math.abs((tintIndex + altOffset) % (tints?.length || 0));
   const familiesNames = useMemo(() => Object.keys(families), [families]);
@@ -116,7 +135,10 @@ export function useTint(altOffset = -1) {
     setNextTintFamily: () => {
       setFamily(
         (prevFamily: TintFamily) =>
-          familiesNames[(familiesNames.indexOf(prevFamily as string) + 1) % familiesNames.length] as TintFamily,
+          familiesNames[
+            (familiesNames.indexOf(prevFamily as string) + 1) %
+              familiesNames.length
+          ] as TintFamily,
       );
     },
   } as const;
@@ -140,7 +162,12 @@ export interface ThemeTintAltProps extends ThemeProps {
   offset?: number;
 }
 
-export function ThemeTintAlt({ children, disable, offset = 1, ...rest }: ThemeTintAltProps) {
+export function ThemeTintAlt({
+  children,
+  disable,
+  offset = 1,
+  ...rest
+}: ThemeTintAltProps) {
   const curTint = useTint(offset).tintAlt;
   const name = disable ? null : curTint;
   return (

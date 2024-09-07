@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-import KeycloakAdmin from '@keycloak/keycloak-admin-client';
-import difference from 'lodash.difference';
-import { AUTHORIZED, RESOURCE, SCOPES } from './decorators/';
-import { getMetadata, Resolvers } from '@multiplatform.one/typegraphql';
+import KeycloakAdmin from "@keycloak/keycloak-admin-client";
+import { type Resolvers, getMetadata } from "@multiplatform.one/typegraphql";
+import difference from "lodash.difference";
+import { AUTHORIZED, RESOURCE, SCOPES } from "./decorators/";
 import type {
   ClientRepresentation,
   KeycloakOptions,
@@ -31,7 +31,7 @@ import type {
   RoleRepresentation,
   ScopeRepresentation,
   UserRepresentation,
-} from './types';
+} from "./types";
 
 // makes registration idempotent
 let registeredKeycloak = false;
@@ -53,28 +53,38 @@ export class RegisterKeycloak {
   ) {
     this.registerOptions = {
       roles: [],
-      ...(typeof this.options.register === 'boolean' ? {} : this.options.register || {}),
+      ...(typeof this.options.register === "boolean"
+        ? {}
+        : this.options.register || {}),
     };
   }
 
   private get canRegister() {
-    return !registeredKeycloak && !!this.options.register && this.options.adminUsername && this.options.adminPassword;
+    return (
+      !registeredKeycloak &&
+      !!this.options.register &&
+      this.options.adminUsername &&
+      this.options.adminPassword
+    );
   }
 
   private get roles() {
     if (this._roles) return this._roles;
     this._roles = [
-      ...(this.resolvers as Function[]).reduce((roles: Set<string>, resolver: Function) => {
-        return new Set([
-          ...roles,
-          ...(getMethods(resolver)
-            .map((method: Function) => {
-              return getMetadata<string | string[]>(AUTHORIZED, method);
-            })
-            .filter(Boolean)
-            .flat(Infinity) as string[]),
-        ]);
-      }, new Set()),
+      ...this.resolvers.reduce(
+        (roles: Set<string>, resolver: (...args: any[]) => any) => {
+          return new Set([
+            ...Array.from(roles),
+            ...(getMethods(resolver)
+              .map((method: (...args: any[]) => any) => {
+                return getMetadata<string | string[]>(AUTHORIZED, method);
+              })
+              .filter(Boolean)
+              .flat(Number.POSITIVE_INFINITY) as string[]),
+          ]);
+        },
+        new Set(),
+      ),
       ...(this.registerOptions.roles || []),
     ];
     return this._roles;
@@ -87,28 +97,48 @@ export class RegisterKeycloak {
   private get realmRoles() {
     return this.roles
       .filter((role: string) => /^realm:/g.test(role))
-      .map((role: string) => role.replace(/^realm:/g, ''));
+      .map((role: string) => role.replace(/^realm:/g, ""));
   }
 
   private get resources(): Record<string, string[]> {
     return Object.entries(
-      (this.resolvers as Function[]).reduce((resources: Record<string, Set<string>>, resolver: Function) => {
-        const methods = getMethods(resolver);
-        const resourceName = getMetadata(RESOURCE, resolver);
-        if (!resourceName) return resources;
-        resources[resourceName] = new Set([
-          ...(resourceName in resources ? resources[resourceName] : []),
-          ...methods.reduce((scopes: Set<string>, method: (...args: any[]) => any) => {
-            const methodValues = getMetadata(SCOPES, method);
-            return new Set([...scopes, ...(methodValues || [])]);
-          }, new Set()),
-        ]);
+      this.resolvers.reduce(
+        (
+          resources: Record<string, Set<string>>,
+          resolver: (...args: any[]) => any,
+        ) => {
+          const methods = getMethods(resolver);
+          const resourceName = getMetadata(RESOURCE, resolver);
+          if (!resourceName) return resources;
+          resources[resourceName] = new Set([
+            ...(resourceName in resources ? resources[resourceName] : []),
+            ...methods.reduce(
+              (scopes: Set<string>, method: (...args: any[]) => any) => {
+                const methodValues = getMetadata(SCOPES, method);
+                return new Set([
+                  ...Array.from(scopes),
+                  ...(methodValues || []),
+                ]);
+              },
+              new Set(),
+            ),
+          ]);
+          return resources;
+        },
+        {},
+      ),
+    ).reduce(
+      (
+        resources: Record<string, string[]>,
+        [resourceName, scopes]: [string, Set<string>],
+      ) => {
+        resources[resourceName] = [
+          ...new Set([...(resources[resourceName] || []), ...scopes]),
+        ];
         return resources;
-      }, {}),
-    ).reduce((resources: Record<string, string[]>, [resourceName, scopes]: [string, Set<string>]) => {
-      resources[resourceName] = [...new Set([...(resources[resourceName] || []), ...scopes])];
-      return resources;
-    }, this.registerOptions.resources || {});
+      },
+      this.registerOptions.resources || {},
+    );
   }
 
   async register(force = false) {
@@ -126,10 +156,11 @@ export class RegisterKeycloak {
   }
 
   private async initializeKeycloakAdmin() {
-    if (!this.keycloakAdmin) this.keycloakAdmin = new KeycloakAdmin({ baseUrl: this.options.baseUrl });
+    if (!this.keycloakAdmin)
+      this.keycloakAdmin = new KeycloakAdmin({ baseUrl: this.options.baseUrl });
     await this.keycloakAdmin.auth({
-      clientId: this.options.adminClientId || 'admin-cli',
-      grantType: 'password',
+      clientId: this.options.adminClientId || "admin-cli",
+      grantType: "password",
       password: this.options.adminPassword,
       username: this.options.adminUsername,
     });
@@ -144,21 +175,29 @@ export class RegisterKeycloak {
       id: await this.getIdFromClientId(this.options.clientId),
     });
     if (!client) {
-      throw new Error(`client ${this.options.clientId} does not exist in the ${this.options.realm} realm`);
+      throw new Error(
+        `client ${this.options.clientId} does not exist in the ${this.options.realm} realm`,
+      );
     }
     return client;
   }
 
   private async canEnableAuthorization(client: ClientRepresentation) {
     if (client?.publicClient) {
-      this.logger.warn({ clientId: this.options.clientId }, 'authorization cannot be enabled on a public client');
+      this.logger.warn(
+        { clientId: this.options.clientId },
+        "authorization cannot be enabled on a public client",
+      );
       return false;
     }
     return true;
   }
 
   private async enableAuthorization(client: ClientRepresentation) {
-    if (!client?.serviceAccountsEnabled || !client.authorizationServicesEnabled) {
+    if (
+      !client?.serviceAccountsEnabled ||
+      !client.authorizationServicesEnabled
+    ) {
       await this.keycloakAdmin!.clients.update(
         { id: await this.getIdFromClientId(this.options.clientId) },
         {
@@ -199,14 +238,20 @@ export class RegisterKeycloak {
       [],
     );
     const rolesToCreate = difference(this.realmRoles, realmRoles);
-    await Promise.all(rolesToCreate.map(async (role: string) => this.keycloakAdmin!.roles.create({ name: role })));
+    await Promise.all(
+      rolesToCreate.map(async (role: string) =>
+        this.keycloakAdmin!.roles.create({ name: role }),
+      ),
+    );
   }
 
   private async createScopedResources() {
     const resources = await this.getResources();
     await Promise.all(
       Object.keys(this.resources).map(async (resourceName: string) => {
-        const resource = resources.find((resource: ResourceRepresentation) => resource.name === resourceName);
+        const resource = resources.find(
+          (resource: ResourceRepresentation) => resource.name === resourceName,
+        );
         const scopes = this.resources[resourceName];
         const existingScopes = await this.getScopes(
           // resource.id is resource._id
@@ -218,17 +263,25 @@ export class RegisterKeycloak {
         if (resource) {
           this.updateResource(resource, [...existingScopes, ...createdScopes]);
         } else {
-          await this.createResource(resourceName, [...existingScopes, ...createdScopes]);
+          await this.createResource(resourceName, [
+            ...existingScopes,
+            ...createdScopes,
+          ]);
         }
       }),
     );
   }
 
   private async getIdFromClientId(clientId: string) {
-    if (this._idsFromClientIds[clientId]) return this._idsFromClientIds[clientId];
-    const idFromClientId = (await this.keycloakAdmin!.clients.find({ clientId }))?.[0]?.id;
+    if (this._idsFromClientIds[clientId])
+      return this._idsFromClientIds[clientId];
+    const idFromClientId = (
+      await this.keycloakAdmin!.clients.find({ clientId })
+    )?.[0]?.id;
     if (!idFromClientId) {
-      throw new Error(`client ${this.options.clientId} does not exist in the ${this.options.realm} realm`);
+      throw new Error(
+        `client ${this.options.clientId} does not exist in the ${this.options.realm} realm`,
+      );
     }
     this._idsFromClientIds[clientId] = idFromClientId;
     return idFromClientId;
@@ -240,10 +293,13 @@ export class RegisterKeycloak {
   ): Promise<ScopeRepresentation[]> {
     const scopesToCreate = difference(
       scopes,
-      existingScopes.reduce((scopeNames: string[], scope: ScopeRepresentation) => {
-        if (scope.name) scopeNames.push(scope.name);
-        return scopeNames;
-      }, []),
+      existingScopes.reduce(
+        (scopeNames: string[], scope: ScopeRepresentation) => {
+          if (scope.name) scopeNames.push(scope.name);
+          return scopeNames;
+        },
+        [],
+      ),
     );
     const createdScopes: ScopeRepresentation[] = [];
     await Promise.all(
@@ -256,20 +312,23 @@ export class RegisterKeycloak {
   }
 
   private async createUsers() {
-    if (!this.options.register || typeof this.options.register === 'boolean') return undefined;
+    if (!this.options.register || typeof this.options.register === "boolean")
+      return undefined;
     return Promise.all(
-      ((this.options.register as RegisterOptions).users || []).map(async (user: UserRepresentation) => {
-        try {
-          await this.keycloakAdmin!.users.create({
-            emailVerified: true,
-            enabled: true,
-            ...user,
-          });
-        } catch (err: any) {
-          if (err?.response?.status === 409) return;
-          throw err;
-        }
-      }),
+      ((this.options.register as RegisterOptions).users || []).map(
+        async (user: UserRepresentation) => {
+          try {
+            await this.keycloakAdmin!.users.create({
+              emailVerified: true,
+              enabled: true,
+              ...user,
+            });
+          } catch (err: any) {
+            if (err?.response?.status === 409) return;
+            throw err;
+          }
+        },
+      ),
     );
   }
 
@@ -298,13 +357,16 @@ export class RegisterKeycloak {
     );
   }
 
-  private async updateResource(resource: ResourceRepresentation, scopes: ScopeRepresentation[]) {
+  private async updateResource(
+    resource: ResourceRepresentation,
+    scopes: ScopeRepresentation[],
+  ) {
     return this.keycloakAdmin!.clients.updateResource(
       {
         id: await this.getIdFromClientId(this.options.clientId),
         // resource.id is resource._id
         // @ts-ignore
-        resourceId: resource.id || resource._id || '',
+        resourceId: resource.id || resource._id || "",
       },
       {
         attributes: {},
@@ -322,7 +384,10 @@ export class RegisterKeycloak {
     );
   }
 
-  private async getScopes(resourceId?: string, scopeNames?: string[]): Promise<ScopeRepresentation[]> {
+  private async getScopes(
+    resourceId?: string,
+    scopeNames?: string[],
+  ): Promise<ScopeRepresentation[]> {
     let scopes: ScopeRepresentation[] = [];
     if (resourceId) {
       scopes = await this.keycloakAdmin!.clients.listScopesByResource({
@@ -337,10 +402,13 @@ export class RegisterKeycloak {
     }
     if (scopeNames) {
       const scopeNamesSet = new Set(scopeNames);
-      return scopes.reduce((scopes: ScopeRepresentation[], scope: ScopeRepresentation) => {
-        if (scope.name && scopeNamesSet.has(scope.name)) scopes.push(scope);
-        return scopes;
-      }, []);
+      return scopes.reduce(
+        (scopes: ScopeRepresentation[], scope: ScopeRepresentation) => {
+          if (scope.name && scopeNamesSet.has(scope.name)) scopes.push(scope);
+          return scopes;
+        },
+        [],
+      );
     }
     return scopes;
   }
@@ -357,13 +425,21 @@ export class RegisterKeycloak {
   }
 }
 
-function getMethods(obj: Function): ((...args: any[]) => any)[] {
+function getMethods(obj: (...args: any[]) => any): ((...args: any[]) => any)[] {
   const propertyNames = new Set<string>();
   let current = obj.prototype;
   do {
-    Object.getOwnPropertyNames(current).map((propertyName) => propertyNames.add(propertyName));
-  } while ((current = Object.getPrototypeOf(current)));
+    Object.getOwnPropertyNames(current).map((propertyName) =>
+      propertyNames.add(propertyName),
+    );
+    current = Object.getPrototypeOf(current);
+  } while (current);
   return [...propertyNames]
-    .filter((propertyName: string) => typeof obj.prototype[propertyName] === 'function')
-    .map((propertyName: string) => obj.prototype[propertyName]) as ((...args: any[]) => any)[];
+    .filter(
+      (propertyName: string) =>
+        typeof obj.prototype[propertyName] === "function",
+    )
+    .map((propertyName: string) => obj.prototype[propertyName]) as ((
+    ...args: any[]
+  ) => any)[];
 }

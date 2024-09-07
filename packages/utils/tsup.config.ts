@@ -19,18 +19,18 @@
  * limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
+import { defineConfig } from "tsup";
 
 export default defineConfig({
   bundle: true,
   clean: true,
   dts: true,
-  entry: ['src/**/*.ts?(x)'],
-  entryPoints: ['src/index.ts'],
-  format: ['cjs'],
+  entry: ["src/**/*.ts?(x)"],
+  entryPoints: ["src/index.ts"],
+  format: ["cjs"],
   minify: false,
-  outDir: 'lib',
+  outDir: "lib",
   skipNodeModulesBundle: true,
   splitting: true,
-  target: 'es2022',
+  target: "es2022",
 });

@@ -19,15 +19,15 @@
  * limitations under the License.
  */
 
-import 'graphiql/graphiql.css';
-import React, { useEffect, useState } from 'react';
-import { GraphiQL, GraphiQLInterface, GraphiQLProvider } from 'graphiql';
-import { createClient } from 'graphql-ws';
-import { createGraphiQLFetcher } from '@graphiql/toolkit';
-import { explorerPlugin } from '@graphiql/plugin-explorer';
-import { useUrlSearchParams } from 'use-url-search-params';
-import { v4 as uuid } from 'uuid';
-import { withAuthenticated, useKeycloak } from '@multiplatform.one/keycloak';
+import "graphiql/graphiql.css";
+import { explorerPlugin } from "@graphiql/plugin-explorer";
+import { createGraphiQLFetcher } from "@graphiql/toolkit";
+import { useKeycloak, withAuthenticated } from "@multiplatform.one/keycloak";
+import { GraphiQL, GraphiQLInterface, GraphiQLProvider } from "graphiql";
+import { createClient } from "graphql-ws";
+import React, { useEffect, useState } from "react";
+import { useUrlSearchParams } from "use-url-search-params";
+import { v4 as uuid } from "uuid";
 
 function GraphiQLPage() {
   const [ready, setReady] = useState(false);
@@ -44,7 +44,7 @@ function GraphiQLPage() {
   const [query, setQuery] = useState(params.query?.toString());
 
   useEffect(() => {
-    if (typeof keycloak?.authenticated === 'undefined') return;
+    if (typeof keycloak?.authenticated === "undefined") return;
     setReady(true);
   }, [keycloak?.authenticated]);
 
@@ -52,8 +52,8 @@ function GraphiQLPage() {
   return (
     <div
       style={{
-        width: '100vw',
-        height: '100vh',
+        width: "100vw",
+        height: "100vh",
       }}
     >
       <GraphiQLProvider
@@ -68,19 +68,21 @@ function GraphiQLPage() {
           } as any),
         ]}
         fetcher={createGraphiQLFetcher({
-          url: 'http://localhost:5001/graphql',
+          url: "http://localhost:5001/graphql",
           async fetch(input: RequestInfo, init?: RequestInit) {
             return fetch(input, {
               ...init,
               headers: {
                 ...init?.headers,
-                'X-Request-Id': uuid(),
-                ...(keycloak?.token ? { Authorization: `Bearer ${keycloak.token}` } : {}),
+                "X-Request-Id": uuid(),
+                ...(keycloak?.token
+                  ? { Authorization: `Bearer ${keycloak.token}` }
+                  : {}),
               },
             });
           },
           wsClient: createClient({
-            url: 'ws://localhost:5001/graphql',
+            url: "ws://localhost:5001/graphql",
           }),
         })}
       >
@@ -91,7 +93,7 @@ function GraphiQLPage() {
           onEditHeaders={(headers) => setParams({ headers })}
         >
           <GraphiQL.Logo>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: "flex", alignItems: "center" }}>
               {keycloak?.authenticated && (
                 <button
                   onClick={() => keycloak?.logout()}

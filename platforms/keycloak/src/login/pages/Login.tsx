@@ -1,12 +1,21 @@
-import { FlatList, type GestureResponderEvent } from 'react-native';
-import type { I18n } from '../i18n';
-import type { KcContext } from '../kcContext';
-import type { PageProps } from 'keycloakify/login/pages/PageProps';
-import { Anchor, SubmitButton, FieldCheckbox, FieldInput, Text, XStack, YStack, Paragraph } from 'ui';
-import { Eye, EyeOff } from '@tamagui/lucide-icons';
-import { clsx } from 'keycloakify/tools/clsx';
-import { useForm } from '@tanstack/react-form';
-import { useState, useRef, useCallback } from 'react';
+import { Eye, EyeOff } from "@tamagui/lucide-icons";
+import { useForm } from "@tanstack/react-form";
+import type { PageProps } from "keycloakify/login/pages/PageProps";
+import { clsx } from "keycloakify/tools/clsx";
+import { useCallback, useRef, useState } from "react";
+import { FlatList, type GestureResponderEvent } from "react-native";
+import {
+  Anchor,
+  FieldCheckbox,
+  FieldInput,
+  Paragraph,
+  SubmitButton,
+  Text,
+  XStack,
+  YStack,
+} from "ui";
+import type { I18n } from "../i18n";
+import type { KcContext } from "../kcContext";
 
 export interface FormError {
   username?: string;
@@ -19,9 +28,17 @@ export default function Login({
   doUseDefaultCss,
   Template,
   classes,
-}: PageProps<Extract<KcContext, { pageId: 'login.ftl' }>, I18n>) {
+}: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>) {
   const formRef = useRef<HTMLFormElement | null>(null);
-  const { social, realm, url, usernameHidden, registrationDisabled, login, auth } = kcContext;
+  const {
+    social,
+    realm,
+    url,
+    usernameHidden,
+    registrationDisabled,
+    login,
+    auth,
+  } = kcContext;
   const { msg, msgStr } = i18n;
   const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -29,38 +46,45 @@ export default function Login({
   const form = useForm({
     defaultValues: {
       credentialId: auth.selectedCredential,
-      password: '',
-      rememberMe: realm.rememberMe && !usernameHidden ? login.rememberMe === 'on' : undefined,
-      username: login.username ?? '',
+      password: "",
+      rememberMe:
+        realm.rememberMe && !usernameHidden
+          ? login.rememberMe === "on"
+          : undefined,
+      username: login.username ?? "",
     },
     onSubmit: ({ value }) => {
       setIsLoginButtonDisabled(true);
       setError({});
       let flag = false;
       Object.entries(value).forEach(([name, value]) => {
-        if (name === 'username' || name === 'password') {
-          if (!value || value === '') {
+        if (name === "username" || name === "password") {
+          if (!value || value === "") {
             flag = true;
             setError((prev) => ({ ...prev, [name]: `${name} is required` }));
           }
         }
         if (flag) return;
         if (!value) return;
-        if (name === 'email' || name === 'usernameOrEmail') name = 'username';
-        if (name === 'username' && formRef.current?.querySelector('input[name="username"]')) return;
-        const input = document.createElement('input');
+        if (name === "email" || name === "usernameOrEmail") name = "username";
+        if (
+          name === "username" &&
+          formRef.current?.querySelector('input[name="username"]')
+        )
+          return;
+        const input = document.createElement("input");
         input.name = name;
-        input.value = value === true ? 'on' : value;
-        input.type = 'hidden';
-        input.style.display = 'none';
+        input.value = value === true ? "on" : value;
+        input.type = "hidden";
+        input.style.display = "none";
         formRef.current?.appendChild(input);
       });
       if (!formRef.current?.querySelector('input[name="credentialId"]')) {
-        const input = document.createElement('input');
-        input.name = 'credentialId';
-        input.value = '';
-        input.type = 'hidden';
-        input.style.display = 'none';
+        const input = document.createElement("input");
+        input.name = "credentialId";
+        input.value = "";
+        input.type = "hidden";
+        input.style.display = "none";
         formRef.current?.appendChild(input);
       }
       if (flag) return;
@@ -77,32 +101,40 @@ export default function Login({
   );
 
   const handleChangeUsername = (value: string) => {
-    if (!value || value === '') {
-      return setError((prev) => ({ ...prev, username: 'user name is required' }));
+    if (!value || value === "") {
+      return setError((prev) => ({
+        ...prev,
+        username: "user name is required",
+      }));
     }
-    setError((prev) => ({ ...prev, username: '' }));
+    setError((prev) => ({ ...prev, username: "" }));
   };
 
   const handleChangePassword = (value: string) => {
-    if (!value || value === '') {
-      return setError((prev) => ({ ...prev, password: 'password is required' }));
+    if (!value || value === "") {
+      return setError((prev) => ({
+        ...prev,
+        password: "password is required",
+      }));
     }
-    setError((prev) => ({ ...prev, password: '' }));
+    setError((prev) => ({ ...prev, password: "" }));
   };
 
   return (
     <Template
       {...{ kcContext, i18n, doUseDefaultCss, classes }}
-      displayInfo={realm.password && realm.registrationAllowed && !registrationDisabled}
+      displayInfo={
+        realm.password && realm.registrationAllowed && !registrationDisabled
+      }
       displayWide={realm.password && social.providers !== undefined}
-      headerNode={msg('doLogIn')}
+      headerNode={msg("doLogIn")}
       infoNode={
         <XStack als="center" marginVertical="$5" id="kc-registration">
           <Text fontSize={16}>
-            {msg('noAccount')}
-            <Anchor fontSize={16} tabIndex={6} href={url.registrationUrl}>
-              {' '}
-              {msg('doRegister')}
+            {msg("noAccount")}
+            <Anchor fontSize={16} tabIndex="0" href={url.registrationUrl}>
+              {" "}
+              {msg("doRegister")}
             </Anchor>
           </Text>
         </XStack>
@@ -112,16 +144,22 @@ export default function Login({
         <YStack id="kc-form-wrapper" width="100%">
           {realm.password && (
             <YStack>
-              <form action={url.loginAction} id="kc-form-login" method="post" ref={formRef}>
+              <form
+                action={url.loginAction}
+                id="kc-form-login"
+                method="post"
+                ref={formRef}
+              >
                 <YStack>
                   {!usernameHidden &&
                     (() => {
                       const label = !realm.loginWithEmailAllowed
-                        ? 'username'
+                        ? "username"
                         : realm.registrationEmailAsUsername
-                          ? 'email'
-                          : 'usernameOrEmail';
-                      const autoCompleteHelper: typeof label = label === 'usernameOrEmail' ? 'username' : label;
+                          ? "email"
+                          : "usernameOrEmail";
+                      const autoCompleteHelper: typeof label =
+                        label === "usernameOrEmail" ? "username" : label;
                       return (
                         <YStack>
                           <FieldInput
@@ -130,15 +168,19 @@ export default function Login({
                             label={msg(label)}
                             // @ts-ignore
                             name={autoCompleteHelper}
-                            tabIndex={1}
+                            tabIndex="0"
                             inputProps={{
-                              autoComplete: 'off',
+                              autoComplete: "off",
                               autoFocus: true,
                             }}
                             onChangeText={handleChangeUsername}
                             required
                           />
-                          {error.username && <Paragraph color="$red9">{error.username}</Paragraph>}
+                          {error.username && (
+                            <Paragraph color="$red9">
+                              {error.username}
+                            </Paragraph>
+                          )}
                         </YStack>
                       );
                     })()}
@@ -147,17 +189,19 @@ export default function Login({
                   <FieldInput
                     form={form}
                     id="password"
-                    label={msg('password')}
+                    label={msg("password")}
                     name="password"
-                    tabIndex={2}
+                    tabIndex="0"
                     inputProps={{
-                      autoComplete: 'off',
+                      autoComplete: "off",
                       secureTextEntry: !showPassword,
                     }}
                     required
                     onChangeText={handleChangePassword}
                   />
-                  {error.password && <Paragraph color="$red9">{error.password}</Paragraph>}
+                  {error.password && (
+                    <Paragraph color="$red9">{error.password}</Paragraph>
+                  )}
                   <YStack
                     als="flex-end"
                     backgroundColor="transparent"
@@ -170,7 +214,11 @@ export default function Login({
                     tabIndex={-1}
                     paddingLeft={4}
                   >
-                    {showPassword ? <EyeOff size="$1.5" /> : <Eye size="$1.5" />}
+                    {showPassword ? (
+                      <EyeOff size="$1.5" />
+                    ) : (
+                      <Eye size="$1.5" />
+                    )}
                   </YStack>
                 </YStack>
                 <XStack ai="center" jc="space-between">
@@ -180,17 +228,17 @@ export default function Login({
                         <FieldCheckbox
                           form={form}
                           id="rememberMe"
-                          label={msg('rememberMe')}
+                          label={msg("rememberMe")}
                           name="rememberMe"
-                          tabIndex={3}
+                          tabIndex="0"
                         />
                       </XStack>
                     )}
                   </YStack>
                   <YStack>
                     {realm.resetPasswordAllowed && (
-                      <Anchor tabIndex={5} href={url.loginResetCredentialsUrl}>
-                        {msg('doForgotPassword')}
+                      <Anchor tabIndex="0" href={url.loginResetCredentialsUrl}>
+                        {msg("doForgotPassword")}
                       </Anchor>
                     )}
                   </YStack>
@@ -201,9 +249,9 @@ export default function Login({
                     // disabled={isLoginButtonDisabled}
                     form={form}
                     id="kc-login"
-                    tabIndex={4}
+                    tabIndex="0"
                   >
-                    {msgStr('doLogIn')}
+                    {msgStr("doLogIn")}
                   </SubmitButton>
                 </YStack>
               </form>
@@ -218,7 +266,7 @@ export default function Login({
                   borderRadius="$2"
                   href={p.loginUrl}
                   id={`zocial-${p.alias}`}
-                  className={clsx('zocial', p.providerId)}
+                  className={clsx("zocial", p.providerId)}
                 >
                   <Text marginHorizontal="$2">{p.displayName}</Text>
                 </Anchor>

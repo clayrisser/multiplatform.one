@@ -19,21 +19,37 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { SheetProps, DialogOverlayProps, YStackProps } from 'tamagui';
-import { Sheet } from '@tamagui/sheet';
+import { Sheet } from "@tamagui/sheet";
+import React from "react";
+import type { DialogOverlayProps, SheetProps, YStackProps } from "tamagui";
 
 export type SimpleSheetProps = SheetProps & {
   overlayStyle?: DialogOverlayProps;
   frameStyle?: YStackProps;
 };
 
-export function SimpleSheet({ children, overlayStyle, frameStyle, ...props }: SimpleSheetProps) {
+export function SimpleSheet({
+  children,
+  overlayStyle,
+  frameStyle,
+  ...props
+}: SimpleSheetProps) {
   return (
     <Sheet zIndex={100_000} {...props}>
-      <Sheet.Overlay animation="lazy" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} {...overlayStyle} />
+      <Sheet.Overlay
+        animation="lazy"
+        enterStyle={{ opacity: 0 }}
+        exitStyle={{ opacity: 0 }}
+        {...overlayStyle}
+      />
       <Sheet.Handle />
-      <Sheet.Frame padding="$4" justifyContent="center" alignItems="center" gap="$5" {...frameStyle}>
+      <Sheet.Frame
+        padding="$4"
+        justifyContent="center"
+        alignItems="center"
+        gap="$5"
+        {...frameStyle}
+      >
         {children}
       </Sheet.Frame>
     </Sheet>

@@ -19,17 +19,17 @@
  * limitations under the License.
  */
 
-export * from './buildSchema';
-export * from './decorate';
-export * from './decorators';
-export * from './logger';
-export * from './middleware';
-export * from './pubSub';
-export * from './resolvers';
-export * from './server';
-export * from './tracing';
-export * from './tsyringe';
-export * from './types';
-export * from './utils';
+export * from "./buildSchema";
+export * from "./decorate";
+export * from "./decorators";
+export * from "./logger";
+export * from "./middleware";
+export * from "./pubSub";
+export * from "./resolvers";
+export * from "./server";
+export * from "./tracing";
+export * from "./tsyringe";
+export * from "./types";
+export * from "./utils";
 
-export { Ctx as Context } from 'type-graphql';
+export { Ctx as Context } from "type-graphql";

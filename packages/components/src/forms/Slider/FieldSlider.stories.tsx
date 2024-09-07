@@ -40,26 +40,28 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { Button, Text, YStack } from 'tamagui';
-import { FieldSlider } from './FieldSlider';
-import { action } from '@storybook/addon-actions';
-import { useForm } from '@tanstack/react-form';
-import type { FieldSliderProps } from './FieldSlider';
+import { action } from "@storybook/addon-actions";
+import { useForm } from "@tanstack/react-form";
+import React from "react";
+import { Button, Text, YStack } from "tamagui";
+import { FieldSlider } from "./FieldSlider";
+import type { FieldSliderProps } from "./FieldSlider";
 
 export default {
-  title: 'forms/FieldSlider',
+  title: "forms/FieldSlider",
   component: FieldSlider,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
-export const main = (args) => <FieldSlider onValueChange={action(`onValueChange`)} {...args} />;
+export const main = (args) => (
+  <FieldSlider onValueChange={action("onValueChange")} {...args} />
+);
 const mainArgs: FieldSliderProps = {
-  label: 'film',
+  label: "film",
   error: undefined,
-  helperText: 'please check this slider',
+  helperText: "please check this slider",
   value: undefined,
 };
 main.args = mainArgs;
@@ -72,13 +74,18 @@ export const form = () => {
       sliderValue: [0],
     },
     onSubmit: async ({ value }) => {
-      action('onSubmit')(value);
+      action("onSubmit")(value);
     },
   });
   return (
     <YStack padding="$4" justifyContent="center" space>
       <Text>{[sliderValue]}</Text>
-      <FieldSlider form={form} name="sliderValue" label="formSlider" onValueChange={(e) => setSliderValue(e)} />
+      <FieldSlider
+        form={form}
+        name="sliderValue"
+        label="formSlider"
+        onValueChange={(e) => setSliderValue(e)}
+      />
       <Button onPress={form.handleSubmit}>Submit</Button>
     </YStack>
   );

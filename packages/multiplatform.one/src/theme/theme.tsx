@@ -19,27 +19,27 @@
  * limitations under the License.
  */
 
-import React, { createContext, useContext, useEffect, useMemo } from 'react';
-import type { Actions } from '@multiplatform.one/zustand';
-import type { ColorScheme as TamaguiColorScheme } from '@tamagui/next-theme';
-import type { PropsWithChildren } from 'react';
-import type { ThemeName } from '@tamagui/web';
-import { MultiPlatform } from '../multiplatform';
-import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
-import { createStateStore } from '@multiplatform.one/zustand';
-import { useCookies } from 'react-cookie';
+import type { Actions } from "@multiplatform.one/zustand";
+import { createStateStore } from "@multiplatform.one/zustand";
+import type { ColorScheme as TamaguiColorScheme } from "@tamagui/next-theme";
+import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
+import type { ThemeName } from "@tamagui/web";
+import React, { createContext, useContext, useEffect, useMemo } from "react";
+import type { PropsWithChildren } from "react";
+import { useCookies } from "react-cookie";
+import { MultiPlatform } from "../multiplatform";
 
-export const COOKIE_ROOT_THEME = 'multiplatform-one.root-theme';
-export const COOKIE_SUB_THEME = 'multiplatform-one.sub-theme';
+export const COOKIE_ROOT_THEME = "multiplatform-one.root-theme";
+export const COOKIE_SUB_THEME = "multiplatform-one.sub-theme";
 
-export type ColorScheme = 'dark' | 'light' | 'system';
+export type ColorScheme = "dark" | "light" | "system";
 
 export interface ThemeState {
   root: ColorScheme | null;
   sub: ThemeName | null;
 }
 
-const defaultThemeState: ThemeState = { root: 'system', sub: 'gray' };
+const defaultThemeState: ThemeState = { root: "system", sub: "gray" };
 
 const ThemeContext = createContext<ThemeState>(defaultThemeState);
 
@@ -48,8 +48,11 @@ export interface ThemeProviderProps extends PropsWithChildren {
   theme?: Partial<ThemeState>;
 }
 
-const { useStore: useThemeState } = createStateStore<ThemeState, Actions<ThemeState>>(
-  'theme',
+const { useStore: useThemeState } = createStateStore<
+  ThemeState,
+  Actions<ThemeState>
+>(
+  "theme",
   {
     root: null,
     sub: null,
@@ -60,18 +63,24 @@ const { useStore: useThemeState } = createStateStore<ThemeState, Actions<ThemeSt
   },
 );
 
-export function useTheme(): [ThemeState, (theme: Partial<ThemeState>) => undefined] {
-  const [, setCookie, removeCookie] = useCookies([COOKIE_ROOT_THEME, COOKIE_SUB_THEME]);
+export function useTheme(): [
+  ThemeState,
+  (theme: Partial<ThemeState>) => undefined,
+] {
+  const [, setCookie, removeCookie] = useCookies([
+    COOKIE_ROOT_THEME,
+    COOKIE_SUB_THEME,
+  ]);
   const themeContextValue = useContext(ThemeContext);
   const themeState = useThemeState();
   return [
     {
-      root: themeContextValue.root || 'system',
+      root: themeContextValue.root || "system",
       sub: themeContextValue.sub,
     },
     (theme: Partial<ThemeState>) => {
-      if (typeof theme.root !== 'undefined') {
-        if (theme.root === null || theme.root === 'system') {
+      if (typeof theme.root !== "undefined") {
+        if (theme.root === null || theme.root === "system") {
           removeCookie(COOKIE_ROOT_THEME);
           themeState.setRoot(null);
         } else {
@@ -79,7 +88,7 @@ export function useTheme(): [ThemeState, (theme: Partial<ThemeState>) => undefin
           themeState.setRoot(theme.root);
         }
       }
-      if (typeof theme.sub !== 'undefined') {
+      if (typeof theme.sub !== "undefined") {
         if (theme.sub === null) {
           removeCookie(COOKIE_SUB_THEME);
           themeState.setSub(null);
@@ -92,7 +101,11 @@ export function useTheme(): [ThemeState, (theme: Partial<ThemeState>) => undefin
   ];
 }
 
-export function ThemeProvider({ children, cookies: nextCookies, theme }: ThemeProviderProps) {
+export function ThemeProvider({
+  children,
+  cookies: nextCookies,
+  theme,
+}: ThemeProviderProps) {
   const [localCookies] = useCookies([COOKIE_ROOT_THEME, COOKIE_SUB_THEME]);
   const defaultThemeValue = useMemo(
     () => ({
@@ -129,12 +142,14 @@ export function ThemeProvider({ children, cookies: nextCookies, theme }: ThemePr
           onChangeTheme={(root: TamaguiColorScheme) => {
             setRootTheme(root);
           }}
-          forcedTheme={root && root !== 'system' ? root : undefined}
+          forcedTheme={root && root !== "system" ? root : undefined}
         >
           {children}
         </NextThemeProvider>
       </ThemeContext.Provider>
     );
   }
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  );
 }

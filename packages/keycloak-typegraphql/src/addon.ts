@@ -19,31 +19,40 @@
  * limitations under the License.
  */
 
-import type { Addon } from '@multiplatform.one/typegraphql';
-import type { KeycloakOptions } from './types';
-import type { Middleware } from 'type-graphql/build/typings/typings/middleware';
-import { AuthGuard } from './authGuard';
-import { initializeKeycloak } from './initialize';
+import type { Addon } from "@multiplatform.one/typegraphql";
+import type { Middleware } from "type-graphql/build/typings/typings/middleware";
+import { AuthGuard } from "./authGuard";
+import { initializeKeycloak } from "./initialize";
+import type { KeycloakOptions } from "./types";
 
-export function KeycloakAddon(keycloakOptions: Partial<KeycloakOptions>): Addon {
+export function KeycloakAddon(
+  keycloakOptions: Partial<KeycloakOptions>,
+): Addon {
   let sharedKeycloakOptions: KeycloakOptions;
   return {
     register(appOptions) {
       const globalMiddlewares: Middleware<any>[] = [];
-      const debug = typeof appOptions.debug !== 'undefined' ? appOptions.debug : process.env.DEBUG === '1';
+      const debug =
+        typeof appOptions.debug !== "undefined"
+          ? appOptions.debug
+          : process.env.DEBUG === "1";
       sharedKeycloakOptions = {
-        adminPassword: process.env.KEYCLOAK_ADMIN_PASSWORD || '',
-        adminUsername: process.env.KEYCLOAK_ADMIN_USERNAME || '',
-        baseUrl: process.env.KEYCLOAK_BASE_URL || '',
-        clientId: process.env.KEYCLOAK_CLIENT_ID || '',
-        clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || '',
+        adminPassword: process.env.KEYCLOAK_ADMIN_PASSWORD || "",
+        adminUsername: process.env.KEYCLOAK_ADMIN_USERNAME || "",
+        baseUrl: process.env.KEYCLOAK_BASE_URL || "",
+        clientId: process.env.KEYCLOAK_CLIENT_ID || "",
+        clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || "",
         debug,
-        realm: process.env.KEYCLOAK_REALM || 'master',
-        register: process.env.KEYCLOAK_REGISTER === '1',
+        realm: process.env.KEYCLOAK_REALM || "master",
+        register: process.env.KEYCLOAK_REGISTER === "1",
         secret: appOptions.secret || process.env.SECRET,
         ...keycloakOptions,
       };
-      if (sharedKeycloakOptions.baseUrl && sharedKeycloakOptions.clientId && sharedKeycloakOptions.realm) {
+      if (
+        sharedKeycloakOptions.baseUrl &&
+        sharedKeycloakOptions.clientId &&
+        sharedKeycloakOptions.realm
+      ) {
         globalMiddlewares.push(AuthGuard);
       }
       return {
@@ -53,7 +62,11 @@ export function KeycloakAddon(keycloakOptions: Partial<KeycloakOptions>): Addon 
       };
     },
     async beforeStart(app) {
-      if (sharedKeycloakOptions.baseUrl && sharedKeycloakOptions.clientId && sharedKeycloakOptions.realm) {
+      if (
+        sharedKeycloakOptions.baseUrl &&
+        sharedKeycloakOptions.clientId &&
+        sharedKeycloakOptions.realm
+      ) {
         const registerKeycloak = await initializeKeycloak(
           sharedKeycloakOptions,
           app.buildSchemaOptions.resolvers,

@@ -1,8 +1,8 @@
-import { YStack, styled } from 'tamagui';
+import { YStack, styled } from "tamagui";
 
 export const UL = styled(YStack, {
-  tag: 'ul',
-  marginVertical: '$1',
-  marginLeft: '$4',
-  marginRight: '$2',
+  tag: "ul",
+  marginVertical: "$1",
+  marginLeft: "$4",
+  marginRight: "$2",
 });

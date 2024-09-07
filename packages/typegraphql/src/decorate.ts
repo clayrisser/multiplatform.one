@@ -19,13 +19,17 @@
  * limitations under the License.
  */
 
-import type { Ctx, ReflectableDecorator, Type } from './types';
-import type { MiddlewareFn } from 'type-graphql';
-import { container as Container, Lifecycle, container } from 'tsyringe';
-import { createMethodDecorator as typeGraphqlCreateMethodDecorator } from 'type-graphql';
+import { container as Container, Lifecycle, container } from "tsyringe";
+import type { MiddlewareFn } from "type-graphql";
+import { createMethodDecorator as typeGraphqlCreateMethodDecorator } from "type-graphql";
+import type { Ctx, ReflectableDecorator, Type } from "./types";
 
 export function applyMethodDecorators(...decorators: Array<MethodDecorator>) {
-  return ((target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) => {
+  return ((
+    target: Object,
+    propertyKey: string | symbol,
+    descriptor: TypedPropertyDescriptor<any>,
+  ) => {
     let result: any;
     for (const decorator of decorators) {
       result = decorator(target, propertyKey, descriptor);
@@ -35,7 +39,11 @@ export function applyMethodDecorators(...decorators: Array<MethodDecorator>) {
 }
 
 export function applyParamDecorators(...decorators: Array<ParameterDecorator>) {
-  return ((target: Object, propertyKey: string | symbol, parameterIndex: number) => {
+  return ((
+    target: Object,
+    propertyKey: string | symbol,
+    parameterIndex: number,
+  ) => {
     let result: any;
     for (const decorator of decorators) {
       result = decorator(target, propertyKey, parameterIndex);
@@ -44,7 +52,9 @@ export function applyParamDecorators(...decorators: Array<ParameterDecorator>) {
   }) as ParameterDecorator;
 }
 
-export function applyPropertyDecorators(...decorators: Array<PropertyDecorator>) {
+export function applyPropertyDecorators(
+  ...decorators: Array<PropertyDecorator>
+) {
   return ((target: Object, propertyKey: string | symbol) => {
     let result: any;
     for (const decorator of decorators) {
@@ -64,15 +74,26 @@ export function applyClassDecorators(...decorators: Array<ClassDecorator>) {
   }) as ClassDecorator;
 }
 
-export function createMethodDecorator<C extends Ctx = Ctx>(resolver: any, _container = Container): MethodDecorator {
-  container.register(resolver, { useClass: resolver }, { lifecycle: Lifecycle.ContainerScoped });
-  return typeGraphqlCreateMethodDecorator<C>(resolver as any as MiddlewareFn<C>);
+export function createMethodDecorator<C extends Ctx = Ctx>(
+  resolver: any,
+  _container = Container,
+): MethodDecorator {
+  container.register(
+    resolver,
+    { useClass: resolver },
+    { lifecycle: Lifecycle.ContainerScoped },
+  );
+  return typeGraphqlCreateMethodDecorator<C>(
+    resolver as any as MiddlewareFn<C>,
+  );
 }
 
 export function getMetadata<TResult = any, TKey = any>(
   metadataKeyOrDecorator: TKey,
   target: Type<any> | Function,
 ): TResult | undefined {
-  const metadataKey = (metadataKeyOrDecorator as ReflectableDecorator<unknown>).KEY ?? metadataKeyOrDecorator;
+  const metadataKey =
+    (metadataKeyOrDecorator as ReflectableDecorator<unknown>).KEY ??
+    metadataKeyOrDecorator;
   return Reflect.getMetadata(metadataKey, target);
 }

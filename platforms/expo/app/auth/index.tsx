@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-import Auth from 'app/screens/auth';
+import Auth from "app/screens/auth";
 
 export default Auth;

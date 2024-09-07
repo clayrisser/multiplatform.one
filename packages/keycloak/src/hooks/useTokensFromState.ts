@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import { useAuthState } from '../state';
-import { validOrRefreshableToken } from '../token';
+import { useAuthState } from "../state";
+import { validOrRefreshableToken } from "../token";
 
 export function useTokensFromState() {
   const authState = useAuthState();

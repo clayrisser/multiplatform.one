@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import constants from 'expo-constants';
-import type { IConfig } from './types';
+import constants from "expo-constants";
+import type { IConfig } from "./types";
 
 export class Config implements IConfig {
   private _config: Record<string, string | undefined> = {};
@@ -29,7 +29,7 @@ export class Config implements IConfig {
     this._config = {
       ...Object.entries(config).reduce<Record<string, string | undefined>>(
         (config, [key, value]: [string, string | undefined]) => {
-          if (typeof value !== 'undefined') config[key] = value;
+          if (typeof value !== "undefined") config[key] = value;
           return config;
         },
         {},
@@ -41,7 +41,10 @@ export class Config implements IConfig {
   get(): Record<string, string | undefined>;
   get(key: string): string | undefined;
   get(key: string, defaultValue: string): string;
-  get(key?: string, defaultValue?: string): Record<string, string | undefined> | string | undefined {
+  get(
+    key?: string,
+    defaultValue?: string,
+  ): Record<string, string | undefined> | string | undefined {
     if (!key) return this._config;
     return this._config[key] || defaultValue;
   }

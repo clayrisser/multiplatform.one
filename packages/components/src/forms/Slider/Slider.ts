@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export type { SliderProps } from 'tamagui';
-export { Slider } from 'tamagui';
+export type { SliderProps } from "tamagui";
+export { Slider } from "tamagui";

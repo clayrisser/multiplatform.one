@@ -19,14 +19,14 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { Table } from './index';
+import React from "react";
+import { Table } from "./index";
 
 export default {
-  title: 'table/Table',
+  title: "table/Table",
   component: Table,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
@@ -52,9 +52,9 @@ export const Main = () => (
     </Table.Col>
     <Table.Col>
       <Table.Cell head>Code Sharing</Table.Cell>
-      <Table.Cell>{'>'} 70%</Table.Cell>
+      <Table.Cell>{">"} 70%</Table.Cell>
       <Table.Cell>-</Table.Cell>
-      <Table.Cell>{'<'} 30%</Table.Cell>
+      <Table.Cell>{"<"} 30%</Table.Cell>
     </Table.Col>
     <Table.Col>
       <Table.Cell head>Feels native</Table.Cell>
@@ -72,6 +72,6 @@ export const Main = () => (
 );
 export const main = (args) => <Main {...args} />;
 main.args = {
-  overflow: 'visible',
-  type: 'multiple',
+  overflow: "visible",
+  type: "multiple",
 };

@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-export * from './Authenticated';
-export * from './authConfig';
-export * from './hooks';
-export * from './keycloak';
-export * from './provider';
-export * from './session';
-export * from './types';
+export * from "./Authenticated";
+export * from "./authConfig";
+export * from "./hooks";
+export * from "./keycloak";
+export * from "./provider";
+export * from "./session";
+export * from "./types";

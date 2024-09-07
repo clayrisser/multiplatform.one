@@ -19,26 +19,26 @@
  * limitations under the License.
  */
 
-import Pino, { destination, multistream } from 'pino';
-import chalk from 'chalk';
-import httpStatus from 'http-status';
-import path from 'path';
-import pretty, { PinoPretty } from 'pino-pretty';
-import type { AxiosLoggerOptions } from './axios';
-import type { Ctx } from './types';
-import type { IncomingMessage, ServerResponse } from 'http';
-import type { Logger as PinoLogger } from 'pino';
-import type { Options as PinoHttpOptions } from 'pino-http';
-import { generateRequestId } from './utils';
-import { trace, context } from '@opentelemetry/api';
+import type { IncomingMessage, ServerResponse } from "node:http";
+import path from "node:path";
+import { context, trace } from "@opentelemetry/api";
+import chalk from "chalk";
+import httpStatus from "http-status";
+import Pino, { destination, multistream } from "pino";
+import type { Logger as PinoLogger } from "pino";
+import type { Options as PinoHttpOptions } from "pino-http";
+import pretty, { type PinoPretty } from "pino-pretty";
+import type { AxiosLoggerOptions } from "./axios";
+import type { Ctx } from "./types";
+import { generateRequestId } from "./utils";
 
-export const LOGGER = 'LOGGER';
+export const LOGGER = "LOGGER";
 
-export const LOGGER_OPTIONS = 'LOGGER_OPTIONS';
+export const LOGGER_OPTIONS = "LOGGER_OPTIONS";
 
 let _logger: PinoLogger | undefined;
 
-export type LogLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal';
+export type LogLevel = "trace" | "debug" | "info" | "warn" | "error" | "fatal";
 
 export class Logger {
   pino?: PinoLogger;
@@ -53,56 +53,92 @@ export class Logger {
   trace(message: string | Record<string, any>, ...args: string[]) {
     this.pino?.trace(
       {
-        ...(typeof message === 'object' ? message : {}),
+        ...(typeof message === "object" ? message : {}),
         id: this.ctx?.id,
         operationName: this.ctx?.params?.operationName,
         time: new Date(),
       },
-      ...(typeof message !== 'object' ? [[message, ...args].join(' ')] : []),
+      ...(typeof message !== "object" ? [[message, ...args].join(" ")] : []),
     );
   }
 
   debug(message: string | Record<string, any>, ...args: string[]) {
     this.pino?.debug(
       {
-        ...(typeof message === 'object' ? message : {}),
+        ...(typeof message === "object" ? message : {}),
         id: this.ctx?.id,
         operationName: this.ctx?.params?.operationName,
         time: new Date(),
       },
-      ...(typeof message !== 'object' ? [[message, ...args].join(' ')] : []),
+      ...(typeof message !== "object" ? [[message, ...args].join(" ")] : []),
     );
   }
 
   info(message: string | Record<string, any>, ...args: string[]) {
     this.pino?.info(
       {
-        ...(typeof message === 'object' ? message : {}),
+        ...(typeof message === "object" ? message : {}),
         id: this.ctx?.id,
         operationName: this.ctx?.params?.operationName,
         time: new Date(),
       },
-      ...(typeof message !== 'object' ? [[message, ...args].join(' ')] : []),
+      ...(typeof message !== "object" ? [[message, ...args].join(" ")] : []),
     );
   }
 
-  warn(message: Record<string, any>, error?: string | Error | unknown, ...args: string[]): void;
-  warn(message: string | Error | unknown, error?: string, ...args: string[]): void;
-  warn(message: string | Record<string, any> | Error | unknown, error?: string | Error | unknown, ...args: string[]) {
+  warn(
+    message: Record<string, any>,
+    error?: string | Error | unknown,
+    ...args: string[]
+  ): void;
+  warn(
+    message: string | Error | unknown,
+    error?: string,
+    ...args: string[]
+  ): void;
+  warn(
+    message: string | Record<string, any> | Error | unknown,
+    error?: string | Error | unknown,
+    ...args: string[]
+  ) {
     const err = this.getError(message, error, ...args);
     return this.pino?.warn(err);
   }
 
-  error(message: Record<string, any>, error?: string | Error | unknown, ...args: string[]): void;
-  error(message: string | Error | unknown, error?: string, ...args: string[]): void;
-  error(message: string | Record<string, any> | Error | unknown, error?: string | Error | unknown, ...args: string[]) {
+  error(
+    message: Record<string, any>,
+    error?: string | Error | unknown,
+    ...args: string[]
+  ): void;
+  error(
+    message: string | Error | unknown,
+    error?: string,
+    ...args: string[]
+  ): void;
+  error(
+    message: string | Record<string, any> | Error | unknown,
+    error?: string | Error | unknown,
+    ...args: string[]
+  ) {
     const err = this.getError(message, error, ...args);
     return this.pino?.error(err);
   }
 
-  fatal(message: Record<string, any>, error?: string | Error | unknown, ...args: string[]): void;
-  fatal(message: string | Error | unknown, error?: string, ...args: string[]): void;
-  fatal(message: string | Record<string, any> | Error | unknown, error?: string | Error | unknown, ...args: string[]) {
+  fatal(
+    message: Record<string, any>,
+    error?: string | Error | unknown,
+    ...args: string[]
+  ): void;
+  fatal(
+    message: string | Error | unknown,
+    error?: string,
+    ...args: string[]
+  ): void;
+  fatal(
+    message: string | Record<string, any> | Error | unknown,
+    error?: string | Error | unknown,
+    ...args: string[]
+  ) {
     const err = this.getError(message, error, ...args);
     return this.pino?.fatal(err);
   }
@@ -113,11 +149,12 @@ export class Logger {
     ...args: string[]
   ) {
     let err: Error & Record<string, any> =
-      typeof message !== 'object'
-        ? new Error([message, ...(error ? [error] : []), ...args].join(' '))
+      typeof message !== "object"
+        ? new Error([message, ...(error ? [error] : []), ...args].join(" "))
         : (message as Error);
-    if (typeof err === 'object' && !(err instanceof Error) && error) {
-      if (typeof error !== 'object') error = new Error([error, ...args].join(' '));
+    if (typeof err === "object" && !(err instanceof Error) && error) {
+      if (typeof error !== "object")
+        error = new Error([error, ...args].join(" "));
       Object.entries(err as Record<string, any>).forEach(([key, value]) => {
         (error as Record<string, any>)[key] = value;
       });
@@ -134,7 +171,7 @@ function createLogger(options: LoggerOptions) {
   if (_logger) return _logger;
   _logger = Pino(
     {
-      level: options.level || 'debug',
+      level: options.level || "debug",
       mixin(obj: any, _level: number) {
         return obj;
       },
@@ -143,15 +180,16 @@ function createLogger(options: LoggerOptions) {
           return { level: label };
         },
         log(obj: Record<string, any>) {
-          delete obj.trace_id;
-          delete obj.span_id;
+          obj.trace_id = undefined;
+          obj.span_id = undefined;
           if (obj.trace_flags) {
             obj.traceFlags = obj.trace_flags;
-            delete obj.trace_flags;
+            obj.trace_flags = undefined;
           }
           const span = trace.getSpan(context.active());
           if (!span) return { ...obj };
-          const { spanId, traceId } = trace.getSpan(context.active())?.spanContext() || {};
+          const { spanId, traceId } =
+            trace.getSpan(context.active())?.spanContext() || {};
           return { ...obj, spanId, traceId };
         },
       },
@@ -164,7 +202,7 @@ function createLogger(options: LoggerOptions) {
                 stream: createPrettyStream(options),
               },
               {
-                level: 'error' as 'error',
+                level: "error" as const,
                 stream: createPrettyStream(options, process.stderr),
               },
             ]
@@ -173,18 +211,22 @@ function createLogger(options: LoggerOptions) {
                 stream: process.stdout,
               },
               {
-                level: 'error' as 'error',
+                level: "error" as const,
                 stream: process.stderr,
               },
             ]),
         ...(options.logFileName
           ? [
               {
-                stream: createSonicBoom(path.resolve(process.cwd(), options.logFileName)),
+                stream: createSonicBoom(
+                  path.resolve(process.cwd(), options.logFileName),
+                ),
               },
               {
-                level: 'error' as 'error',
-                stream: createSonicBoom(path.resolve(process.cwd(), options.logFileName)),
+                level: "error" as const,
+                stream: createSonicBoom(
+                  path.resolve(process.cwd(), options.logFileName),
+                ),
               },
             ]
           : []),
@@ -197,7 +239,9 @@ function createLogger(options: LoggerOptions) {
   return _logger;
 }
 
-export function createPinoHttp(options: LoggerOptions): PinoHttpOptions<IncomingMessage, ServerResponse> {
+export function createPinoHttp(
+  options: LoggerOptions,
+): PinoHttpOptions<IncomingMessage, ServerResponse> {
   return {
     logger: createLogger(options),
     genReqId: generateRequestId,
@@ -209,65 +253,108 @@ export function createPinoHttp(options: LoggerOptions): PinoHttpOptions<Incoming
   };
 }
 
-function createPrettyStream(options: LoggerOptions, destination: NodeJS.WritableStream = process.stdout) {
+function createPrettyStream(
+  options: LoggerOptions,
+  destination: NodeJS.WritableStream = process.stdout,
+) {
   return pretty({
-    minimumLevel: 'trace',
+    minimumLevel: "trace",
     colorize: true,
     sync: true,
     mkdir: true,
-    ignore: ['span_id', 'traceFlags', 'trace_flags', 'trace_id', ...(options.ignore ? options.ignore : [])].join(','),
+    ignore: [
+      "span_id",
+      "traceFlags",
+      "trace_flags",
+      "trace_id",
+      ...(options.ignore ? options.ignore : []),
+    ].join(","),
     destination,
-    errorLikeObjectKeys: ['error', 'err'],
+    errorLikeObjectKeys: ["error", "err"],
     customPrettifiers: {
-      time(data: string | object, _key: string, _log: object, _extras: PinoPretty.PrettifierExtras<any>): string {
+      time(
+        data: string | object,
+        _key: string,
+        _log: object,
+        _extras: PinoPretty.PrettifierExtras<any>,
+      ): string {
         if (!data) return data as string;
-        if (typeof data !== 'string' || data.split('.').length < 2) {
+        if (typeof data !== "string" || data.split(".").length < 2) {
           const date = new Date();
           return colorTime(
-            `${date.getHours().toLocaleString('en-US', { minimumIntegerDigits: 2 })}:${date
+            `${date.getHours().toLocaleString("en-US", { minimumIntegerDigits: 2 })}:${date
               .getMinutes()
-              .toLocaleString('en-US', { minimumIntegerDigits: 2 })}:${date
+              .toLocaleString("en-US", { minimumIntegerDigits: 2 })}:${date
               .getSeconds()
-              .toLocaleString('en-US', { minimumIntegerDigits: 2 })}`,
-            `.${date.getMilliseconds().toLocaleString('en-US', { minimumIntegerDigits: 3 })}`,
+              .toLocaleString("en-US", { minimumIntegerDigits: 2 })}`,
+            `.${date.getMilliseconds().toLocaleString("en-US", { minimumIntegerDigits: 3 })}`,
             options.color,
           );
         }
-        const [time, milli] = data.split('.');
+        const [time, milli] = data.split(".");
         return colorTime(time, milli, options.color);
       },
-      req(data: string | object, _key: string, _log: object, _extras: PinoPretty.PrettifierExtras<any>): string {
+      req(
+        data: string | object,
+        _key: string,
+        _log: object,
+        _extras: PinoPretty.PrettifierExtras<any>,
+      ): string {
         if (!data) return data as string;
-        const req = typeof data === 'string' ? JSON.parse(data) : data;
-        return req.method && req.url ? `${req.method} ${req.url}${req.id ? ` id=${req.id}` : ''}` : '';
+        const req = typeof data === "string" ? JSON.parse(data) : data;
+        return req.method && req.url
+          ? `${req.method} ${req.url}${req.id ? ` id=${req.id}` : ""}`
+          : "";
       },
-      res(data: string | object, _key: string, _log: object, _extras: PinoPretty.PrettifierExtras<any>): string {
+      res(
+        data: string | object,
+        _key: string,
+        _log: object,
+        _extras: PinoPretty.PrettifierExtras<any>,
+      ): string {
         if (!data) return data as string;
-        const res = typeof data === 'string' ? JSON.parse(data) : data;
-        return res.statusCode ? `status=${formatStatus(res.statusCode, options.color)}` : '';
+        const res = typeof data === "string" ? JSON.parse(data) : data;
+        return res.statusCode
+          ? `status=${formatStatus(res.statusCode, options.color)}`
+          : "";
       },
-      method(data: string | object, _key: string, _log: object, _extras: PinoPretty.PrettifierExtras<any>): string {
+      method(
+        data: string | object,
+        _key: string,
+        _log: object,
+        _extras: PinoPretty.PrettifierExtras<any>,
+      ): string {
         if (!data) return data as string;
         if (options.color) {
           return chalk.bold(chalk.gray(data.toString()));
         }
         return data.toString();
       },
-      status(data: string | object, _key: string, _log: object, _extras: PinoPretty.PrettifierExtras<any>): string {
+      status(
+        data: string | object,
+        _key: string,
+        _log: object,
+        _extras: PinoPretty.PrettifierExtras<any>,
+      ): string {
         if (!data) return data as string;
         return formatStatus(data.toString(), options.color);
       },
-      kind(data: string | object, _key: string, _log: object, _extras: PinoPretty.PrettifierExtras<any>): string {
+      kind(
+        data: string | object,
+        _key: string,
+        _log: object,
+        _extras: PinoPretty.PrettifierExtras<any>,
+      ): string {
         if (!data) return data as string;
         if (options.color) {
           switch (data) {
-            case 'HTTP_REQUEST': {
+            case "HTTP_REQUEST": {
               return chalk.underline(chalk.italic(data));
             }
-            case 'HTTP_RESPONSE': {
+            case "HTTP_RESPONSE": {
               return chalk.underline(chalk.bold(data));
             }
-            case 'HTTP_ERROR': {
+            case "HTTP_ERROR": {
               return chalk.redBright(chalk.underline(chalk.bold(data)));
             }
           }
@@ -275,9 +362,15 @@ function createPrettyStream(options: LoggerOptions, destination: NodeJS.Writable
         return prettifierStr(data) as string;
       },
       ...Object.fromEntries(
-        ['ctx', 'id', 'operationName', 'spanId', 'traceId', 'url', ...(options.strings ? options.strings : [])].map(
-          (key) => [key, prettifierStr],
-        ),
+        [
+          "ctx",
+          "id",
+          "operationName",
+          "spanId",
+          "traceId",
+          "url",
+          ...(options.strings ? options.strings : []),
+        ].map((key) => [key, prettifierStr]),
       ),
       ...(options.prettifiers ? options.prettifiers : {}),
     },
@@ -291,9 +384,9 @@ function colorTime(time: string, milli: string, color = false) {
 
 function formatStatus(status: number | string, color = false) {
   const statusName = httpStatus[`${status}_NAME` as keyof typeof httpStatus];
-  status = `${status}${statusName ? ':' + statusName : ''}`;
+  status = `${status}${statusName ? `:${statusName}` : ""}`;
   if (color) {
-    switch (parseInt(status[0], 10)) {
+    switch (Number.parseInt(status[0], 10)) {
       case 2: {
         return chalk.greenBright(status);
       }
@@ -313,7 +406,7 @@ function formatStatus(status: number | string, color = false) {
 
 function prettifierStr(data: string | object) {
   if (!data) return data;
-  if (typeof data === 'object') {
+  if (typeof data === "object") {
     try {
       return JSON.stringify(data);
     } catch (err) {}
@@ -329,7 +422,11 @@ export interface LoggerOptions {
   axios?: AxiosLoggerOptions | boolean;
   color?: boolean;
   container?: boolean;
-  httpMixin?: (mergeObject: object, req: IncomingMessage, res: ServerResponse<IncomingMessage>) => object;
+  httpMixin?: (
+    mergeObject: object,
+    req: IncomingMessage,
+    res: ServerResponse<IncomingMessage>,
+  ) => object;
   ignore?: string[];
   level?: LogLevel;
   logFileName?: string;

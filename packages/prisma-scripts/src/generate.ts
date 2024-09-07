@@ -19,29 +19,30 @@
  * limitations under the License.
  */
 
-import dotenv from 'dotenv';
-import fs from 'fs/promises';
-import path from 'path';
-import { execa } from 'execa';
+import fs from "node:fs/promises";
+import path from "node:path";
+import dotenv from "dotenv";
+import { execa } from "execa";
 
 const { argv } = process;
-dotenv.config({ path: path.resolve(process.cwd(), argv[2] || '.', '.env') });
+dotenv.config({ path: path.resolve(process.cwd(), argv[2] || ".", ".env") });
 const { env } = process;
 const prismaPath = process.cwd();
 
 export default async function generate() {
-  const sqliteUrl = env.SQLITE_URL || 'file:./sqlite.db';
+  const sqliteUrl = env.SQLITE_URL || "file:./sqlite.db";
   const postgresUrl = env.POSTGRES_URL
     ? env.POSTGRES_URL
-    : `postgresql://${env.POSTGRES_USERNAME || 'postgres'}:${env.POSTGRES_PASSWORD}@${env.POSTGRES_HOSTNAME}:${
-        env.POSTGRES_PORT || '5432'
-      }/${env.POSTGRES_DATABASE || 'postgres'}?sslmode=${env.POSTGRES_SSLMODE || 'prefer'}`;
+    : `postgresql://${env.POSTGRES_USERNAME || "postgres"}:${env.POSTGRES_PASSWORD}@${env.POSTGRES_HOSTNAME}:${
+        env.POSTGRES_PORT || "5432"
+      }/${env.POSTGRES_DATABASE || "postgres"}?sslmode=${env.POSTGRES_SSLMODE || "prefer"}`;
   const prisma = path.resolve(
-    import.meta.resolve('prisma') || path.resolve(process.cwd(), 'node_modules/prisma'),
-    'build/index.js',
+    import.meta.resolve("prisma") ||
+      path.resolve(process.cwd(), "node_modules/prisma"),
+    "build/index.js",
   );
   await fs.writeFile(
-    path.resolve(prismaPath, '.env'),
+    path.resolve(prismaPath, ".env"),
     `# ------------------------------------------------------
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
@@ -49,5 +50,5 @@ POSTGRES_URL=${postgresUrl}
 SQLITE_URL=${sqliteUrl}
 `,
   );
-  await execa('node', [prisma, 'generate'], { stdio: 'inherit' });
+  await execa("node", [prisma, "generate"], { stdio: "inherit" });
 }

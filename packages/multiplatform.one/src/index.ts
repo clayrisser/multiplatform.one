@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-import { MultiPlatform } from './multiplatform';
+import { MultiPlatform } from "./multiplatform";
 
 export { MultiPlatform };
 
-export * from './config';
-export * from './font';
-export * from './helpers';
+export * from "./config";
+export * from "./font";
+export * from "./helpers";

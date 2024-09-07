@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export * from './useIpcMutation';
-export * from './useIpcQuery';
+export * from "./useIpcMutation";
+export * from "./useIpcQuery";

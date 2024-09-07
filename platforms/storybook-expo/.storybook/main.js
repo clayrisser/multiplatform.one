@@ -19,36 +19,37 @@
  * limitations under the License.
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("node:fs");
+const path = require("node:path");
 
 const stories = [
-  '..',
-  '../../../app',
-  ...fs.readdirSync(path.resolve(__dirname, '../../../packages')).map((dir) => `../../../packages/${dir}`),
+  "..",
+  "../../../app",
+  ...fs
+    .readdirSync(path.resolve(__dirname, "../../../packages"))
+    .map((dir) => `../../../packages/${dir}`),
 ]
   .map((dir) => path.resolve(__dirname, dir))
-  .map((dir) => {
+  .flatMap((dir) => {
     return fs
       .readdirSync(dir, { withFileTypes: true })
       .filter(
         (dir) =>
           dir.isDirectory() &&
-          !['dist', 'lib', 'types', 'bin', 'node_modules'].includes(dir.name) &&
-          !dir.name.startsWith('.') &&
-          !dir.name.startsWith('_') &&
-          !dir.name.startsWith('@'),
+          !["dist", "lib", "types", "bin", "node_modules"].includes(dir.name) &&
+          !dir.name.startsWith(".") &&
+          !dir.name.startsWith("_") &&
+          !dir.name.startsWith("@"),
       )
       .map((dir) => `${dir.parentPath}/${dir.name}`);
-  })
-  .flat();
+  });
 
 module.exports = {
   stories,
   addons: [
-    '@storybook/addon-ondevice-actions',
-    '@storybook/addon-ondevice-backgrounds',
-    '@storybook/addon-ondevice-controls',
-    '@storybook/addon-ondevice-notes',
+    "@storybook/addon-ondevice-actions",
+    "@storybook/addon-ondevice-backgrounds",
+    "@storybook/addon-ondevice-controls",
+    "@storybook/addon-ondevice-notes",
   ],
 };

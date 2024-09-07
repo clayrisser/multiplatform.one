@@ -19,18 +19,18 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { ReactNode } from 'react';
-import { AlertDialog, Button, XStack, YStack } from 'tamagui';
+import React from "react";
+import type { ReactNode } from "react";
+import { AlertDialog, Button, XStack, YStack } from "tamagui";
 import type {
+  AlertDialogActionProps,
   AlertDialogContentProps,
   AlertDialogDescriptionProps,
   AlertDialogProps,
   AlertDialogTitleProps,
   AlertDialogTriggerProps,
   ButtonProps,
-  AlertDialogActionProps,
-} from 'tamagui';
+} from "tamagui";
 
 export type AlterDialogSimpleProps = AlertDialogProps & {
   accept?: string;
@@ -83,7 +83,7 @@ export function SimpleAlertDialog({
           elevate
           key="content"
           animation={[
-            'bouncy',
+            "bouncy",
             {
               opacity: {
                 overshootClamping: true,
@@ -102,17 +102,23 @@ export function SimpleAlertDialog({
             children
           ) : (
             <YStack gap>
-              {title && <AlertDialog.Title {...titleStyle}>{title}</AlertDialog.Title>}
-              {description && <AlertDialog.Description {...descriptionStyle}>{description}</AlertDialog.Description>}
+              {title && (
+                <AlertDialog.Title {...titleStyle}>{title}</AlertDialog.Title>
+              )}
+              {description && (
+                <AlertDialog.Description {...descriptionStyle}>
+                  {description}
+                </AlertDialog.Description>
+              )}
               <XStack gap="$3" justifyContent="flex-end">
                 <AlertDialog.Cancel asChild>
                   <Button onPress={onCancel} {...buttonStyle}>
-                    {cancel || 'cancel'}
+                    {cancel || "cancel"}
                   </Button>
                 </AlertDialog.Cancel>
                 <AlertDialog.Action asChild {...actionStyle}>
                   <Button theme="active" onPress={onAccept} {...buttonStyle}>
-                    {accept || 'accept'}
+                    {accept || "accept"}
                   </Button>
                 </AlertDialog.Action>
               </XStack>

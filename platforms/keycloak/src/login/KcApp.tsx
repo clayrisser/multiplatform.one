@@ -20,29 +20,29 @@
  * limitations under the License.
  */
 
-import Fallback from 'keycloakify/login';
-import Template from './Template';
-import tamaguiConfig from '../tamagui.config';
-import type { KcContext } from './kcContext';
-import type { PageProps } from 'keycloakify/login';
-import type { ReactNode } from 'react';
-import { GlobalProvider } from 'app/providers';
-import { lazy, Suspense } from 'react';
-import { useI18n } from './i18n';
-import { useTheme } from 'multiplatform.one/theme';
+import { GlobalProvider } from "app/providers";
+import Fallback from "keycloakify/login";
+import type { PageProps } from "keycloakify/login";
+import { useTheme } from "multiplatform.one/theme";
+import type { ReactNode } from "react";
+import { Suspense, lazy } from "react";
+import tamaguiConfig from "../tamagui.config";
+import Template from "./Template";
+import { useI18n } from "./i18n";
+import type { KcContext } from "./kcContext";
 // import LoginResetPassword from './pages/LoginResetPassword';
 // import LoginUpdatePassword from './pages/LoginUpdatePassword';
 // import LoginUpdateProfile from './pages/LoginUpdateProfile';
 
-const Info = lazy(() => import('keycloakify/login/pages/Info'));
-const Login = lazy(() => import('./pages/Login'));
-const Register = lazy(() => import('./pages/Register'));
-const RegisterUserProfile = lazy(() => import('./pages/RegisterUserProfile'));
-const Terms = lazy(() => import('./pages/Terms'));
-const LoginResetPassword = lazy(() => import('./pages/LoginResetPassword'));
-const LoginUpdatePassword = lazy(() => import('./pages/LoginUpdatePassword'));
-const LoginUpdateProfile = lazy(() => import('./pages/LoginUpdateProfile'));
-const classes: PageProps<any, any>['classes'] = {};
+const Info = lazy(() => import("keycloakify/login/pages/Info"));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const RegisterUserProfile = lazy(() => import("./pages/RegisterUserProfile"));
+const Terms = lazy(() => import("./pages/Terms"));
+const LoginResetPassword = lazy(() => import("./pages/LoginResetPassword"));
+const LoginUpdatePassword = lazy(() => import("./pages/LoginUpdatePassword"));
+const LoginUpdateProfile = lazy(() => import("./pages/LoginUpdateProfile"));
+const classes: PageProps<any, any>["classes"] = {};
 
 function Provider({ children }: { children?: ReactNode }) {
   const [theme] = useTheme();
@@ -61,32 +61,73 @@ export default function KcApp({ kcContext }: { kcContext: KcContext }) {
       <Suspense>
         {(() => {
           switch (kcContext.pageId) {
-            case 'login.ftl':
-              return <Login {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
-            case 'register.ftl':
-              return <Register {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
-            case 'register-user-profile.ftl':
-              return <RegisterUserProfile {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
-            case 'terms.ftl':
-              return <Terms {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
-            case 'info.ftl':
+            case "login.ftl":
               return (
-                <Info
-                  {...{ kcContext, i18n, classes }}
-                  Template={lazy(() => import('keycloakify/login/Template'))}
+                <Login
+                  {...{ kcContext, i18n, Template, classes }}
                   doUseDefaultCss={true}
                 />
               );
-            case 'login-reset-password.ftl':
-              return <LoginResetPassword {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
+            case "register.ftl":
+              return (
+                <Register
+                  {...{ kcContext, i18n, Template, classes }}
+                  doUseDefaultCss={true}
+                />
+              );
+            case "register-user-profile.ftl":
+              return (
+                <RegisterUserProfile
+                  {...{ kcContext, i18n, Template, classes }}
+                  doUseDefaultCss={true}
+                />
+              );
+            case "terms.ftl":
+              return (
+                <Terms
+                  {...{ kcContext, i18n, Template, classes }}
+                  doUseDefaultCss={true}
+                />
+              );
+            case "info.ftl":
+              return (
+                <Info
+                  {...{ kcContext, i18n, classes }}
+                  Template={lazy(() => import("keycloakify/login/Template"))}
+                  doUseDefaultCss={true}
+                />
+              );
+            case "login-reset-password.ftl":
+              return (
+                <LoginResetPassword
+                  {...{ kcContext, i18n, Template, classes }}
+                  doUseDefaultCss={true}
+                />
+              );
 
-            case 'login-update-password.ftl':
-              return <LoginUpdatePassword {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
+            case "login-update-password.ftl":
+              return (
+                <LoginUpdatePassword
+                  {...{ kcContext, i18n, Template, classes }}
+                  doUseDefaultCss={true}
+                />
+              );
 
-            case 'login-update-profile.ftl':
-              return <LoginUpdateProfile {...{ kcContext, i18n, Template, classes }} doUseDefaultCss={true} />;
+            case "login-update-profile.ftl":
+              return (
+                <LoginUpdateProfile
+                  {...{ kcContext, i18n, Template, classes }}
+                  doUseDefaultCss={true}
+                />
+              );
             default:
-              return <Fallback {...{ kcContext, i18n, classes }} Template={Template} doUseDefaultCss={true} />;
+              return (
+                <Fallback
+                  {...{ kcContext, i18n, classes }}
+                  Template={Template}
+                  doUseDefaultCss={true}
+                />
+              );
           }
         })()}
       </Suspense>

@@ -1,2 +1,2 @@
-export * from './useAssets';
-export * from './useClipboard';
+export * from "./useAssets";
+export * from "./useClipboard";

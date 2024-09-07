@@ -19,12 +19,14 @@
  * limitations under the License.
  */
 
-import type { NonEmptyArray } from 'type-graphql';
-import type { AppOptions } from './types';
-import { Guards } from './decorators/guards';
+import type { NonEmptyArray } from "type-graphql";
+import { Guards } from "./decorators/guards";
+import type { AppOptions } from "./types";
 
 export function createResolvers(options: AppOptions) {
-  return options.resolvers.map((resolver) => (typeof resolver === 'string' ? resolver : Guards(resolver))) as Resolvers;
+  return options.resolvers.map((resolver) =>
+    typeof resolver === "string" ? resolver : Guards(resolver),
+  ) as Resolvers;
 }
 
 export type Resolvers = NonEmptyArray<Function> | NonEmptyArray<string>;

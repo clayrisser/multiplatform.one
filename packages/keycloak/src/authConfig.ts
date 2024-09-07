@@ -19,9 +19,9 @@
  * limitations under the License.
  */
 
-'use client';
+"use client";
 
-import { createContext } from 'react';
+import { createContext } from "react";
 
 export const defaultAuthConfig: AuthConfig = {};
 

@@ -20,16 +20,16 @@
  * limitations under the License.
  */
 
-import type { ComponentStory, ComponentMeta } from '@storybook/react';
-import { createPageStory } from '../createPageStory';
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
+import { createPageStory } from "../createPageStory";
 
 const { PageStory } = createPageStory({
-  pageId: 'terms.ftl',
+  pageId: "terms.ftl",
 });
 
 export const Primary: ComponentStory<typeof PageStory> = () => <PageStory />;
 
 export default {
-  title: 'login/Terms',
+  title: "login/Terms",
   component: PageStory,
 } as ComponentMeta<typeof PageStory>;

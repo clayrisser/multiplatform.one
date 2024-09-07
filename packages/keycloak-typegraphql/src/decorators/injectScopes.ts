@@ -19,17 +19,17 @@
  * limitations under the License.
  */
 
-import type { Ctx } from '@multiplatform.one/typegraphql';
-import type { KeycloakRequest } from '../types';
-import type { ResolverData } from 'type-graphql';
-import type { Token } from '../token';
-import { createParamDecorator } from 'type-graphql';
+import type { Ctx } from "@multiplatform.one/typegraphql";
+import type { ResolverData } from "type-graphql";
+import { createParamDecorator } from "type-graphql";
+import type { Token } from "../token";
+import type { KeycloakRequest } from "../types";
 
 export function InjectScopes() {
   return createParamDecorator(({ context: ctx }: ResolverData<Ctx>) => {
     const req = ctx.req as KeycloakRequest;
     if (!req?.kauth?.grant?.access_token) return undefined;
     const accessToken = req.kauth.grant.access_token as Token;
-    return (accessToken.content?.scope || '').split(' ');
+    return (accessToken.content?.scope || "").split(" ");
   });
 }

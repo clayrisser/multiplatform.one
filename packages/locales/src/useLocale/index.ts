@@ -19,14 +19,17 @@
  * limitations under the License.
  */
 
-import i18n from 'i18next';
-import { MultiPlatform } from 'multiplatform.one';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import i18n from "i18next";
+import { MultiPlatform } from "multiplatform.one";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export function useLocale(): [string, (locale: string) => void] {
-  const nextRouter = MultiPlatform.isNext && !MultiPlatform.isStatic ? useRouter() : null;
-  const [locale, setLocale] = useState(nextRouter?.locale || i18n?.language || 'en');
+  const nextRouter =
+    MultiPlatform.isNext && !MultiPlatform.isStatic ? useRouter() : null;
+  const [locale, setLocale] = useState(
+    nextRouter?.locale || i18n?.language || "en",
+  );
 
   useEffect(() => {
     if (!nextRouter?.locale) return;
@@ -38,9 +41,9 @@ export function useLocale(): [string, (locale: string) => void] {
     function handleLanguageChanged(lng: string) {
       setLocale(lng);
     }
-    i18n.on('languageChanged', handleLanguageChanged);
+    i18n.on("languageChanged", handleLanguageChanged);
     return () => {
-      i18n.off('languageChanged', handleLanguageChanged);
+      i18n.off("languageChanged", handleLanguageChanged);
     };
   }, []);
 

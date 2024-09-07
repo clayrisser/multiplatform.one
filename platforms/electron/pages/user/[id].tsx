@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-import UserScreen from 'app/screens/user';
+import UserScreen from "app/screens/user";
 
 export default UserScreen;

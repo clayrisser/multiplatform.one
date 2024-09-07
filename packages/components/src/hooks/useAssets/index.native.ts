@@ -1,14 +1,18 @@
-import type { Asset } from 'expo-asset';
-import type { StaticImageData } from 'next/image';
-import { useAssets as expoUseAssets } from 'expo-asset';
+import type { Asset } from "expo-asset";
+import { useAssets as expoUseAssets } from "expo-asset";
+import type { StaticImageData } from "next/image";
 
 const logger = console;
 
-export function useAssets(modules: any | any[]): (StaticImageData | undefined)[] {
-  const modulesArr = (Array.isArray(modules) ? modules : [modules]).map((module: any) => {
-    if (typeof module.default !== 'undefined') return module.default;
-    return module;
-  });
+export function useAssets(
+  modules: any | any[],
+): (StaticImageData | undefined)[] {
+  const modulesArr = (Array.isArray(modules) ? modules : [modules]).map(
+    (module: any) => {
+      if (typeof module.default !== "undefined") return module.default;
+      return module;
+    },
+  );
   const [assets, err] = expoUseAssets(modulesArr);
   if (err) logger.error(err);
   if (!assets) return new Array(modulesArr.length);

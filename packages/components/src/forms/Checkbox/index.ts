@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export * from './Checkbox';
-export * from './FieldCheckbox';
+export * from "./Checkbox";
+export * from "./FieldCheckbox";

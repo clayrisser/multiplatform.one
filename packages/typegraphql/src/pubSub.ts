@@ -19,20 +19,26 @@
  * limitations under the License.
  */
 
-import PGPubSub from 'pg-pubsub';
-import type { ClientConfig as PgClientConfig } from 'pg';
-import type { PubSub, ChannelPubSubConfig } from '@graphql-yoga/subscription/typings/create-pub-sub';
-import { Repeater } from '@repeaterjs/repeater';
+import type {
+  ChannelPubSubConfig,
+  PubSub,
+} from "@graphql-yoga/subscription/typings/create-pub-sub";
+import { Repeater } from "@repeaterjs/repeater";
+import type { ClientConfig as PgClientConfig } from "pg";
+import PGPubSub from "pg-pubsub";
 
 interface PubSubPublishArgsByKey {
   [key: string]: [] | [any] | [number | string, any];
 }
 
-export interface CreatePgPubSubConfig<TPubSubPublishArgsByKey extends PubSubPublishArgsByKey>
-  extends Omit<ChannelPubSubConfig<TPubSubPublishArgsByKey>, 'eventTarget'>,
+export interface CreatePgPubSubConfig<
+  TPubSubPublishArgsByKey extends PubSubPublishArgsByKey,
+> extends Omit<ChannelPubSubConfig<TPubSubPublishArgsByKey>, "eventTarget">,
     PgClientConfig {}
 
-export function createPgPubSub<TPubSubPublishArgsByKey extends PubSubPublishArgsByKey>({
+export function createPgPubSub<
+  TPubSubPublishArgsByKey extends PubSubPublishArgsByKey,
+>({
   ...pgConfig
 }: CreatePgPubSubConfig<TPubSubPublishArgsByKey>): PubSub<TPubSubPublishArgsByKey> {
   const pgPubSub = new PGPubSub(pgConfig);
@@ -42,7 +48,10 @@ export function createPgPubSub<TPubSubPublishArgsByKey extends PubSubPublishArgs
       ...args: TPubSubPublishArgsByKey[TKey]
     ) {
       const payload = args[1] ?? args[0] ?? null;
-      const topic = args[1] === undefined ? routingKey : `${routingKey}:${args[0] as number}`;
+      const topic =
+        args[1] === undefined
+          ? routingKey
+          : `${routingKey}:${args[0] as number}`;
       await pgPubSub.publish(topic, { payload });
     },
 
@@ -55,7 +64,8 @@ export function createPgPubSub<TPubSubPublishArgsByKey extends PubSubPublishArgs
         ? TPubSubPublishArgsByKey[TKey][0]
         : TPubSubPublishArgsByKey[TKey][1]
     > {
-      const topic = id === undefined ? routingKey : `${routingKey}:${id as number}`;
+      const topic =
+        id === undefined ? routingKey : `${routingKey}:${id as number}`;
       return new Repeater(async (next, stop) => {
         await pgPubSub.addChannel(topic, (data) => {
           next(data.payload);

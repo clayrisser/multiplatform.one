@@ -20,15 +20,34 @@
  * limitations under the License.
  */
 
-import type { I18n } from './i18n';
-import type { KcContext } from './kcContext';
-import type { TemplateProps } from 'keycloakify/login/TemplateProps';
-import { Share, Info, AlertTriangle, CheckCircle, XCircle } from '@tamagui/lucide-icons';
-import { YStack, Card, XStack, Text, Anchor, Label, Input, H5, SimplePopover, Button, H1, ScrollView } from 'ui';
-import { clsx } from 'keycloakify/tools/clsx';
-import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
-import { usePrepareTemplate } from 'keycloakify/lib/usePrepareTemplate';
-import { useState } from 'react';
+import {
+  AlertTriangle,
+  CheckCircle,
+  Info,
+  Share,
+  XCircle,
+} from "@tamagui/lucide-icons";
+import { usePrepareTemplate } from "keycloakify/lib/usePrepareTemplate";
+import type { TemplateProps } from "keycloakify/login/TemplateProps";
+import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import { clsx } from "keycloakify/tools/clsx";
+import { useState } from "react";
+import {
+  Anchor,
+  Button,
+  Card,
+  H1,
+  H5,
+  Input,
+  Label,
+  ScrollView,
+  SimplePopover,
+  Text,
+  XStack,
+  YStack,
+} from "ui";
+import type { I18n } from "./i18n";
+import type { KcContext } from "./kcContext";
 
 export default function Template({
   displayInfo = false,
@@ -60,26 +79,33 @@ export default function Template({
     htmlClassName: undefined, // getClassName('kcHtmlClass'),
   });
   useState(() => {
-    document.title = i18n.msgStr('loginTitle', kcContext.realm.displayName);
-    document.body.className = '';
+    document.title = i18n.msgStr("loginTitle", kcContext.realm.displayName);
+    document.body.className = "";
   });
   if (!isReady) return null;
   return (
     <YStack fullscreen>
-      <ScrollView justifyContent="center" alignItems="center" backgroundColor="$background" padding="$4">
+      <ScrollView
+        justifyContent="center"
+        alignItems="center"
+        backgroundColor="$background"
+        padding="$4"
+      >
         {/* <H1 marginVertical="$6" textTransform="capitalize" letterSpacing={0.5} textAlign="center">
           {msg('loginTitleHtml', realm.displayNameHtml)}!!!
         </H1> */}
-        <Card $sm={{ width: '100%' }} width={450} elevation="$4">
-          <Card.Background>{/* <Image src={keycloakifyLogoPngUrl} alt="Keycloakify logo" /> */}</Card.Background>
+        <Card $sm={{ width: "100%" }} width={450} elevation="$4">
+          <Card.Background>
+            {/* <Image src={keycloakifyLogoPngUrl} alt="Keycloakify logo" /> */}
+          </Card.Background>
           <Card.Header>
             <YStack>
-              {!(auth !== undefined && auth.showUsername && !auth.showResetCredentials) ? (
+              {!(auth?.showUsername && !auth.showResetCredentials) ? (
                 displayRequiredFields ? (
                   <XStack>
                     <XStack>
                       <Text className="required">*</Text>
-                      {msg('requiredFields')}
+                      {msg("requiredFields")}
                     </XStack>
 
                     <Text id="kc-page-title">{headerNode}</Text>
@@ -92,16 +118,18 @@ export default function Template({
               ) : displayRequiredFields ? (
                 <YStack>
                   <YStack>
-                    <Text>*</Text> {msg('requiredFields')}
+                    <Text>*</Text> {msg("requiredFields")}
                   </YStack>
                   <YStack>
                     {showUsernameNode}
                     <YStack>
                       <YStack id="kc-username">
-                        <Label id="kc-attempted-username">{auth?.attemptedUsername}</Label>
+                        <Label id="kc-attempted-username">
+                          {auth?.attemptedUsername}
+                        </Label>
                         <Anchor id="reset-login" href={url.loginRestartFlowUrl}>
                           <Share />
-                          <Text>{msg('restartLoginTooltip')}</Text>
+                          <Text>{msg("restartLoginTooltip")}</Text>
                         </Anchor>
                       </YStack>
                     </YStack>
@@ -112,11 +140,29 @@ export default function Template({
                   {showUsernameNode}
                   <YStack>
                     <XStack als="center" id="kc-username">
-                      <Label id="kc-attempted-username">{auth?.attemptedUsername}</Label>
-                      <Anchor als="center" id="reset-login" href={url.loginRestartFlowUrl}>
-                        <XStack ai="center" gap="$2" className="kc-login-tooltip">
-                          <SimplePopover hoverable trigger={<Button unstyled iconAfter={<Share size={20} />} />}>
-                            {msg('restartLoginTooltip')}
+                      <Label id="kc-attempted-username">
+                        {auth?.attemptedUsername}
+                      </Label>
+                      <Anchor
+                        als="center"
+                        id="reset-login"
+                        href={url.loginRestartFlowUrl}
+                      >
+                        <XStack
+                          ai="center"
+                          gap="$2"
+                          className="kc-login-tooltip"
+                        >
+                          <SimplePopover
+                            hoverable
+                            trigger={
+                              <Button
+                                unstyled
+                                iconAfter={<Share size={20} />}
+                              />
+                            }
+                          >
+                            {msg("restartLoginTooltip")}
                           </SimplePopover>
                         </XStack>
                       </Anchor>
@@ -129,26 +175,40 @@ export default function Template({
           <YStack>
             <YStack width="100%" padding="$4" id="kc-content">
               <YStack id="kc-content-wrapper">
-                {displayMessage && message !== undefined && (message.type !== 'warning' || !isAppInitiatedAction) && (
-                  <XStack ai="center" gap="$1" bg="$backgroundFocus" borderRadius="$4" padding="$4" width="100%">
-                    {message.type === 'success' && <CheckCircle size={18} />}
-                    {message.type === 'warning' && <AlertTriangle size={18} />}
-                    {message.type === 'error' && <XCircle size={18} />}
-                    {message.type === 'info' && <Info size={18} />}
-                    <Text
-                      dangerouslySetInnerHTML={{
-                        __html: message.summary,
-                      }}
-                    />
-                  </XStack>
-                )}
+                {displayMessage &&
+                  message !== undefined &&
+                  (message.type !== "warning" || !isAppInitiatedAction) && (
+                    <XStack
+                      ai="center"
+                      gap="$1"
+                      bg="$backgroundFocus"
+                      borderRadius="$4"
+                      padding="$4"
+                      width="100%"
+                    >
+                      {message.type === "success" && <CheckCircle size={18} />}
+                      {message.type === "warning" && (
+                        <AlertTriangle size={18} />
+                      )}
+                      {message.type === "error" && <XCircle size={18} />}
+                      {message.type === "info" && <Info size={18} />}
+                      <Text
+                        // biome-ignore lint/security/noDangerouslySetInnerHtml:
+                        dangerouslySetInnerHTML={{
+                          __html: message.summary,
+                        }}
+                      />
+                    </XStack>
+                  )}
                 {children}
-                {auth !== undefined && auth.showTryAnotherWayLink && showAnotherWayIfPresent && (
+                {auth?.showTryAnotherWayLink && showAnotherWayIfPresent && (
                   <form
                     id="kc-select-try-another-way-form"
                     action={url.loginAction}
                     method="post"
-                    className={clsx(displayWide && getClassName('kcContentWrapperClass'))}
+                    className={clsx(
+                      displayWide && getClassName("kcContentWrapperClass"),
+                    )}
                   >
                     <YStack>
                       <YStack>
@@ -163,11 +223,13 @@ export default function Template({
                           id="try-another-way"
                           // @ts-ignore
                           onClick={() => {
-                            document.forms['kc-select-try-another-way-form' as never].submit();
+                            document.forms[
+                              "kc-select-try-another-way-form" as never
+                            ].submit();
                             return false;
                           }}
                         >
-                          {msg('doTryAnotherWay')}
+                          {msg("doTryAnotherWay")}
                         </Anchor>
                       </YStack>
                     </YStack>

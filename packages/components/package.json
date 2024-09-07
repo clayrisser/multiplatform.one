@@ -83,9 +83,5 @@
     "tsup": "^8.1.0",
     "vitest": "^1.6.0",
     "vitest-react-native": "^0.1.5"
-  },
-  "eslintIgnore": [
-    "dist",
-    "types"
-  ]
+  }
 }

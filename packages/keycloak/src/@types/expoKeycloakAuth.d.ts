@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-declare module 'expo-keycloak-auth' {
+declare module "expo-keycloak-auth" {
   export const KeycloakProvider: any;
   export function useKeycloak(): any;
 }

@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-import type { Ctx } from '@multiplatform.one/typegraphql';
-import type { KeycloakRequest } from '../types';
-import type { ResolverData } from 'type-graphql';
-import { createParamDecorator } from 'type-graphql';
+import type { Ctx } from "@multiplatform.one/typegraphql";
+import type { ResolverData } from "type-graphql";
+import { createParamDecorator } from "type-graphql";
+import type { KeycloakRequest } from "../types";
 
 export function InjectGrant() {
   return createParamDecorator(({ context: ctx }: ResolverData<Ctx>) => {

@@ -1,1 +1,1 @@
-export * from './reactNative';
+export * from "./reactNative";

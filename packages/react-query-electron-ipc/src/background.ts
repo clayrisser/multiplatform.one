@@ -19,39 +19,53 @@
  * limitations under the License.
  */
 
-import type { IpcHandlers, IpcRequest, IpcResponse } from './types';
-import { IpcEvent, IpcMethod } from './types';
-import { ipcMain } from 'electron';
+import { ipcMain } from "electron";
+import type { IpcHandlers, IpcRequest, IpcResponse } from "./types";
+import { IpcEvent, IpcMethod } from "./types";
 
 const logger = console;
 
-export function createIpcHandler<THandler extends string = string, TVariables extends object = {}, TData = any>(
+export function createIpcHandler<
+  THandler extends string = string,
+  TVariables extends object = {},
+  TData = any,
+>(
   method: IpcMethod,
   handler: string,
   handlerFn: (variables: TVariables) => TData | Promise<TData>,
 ) {
   return () => {
-    ipcMain.on(IpcEvent.Request, async (event, request: IpcRequest<THandler>) => {
-      if (request.handler !== handler || request.method !== method || !request.id) return;
-      try {
-        const response: IpcResponse<THandler> = {
-          handler: request.handler,
-          id: request.id,
-          method: request.method,
-          payload: JSON.stringify(await handlerFn(JSON.parse(request.body || '{}'))),
-        };
-        event.reply(IpcEvent.Response, response);
-      } catch (err) {
-        logger.error(err);
-        const response: IpcResponse<THandler> = {
-          error: err?.message || err.toString(),
-          handler: request.handler,
-          id: request.id,
-          method: request.method,
-        };
-        event.reply(IpcEvent.Response, response);
-      }
-    });
+    ipcMain.on(
+      IpcEvent.Request,
+      async (event, request: IpcRequest<THandler>) => {
+        if (
+          request.handler !== handler ||
+          request.method !== method ||
+          !request.id
+        )
+          return;
+        try {
+          const response: IpcResponse<THandler> = {
+            handler: request.handler,
+            id: request.id,
+            method: request.method,
+            payload: JSON.stringify(
+              await handlerFn(JSON.parse(request.body || "{}")),
+            ),
+          };
+          event.reply(IpcEvent.Response, response);
+        } catch (err) {
+          logger.error(err);
+          const response: IpcResponse<THandler> = {
+            error: err?.message || err.toString(),
+            handler: request.handler,
+            id: request.id,
+            method: request.method,
+          };
+          event.reply(IpcEvent.Response, response);
+        }
+      },
+    );
   };
 }
 
@@ -66,4 +80,4 @@ export function createIpcHandlers(handlers: IpcHandlers) {
   };
 }
 
-export * from './types';
+export * from "./types";

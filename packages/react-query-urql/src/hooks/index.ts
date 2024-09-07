@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-export * from './useGqlMutation';
-export * from './useGqlQuery';
-export * from './useGqlSubscription';
+export * from "./useGqlMutation";
+export * from "./useGqlQuery";
+export * from "./useGqlSubscription";

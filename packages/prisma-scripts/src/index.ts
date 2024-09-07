@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-import generate from './generate';
-import mainWaitForPostgres from './waitForPostgres';
-import seedDb from './seed';
+import generate from "./generate";
+import seedDb from "./seed";
+import mainWaitForPostgres from "./waitForPostgres";
 
 export { generate, mainWaitForPostgres, seedDb };
 
-export * from './seed';
-export * from './waitForPostgres';
+export * from "./seed";
+export * from "./waitForPostgres";

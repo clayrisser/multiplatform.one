@@ -1,8 +1,8 @@
-import { config } from './tamagui.config';
+import { config } from "./tamagui.config";
 
 export type Config = typeof config;
 
-declare module 'tamagui' {
+declare module "tamagui" {
   interface TamaguiCustomConfig extends Config {}
 }
 

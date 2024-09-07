@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import { SetMetadata } from '@multiplatform.one/typegraphql';
+import { SetMetadata } from "@multiplatform.one/typegraphql";
 
-export const PUBLIC = 'KEYCLOAK_PUBLIC';
+export const PUBLIC = "KEYCLOAK_PUBLIC";
 
 export const Public = () => SetMetadata(PUBLIC, true);

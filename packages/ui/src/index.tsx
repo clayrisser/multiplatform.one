@@ -21,5 +21,5 @@
  * limitations under the License.
  */
 
-export * from '@multiplatform.one/components';
-export * from './tamagui.config';
+export * from "@multiplatform.one/components";
+export * from "./tamagui.config";

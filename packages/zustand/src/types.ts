@@ -19,10 +19,13 @@
  * limitations under the License.
  */
 
-import type { Actions, MiddlewareOptionType, InitStateType } from './tools';
-import type { PersistOptions, DevtoolsOptions } from 'zustand/middleware';
+import type { DevtoolsOptions, PersistOptions } from "zustand/middleware";
+import type { Actions, InitStateType, MiddlewareOptionType } from "./tools";
 
-export interface CreateOptions<State extends InitStateType, A extends Actions<State>> {
+export interface CreateOptions<
+  State extends InitStateType,
+  A extends Actions<State>,
+> {
   devtools?: boolean | DevtoolsOptions;
   middlewares?: MiddlewareOptionType<State & ReturnType<A>>[];
   persist?: boolean | Partial<PersistOptions<State>>;

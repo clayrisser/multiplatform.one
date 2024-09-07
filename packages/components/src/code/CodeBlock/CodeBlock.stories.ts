@@ -1,17 +1,17 @@
-import { CodeBlock } from './index';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { CodeBlock } from "./index";
 
 const meta: Meta = {
-  title: 'code/CodeBlock',
+  title: "code/CodeBlock",
   component: CodeBlock,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
 export const main: StoryObj<typeof CodeBlock> = {
   args: {
-    backgroundColor: '$color2',
+    backgroundColor: "$color2",
     debug: false,
     disableCopy: false,
     isCollapsible: false,

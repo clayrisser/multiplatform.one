@@ -19,9 +19,9 @@
  * limitations under the License.
  */
 
-import { SetMetadata } from '@multiplatform.one/typegraphql';
+import { SetMetadata } from "@multiplatform.one/typegraphql";
 
-export const AUTHORIZED = 'KEYCLOAK_AUTHORIZED';
+export const AUTHORIZED = "KEYCLOAK_AUTHORIZED";
 
 export function Authorized(...roles: (string | string[])[]) {
   return SetMetadata(AUTHORIZED, roles || []);

@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-import childProcess from 'child_process';
-import path from 'path';
-import type { ChildProcess } from 'child_process';
-import { VitePluginNode } from 'vite-plugin-node';
-import { defineConfig } from 'vite';
+import childProcess from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import path from "node:path";
+import { defineConfig } from "vite";
+import { VitePluginNode } from "vite-plugin-node";
 
 let previousProcess: ChildProcess;
 
@@ -32,37 +32,40 @@ export default defineConfig({
     port: 5001,
   },
   build: {
-    outDir: 'dist/api',
+    outDir: "dist/api",
   },
   plugins: [
     ...VitePluginNode({
-      adapter: 'express',
-      appPath: './main.ts',
-      tsCompiler: 'swc',
+      adapter: "express",
+      appPath: "./main.ts",
+      tsCompiler: "swc",
     }),
     {
-      name: 'close-bundle',
+      name: "close-bundle",
       async closeBundle() {
         await new Promise((resolve, reject) => {
           const p = childProcess.spawn(
-            'pnpm',
+            "pnpm",
             [
-              'build-schema',
-              path.resolve(__dirname, './dist/api/main.mjs'),
-              path.resolve(__dirname, '../packages/gql/generated/schema.graphql'),
+              "build-schema",
+              path.resolve(__dirname, "./dist/api/main.mjs"),
+              path.resolve(
+                __dirname,
+                "../packages/gql/generated/schema.graphql",
+              ),
             ],
             {
-              stdio: 'inherit',
+              stdio: "inherit",
               shell: true,
             },
           );
-          p.on('close', (code, signal) => resolve({ code, signal }));
-          p.on('error', (err) => reject(err));
+          p.on("close", (code, signal) => resolve({ code, signal }));
+          p.on("error", (err) => reject(err));
         });
-        if (!new Set(process.argv).has('--watch')) return;
+        if (!new Set(process.argv).has("--watch")) return;
         previousProcess?.kill();
-        previousProcess = childProcess.spawn('node', ['dist/api/main.mjs'], {
-          stdio: 'inherit',
+        previousProcess = childProcess.spawn("node", ["dist/api/main.mjs"], {
+          stdio: "inherit",
           shell: true,
         });
       },

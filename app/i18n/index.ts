@@ -19,27 +19,31 @@
  * limitations under the License.
  */
 
-import 'intl-pluralrules';
-import config from './config';
-import i18n from 'i18next';
-import locales from './locales';
-import type { Resource, ResourceKey } from 'i18next';
-import { MultiPlatform } from 'multiplatform.one';
-import { initReactI18next } from 'react-i18next';
+import "intl-pluralrules";
+import i18n from "i18next";
+import type { Resource, ResourceKey } from "i18next";
+import { MultiPlatform } from "multiplatform.one";
+import { initReactI18next } from "react-i18next";
+import config from "./config";
+import locales from "./locales";
 
 const logger = console;
 const { defaultNamespace, defaultLocale, supportedLocales } = config;
 
-if (MultiPlatform.isNext && !MultiPlatform.isStatic) logger.warn("next should not import 'app/i18n'");
+if (MultiPlatform.isNext && !MultiPlatform.isStatic)
+  logger.warn("next should not import 'app/i18n'");
 
 export async function i18nInit() {
   return i18n.use(initReactI18next).init({
     defaultNS: defaultNamespace,
     lng: defaultLocale,
-    resources: Object.entries(locales).reduce<Resource>((resources, [key, value]: [string, ResourceKey]) => {
-      resources[key] = { [defaultNamespace]: value };
-      return resources;
-    }, {}),
+    resources: Object.entries(locales).reduce<Resource>(
+      (resources, [key, value]: [string, ResourceKey]) => {
+        resources[key] = { [defaultNamespace]: value };
+        return resources;
+      },
+      {},
+    ),
     interpolation: {
       escapeValue: false,
     },

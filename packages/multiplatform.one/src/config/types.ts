@@ -21,7 +21,9 @@
 
 export interface IConfig {
   add: (value: Record<string, string>) => void;
-  get: (key?: string) => Record<string, string | undefined> | string | undefined;
+  get: (
+    key?: string,
+  ) => Record<string, string | undefined> | string | undefined;
   remove: (key: string) => string | undefined;
   set: (key: string, value: string) => void;
 }

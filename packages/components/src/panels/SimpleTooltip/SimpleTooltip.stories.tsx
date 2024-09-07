@@ -19,15 +19,15 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { SimpleToolTipProps, SimpleTooltip } from './index';
-import { Button, Label, Switch, Text, XStack, YStack } from 'tamagui';
-import type { Meta } from '@storybook/react';
+import type { Meta } from "@storybook/react";
+import React from "react";
+import { Button, Label, Switch, Text, XStack, YStack } from "tamagui";
+import { type SimpleToolTipProps, SimpleTooltip } from "./index";
 
 const meta: Meta = {
-  title: 'panels/SimpleTooltip',
+  title: "panels/SimpleTooltip",
   component: SimpleTooltip,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: "beta" } },
 };
 
 function Tooltip(args: SimpleToolTipProps) {
@@ -54,10 +54,10 @@ function Tooltip(args: SimpleToolTipProps) {
 export const main = (args) => <Tooltip {...args} />;
 main.args = {
   arrow: true,
-  themeStyle: { background: 'black', color: 'white' },
-  triggerStyle: { background: 'black', color: 'white' },
-  contentStyle: { background: 'black', color: 'white' },
-  arrowStyle: { background: 'black' },
+  themeStyle: { background: "black", color: "white" },
+  triggerStyle: { background: "black", color: "white" },
+  contentStyle: { background: "black", color: "white" },
+  arrowStyle: { background: "black" },
 };
 
 export default meta;

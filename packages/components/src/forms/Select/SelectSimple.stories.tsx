@@ -1,19 +1,19 @@
-import React from 'react';
-import { Select } from 'tamagui';
-import { SelectSimple } from './SelectSimple';
-import { action } from '@storybook/addon-actions';
+import { action } from "@storybook/addon-actions";
+import React from "react";
+import { Select } from "tamagui";
+import { SelectSimple } from "./SelectSimple";
 
 export default {
-  title: 'forms/SelectSimple',
+  title: "forms/SelectSimple",
   component: SelectSimple,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
 export const main = (args) => {
   return (
-    <SelectSimple onValueChange={action('onValueChange')} {...args}>
+    <SelectSimple onValueChange={action("onValueChange")} {...args}>
       <Select.Item key="bmw" index={0} value="bmw">
         <Select.ItemText>BMW</Select.ItemText>
       </Select.Item>
@@ -30,10 +30,10 @@ export const main = (args) => {
   );
 };
 const mainArgs = {
-  name: 'FormSelectSimple',
-  placeholder: 'select one of these',
-  defaultValue: 'bmw',
-  value: 'bmw',
-  onValueChange: 'string',
+  name: "FormSelectSimple",
+  placeholder: "select one of these",
+  defaultValue: "bmw",
+  value: "bmw",
+  onValueChange: "string",
 };
 main.args = mainArgs;

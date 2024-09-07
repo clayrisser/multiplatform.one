@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export * from './FieldSlider';
-export * from './Slider';
+export * from "./FieldSlider";
+export * from "./Slider";

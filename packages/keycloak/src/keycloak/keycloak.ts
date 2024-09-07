@@ -19,25 +19,26 @@
  * limitations under the License.
  */
 
-import type KeycloakClient from 'keycloak-js';
-import type { AccessTokenParsed, TokenParsed } from '../token';
-import type { AuthRequestPromptOptions } from 'expo-auth-session';
-import type { KeycloakMock } from '../types';
-import type { Session } from '../session/session';
-import { KeycloakConfigContext, type KeycloakConfig } from './config';
-import { KeycloakContext } from './context';
-import { MultiPlatform } from 'multiplatform.one';
-import { useSession } from '../session/session';
-import { jwtDecode } from 'jwt-decode';
-import { signIn, signOut } from 'next-auth/react';
-import { useAuthConfig } from '../hooks';
-import { useContext } from 'react';
+import type { AuthRequestPromptOptions } from "expo-auth-session";
+import { jwtDecode } from "jwt-decode";
+import type KeycloakClient from "keycloak-js";
 import type {
   KeycloakLoginOptions as KeycloakJsLoginOptions,
   KeycloakLogoutOptions as KeycloakJsLogoutOptions,
-} from 'keycloak-js';
+} from "keycloak-js";
+import { MultiPlatform } from "multiplatform.one";
+import { signIn, signOut } from "next-auth/react";
+import { useContext } from "react";
+import { useAuthConfig } from "../hooks";
+import type { Session } from "../session/session";
+import { useSession } from "../session/session";
+import type { AccessTokenParsed, TokenParsed } from "../token";
+import type { KeycloakMock } from "../types";
+import { type KeycloakConfig, KeycloakConfigContext } from "./config";
+import { KeycloakContext } from "./context";
 
-export type KeycloakLoginOptions = KeycloakJsLoginOptions & AuthRequestPromptOptions & { redirect?: boolean };
+export type KeycloakLoginOptions = KeycloakJsLoginOptions &
+  AuthRequestPromptOptions & { redirect?: boolean };
 export type KeycloakLogoutOptions = KeycloakJsLogoutOptions;
 
 export class Keycloak {
@@ -61,12 +62,12 @@ export class Keycloak {
     login?: (_options: KeycloakLoginOptions) => Promise<undefined>,
     logout?: (_options: KeycloakLogoutOptions) => Promise<undefined>,
   ) {
-    if (typeof input === 'string') {
+    if (typeof input === "string") {
       this.token = input;
       this.idToken = idToken;
       this.refreshToken = refreshToken;
-    } else if (typeof input === 'object') {
-      if (typeof (input as KeycloakClient).init === 'function') {
+    } else if (typeof input === "object") {
+      if (typeof (input as KeycloakClient).init === "function") {
         this.keycloakClient = input as KeycloakClient;
       } else if ((input as Session).accessToken) {
         const session = input as Session;
@@ -77,8 +78,10 @@ export class Keycloak {
         this.mock = input as KeycloakMock;
       }
     }
-    if (this.token && !this._tokenParsed) this._tokenParsed = jwtDecode(this.token) as AccessTokenParsed;
-    if (this.idToken && !this._idTokenParsed) this._idTokenParsed = jwtDecode(this.idToken) as TokenParsed;
+    if (this.token && !this._tokenParsed)
+      this._tokenParsed = jwtDecode(this.token) as AccessTokenParsed;
+    if (this.idToken && !this._idTokenParsed)
+      this._idTokenParsed = jwtDecode(this.idToken) as TokenParsed;
     if (this.refreshToken && !this._refreshTokenParsed) {
       this._refreshTokenParsed = jwtDecode(this.refreshToken) as TokenParsed;
     }
@@ -87,17 +90,20 @@ export class Keycloak {
   }
 
   get tokenParsed() {
-    if (this.keycloakClient) return this.keycloakClient.tokenParsed as AccessTokenParsed;
+    if (this.keycloakClient)
+      return this.keycloakClient.tokenParsed as AccessTokenParsed;
     return this._tokenParsed;
   }
 
   get idTokenParsed() {
-    if (this.keycloakClient) return this.keycloakClient.idTokenParsed as TokenParsed;
+    if (this.keycloakClient)
+      return this.keycloakClient.idTokenParsed as TokenParsed;
     return this._idTokenParsed;
   }
 
   get refreshTokenParsed() {
-    if (this.keycloakClient) return this.keycloakClient.refreshTokenParsed as TokenParsed;
+    if (this.keycloakClient)
+      return this.keycloakClient.refreshTokenParsed as TokenParsed;
     return this._refreshTokenParsed;
   }
 
@@ -114,7 +120,7 @@ export class Keycloak {
 
   get realm() {
     if (this.keycloakClient) return this.keycloakClient.realm;
-    return this.tokenParsed?.iss?.split('/').pop() || this.config.realm;
+    return this.tokenParsed?.iss?.split("/").pop() || this.config.realm;
   }
 
   get realmAccess() {
@@ -144,13 +150,16 @@ export class Keycloak {
 
   async getUserInfo() {
     if (!this.authenticated) return;
-    const response = await fetch(`${this.config.url}/realms/${this.config.realm}/protocol/openid-connect/userinfo`, {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + this.token,
-        Accept: 'application/json',
+    const response = await fetch(
+      `${this.config.url}/realms/${this.config.realm}/protocol/openid-connect/userinfo`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+          Accept: "application/json",
+        },
       },
-    });
+    );
     if (response.ok) return response.json();
   }
 
@@ -161,7 +170,7 @@ export class Keycloak {
     if (this.keycloakClient) {
       await this.keycloakClient.login(options);
     } else if (MultiPlatform.isNext && !MultiPlatform.isServer) {
-      await signIn('keycloak', {
+      await signIn("keycloak", {
         callbackUrl: options.redirectUri,
         redirect: options.redirect,
       });
@@ -177,7 +186,7 @@ export class Keycloak {
     if (this.keycloakClient) {
       await this.keycloakClient.logout(options);
     } else if (MultiPlatform.isNext && !MultiPlatform.isServer) {
-      await fetch('/api/auth/logout', { method: 'GET' });
+      await fetch("/api/auth/logout", { method: "GET" });
       await signOut({
         callbackUrl: options.redirectUri,
       });
@@ -203,12 +212,14 @@ export function useKeycloak() {
   const { session, status } = useSession();
   if (MultiPlatform.isStorybook) {
     return new Keycloak(keycloakConfig, {
-      email: 'storybook@example.com',
-      username: 'storybook',
+      email: "storybook@example.com",
+      username: "storybook",
     });
-  } else if (status === 'unauthenticated') {
+  }
+  if (status === "unauthenticated") {
     return new Keycloak(keycloakConfig);
-  } else if (status === 'authenticated' && session?.accessToken) {
+  }
+  if (status === "authenticated" && session?.accessToken) {
     return new Keycloak(keycloakConfig, session as Session);
   }
 }

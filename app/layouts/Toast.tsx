@@ -19,9 +19,13 @@
  * limitations under the License.
  */
 
-import { useToastState, Toast as TamaguiToast, useToastController } from '@tamagui/toast';
-import { useEffect } from 'react';
-import { YStack } from 'tamagui';
+import {
+  Toast as TamaguiToast,
+  useToastController,
+  useToastState,
+} from "@tamagui/toast";
+import { useEffect } from "react";
+import { YStack } from "tamagui";
 
 export function Toast() {
   const toastState = useToastState();
@@ -46,7 +50,11 @@ export function Toast() {
       >
         <YStack>
           <TamaguiToast.Title>{toastState.title}</TamaguiToast.Title>
-          {!!toastState.message && <TamaguiToast.Description>{toastState.message}</TamaguiToast.Description>}
+          {!!toastState.message && (
+            <TamaguiToast.Description>
+              {toastState.message}
+            </TamaguiToast.Description>
+          )}
         </YStack>
       </TamaguiToast>
     )

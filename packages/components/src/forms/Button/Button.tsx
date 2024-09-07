@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export type { ButtonProps } from 'tamagui';
-export { Button } from 'tamagui';
+export type { ButtonProps } from "tamagui";
+export { Button } from "tamagui";

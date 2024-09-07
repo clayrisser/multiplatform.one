@@ -20,74 +20,76 @@
  * limitations under the License.
  */
 
-import { createGetKcContext } from 'keycloakify/login';
+import { createGetKcContext } from "keycloakify/login";
 
-export type KcContextExtension = { pageId: 'login.ftl' } | { pageId: 'register.ftl'; authorizedMailDomains: string[] };
+export type KcContextExtension =
+  | { pageId: "login.ftl" }
+  | { pageId: "register.ftl"; authorizedMailDomains: string[] };
 
 export const { getKcContext } = createGetKcContext<KcContextExtension>({
   mockData: [
     {
-      pageId: 'login.ftl',
+      pageId: "login.ftl",
       locale: {
-        currentLanguageTag: 'en',
+        currentLanguageTag: "en",
       },
     },
     {
-      pageId: 'register-user-profile.ftl',
+      pageId: "register-user-profile.ftl",
       locale: {
-        currentLanguageTag: 'en',
+        currentLanguageTag: "en",
       },
       profile: {
         attributes: [
           {
             validators: {
               pattern: {
-                pattern: '^[a-zA-Z0-9]+$',
-                'ignore.empty.value': true,
-                'error-message': `\${alphanumericalCharsOnly}`,
+                pattern: "^[a-zA-Z0-9]+$",
+                "ignore.empty.value": true,
+                "error-message": "${alphanumericalCharsOnly}",
               },
             },
             value: undefined,
-            name: 'username',
+            name: "username",
           },
           {
             validators: {
               options: {
-                options: ['male', 'female', 'non_binary', 'prefer_not_to_say'],
+                options: ["male", "female", "non_binary", "prefer_not_to_say"],
               },
             },
-            displayName: `\${gender}`,
+            displayName: "${gender}",
             annotations: {},
             required: true,
             groupAnnotations: {},
             readOnly: false,
-            name: 'gender',
+            name: "gender",
           },
         ],
       },
     },
     {
-      pageId: 'register.ftl',
+      pageId: "register.ftl",
       authorizedMailDomains: [
-        '*.example.com',
-        '*.yet-another-example.com',
-        'another-example.com',
-        'example.com',
-        'hello-world.com',
+        "*.example.com",
+        "*.yet-another-example.com",
+        "another-example.com",
+        "example.com",
+        "hello-world.com",
       ],
       messagesPerField: {
         printIfExists: <T>(fieldName: string, text: T) => {
           console.log({ fieldName });
-          return fieldName === 'email' ? text : undefined;
+          return fieldName === "email" ? text : undefined;
         },
-        existsError: (fieldName: string) => fieldName === 'email',
+        existsError: (fieldName: string) => fieldName === "email",
         get: (fieldName: string) => `Fake error for ${fieldName}`,
-        exists: (fieldName: string) => fieldName === 'email',
+        exists: (fieldName: string) => fieldName === "email",
       },
     },
     {
-      pageId: 'login-update-password.ftl',
-      username: 'test',
+      pageId: "login-update-password.ftl",
+      username: "test",
     },
   ],
   mockProperties: {},
@@ -95,4 +97,6 @@ export const { getKcContext } = createGetKcContext<KcContextExtension>({
 
 export const { kcContext } = getKcContext({});
 
-export type KcContext = NonNullable<ReturnType<typeof getKcContext>['kcContext']>;
+export type KcContext = NonNullable<
+  ReturnType<typeof getKcContext>["kcContext"]
+>;

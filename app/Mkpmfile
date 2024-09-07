@@ -29,8 +29,7 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 
 ACTIONS += format~deps
 $(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
-#	-@$(call eslint_format,$?)
-	-@$(call prettier,$?,$(FORMAT_ARGS))
+	# TODO biome
 	@$(call done,$@)
 
 ACTIONS += spellcheck~format
@@ -40,7 +39,7 @@ $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 
 ACTIONS += lint~spellcheck
 $(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
-	-@$(call eslint,$?,$(LINT_ARGS))
+	# TODO biome
 	@$(call done,$@)
 
 ACTIONS += test~lint

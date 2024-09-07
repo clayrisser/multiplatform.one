@@ -19,20 +19,20 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { ComponentType, ReactNode } from 'react';
-import type { ThemeName } from 'tamagui';
-import type { WithLayout } from 'multiplatform.one';
-import { Select, YStack, XStack, Adapt, Popover, Circle } from 'tamagui';
-// import { SelectSimple } from '../../forms/SelectSimple';
-import { createWithLayout } from 'multiplatform.one';
-import { useLocale, useSupportedLocales } from '@multiplatform.one/locales';
-import { useTheme } from 'multiplatform.one/theme';
-import { useTint } from '../../tints';
+import { useLocale, useSupportedLocales } from "@multiplatform.one/locales";
 // @ts-ignore
-import { config } from 'app/config';
+import { config } from "app/config";
+import type { WithLayout } from "multiplatform.one";
+// import { SelectSimple } from '../../forms/SelectSimple';
+import { createWithLayout } from "multiplatform.one";
+import { useTheme } from "multiplatform.one/theme";
+import React from "react";
+import type { ComponentType, ReactNode } from "react";
+import type { ThemeName } from "tamagui";
+import { Adapt, Circle, Popover, Select, XStack, YStack } from "tamagui";
+import { useTint } from "../../tints";
 
-type ColorScheme = 'dark' | 'light';
+type ColorScheme = "dark" | "light";
 
 export interface DebugLayoutProps<DebugViewProps> {
   children: ReactNode;
@@ -47,9 +47,18 @@ export function DebugLayout<DebugViewProps>({
   children,
   debugView,
   debugViewProps,
-  rootThemeNames = ['system', 'light', 'dark'],
+  rootThemeNames = ["system", "light", "dark"],
   size = 12,
-  subThemeNames = ['blue', 'gray', 'green', 'orange', 'pink', 'purple', 'red', 'yellow'],
+  subThemeNames = [
+    "blue",
+    "gray",
+    "green",
+    "orange",
+    "pink",
+    "purple",
+    "red",
+    "yellow",
+  ],
 }: DebugLayoutProps<DebugViewProps>) {
   const { familiesNames, setFamily, name } = useTint();
   const DebugView = debugView;
@@ -110,7 +119,12 @@ export function DebugLayout<DebugViewProps>({
       <XStack gap="$4" margin="$4" width={size} height={size}>
         <Popover placement="right" size="$5">
           <Popover.Trigger>
-            <Circle cursor="pointer" backgroundColor="$color9" width={size} height={size} />
+            <Circle
+              cursor="pointer"
+              backgroundColor="$color9"
+              width={size}
+              height={size}
+            />
           </Popover.Trigger>
           <Adapt>
             <Popover.Sheet modal dismissOnSnapToBottom>
@@ -169,7 +183,7 @@ export function DebugLayout<DebugViewProps>({
     );
   }
 
-  if (config.get('DEBUG') !== '1') return <>{children}</>;
+  if (config.get("DEBUG") !== "1") return <>{children}</>;
   return (
     <YStack fullscreen>
       {children}

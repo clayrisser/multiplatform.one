@@ -19,20 +19,24 @@
  * limitations under the License.
  */
 
-import { useMemo } from 'react';
-import type { AnyVariables } from '../types';
-import type { QueryKey } from '@tanstack/react-query';
-import type { UseSubscriptionArgs, SubscriptionHandler, UseSubscriptionState } from 'urql';
-import { useEffect } from 'react';
-import { useKeycloak } from '@multiplatform.one/keycloak';
-import { useQueryClient } from '@tanstack/react-query';
-import { useSubscription } from 'urql';
+import { useKeycloak } from "@multiplatform.one/keycloak";
+import type { QueryKey } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
+import { useEffect } from "react";
+import type {
+  SubscriptionHandler,
+  UseSubscriptionArgs,
+  UseSubscriptionState,
+} from "urql";
+import { useSubscription } from "urql";
+import type { AnyVariables } from "../types";
 
 export type UseGqlSubscriptionOptions<
   TData = any,
   TVariables extends AnyVariables = AnyVariables,
   TQueryKey extends QueryKey = QueryKey,
-> = Omit<UseSubscriptionArgs<TVariables, TData>, 'pause'> & {
+> = Omit<UseSubscriptionArgs<TVariables, TData>, "pause"> & {
   enabled?: boolean;
   queryKey?: TQueryKey;
   updatedAt?: number;
@@ -44,8 +48,10 @@ type DataTag<TType, TValue> = TType & {
 };
 type NoInfer<T> = [T][T extends any ? 0 : never];
 
-export interface UseGqlSubscriptionResponse<TData = any, TVariables extends AnyVariables = AnyVariables>
-  extends Omit<UseSubscriptionState<TData, TVariables>, 'fetching'> {
+export interface UseGqlSubscriptionResponse<
+  TData = any,
+  TVariables extends AnyVariables = AnyVariables,
+> extends Omit<UseSubscriptionState<TData, TVariables>, "fetching"> {
   isFetching: boolean;
 }
 
@@ -62,18 +68,18 @@ export function useGqlSubscription<
   const queryClient = useQueryClient();
   const [response] = useSubscription<TData, TResult, TVariables>(
     {
-      pause: !(typeof options?.enabled !== 'undefined'
+      pause: !(typeof options?.enabled !== "undefined"
         ? options.enabled
         : !!(keycloak?.authenticated && keycloak.token)),
       context: useMemo(
         () => ({
           ...options.context,
           fetchOptions: {
-            ...(typeof options.context?.fetchOptions === 'function'
+            ...(typeof options.context?.fetchOptions === "function"
               ? options.context.fetchOptions()
               : options.context?.fetchOptions),
             headers: {
-              ...(typeof options.context?.fetchOptions === 'function'
+              ...(typeof options.context?.fetchOptions === "function"
                 ? options.context.fetchOptions()?.headers
                 : options.context?.fetchOptions?.headers),
               authorization: `Bearer ${keycloak?.token}`,
@@ -92,7 +98,11 @@ export function useGqlSubscription<
       queryClient.setQueryData(
         options.queryKey,
         response.data as
-          | NoInfer<TQueryKey extends DataTag<unknown, infer TaggedValue> ? TaggedValue : TData>
+          | NoInfer<
+              TQueryKey extends DataTag<unknown, infer TaggedValue>
+                ? TaggedValue
+                : TData
+            >
           | undefined,
         {
           updatedAt: options.updatedAt,
@@ -100,7 +110,7 @@ export function useGqlSubscription<
       );
     }
   }, [response]);
-  delete (response as { fetching: any }).fetching;
+  (response as { fetching: any }).fetching = undefined;
   return {
     ...response,
     isFetching: response.fetching,

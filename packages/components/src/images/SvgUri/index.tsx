@@ -19,15 +19,15 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { StackProps } from 'tamagui';
-import type { UriProps } from 'react-native-svg';
+import React from "react";
+import type { UriProps } from "react-native-svg";
+import type { StackProps } from "tamagui";
 
 const logger = console;
 
 export type SvgUriProps = StackProps & UriProps;
 
 export function SvgUri(_props: SvgUriProps) {
-  logger.error('use SimpleImage instead of SvgUri');
+  logger.error("use SimpleImage instead of SvgUri");
   return <>{}</>;
 }

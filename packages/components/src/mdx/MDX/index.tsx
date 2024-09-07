@@ -19,12 +19,12 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { MDXComponents } from '@mdx-js/react/lib';
-import type { DebugProp } from '@tamagui/web';
-import { mdxComponents } from '../components';
-import { useCompileAndEvaluateMdx } from '../hooks';
-import { useMDXComponents } from '@mdx-js/react';
+import { useMDXComponents } from "@mdx-js/react";
+import type { MDXComponents } from "@mdx-js/react/lib";
+import type { DebugProp } from "@tamagui/web";
+import React from "react";
+import { mdxComponents } from "../components";
+import { useCompileAndEvaluateMdx } from "../hooks";
 
 export interface MDXProps {
   children: string;
@@ -39,7 +39,7 @@ export function MDX({ children, debug, ...props }: MDXProps) {
   const { Component, code, frontmatter } = useCompileAndEvaluateMdx(children);
   if (!Component) return <>{}</>;
   if (debug) {
-    logger.debug('MDX', { frontmatter });
+    logger.debug("MDX", { frontmatter });
     logger.debug(code);
   }
   return (

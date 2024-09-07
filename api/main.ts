@@ -19,16 +19,19 @@
  * limitations under the License.
  */
 
-import 'reflect-metadata';
-import { createApp } from '@multiplatform.one/typegraphql';
-import { fileURLToPath } from 'url';
-import { options } from './app';
+import "reflect-metadata";
+import { fileURLToPath } from "node:url";
+import { createApp } from "@multiplatform.one/typegraphql";
+import { options } from "./app";
 
 const app = createApp({
   ...options,
   logger: {
     ...options.logger,
-    logFileName: process.argv[1] === fileURLToPath(import.meta.url) ? options.logger?.logFileName : undefined,
+    logFileName:
+      process.argv[1] === fileURLToPath(import.meta.url)
+        ? options.logger?.logFileName
+        : undefined,
   },
 });
 if (process.argv[1] === fileURLToPath(import.meta.url)) app.start();

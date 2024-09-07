@@ -1,24 +1,27 @@
-import { clsx } from 'keycloakify/tools/clsx';
-import type { PageProps } from 'keycloakify/login/pages/PageProps';
-import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
-import type { KcContext } from '../kcContext';
-import type { I18n } from '../i18n';
-import { FieldCheckbox, FieldInput, Paragraph, SubmitButton, YStack } from 'ui';
-import { useForm } from '@tanstack/react-form';
-import { useCallback, useRef, useState } from 'react';
-import { Eye, EyeOff } from '@tamagui/lucide-icons';
-import { FlatList, type GestureResponderEvent } from 'react-native';
+import { Eye, EyeOff } from "@tamagui/lucide-icons";
+import { useForm } from "@tanstack/react-form";
+import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import type { PageProps } from "keycloakify/login/pages/PageProps";
+import { clsx } from "keycloakify/tools/clsx";
+import { useCallback, useRef, useState } from "react";
+import { FlatList, type GestureResponderEvent } from "react-native";
+import { FieldCheckbox, FieldInput, Paragraph, SubmitButton, YStack } from "ui";
+import type { I18n } from "../i18n";
+import type { KcContext } from "../kcContext";
 
 export interface LoginUpdatePasswordForm {
   username: string;
   password: string;
-  'password-new': string;
-  'password-confirm': string;
-  'logout-sessions': boolean;
+  "password-new": string;
+  "password-confirm": string;
+  "logout-sessions": boolean;
 }
 
 export default function LoginUpdatePassword(
-  props: PageProps<Extract<KcContext, { pageId: 'login-update-password.ftl' }>, I18n>,
+  props: PageProps<
+    Extract<KcContext, { pageId: "login-update-password.ftl" }>,
+    I18n
+  >,
 ) {
   const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -40,24 +43,27 @@ export default function LoginUpdatePassword(
 
   const { url, messagesPerField, isAppInitiatedAction, username } = kcContext;
 
-  const [error, setError] = useState<{ newPassword?: string; confirmNewPassword?: string }>({});
+  const [error, setError] = useState<{
+    newPassword?: string;
+    confirmNewPassword?: string;
+  }>({});
 
   const form = useForm({
     defaultValues: {
       username,
-      password: '',
-      'password-new': '',
-      'password-confirm': '',
-      ...(isAppInitiatedAction ? { 'logout-sessions': true } : {}),
+      password: "",
+      "password-new": "",
+      "password-confirm": "",
+      ...(isAppInitiatedAction ? { "logout-sessions": true } : {}),
     },
     onSubmit: ({ value }) => {
       Object.entries(value).forEach(([name, value]) => {
         if (!value) return;
-        const input = document.createElement('input');
+        const input = document.createElement("input");
         input.name = name;
-        input.value = value === true ? 'on' : value;
-        input.type = 'hidden';
-        input.style.display = 'none';
+        input.value = value === true ? "on" : value;
+        input.type = "hidden";
+        input.style.display = "none";
         formRef.current?.appendChild(input);
       });
       formRef.current?.submit();
@@ -65,17 +71,17 @@ export default function LoginUpdatePassword(
   });
 
   function handleNewPassword(text: string) {
-    let errorMessage = '';
+    let errorMessage = "";
 
     if (!text) {
-      errorMessage = 'Password is required';
+      errorMessage = "Password is required";
     } else {
       const passwordRegex =
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\]{};':"\\|,.<>?])[A-Za-z\d!@#$%^&*()_+\-=\]{};':"\\|,.<>?]{6,15}$/;
 
       if (!passwordRegex.test(text)) {
         errorMessage =
-          'Password must have at least one lowercase letter, one uppercase letter, one number, one special character, and be between 6 and 15 characters long';
+          "Password must have at least one lowercase letter, one uppercase letter, one number, one special character, and be between 6 and 15 characters long";
       }
     }
 
@@ -86,27 +92,30 @@ export default function LoginUpdatePassword(
     if (!text) {
       return setError((prev) => ({
         ...prev,
-        confirmNewPassword: 'confirm password is required',
+        confirmNewPassword: "confirm password is required",
       }));
     }
-    if (text !== form.state.values['password-new']) {
+    if (text !== form.state.values["password-new"]) {
       return setError((prev) => ({
         ...prev,
-        confirmNewPassword: 'password is not matching',
+        confirmNewPassword: "password is not matching",
       }));
     }
     return setError((prev) => ({
       ...prev,
-      confirmNewPassword: '',
+      confirmNewPassword: "",
     }));
   }
 
   return (
-    <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} headerNode={msg('updatePasswordTitle')}>
+    <Template
+      {...{ kcContext, i18n, doUseDefaultCss, classes }}
+      headerNode={msg("updatePasswordTitle")}
+    >
       <form
         id="kc-passwd-update-form"
         ref={formRef}
-        className={getClassName('kcFormClass')}
+        className={getClassName("kcFormClass")}
         action={url.loginAction}
         method="post"
       >
@@ -139,7 +148,7 @@ export default function LoginUpdatePassword(
         >
           <YStack position="relative">
             <FieldInput
-              label={msg('passwordNew')}
+              label={msg("passwordNew")}
               // @ts-ignore
               type="password"
               id="password-new"
@@ -150,7 +159,7 @@ export default function LoginUpdatePassword(
               autoComplete="new-password"
               onChangeText={handleNewPassword}
               inputProps={{
-                autoComplete: 'off',
+                autoComplete: "off",
                 secureTextEntry: !showPassword,
               }}
             />
@@ -172,7 +181,13 @@ export default function LoginUpdatePassword(
         </YStack>
         {/* {error.newPassword && <Paragraph color="$red9">{error.newPassword}</Paragraph>} */}
         {error.newPassword && (
-          <Paragraph color={error.newPassword === 'Password is required' ? '$red9' : '$yellow9'}>
+          <Paragraph
+            color={
+              error.newPassword === "Password is required"
+                ? "$red9"
+                : "$yellow9"
+            }
+          >
             {error.newPassword}
           </Paragraph>
         )}
@@ -184,7 +199,7 @@ export default function LoginUpdatePassword(
         >
           <YStack position="relative">
             <FieldInput
-              label={msg('passwordConfirm')}
+              label={msg("passwordConfirm")}
               // @ts-ignore
               type="password"
               id="password-confirm"
@@ -193,7 +208,7 @@ export default function LoginUpdatePassword(
               autoComplete="new-password"
               onChangeText={handleConfirmPassword}
               inputProps={{
-                autoComplete: 'off',
+                autoComplete: "off",
                 secureTextEntry: !showPassword,
               }}
             />
@@ -212,19 +227,24 @@ export default function LoginUpdatePassword(
               {showPassword ? <EyeOff size="$1.5" /> : <Eye size="$1.5" />}
             </YStack>
           </YStack>
-          {error.confirmNewPassword && <Paragraph color="$red9">{error.confirmNewPassword}</Paragraph>}
+          {error.confirmNewPassword && (
+            <Paragraph color="$red9">{error.confirmNewPassword}</Paragraph>
+          )}
         </YStack>
 
-        <YStack className={getClassName('kcFormGroupClass')}>
-          <YStack id="kc-form-options" className={getClassName('kcFormOptionsClass')}>
-            <YStack className={getClassName('kcFormOptionsWrapperClass')}>
+        <YStack className={getClassName("kcFormGroupClass")}>
+          <YStack
+            id="kc-form-options"
+            className={getClassName("kcFormOptionsClass")}
+          >
+            <YStack className={getClassName("kcFormOptionsWrapperClass")}>
               {isAppInitiatedAction && (
                 <YStack className="checkbox">
                   <FieldCheckbox
                     form={form}
                     id="logout-sessions"
                     name="logout-sessions"
-                    label={msgStr('logoutOtherSessions')}
+                    label={msgStr("logoutOtherSessions")}
                     // @ts-ignore
                     value="on"
                     checked
@@ -234,10 +254,13 @@ export default function LoginUpdatePassword(
             </YStack>
           </YStack>
 
-          <YStack id="kc-form-buttons" className={getClassName('kcFormButtonsClass')}>
+          <YStack
+            id="kc-form-buttons"
+            className={getClassName("kcFormButtonsClass")}
+          >
             {isAppInitiatedAction ? (
               <>
-                <SubmitButton form={form}>{msgStr('doSubmit')}</SubmitButton>
+                <SubmitButton form={form}>{msgStr("doSubmit")}</SubmitButton>
                 <SubmitButton
                   form={form}
                   // @ts-ignore
@@ -245,7 +268,7 @@ export default function LoginUpdatePassword(
                   name="cancel-aia"
                   value="true"
                 >
-                  {msg('doCancel')}
+                  {msg("doCancel")}
                 </SubmitButton>
               </>
             ) : (
@@ -260,7 +283,7 @@ export default function LoginUpdatePassword(
               //   value={msgStr('doSubmit')}
               // />
               <SubmitButton bg="$backgroundFocus" form={form}>
-                {msgStr('doSubmit')}
+                {msgStr("doSubmit")}
               </SubmitButton>
             )}
           </YStack>

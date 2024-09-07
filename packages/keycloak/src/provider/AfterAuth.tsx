@@ -19,13 +19,13 @@
  * limitations under the License.
  */
 
-'use client';
+"use client";
 
-import React, { useEffect } from 'react';
-import type { PropsWithChildren } from 'react';
-import { useAuthConfig } from '../hooks';
-import { useAuthState, persist } from '../state';
-import { useKeycloak } from '../keycloak';
+import React, { useEffect } from "react";
+import type { PropsWithChildren } from "react";
+import { useAuthConfig } from "../hooks";
+import { useKeycloak } from "../keycloak";
+import { persist, useAuthState } from "../state";
 
 export interface AfterAuthProps extends PropsWithChildren {}
 
@@ -41,24 +41,34 @@ export function AfterAuth({ children }: AfterAuthProps) {
     if (keycloak.token) {
       authState.setToken(keycloak.token);
       if (keycloak.idToken) authState.setIdToken(keycloak.idToken);
-      if (keycloak.refreshToken) authState.setRefreshToken(keycloak.refreshToken);
+      if (keycloak.refreshToken)
+        authState.setRefreshToken(keycloak.refreshToken);
     }
-  }, [keycloak?.authenticated, keycloak?.token, keycloak?.idToken, keycloak?.refreshToken]);
+  }, [
+    keycloak?.authenticated,
+    keycloak?.token,
+    keycloak?.idToken,
+    keycloak?.refreshToken,
+  ]);
 
   useEffect(() => {
-    if (authConfig.debug && keycloak?.token) logger.debug('token', keycloak.token);
+    if (authConfig.debug && keycloak?.token)
+      logger.debug("token", keycloak.token);
   }, [keycloak?.token]);
 
   useEffect(() => {
-    if (authConfig.debug && keycloak?.idToken) logger.debug('idToken', keycloak.idToken);
+    if (authConfig.debug && keycloak?.idToken)
+      logger.debug("idToken", keycloak.idToken);
   }, [keycloak?.idToken]);
 
   useEffect(() => {
-    if (authConfig.debug && keycloak?.refreshToken) logger.debug('refreshToken', keycloak.refreshToken);
+    if (authConfig.debug && keycloak?.refreshToken)
+      logger.debug("refreshToken", keycloak.refreshToken);
   }, [keycloak?.refreshToken]);
 
   useEffect(() => {
-    if (authConfig.debug && keycloak?.authenticated) logger.debug('authenticated', keycloak.authenticated);
+    if (authConfig.debug && keycloak?.authenticated)
+      logger.debug("authenticated", keycloak.authenticated);
   }, [keycloak?.authenticated]);
 
   return <>{children}</>;

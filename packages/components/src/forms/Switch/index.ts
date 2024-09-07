@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export * from './Switch';
-export * from './FieldSwitch';
+export * from "./Switch";
+export * from "./FieldSwitch";

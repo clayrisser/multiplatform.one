@@ -52,8 +52,5 @@
   },
   "engines": {
     "node": ">=6.0.0"
-  },
-  "eslintIgnore": [
-    "lib"
-  ]
+  }
 }

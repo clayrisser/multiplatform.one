@@ -1,17 +1,17 @@
-import React, { useMemo } from 'react';
-import { useKeycloak } from '@multiplatform.one/keycloak';
-import type { PropsWithChildren } from 'react';
-import { config } from 'app/config';
+import { useKeycloak } from "@multiplatform.one/keycloak";
+import { config } from "app/config";
+import { createClient as createWSClient } from "graphql-ws";
+import { MultiPlatform } from "multiplatform.one";
+import React, { useMemo } from "react";
+import type { PropsWithChildren } from "react";
 import {
   Client,
+  Provider as UrqlProvider,
   cacheExchange,
   fetchExchange,
-  subscriptionExchange,
-  Provider as UrqlProvider,
   ssrExchange,
-} from 'urql';
-import { createClient as createWSClient } from 'graphql-ws';
-import { MultiPlatform } from 'multiplatform.one';
+  subscriptionExchange,
+} from "urql";
 
 export interface GlobalUrqlProviderProps extends PropsWithChildren {
   keycloakDisabled?: boolean;
@@ -19,11 +19,13 @@ export interface GlobalUrqlProviderProps extends PropsWithChildren {
 export function GlobalUrqlProvider({ children }: GlobalUrqlProviderProps) {
   const keycloak = useKeycloak();
   const client = useMemo(() => {
-    const headers = { ...(keycloak ? { Authorization: `Bearer ${keycloak?.token}` } : {}) };
-    const uri = (config.get('API_BASE_URL') || 'http://localhost:5001') + '/graphql';
+    const headers = {
+      ...(keycloak ? { Authorization: `Bearer ${keycloak?.token}` } : {}),
+    };
+    const uri = `${config.get("API_BASE_URL") || "http://localhost:5001"}/graphql`;
 
     const wsClient = createWSClient({
-      url: uri.replace(/^http/, 'ws'),
+      url: uri.replace(/^http/, "ws"),
       connectionParams: { headers },
     });
     return new Client({
@@ -34,7 +36,7 @@ export function GlobalUrqlProvider({ children }: GlobalUrqlProviderProps) {
             fetchExchange,
             subscriptionExchange({
               forwardSubscription(request) {
-                const input = { ...request, query: request.query || '' };
+                const input = { ...request, query: request.query || "" };
                 return {
                   subscribe(sink) {
                     const unsubscribe = wsClient.subscribe(input, sink);

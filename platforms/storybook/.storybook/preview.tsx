@@ -19,30 +19,30 @@
  * limitations under the License.
  */
 
-import '@multiplatform.one/components/css/code-highlight.css';
-import '@tamagui/core/reset.css';
-import 'raf/polyfill';
-import React, { useEffect } from 'react';
-import tamaguiConfig from '../tamagui.config';
-import type { Preview } from '@storybook/react';
-import type { PropsWithChildren } from 'react';
-import type { ThemeName } from 'ui';
-import { GlobalProvider } from 'app/providers';
-import { MDXProvider } from '@mdx-js/react';
-import { importFonts } from 'app/fonts';
-import { mdxComponents, YStack } from 'ui';
-import { supportedLocales, defaultLocale, i18nInit, i18n } from 'app/i18n';
-import { themes as storybookThemes } from '@storybook/theming';
-import { useDarkMode } from 'storybook-dark-mode';
-import { useTheme } from 'multiplatform.one/theme';
-import { withThemeFromJSXProvider } from '@storybook/addon-styling';
+import "@multiplatform.one/components/css/code-highlight.css";
+import "@tamagui/core/reset.css";
+import "raf/polyfill";
+import { MDXProvider } from "@mdx-js/react";
+import { withThemeFromJSXProvider } from "@storybook/addon-styling";
+import type { Preview } from "@storybook/react";
+import { themes as storybookThemes } from "@storybook/theming";
+import { importFonts } from "app/fonts";
+import { defaultLocale, i18n, i18nInit, supportedLocales } from "app/i18n";
+import { GlobalProvider } from "app/providers";
+import { useTheme } from "multiplatform.one/theme";
+import React, { useEffect } from "react";
+import type { PropsWithChildren } from "react";
+import { useDarkMode } from "storybook-dark-mode";
+import type { ThemeName } from "ui";
+import { YStack, mdxComponents } from "ui";
+import tamaguiConfig from "../tamagui.config";
 
 i18nInit();
 importFonts();
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
+    actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
       expanded: true,
       hideNoControlsWarning: true,
@@ -62,20 +62,29 @@ const preview: Preview = {
       default: null,
     },
     backgrounds: [
-      { name: 'light', value: 'white', default: true },
-      { name: 'dark', value: '#262626' },
+      { name: "light", value: "white", default: true },
+      { name: "dark", value: "#262626" },
     ],
   },
 
   decorators: [
     withThemeFromJSXProvider({
       themes: {
-        ...['blue', 'gray', 'green', 'orange', 'pink', 'purple', 'red', 'yellow'].reduce((themes, name) => {
+        ...[
+          "blue",
+          "gray",
+          "green",
+          "orange",
+          "pink",
+          "purple",
+          "red",
+          "yellow",
+        ].reduce((themes, name) => {
           themes[name] = { name };
           return themes;
         }, {}),
       },
-      defaultTheme: 'blue',
+      defaultTheme: "blue",
       Provider,
     }),
     (Story, { globals }) => {
@@ -88,12 +97,12 @@ const preview: Preview = {
 
   globalTypes: {
     locale: {
-      name: 'locale',
-      title: 'Locale',
-      description: 'i18n locale',
+      name: "locale",
+      title: "Locale",
+      description: "i18n locale",
       defaultValue: defaultLocale,
       toolbar: {
-        icon: 'globe',
+        icon: "globe",
         dynamicTitle: true,
         items: supportedLocales.map((locale) => ({
           value: locale,
@@ -116,11 +125,11 @@ function Provider(props: PropsWithChildren & { theme: StylingTheme }) {
   const darkMode = useDarkMode();
   const [theme, setTheme] = useTheme();
   useEffect(() => {
-    if (typeof darkMode === 'undefined') return;
-    setTheme({ root: darkMode ? 'dark' : 'light' });
+    if (typeof darkMode === "undefined") return;
+    setTheme({ root: darkMode ? "dark" : "light" });
   }, [darkMode]);
   useEffect(() => {
-    if (typeof props.theme.name === 'undefined') return;
+    if (typeof props.theme.name === "undefined") return;
     setTheme({ sub: props.theme.name });
   }, [props.theme.name]);
   return (

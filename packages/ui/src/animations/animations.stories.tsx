@@ -1,11 +1,11 @@
-import React from 'react';
-import type { Meta } from '@storybook/react';
-import { YStack, Circle } from 'tamagui';
+import type { Meta } from "@storybook/react";
+import React from "react";
+import { Circle, YStack } from "tamagui";
 
 const meta: Meta = {
-  title: 'animations',
+  title: "animations",
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
@@ -18,24 +18,24 @@ export const main = () => (
     bg="$blue5"
     animation="bouncy"
     hoverStyle={{
-      rotate: '20deg',
+      rotate: "20deg",
       scale: 1.5,
     }}
     pressStyle={{
-      rotate: '20deg',
+      rotate: "20deg",
       scale: 1.5,
     }}
   >
     <Circle
       enterStyle={{
-        bg: '$green10',
+        bg: "$green10",
       }}
       hoverStyle={{
-        bg: '$green10',
+        bg: "$green10",
       }}
       pressStyle={{
-        bg: '$purple10',
-        skewX: '10deg',
+        bg: "$purple10",
+        skewX: "10deg",
       }}
       animation="bouncy"
       w={200}

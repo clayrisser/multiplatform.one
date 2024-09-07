@@ -19,59 +19,59 @@
  * limitations under the License.
  */
 
-import 'reflect-metadata';
-import dotenv from 'dotenv';
-import type { AppOptions } from '@multiplatform.one/typegraphql';
-import type { PubSubEvents } from './pubSub';
-import type { UserRepresentation } from '@multiplatform.one/keycloak-typegraphql';
-import { KeycloakAddon } from '@multiplatform.one/keycloak-typegraphql';
-import { PrismaClient } from '@prisma/client';
-import { pubSub } from './pubSub';
-import { resolvers } from './resolvers';
+import "reflect-metadata";
+import type { UserRepresentation } from "@multiplatform.one/keycloak-typegraphql";
+import { KeycloakAddon } from "@multiplatform.one/keycloak-typegraphql";
+import type { AppOptions } from "@multiplatform.one/typegraphql";
+import { PrismaClient } from "@prisma/client";
+import dotenv from "dotenv";
+import type { PubSubEvents } from "./pubSub";
+import { pubSub } from "./pubSub";
+import { resolvers } from "./resolvers";
 
 dotenv.config();
 const seedUsers: UserRepresentation[] = [
   {
-    username: 'one',
-    email: 'one@multiplatform.one',
-    firstName: 'Multiplatform',
-    lastName: 'One',
-    credentials: [{ value: 'pass' }],
+    username: "one",
+    email: "one@multiplatform.one",
+    firstName: "Multiplatform",
+    lastName: "One",
+    credentials: [{ value: "pass" }],
   },
 ];
 
 export const options: AppOptions<PubSubEvents> = {
-  debug: process.env.DEBUG === '1',
-  port: process.env.API_PORT ? parseInt(process.env.API_PORT, 10) : 5000,
+  debug: process.env.DEBUG === "1",
+  port: process.env.API_PORT ? Number.parseInt(process.env.API_PORT, 10) : 5000,
   prisma: new PrismaClient(),
   pubSub,
   resolvers,
   secret: process.env.SECRET,
   addons: [
     KeycloakAddon({
-      adminPassword: process.env.KEYCLOAK_ADMIN_PASSWORD || '',
-      adminUsername: process.env.KEYCLOAK_ADMIN_USERNAME || '',
-      baseUrl: process.env.KEYCLOAK_BASE_URL || '',
-      clientId: process.env.KEYCLOAK_CLIENT_ID || '',
-      clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || '',
-      realm: process.env.KEYCLOAK_REALM || 'master',
+      adminPassword: process.env.KEYCLOAK_ADMIN_PASSWORD || "",
+      adminUsername: process.env.KEYCLOAK_ADMIN_USERNAME || "",
+      baseUrl: process.env.KEYCLOAK_BASE_URL || "",
+      clientId: process.env.KEYCLOAK_CLIENT_ID || "",
+      clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || "",
+      realm: process.env.KEYCLOAK_REALM || "master",
       register:
-        process.env.KEYCLOAK_REGISTER === '1'
+        process.env.KEYCLOAK_REGISTER === "1"
           ? {
-              ...(process.env.SEED === '1' ? { users: seedUsers } : {}),
+              ...(process.env.SEED === "1" ? { users: seedUsers } : {}),
             }
           : false,
     }),
   ],
   logger: {
     axios: {
-      requestLogLevel: 'info',
-      responseLogLevel: 'info',
+      requestLogLevel: "info",
+      responseLogLevel: "info",
       data: false,
       headers: false,
     },
   },
   tracing: {
-    apollo: process.env.APOLLO_TRACING === '1',
+    apollo: process.env.APOLLO_TRACING === "1",
   },
 };

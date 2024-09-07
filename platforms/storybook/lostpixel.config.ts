@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-import type { CustomProjectConfig } from 'lost-pixel/dist';
+import type { CustomProjectConfig } from "lost-pixel/dist";
 
 export const config: CustomProjectConfig = {
   storybookShots: {
-    storybookUrl: './storybook-static',
+    storybookUrl: "./storybook-static",
   },
   generateOnly: true,
   failOnDifference: true,

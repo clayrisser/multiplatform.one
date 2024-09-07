@@ -19,37 +19,70 @@
  * limitations under the License.
  */
 
-import React, { useId } from 'react';
-import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
-import type { FieldComponentProps } from '../types';
-import type { FormFieldProps } from '../FormField';
-import type { RadioGroupItemProps, XStackProps } from 'tamagui';
-import type { RadioGroupProps } from './RadioGroup';
-import { FormField } from '../FormField';
-import { RadioGroup } from './RadioGroup';
-import { useForm, Field } from '@tanstack/react-form';
-import { useProps, XStack } from 'tamagui';
+import type { DeepKeys, DeepValue, Validator } from "@tanstack/form-core";
+import { Field, useForm } from "@tanstack/react-form";
+import React, { useId } from "react";
+import type { RadioGroupItemProps, XStackProps } from "tamagui";
+import { XStack, useProps } from "tamagui";
+import type { FormFieldProps } from "../FormField";
+import { FormField } from "../FormField";
+import type { FieldComponentProps } from "../types";
+import type { RadioGroupProps } from "./RadioGroup";
+import { RadioGroup } from "./RadioGroup";
 
 export type FieldRadioGroupProps<
   TParentData = any,
   TName extends DeepKeys<TParentData> = any,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
-> = Omit<FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children' | 'field'> &
-  Pick<RadioGroupProps, 'children' | 'value' | 'onValueChange'> &
-  Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
-    radioGroupProps?: Omit<RadioGroupProps, 'value' | 'id' | 'onValueChange' | 'children'>;
+> = Omit<
+  FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>,
+  "children" | "field"
+> &
+  Pick<RadioGroupProps, "children" | "value" | "onValueChange"> &
+  Partial<
+    Omit<
+      FieldComponentProps<
+        TParentData,
+        TName,
+        TFieldValidator,
+        TFormValidator,
+        TData
+      >,
+      "children"
+    >
+  > & {
+    radioGroupProps?: Omit<
+      RadioGroupProps,
+      "value" | "id" | "onValueChange" | "children"
+    >;
     horizontal?: boolean;
   };
 
 export function FieldRadioGroup<
   TParentData,
   TName extends DeepKeys<TParentData>,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
->(props: FieldRadioGroupProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+>(
+  props: FieldRadioGroupProps<
+    TParentData,
+    TName,
+    TFieldValidator,
+    TFormValidator,
+    TData
+  >,
+) {
   let {
     asyncAlways,
     asyncDebounceMs,
@@ -98,7 +131,9 @@ export function FieldRadioGroup<
       validators={validators}
     >
       {(field) => {
-        const error = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : fieldProps.error;
+        const error = field.state.meta.errors.length
+          ? field.state.meta.errors.join(", ")
+          : fieldProps.error;
         return (
           <FormField
             error={error}
@@ -127,9 +162,11 @@ export function FieldRadioGroup<
   );
 }
 
-export interface FormRadioGroupItemProps extends XStackProps, Pick<RadioGroupItemProps, 'children' | 'value' | 'size'> {
+export interface FormRadioGroupItemProps
+  extends XStackProps,
+    Pick<RadioGroupItemProps, "children" | "value" | "size"> {
   disabled?: boolean;
-  itemProps?: Omit<RadioGroupItemProps, 'children' | 'value' | 'size'>;
+  itemProps?: Omit<RadioGroupItemProps, "children" | "value" | "size">;
 }
 
 export function FieldRadioGroupItem({

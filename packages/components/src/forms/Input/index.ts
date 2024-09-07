@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export * from './FieldInput';
-export * from './Input';
+export * from "./FieldInput";
+export * from "./Input";

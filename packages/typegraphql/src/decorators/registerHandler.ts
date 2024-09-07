@@ -19,9 +19,9 @@
  * limitations under the License.
  */
 
-import type { Ctx } from '../types';
-import type { ResolverData, NextFn, MiddlewareInterface } from 'type-graphql';
-import { createMethodDecorator } from '../decorate';
+import type { MiddlewareInterface, NextFn, ResolverData } from "type-graphql";
+import { createMethodDecorator } from "../decorate";
+import type { Ctx } from "../types";
 
 export function RegisterHandler(
   target: any,
@@ -40,11 +40,15 @@ export function RegisterHandler(
             handlers: [],
           };
         }
-        if (typeof descriptor.value === 'function') {
-          ctx.typegraphqlMeta.resolvers[target.constructor.name].handlers.push(descriptor.value);
+        if (typeof descriptor.value === "function") {
+          ctx.typegraphqlMeta.resolvers[target.constructor.name].handlers.push(
+            descriptor.value,
+          );
         }
         return next();
       }
     },
-  )(target, propertyKey, descriptor) as undefined | TypedPropertyDescriptor<any>;
+  )(target, propertyKey, descriptor) as
+    | undefined
+    | TypedPropertyDescriptor<any>;
 }

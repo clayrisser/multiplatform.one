@@ -20,7 +20,7 @@
  * limitations under the License.
  */
 
-import { createGetKcContext } from 'keycloakify/account';
+import { createGetKcContext } from "keycloakify/account";
 
 export const { getKcContext } = createGetKcContext({
   mockData: [],
@@ -29,4 +29,6 @@ export const { getKcContext } = createGetKcContext({
 
 export const { kcContext } = getKcContext({});
 
-export type KcContext = NonNullable<ReturnType<typeof getKcContext>['kcContext']>;
+export type KcContext = NonNullable<
+  ReturnType<typeof getKcContext>["kcContext"]
+>;

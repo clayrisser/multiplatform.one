@@ -19,19 +19,21 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { SimpleSheet } from './index';
-import type { Meta } from '@storybook/react';
-import { YStack, Button } from 'tamagui';
-import type { SimpleSheetProps } from './index';
-import { action } from '@storybook/addon-actions';
+import { action } from "@storybook/addon-actions";
+import type { Meta } from "@storybook/react";
+import React from "react";
+import { Button, YStack } from "tamagui";
+import { SimpleSheet } from "./index";
+import type { SimpleSheetProps } from "./index";
 
 const meta: Meta = {
-  title: 'panels/SimpleSheet',
+  title: "panels/SimpleSheet",
   component: SimpleSheet,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: "beta" } },
 };
-export const main = (args) => <SimpleSheet onSheetChange={action('onSheetChange')} {...args} />;
+export const main = (args) => (
+  <SimpleSheet onSheetChange={action("onSheetChange")} {...args} />
+);
 const mainArgs: SimpleSheetProps = {
   forceRemoveScrollEnabled: true,
   modal: true,

@@ -1,8 +1,8 @@
-import React from 'react';
-import { Text } from 'ui';
+import React from "react";
+import { Text } from "ui";
 
 export default {
-  title: 'Welcome',
+  title: "Welcome",
 };
 
 export const welcome = () => <Text>Welcome</Text>;

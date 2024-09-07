@@ -1,28 +1,35 @@
-import { createDefaultFont } from 'multiplatform.one';
-import { createInterFont } from '@tamagui/font-inter';
+import { createInterFont } from "@tamagui/font-inter";
+import { createDefaultFont } from "multiplatform.one";
 
-export const fonts = {
+export interface Fonts {
+  body: ReturnType<typeof createInterFont>;
+  heading: ReturnType<typeof createInterFont>;
+  rockSalt: ReturnType<typeof createDefaultFont>;
+  silkscreen: ReturnType<typeof createDefaultFont>;
+}
+
+export const fonts: Fonts = {
   rockSalt: createDefaultFont({
-    family: 'Rock Salt',
+    family: "Rock Salt",
   }),
   silkscreen: createDefaultFont({
-    family: 'Silkscreen',
+    family: "Silkscreen",
   }),
   heading: createInterFont({
     size: {
       6: 15,
     },
     transform: {
-      6: 'uppercase',
-      7: 'none',
+      6: "uppercase",
+      7: "none",
     },
     weight: {
-      6: '400',
-      7: '700',
+      6: "400",
+      7: "700",
     },
     color: {
-      6: '$colorFocus',
-      7: '$color',
+      6: "$colorFocus",
+      7: "$color",
     },
     letterSpacing: {
       5: 2,
@@ -36,13 +43,13 @@ export const fonts = {
       15: -6,
     },
     face: {
-      700: { normal: 'InterBold' },
+      700: { normal: "InterBold" },
     },
   }),
   body: createInterFont(
     {
       face: {
-        700: { normal: 'InterBold' },
+        700: { normal: "InterBold" },
       },
     },
     {

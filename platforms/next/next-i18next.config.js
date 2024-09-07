@@ -1,9 +1,9 @@
-const { supportedLocales, defaultLocale } = require('app/i18n/config');
+const { supportedLocales, defaultLocale } = require("app/i18n/config");
 
 module.exports = {
   i18n: {
     defaultLocale,
     locales: supportedLocales,
   },
-  localePath: '../../app/i18n/locales',
+  localePath: "../../app/i18n/locales",
 };

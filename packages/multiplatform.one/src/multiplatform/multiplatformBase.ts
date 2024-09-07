@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import { isTouchable, isWindowDefined } from '@tamagui/constants';
+import { isTouchable, isWindowDefined } from "@tamagui/constants";
 
 declare global {
   interface Window {
@@ -42,7 +42,8 @@ export class MultiPlatformBase {
   static isNext = false;
   static isServer = false;
   static isStatic = false;
-  static isStorybook = isWindowDefined && typeof window.__STORYBOOK_ADDONS_PREVIEW === 'object';
+  static isStorybook =
+    isWindowDefined && typeof window.__STORYBOOK_ADDONS_PREVIEW === "object";
   static isTouchable = isTouchable;
   static isWeb = false;
   static isWebTouchable = false;

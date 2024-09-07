@@ -19,16 +19,16 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { useAssets } from '../../hooks';
-import { Props, SimpleImage } from './index';
-import { YStack } from 'tamagui';
+import React from "react";
+import { YStack } from "tamagui";
+import { useAssets } from "../../hooks";
+import { type Props, SimpleImage } from "./index";
 
 export default {
-  title: 'images/SimpleImage',
+  title: "images/SimpleImage",
   component: SimpleImage,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
@@ -92,10 +92,10 @@ export const withYStack = (args: Props) => (
 
 withYStack.args = {
   height: 200,
-  width: '50%',
-  backgroundColor: 'green',
+  width: "50%",
+  backgroundColor: "green",
   // loader: 'ImageLoader',
-  loading: 'lazy',
+  loading: "lazy",
 };
 
 export const withTamagui = (args: Props) => (
@@ -111,9 +111,9 @@ export const withTamagui = (args: Props) => (
 );
 
 withTamagui.args = {
-  height: '$20',
-  width: '100%',
-  backgroundColor: '$red8',
+  height: "$20",
+  width: "100%",
+  backgroundColor: "$red8",
   // loader: 'ImageLoader',
-  loading: 'lazy',
+  loading: "lazy",
 };

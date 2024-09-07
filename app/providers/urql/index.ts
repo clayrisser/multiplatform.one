@@ -1,1 +1,1 @@
-export * from './urql';
+export * from "./urql";

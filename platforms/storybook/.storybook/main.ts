@@ -19,56 +19,62 @@
  * limitations under the License.
  */
 
-import fs from 'fs';
-import path from 'path';
-import publicConfig from 'app/config/public';
-import type { StorybookConfig } from '@storybook/nextjs';
-import { lookupTranspileModules, lookupTamaguiModules } from '@multiplatform.one/utils/transpileModules';
+import fs from "node:fs";
+import path from "node:path";
+import {
+  lookupTamaguiModules,
+  lookupTranspileModules,
+} from "@multiplatform.one/utils/transpileModules";
+import type { StorybookConfig } from "@storybook/nextjs";
+import publicConfig from "app/config/public";
 
 const stories = [
-  '..',
-  '../../../app',
-  ...fs.readdirSync(path.resolve(__dirname, '../../../packages')).map((dir) => `../../../packages/${dir}`),
+  "..",
+  "../../../app",
+  ...fs
+    .readdirSync(path.resolve(__dirname, "../../../packages"))
+    .map((dir) => `../../../packages/${dir}`),
 ]
   .map((dir) => path.resolve(__dirname, dir))
-  .map((parentDir) => {
+  .flatMap((parentDir) => {
     return fs
       .readdirSync(parentDir, { withFileTypes: true })
       .filter(
         (dir) =>
           dir.isDirectory() &&
-          !['dist', 'lib', 'types', 'bin', 'node_modules'].includes(dir.name) &&
-          !dir.name.startsWith('.') &&
-          !dir.name.startsWith('_') &&
-          !dir.name.startsWith('@'),
+          !["dist", "lib", "types", "bin", "node_modules"].includes(dir.name) &&
+          !dir.name.startsWith(".") &&
+          !dir.name.startsWith("_") &&
+          !dir.name.startsWith("@"),
       )
       .map((dir) => `${parentDir}/${dir.name}`);
-  })
-  .flat();
+  });
 
 const config: StorybookConfig = {
   stories,
   addons: [
-    '@etchteam/storybook-addon-status',
-    '@storybook/addon-a11y',
-    '@storybook/addon-links',
-    '@storybook/addon-notes',
-    '@storybook/addon-storyshots',
-    '@storybook/addon-storysource',
-    '@storybook/addon-webpack5-compiler-babel',
-    'addon-screen-reader',
-    'storybook-addon-paddings',
-    'storybook-color-picker',
-    'storybook-dark-mode',
+    "@etchteam/storybook-addon-status",
+    "@storybook/addon-a11y",
+    "@storybook/addon-links",
+    "@storybook/addon-notes",
+    "@storybook/addon-storyshots",
+    "@storybook/addon-storysource",
+    "@storybook/addon-webpack5-compiler-babel",
+    "addon-screen-reader",
+    "storybook-addon-paddings",
+    "storybook-color-picker",
+    "storybook-dark-mode",
     {
-      name: '@storybook/addon-react-native-web',
+      name: "@storybook/addon-react-native-web",
       options: {
-        babelPlugins: ['react-native-reanimated/plugin'],
-        modulesToTranspile: lookupTranspileModules([path.resolve(__dirname, '..')]),
+        babelPlugins: ["react-native-reanimated/plugin"],
+        modulesToTranspile: lookupTranspileModules([
+          path.resolve(__dirname, ".."),
+        ]),
       },
     },
     {
-      name: '@storybook/addon-essentials',
+      name: "@storybook/addon-essentials",
       options: {
         actions: true,
         backgrounds: false,
@@ -78,13 +84,13 @@ const config: StorybookConfig = {
         controls: true,
       },
     },
-    '@storybook/addon-styling',
+    "@storybook/addon-styling",
   ],
   core: {
     disableTelemetry: true,
   },
   framework: {
-    name: '@storybook/nextjs',
+    name: "@storybook/nextjs",
     options: {},
   },
   features: {
@@ -92,20 +98,23 @@ const config: StorybookConfig = {
     storyStoreV7: false,
   },
   docs: {
-    autodocs: 'tag',
+    autodocs: "tag",
   },
   env: (config) => ({
     ...config,
-    TAMAGUI_TARGET: 'web',
+    TAMAGUI_TARGET: "web",
     ...(publicConfig as Record<string, string>),
   }),
   typescript: {
     check: false,
     checkOptions: {},
-    reactDocgen: 'react-docgen-typescript',
+    reactDocgen: "react-docgen-typescript",
     skipBabel: false,
     reactDocgenTypescriptOptions: {
-      propFilter: (prop) => (prop.parent ? !/node_modules\/(?!tamagui)/.test(prop.parent.fileName) : true),
+      propFilter: (prop) =>
+        prop.parent
+          ? !/node_modules\/(?!tamagui)/.test(prop.parent.fileName)
+          : true,
       shouldExtractLiteralValuesFromEnum: true,
       shouldRemoveUndefinedFromOptional: true,
     },
@@ -116,9 +125,9 @@ const config: StorybookConfig = {
       ...config.resolve,
       alias: {
         ...(config.resolve?.alias || {}),
-        buffer: require.resolve('buffer/'),
-        stream: require.resolve('stream-browserify'),
-        zlib: require.resolve('browserify-zlib'),
+        buffer: require.resolve("buffer/"),
+        stream: require.resolve("stream-browserify"),
+        zlib: require.resolve("browserify-zlib"),
       },
       fallback: {
         ...(config.resolve?.fallback || {}),
@@ -128,19 +137,19 @@ const config: StorybookConfig = {
   }),
   babelDefault: (config, _options) => ({
     ...config,
-    presets: [...(config.presets || []), '@babel/preset-typescript'],
+    presets: [...(config.presets || []), "@babel/preset-typescript"],
     plugins: [
       // TODO: do this only in production
       ...(Math.random() * 0
         ? [
-            '@tamagui/babel-plugin',
+            "@tamagui/babel-plugin",
             {
-              components: lookupTamaguiModules([path.resolve(__dirname, '..')]),
-              config: require.resolve('../tamagui.config.ts'),
+              components: lookupTamaguiModules([path.resolve(__dirname, "..")]),
+              config: require.resolve("../tamagui.config.ts"),
             },
           ]
         : []),
-      'react-native-reanimated/plugin',
+      "react-native-reanimated/plugin",
     ],
   }),
 };

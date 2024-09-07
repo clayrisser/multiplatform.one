@@ -19,20 +19,27 @@
  * limitations under the License.
  */
 
-import path from 'path';
-import type { Ctx, AppOptions } from './types';
-import type { ValidateSettings } from 'type-graphql/build/typings/schema/build-context';
-import { BuildSchemaOptions, ResolverData, buildSchema as typeGraphqlBuildSchema } from 'type-graphql';
-import { createResolvers } from './resolvers';
+import path from "node:path";
+import {
+  type BuildSchemaOptions,
+  type ResolverData,
+  buildSchema as typeGraphqlBuildSchema,
+} from "type-graphql";
+import type { ValidateSettings } from "type-graphql/build/typings/schema/build-context";
+import { createResolvers } from "./resolvers";
+import type { AppOptions, Ctx } from "./types";
 
 const logger = console;
 
 export async function _buildSchemaBin() {
   const bundlePath = process.argv[2];
-  const emitPath = process.argv.length > 3 ? path.resolve(process.cwd(), process.argv[3]) : undefined;
+  const emitPath =
+    process.argv.length > 3
+      ? path.resolve(process.cwd(), process.argv[3])
+      : undefined;
   if (!bundlePath || !emitPath) {
-    if (!bundlePath) logger.error('missing bundle path');
-    if (!emitPath) logger.error('missing emit path');
+    if (!bundlePath) logger.error("missing bundle path");
+    if (!emitPath) logger.error("missing emit path");
     process.exit(1);
   }
   const { options } = await import(path.resolve(process.cwd(), bundlePath));
@@ -43,7 +50,8 @@ export async function _buildSchemaBin() {
 export async function buildSchema(options: AppOptions, emit?: string | true) {
   return typeGraphqlBuildSchema({
     ...createBuildSchemaOptions(options),
-    emitSchemaFile: emit === true ? path.resolve(process.cwd(), 'schema.graphql') : emit,
+    emitSchemaFile:
+      emit === true ? path.resolve(process.cwd(), "schema.graphql") : emit,
   });
 }
 
@@ -59,7 +67,7 @@ export function createBuildSchemaOptions(options: AppOptions) {
     pubSub: options.pubSub,
     resolvers: createResolvers(options),
     validate:
-      typeof options.buildSchema?.validate === 'object'
+      typeof options.buildSchema?.validate === "object"
         ? {
             ...validate,
             ...options.buildSchema?.validate,

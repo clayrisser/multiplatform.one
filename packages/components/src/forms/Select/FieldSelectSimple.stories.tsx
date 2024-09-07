@@ -19,33 +19,38 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { FieldSelectSimple } from './index';
-import { Select, YStack } from 'tamagui';
-import { SubmitButton } from '../Button';
-import { action } from '@storybook/addon-actions';
-import { useForm } from '@tanstack/react-form';
+import { action } from "@storybook/addon-actions";
+import { useForm } from "@tanstack/react-form";
+import React from "react";
+import { Select, YStack } from "tamagui";
+import { SubmitButton } from "../Button";
+import { FieldSelectSimple } from "./index";
 
 export default {
-  title: 'forms/FieldSelectSimple',
+  title: "forms/FieldSelectSimple",
   component: FieldSelectSimple,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
 export const main = (args) => {
   const form = useForm({
     defaultValues: {
-      car: 'ford',
+      car: "ford",
     },
     onSubmit: async ({ value }) => {
-      action('onSubmit')(value);
+      action("onSubmit")(value);
     },
   });
   return (
     <YStack>
-      <FieldSelectSimple label="SELECT VEHICLE" name="car" form={form} {...args}>
+      <FieldSelectSimple
+        label="SELECT VEHICLE"
+        name="car"
+        form={form}
+        {...args}
+      >
         <Select.Item key="bmw" index={0} value="bmw">
           <Select.ItemText>BMW</Select.ItemText>
         </Select.Item>

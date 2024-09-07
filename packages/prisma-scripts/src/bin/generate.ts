@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-import generate from '../generate';
+import generate from "../generate";
 
 generate();

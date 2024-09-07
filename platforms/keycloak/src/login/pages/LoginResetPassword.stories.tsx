@@ -20,11 +20,11 @@
  * limitations under the License.
  */
 
-import type { ComponentStory, ComponentMeta } from '@storybook/react';
-import { createPageStory } from '../createPageStory';
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
+import { createPageStory } from "../createPageStory";
 
 const { PageStory } = createPageStory({
-  pageId: 'login-reset-password.ftl',
+  pageId: "login-reset-password.ftl",
 });
 
 export const WithEmailAsUsername: ComponentStory<typeof PageStory> = () => (
@@ -36,6 +36,6 @@ export const WithEmailAsUsername: ComponentStory<typeof PageStory> = () => (
 );
 
 export default {
-  title: 'login/LoginResetPassword',
+  title: "login/LoginResetPassword",
   component: PageStory,
 } as ComponentMeta<typeof PageStory>;

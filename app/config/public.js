@@ -20,13 +20,13 @@
  */
 
 module.exports = {
-  API_BASE_URL: process.env.API_BASE_URL || '',
-  CROSS_STORAGE_HUB_URL: process.env.CROSS_STORAGE_HUB_URL || '',
-  DEBUG: process.env.DEBUG || '',
-  KEYCLOAK_BASE_URL: process.env.KEYCLOAK_BASE_URL || '',
-  KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID || '',
-  KEYCLOAK_ENABLED: process.env.KEYCLOAK_ENABLED || '',
-  KEYCLOAK_PUBLIC_CLIENT_ID: process.env.KEYCLOAK_PUBLIC_CLIENT_ID || '',
-  KEYCLOAK_REALM: process.env.KEYCLOAK_REALM || '',
-  SENTRY_DSN: process.env.SENTRY_DSN || '',
+  API_BASE_URL: process.env.API_BASE_URL || "",
+  CROSS_STORAGE_HUB_URL: process.env.CROSS_STORAGE_HUB_URL || "",
+  DEBUG: process.env.DEBUG || "",
+  KEYCLOAK_BASE_URL: process.env.KEYCLOAK_BASE_URL || "",
+  KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID || "",
+  KEYCLOAK_ENABLED: process.env.KEYCLOAK_ENABLED || "",
+  KEYCLOAK_PUBLIC_CLIENT_ID: process.env.KEYCLOAK_PUBLIC_CLIENT_ID || "",
+  KEYCLOAK_REALM: process.env.KEYCLOAK_REALM || "",
+  SENTRY_DSN: process.env.SENTRY_DSN || "",
 };

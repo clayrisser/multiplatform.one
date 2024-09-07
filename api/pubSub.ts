@@ -19,9 +19,9 @@
  * limitations under the License.
  */
 
-import { createPgPubSub } from '@multiplatform.one/typegraphql';
+import { createPgPubSub } from "@multiplatform.one/typegraphql";
 
-export const PING_PONG_EVENTS = 'PING_PONG_EVENTS';
+export const PING_PONG_EVENTS = "PING_PONG_EVENTS";
 
 export interface PubSubEvents {
   [key: string]: any;
@@ -29,9 +29,9 @@ export interface PubSubEvents {
 }
 
 export const pubSub = createPgPubSub<PubSubEvents>({
-  database: process.env.POSTGRES_DATABASE || 'postgres',
-  host: process.env.POSTGRES_HOSTNAME || 'localhost',
-  password: process.env.POSTGRES_PASSWORD || '',
-  port: parseInt(process.env.POSTGRES_PORT || '', 10) || 5432,
-  user: process.env.POSTGRES_USERNAME || 'postgres',
+  database: process.env.POSTGRES_DATABASE || "postgres",
+  host: process.env.POSTGRES_HOSTNAME || "localhost",
+  password: process.env.POSTGRES_PASSWORD || "",
+  port: Number.parseInt(process.env.POSTGRES_PORT || "", 10) || 5432,
+  user: process.env.POSTGRES_USERNAME || "postgres",
 });

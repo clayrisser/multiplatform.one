@@ -19,15 +19,15 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { TabsProps, TabsContentProps, TabsListProps } from 'tamagui';
-import { Separator } from 'tamagui';
-import { Tabs } from 'tamagui';
+import React from "react";
+import type { TabsContentProps, TabsListProps, TabsProps } from "tamagui";
+import { Separator } from "tamagui";
+import { Tabs } from "tamagui";
 
 export type SimpleTabsProps = TabsProps;
 
 export function SimpleTabs({ ...props }: SimpleTabsProps) {
-  if (props.orientation === 'vertical') return <VerticalTabs {...props} />;
+  if (props.orientation === "vertical") return <VerticalTabs {...props} />;
   return <HorizontalTabs {...props} />;
 }
 
@@ -90,8 +90,10 @@ export function TabsContent(props: TabsContentProps) {
 export function TabsList(props: TabsListProps) {
   return (
     <Tabs.List
-      separator={<Separator vertical={props.orientation === 'horizontal'} />}
-      disablePassBorderRadius={props.orientation === 'horizontal' ? 'bottom' : 'end'}
+      separator={<Separator vertical={props.orientation === "horizontal"} />}
+      disablePassBorderRadius={
+        props.orientation === "horizontal" ? "bottom" : "end"
+      }
       aria-label="Manage your account"
       {...props}
     >

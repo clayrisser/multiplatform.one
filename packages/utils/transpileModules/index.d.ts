@@ -19,4 +19,4 @@
  * limitations under the License.
  */
 
-export * from '../lib/transpileModules';
+export * from "../lib/transpileModules";

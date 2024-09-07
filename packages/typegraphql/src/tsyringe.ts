@@ -19,13 +19,15 @@
  * limitations under the License.
  */
 
-import { Lifecycle, injectable, scoped, singleton } from 'tsyringe';
-import { applyClassDecorators } from './decorate';
+import { Lifecycle, injectable, scoped, singleton } from "tsyringe";
+import { applyClassDecorators } from "./decorate";
 
 export function Injectable(lifecycle = Lifecycle.ContainerScoped) {
-  let scope = scoped(lifecycle as Lifecycle.ContainerScoped | Lifecycle.ResolutionScoped) as ClassDecorator;
+  let scope = scoped(
+    lifecycle as Lifecycle.ContainerScoped | Lifecycle.ResolutionScoped,
+  ) as ClassDecorator;
   if (lifecycle === Lifecycle.Singleton) scope = singleton() as ClassDecorator;
   return applyClassDecorators(injectable() as ClassDecorator, scope);
 }
 
-export { inject as Inject } from 'tsyringe';
+export { inject as Inject } from "tsyringe";

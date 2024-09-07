@@ -19,23 +19,23 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { Text } from 'tamagui';
-import { LI } from './index';
+import React from "react";
+import { Text } from "tamagui";
+import { LI } from "./index";
 
 export default {
-  title: 'mdx/LI',
+  title: "mdx/LI",
   component: LI,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: "beta" } },
   controls: {
     argTypes: {
       size: {
-        description: 'Sets the size of the list item',
-        defaultValue: '$5',
+        description: "Sets the size of the list item",
+        defaultValue: "$5",
       },
       tag: {
-        description: 'Sets the HTML tag for the list item',
-        defaultValue: 'li',
+        description: "Sets the HTML tag for the list item",
+        defaultValue: "li",
       },
     },
   },

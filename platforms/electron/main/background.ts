@@ -19,32 +19,32 @@
  * limitations under the License.
  */
 
-import path from 'path';
-import serve from 'electron-serve';
-import { app } from 'electron';
-import { createWindow } from './helpers';
-import { registerIpcHandlers } from './ipc';
+import path from "node:path";
+import { app } from "electron";
+import serve from "electron-serve";
+import { createWindow } from "./helpers";
+import { registerIpcHandlers } from "./ipc";
 
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = process.env.NODE_ENV === "production";
 
 if (isProd) {
-  serve({ directory: 'app' });
+  serve({ directory: "app" });
 } else {
-  app.setPath('userData', `${app.getPath('userData')} (development)`);
+  app.setPath("userData", `${app.getPath("userData")} (development)`);
 }
 
 (async () => {
   await app.whenReady();
   registerIpcHandlers();
-  const mainWindow = createWindow('main', {
+  const mainWindow = createWindow("main", {
     width: 1000,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, "preload.js"),
     },
   });
   if (isProd) {
-    await mainWindow.loadURL('app://./index');
+    await mainWindow.loadURL("app://./index");
   } else {
     const port = process.argv[2];
     await mainWindow.loadURL(`http://localhost:${port}`);
@@ -52,6 +52,6 @@ if (isProd) {
   }
 })();
 
-app.on('window-all-closed', () => {
+app.on("window-all-closed", () => {
   app.quit();
 });

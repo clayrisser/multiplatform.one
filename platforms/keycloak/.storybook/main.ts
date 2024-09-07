@@ -19,40 +19,42 @@
  * limitations under the License.
  */
 
-import path from 'path';
-import publicConfig from 'app/config/public';
-import type { StorybookConfig } from '@storybook/react-webpack5';
-import webpack from 'webpack';
-import { lookupTranspileModules } from '@multiplatform.one/utils/transpileModules';
+import path from "node:path";
+import { lookupTranspileModules } from "@multiplatform.one/utils/transpileModules";
+import type { StorybookConfig } from "@storybook/react-webpack5";
+import publicConfig from "app/config/public";
+import webpack from "webpack";
 
 const config: StorybookConfig = {
   stories: [
     {
-      directory: path.resolve(__dirname, '../src'),
+      directory: path.resolve(__dirname, "../src"),
     },
   ],
-  staticDirs: ['../public'],
+  staticDirs: ["../public"],
   addons: [
-    '@etchteam/storybook-addon-status',
-    '@storybook/addon-a11y',
-    '@storybook/addon-links',
-    '@storybook/addon-notes',
-    '@storybook/addon-storyshots',
-    '@storybook/addon-storysource',
-    '@storybook/addon-webpack5-compiler-babel',
-    'addon-screen-reader',
-    'storybook-addon-paddings',
-    'storybook-color-picker',
-    'storybook-dark-mode',
+    "@etchteam/storybook-addon-status",
+    "@storybook/addon-a11y",
+    "@storybook/addon-links",
+    "@storybook/addon-notes",
+    "@storybook/addon-storyshots",
+    "@storybook/addon-storysource",
+    "@storybook/addon-webpack5-compiler-babel",
+    "addon-screen-reader",
+    "storybook-addon-paddings",
+    "storybook-color-picker",
+    "storybook-dark-mode",
     {
-      name: '@storybook/addon-react-native-web',
+      name: "@storybook/addon-react-native-web",
       options: {
-        babelPlugins: ['react-native-reanimated/plugin'],
-        modulesToTranspile: lookupTranspileModules([path.resolve(__dirname, '..')]),
+        babelPlugins: ["react-native-reanimated/plugin"],
+        modulesToTranspile: lookupTranspileModules([
+          path.resolve(__dirname, ".."),
+        ]),
       },
     },
     {
-      name: '@storybook/addon-essentials',
+      name: "@storybook/addon-essentials",
       options: {
         actions: true,
         backgrounds: false,
@@ -62,13 +64,13 @@ const config: StorybookConfig = {
         controls: true,
       },
     },
-    '@storybook/addon-styling',
+    "@storybook/addon-styling",
   ],
   core: {
     disableTelemetry: true,
   },
   framework: {
-    name: '@storybook/react-webpack5',
+    name: "@storybook/react-webpack5",
     options: {},
   },
   features: {
@@ -76,20 +78,23 @@ const config: StorybookConfig = {
     storyStoreV7: false,
   },
   docs: {
-    autodocs: 'tag',
+    autodocs: "tag",
   },
   env: (config) => ({
     ...config,
-    TAMAGUI_TARGET: 'web',
+    TAMAGUI_TARGET: "web",
     ...(publicConfig as Record<string, string>),
   }),
   typescript: {
     check: false,
     checkOptions: {},
-    reactDocgen: 'react-docgen-typescript',
+    reactDocgen: "react-docgen-typescript",
     skipBabel: false,
     reactDocgenTypescriptOptions: {
-      propFilter: (prop) => (prop.parent ? !/node_modules\/(?!tamagui)/.test(prop.parent.fileName) : true),
+      propFilter: (prop) =>
+        prop.parent
+          ? !/node_modules\/(?!tamagui)/.test(prop.parent.fileName)
+          : true,
       shouldExtractLiteralValuesFromEnum: true,
       shouldRemoveUndefinedFromOptional: true,
     },
@@ -108,9 +113,9 @@ const config: StorybookConfig = {
         // 'next/link': require.resolve('empty-module'),
         // 'next/router': require.resolve('empty-module'),
         // next: require.resolve('empty-module'),
-        buffer: require.resolve('buffer/'),
-        stream: require.resolve('stream-browserify'),
-        zlib: require.resolve('browserify-zlib'),
+        buffer: require.resolve("buffer/"),
+        stream: require.resolve("stream-browserify"),
+        zlib: require.resolve("browserify-zlib"),
       },
       fallback: {
         ...(config.resolve?.fallback || {}),
@@ -119,14 +124,14 @@ const config: StorybookConfig = {
     plugins: [
       ...(config.plugins || []),
       new webpack.ProvidePlugin({
-        Buffer: ['buffer', 'Buffer'],
+        Buffer: ["buffer", "Buffer"],
       }),
     ],
   }),
   babelDefault: (config, _options) => ({
     ...config,
-    presets: [...(config.presets || []), '@babel/preset-typescript'],
-    plugins: ['react-native-reanimated/plugin'],
+    presets: [...(config.presets || []), "@babel/preset-typescript"],
+    plugins: ["react-native-reanimated/plugin"],
   }),
 };
 

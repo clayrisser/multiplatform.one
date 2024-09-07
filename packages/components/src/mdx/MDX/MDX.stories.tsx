@@ -1,11 +1,11 @@
-import React from 'react';
-import type { Meta } from '@storybook/react';
-import { MDX } from './index';
+import type { Meta } from "@storybook/react";
+import React from "react";
+import { MDX } from "./index";
 
 const meta: Meta = {
-  title: 'mdx/MDX',
+  title: "mdx/MDX",
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 

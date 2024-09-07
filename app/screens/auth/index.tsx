@@ -19,39 +19,44 @@
  * limitations under the License.
  */
 
-import { useKeycloak, withAuthenticated } from '@multiplatform.one/keycloak';
-import { withDefaultLayout } from 'app/layouts/Default';
+import { useKeycloak, withAuthenticated } from "@multiplatform.one/keycloak";
+import { ChevronRight } from "@tamagui/lucide-icons";
+import { withDefaultLayout } from "app/layouts/Default";
+import { useLink } from "solito/link";
 import {
-  YStack,
-  H1,
-  Paragraph,
-  XStack,
-  Button,
+  Anchor,
   Avatar,
+  Button,
+  Card,
+  Dialog,
+  H1,
+  H3,
+  Paragraph,
   Separator,
   SimpleDialog,
-  Dialog,
-  Card,
-  Text,
-  H3,
-  Theme,
-  Anchor,
   SimpleList,
   SimpleListItem,
-} from 'ui';
-import { ChevronRight } from '@tamagui/lucide-icons';
-import { useLink } from 'solito/link';
+  Text,
+  Theme,
+  XStack,
+  YStack,
+} from "ui";
 
 function Auth() {
   const keycloak = useKeycloak();
   const homeProps = useLink({
-    href: '/',
+    href: "/",
   });
-  console.log('keycloak', keycloak);
+  console.log("keycloak", keycloak);
   return (
     <YStack fullscreen padding="$4">
       <Theme>
-        <XStack justifyContent="space-between" flexDirection="row-reverse" flexWrap="wrap" alignItems="flex-end">
+        <XStack
+          justifyContent="space-between"
+          flexDirection="row-reverse"
+          flexWrap="wrap"
+          alignItems="flex-end"
+        >
           <Theme>
             <SimpleDialog
               asRightSideSheet
@@ -59,7 +64,12 @@ function Auth() {
               trigger={
                 <Button size="$4" circular>
                   <Theme name="light">
-                    <Avatar theme="active" bg="$backgroundFocus" circular size="$4">
+                    <Avatar
+                      theme="active"
+                      bg="$backgroundFocus"
+                      circular
+                      size="$4"
+                    >
                       <Avatar.Image src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn-icons-png.flaticon.com%2F512%2F61%2F61205.png&f=1&nofb=1&ipt=a9586522eaa6b92658d2a461eb4eeedcc9e418ba16e5a4e0cab477a02c846947&ipo=images" />
                     </Avatar>
                   </Theme>
@@ -67,11 +77,19 @@ function Auth() {
               }
             >
               <SimpleList>
-                <SimpleListItem title="Home" iconAfter={ChevronRight} {...homeProps} />
+                <SimpleListItem
+                  title="Home"
+                  iconAfter={ChevronRight}
+                  {...homeProps}
+                />
                 <SimpleListItem title="Edit Profile" iconAfter={ChevronRight} />
                 <SimpleListItem title="Set Status" iconAfter={ChevronRight} />
                 <Dialog.Close>
-                  <SimpleListItem title="Sign Out" onPress={() => keycloak?.logout()} iconAfter={ChevronRight} />
+                  <SimpleListItem
+                    title="Sign Out"
+                    onPress={() => keycloak?.logout()}
+                    iconAfter={ChevronRight}
+                  />
                 </Dialog.Close>
               </SimpleList>
             </SimpleDialog>
@@ -81,17 +99,29 @@ function Auth() {
           </H3>
         </XStack>
         <YStack f={1} jc="center" ai="center" width="100%" flexWrap="wrap">
-          <Card elevation="$10" maw={700} padded paddingVertical="$10" $sm={{ paddingVertical: '$7' }}>
+          <Card
+            elevation="$10"
+            maw={700}
+            padded
+            paddingVertical="$10"
+            $sm={{ paddingVertical: "$7" }}
+          >
             <YStack gap="$9" flexWrap="wrap">
-              <H1 $sm={{ fontSize: '$8' }} ta="center">
+              <H1 $sm={{ fontSize: "$8" }} ta="center">
                 Keycloak Authentication
               </H1>
               <Separator />
               <Paragraph fontFamily="$silkscreen" ta="center">
-                you have successfully login in keycloak with client id {keycloak?.clientId} using {keycloak?.realm} with{' '}
+                you have successfully login in keycloak with client id{" "}
+                {keycloak?.clientId} using {keycloak?.realm} with{" "}
                 {keycloak?.email}
               </Paragraph>
-              <XStack alignItems="flex-end" jc="flex-end" gap="$2" flexWrap="wrap">
+              <XStack
+                alignItems="flex-end"
+                jc="flex-end"
+                gap="$2"
+                flexWrap="wrap"
+              >
                 <Text marginBottom="$3"> Keycloak Docs </Text>
                 <Anchor
                   marginBottom="$1"

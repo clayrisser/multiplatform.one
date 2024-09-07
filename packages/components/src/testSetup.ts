@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-import '@testing-library/jest-dom';
-import { afterEach, vi } from 'vitest';
-import { cleanup } from '@testing-library/react';
+import "@testing-library/jest-dom";
+import { cleanup } from "@testing-library/react";
+import { afterEach, vi } from "vitest";
 
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query) => ({
     addEventListener: vi.fn(),
@@ -39,18 +39,19 @@ Object.defineProperty(window, 'matchMedia', {
 
 class ESBuildAndJSDOMCompatibleTextEncoder extends TextEncoder {
   encode(input: string) {
-    if (typeof input !== 'string') throw new TypeError('`input` must be a string');
+    if (typeof input !== "string")
+      throw new TypeError("`input` must be a string");
     const decodedURI = decodeURIComponent(encodeURIComponent(input));
     const arr = new Uint8Array(decodedURI.length);
-    const chars = decodedURI.split('');
+    const chars = decodedURI.split("");
     for (let i = 0; i < chars.length; i++) {
-      arr[i] = (decodedURI[i] || '').charCodeAt(0);
+      arr[i] = (decodedURI[i] || "").charCodeAt(0);
     }
     return arr;
   }
 }
 
-Object.defineProperty(global, 'TextEncoder', {
+Object.defineProperty(global, "TextEncoder", {
   value: ESBuildAndJSDOMCompatibleTextEncoder,
   writable: true,
 });

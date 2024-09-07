@@ -19,13 +19,13 @@
  * limitations under the License.
  */
 
-'use client';
+"use client";
 
-import { MultiPlatform } from 'multiplatform.one';
-import { useRouter } from 'next/router';
+import { MultiPlatform } from "multiplatform.one";
+import { useRouter } from "next/router";
 
 export function useTokensFromQuery() {
   if (!MultiPlatform.isIframe) return false;
   const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
-  return 'idToken' in query || 'token' in query || 'refreshToken' in query;
+  return "idToken" in query || "token" in query || "refreshToken" in query;
 }

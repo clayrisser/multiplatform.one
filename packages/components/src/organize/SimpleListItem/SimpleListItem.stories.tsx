@@ -19,22 +19,29 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { SimpleList, SimpleListItem, SimpleListProps, SimpleListItemProps } from './index';
-import { ChevronRight, Star } from '@tamagui/lucide-icons';
-import { Label, Separator, Switch, XStack, YStack } from 'tamagui';
+import { ChevronRight, Star } from "@tamagui/lucide-icons";
+import React from "react";
+import { Label, Separator, Switch, XStack, YStack } from "tamagui";
+import {
+  SimpleList,
+  SimpleListItem,
+  type SimpleListItemProps,
+  type SimpleListProps,
+} from "./index";
 export default {
-  title: 'organize/SimpleListItem',
+  title: "organize/SimpleListItem",
   component: SimpleList,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
 function Main(args: SimpleListProps & SimpleListItemProps) {
-  const [orientation, setOrientation] = React.useState(args.orientation === 'horizontal');
+  const [orientation, setOrientation] = React.useState(
+    args.orientation === "horizontal",
+  );
   React.useEffect(() => {
-    if (args.orientation === 'horizontal') {
+    if (args.orientation === "horizontal") {
       setOrientation(true);
     } else {
       setOrientation(false);
@@ -43,27 +50,68 @@ function Main(args: SimpleListProps & SimpleListItemProps) {
   return (
     <YStack fullscreen>
       <XStack width={200} alignItems="center" gap="$4" alignSelf="flex-start">
-        <Label paddingRight="$0" minWidth={90} justifyContent="flex-end" size="$2">
-          {orientation ? 'Horizontal' : 'Vertical'}
+        <Label
+          paddingRight="$0"
+          minWidth={90}
+          justifyContent="flex-end"
+          size="$2"
+        >
+          {orientation ? "Horizontal" : "Vertical"}
         </Label>
         <Separator minHeight={20} vertical />
-        <Switch size="$2" checked={orientation} onCheckedChange={setOrientation}>
+        <Switch
+          size="$2"
+          checked={orientation}
+          onCheckedChange={setOrientation}
+        >
           <Switch.Thumb animation="quick" />
         </Switch>
       </XStack>
       <SimpleList orientation={args.orientation}>
-        <SimpleListItem title="hello" icon={Star} subTitle="how are you" iconAfter={ChevronRight} width={200} />
-        <SimpleListItem title="hello" icon={Star} subTitle="how are you" iconAfter={ChevronRight} width={200} />
-        <SimpleListItem title="hello" icon={Star} subTitle="how are you" iconAfter={ChevronRight} width={200} />
-        <SimpleListItem title="hello" icon={Star} subTitle="how are you" iconAfter={ChevronRight} width={200} />
-        <SimpleListItem title="hello" icon={Star} subTitle="how are you" iconAfter={ChevronRight} width={200} />
+        <SimpleListItem
+          title="hello"
+          icon={Star}
+          subTitle="how are you"
+          iconAfter={ChevronRight}
+          width={200}
+        />
+        <SimpleListItem
+          title="hello"
+          icon={Star}
+          subTitle="how are you"
+          iconAfter={ChevronRight}
+          width={200}
+        />
+        <SimpleListItem
+          title="hello"
+          icon={Star}
+          subTitle="how are you"
+          iconAfter={ChevronRight}
+          width={200}
+        />
+        <SimpleListItem
+          title="hello"
+          icon={Star}
+          subTitle="how are you"
+          iconAfter={ChevronRight}
+          width={200}
+        />
+        <SimpleListItem
+          title="hello"
+          icon={Star}
+          subTitle="how are you"
+          iconAfter={ChevronRight}
+          width={200}
+        />
       </SimpleList>
     </YStack>
   );
 }
 
-export const main = (args: SimpleListProps & SimpleListItemProps) => <Main {...args} />;
+export const main = (args: SimpleListProps & SimpleListItemProps) => (
+  <Main {...args} />
+);
 
 main.args = {
-  orientation: 'horizontal',
+  orientation: "horizontal",
 };

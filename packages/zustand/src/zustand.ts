@@ -19,18 +19,26 @@
  * limitations under the License.
  */
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import type { CreateOptions } from './types';
-import type { InitStateType, Actions, MiddlewareOptionType, CreateSimpleReturn } from './tools';
-import type { PersistOptions } from 'zustand/middleware';
-import { createSimple } from './tools';
-import { devtools, persist, createJSONStorage } from 'zustand/middleware';
-import { immer } from 'zustand/middleware/immer';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import type { PersistOptions } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
+import type {
+  Actions,
+  CreateSimpleReturn,
+  InitStateType,
+  MiddlewareOptionType,
+} from "./tools";
+import { createSimple } from "./tools";
+import type { CreateOptions } from "./types";
 
 // @ts-ignore
-const g: any = typeof window === 'undefined' ? global : window;
+const g: any = typeof window === "undefined" ? global : window;
 
-export function createStateStore<State extends InitStateType, A extends Actions<State>>(
+export function createStateStore<
+  State extends InitStateType,
+  A extends Actions<State>,
+>(
   name: string,
   initState: State,
   actions?: A,
@@ -39,14 +47,17 @@ export function createStateStore<State extends InitStateType, A extends Actions<
   const store = createSimple(initState, {
     actions,
     middlewares: [
-      ...(options.devtools === false || typeof g?.__REDUX_DEVTOOLS_EXTENSION__ !== 'function'
+      ...(options.devtools === false ||
+      typeof g?.__REDUX_DEVTOOLS_EXTENSION__ !== "function"
         ? []
         : ([
             (initializer) =>
               devtools(initializer, {
                 name,
                 enabled: true,
-                ...(typeof options.devtools === 'object' ? options.devtools : {}),
+                ...(typeof options.devtools === "object"
+                  ? options.devtools
+                  : {}),
               }),
           ] as MiddlewareOptionType<State & ReturnType<A>>[])),
       (initializer) => immer(initializer),
@@ -56,7 +67,9 @@ export function createStateStore<State extends InitStateType, A extends Actions<
               persist(initializer, {
                 name,
                 storage: createJSONStorage(() => AsyncStorage),
-                ...((typeof options.persist === 'object' ? options.persist : {}) as Partial<PersistOptions<any>>),
+                ...((typeof options.persist === "object"
+                  ? options.persist
+                  : {}) as Partial<PersistOptions<any>>),
               }),
           ] as MiddlewareOptionType<State & ReturnType<A>>[])
         : []),

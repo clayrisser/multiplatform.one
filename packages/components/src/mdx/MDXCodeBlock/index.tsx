@@ -19,17 +19,24 @@
  * limitations under the License.
  */
 
-import React, { useEffect, useRef, useState, useContext } from 'react';
-import type { MDXCodeBlockContextValue } from './MDXCodeBlockContext';
-import { Button, Spacer, TooltipSimple, XStack, YStack, getTokens } from 'tamagui';
-import { CheckCircle, Clipboard } from '@tamagui/lucide-icons';
-import { Code } from '../../code/Code';
-import { ErrorBoundary } from '../../ErrorBoundary';
-import { LinearGradient } from '@tamagui/linear-gradient';
-import { MDXCodeBlockContext } from './MDXCodeBlockContext';
-import { Pre } from '../../code/Pre';
-import { ScrollView } from 'react-native';
-import { useClipboard } from '../../hooks/useClipboard';
+import { LinearGradient } from "@tamagui/linear-gradient";
+import { CheckCircle, Clipboard } from "@tamagui/lucide-icons";
+import React, { useEffect, useRef, useState, useContext } from "react";
+import { ScrollView } from "react-native";
+import {
+  Button,
+  Spacer,
+  TooltipSimple,
+  XStack,
+  YStack,
+  getTokens,
+} from "tamagui";
+import { ErrorBoundary } from "../../ErrorBoundary";
+import { Code } from "../../code/Code";
+import { Pre } from "../../code/Pre";
+import { useClipboard } from "../../hooks/useClipboard";
+import type { MDXCodeBlockContextValue } from "./MDXCodeBlockContext";
+import { MDXCodeBlockContext } from "./MDXCodeBlockContext";
 
 export interface MDXCodeBlockProps extends MDXCodeBlockContextValue {
   className?: string;
@@ -49,7 +56,7 @@ export function MDXCodeBlock(props: MDXCodeBlockProps) {
     ...codeProps
   } = { ...useContext(MDXCodeBlockContext), ...props };
   const lines = Array.isArray(children) ? children.length : 0;
-  const showLineNumbers = propShowLineNumbers ?? (lines > 10 ? true : false);
+  const showLineNumbers = propShowLineNumbers ?? lines > 10;
   const [isCollapsed, setIsCollapsed] = useState(isCollapsible);
   const isLong = lines > 22;
   const [isCutoff, setIsCutoff] = useState(isLong && !isCollapsible);
@@ -61,9 +68,9 @@ export function MDXCodeBlock(props: MDXCodeBlockProps) {
   useEffect(() => {
     try {
       if (preRef.current) {
-        const codeElement = preRef.current.querySelector('code');
+        const codeElement = preRef.current.querySelector("code");
         if (codeElement) {
-          const code = codeElement.innerText.replace(/\n{3,}/g, '\n');
+          const code = codeElement.innerText.replace(/\n{3,}/g, "\n");
           setCode(code);
         }
       }
@@ -77,8 +84,8 @@ export function MDXCodeBlock(props: MDXCodeBlockProps) {
           position="relative"
           {...(isCutoff && {
             maxHeight: 400,
-            ov: 'hidden',
-            br: '$4',
+            ov: "hidden",
+            br: "$4",
           })}
         >
           {(!isCollapsed || !isCollapsible) && isCutoff && (
@@ -88,7 +95,7 @@ export function MDXCodeBlock(props: MDXCodeBlockProps) {
               left={0}
               right={0}
               height={200}
-              colors={['$backgroundTransparent', '$background']}
+              colors={["$backgroundTransparent", "$background"]}
               zIndex={1000}
             >
               <Spacer flex={1} />
@@ -109,8 +116,8 @@ export function MDXCodeBlock(props: MDXCodeBlockProps) {
               id={id}
             >
               <ScrollView
-                style={{ width: '100%' }}
-                contentContainerStyle={{ minWidth: '100%' }}
+                style={{ width: "100%" }}
+                contentContainerStyle={{ minWidth: "100%" }}
                 horizontal
                 showsHorizontalScrollIndicator={false}
               >
@@ -118,9 +125,9 @@ export function MDXCodeBlock(props: MDXCodeBlockProps) {
                   backgroundColor="transparent"
                   className={className}
                   flex={1}
-                  lineHeight={tokens.space[size || '$5'] as any}
+                  lineHeight={tokens.space[size || "$5"] as any}
                   padding="$4"
-                  size={size ?? '$5'}
+                  size={size ?? "$5"}
                   {...codeProps}
                 >
                   {children}
@@ -130,21 +137,25 @@ export function MDXCodeBlock(props: MDXCodeBlockProps) {
           )}
           <XStack position="absolute" top="$3" right="$3" gap="$3">
             {(!isCollapsed || !isCollapsible) && !disableCopy && (
-              <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
+              <TooltipSimple label={hasCopied ? "Copied" : "Copy to clipboard"}>
                 <Button
                   aria-label="Copy code to clipboard"
                   size="$2"
                   icon={hasCopied ? CheckCircle : Clipboard}
                   onPress={onCopy}
                   $xs={{
-                    display: 'none',
+                    display: "none",
                   }}
                 />
               </TooltipSimple>
             )}
             {isCollapsible && (
-              <Button accessibilityLabel="Show or hide code" size="$2" onPress={() => setIsCollapsed((x) => !x)}>
-                {isCollapsed ? 'Show code' : 'Hide code'}
+              <Button
+                accessibilityLabel="Show or hide code"
+                size="$2"
+                onPress={() => setIsCollapsed((x) => !x)}
+              >
+                {isCollapsed ? "Show code" : "Hide code"}
               </Button>
             )}
           </XStack>

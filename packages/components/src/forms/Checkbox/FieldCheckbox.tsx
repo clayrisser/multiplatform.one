@@ -19,36 +19,69 @@
  * limitations under the License.
  */
 
-import React, { useId } from 'react';
-import type { CheckboxProps } from './Checkbox';
-import type { CheckedState, FontSizeTokens } from 'tamagui';
-import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
-import type { FieldComponentProps } from '../types';
-import type { FormFieldProps } from '../FormField';
-import { CheckRegular, MinusRegular } from '../../icons';
-import { Checkbox } from './Checkbox';
-import { Field, useForm } from '@tanstack/react-form';
-import { useProps, XStack, Label, Paragraph, YStack } from 'tamagui';
+import type { DeepKeys, DeepValue, Validator } from "@tanstack/form-core";
+import { Field, useForm } from "@tanstack/react-form";
+import React, { useId } from "react";
+import type { CheckedState, FontSizeTokens } from "tamagui";
+import { Label, Paragraph, XStack, YStack, useProps } from "tamagui";
+import { CheckRegular, MinusRegular } from "../../icons";
+import type { FormFieldProps } from "../FormField";
+import type { FieldComponentProps } from "../types";
+import type { CheckboxProps } from "./Checkbox";
+import { Checkbox } from "./Checkbox";
 
 export type FieldCheckboxProps<
   TParentData = any,
   TName extends DeepKeys<TParentData> = any,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
-> = Omit<FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children' | 'field'> &
-  Pick<CheckboxProps, 'checked' | 'children' | 'onCheckedChange'> &
-  Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
-    checkboxProps?: Omit<CheckboxProps, 'children' | 'checked' | 'id' | 'onCheckedChange'>;
+> = Omit<
+  FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>,
+  "children" | "field"
+> &
+  Pick<CheckboxProps, "checked" | "children" | "onCheckedChange"> &
+  Partial<
+    Omit<
+      FieldComponentProps<
+        TParentData,
+        TName,
+        TFieldValidator,
+        TFormValidator,
+        TData
+      >,
+      "children"
+    >
+  > & {
+    checkboxProps?: Omit<
+      CheckboxProps,
+      "children" | "checked" | "id" | "onCheckedChange"
+    >;
   };
 
 export function FieldCheckbox<
   TParentData,
   TName extends DeepKeys<TParentData>,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
->(props: FieldCheckboxProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+>(
+  props: FieldCheckboxProps<
+    TParentData,
+    TName,
+    TFieldValidator,
+    TFormValidator,
+    TData
+  >,
+) {
   let {
     asyncAlways,
     asyncDebounceMs,
@@ -75,20 +108,21 @@ export function FieldCheckbox<
   } = useProps(props);
   form = form || useForm();
   const id = fieldProps.id || useId();
-  helperText = error && typeof error === 'string' ? error : helperText;
+  helperText = error && typeof error === "string" ? error : helperText;
   if (!form || !name) {
     return (
-      <YStack theme={error ? 'red' : undefined} {...fieldProps} onBlur={onBlur}>
+      <YStack theme={error ? "red" : undefined} {...fieldProps} onBlur={onBlur}>
         <XStack gap="$2" alignItems="center">
           <Checkbox
             {...checkboxProps}
             onCheckedChange={onCheckedChange}
-            checked={checked ?? (defaultValue as boolean | 'indeterminate')}
+            checked={checked ?? (defaultValue as boolean | "indeterminate")}
             id={id}
           >
             {children ?? (
               <Checkbox.Indicator>
-                {(checked ?? (defaultValue as boolean | 'indeterminate')) === 'indeterminate' ? (
+                {(checked ?? (defaultValue as boolean | "indeterminate")) ===
+                "indeterminate" ? (
                   <MinusRegular />
                 ) : (
                   <CheckRegular />
@@ -97,14 +131,23 @@ export function FieldCheckbox<
             )}
           </Checkbox>
           {label && (
-            <Label htmlFor={id} size={size || '$3'} color={error ? '$red10' : undefined} {...labelProps}>
+            <Label
+              htmlFor={id}
+              size={size || "$3"}
+              color={error ? "$red10" : undefined}
+              {...labelProps}
+            >
               {label}
-              {required && ` *`}
+              {required && " *"}
             </Label>
           )}
         </XStack>
         {helperText && (
-          <Paragraph paddingLeft="$2" size={size as FontSizeTokens} color={error ? '$red10' : undefined}>
+          <Paragraph
+            paddingLeft="$2"
+            size={size as FontSizeTokens}
+            color={error ? "$red10" : undefined}
+          >
             {helperText}
           </Paragraph>
         )}
@@ -125,11 +168,13 @@ export function FieldCheckbox<
       validators={validators}
     >
       {(field) => {
-        error = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : error;
-        helperText = typeof error === 'string' ? error : helperText;
+        error = field.state.meta.errors.length
+          ? field.state.meta.errors.join(", ")
+          : error;
+        helperText = typeof error === "string" ? error : helperText;
         return (
           <YStack
-            theme={error ? 'red' : undefined}
+            theme={error ? "red" : undefined}
             {...fieldProps}
             onBlur={(e) => {
               field.handleBlur();
@@ -148,7 +193,8 @@ export function FieldCheckbox<
               >
                 {children ?? (
                   <Checkbox.Indicator>
-                    {(checked ?? (field.state.value as CheckedState)) === 'indeterminate' ? (
+                    {(checked ?? (field.state.value as CheckedState)) ===
+                    "indeterminate" ? (
                       <MinusRegular />
                     ) : (
                       <CheckRegular />
@@ -157,14 +203,23 @@ export function FieldCheckbox<
                 )}
               </Checkbox>
               {label && (
-                <Label htmlFor={id} size={size || '$3'} color={error ? '$red10' : undefined} {...labelProps}>
+                <Label
+                  htmlFor={id}
+                  size={size || "$3"}
+                  color={error ? "$red10" : undefined}
+                  {...labelProps}
+                >
                   {label}
-                  {required && ` *`}
+                  {required && " *"}
                 </Label>
               )}
             </XStack>
             {helperText && (
-              <Paragraph paddingLeft="$2" size={size as FontSizeTokens} color={error ? '$red10' : undefined}>
+              <Paragraph
+                paddingLeft="$2"
+                size={size as FontSizeTokens}
+                color={error ? "$red10" : undefined}
+              >
                 {helperText}
               </Paragraph>
             )}

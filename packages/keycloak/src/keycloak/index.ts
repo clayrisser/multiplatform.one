@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export * from './config';
-export * from './keycloak';
+export * from "./config";
+export * from "./keycloak";

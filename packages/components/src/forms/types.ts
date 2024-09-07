@@ -19,15 +19,35 @@
  * limitations under the License.
  */
 
-import type { FieldApi, DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
-import type { UseFieldOptions, NodeType } from '@tanstack/react-form/dist/esm/types';
+import type {
+  DeepKeys,
+  DeepValue,
+  FieldApi,
+  Validator,
+} from "@tanstack/form-core";
+import type {
+  NodeType,
+  UseFieldOptions,
+} from "@tanstack/react-form/dist/esm/types";
 
 export type FieldComponentProps<
   TParentData,
   TName extends DeepKeys<TParentData>,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
 > = {
-  children: (fieldApi: FieldApi<TParentData, TName, TFieldValidator, TFormValidator, TData>) => NodeType;
+  children: (
+    fieldApi: FieldApi<
+      TParentData,
+      TName,
+      TFieldValidator,
+      TFormValidator,
+      TData
+    >,
+  ) => NodeType;
 } & UseFieldOptions<TParentData, TName, TFieldValidator, TFormValidator, TData>;

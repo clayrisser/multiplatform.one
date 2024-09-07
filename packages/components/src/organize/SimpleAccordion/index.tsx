@@ -19,14 +19,18 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { AccordionContentProps, AccordionItemProps, AccordionTriggerProps } from 'tamagui';
-import { Accordion } from 'tamagui';
+import type React from "react";
+import type {
+  AccordionContentProps,
+  AccordionItemProps,
+  AccordionTriggerProps,
+} from "tamagui";
+import { Accordion } from "tamagui";
 
 interface SimpleAccordionProps {
   children: React.ReactNode;
-  overflow?: 'visible' | 'hidden' | 'scroll';
-  type?: 'single' | 'multiple';
+  overflow?: "visible" | "hidden" | "scroll";
+  type?: "single" | "multiple";
 }
 
 type SimpleAccordionItemProps = AccordionItemProps & {
@@ -44,10 +48,20 @@ export function SimpleAccordion({ children, ...props }: SimpleAccordionProps) {
   );
 }
 
-export function AccordionItem({ trigger, triggerStyle, children, contentStyle, ...props }: SimpleAccordionItemProps) {
+export function AccordionItem({
+  trigger,
+  triggerStyle,
+  children,
+  contentStyle,
+  ...props
+}: SimpleAccordionItemProps) {
   return (
     <Accordion.Item {...props}>
-      <Accordion.Trigger flexDirection="row" justifyContent="space-between" {...triggerStyle}>
+      <Accordion.Trigger
+        flexDirection="row"
+        justifyContent="space-between"
+        {...triggerStyle}
+      >
         {({ open }) => trigger(open)}
       </Accordion.Trigger>
       <Accordion.Content {...contentStyle}>{children}</Accordion.Content>

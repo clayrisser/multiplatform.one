@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-import { seedDb } from '@multiplatform.one/prisma-scripts';
-import dotenv from 'dotenv';
-import path from 'path';
+import path from "node:path";
+import { seedDb } from "@multiplatform.one/prisma-scripts";
+import dotenv from "dotenv";
 
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 export default async function seed() {
   await seedDb({}, []);

@@ -20,17 +20,17 @@
  * limitations under the License.
  */
 
-import tosEnUrl from '../assets/tosEn.md';
-import type { I18n } from '../i18n';
-import type { KcContext } from '../kcContext';
-import type { PageProps } from 'keycloakify/login/pages/PageProps';
-import { Markdown } from 'keycloakify/tools/Markdown';
-import { clsx } from 'keycloakify/tools/clsx';
-import { evtTermMarkdown } from 'keycloakify/login/lib/useDownloadTerms';
-import { useDownloadTerms } from 'keycloakify/login';
-import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
-import { useRerenderOnStateChange } from 'evt/hooks';
-import { Button, XStack, YStack } from 'ui';
+import { useRerenderOnStateChange } from "evt/hooks";
+import { useDownloadTerms } from "keycloakify/login";
+import { evtTermMarkdown } from "keycloakify/login/lib/useDownloadTerms";
+import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import type { PageProps } from "keycloakify/login/pages/PageProps";
+import { Markdown } from "keycloakify/tools/Markdown";
+import { clsx } from "keycloakify/tools/clsx";
+import { Button, XStack, YStack } from "ui";
+import tosEnUrl from "../assets/tosEn.md";
+import type { I18n } from "../i18n";
+import type { KcContext } from "../kcContext";
 
 export default function Terms({
   Template,
@@ -38,7 +38,7 @@ export default function Terms({
   doUseDefaultCss,
   i18n,
   kcContext,
-}: PageProps<Extract<KcContext, { pageId: 'terms.ftl' }>, I18n>) {
+}: PageProps<Extract<KcContext, { pageId: "terms.ftl" }>, I18n>) {
   const { getClassName } = useGetClassName({
     classes,
     doUseDefaultCss,
@@ -53,8 +53,10 @@ export default function Terms({
             return tosEnUrl;
         }
       })();
-      if ('__STORYBOOK_ADDONS' in window) return tosUrl;
-      const markdownString = await fetch(tosUrl).then((response) => response.text());
+      if ("__STORYBOOK_ADDONS" in window) return tosUrl;
+      const markdownString = await fetch(tosUrl).then((response) =>
+        response.text(),
+      );
       return markdownString;
     },
   });
@@ -63,17 +65,21 @@ export default function Terms({
   const termMarkdown = evtTermMarkdown.state;
   if (termMarkdown === undefined) return;
   return (
-    <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} displayMessage={false} headerNode={msg('termsTitle')}>
+    <Template
+      {...{ kcContext, i18n, doUseDefaultCss, classes }}
+      displayMessage={false}
+      headerNode={msg("termsTitle")}
+    >
       <YStack id="kc-terms-text">
         <Markdown>{termMarkdown}</Markdown>
       </YStack>
       <form className="form-actions" action={url.loginAction} method="POST">
         <XStack gap="$2">
           <Button bg="$backgroundFocus" fontWeight="bold">
-            {msgStr('doAccept')}
+            {msgStr("doAccept")}
           </Button>
           <Button bg="$background" fontWeight="bold">
-            {msgStr('doDecline')}
+            {msgStr("doDecline")}
           </Button>
         </XStack>
       </form>

@@ -19,9 +19,9 @@
  * limitations under the License.
  */
 
-import { MultiPlatform } from 'multiplatform.one';
-import { useTranslation as nextUseTranslation } from 'next-i18next';
-import { useTranslation as reactUseTranslation } from 'react-i18next';
+import { MultiPlatform } from "multiplatform.one";
+import { useTranslation as nextUseTranslation } from "next-i18next";
+import { useTranslation as reactUseTranslation } from "react-i18next";
 
 let useTranslation = reactUseTranslation;
 

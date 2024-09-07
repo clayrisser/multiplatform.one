@@ -1,10 +1,10 @@
-import React from 'react';
-import { HR } from './index';
+import React from "react";
+import { HR } from "./index";
 
 export default {
-  title: 'mdx/HR',
+  title: "mdx/HR",
   component: HR,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: "beta" } },
 };
 
 export const main = () => <HR />;

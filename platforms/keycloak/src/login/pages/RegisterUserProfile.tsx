@@ -20,14 +20,14 @@
  * limitations under the License.
  */
 
-import type { I18n } from '../i18n';
-import type { KcContext } from '../kcContext';
-import type { PageProps } from 'keycloakify/login/pages/PageProps';
-import { UserProfileFormFields } from './shared/UserProfileFormFields';
-import { clsx } from 'keycloakify/tools/clsx';
-import { useGetClassName } from 'keycloakify/login/lib/useGetClassName';
-import { useState } from 'react';
-import { Anchor, Button, Text, Theme, YStack } from 'ui';
+import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
+import type { PageProps } from "keycloakify/login/pages/PageProps";
+import { clsx } from "keycloakify/tools/clsx";
+import { useState } from "react";
+import { Anchor, Button, Text, Theme, YStack } from "ui";
+import type { I18n } from "../i18n";
+import type { KcContext } from "../kcContext";
+import { UserProfileFormFields } from "./shared/UserProfileFormFields";
 
 export default function RegisterUserProfile({
   kcContext,
@@ -35,13 +35,17 @@ export default function RegisterUserProfile({
   doUseDefaultCss,
   Template,
   classes,
-}: PageProps<Extract<KcContext, { pageId: 'register-user-profile.ftl' }>, I18n>) {
+}: PageProps<
+  Extract<KcContext, { pageId: "register-user-profile.ftl" }>,
+  I18n
+>) {
   const { getClassName } = useGetClassName({
     doUseDefaultCss,
     classes,
   });
 
-  const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey } = kcContext;
+  const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey } =
+    kcContext;
   const { msg, msgStr } = i18n;
   const [isFormSubmittable, setIsFormSubmittable] = useState(false);
 
@@ -49,9 +53,9 @@ export default function RegisterUserProfile({
     <Theme>
       <Template
         {...{ kcContext, i18n, doUseDefaultCss, classes }}
-        displayMessage={messagesPerField.exists('global')}
+        displayMessage={messagesPerField.exists("global")}
         displayRequiredFields={true}
-        headerNode={msg('registerTitle')}
+        headerNode={msg("registerTitle")}
       >
         <YStack
           id="kc-register-form"
@@ -73,24 +77,30 @@ export default function RegisterUserProfile({
             </YStack>
           )}
           <YStack>
-            <YStack id="kc-form-options" className={getClassName('kcFormOptionsClass')}>
+            <YStack
+              id="kc-form-options"
+              className={getClassName("kcFormOptionsClass")}
+            >
               <YStack>
                 <Text>
                   <Anchor color="$backgroundFocus" href={url.loginUrl}>
-                    {msg('backToLogin')}
+                    {msg("backToLogin")}
                   </Anchor>
                 </Text>
               </YStack>
             </YStack>
-            <YStack id="kc-form-buttons" className={getClassName('kcFormButtonsClass')}>
+            <YStack
+              id="kc-form-buttons"
+              className={getClassName("kcFormButtonsClass")}
+            >
               <Button
                 // @ts-ignore
-                value={msgStr('doRegister')}
+                value={msgStr("doRegister")}
                 disabled={!isFormSubmittable}
                 cursor="pointer"
                 bg="$backgroundFocus"
               >
-                {msgStr('doRegister')}
+                {msgStr("doRegister")}
               </Button>
             </YStack>
           </YStack>

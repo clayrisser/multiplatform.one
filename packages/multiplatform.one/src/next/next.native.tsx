@@ -19,13 +19,19 @@
  * limitations under the License.
  */
 
-import type { GetStaticPaths } from 'next/types';
+import type { GetStaticPaths } from "next/types";
 
-export async function getBaseProps(_locale: any, _namespacesRequired: string[] = []) {
+export async function getBaseProps(
+  _locale: any,
+  _namespacesRequired: string[] = [],
+) {
   return {};
 }
 
-export function createGetProps(namespacesRequired: string[] = [], props: Record<string, any> = {}) {
+export function createGetProps(
+  namespacesRequired: string[] = [],
+  props: Record<string, any> = {},
+) {
   return async ({ locale }: { locale: any }) => ({
     props: {
       ...(await getBaseProps(locale, namespacesRequired)),
@@ -38,10 +44,12 @@ export function createGetInitialProps(props: Record<string, any> = {}) {
   return async () => ({ props });
 }
 
-export function createGetStaticPaths(paths: string[] = []): GetStaticPaths<{ slug: string }> {
+export function createGetStaticPaths(
+  paths: string[] = [],
+): GetStaticPaths<{ slug: string }> {
   return async () => ({
     paths,
-    fallback: 'blocking',
+    fallback: "blocking",
   });
 }
 

@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import { useContext } from 'react';
-import { AuthConfigContext } from '../authConfig';
+import { useContext } from "react";
+import { AuthConfigContext } from "../authConfig";
 
 export function useAuthConfig() {
   return useContext(AuthConfigContext);

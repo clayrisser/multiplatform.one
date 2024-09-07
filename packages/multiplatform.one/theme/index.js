@@ -19,4 +19,4 @@
  * limitations under the License.
  */
 
-module.exports = require('../dist/cjs/theme/index');
+module.exports = require("../dist/cjs/theme/index");

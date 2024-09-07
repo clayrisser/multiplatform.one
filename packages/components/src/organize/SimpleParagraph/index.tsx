@@ -1,14 +1,19 @@
-import React from 'react';
-import { YStack, XStack, Paragraph, Text, ScrollView } from 'tamagui';
-import { CodeBlock } from '../../code';
-import type { YStackProps, ParagraphProps } from 'tamagui';
+import type React from "react";
+import { Paragraph, ScrollView, Text, XStack, YStack } from "tamagui";
+import type { ParagraphProps, YStackProps } from "tamagui";
+import { CodeBlock } from "../../code";
 
-export interface SimpleParagraphProps extends YStackProps, Pick<ParagraphProps, 'color' | 'fontSize'> {
+export interface SimpleParagraphProps
+  extends YStackProps,
+    Pick<ParagraphProps, "color" | "fontSize"> {
   children: string;
 }
 
-export const SimpleParagraph = ({ children, ...props }: SimpleParagraphProps) => {
-  if (typeof children !== 'string') return null;
+export const SimpleParagraph = ({
+  children,
+  ...props
+}: SimpleParagraphProps) => {
+  if (typeof children !== "string") return null;
 
   function parseContent(data) {
     const regex = /```(.*?)\n([\s\S]*?)```|[\s\S]+?(?=```|$)/g;
@@ -26,14 +31,14 @@ export const SimpleParagraph = ({ children, ...props }: SimpleParagraphProps) =>
       const codeMatch = segment.match(/```(.*?)\n([\s\S]*?)```/);
       if (codeMatch) {
         parsedSegments.push({
-          type: 'code',
+          type: "code",
           language: codeMatch[1],
           code: codeMatch[2].trim(),
         });
       } else {
         // Splitting the text segment by new lines and treating each new line as a separate text segment
-        segment.split('\n').forEach((line) => {
-          let content: React.ReactNode[] = [];
+        segment.split("\n").forEach((line) => {
+          const content: React.ReactNode[] = [];
           let lastIndex = 0;
           line.replace(boldTextRegex, (match, p1, offset) => {
             if (offset > lastIndex) {
@@ -47,7 +52,7 @@ export const SimpleParagraph = ({ children, ...props }: SimpleParagraphProps) =>
             content.push(line.substring(lastIndex));
           }
           parsedSegments.push({
-            type: 'text',
+            type: "text",
             content: content.length === 1 ? content[0] : content,
             isBold: false,
           });
@@ -62,15 +67,20 @@ export const SimpleParagraph = ({ children, ...props }: SimpleParagraphProps) =>
   return (
     <YStack {...props}>
       {parsedSegments.map((segment, index) => {
-        if (segment.type === 'text') {
+        if (segment.type === "text") {
           return (
             <XStack key={index}>
-              <Paragraph overflow="hidden" fontSize={props.fontSize} color={props.color}>
+              <Paragraph
+                overflow="hidden"
+                fontSize={props.fontSize}
+                color={props.color}
+              >
                 {segment.content}
               </Paragraph>
             </XStack>
           );
-        } else if (segment.type === 'code') {
+        }
+        if (segment.type === "code") {
           return (
             <ScrollView key={index} flexShrink={1} scrollEnabled>
               <CodeBlock>{segment.code}</CodeBlock>

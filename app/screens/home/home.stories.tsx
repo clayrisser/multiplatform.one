@@ -1,8 +1,8 @@
-import HomeScreen from './index';
-import React from 'react';
+import React from "react";
+import HomeScreen from "./index";
 
 export default {
-  title: 'screens/Home',
+  title: "screens/Home",
 };
 
 export const main = () => <HomeScreen />;

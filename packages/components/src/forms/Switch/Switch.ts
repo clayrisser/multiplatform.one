@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export type { SwitchProps, SwitchThumbProps } from 'tamagui';
-export { Switch } from 'tamagui';
+export type { SwitchProps, SwitchThumbProps } from "tamagui";
+export { Switch } from "tamagui";

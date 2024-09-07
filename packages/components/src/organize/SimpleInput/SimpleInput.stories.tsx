@@ -1,11 +1,11 @@
-import React from 'react';
-import { SimpleInput, SimpleInputProps } from '.';
-import type { Meta } from '@storybook/react';
+import type { Meta } from "@storybook/react";
+import React from "react";
+import { SimpleInput, type SimpleInputProps } from ".";
 
 const meta: Meta = {
-  title: 'organize/SimpleInput',
+  title: "organize/SimpleInput",
   component: SimpleInput,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: "beta" } },
   argTypes: {
     inputType: {
       control: {},
@@ -16,15 +16,17 @@ const meta: Meta = {
 export const main = (args: SimpleInputProps) => <SimpleInput {...args} />;
 
 const mainArgs: SimpleInputProps = {
-  inputType: 'TEXT',
+  inputType: "TEXT",
 };
 
 main.args = mainArgs;
 
-export const passwordInputType = (args: SimpleInputProps) => <SimpleInput {...args} />;
+export const passwordInputType = (args: SimpleInputProps) => (
+  <SimpleInput {...args} />
+);
 
 const passwordInputTypeArgs: SimpleInputProps = {
-  inputType: 'PASSWORD',
+  inputType: "PASSWORD",
   secureTextEntry: true,
 };
 

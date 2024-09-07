@@ -19,11 +19,8 @@
  * limitations under the License.
  */
 
-import type { DocumentNode } from 'graphql';
-import type { TypedDocumentNode, OperationContext } from 'urql';
-import { useClient } from 'urql';
-import { useKeycloak } from '@multiplatform.one/keycloak';
-import { useQuery as useTanstackQuery } from '@tanstack/react-query';
+import { useKeycloak } from "@multiplatform.one/keycloak";
+import { useQuery as useTanstackQuery } from "@tanstack/react-query";
 import type {
   DefaultError,
   DefinedInitialDataOptions,
@@ -32,11 +29,18 @@ import type {
   UndefinedInitialDataOptions,
   UseQueryOptions,
   UseQueryResult,
-} from '@tanstack/react-query';
+} from "@tanstack/react-query";
+import type { DocumentNode } from "graphql";
+import type { OperationContext, TypedDocumentNode } from "urql";
+import { useClient } from "urql";
 
-const extraOptionsKeys = new Set(['context', 'query', 'variables']);
+const extraOptionsKeys = new Set(["context", "query", "variables"]);
 
-interface ExtraOptions<TQueryFnData = unknown, TData = TQueryFnData, TVariables extends object = {}> {
+interface ExtraOptions<
+  TQueryFnData = unknown,
+  TData = TQueryFnData,
+  TVariables extends object = {},
+> {
   context?: Partial<OperationContext>;
   query: DocumentNode | TypedDocumentNode<TData, TVariables> | string;
   variables: TVariables;
@@ -53,7 +57,7 @@ export function useGqlQuery<
     | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
     | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
     | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
-    'queryFn' | 'queryKey'
+    "queryFn" | "queryKey"
   > &
     ExtraOptions<TQueryFnData, TData, TVariables> & {
       queryKey?: TQueryKey;
@@ -62,14 +66,20 @@ export function useGqlQuery<
 ): UseQueryResult<TData, TError> {
   const keycloak = useKeycloak();
   const client = useClient();
-  const extraOptions = [...extraOptionsKeys].reduce((extraQueryOptions, key) => {
-    if (options.hasOwnProperty(key)) extraQueryOptions[key] = options[key];
-    return extraQueryOptions;
-  }, {}) as ExtraOptions<TQueryFnData, TData, TVariables>;
-  const tanstackQueryOptions = Object.entries(options).reduce((tanstackQueryOptions, [key, value]) => {
-    if (!extraOptionsKeys.has(key)) tanstackQueryOptions[key] = value;
-    return tanstackQueryOptions;
-  }, {}) as
+  const extraOptions = [...extraOptionsKeys].reduce(
+    (extraQueryOptions, key) => {
+      if (options.hasOwnProperty(key)) extraQueryOptions[key] = options[key];
+      return extraQueryOptions;
+    },
+    {},
+  ) as ExtraOptions<TQueryFnData, TData, TVariables>;
+  const tanstackQueryOptions = Object.entries(options).reduce(
+    (tanstackQueryOptions, [key, value]) => {
+      if (!extraOptionsKeys.has(key)) tanstackQueryOptions[key] = value;
+      return tanstackQueryOptions;
+    },
+    {},
+  ) as
     | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
     | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
     | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>;
@@ -78,26 +88,31 @@ export function useGqlQuery<
       ...tanstackQueryOptions,
       queryKey: (options.queryKey || [options.query.toString()]) as TQueryKey,
       enabled:
-        typeof tanstackQueryOptions?.enabled !== 'undefined'
+        typeof tanstackQueryOptions?.enabled !== "undefined"
           ? tanstackQueryOptions.enabled
           : !!(keycloak?.authenticated && keycloak.token),
       async queryFn() {
         const { data, error } = await client
-          .query<TQueryFnData, TVariables>(extraOptions.query, extraOptions.variables, {
-            ...extraOptions.context,
-            fetchOptions: {
-              ...extraOptions.context?.fetchOptions,
-              headers: {
-                ...(typeof extraOptions.context?.fetchOptions === 'function'
-                  ? extraOptions.context?.fetchOptions()?.headers
-                  : extraOptions.context?.fetchOptions?.headers),
-                authorization: `Bearer ${keycloak?.token}`,
+          .query<TQueryFnData, TVariables>(
+            extraOptions.query,
+            extraOptions.variables,
+            {
+              ...extraOptions.context,
+              fetchOptions: {
+                ...extraOptions.context?.fetchOptions,
+                headers: {
+                  ...(typeof extraOptions.context?.fetchOptions === "function"
+                    ? extraOptions.context?.fetchOptions()?.headers
+                    : extraOptions.context?.fetchOptions?.headers),
+                  authorization: `Bearer ${keycloak?.token}`,
+                },
               },
             },
-          })
+          )
           .toPromise();
         if (error) throw error;
-        if (typeof data === 'undefined') throw new Error('no data returned from query');
+        if (typeof data === "undefined")
+          throw new Error("no data returned from query");
         return data;
       },
     },

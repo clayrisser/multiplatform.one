@@ -1,8 +1,8 @@
-import React from 'react';
-import type { ComponentMeta } from '@storybook/react';
-import { createPageStory } from '../createPageStory';
+import type { ComponentMeta } from "@storybook/react";
+import React from "react";
+import { createPageStory } from "../createPageStory";
 
-const pageId = 'login-update-profile.ftl';
+const pageId = "login-update-profile.ftl";
 
 const { PageStory } = createPageStory({ pageId });
 
@@ -10,9 +10,9 @@ const meta: ComponentMeta<any> = {
   title: `login/${pageId}`,
   component: PageStory,
   parameters: {
-    viewMode: 'story',
+    viewMode: "story",
     previewTabs: {
-      'storybook/docs/panel': {
+      "storybook/docs/panel": {
         hidden: true,
       },
     },

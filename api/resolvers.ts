@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-import { AuthResolver } from './auth';
-import { CountResolver } from './count';
-import { Authorized } from '@multiplatform.one/keycloak-typegraphql';
-import { NonEmptyArray } from 'type-graphql';
+import { Authorized } from "@multiplatform.one/keycloak-typegraphql";
+import type { NonEmptyArray } from "type-graphql";
+import { AuthResolver } from "./auth";
+import { CountResolver } from "./count";
 import {
   // PostCrudResolver,
   UserCrudResolver,
@@ -32,7 +32,7 @@ import {
   applyOutputTypesEnhanceMap,
   // applyRelationResolversEnhanceMap,
   applyResolversEnhanceMap,
-} from './generated/type-graphql';
+} from "./generated/type-graphql";
 
 export const resolvers: NonEmptyArray<Function> | NonEmptyArray<string> = [
   AuthResolver,

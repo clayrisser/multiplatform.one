@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-import type { Ctx } from '../types';
-import type { ResolverData, NextFn, MiddlewareInterface } from 'type-graphql';
-import { DecorateAll } from './decorateAll';
-import { createMethodDecorator } from '../decorate';
+import type { MiddlewareInterface, NextFn, ResolverData } from "type-graphql";
+import { createMethodDecorator } from "../decorate";
+import type { Ctx } from "../types";
+import { DecorateAll } from "./decorateAll";
 
 export const RegisterClass = ((target: any): undefined | Function => {
   if (!target.prototype) return undefined;
@@ -32,7 +32,8 @@ export const RegisterClass = ((target: any): undefined | Function => {
         class RegisterClassDecorator implements MiddlewareInterface<Ctx> {
           async use({ context: ctx }: ResolverData<Ctx>, next: NextFn) {
             if (!ctx.typegraphqlMeta) ctx.typegraphqlMeta = {};
-            if (!ctx.typegraphqlMeta.resolvers) ctx.typegraphqlMeta.resolvers = {};
+            if (!ctx.typegraphqlMeta.resolvers)
+              ctx.typegraphqlMeta.resolvers = {};
             ctx.typegraphqlMeta.resolvers[target.name] = {
               target,
               handlers: [],

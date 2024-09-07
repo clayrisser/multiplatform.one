@@ -19,4 +19,4 @@
  * limitations under the License.
  */
 
-export * from '../lib/background';
+export * from "../lib/background";

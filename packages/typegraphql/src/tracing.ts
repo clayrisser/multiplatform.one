@@ -19,21 +19,27 @@
  * limitations under the License.
  */
 
-import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks';
-import { B3InjectEncoding, B3Propagator } from '@opentelemetry/propagator-b3';
-import { CompositePropagator, W3CTraceContextPropagator, W3CBaggagePropagator } from '@opentelemetry/core';
-import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
-import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
-import { NodeSDK } from '@opentelemetry/sdk-node';
-import prismaInstrumentation from '@prisma/instrumentation';
-import { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
+import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import {
+  CompositePropagator,
+  W3CBaggagePropagator,
+  W3CTraceContextPropagator,
+} from "@opentelemetry/core";
+import { JaegerExporter } from "@opentelemetry/exporter-jaeger";
+import { B3InjectEncoding, B3Propagator } from "@opentelemetry/propagator-b3";
+import { JaegerPropagator } from "@opentelemetry/propagator-jaeger";
+import { NodeSDK } from "@opentelemetry/sdk-node";
+import { SimpleSpanProcessor } from "@opentelemetry/sdk-trace-base";
+import prismaInstrumentation from "@prisma/instrumentation";
 
-process.env.OTEL_EXPORTER_JAEGER_ENDPOINT = process.env.OTEL_EXPORTER_TRACE_ENDPOINT;
+process.env.OTEL_EXPORTER_JAEGER_ENDPOINT =
+  process.env.OTEL_EXPORTER_TRACE_ENDPOINT;
 
 export const otelSDK = new NodeSDK({
   spanProcessor:
-    process.env.OTEL_EXPORTER_TRACE_ENABLED === '1' && process.env.OTEL_EXPORTER_TRACE_ENDPOINT
+    process.env.OTEL_EXPORTER_TRACE_ENABLED === "1" &&
+    process.env.OTEL_EXPORTER_TRACE_ENDPOINT
       ? new SimpleSpanProcessor(new JaegerExporter())
       : undefined,
   contextManager: new AsyncLocalStorageContextManager(),
@@ -48,5 +54,8 @@ export const otelSDK = new NodeSDK({
       }),
     ],
   }),
-  instrumentations: [getNodeAutoInstrumentations(), new prismaInstrumentation.PrismaInstrumentation()],
+  instrumentations: [
+    getNodeAutoInstrumentations(),
+    new prismaInstrumentation.PrismaInstrumentation(),
+  ],
 });

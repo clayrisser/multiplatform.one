@@ -19,24 +19,32 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { ButtonProps } from './Button';
-import type { FormApi } from '@tanstack/react-form';
-import type { Validator } from '@tanstack/form-core';
-import { Button } from './Button';
-import { useForm } from '@tanstack/react-form';
+import type { Validator } from "@tanstack/form-core";
+import type { FormApi } from "@tanstack/react-form";
+import { useForm } from "@tanstack/react-form";
+import React from "react";
+import type { ButtonProps } from "./Button";
+import { Button } from "./Button";
 
 export type SubmitButtonProps<
   TParentData = any,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
 > = ButtonProps & {
   form: FormApi<TParentData, TFormValidator>;
 };
 
 export function SubmitButton<
   TParentData,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
->({ form, onPress, ...buttonProps }: SubmitButtonProps<TParentData, TFormValidator>) {
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
+>({
+  form,
+  onPress,
+  ...buttonProps
+}: SubmitButtonProps<TParentData, TFormValidator>) {
   form = form || useForm();
   return (
     <Button

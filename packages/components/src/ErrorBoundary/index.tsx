@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { YStack, H2, Button } from 'tamagui';
+import React, { Component } from "react";
+import { Button, H2, YStack } from "tamagui";
 
 const logger = console;
 
@@ -19,7 +19,9 @@ export class ErrorBoundary extends Component<any> {
       return (
         <YStack>
           <H2>Oops, there is an error!</H2>
-          <Button onPress={() => this.setState({ hasError: false })}>Try again?</Button>
+          <Button onPress={() => this.setState({ hasError: false })}>
+            Try again?
+          </Button>
         </YStack>
       );
     }

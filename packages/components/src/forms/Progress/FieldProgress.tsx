@@ -19,37 +19,67 @@
  * limitations under the License.
  */
 
-import React, { useId } from 'react';
-import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
-import type { FieldComponentProps } from '../types';
-import type { FormFieldProps } from '../FormField';
-import type { ProgressProps } from './Progress';
-import { FormField } from '../FormField';
-import { Progress } from './Progress';
-import { useForm, Field } from '@tanstack/react-form';
-import {  useProps } from 'tamagui';
-import type{ProgressIndicatorProps} from 'tamagui';
+import type { DeepKeys, DeepValue, Validator } from "@tanstack/form-core";
+import { Field, useForm } from "@tanstack/react-form";
+import React, { useId } from "react";
+import { useProps } from "tamagui";
+import type { ProgressIndicatorProps } from "tamagui";
+import type { FormFieldProps } from "../FormField";
+import { FormField } from "../FormField";
+import type { FieldComponentProps } from "../types";
+import type { ProgressProps } from "./Progress";
+import { Progress } from "./Progress";
 
 export type FieldProgressProps<
   TParentData = any,
   TName extends DeepKeys<TParentData> = any,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
-> = Omit<FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children' | 'field'> &
-  Pick<ProgressProps, 'id' | 'value'> &
-  Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
-    progressProps?: Omit<ProgressProps, 'id' | 'value'>;
+> = Omit<
+  FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>,
+  "children" | "field"
+> &
+  Pick<ProgressProps, "id" | "value"> &
+  Partial<
+    Omit<
+      FieldComponentProps<
+        TParentData,
+        TName,
+        TFieldValidator,
+        TFormValidator,
+        TData
+      >,
+      "children"
+    >
+  > & {
+    progressProps?: Omit<ProgressProps, "id" | "value">;
     indicatorProps?: ProgressIndicatorProps;
   };
 
 export function FieldProgress<
   TParentData,
   TName extends DeepKeys<TParentData>,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
->(props: FieldProgressProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+>(
+  props: FieldProgressProps<
+    TParentData,
+    TName,
+    TFieldValidator,
+    TFormValidator,
+    TData
+  >,
+) {
   let {
     asyncAlways,
     asyncDebounceMs,
@@ -72,7 +102,7 @@ export function FieldProgress<
     return (
       <FormField {...fieldProps} id={id}>
         <Progress
-          borderColor={fieldProps.error ? '$red8' : undefined}
+          borderColor={fieldProps.error ? "$red8" : undefined}
           {...progressProps}
           id={id}
           value={value ?? (defaultValue as number)}
@@ -96,11 +126,13 @@ export function FieldProgress<
       validators={validators}
     >
       {(field) => {
-        const error = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : fieldProps.error;
+        const error = field.state.meta.errors.length
+          ? field.state.meta.errors.join(", ")
+          : fieldProps.error;
         return (
           <FormField error={error} {...fieldProps} id={id}>
             <Progress
-              borderColor={error ? '$red8' : undefined}
+              borderColor={error ? "$red8" : undefined}
               {...progressProps}
               id={id}
               value={value ?? (field.state.value as number)}

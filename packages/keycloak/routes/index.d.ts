@@ -19,4 +19,4 @@
  * limitations under the License.
  */
 
-export * from '../types/routes';
+export * from "../types/routes";

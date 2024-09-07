@@ -19,30 +19,35 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { FieldTextAreaProps } from './FieldTextArea';
-import { Button, YStack } from 'tamagui';
-import { FieldTextArea } from './FieldTextArea';
-import { action } from '@storybook/addon-actions';
-import { useForm } from '@tanstack/react-form';
+import { action } from "@storybook/addon-actions";
+import { useForm } from "@tanstack/react-form";
+import React from "react";
+import { Button, YStack } from "tamagui";
+import type { FieldTextAreaProps } from "./FieldTextArea";
+import { FieldTextArea } from "./FieldTextArea";
 
 export default {
-  title: 'forms/FieldTextArea',
+  title: "forms/FieldTextArea",
   component: FieldTextArea,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: "beta" } },
 };
 
 export const main = () => (
-  <FieldTextArea label="Description" name="description" defaultValue="" onChangeText={action('onChangeText')} />
+  <FieldTextArea
+    label="Description"
+    name="description"
+    defaultValue=""
+    onChangeText={action("onChangeText")}
+  />
 );
 
 export const form = (args: FieldTextAreaProps) => {
   const form = useForm({
     defaultValues: {
-      textArea: '',
+      textArea: "",
     },
     onSubmit: async ({ value }) => {
-      action('onSubmit')(value);
+      action("onSubmit")(value);
     },
   });
   return (
@@ -54,11 +59,11 @@ export const form = (args: FieldTextAreaProps) => {
 };
 
 form.args = {
-  label: 'Sample Text Area',
-  defaultValue: 'This is a sample text area',
-  onChangeText: action('onChangeText'),
+  label: "Sample Text Area",
+  defaultValue: "This is a sample text area",
+  onChangeText: action("onChangeText"),
   textAreaProps: {
-    placeholder: 'Enter some text here...',
+    placeholder: "Enter some text here...",
     disabled: false,
   },
 };

@@ -20,11 +20,11 @@
  * limitations under the License.
  */
 
-import type { I18n } from '../i18n';
-import type { KcContext } from '../kcContext';
-import type { PageProps } from 'keycloakify/account/pages/PageProps';
-import { clsx } from 'keycloakify/tools/clsx';
-import { useGetClassName } from 'keycloakify/account/lib/useGetClassName';
+import { useGetClassName } from "keycloakify/account/lib/useGetClassName";
+import type { PageProps } from "keycloakify/account/pages/PageProps";
+import { clsx } from "keycloakify/tools/clsx";
+import type { I18n } from "../i18n";
+import type { KcContext } from "../kcContext";
 
 export default function LogoutConfirm({
   kcContext,
@@ -32,24 +32,27 @@ export default function LogoutConfirm({
   doUseDefaultCss,
   Template,
   classes,
-}: PageProps<Extract<KcContext, { pageId: 'password.ftl' }>, I18n>) {
+}: PageProps<Extract<KcContext, { pageId: "password.ftl" }>, I18n>) {
   const { getClassName } = useGetClassName({
     doUseDefaultCss,
     classes: {
       ...classes,
-      kcBodyClass: clsx(classes?.kcBodyClass, 'password'),
+      kcBodyClass: clsx(classes?.kcBodyClass, "password"),
     },
   });
   const { url, password, account, stateChecker } = kcContext;
   const { msg } = i18n;
   return (
-    <Template {...{ kcContext, i18n, doUseDefaultCss, classes }} active="password">
+    <Template
+      {...{ kcContext, i18n, doUseDefaultCss, classes }}
+      active="password"
+    >
       <div className="row">
         <div className="col-md-10">
-          <h2>{msg('changePasswordHtmlTitle')}</h2>
+          <h2>{msg("changePasswordHtmlTitle")}</h2>
         </div>
         <div className="col-md-2 subtitle">
-          <span className="subtitle">{msg('allFieldsRequired')}</span>
+          <span className="subtitle">{msg("allFieldsRequired")}</span>
         </div>
       </div>
       <form action={url.passwordUrl} className="form-horizontal" method="post">
@@ -57,16 +60,16 @@ export default function LogoutConfirm({
           type="text"
           id="username"
           name="username"
-          value={account.username ?? ''}
+          value={account.username ?? ""}
           autoComplete="username"
           readOnly
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
         />
         {password.passwordSet && (
           <div className="form-group">
             <div className="col-sm-2 col-md-2">
               <label htmlFor="password" className="control-label">
-                {msg('password')}
+                {msg("password")}
               </label>
             </div>
             <div className="col-sm-10 col-md-10">
@@ -75,17 +78,21 @@ export default function LogoutConfirm({
                 className="form-control"
                 id="password"
                 name="password"
-                autoFocus
                 autoComplete="current-password"
               />
             </div>
           </div>
         )}
-        <input type="hidden" id="stateChecker" name="stateChecker" value={stateChecker} />
+        <input
+          type="hidden"
+          id="stateChecker"
+          name="stateChecker"
+          value={stateChecker}
+        />
         <div className="form-group">
           <div className="col-sm-2 col-md-2">
             <label htmlFor="password-new" className="control-label">
-              {msg('passwordNew')}
+              {msg("passwordNew")}
             </label>
           </div>
           <div className="col-sm-10 col-md-10">
@@ -100,8 +107,11 @@ export default function LogoutConfirm({
         </div>
         <div className="form-group">
           <div className="col-sm-2 col-md-2">
-            <label htmlFor="password-confirm" className="control-label two-lines">
-              {msg('passwordConfirm')}
+            <label
+              htmlFor="password-confirm"
+              className="control-label two-lines"
+            >
+              {msg("passwordConfirm")}
             </label>
           </div>
           <div className="col-sm-10 col-md-10">
@@ -115,19 +125,22 @@ export default function LogoutConfirm({
           </div>
         </div>
         <div className="form-group">
-          <div id="kc-form-buttons" className="col-md-offset-2 col-md-10 submit">
+          <div
+            id="kc-form-buttons"
+            className="col-md-offset-2 col-md-10 submit"
+          >
             <div>
               <button
                 type="submit"
                 className={clsx(
-                  getClassName('kcButtonClass'),
-                  getClassName('kcButtonPrimaryClass'),
-                  getClassName('kcButtonLargeClass'),
+                  getClassName("kcButtonClass"),
+                  getClassName("kcButtonPrimaryClass"),
+                  getClassName("kcButtonLargeClass"),
                 )}
                 name="submitAction"
                 value="Save"
               >
-                {msg('doSave')}
+                {msg("doSave")}
               </button>
             </div>
           </div>

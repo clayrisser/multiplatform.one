@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import type { IpcHandler } from './main/preload';
+import type { IpcHandler } from "./main/preload";
 
 declare global {
   interface Window {

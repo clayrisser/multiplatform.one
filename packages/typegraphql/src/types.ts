@@ -19,22 +19,29 @@
  * limitations under the License.
  */
 
-import type WebSocket from 'ws';
-import type { BuildSchemaOptions, MiddlewareFn } from 'type-graphql';
-import type { DependencyContainer } from 'tsyringe';
-import type { GraphQLSchema } from 'graphql';
-import type { Logger } from './logger';
-import type { LoggerOptions } from './logger';
-import type { NodeSDK } from '@opentelemetry/sdk-node';
-import type { NonEmptyArray } from 'type-graphql';
-import type { PrismaClient } from '@prisma/client';
-import type { PubSub, YogaInitialContext, YogaServerInstance, YogaServerOptions } from 'graphql-yoga';
-import type { Server, IncomingMessage, ServerResponse } from 'http';
-import type { SubscribePayload } from 'graphql-ws';
-import type { WebSocketServer } from 'ws';
+import type { IncomingMessage, Server, ServerResponse } from "node:http";
+import type { NodeSDK } from "@opentelemetry/sdk-node";
+import type { PrismaClient } from "@prisma/client";
+import type { GraphQLSchema } from "graphql";
+import type { SubscribePayload } from "graphql-ws";
+import type {
+  PubSub,
+  YogaInitialContext,
+  YogaServerInstance,
+  YogaServerOptions,
+} from "graphql-yoga";
+import type { DependencyContainer } from "tsyringe";
+import type { BuildSchemaOptions, MiddlewareFn } from "type-graphql";
+import type { NonEmptyArray } from "type-graphql";
+import type WebSocket from "ws";
+import type { WebSocketServer } from "ws";
+import type { Logger } from "./logger";
+import type { LoggerOptions } from "./logger";
 
-export interface Ctx<R extends Request = Request, P extends PrismaClient = PrismaClient>
-  extends Omit<YogaInitialContext, 'request'> {
+export interface Ctx<
+  R extends Request = Request,
+  P extends PrismaClient = PrismaClient,
+> extends Omit<YogaInitialContext, "request"> {
   container: DependencyContainer;
   extra?: CtxExtra;
   headers?: Record<string, string>;
@@ -63,28 +70,31 @@ export interface PubSubPublishArgsByKey {
 }
 
 export interface RegisterAddonResult {
-  buildSchemaOptions?: Partial<Pick<BuildSchemaOptions, 'globalMiddlewares'>>;
+  buildSchemaOptions?: Partial<Pick<BuildSchemaOptions, "globalMiddlewares">>;
 }
 
 export interface Addon {
   register?: (appOptions: AppOptions) => RegisterAddonResult;
   beforeStart?: (
-    app: Omit<TypeGraphQLApp, 'start'>,
+    app: Omit<TypeGraphQLApp, "start">,
     appOptions: AppOptions,
     startOptions: StartOptions,
   ) => Promise<void>;
   afterStart?: (
-    app: Omit<TypeGraphQLApp, 'start'>,
+    app: Omit<TypeGraphQLApp, "start">,
     appOptions: AppOptions,
     startOptions: StartOptions,
     result: StartResult,
   ) => Promise<void>;
 }
 
-export interface AppOptions<TPubSubPublishArgsByKey extends PubSubPublishArgsByKey = PubSubPublishArgsByKey> {
+export interface AppOptions<
+  TPubSubPublishArgsByKey extends
+    PubSubPublishArgsByKey = PubSubPublishArgsByKey,
+> {
   addons?: Addon[];
   baseUrl?: string;
-  buildSchema?: Omit<BuildSchemaOptions, 'resolvers'>;
+  buildSchema?: Omit<BuildSchemaOptions, "resolvers">;
   cleanup?: () => Promise<void>;
   debug?: boolean;
   graphqlEndpoint?: string;
@@ -115,12 +125,15 @@ export interface StartOptions {
   };
 }
 
-export type StartResult = Omit<TypeGraphQLApp, 'start'> & {
+export type StartResult = Omit<TypeGraphQLApp, "start"> & {
   metricsPort: number;
   port: number;
   schema: GraphQLSchema;
   yoga: YogaServerInstance<Record<string, any>, Record<string, any>>;
-  yogaServerOptions: YogaServerOptions<Record<string, any>, Record<string, any>>;
+  yogaServerOptions: YogaServerOptions<
+    Record<string, any>,
+    Record<string, any>
+  >;
 };
 
 export interface TypeGraphQLApp {
@@ -148,7 +161,6 @@ export interface TypeGraphqlMeta {
 }
 
 export interface Type<T = any> extends Function {
-  // eslint-disable-next-line @typescript-eslint/prefer-function-type
   new (...args: any[]): T;
 }
 
@@ -157,6 +169,8 @@ export type CustomDecorator<TKey = string> = MethodDecorator &
     KEY: TKey;
   };
 
-export type ReflectableDecorator<TParam> = ((opts?: TParam) => CustomDecorator) & {
+export type ReflectableDecorator<TParam> = ((
+  opts?: TParam,
+) => CustomDecorator) & {
   KEY: string;
 };

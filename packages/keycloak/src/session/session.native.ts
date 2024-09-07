@@ -19,13 +19,15 @@
  * limitations under the License.
  */
 
-import type { SessionContextValue } from './session';
-import type { UseSessionOptions } from 'next-auth/react';
+import type { UseSessionOptions } from "next-auth/react";
+import type { SessionContextValue } from "./session";
 
 export async function getSession() {
   return null;
 }
 
-export function useSession<R extends boolean>(_options?: UseSessionOptions<R>): SessionContextValue<R> {
+export function useSession<R extends boolean>(
+  _options?: UseSessionOptions<R>,
+): SessionContextValue<R> {
   return {};
 }

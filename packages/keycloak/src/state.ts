@@ -19,17 +19,18 @@
  * limitations under the License.
  */
 
-import { MultiPlatform } from 'multiplatform.one';
-import { createStateStore } from '@multiplatform.one/zustand';
+import { createStateStore } from "@multiplatform.one/zustand";
+import { MultiPlatform } from "multiplatform.one";
 
-export const persist = MultiPlatform.isIframe || (!MultiPlatform.isNext && !MultiPlatform.isServer);
+export const persist =
+  MultiPlatform.isIframe || (!MultiPlatform.isNext && !MultiPlatform.isServer);
 
 const { useStore } = createStateStore(
-  'auth',
+  "auth",
   {
-    idToken: '',
-    refreshToken: '',
-    token: '',
+    idToken: "",
+    refreshToken: "",
+    token: "",
   },
   undefined,
   { persist },

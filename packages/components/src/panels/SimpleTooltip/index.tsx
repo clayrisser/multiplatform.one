@@ -19,9 +19,15 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { TooltipProps, ThemeProps, PopoverContentProps, PopoverTriggerProps, PopoverArrowProps } from 'tamagui';
-import { Theme, Tooltip } from 'tamagui';
+import type React from "react";
+import type {
+  PopoverArrowProps,
+  PopoverContentProps,
+  PopoverTriggerProps,
+  ThemeProps,
+  TooltipProps,
+} from "tamagui";
+import { Theme, Tooltip } from "tamagui";
 
 export type SimpleToolTipProps = TooltipProps & {
   trigger: React.ReactNode;
@@ -55,7 +61,7 @@ export function SimpleTooltip({
           y={0}
           opacity={1}
           animation={[
-            'quick',
+            "quick",
             {
               opacity: {
                 overshootClamping: true,

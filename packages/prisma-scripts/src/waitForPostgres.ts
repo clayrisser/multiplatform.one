@@ -19,15 +19,15 @@
  * limitations under the License.
  */
 
-import dotenv from 'dotenv';
-import ora from 'ora';
-import path from 'path';
-import type { ExecaError } from 'execa';
-import { execa } from 'execa';
+import path from "node:path";
+import dotenv from "dotenv";
+import type { ExecaError } from "execa";
+import { execa } from "execa";
+import ora from "ora";
 
 const { argv, env } = process;
-const prismaPath = path.resolve(process.cwd(), argv[2] || '');
-dotenv.config({ path: path.resolve(prismaPath, '.env') });
+const prismaPath = path.resolve(process.cwd(), argv[2] || "");
+dotenv.config({ path: path.resolve(prismaPath, ".env") });
 
 export default async function main(spinner = ora()) {
   try {
@@ -40,15 +40,15 @@ export default async function main(spinner = ora()) {
 
 export async function waitForPostgres(spinner = ora(), interval = 1000) {
   if (!env.POSTGRES_URL) {
-    throw new Error('$POSTGRES_URL not set');
+    throw new Error("$POSTGRES_URL not set");
   }
-  spinner.start('waiting for postgres');
+  spinner.start("waiting for postgres");
   for (;;) {
     try {
       if (
         (
-          await execa('psql', [env.POSTGRES_URL, '-c', '\\l'], {
-            stdio: 'pipe',
+          await execa("psql", [env.POSTGRES_URL, "-c", "\\l"], {
+            stdio: "pipe",
           })
         ).exitCode === 0
       ) {
@@ -56,11 +56,15 @@ export async function waitForPostgres(spinner = ora(), interval = 1000) {
       }
     } catch (err) {
       const execaErr = err as ExecaError;
-      if (typeof execaErr.exitCode !== 'number') throw err;
-      spinner.warn(execaErr.stdout.toString().trim() || execaErr.message || execaErr.toString());
-      spinner.start('waiting for postgres');
+      if (typeof execaErr.exitCode !== "number") throw err;
+      spinner.warn(
+        execaErr.stdout.toString().trim() ||
+          execaErr.message ||
+          execaErr.toString(),
+      );
+      spinner.start("waiting for postgres");
     }
     await new Promise((r) => setTimeout(r, interval, null));
   }
-  spinner.succeed('postgres ready');
+  spinner.succeed("postgres ready");
 }

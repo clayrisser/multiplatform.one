@@ -33,6 +33,16 @@ $(ACTION)/deps: package.json \
 	@$(PNPM) install
 	@$(call done,$@)
 
+ACTIONS += spellcheck~deps
+$(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
+	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
+	@$(call done,$@)
+
+ACTIONS += check~spellcheck
+$(ACTION)/check: $(call git_deps,\.([jt]sx?)$$)
+	$(BIOME) check --fix --unsafe $?
+	@$(call done,$@)
+
 .PHONY: $(patsubst %,%/%,$(PLATFORMS))
 $(patsubst %,%/%,$(PLATFORMS)):
 	@$(call make,platforms/$(@D)) $*

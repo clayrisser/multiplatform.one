@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
 export const metadata = {
-  title: '',
-  description: '',
+  title: "",
+  description: "",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

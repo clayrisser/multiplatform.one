@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useEvent } from 'tamagui';
+import { useEffect, useState } from "react";
+import { useEvent } from "tamagui";
 
 export const copyToClipboard = (text: string) => {
   return navigator.clipboard.writeText(text);
 };
 
-export function useClipboard(text = '', timeout = 1500) {
+export function useClipboard(text = "", timeout = 1500) {
   const [hasCopied, setHasCopied] = useState(false);
 
   const onCopy = useEvent(async () => {

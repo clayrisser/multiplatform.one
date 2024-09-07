@@ -19,19 +19,23 @@
  * limitations under the License.
  */
 
-import axios from 'axios';
-import cookie from 'cookie';
-import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
-import type { AxiosError } from 'axios';
-import type { Ctx } from '@multiplatform.one/typegraphql';
-import type { Grant } from 'keycloak-connect';
-import type { KeycloakConnect } from './initialize';
-import type { Session } from '@multiplatform.one/keycloak';
-import { KEYCLOAK_CONNECT, KEYCLOAK_OPTIONS, KeycloakAdmin } from './initialize';
-import { Token } from './token';
-import { decode } from 'next-auth/jwt';
-import { getReqHeader, Logger } from '@multiplatform.one/typegraphql';
-import { injectable, scoped, Lifecycle, inject } from 'tsyringe';
+import type UserRepresentation from "@keycloak/keycloak-admin-client/lib/defs/userRepresentation";
+import type { Session } from "@multiplatform.one/keycloak";
+import type { Ctx } from "@multiplatform.one/typegraphql";
+import { type Logger, getReqHeader } from "@multiplatform.one/typegraphql";
+import axios from "axios";
+import type { AxiosError } from "axios";
+import cookie from "cookie";
+import type { Grant } from "keycloak-connect";
+import { decode } from "next-auth/jwt";
+import { Lifecycle, inject, injectable, scoped } from "tsyringe";
+import type { KeycloakConnect } from "./initialize";
+import {
+  KEYCLOAK_CONNECT,
+  KEYCLOAK_OPTIONS,
+  type KeycloakAdmin,
+} from "./initialize";
+import { Token } from "./token";
 import type {
   AuthorizationCodeGrantOptions,
   ClientCredentialsGrantOptions,
@@ -41,7 +45,7 @@ import type {
   RefreshTokenGrantOptions,
   SmartGrantOptions,
   UserInfo,
-} from './types';
+} from "./types";
 
 @injectable()
 @scoped(Lifecycle.ContainerScoped)
@@ -69,16 +73,16 @@ export class KeycloakService {
   private _nextAuthSession: Session | undefined;
 
   constructor(
-    @inject('REQ') public readonly req: KeycloakRequest,
+    @inject("REQ") public readonly req: KeycloakRequest,
     @inject(KEYCLOAK_OPTIONS) options: KeycloakOptions,
-    @inject('LOGGER') private readonly logger: Logger,
+    @inject("LOGGER") private readonly logger: Logger,
     @inject(KEYCLOAK_CONNECT) public readonly keycloakConnect: KeycloakConnect,
     public readonly keycloakAdmin: KeycloakAdmin,
-    @inject('CTX') public readonly ctx?: Ctx,
+    @inject("CTX") public readonly ctx?: Ctx,
   ) {
     this.options = {
       ensureFreshness: true,
-      nextAuthCookieName: 'next-auth.session-token',
+      nextAuthCookieName: "next-auth.session-token",
       ...options,
     };
   }
@@ -111,7 +115,11 @@ export class KeycloakService {
       try {
         const refreshToken = await this.lookupRefreshToken();
         const idToken = await this.lookupIdToken();
-        const grant = await this.createGrant(accessToken, idToken, refreshToken);
+        const grant = await this.createGrant(
+          accessToken,
+          idToken,
+          refreshToken,
+        );
         await this.afterGrant(grant);
       } catch (err) {
         this.clearGrant();
@@ -139,7 +147,9 @@ export class KeycloakService {
     const accessToken = await this.getAccessToken(grant);
     if (!accessToken) return undefined;
     this._roles = [
-      ...(accessToken.content?.realm_access?.roles || []).map((role: string) => `realm:${role}`),
+      ...(accessToken.content?.realm_access?.roles || []).map(
+        (role: string) => `realm:${role}`,
+      ),
       ...(accessToken.content?.resource_access?.[this.clientId]?.roles || []),
     ];
     return this._roles;
@@ -149,7 +159,7 @@ export class KeycloakService {
     if (this._aclRoles) return this._aclRoles;
     const roles = await this.getRoles(grant);
     if (!roles) return undefined;
-    this._aclRoles = roles.map((role: string) => role.replace(/^realm:/g, ''));
+    this._aclRoles = roles.map((role: string) => role.replace(/^realm:/g, ""));
     return this._aclRoles;
   }
 
@@ -157,11 +167,14 @@ export class KeycloakService {
     if (this._scopes) return this._scopes;
     const accessToken = await this.getAccessToken(grant);
     if (!accessToken) return undefined;
-    this._scopes = (accessToken.content?.scope || '').split(' ');
+    this._scopes = (accessToken.content?.scope || "").split(" ");
     return this._scopes;
   }
 
-  async getUserInfo(grant?: Grant, force = false): Promise<UserInfo | undefined> {
+  async getUserInfo(
+    grant?: Grant,
+    force = false,
+  ): Promise<UserInfo | undefined> {
     await this.getGrant(force, grant);
     if (this._userInfo) return this._userInfo;
     if (this.req.kauth?.userInfo) {
@@ -169,7 +182,11 @@ export class KeycloakService {
       return this._userInfo;
     }
     const nextAuthSession = await this.getNextAuthSession();
-    if (!this.bearerToken && !nextAuthSession?.accessToken && this.req.session?.kauth?.userInfo) {
+    if (
+      !this.bearerToken &&
+      !nextAuthSession?.accessToken &&
+      this.req.session?.kauth?.userInfo
+    ) {
       this._userInfo = this.req.session.kauth.userInfo;
       return this._userInfo;
     }
@@ -196,10 +213,10 @@ export class KeycloakService {
       preferredUsername: userInfo?.preferred_username,
       ...userInfo,
     } as UserInfo;
-    delete result?.email_verified;
-    delete result?.family_name;
-    delete result?.given_name;
-    delete result?.preferred_username;
+    result.email_verified = undefined;
+    result.family_name = undefined;
+    result.given_name = undefined;
+    result.preferred_username = undefined;
     if (!this.req.kauth) this.req.kauth = {};
     this.req.kauth.userInfo = result;
     this._userInfo = result;
@@ -216,7 +233,10 @@ export class KeycloakService {
     return accessToken?.content?.preferred_username;
   }
 
-  async isAuthorizedByRoles(roles: (string | string[])[] = [], grant?: Grant): Promise<boolean> {
+  async isAuthorizedByRoles(
+    roles: (string | string[])[] = [],
+    grant?: Grant,
+  ): Promise<boolean> {
     const accessToken = await this.getAccessToken(grant);
     const rolesArr = Array.isArray(roles) ? roles : [roles];
     if (!roles.length) return true;
@@ -249,12 +269,17 @@ export class KeycloakService {
     }
   }
 
-  async getUser(userId?: string, grant?: Grant): Promise<UserRepresentation | undefined> {
+  async getUser(
+    userId?: string,
+    grant?: Grant,
+  ): Promise<UserRepresentation | undefined> {
     if (!userId) userId = await this.getUserId(grant);
     if (!userId) return undefined;
     if (!this.keycloakAdmin) return undefined;
     try {
-      return (await this.keycloakAdmin.users.findOne({ id: userId })) || undefined;
+      return (
+        (await this.keycloakAdmin.users.findOne({ id: userId })) || undefined
+      );
     } catch (err) {
       const error = err as AxiosError;
       if (error.response?.status !== 404) throw err;
@@ -262,7 +287,10 @@ export class KeycloakService {
     }
   }
 
-  async smartGrant(options: SmartGrantOptions, persistSession = true): Promise<Grant | undefined> {
+  async smartGrant(
+    options: SmartGrantOptions,
+    persistSession = true,
+  ): Promise<Grant | undefined> {
     let grant: Grant | undefined;
     if (options.refreshToken) {
       grant = await this.refreshTokenGrant(
@@ -319,11 +347,11 @@ export class KeycloakService {
           client_id: clientId,
           username,
           password,
-          grant_type: 'password',
+          grant_type: "password",
           scope: this.serializeScope(scope),
         }).toString(),
         {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
         },
       );
       grant = await this.keycloakConnect.grantManager.createGrant(res.data);
@@ -337,7 +365,11 @@ export class KeycloakService {
       );
     }
     if (!grant) return undefined;
-    if (persistSession) this.sessionSetTokens(grant.access_token as Token, grant.refresh_token as Token);
+    if (persistSession)
+      this.sessionSetTokens(
+        grant.access_token as Token,
+        grant.refresh_token as Token,
+      );
     await this.afterGrant(grant);
     return grant;
   }
@@ -354,23 +386,28 @@ export class KeycloakService {
         new URLSearchParams({
           ...(clientSecret ? { client_secret: clientSecret } : {}),
           client_id: clientId,
-          grant_type: 'client_credentials',
+          grant_type: "client_credentials",
           scope: this.serializeScope(scope),
         }).toString(),
         {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
         },
       );
       grant = await this.keycloakConnect.grantManager.createGrant(res.data);
     } else {
-      grant = await this.keycloakConnect.grantManager.obtainFromClientCredentials(
-        // @ts-ignore missing scope argument
-        undefined,
-        this.serializeScope(scope),
-      );
+      grant =
+        await this.keycloakConnect.grantManager.obtainFromClientCredentials(
+          // @ts-ignore missing scope argument
+          undefined,
+          this.serializeScope(scope),
+        );
     }
     if (!grant) return undefined;
-    if (persistSession) this.sessionSetTokens(grant.access_token as Token, grant.refresh_token as Token);
+    if (persistSession)
+      this.sessionSetTokens(
+        grant.access_token as Token,
+        grant.refresh_token as Token,
+      );
     await this.afterGrant(grant);
     return grant;
   }
@@ -384,28 +421,42 @@ export class KeycloakService {
       `${this.options.baseUrl}/realms/${this.options.realm}/protocol/openid-connect/token`,
       new URLSearchParams({
         client_id: clientId,
-        grant_type: 'refresh_token',
+        grant_type: "refresh_token",
         refresh_token: refreshToken,
       }).toString(),
       {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
       },
     );
     const grant = await this.keycloakConnect.grantManager.createGrant(res.data);
     if (!grant) return undefined;
-    if (persistSession) this.sessionSetTokens(grant.access_token as Token, grant.refresh_token as Token);
+    if (persistSession)
+      this.sessionSetTokens(
+        grant.access_token as Token,
+        grant.refresh_token as Token,
+      );
     await this.afterGrant(grant);
     return grant;
   }
 
   async authorizationCodeGrant(
-    { code, redirectUri, clientId, sessionHost, sessionId, codeVerifier }: AuthorizationCodeGrantOptions,
+    {
+      code,
+      redirectUri,
+      clientId,
+      sessionHost,
+      sessionId,
+      codeVerifier,
+    }: AuthorizationCodeGrantOptions,
     persistSession = true,
   ): Promise<Grant | undefined> {
     let grant: Grant | undefined;
     if (clientId || redirectUri || codeVerifier) {
       if (!clientId) clientId = this.clientId;
-      if (!redirectUri) redirectUri = this.req.session ? this.req.session.auth_redirect_uri : undefined;
+      if (!redirectUri)
+        redirectUri = this.req.session
+          ? this.req.session.auth_redirect_uri
+          : undefined;
       const res = await axios.post(
         `${this.options.baseUrl}/realms/${this.options.realm}/protocol/openid-connect/token`,
         new URLSearchParams({
@@ -414,11 +465,11 @@ export class KeycloakService {
           ...(sessionId ? { client_session_state: sessionId } : {}),
           client_id: clientId,
           code,
-          grant_type: 'authorization_code',
-          redirect_uri: redirectUri ? redirectUri : '',
+          grant_type: "authorization_code",
+          redirect_uri: redirectUri ? redirectUri : "",
         }).toString(),
         {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
         },
       );
       grant = await this.keycloakConnect.grantManager.createGrant(res.data);
@@ -432,7 +483,11 @@ export class KeycloakService {
       );
     }
     if (!grant) return undefined;
-    if (persistSession) this.sessionSetTokens(grant.access_token as Token, grant.refresh_token as Token);
+    if (persistSession)
+      this.sessionSetTokens(
+        grant.access_token as Token,
+        grant.refresh_token as Token,
+      );
     await this.afterGrant(grant);
     return grant;
   }
@@ -446,15 +501,22 @@ export class KeycloakService {
   private get bearerToken(): Token | undefined {
     if (this._bearerToken) return this._bearerToken;
     const { strict } = this.options;
-    const authorization = getReqHeader(this.req, 'authorization', this.ctx?.headers);
-    if (typeof authorization === 'undefined') return undefined;
-    if (authorization && authorization.indexOf(' ') <= -1) {
+    const authorization = getReqHeader(
+      this.req,
+      "authorization",
+      this.ctx?.headers,
+    );
+    if (typeof authorization === "undefined") return undefined;
+    if (authorization && authorization.indexOf(" ") <= -1) {
       if (strict) return undefined;
       this._bearerToken = new Token(authorization, this.clientId);
       return this._bearerToken;
     }
-    const authorizationArr = authorization?.split(' ');
-    if (authorizationArr?.[0] && authorizationArr[0].toLowerCase() === 'bearer') {
+    const authorizationArr = authorization?.split(" ");
+    if (
+      authorizationArr?.[0] &&
+      authorizationArr[0].toLowerCase() === "bearer"
+    ) {
       this._bearerToken = new Token(authorizationArr[1], this.clientId);
       return this._bearerToken;
     }
@@ -464,22 +526,23 @@ export class KeycloakService {
   private async getNextAuthSession() {
     if (this._nextAuthSession) return this._nextAuthSession;
     const chunks: Record<string, string> = {};
-    const cookies = cookie.parse(getReqHeader(this.req, 'cookie') || '');
+    const cookies = cookie.parse(getReqHeader(this.req, "cookie") || "");
     const cookieName = this.options.nextAuthCookieName!;
     Object.keys(cookies).forEach((name) => {
       if (name.startsWith(cookieName)) chunks[name] = cookies[name];
     });
     const sortedKeys = Object.keys(chunks).sort((a, b) => {
-      const aSuffix = parseInt(a.split('.').pop() ?? '0', 10);
-      const bSuffix = parseInt(b.split('.').pop() ?? '0', 10);
+      const aSuffix = Number.parseInt(a.split(".").pop() ?? "0", 10);
+      const bSuffix = Number.parseInt(b.split(".").pop() ?? "0", 10);
       return aSuffix - bSuffix;
     });
     if (!sortedKeys.length) return undefined;
-    const token = sortedKeys.map((key) => chunks[key]).join('');
+    const token = sortedKeys.map((key) => chunks[key]).join("");
     try {
-      this._nextAuthSession = (await decode({ token, secret: this.options.secret || '' })) as unknown as
-        | Session
-        | undefined;
+      this._nextAuthSession = (await decode({
+        token,
+        secret: this.options.secret || "",
+      })) as unknown as Session | undefined;
       return this._nextAuthSession;
     } catch (err) {
       this.logger.error(err);
@@ -489,14 +552,19 @@ export class KeycloakService {
 
   private async lookupRefreshToken(): Promise<Token | undefined> {
     if (this._refreshToken) return this._refreshToken;
-    const refreshToken = this.req.kauth?.grant?.refresh_token as Token | undefined;
+    const refreshToken = this.req.kauth?.grant?.refresh_token as
+      | Token
+      | undefined;
     if (refreshToken) {
       this._refreshToken = refreshToken;
       return this._refreshToken;
     }
     const nextAuthSession = await this.getNextAuthSession();
     if (nextAuthSession?.refreshToken) {
-      this._refreshToken = new Token(nextAuthSession.refreshToken, this.clientId);
+      this._refreshToken = new Token(
+        nextAuthSession.refreshToken,
+        this.clientId,
+      );
       return this._refreshToken;
     }
     this._refreshToken = this.req.session?.kauth?.refreshToken
@@ -507,7 +575,9 @@ export class KeycloakService {
 
   private async lookupAccessToken(): Promise<Token | undefined> {
     if (this._accessToken) return this._accessToken;
-    const accessToken = this.req.kauth?.grant?.access_token as Token | undefined;
+    const accessToken = this.req.kauth?.grant?.access_token as
+      | Token
+      | undefined;
     if (accessToken) {
       this._accessToken = accessToken;
       return this._accessToken;
@@ -550,12 +620,12 @@ export class KeycloakService {
       this.clearGrant();
       return;
     }
-    delete this._aclRoles;
-    delete this._idToken;
-    delete this._refreshToken;
-    delete this._roles;
-    delete this._scopes;
-    delete this._userInfo;
+    this._aclRoles = undefined;
+    this._idToken = undefined;
+    this._refreshToken = undefined;
+    this._roles = undefined;
+    this._scopes = undefined;
+    this._userInfo = undefined;
     this._grant = grant;
     this._accessToken = grant.access_token as Token;
     if (grant.id_token) this._idToken = grant.id_token as Token;
@@ -570,23 +640,23 @@ export class KeycloakService {
   }
 
   private clearGrant() {
-    delete this._accessToken;
-    delete this._aclRoles;
-    delete this._bearerToken;
-    delete this._grant;
-    delete this._idToken;
-    delete this._nextAuthSession;
-    delete this._refreshToken;
-    delete this._roles;
-    delete this._scopes;
-    delete this._userInfo;
-    delete this.req.kauth;
+    this._accessToken = undefined;
+    this._aclRoles = undefined;
+    this._bearerToken = undefined;
+    this._grant = undefined;
+    this._idToken = undefined;
+    this._nextAuthSession = undefined;
+    this._refreshToken = undefined;
+    this._roles = undefined;
+    this._scopes = undefined;
+    this._userInfo = undefined;
+    this.req.kauth = undefined;
   }
 
   private async clearSession() {
     if (!this.req.session) return;
-    delete this.req.session.kauth;
-    delete this.req.session.token;
+    this.req.session.kauth = undefined;
+    this.req.session.token = undefined;
     await new Promise<void>((resolve, reject) => {
       if (!this.req.session?.destroy) return resolve();
       this.req.session?.destroy((err: Error) => {
@@ -615,7 +685,11 @@ export class KeycloakService {
     this.req.kauth.options = this.options;
   }
 
-  private async createGrant(accessToken: Token, idToken?: Token, refreshToken?: Token): Promise<Grant | undefined> {
+  private async createGrant(
+    accessToken: Token,
+    idToken?: Token,
+    refreshToken?: Token,
+  ): Promise<Grant | undefined> {
     return (
       this.keycloakConnect.grantManager.createGrant({
         // access_token is actually a string even though keycloak-connect
@@ -627,28 +701,40 @@ export class KeycloakService {
         ...(idToken ? { id_token: idToken.token } : {}),
         // refresh_token is actually a string even though keycloak-connect
         // thinks it is a Token
-        ...(this.options.ensureFreshness && refreshToken ? { refresh_token: refreshToken.token } : {}),
-        ...(accessToken.content?.exp ? { expires_in: accessToken.content.exp } : {}),
-        ...(accessToken.content?.typ ? { token_type: accessToken.content.typ } : {}),
+        ...(this.options.ensureFreshness && refreshToken
+          ? { refresh_token: refreshToken.token }
+          : {}),
+        ...(accessToken.content?.exp
+          ? { expires_in: accessToken.content.exp }
+          : {}),
+        ...(accessToken.content?.typ
+          ? { token_type: accessToken.content.typ }
+          : {}),
       }) || undefined
     );
   }
 
   private async validateGrant(grant: Grant): Promise<Grant | undefined> {
-    // @ts-ignore isGrantRefreshable is private
-    if (this.options.ensureFreshness && this.keycloakConnect.grantManager.isGrantRefreshable(grant)) {
+    if (
+      this.options.ensureFreshness &&
+      // @ts-ignore isGrantRefreshable is private
+      this.keycloakConnect.grantManager.isGrantRefreshable(grant)
+    ) {
       await this.keycloakConnect.grantManager.ensureFreshness(grant);
     }
     return this.keycloakConnect.grantManager.validateGrant(grant);
   }
 
   private serializeScope(scope?: string | string[]) {
-    return ['openid', ...(Array.isArray(scope) ? scope : (scope || 'profile').split(' '))].join(' ');
+    return [
+      "openid",
+      ...(Array.isArray(scope) ? scope : (scope || "profile").split(" ")),
+    ].join(" ");
   }
 }
 
 export interface TokenResponseData {
-  'not-before-policy'?: number;
+  "not-before-policy"?: number;
   access_token?: string;
   expires_in?: number;
   id_token?: string;

@@ -22,7 +22,8 @@
         "ms-python.black-formatter",
         "ms-python.debugpy",
         "ms-python.python",
-        "ms-vscode.live-server"
+        "ms-vscode.live-server",
+        "biomejs.biome"
       ],
       "settings": {
         "extensions.verifySignature": false,

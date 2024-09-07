@@ -19,47 +19,53 @@
  * limitations under the License.
  */
 
-import dotenv from 'dotenv';
-import ora from 'ora';
-import path from 'path';
+import path from "node:path";
+import dotenv from "dotenv";
+import ora from "ora";
 
 const logger = console;
 
 const { argv } = process;
-dotenv.config({ path: path.resolve(process.cwd(), argv[2] || '.', '.env') });
+dotenv.config({ path: path.resolve(process.cwd(), argv[2] || ".", ".env") });
 
-export default async function seedDb(entities: Entities, hide: string[] = [], spinner = ora()) {
-  const { PrismaClient } = require('@prisma/client');
+export default async function seedDb(
+  entities: Entities,
+  hide: string[] = [],
+  spinner = ora(),
+) {
+  const { PrismaClient } = require("@prisma/client");
   const prisma = new PrismaClient();
   const result = (await Promise.all(
-    Object.entries(entities).map(async ([key, entity]: [string, Entity | Entity[]]) => {
-      spinner.start(`seeding '${key}'`);
-      if (!prisma[key]) {
-        spinner.warn(`failed to find '${key}'`);
-        return [key, null];
-      }
-      if (!Array.isArray(entity)) entity = [entity];
-      if (await prisma[key].count()) {
-        spinner.info(`already seeded '${key}'`);
-        return [key, null];
-      }
-      let result = await Promise.all(
-        entity.map(async (entity: Entity) => {
-          try {
-            const result = await prisma[key].create({ data: entity });
-            return hideResults(key, result, hide);
-          } catch (err) {
-            spinner.fail((err as Error).message || (err as string));
-            process.exit(1);
-          }
-        }),
-      );
-      if (result.length === 1) [result] = result;
-      spinner.stop();
-      logger.log(result);
-      spinner.succeed(`seeded '${key}'`);
-      return [key, result];
-    }),
+    Object.entries(entities).map(
+      async ([key, entity]: [string, Entity | Entity[]]) => {
+        spinner.start(`seeding '${key}'`);
+        if (!prisma[key]) {
+          spinner.warn(`failed to find '${key}'`);
+          return [key, null];
+        }
+        if (!Array.isArray(entity)) entity = [entity];
+        if (await prisma[key].count()) {
+          spinner.info(`already seeded '${key}'`);
+          return [key, null];
+        }
+        let result = await Promise.all(
+          entity.map(async (entity: Entity) => {
+            try {
+              const result = await prisma[key].create({ data: entity });
+              return hideResults(key, result, hide);
+            } catch (err) {
+              spinner.fail((err as Error).message || (err as string));
+              process.exit(1);
+            }
+          }),
+        );
+        if (result.length === 1) [result] = result;
+        spinner.stop();
+        logger.log(result);
+        spinner.succeed(`seeded '${key}'`);
+        return [key, result];
+      },
+    ),
   )) as Result[];
   await prisma.$disconnect();
   return result.reduce((mappedResult: MappedResult, [key, value]: Result) => {
@@ -71,20 +77,22 @@ export default async function seedDb(entities: Entities, hide: string[] = [], sp
 export function hideResults(model: string, result: Entity, hide: string[]) {
   hide = hide
     .filter((path: string) => {
-      const hideArr = path.split('.');
-      return hideArr.length === 1 || (hideArr.length > 1 && hideArr[0] === model);
+      const hideArr = path.split(".");
+      return (
+        hideArr.length === 1 || (hideArr.length > 1 && hideArr[0] === model)
+      );
     })
     .map((path: string) => {
-      const hideArr = path.split('.');
+      const hideArr = path.split(".");
       if (hideArr.length > 1 && hideArr[0] === model) {
-        return hideArr.slice(1).join('.');
+        return hideArr.slice(1).join(".");
       }
       return path;
     });
   return {
     ...result,
     ...hide.reduce((hiddenResult: Entity, key: string) => {
-      if (typeof result[key] !== 'undefined') hiddenResult[key] = '***';
+      if (typeof result[key] !== "undefined") hiddenResult[key] = "***";
       return hiddenResult;
     }, {}),
   };

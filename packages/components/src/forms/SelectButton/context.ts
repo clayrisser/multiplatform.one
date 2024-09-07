@@ -19,11 +19,13 @@
  * limitations under the License.
  */
 
-import type { ButtonProps } from 'tamagui';
-import type { Dispatch, SetStateAction } from 'react';
-import { createContext } from 'react';
+import type { Dispatch, SetStateAction } from "react";
+import { createContext } from "react";
+import type { ButtonProps } from "tamagui";
 
-export const SelectButtonContext = createContext<SelectButtonContextValue>({ values: {} });
+export const SelectButtonContext = createContext<SelectButtonContextValue>({
+  values: {},
+});
 
 interface SelectButtonContextValue {
   selectedIndex?: number;

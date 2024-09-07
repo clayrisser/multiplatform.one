@@ -1,13 +1,13 @@
-import React from 'react';
-import { SelectButton } from './SelectButton';
-import { Text } from 'tamagui';
-import { action } from '@storybook/addon-actions';
+import { action } from "@storybook/addon-actions";
+import React from "react";
+import { Text } from "tamagui";
+import { SelectButton } from "./SelectButton";
 
 export default {
-  title: 'forms/SelectButton',
+  title: "forms/SelectButton",
   component: SelectButton,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
@@ -31,8 +31,8 @@ export const main = (args) => {
 };
 
 const mainArgs = {
-  value: 'bmw',
-  selectedValue: 'bmw',
+  value: "bmw",
+  selectedValue: "bmw",
 };
 
 main.args = mainArgs;

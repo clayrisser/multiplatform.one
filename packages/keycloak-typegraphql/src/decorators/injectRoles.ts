@@ -19,20 +19,24 @@
  * limitations under the License.
  */
 
-import type { Ctx } from '@multiplatform.one/typegraphql';
-import type { KeycloakRequest } from '../types';
-import type { ResolverData } from 'type-graphql';
-import type { Token } from '../token';
-import { createParamDecorator } from 'type-graphql';
+import type { Ctx } from "@multiplatform.one/typegraphql";
+import type { ResolverData } from "type-graphql";
+import { createParamDecorator } from "type-graphql";
+import type { Token } from "../token";
+import type { KeycloakRequest } from "../types";
 
 export function InjectRoles() {
   return createParamDecorator(({ context: ctx }: ResolverData<Ctx>) => {
     const req = ctx.req as KeycloakRequest;
-    if (!req?.kauth?.grant?.access_token || !req.kauth.options) return undefined;
+    if (!req?.kauth?.grant?.access_token || !req.kauth.options)
+      return undefined;
     const accessToken = req.kauth.grant.access_token as Token;
     return [
-      ...(accessToken.content?.realm_access?.roles || []).map((role: string) => `realm:${role}`),
-      ...(accessToken.content?.resource_access?.[req.kauth.options.clientId]?.roles || []),
+      ...(accessToken.content?.realm_access?.roles || []).map(
+        (role: string) => `realm:${role}`,
+      ),
+      ...(accessToken.content?.resource_access?.[req.kauth.options.clientId]
+        ?.roles || []),
     ];
   });
 }

@@ -19,27 +19,38 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { SimpleTabs, TabsList, TabsContent } from './index';
-import { H5, SizableText, Tabs, Separator, YStack, Switch, XStack, Text } from 'tamagui';
-import { SimpleTabsProps } from './index';
+import React from "react";
+import {
+  H5,
+  Separator,
+  SizableText,
+  Switch,
+  Tabs,
+  Text,
+  XStack,
+  YStack,
+} from "tamagui";
+import { SimpleTabs, TabsContent, TabsList } from "./index";
+import type { SimpleTabsProps } from "./index";
 
 export default {
-  title: 'organize/SimpleTabs',
+  title: "organize/SimpleTabs",
   component: SimpleTabs,
   parameters: {
     status: {
-      type: 'beta',
+      type: "beta",
     },
   },
 };
 
 export const Main = (args: SimpleTabsProps) => {
-  const [orientation, setOrientation] = React.useState(args.orientation === 'horizontal');
+  const [orientation, setOrientation] = React.useState(
+    args.orientation === "horizontal",
+  );
   const [isHorizontal, setIsHorizontal] = React.useState(true);
 
   React.useEffect(() => {
-    if (args.orientation === 'horizontal') {
+    if (args.orientation === "horizontal") {
       setOrientation(true);
     } else {
       setOrientation(false);
@@ -49,13 +60,23 @@ export const Main = (args: SimpleTabsProps) => {
   return (
     <YStack gap padding="$4">
       <XStack gap>
-        <Switch size="$3" checked={orientation} onCheckedChange={setIsHorizontal}>
+        <Switch
+          size="$3"
+          checked={orientation}
+          onCheckedChange={setIsHorizontal}
+        >
           <Switch.Thumb animation="bouncy" />
         </Switch>
-        <Text>{orientation ? 'Horizontal' : 'Vertical'}</Text>
+        <Text>{orientation ? "Horizontal" : "Vertical"}</Text>
       </XStack>
-      <SimpleTabs orientation={orientation ? 'horizontal' : 'vertical'} defaultValue="home">
-        <TabsList justifyContent="space-between" orientation={orientation ? 'horizontal' : 'vertical'}>
+      <SimpleTabs
+        orientation={orientation ? "horizontal" : "vertical"}
+        defaultValue="home"
+      >
+        <TabsList
+          justifyContent="space-between"
+          orientation={orientation ? "horizontal" : "vertical"}
+        >
           <Tabs.Tab value="home" flex={1}>
             <SizableText textAlign="center">Home</SizableText>
           </Tabs.Tab>
@@ -86,6 +107,6 @@ export const main = (args) => {
 };
 
 const mainArgs = {
-  orientation: 'horizontal',
+  orientation: "horizontal",
 };
 main.args = mainArgs;

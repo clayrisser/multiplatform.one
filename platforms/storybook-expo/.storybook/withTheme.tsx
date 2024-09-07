@@ -19,17 +19,17 @@
  * limitations under the License.
  */
 
-import React, { useEffect, useState } from 'react';
-import addons, { makeDecorator } from '@storybook/addons';
-import type { ColorScheme } from 'multiplatform.one/theme';
-import type { ThemeName } from 'ui';
-import { useTheme } from 'multiplatform.one/theme';
+import addons, { makeDecorator } from "@storybook/addons";
+import type { ColorScheme } from "multiplatform.one/theme";
+import { useTheme } from "multiplatform.one/theme";
+import React, { useEffect, useState } from "react";
+import type { ThemeName } from "ui";
 
-const UPDATE_BACKGROUND = 'storybook-addon-background:update';
+const UPDATE_BACKGROUND = "storybook-addon-background:update";
 
 export const withTheme = makeDecorator({
-  name: 'withTheme',
-  parameterName: 'backgrounds',
+  name: "withTheme",
+  parameterName: "backgrounds",
   skipIfNoParametersOrOptions: false,
   wrapper: (getStory, context, { parameters }) => {
     const channel = addons.getChannel();
@@ -38,9 +38,11 @@ export const withTheme = makeDecorator({
       values: Background[];
     };
     const backgrounds: Background[] = data.values;
-    const defaultValue = data.default ? backgrounds.find((b) => b.name === data.default) : undefined;
+    const defaultValue = data.default
+      ? backgrounds.find((b) => b.name === data.default)
+      : undefined;
     const defaultOrFirst = defaultValue ? defaultValue : backgrounds[0];
-    const [background, setBackground] = useState(defaultOrFirst?.value || '');
+    const [background, setBackground] = useState(defaultOrFirst?.value || "");
     const [, setTheme] = useTheme();
 
     // TODO: fix these effects (they were causing infinite renders)

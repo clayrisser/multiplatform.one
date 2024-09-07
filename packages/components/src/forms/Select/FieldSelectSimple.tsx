@@ -19,35 +19,71 @@
  * limitations under the License.
  */
 
-import React, { useId } from 'react';
-import type { DeepKeys, DeepValue, Validator } from '@tanstack/form-core';
-import type { FieldComponentProps } from '../types';
-import type { FormFieldProps } from '../FormField';
-import { FormField } from '../FormField';
-import { useProps } from 'tamagui';
-import { SelectSimple } from './SelectSimple';
-import type { SelectSimpleProps } from './SelectSimple';
-import { useForm, Field } from '@tanstack/react-form';
+import type { DeepKeys, DeepValue, Validator } from "@tanstack/form-core";
+import { Field, useForm } from "@tanstack/react-form";
+import React, { useId } from "react";
+import { useProps } from "tamagui";
+import type { FormFieldProps } from "../FormField";
+import { FormField } from "../FormField";
+import type { FieldComponentProps } from "../types";
+import { SelectSimple } from "./SelectSimple";
+import type { SelectSimpleProps } from "./SelectSimple";
 
 export type FieldSelectSimpleProps<
   TParentData = any,
   TName extends DeepKeys<TParentData> = any,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
-> = Omit<FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'field'> &
-  Pick<SelectSimpleProps, 'placeholder' | 'value' | 'onOpenChange' | 'onValueChange'> &
-  Partial<Omit<FieldComponentProps<TParentData, TName, TFieldValidator, TFormValidator, TData>, 'children'>> & {
-    selectProps?: Omit<SelectSimpleProps, 'placeholder' | 'value' | 'id' | 'onOpenChange' | 'onValueChange'>;
+> = Omit<
+  FormFieldProps<TParentData, TName, TFieldValidator, TFormValidator, TData>,
+  "field"
+> &
+  Pick<
+    SelectSimpleProps,
+    "placeholder" | "value" | "onOpenChange" | "onValueChange"
+  > &
+  Partial<
+    Omit<
+      FieldComponentProps<
+        TParentData,
+        TName,
+        TFieldValidator,
+        TFormValidator,
+        TData
+      >,
+      "children"
+    >
+  > & {
+    selectProps?: Omit<
+      SelectSimpleProps,
+      "placeholder" | "value" | "id" | "onOpenChange" | "onValueChange"
+    >;
   };
 
 export function FieldSelectSimple<
   TParentData = any,
   TName extends DeepKeys<TParentData> = any,
-  TFieldValidator extends Validator<DeepValue<TParentData, TName>, unknown> | undefined = undefined,
-  TFormValidator extends Validator<TParentData, unknown> | undefined = undefined,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
   TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
->(props: FieldSelectSimpleProps<TParentData, TName, TFieldValidator, TFormValidator, TData>) {
+>(
+  props: FieldSelectSimpleProps<
+    TParentData,
+    TName,
+    TFieldValidator,
+    TFormValidator,
+    TData
+  >,
+) {
   let {
     asyncAlways,
     asyncDebounceMs,
@@ -98,7 +134,9 @@ export function FieldSelectSimple<
       validators={validators}
     >
       {(field) => {
-        const error = field.state.meta.errors.length ? field.state.meta.errors.join(', ') : fieldProps.error;
+        const error = field.state.meta.errors.length
+          ? field.state.meta.errors.join(", ")
+          : fieldProps.error;
         return (
           <FormField
             error={error}

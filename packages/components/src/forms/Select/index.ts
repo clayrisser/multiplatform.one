@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-export * from './FieldSelectSimple';
-export * from './Select';
-export * from './SelectSimple';
+export * from "./FieldSelectSimple";
+export * from "./Select";
+export * from "./SelectSimple";

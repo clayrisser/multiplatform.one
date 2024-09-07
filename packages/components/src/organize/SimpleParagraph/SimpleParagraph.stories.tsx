@@ -1,10 +1,10 @@
-import React from 'react';
-import { SimpleParagraph } from '.';
+import React from "react";
+import { SimpleParagraph } from ".";
 
 export default {
-  title: 'Components/SimpleParagraph',
+  title: "Components/SimpleParagraph",
   component: SimpleParagraph,
-  parameters: { status: { type: 'beta' } },
+  parameters: { status: { type: "beta" } },
 };
 
 export const main = () => (

@@ -19,20 +19,31 @@
  * limitations under the License.
  */
 
-export function DecorateAll(decorator: MethodDecorator, options: { exclude?: string[]; deep?: boolean } = {}) {
-  return ((target: Function, propertyKey?: string | symbol, descriptor?: TypedPropertyDescriptor<any>) => {
-    if (propertyKey && descriptor) return decorator(target, propertyKey, descriptor);
+export function DecorateAll(
+  decorator: MethodDecorator,
+  options: { exclude?: string[]; deep?: boolean } = {},
+) {
+  return ((
+    target: Function,
+    propertyKey?: string | symbol,
+    descriptor?: TypedPropertyDescriptor<any>,
+  ) => {
+    if (propertyKey && descriptor)
+      return decorator(target, propertyKey, descriptor);
     let descriptors = Object.getOwnPropertyDescriptors(target.prototype);
     if (options.deep) {
       let base = Object.getPrototypeOf(target);
       while (base.prototype) {
-        const baseDescriptors = Object.getOwnPropertyDescriptors(base.prototype);
+        const baseDescriptors = Object.getOwnPropertyDescriptors(
+          base.prototype,
+        );
         descriptors = { ...baseDescriptors, ...descriptors };
         base = Object.getPrototypeOf(base);
       }
     }
     for (const [propName, descriptor] of Object.entries(descriptors)) {
-      const isMethod = typeof descriptor.value === 'function' && propName !== 'constructor';
+      const isMethod =
+        typeof descriptor.value === "function" && propName !== "constructor";
       if (options.exclude?.includes(propName)) continue;
       if (!isMethod) continue;
       decorator(target.prototype, propName, descriptor);

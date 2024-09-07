@@ -19,28 +19,28 @@
  * limitations under the License.
  */
 
-'use client';
+"use client";
 
-import KeycloakClient from 'keycloak-js';
-import React, { useEffect, useMemo, useState } from 'react';
-import type { KeycloakInitOptions } from 'keycloak-js';
-import type { KeycloakConfig } from '../../keycloak';
-import type { PropsWithChildren } from 'react';
-import type { SessionProviderProps } from 'next-auth/react';
-import { AfterAuth } from '../AfterAuth';
-import { Keycloak, KeycloakConfigContext } from '../../keycloak';
-import { KeycloakContext } from '../../keycloak/context';
-import { MultiPlatform } from 'multiplatform.one';
-import { SessionProvider } from 'next-auth/react';
-import { persist, useAuthState } from '../../state';
-import { useAuthConfig } from '../../hooks';
-import { useRouter } from 'next/router';
-import { validOrRefreshableToken } from '../../token';
+import KeycloakClient from "keycloak-js";
+import type { KeycloakInitOptions } from "keycloak-js";
+import { MultiPlatform } from "multiplatform.one";
+import type { SessionProviderProps } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
+import { useRouter } from "next/router";
+import React, { useEffect, useMemo, useState } from "react";
+import type { PropsWithChildren } from "react";
+import { useAuthConfig } from "../../hooks";
+import type { KeycloakConfig } from "../../keycloak";
+import { Keycloak, KeycloakConfigContext } from "../../keycloak";
+import { KeycloakContext } from "../../keycloak/context";
+import { persist, useAuthState } from "../../state";
+import { validOrRefreshableToken } from "../../token";
+import { AfterAuth } from "../AfterAuth";
 
 export interface AuthProviderProps extends PropsWithChildren {
   keycloakConfig: KeycloakConfig;
   keycloakInitOptions?: KeycloakInitOptions;
-  sessionProvider?: Omit<SessionProviderProps, 'children'>;
+  sessionProvider?: Omit<SessionProviderProps, "children">;
 }
 
 const logger = console;
@@ -51,7 +51,12 @@ export interface Tokens<B = boolean> {
   token?: string | B;
 }
 
-export function AuthProvider({ children, sessionProvider, keycloakInitOptions, keycloakConfig }: AuthProviderProps) {
+export function AuthProvider({
+  children,
+  sessionProvider,
+  keycloakInitOptions,
+  keycloakConfig,
+}: AuthProviderProps) {
   const { debug, messageHandlerKeys } = useAuthConfig();
   const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
   const authState = useAuthState();
@@ -60,7 +65,8 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
     () =>
       validOrRefreshableToken(
         MultiPlatform.isIframe
-          ? ('refreshToken' in query && (query.refreshToken?.toString() || true)) ||
+          ? ("refreshToken" in query &&
+              (query.refreshToken?.toString() || true)) ||
               (persist && authState.refreshToken) ||
               undefined
           : undefined,
@@ -71,58 +77,72 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
     refreshToken: initialRefreshToken,
     token: validOrRefreshableToken(
       MultiPlatform.isIframe
-        ? ('token' in query && (query.token?.toString() || true)) || (persist && authState.token) || undefined
+        ? ("token" in query && (query.token?.toString() || true)) ||
+            (persist && authState.token) ||
+            undefined
         : undefined,
       initialRefreshToken,
     ),
     idToken: validOrRefreshableToken(
       MultiPlatform.isIframe
-        ? ('idToken' in query && (query.idToken?.toString() || true)) || (persist && authState.idToken) || undefined
+        ? ("idToken" in query && (query.idToken?.toString() || true)) ||
+            (persist && authState.idToken) ||
+            undefined
         : undefined,
       initialRefreshToken,
     ),
   });
 
   useEffect(() => {
-    if (tokens.token !== true && tokens.refreshToken !== true && tokens.idToken !== true) return;
-    if (debug) logger.debug('post message', JSON.stringify({ type: 'LOADED' }));
+    if (
+      tokens.token !== true &&
+      tokens.refreshToken !== true &&
+      tokens.idToken !== true
+    )
+      return;
+    if (debug) logger.debug("post message", JSON.stringify({ type: "LOADED" }));
     (messageHandlerKeys || []).forEach((key: string) => {
-      window?.webkit?.messageHandlers?.[key]?.postMessage(JSON.stringify({ type: 'LOADED' }));
+      window?.webkit?.messageHandlers?.[key]?.postMessage(
+        JSON.stringify({ type: "LOADED" }),
+      );
     });
-    window?.ReactNativeWebView?.postMessage(JSON.stringify({ type: 'LOADED' }));
-    window?.parent?.postMessage(JSON.stringify({ type: 'LOADED' }));
+    window?.ReactNativeWebView?.postMessage(JSON.stringify({ type: "LOADED" }));
+    window?.parent?.postMessage(JSON.stringify({ type: "LOADED" }));
   }, []);
 
   useEffect(() => {
     if (tokens.refreshToken !== true) return;
     const messageCallback = (e: MessageEvent<any>) => {
       let data = e?.data || null;
-      if (typeof data === 'string') {
+      if (typeof data === "string") {
         try {
           data = JSON.parse(data);
         } catch (err) {}
       }
-      if (debug) logger.debug('received message', JSON.stringify(data));
+      if (debug) logger.debug("received message", JSON.stringify(data));
       const message: MessageSchema = data;
       if (!message.type) return;
-      if (message.type.toUpperCase() === 'REFRESH_TOKEN' && message.payload) {
-        if (debug) logger.debug('setting refresh token', message.payload);
-        setTokens((tokens) => ({ ...tokens, refreshToken: validOrRefreshableToken(message.payload) }));
-        window.removeEventListener('message', messageCallback);
+      if (message.type.toUpperCase() === "REFRESH_TOKEN" && message.payload) {
+        if (debug) logger.debug("setting refresh token", message.payload);
+        setTokens((tokens) => ({
+          ...tokens,
+          refreshToken: validOrRefreshableToken(message.payload),
+        }));
+        window.removeEventListener("message", messageCallback);
       }
     };
     if (debug) {
       logger.debug(
-        'listening for message',
+        "listening for message",
         JSON.stringify({
-          type: 'REFRESH_TOKEN',
-          payload: '<some_refresh_token>',
+          type: "REFRESH_TOKEN",
+          payload: "<some_refresh_token>",
         }),
       );
     }
-    window.addEventListener('message', messageCallback);
+    window.addEventListener("message", messageCallback);
     return () => {
-      window.removeEventListener('message', messageCallback);
+      window.removeEventListener("message", messageCallback);
     };
   }, []);
 
@@ -130,32 +150,35 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
     if (tokens.token !== true) return;
     const messageCallback = (e: MessageEvent<any>) => {
       let data = e?.data || null;
-      if (typeof data === 'string') {
+      if (typeof data === "string") {
         try {
           data = JSON.parse(data);
         } catch (err) {}
       }
-      if (debug) logger.debug('received message', JSON.stringify(data));
+      if (debug) logger.debug("received message", JSON.stringify(data));
       const message: MessageSchema = data;
       if (!message.type) return;
-      if (message.type.toUpperCase() === 'TOKEN' && message.payload) {
-        if (debug) logger.debug('setting token', message.payload);
-        setTokens((tokens) => ({ ...tokens, token: validOrRefreshableToken(message.payload, tokens.refreshToken) }));
-        window.removeEventListener('message', messageCallback);
+      if (message.type.toUpperCase() === "TOKEN" && message.payload) {
+        if (debug) logger.debug("setting token", message.payload);
+        setTokens((tokens) => ({
+          ...tokens,
+          token: validOrRefreshableToken(message.payload, tokens.refreshToken),
+        }));
+        window.removeEventListener("message", messageCallback);
       }
     };
     if (debug) {
       logger.debug(
-        'listening for message',
+        "listening for message",
         JSON.stringify({
-          type: 'TOKEN',
-          payload: '<some_token>',
+          type: "TOKEN",
+          payload: "<some_token>",
         }),
       );
     }
-    window.addEventListener('message', messageCallback);
+    window.addEventListener("message", messageCallback);
     return () => {
-      window.removeEventListener('message', messageCallback);
+      window.removeEventListener("message", messageCallback);
     };
   }, []);
 
@@ -163,85 +186,117 @@ export function AuthProvider({ children, sessionProvider, keycloakInitOptions, k
     if (tokens.idToken !== true) return;
     const messageCallback = (e: MessageEvent<any>) => {
       let data = e?.data || null;
-      if (typeof data === 'string') {
+      if (typeof data === "string") {
         try {
           data = JSON.parse(data);
         } catch (err) {}
       }
-      if (debug) logger.debug('received message', JSON.stringify(data));
+      if (debug) logger.debug("received message", JSON.stringify(data));
       const message: MessageSchema = data;
       if (!message.type) return;
-      if (message.type.toUpperCase() === 'ID_TOKEN' && message.payload) {
-        if (debug) logger.debug('setting id token', message.payload);
-        setTokens((tokens) => ({ ...tokens, idToken: validOrRefreshableToken(message.payload, tokens.refreshToken) }));
-        window.removeEventListener('message', messageCallback);
+      if (message.type.toUpperCase() === "ID_TOKEN" && message.payload) {
+        if (debug) logger.debug("setting id token", message.payload);
+        setTokens((tokens) => ({
+          ...tokens,
+          idToken: validOrRefreshableToken(
+            message.payload,
+            tokens.refreshToken,
+          ),
+        }));
+        window.removeEventListener("message", messageCallback);
       }
     };
     if (debug) {
       logger.debug(
-        'listening for message',
+        "listening for message",
         JSON.stringify({
-          type: 'ID_TOKEN',
-          payload: '<some_id_token>',
+          type: "ID_TOKEN",
+          payload: "<some_id_token>",
         }),
       );
     }
-    window.addEventListener('message', messageCallback);
+    window.addEventListener("message", messageCallback);
     return () => {
-      window.removeEventListener('message', messageCallback);
+      window.removeEventListener("message", messageCallback);
     };
   }, []);
 
   const keycloakClient = useMemo(
     () =>
-      (!MultiPlatform.isNext || MultiPlatform.isElectron || MultiPlatform.isIframe) && keycloakConfig
+      (!MultiPlatform.isNext ||
+        MultiPlatform.isElectron ||
+        MultiPlatform.isIframe) &&
+      keycloakConfig
         ? new KeycloakClient({
             url: keycloakConfig.url,
             realm: keycloakConfig.realm,
             clientId: keycloakConfig.publicClientId || keycloakConfig.clientId,
           })
         : undefined,
-    [keycloakInitOptions, keycloakConfig, tokens.token, tokens.refreshToken, tokens.idToken],
+    [
+      keycloakInitOptions,
+      keycloakConfig,
+      tokens.token,
+      tokens.refreshToken,
+      tokens.idToken,
+    ],
   );
 
   const initOptions = useMemo(() => {
-    if (MultiPlatform.isNext && !MultiPlatform.isElectron && !MultiPlatform.isIframe) return;
+    if (
+      MultiPlatform.isNext &&
+      !MultiPlatform.isElectron &&
+      !MultiPlatform.isIframe
+    )
+      return;
     const initOptions: KeycloakInitOptions = {
       ...defaultKeycloakInitOptions,
       ...keycloakInitOptions,
       scope: [
         ...new Set([
-          'email',
-          'openid',
-          'profile',
-          ...(defaultKeycloakInitOptions.scope?.split(' ') || []),
-          ...(keycloakInitOptions?.scope?.split(' ') || []),
+          "email",
+          "openid",
+          "profile",
+          ...(defaultKeycloakInitOptions.scope?.split(" ") || []),
+          ...(keycloakInitOptions?.scope?.split(" ") || []),
           ...(keycloakConfig.scopes || []),
         ]),
-      ].join(' '),
+      ].join(" "),
     };
     if (debug) initOptions.enableLogging = true;
-    if (tokens.token && typeof tokens.token === 'string') {
+    if (tokens.token && typeof tokens.token === "string") {
       initOptions.token = tokens.token;
       initOptions.timeSkew = 0;
-      if (tokens.idToken && typeof tokens.idToken === 'string') initOptions.idToken = tokens.idToken;
-      if (tokens.refreshToken && typeof tokens.refreshToken === 'string')
+      if (tokens.idToken && typeof tokens.idToken === "string")
+        initOptions.idToken = tokens.idToken;
+      if (tokens.refreshToken && typeof tokens.refreshToken === "string")
         initOptions.refreshToken = tokens.refreshToken;
     }
-    if ((typeof window !== 'undefined' && window.self !== window.top) || (tokens.token && !tokens.refreshToken)) {
+    if (
+      (typeof window !== "undefined" && window.self !== window.top) ||
+      (tokens.token && !tokens.refreshToken)
+    ) {
       initOptions.checkLoginIframe = false;
-      initOptions.flow = 'implicit';
+      initOptions.flow = "implicit";
       initOptions.onLoad = undefined;
     }
     return initOptions;
-  }, [keycloakInitOptions, keycloakConfig.scopes, tokens.token, tokens.idToken, tokens.refreshToken]);
+  }, [
+    keycloakInitOptions,
+    keycloakConfig.scopes,
+    tokens.token,
+    tokens.idToken,
+    tokens.refreshToken,
+  ]);
 
   useEffect(() => {
     function onError() {
-      if (keycloakClient && initOptions) setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
+      if (keycloakClient && initOptions)
+        setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
     }
     function onUpdate() {
-      if (keycloakClient && initOptions) setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
+      if (keycloakClient && initOptions)
+        setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
     }
     if (keycloakClient && initOptions) {
       (async () => {
@@ -284,8 +339,8 @@ const defaultKeycloakInitOptions: KeycloakInitOptions = {
   checkLoginIframe: true,
   checkLoginIframeInterval: 5,
   enableLogging: false,
-  onLoad: 'check-sso',
-  pkceMethod: 'S256',
+  onLoad: "check-sso",
+  pkceMethod: "S256",
 };
 
 export interface MessageSchema {

@@ -18,6 +18,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import FormScreen from 'app/screens/form';
+import FormScreen from "app/screens/form";
 
 export default FormScreen;

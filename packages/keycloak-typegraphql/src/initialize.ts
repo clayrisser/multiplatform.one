@@ -19,27 +19,38 @@
  * limitations under the License.
  */
 
-import Keycloak from 'keycloak-connect';
-import axios from 'axios';
-import type IKeycloakAdminClient from '@keycloak/keycloak-admin-client';
-import type { AxiosError } from 'axios';
-import type { Keycloak as IKeycloakConnect } from 'keycloak-connect';
-import type { KeycloakOptions } from './types';
-import type { Resolvers, Logger } from '@multiplatform.one/typegraphql';
-import { RegisterKeycloak } from './register';
-import { container as Container } from 'tsyringe';
+import type IKeycloakAdminClient from "@keycloak/keycloak-admin-client";
+import type { Logger, Resolvers } from "@multiplatform.one/typegraphql";
+import axios from "axios";
+import type { AxiosError } from "axios";
+import Keycloak from "keycloak-connect";
+import type { Keycloak as IKeycloakConnect } from "keycloak-connect";
+import { container as Container } from "tsyringe";
+import { RegisterKeycloak } from "./register";
+import type { KeycloakOptions } from "./types";
 
 export class KeycloakConnect extends Keycloak implements IKeycloakConnect {}
 
-export const KEYCLOAK_CONNECT = 'KEYCLOAK_CONNECT';
+export const KEYCLOAK_CONNECT = "KEYCLOAK_CONNECT";
 
-export const KEYCLOAK_OPTIONS = 'KEYCLOAK_OPTIONS';
+export const KEYCLOAK_OPTIONS = "KEYCLOAK_OPTIONS";
 
-export class KeycloakAdmin extends (require('@keycloak/keycloak-admin-client')
+export class KeycloakAdmin extends (require("@keycloak/keycloak-admin-client")
   .default as typeof IKeycloakAdminClient) {}
 
-export async function initializeKeycloak(options: KeycloakOptions, resolvers: Resolvers, logger?: Logger) {
-  const { clientSecret, clientId, realm, baseUrl, adminUsername, adminPassword } = options;
+export async function initializeKeycloak(
+  options: KeycloakOptions,
+  resolvers: Resolvers,
+  logger?: Logger,
+) {
+  const {
+    clientSecret,
+    clientId,
+    realm,
+    baseUrl,
+    adminUsername,
+    adminPassword,
+  } = options;
   let keycloakAdmin: KeycloakAdmin | undefined;
   if (adminUsername && adminPassword) {
     keycloakAdmin = new KeycloakAdmin({ baseUrl });
@@ -56,16 +67,16 @@ export async function initializeKeycloak(options: KeycloakOptions, resolvers: Re
   Container.register(KEYCLOAK_CONNECT, { useValue: keycloakConnect });
   Container.register(KEYCLOAK_OPTIONS, { useValue: options });
   return async () => {
-    logger?.info('waiting for keycloak');
+    logger?.info("waiting for keycloak");
     await waitForReady(options);
-    logger?.info('registering keycloak');
+    logger?.info("registering keycloak");
     if (options.register) {
       const registerKeycloak = new RegisterKeycloak(options, resolvers);
       await registerKeycloak.register();
     }
     await keycloakAdmin?.auth({
-      clientId: options.adminClientId || 'admin-cli',
-      grantType: 'password',
+      clientId: options.adminClientId || "admin-cli",
+      grantType: "password",
       password: options.adminPassword,
       username: options.adminUsername,
     });
@@ -75,7 +86,10 @@ export async function initializeKeycloak(options: KeycloakOptions, resolvers: Re
   };
 }
 
-async function waitForReady(options: KeycloakOptions, interval = 5000): Promise<void> {
+async function waitForReady(
+  options: KeycloakOptions,
+  interval = 5000,
+): Promise<void> {
   try {
     const res = await axios.get(`${options.baseUrl}/health/live`, {
       silent: !options.debug,
@@ -93,11 +107,17 @@ async function waitForReady(options: KeycloakOptions, interval = 5000): Promise<
   }
 }
 
-async function waitForReadyWellKnown(options: KeycloakOptions, interval = 5000): Promise<void> {
+async function waitForReadyWellKnown(
+  options: KeycloakOptions,
+  interval = 5000,
+): Promise<void> {
   try {
-    const res = await axios.get(`${options.baseUrl}/realms/master/.well-known/openid-configuration`, {
-      silent: !options.debug,
-    } as any);
+    const res = await axios.get(
+      `${options.baseUrl}/realms/master/.well-known/openid-configuration`,
+      {
+        silent: !options.debug,
+      } as any,
+    );
     if ((res.status || 500) > 299) {
       await new Promise((r) => setTimeout(r, interval));
       return waitForReadyWellKnown(options, interval);

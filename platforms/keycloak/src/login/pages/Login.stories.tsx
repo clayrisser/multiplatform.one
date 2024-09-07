@@ -20,11 +20,11 @@
  * limitations under the License.
  */
 
-import type { ComponentStory, ComponentMeta } from '@storybook/react';
-import { createPageStory } from '../createPageStory';
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
+import { createPageStory } from "../createPageStory";
 
 const { PageStory } = createPageStory({
-  pageId: 'login.ftl',
+  pageId: "login.ftl",
 });
 
 export const Default: ComponentStory<typeof PageStory> = () => <PageStory />;
@@ -72,20 +72,22 @@ export const WithEmailAsUsername: ComponentStory<typeof PageStory> = () => (
 export const WithPresetUsername: ComponentStory<typeof PageStory> = () => (
   <PageStory
     kcContext={{
-      login: { username: 'email@example.com' },
+      login: { username: "email@example.com" },
     }}
   />
 );
 
-export const WithImmutablePresetUsername: ComponentStory<typeof PageStory> = () => (
+export const WithImmutablePresetUsername: ComponentStory<
+  typeof PageStory
+> = () => (
   <PageStory
     kcContext={{
       auth: {
-        attemptedUsername: 'email@example.com',
+        attemptedUsername: "email@example.com",
         showUsername: true,
       },
       usernameHidden: true,
-      message: { type: 'info', summary: 'Please re-authenticate to continue' },
+      message: { type: "info", summary: "Please re-authenticate to continue" },
     }}
   />
 );
@@ -93,7 +95,7 @@ export const WithImmutablePresetUsername: ComponentStory<typeof PageStory> = () 
 export const WithRememberMe: ComponentStory<typeof PageStory> = () => (
   <PageStory
     kcContext={{
-      login: { rememberMe: 'on' },
+      login: { rememberMe: "on" },
       realm: { rememberMe: true },
     }}
   />
@@ -113,23 +115,78 @@ export const WithSocialProviders: ComponentStory<typeof PageStory> = () => (
       social: {
         displayInfo: true,
         providers: [
-          { loginUrl: 'google', alias: 'google', providerId: 'google', displayName: 'Google' },
-          { loginUrl: 'microsoft', alias: 'microsoft', providerId: 'microsoft', displayName: 'Microsoft' },
-          { loginUrl: 'facebook', alias: 'facebook', providerId: 'facebook', displayName: 'Facebook' },
-          { loginUrl: 'instagram', alias: 'instagram', providerId: 'instagram', displayName: 'Instagram' },
-          { loginUrl: 'twitter', alias: 'twitter', providerId: 'twitter', displayName: 'Twitter' },
-          { loginUrl: 'linkedin', alias: 'linkedin', providerId: 'linkedin', displayName: 'LinkedIn' },
           {
-            loginUrl: 'stackoverflow',
-            alias: 'stackoverflow',
-            providerId: 'stackoverflow',
-            displayName: 'Stackoverflow',
+            loginUrl: "google",
+            alias: "google",
+            providerId: "google",
+            displayName: "Google",
           },
-          { loginUrl: 'github', alias: 'github', providerId: 'github', displayName: 'Github' },
-          { loginUrl: 'gitlab', alias: 'gitlab', providerId: 'gitlab', displayName: 'Gitlab' },
-          { loginUrl: 'bitbucket', alias: 'bitbucket', providerId: 'bitbucket', displayName: 'Bitbucket' },
-          { loginUrl: 'paypal', alias: 'paypal', providerId: 'paypal', displayName: 'PayPal' },
-          { loginUrl: 'openshift', alias: 'openshift', providerId: 'openshift', displayName: 'OpenShift' },
+          {
+            loginUrl: "microsoft",
+            alias: "microsoft",
+            providerId: "microsoft",
+            displayName: "Microsoft",
+          },
+          {
+            loginUrl: "facebook",
+            alias: "facebook",
+            providerId: "facebook",
+            displayName: "Facebook",
+          },
+          {
+            loginUrl: "instagram",
+            alias: "instagram",
+            providerId: "instagram",
+            displayName: "Instagram",
+          },
+          {
+            loginUrl: "twitter",
+            alias: "twitter",
+            providerId: "twitter",
+            displayName: "Twitter",
+          },
+          {
+            loginUrl: "linkedin",
+            alias: "linkedin",
+            providerId: "linkedin",
+            displayName: "LinkedIn",
+          },
+          {
+            loginUrl: "stackoverflow",
+            alias: "stackoverflow",
+            providerId: "stackoverflow",
+            displayName: "Stackoverflow",
+          },
+          {
+            loginUrl: "github",
+            alias: "github",
+            providerId: "github",
+            displayName: "Github",
+          },
+          {
+            loginUrl: "gitlab",
+            alias: "gitlab",
+            providerId: "gitlab",
+            displayName: "Gitlab",
+          },
+          {
+            loginUrl: "bitbucket",
+            alias: "bitbucket",
+            providerId: "bitbucket",
+            displayName: "Bitbucket",
+          },
+          {
+            loginUrl: "paypal",
+            alias: "paypal",
+            providerId: "paypal",
+            displayName: "PayPal",
+          },
+          {
+            loginUrl: "openshift",
+            alias: "openshift",
+            providerId: "openshift",
+            displayName: "OpenShift",
+          },
         ],
       },
     }}
@@ -137,6 +194,6 @@ export const WithSocialProviders: ComponentStory<typeof PageStory> = () => (
 );
 
 export default {
-  title: 'login/Login',
+  title: "login/Login",
   component: PageStory,
 } as ComponentMeta<typeof PageStory>;

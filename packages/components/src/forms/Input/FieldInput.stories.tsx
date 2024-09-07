@@ -19,40 +19,42 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { Button } from 'tamagui';
-import { FieldInput } from './FieldInput';
-import { YStack } from 'tamagui';
-import { action } from '@storybook/addon-actions';
-import { useForm } from '@tanstack/react-form';
-import type { FieldInputProps } from './FieldInput';
+import { action } from "@storybook/addon-actions";
+import { useForm } from "@tanstack/react-form";
+import React from "react";
+import { Button } from "tamagui";
+import { YStack } from "tamagui";
+import { FieldInput } from "./FieldInput";
+import type { FieldInputProps } from "./FieldInput";
 
 export default {
-  title: 'forms/FieldInput',
+  title: "forms/FieldInput",
   component: FieldInput,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
-export const main = (args) => <FieldInput onCheckedChange={action('onCheckedChange')} {...args} />;
+export const main = (args) => (
+  <FieldInput onCheckedChange={action("onCheckedChange")} {...args} />
+);
 const mainArgs: FieldInputProps = {
-  label: 'Hi',
+  label: "Hi",
   error: undefined,
-  helperText: 'please check this input',
+  helperText: "please check this input",
   mode: undefined,
-  size: '$1',
+  size: "$1",
 };
 main.args = mainArgs;
 
 export const form = () => {
   const form = useForm({
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      firstName: "",
+      lastName: "",
     },
     onSubmit: async ({ value }) => {
-      action('onSubmit')(value);
+      action("onSubmit")(value);
     },
   });
   return (

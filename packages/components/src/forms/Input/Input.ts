@@ -19,5 +19,5 @@
  * limitations under the License.
  */
 
-export type { InputProps } from 'tamagui';
-export { Input } from 'tamagui';
+export type { InputProps } from "tamagui";
+export { Input } from "tamagui";

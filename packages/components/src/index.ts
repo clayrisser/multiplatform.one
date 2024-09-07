@@ -21,16 +21,16 @@
  * limitations under the License.
  */
 
-export * from './ErrorBoundary';
-export * from './code';
-export * from './forms';
-export * from './helpers';
-export * from './hooks';
-export * from './images';
-export * from './layouts';
-export * from './mdx';
-export * from './organize';
-export * from './panels';
-export * from './table';
-export * from './tints';
-export * from 'tamagui';
+export * from "./ErrorBoundary";
+export * from "./code";
+export * from "./forms";
+export * from "./helpers";
+export * from "./hooks";
+export * from "./images";
+export * from "./layouts";
+export * from "./mdx";
+export * from "./organize";
+export * from "./panels";
+export * from "./table";
+export * from "./tints";
+export * from "tamagui";

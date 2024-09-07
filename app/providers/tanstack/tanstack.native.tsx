@@ -19,12 +19,16 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import type { GlobalTanstackProviderProps } from './tanstack';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
+import type { GlobalTanstackProviderProps } from "./tanstack";
 
 export const queryClient = new QueryClient();
 
-export function GlobalTanstackProvider({ children }: GlobalTanstackProviderProps) {
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+export function GlobalTanstackProvider({
+  children,
+}: GlobalTanstackProviderProps) {
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
 }

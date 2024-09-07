@@ -19,4 +19,4 @@
  * limitations under the License.
  */
 
-export * from '../types/next';
+export * from "../types/next";

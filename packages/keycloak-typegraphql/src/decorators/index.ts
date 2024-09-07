@@ -19,16 +19,16 @@
  * limitations under the License.
  */
 
-export * from './authorized';
-export * from './injectAccessToken';
-export * from './injectGrant';
-export * from './injectRefreshToken';
-export * from './injectRoles';
-export * from './injectScopes';
-export * from './injectUserId';
-export * from './injectUserInfo';
-export * from './injectUsername';
-export * from './onlyOwner';
-export * from './public';
-export * from './resource';
-export * from './scopes';
+export * from "./authorized";
+export * from "./injectAccessToken";
+export * from "./injectGrant";
+export * from "./injectRefreshToken";
+export * from "./injectRoles";
+export * from "./injectScopes";
+export * from "./injectUserId";
+export * from "./injectUserInfo";
+export * from "./injectUsername";
+export * from "./onlyOwner";
+export * from "./public";
+export * from "./resource";
+export * from "./scopes";

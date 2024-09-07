@@ -4,7 +4,7 @@
  * MIT License
  */
 
-export * from './createHooksObject';
-export * from './createStore';
-export * from './filterObjectByKey';
-export * from './ucFirst';
+export * from "./createHooksObject";
+export * from "./createStore";
+export * from "./filterObjectByKey";
+export * from "./ucFirst";

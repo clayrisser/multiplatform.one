@@ -19,16 +19,18 @@
  * limitations under the License.
  */
 
-import type ClientRepresentation from '@keycloak/keycloak-admin-client/lib/defs/clientRepresentation';
-import type ResourceRepresentation from '@keycloak/keycloak-admin-client/lib/defs/resourceRepresentation';
-import type RoleRepresentation from '@keycloak/keycloak-admin-client/lib/defs/roleRepresentation';
-import type ScopeRepresentation from '@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation';
-import type UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
-import type { Grant } from 'keycloak-connect';
-import type { IncomingMessage } from 'http';
-import type { KeycloakService } from './keycloakService';
+import type { IncomingMessage } from "node:http";
+import type ClientRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientRepresentation";
+import type ResourceRepresentation from "@keycloak/keycloak-admin-client/lib/defs/resourceRepresentation";
+import type RoleRepresentation from "@keycloak/keycloak-admin-client/lib/defs/roleRepresentation";
+import type ScopeRepresentation from "@keycloak/keycloak-admin-client/lib/defs/scopeRepresentation";
+import type UserRepresentation from "@keycloak/keycloak-admin-client/lib/defs/userRepresentation";
+import type { Grant } from "keycloak-connect";
+import type { KeycloakService } from "./keycloakService";
 
-export type KeycloakRequest<R extends Request | IncomingMessage = Request | IncomingMessage> = {
+export type KeycloakRequest<
+  R extends Request | IncomingMessage = Request | IncomingMessage,
+> = {
   kauth?: Kauth;
   keycloakService?: KeycloakService;
   resourceDenied?: boolean;

@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-import { StrictMode, lazy, Suspense } from 'react';
-import { createRoot } from 'react-dom/client';
-import { kcContext as kcAccountThemeContext } from './account/kcContext';
-import { kcContext as kcLoginThemeContext } from './login/kcContext';
+import { StrictMode, Suspense, lazy } from "react";
+import { createRoot } from "react-dom/client";
+import { kcContext as kcAccountThemeContext } from "./account/kcContext";
+import { kcContext as kcLoginThemeContext } from "./login/kcContext";
 
 declare global {
   interface Window {
@@ -33,10 +33,10 @@ declare global {
 if (!window.process) window.process = {};
 if (!window.process.env) window.process.env = {};
 
-const KcAccountThemeApp = lazy(() => import('./account/KcApp'));
-const KcLoginThemeApp = lazy(() => import('./login/KcApp'));
+const KcAccountThemeApp = lazy(() => import("./account/KcApp"));
+const KcLoginThemeApp = lazy(() => import("./login/KcApp"));
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Suspense>
       {(() => {
@@ -46,7 +46,9 @@ createRoot(document.getElementById('root')!).render(
         if (kcAccountThemeContext !== undefined) {
           return <KcAccountThemeApp kcContext={kcAccountThemeContext} />;
         }
-        throw new Error('This app is a Keycloak theme and is not meant to be deployed outside of Keycloak');
+        throw new Error(
+          "This app is a Keycloak theme and is not meant to be deployed outside of Keycloak",
+        );
       })()}
     </Suspense>
   </StrictMode>,

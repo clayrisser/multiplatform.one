@@ -19,19 +19,19 @@
  * limitations under the License.
  */
 
-import i18n from 'i18next';
-import { useEffect, useState } from 'react';
+import i18n from "i18next";
+import { useEffect, useState } from "react";
 
 export function useLocale(): [string, (locale: string) => void] {
-  const [locale, setLocale] = useState(i18n?.language || 'en');
+  const [locale, setLocale] = useState(i18n?.language || "en");
 
   useEffect(() => {
     function handleLanguageChanged(lng: string) {
       setLocale(lng);
     }
-    i18n.on('languageChanged', handleLanguageChanged);
+    i18n.on("languageChanged", handleLanguageChanged);
     return () => {
-      i18n.off('languageChanged', handleLanguageChanged);
+      i18n.off("languageChanged", handleLanguageChanged);
     };
   }, []);
 

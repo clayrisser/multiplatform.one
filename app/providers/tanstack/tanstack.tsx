@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { PropsWithChildren } from 'react';
-import { MultiPlatform } from 'multiplatform.one';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { MultiPlatform } from "multiplatform.one";
+import React from "react";
+import type { PropsWithChildren } from "react";
 
 export const queryClient = new QueryClient();
 
@@ -31,10 +31,15 @@ export interface GlobalTanstackProviderProps extends PropsWithChildren {
   debug?: boolean;
 }
 
-export function GlobalTanstackProvider({ children, debug }: GlobalTanstackProviderProps) {
+export function GlobalTanstackProvider({
+  children,
+  debug,
+}: GlobalTanstackProviderProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      {debug && !MultiPlatform.isStorybook && <ReactQueryDevtools initialIsOpen={false} />}
+      {debug && !MultiPlatform.isStorybook && (
+        <ReactQueryDevtools initialIsOpen={false} />
+      )}
       {children}
     </QueryClientProvider>
   );

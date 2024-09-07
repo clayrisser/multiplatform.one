@@ -19,12 +19,12 @@
  * limitations under the License.
  */
 
-import React, { useMemo } from 'react';
-import type { AuthConfig } from '../authConfig';
-import type { PropsWithChildren } from 'react';
-import type { Session } from 'next-auth';
-import { AuthConfigContext } from '../authConfig';
-import { AuthProvider } from './AuthProvider';
+import type { Session } from "next-auth";
+import React, { useMemo } from "react";
+import type { PropsWithChildren } from "react";
+import type { AuthConfig } from "../authConfig";
+import { AuthConfigContext } from "../authConfig";
+import { AuthProvider } from "./AuthProvider";
 
 export interface KeycloakProviderProps extends PropsWithChildren, AuthConfig {
   baseUrl?: string;
@@ -45,7 +45,10 @@ export function KeycloakProvider({
   realm,
   session,
 }: KeycloakProviderProps) {
-  const authConfig = useMemo(() => ({ debug, disabled, loginRedirectUri }), [debug, disabled, loginRedirectUri]);
+  const authConfig = useMemo(
+    () => ({ debug, disabled, loginRedirectUri }),
+    [debug, disabled, loginRedirectUri],
+  );
   return (
     <AuthConfigContext.Provider value={authConfig}>
       {disabled ? (
@@ -54,9 +57,9 @@ export function KeycloakProvider({
         <AuthProvider
           sessionProvider={{ session }}
           keycloakConfig={{
-            clientId: clientId || 'app',
+            clientId: clientId || "app",
             publicClientId,
-            realm: realm || 'main',
+            realm: realm || "main",
             url: baseUrl,
           }}
         >

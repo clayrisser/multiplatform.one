@@ -17,19 +17,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-PNPM ?= pnpm
 BABEL ?= $(PNPM) babel
 BABEL_NODE ?= $(PNPM) babel-node
+BIOME ?= $(PNPM) biome
 BROWSERSLIST_BINARY ?= $(PNPM) browserslist
 BUILD_STORYBOOK ?= $(PNPM) build-storybook
 CHANGESET ?= $(PNPM) changeset
 CLOC ?= cloc
 CSPELL ?= $(PNPM) cspell
-ESLINT ?= $(PNPM) eslint
 EXPO ?= $(PNPM) expo
 GM ?= command gm
 NODE ?= node
-PRETTIER ?= $(PNPM) prettier
+PNPM ?= pnpm
 SWC ?= $(PNPM) swc
 TSC ?= $(PNPM) tsc
 TSUP := $(PROJECT_ROOT)/node_modules/.bin/tsup
@@ -39,6 +38,5 @@ WATCHMAN ?= watchman
 export POSTGRES_URL ?= \
 	postgresql://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOSTNAME):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=prefer
 
-export ESLINT_USE_FLAT_CONFIG := false
 export GIT_COMMIT ?= $(shell $(GIT) describe --tags --always --dirty | $(SED) 's|^.*@||g')
 export TAMAGUI_IGNORE_BUNDLE_ERRORS := solito/image,solito/link,moti

@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-export * from './decorateAll';
-export * from './guards';
-export * from './registerClass';
-export * from './registerHandler';
-export * from './setMetadata';
+export * from "./decorateAll";
+export * from "./guards";
+export * from "./registerClass";
+export * from "./registerHandler";
+export * from "./setMetadata";

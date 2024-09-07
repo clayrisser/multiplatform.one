@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-import { Paragraph, styled } from 'tamagui';
+import { Paragraph, styled } from "tamagui";
 
 export const LI = styled(Paragraph, {
-  display: 'list-item' as any,
-  tag: 'li',
-  size: '$5',
-  paddingBottom: '$1',
+  display: "list-item" as any,
+  tag: "li",
+  size: "$5",
+  paddingBottom: "$1",
 });

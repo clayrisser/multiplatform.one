@@ -19,24 +19,24 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { SubmitButton, SubmitButtonProps } from './SubmitButton';
-import { useForm } from '@tanstack/react-form';
-import { Meta } from '@storybook/react';
+import type { Meta } from "@storybook/react";
+import { useForm } from "@tanstack/react-form";
+import React from "react";
+import { SubmitButton, type SubmitButtonProps } from "./SubmitButton";
 
 const meta: Meta = {
-  title: 'forms/SubmitButton',
+  title: "forms/SubmitButton",
   component: SubmitButton,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
 export const main = (args) => {
   const form = useForm({
     defaultValues: {
-      firstName: 'Hello',
-      lastName: 'Bob',
+      firstName: "Hello",
+      lastName: "Bob",
       age: 24,
       isGraduate: true,
     },
@@ -45,7 +45,7 @@ export const main = (args) => {
 };
 
 const mainArgs: Partial<SubmitButtonProps> = {
-  children: 'Submit',
+  children: "Submit",
 };
 
 main.args = mainArgs;

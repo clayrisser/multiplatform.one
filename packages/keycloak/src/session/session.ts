@@ -19,21 +19,28 @@
  * limitations under the License.
  */
 
-import type { Session as NextSession } from 'next-auth';
-import type { SessionContextValue as NextSessionContextValue, UseSessionOptions } from 'next-auth/react';
-import { MultiPlatform } from 'multiplatform.one';
-import { useSession as useNextSession } from 'next-auth/react';
+import { MultiPlatform } from "multiplatform.one";
+import type { Session as NextSession } from "next-auth";
+import type {
+  SessionContextValue as NextSessionContextValue,
+  UseSessionOptions,
+} from "next-auth/react";
+import { useSession as useNextSession } from "next-auth/react";
 
 export type SessionContextValue<R extends boolean> = Partial<
-  Omit<NextSessionContextValue<R> & { session: Session }, 'data'>
+  Omit<NextSessionContextValue<R> & { session: Session }, "data">
 >;
 
-let useSession = <R extends boolean>(_options?: UseSessionOptions<R>): SessionContextValue<R> => {
+let useSession = <R extends boolean>(
+  _options?: UseSessionOptions<R>,
+): SessionContextValue<R> => {
   return {};
 };
 
 if (MultiPlatform.isNext && !MultiPlatform.isElectron) {
-  useSession = <R extends boolean>(options?: UseSessionOptions<R>): SessionContextValue<R> => {
+  useSession = <R extends boolean>(
+    options?: UseSessionOptions<R>,
+  ): SessionContextValue<R> => {
     const nextSession = useNextSession(options);
     return {
       update: nextSession.update,

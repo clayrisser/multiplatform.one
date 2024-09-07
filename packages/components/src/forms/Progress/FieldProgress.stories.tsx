@@ -19,29 +19,31 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import type { FieldProgressProps } from './FieldProgress';
-import { Button, YStack } from 'tamagui';
-import { FieldProgress } from './FieldProgress';
-import { action } from '@storybook/addon-actions';
-import { useForm } from '@tanstack/react-form';
+import { action } from "@storybook/addon-actions";
+import { useForm } from "@tanstack/react-form";
+import React from "react";
+import { Button, YStack } from "tamagui";
+import type { FieldProgressProps } from "./FieldProgress";
+import { FieldProgress } from "./FieldProgress";
 
 export default {
-  title: 'forms/FieldProgress',
+  title: "forms/FieldProgress",
   component: FieldProgress,
   parameters: {
     status: {
-      type: 'beta',
+      type: "beta",
     },
   },
 };
 
-export const main = (args) => <FieldProgress onProgressChange={action('onProgressChange')} {...args} />;
+export const main = (args) => (
+  <FieldProgress onProgressChange={action("onProgressChange")} {...args} />
+);
 const mainArgs: FieldProgressProps = {
-  label: 'john',
+  label: "john",
   error: undefined,
-  helperText: 'please check this progress',
-  size: '$2',
+  helperText: "please check this progress",
+  size: "$2",
 };
 main.args = mainArgs;
 export const form = () => {
@@ -51,7 +53,7 @@ export const form = () => {
       bar: true,
     },
     onSubmit: async ({ value }) => {
-      action('onSubmit')(value);
+      action("onSubmit")(value);
     },
   });
   return (

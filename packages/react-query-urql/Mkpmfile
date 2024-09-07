@@ -26,28 +26,23 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call make,$(PROJECT_ROOT)) \~deps DEPS_ARGS=$(DEPS_ARGS)
 	@$(call done,$@)
 
-ACTIONS += format~deps
-$(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
-	-@$(call prettier,$?,$(ARGS))
-	@$(call done,$@)
-
-ACTIONS += spellcheck~format
+ACTIONS += spellcheck~deps
 $(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
 	-@$(call cspell,$?,$(ARGS))
 	@$(call done,$@)
 
-ACTIONS += lint~spellcheck
-$(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
-	-@$(call eslint,$?,$(ARGS))
+ACTIONS += check~spellcheck
+$(ACTION)/check: $(call git_deps,\.([jt]sx?)$$)
+	$(BIOME) check --fix --unsafe $?
 	@$(call done,$@)
 
-# ACTIONS += test~lint
+# ACTIONS += test~check
 # $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 # 	-@$(MKDIR) -p node_modules/.tmp
 # 	-@$(call jest,$?,$(ARGS))
 # 	@$(call done,$@)
 
-ACTIONS += build~lint
+ACTIONS += build~check
 BUILD_TARGET := dist/cjs/index.js
 dist/cjs/index.js:
 	@$(call reset,build)
@@ -59,6 +54,4 @@ $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 
 export CACHE_ENVS += \
 	CSPELL \
-	ESLINT \
-	PRETTIER \
 	TSC

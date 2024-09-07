@@ -19,14 +19,14 @@
  * limitations under the License.
  */
 
-import { Code } from './index';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Code } from "./index";
 
 const meta: Meta = {
-  title: 'code/Code',
+  title: "code/Code",
   component: Code,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 

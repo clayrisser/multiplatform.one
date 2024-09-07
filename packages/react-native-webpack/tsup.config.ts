@@ -19,22 +19,22 @@
  * limitations under the License.
  */
 
-import { defineConfig } from 'tsup';
-import transpileModules from './transpileModules';
+import { defineConfig } from "tsup";
+import transpileModules from "./transpileModules";
 
 export default defineConfig({
   bundle: true,
   clean: true,
   dts: true,
-  entry: ['src/**/*.ts?(x)'],
-  entryPoints: ['src/index.ts'],
-  external: ['@prisma/client'],
-  format: ['esm', 'cjs'],
+  entry: ["src/**/*.ts?(x)"],
+  entryPoints: ["src/index.ts"],
+  external: ["@prisma/client"],
+  format: ["esm", "cjs"],
   minify: false,
   noExternal: transpileModules,
-  outDir: 'lib',
-  publicDir: './public',
+  outDir: "lib",
+  publicDir: "./public",
   skipNodeModulesBundle: false,
   splitting: true,
-  target: 'es2022',
+  target: "es2022",
 });

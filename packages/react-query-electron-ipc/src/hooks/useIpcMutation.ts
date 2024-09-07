@@ -19,14 +19,26 @@
  * limitations under the License.
  */
 
-import type { IpcRequestOptions } from '../request';
-import type { QueryKey, UseMutationResult, DefaultError, UseMutationOptions, QueryClient } from '@tanstack/react-query';
-import { ipcMutation } from '../request';
-import { useQueryClient, useMutation as useTanstackMutation } from '@tanstack/react-query';
+import type {
+  DefaultError,
+  QueryClient,
+  QueryKey,
+  UseMutationOptions,
+  UseMutationResult,
+} from "@tanstack/react-query";
+import {
+  useQueryClient,
+  useMutation as useTanstackMutation,
+} from "@tanstack/react-query";
+import type { IpcRequestOptions } from "../request";
+import { ipcMutation } from "../request";
 
-const extraOptionsKeys = new Set(['handler', 'invalidateQueryKeys', 'timeout']);
+const extraOptionsKeys = new Set(["handler", "invalidateQueryKeys", "timeout"]);
 
-interface ExtraOptions<TQueryKeys extends QueryKey[] = QueryKey[], THandler extends string = string> {
+interface ExtraOptions<
+  TQueryKeys extends QueryKey[] = QueryKey[],
+  THandler extends string = string,
+> {
   handler: THandler;
   invalidateQueryKeys?: TQueryKeys;
 }
@@ -44,20 +56,30 @@ export function useIpcMutation<
     IpcRequestOptions,
   queryClient?: QueryClient,
 ): UseMutationResult<TData, TError, TVariables, TContext> {
-  const tanstackMutationOptions = Object.entries(options).reduce((tanstackMutationOptions, [key, value]) => {
-    if (!extraOptionsKeys.has(key)) tanstackMutationOptions[key] = value;
-    return tanstackMutationOptions;
-  }, {}) as UseMutationOptions<TData, TError, TVariables, TContext>;
+  const tanstackMutationOptions = Object.entries(options).reduce(
+    (tanstackMutationOptions, [key, value]) => {
+      if (!extraOptionsKeys.has(key)) tanstackMutationOptions[key] = value;
+      return tanstackMutationOptions;
+    },
+    {},
+  ) as UseMutationOptions<TData, TError, TVariables, TContext>;
   const tanstackQueryClient = useQueryClient();
   return useTanstackMutation<TData, TError, TVariables, TContext>(
     {
       ...tanstackMutationOptions,
       async mutationFn(variables: TVariables): Promise<TData> {
-        return ipcMutation<THandler, TVariables, TData>(options.handler, variables, { timeout: options.timeout });
+        return ipcMutation<THandler, TVariables, TData>(
+          options.handler,
+          variables,
+          { timeout: options.timeout },
+        );
       },
       async onMutate(variables: TVariables) {
-        (options?.invalidateQueryKeys || []).forEach((queryKey) => tanstackQueryClient.invalidateQueries({ queryKey }));
-        if (tanstackMutationOptions.onMutate) return tanstackMutationOptions.onMutate(variables);
+        (options?.invalidateQueryKeys || []).forEach((queryKey) =>
+          tanstackQueryClient.invalidateQueries({ queryKey }),
+        );
+        if (tanstackMutationOptions.onMutate)
+          return tanstackMutationOptions.onMutate(variables);
         return undefined;
       },
     },

@@ -19,20 +19,20 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import { SvgUri } from '@multiplatform.one/components/src/images/SvgUri';
-import { useAssets } from '@multiplatform.one/components/src/hooks';
+import { useAssets } from "@multiplatform.one/components/src/hooks";
+import { SvgUri } from "@multiplatform.one/components/src/images/SvgUri";
+import React from "react";
 
 export default {
-  title: 'images/SvgUri',
+  title: "images/SvgUri",
   component: SvgUri,
   parameters: {
-    status: { type: 'beta' },
+    status: { type: "beta" },
   },
 };
 
 function Main() {
-  const [pentagonSvg] = useAssets([require('app/assets/pentagon.svg')]);
+  const [pentagonSvg] = useAssets([require("app/assets/pentagon.svg")]);
   if (!pentagonSvg?.src) return null;
   return <SvgUri width={304} height={290} uri={pentagonSvg?.src} />;
 }

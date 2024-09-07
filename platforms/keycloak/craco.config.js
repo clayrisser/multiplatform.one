@@ -19,10 +19,13 @@
  * limitations under the License.
  */
 
-const cracoBabelLoader = require('craco-babel-loader');
-const publicConfig = require('app/config/public');
-const webpack = require('webpack');
-const { lookupTranspileModules, lookupTamaguiModules } = require('@multiplatform.one/utils/transpileModules');
+const cracoBabelLoader = require("craco-babel-loader");
+const publicConfig = require("app/config/public");
+const webpack = require("webpack");
+const {
+  lookupTranspileModules,
+  lookupTamaguiModules,
+} = require("@multiplatform.one/utils/transpileModules");
 
 module.exports = {
   plugins: [
@@ -43,14 +46,14 @@ module.exports = {
           ...config.resolve,
           alias: {
             ...(config.resolve?.alias || {}),
-            'next-i18next': require.resolve('empty-module'),
-            'next/config': require.resolve('empty-module'),
-            'next/head': require.resolve('empty-module'),
-            'next/headers': require.resolve('empty-module'),
-            'next/image': require.resolve('empty-module'),
-            'next/link': require.resolve('empty-module'),
-            'next/router': require.resolve('empty-module'),
-            next: require.resolve('empty-module'),
+            "next-i18next": require.resolve("empty-module"),
+            "next/config": require.resolve("empty-module"),
+            "next/head": require.resolve("empty-module"),
+            "next/headers": require.resolve("empty-module"),
+            "next/image": require.resolve("empty-module"),
+            "next/link": require.resolve("empty-module"),
+            "next/router": require.resolve("empty-module"),
+            next: require.resolve("empty-module"),
           },
           fallback: {
             ...(config.resolve?.fallback || {}),
@@ -82,12 +85,12 @@ module.exports = {
     },
     babel: {
       plugins: [
-        'react-native-reanimated/plugin',
+        "react-native-reanimated/plugin",
         [
-          '@tamagui/babel-plugin',
+          "@tamagui/babel-plugin",
           {
             components: lookupTamaguiModules([__dirname]),
-            config: require.resolve('./src/tamagui.config.ts'),
+            config: require.resolve("./src/tamagui.config.ts"),
           },
         ],
       ],

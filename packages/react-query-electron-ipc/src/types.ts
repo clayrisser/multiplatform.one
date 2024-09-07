@@ -19,9 +19,10 @@
  * limitations under the License.
  */
 
-export type IpcHandler<TVariables extends object = {}, TData extends object = {}> = (
-  variables: TVariables,
-) => TData | Promise<TData>;
+export type IpcHandler<
+  TVariables extends object = {},
+  TData extends object = {},
+> = (variables: TVariables) => TData | Promise<TData>;
 
 export interface IpcHandlers {
   mutations?: Record<string, IpcHandler>;
@@ -44,11 +45,11 @@ export interface IpcResponse<THandler extends string = string> {
 }
 
 export enum IpcEvent {
-  Request = 'request',
-  Response = 'response',
+  Request = "request",
+  Response = "response",
 }
 
 export enum IpcMethod {
-  Mutation = 'mutation',
-  Query = 'query',
+  Mutation = "mutation",
+  Query = "query",
 }

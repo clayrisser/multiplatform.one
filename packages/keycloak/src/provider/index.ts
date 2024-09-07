@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-export * from './AfterAuth';
-export * from './AuthProvider';
-export * from './KeycloakProvider';
+export * from "./AfterAuth";
+export * from "./AuthProvider";
+export * from "./KeycloakProvider";
