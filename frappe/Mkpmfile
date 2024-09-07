@@ -24,8 +24,10 @@ include $(MKPM)/dotenv
 FRAPPE_BRANCH ?= version-15-hotfix
 APP_NAME := $(shell cat setup.py pyproject.toml 2>/dev/null | grep name | sed "s|['\",]||g" | sed 's|^[^=]*= *||g')
 FRAPPE_DATABASE_ENGINE := postgres
-FRAPPE_DATABASE_HOST := $(FRAPPE_DATABASE_ENGINE)
-FRAPPE_DATABASE_PASSWORD := P@ssw0rd
+FRAPPE_DATABASE_HOST := 127.0.0.1
+FRAPPE_DATABASE_PASSWORD := postgres
+REDIS_CACHE_URI := redis://localhost:6379
+REDIS_QUEUE_URI := redis://localhost:6380
 SITE_NAME := localhost
 
 .PHONY: install
@@ -47,6 +49,8 @@ frappe-bench/Procfile:
 		--db-root-password $(FRAPPE_DATABASE_PASSWORD) \
 		--db-type $(FRAPPE_DATABASE_ENGINE) \
 		--frappe-branch $(FRAPPE_BRANCH) \
+		--redis-cache-uri $(REDIS_CACHE_URI) \
+		--redis-queue-uri $(REDIS_QUEUE_URI) \
 		--site-name $(SITE_NAME)
 	@cd frappe-bench && \
 		bench --site $(SITE_NAME) set-config -g developer_mode 1 && \

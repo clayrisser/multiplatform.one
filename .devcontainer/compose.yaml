@@ -5,35 +5,11 @@ services:
     working_dir: /workspace/development
     volumes:
       - ..:/workspace/development:rw
-    ports:
-      - 8000-8005:8000-8005
-      - 9000-9005:9000-9005
-
-  # mariadb:
-  #   image: docker.io/mariadb:10.6
-  #   command:
-  #     - --character-set-server=utf8mb4
-  #     - --collation-server=utf8mb4_unicode_ci
-  #     - --skip-character-set-client-handshake
-  #     - --skip-innodb-read-only-compressed
-  #   ports:
-  #     - 3306:3306
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: P@ssw0rd
-  #   volumes:
-  #     - mariadb:/var/lib/mysql
-
-  postgres:
-    image: docker.io/postgres:14
-    ports:
-      - 5432:5432
-    environment:
-      POSTGRES_PASSWORD: P@ssw0rd
-    volumes:
-      - postgres:/var/lib/postgresql/data
+    network_mode: host
 
   mailpit:
     image: axllent/mailpit
+    restart: unless-stopped
     volumes:
       - mailpit:/data
     ports:
@@ -47,11 +23,160 @@ services:
 
   redis-cache:
     image: docker.io/redis:alpine
+    restart: unless-stopped
+    ports:
+      - 6379:6379
 
   redis-queue:
     image: docker.io/redis:alpine
+    restart: unless-stopped
+    ports:
+      - 6380:6379
+
+  keycloak:
+    container_name: keycloak
+    restart: unless-stopped
+    image: registry.gitlab.com/bitspur/rock8s/images/keycloak:25.0.1
+    ports:
+      - 8080:8080
+    volumes:
+      - ../platforms/keycloak/docker/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+    command:
+      - start
+      - --import-realm
+      - --optimized
+    environment:
+      KC_DB_URL_DATABASE: postgres
+      KC_DB_URL_HOST: postgres-keycloak
+      KC_DB_URL_PASSWORD: postgres
+      KC_DB_URL_USERNAME: postgres
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: P@ssw0rd
+    depends_on:
+      - postgres-keycloak
+
+  postgres:
+    container_name: postgres
+    restart: unless-stopped
+    image: postgres:14.5
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DATABASE: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  postgres-keycloak:
+    container_name: postgres-keycloak
+    restart: unless-stopped
+    image: postgres:14.5
+    environment:
+      POSTGRES_DATABASE: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    volumes:
+      - postgres-keycloak:/var/lib/postgresql/data
+
+  tempo:
+    container_name: tempo
+    user: 0:0
+    restart: unless-stopped
+    image: grafana/tempo:2.3.1
+    command: ['-config.file=/etc/tempo.yaml']
+    volumes:
+      - ./tempo.yaml:/etc/tempo.yaml
+      - tempo:/tmp/tempo
+    ports:
+      - 14268:14268
+      - 3200:3200
+      - 4317:4317
+      - 4318:4318
+      - 9095:9095
+      - 9411:9411
+
+  k6-tracing:
+    image: ghcr.io/grafana/xk6-client-tracing:latest
+    environment:
+      - ENDPOINT=tempo:4317
+    restart: always
+    depends_on:
+      - tempo
+
+  loki:
+    container_name: loki
+    user: 0:0
+    restart: unless-stopped
+    image: grafana/loki:2.9.3
+    command: -config.file=/etc/loki/loki-local.yaml
+    ports:
+      - 3100:3100
+    environment:
+      - JAEGER_AGENT_HOST=tempo
+      - JAEGER_ENDPOINT=http://tempo:14268/api/traces
+      - JAEGER_SAMPLER_PARAM=1
+      - JAEGER_SAMPLER_TYPE=const
+    volumes:
+      - ./loki.yaml:/etc/loki/loki-local.yaml
+      - loki:/tmp/loki
+
+  promtail:
+    container_name: promtail
+    user: 0:0
+    restart: unless-stopped
+    image: grafana/promtail:2.8.7
+    command: -config.file=/etc/promtail/promtail-local.yaml
+    volumes:
+      - ./promtail.yaml:/etc/promtail/promtail-local.yaml
+      - ./data/logs:/app/logs
+    depends_on:
+      - loki
+
+  prometheus:
+    container_name: prometheus
+    user: 0:0
+    restart: unless-stopped
+    image: prom/prometheus:v2.49.1
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    command:
+      - --config.file=/etc/prometheus.yaml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=exemplar-storage
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus.yaml
+    ports:
+      - '9090:9090'
+
+  grafana:
+    container_name: grafana
+    user: 0:0
+    restart: unless-stopped
+    image: grafana/grafana:10.2.2
+    volumes:
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/dashboards-provisioning:/etc/grafana/provisioning/dashboards
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor traceQLStreaming metricsSummary
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+      - tempo
+      - loki
 
 volumes:
+  loki: {}
   mailpit: {}
-  # mariadb: {}
+  postgres-keycloak: {}
   postgres: {}
+  sentry-postgres: {}
+  sentry-redis: {}
+  sentry-web: {}
+  sentry-worker: {}
+  tempo: {}

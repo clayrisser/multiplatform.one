@@ -27,8 +27,6 @@ PRISMA_DATABASE_ENGINE ?= sqlite
 PRISMA_STUDIO_PORT ?= 5555
 PSQL ?= psql
 
-export POSTGRES_URL ?= \
-	postgresql://$(POSTGRES_PASSWORD):$(POSTGRES_USERNAME)@$(POSTGRES_HOSTNAME):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=prefer
 WAIT_FOR_POSTGRES ?= echo 'waiting for postgres...' && \
 	until psql "$(POSTGRES_URL)" -c '\q' && break; do sleep 1; done; sleep 1 && echo "postgres ready"
 
@@ -82,7 +80,9 @@ seed: ../dist/scripts/prisma/seed.mjs dev $(PRISMA_DATABASE_ENGINE)
 
 .PHONY: postgres sqlite
 postgres:
+ifneq (,$(shell which docker >$(NULL)))
 	@$(call make) -C $(DOCKER_PATH) postgres-d
+endif
 	@$(WAIT_FOR_POSTGRES)
 sqlite:
 

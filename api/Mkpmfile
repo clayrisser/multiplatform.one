@@ -52,10 +52,14 @@ prisma/%: ~deps
 	@$(call make,prisma) $*
 
 .PHONY: docker/%
+ifneq (,$(shell which docker >$(NULL)))
 docker/%: $(PROJECT_ROOT)/docker/data/logs/app.log
 	@$(call make,$(PROJECT_ROOT)) docker/$*
 $(PROJECT_ROOT)/docker/data/logs/app.log:
 	@$(MKDIR) -p $(@D)
 	@$(TOUCH) $@
+else
+docker/%: ;
+endif
 
 -include $(call chain)

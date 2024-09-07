@@ -52,21 +52,6 @@ EXPO_PORT ?= 8081
 .PHONY: dev +dev
 dev: | ~deps +dev
 +dev:
-	@$(EXPO) start -c -p $(EXPO_PORT) --go $(DEV_ARGS)
-
-.PHONY: dev@web +dev@web
-dev@web: | ~deps +dev@web
-+dev@web:
-	@$(EXPO) start -c -p $(EXPO_PORT) --go --web
-
-.PHONY: dev@android +dev@android
-dev@android: | ~deps +dev@android
-+dev@android:
-	@$(EXPO) start -c -p $(EXPO_PORT) --go --android
-
-.PHONY: dev@ios +dev@ios
-dev@ios: | ~deps dev@ios
-+dev@ios:
-	@$(EXPO) start -c -p $(EXPO_PORT) --go --ios
+	@$(EXPO) start --tunnel -c -p $(EXPO_PORT) --go $(DEV_ARGS)
 
 -include $(call chain)
