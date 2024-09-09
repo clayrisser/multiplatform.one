@@ -30,6 +30,7 @@ bblr
 bbrr
 bbs
 bbw
+biomejs
 bitbucket
 bitspur
 blc
@@ -57,6 +58,7 @@ bufferutil
 buildpack
 builtins
 bxsh
+caddyfile
 camelcase
 cancelable
 checkbox
@@ -76,6 +78,7 @@ compat
 consolas
 constructable
 cookiecutter
+coredns
 corejs
 coreutils
 cors

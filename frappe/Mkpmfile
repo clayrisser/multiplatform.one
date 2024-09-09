@@ -27,7 +27,7 @@ FRAPPE_DATABASE_HOST ?= 127.0.0.1
 FRAPPE_DATABASE_PASSWORD ?= postgres
 REDIS_CACHE_URI ?= redis://localhost:6379
 REDIS_QUEUE_URI ?= redis://localhost:6380
-SITE_NAME ?= $(shell echo $(FRAPPE_BASE_URL) | sed 's|^https\?://||')
+SITE_NAME ?= $(shell echo $(FRAPPE_BASE_URL) | sed 's|^https\?://||' | sed 's|:[0-9]\+$$||')
 
 APP_NAME := $(shell cat setup.py pyproject.toml 2>/dev/null | grep name | sed "s|['\",]||g" | sed 's|^[^=]*= *||g')
 

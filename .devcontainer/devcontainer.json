@@ -24,7 +24,6 @@
         "ms-python.black-formatter",
         "ms-python.debugpy",
         "ms-python.python",
-        "ms-vscode.live-server",
         "ms-vscode.makefile-tools",
         "prisma.prisma",
         "psioniq.psi-header",

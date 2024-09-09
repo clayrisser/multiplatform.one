@@ -40,6 +40,16 @@ const seedUsers: UserRepresentation[] = [
   },
 ];
 
+let keycloakBaseUrl = process.env.KEYCLOAK_BASE_URL || ""
+if (keycloakBaseUrl) {
+  const url = new URL(keycloakBaseUrl);
+  if (url.hostname.endsWith('.localhost')) {
+    url.hostname = 'localhost';
+    url.port = process.env.KEYCLOAK_LOCALHOST_PORT || '8080';
+    keycloakBaseUrl = url.toString();
+  }
+}
+
 export const options: AppOptions<PubSubEvents> = {
   debug: process.env.DEBUG === "1",
   port: process.env.API_PORT ? Number.parseInt(process.env.API_PORT, 10) : 5000,
@@ -51,7 +61,7 @@ export const options: AppOptions<PubSubEvents> = {
     KeycloakAddon({
       adminPassword: process.env.KEYCLOAK_ADMIN_PASSWORD || "",
       adminUsername: process.env.KEYCLOAK_ADMIN_USERNAME || "",
-      baseUrl: process.env.KEYCLOAK_BASE_URL || "",
+      baseUrl: keycloakBaseUrl,
       clientId: process.env.KEYCLOAK_CLIENT_ID || "",
       clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || "",
       realm: process.env.KEYCLOAK_REALM || "master",
