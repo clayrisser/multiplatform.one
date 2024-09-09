@@ -2,5 +2,9 @@
   {
     "url": "https://gitlab.com/bitspur/frappe/graphql.git",
     "branch": "main"
+  },
+  {
+    "url": "https://gitlab.com/bitspur/frappe/keycloak.git",
+    "branch": "main"
   }
 ]

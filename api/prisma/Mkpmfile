@@ -80,7 +80,7 @@ seed: ../dist/scripts/prisma/seed.mjs dev $(PRISMA_DATABASE_ENGINE)
 
 .PHONY: postgres sqlite
 postgres:
-ifneq (,$(shell which docker >$(NULL)))
+ifneq (/home/frappe,$(HOME))
 	@$(call make) -C $(DOCKER_PATH) postgres-d
 endif
 	@$(WAIT_FOR_POSTGRES)

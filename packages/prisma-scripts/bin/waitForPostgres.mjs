@@ -21,4 +21,4 @@
  * limitations under the License.
  */
 
-import '@multiplatform.one/prisma-scripts/bin/waitForPostgres';
+import "@multiplatform.one/prisma-scripts/bin/waitForPostgres";

@@ -1,10 +1,5 @@
 {
   "name": "Frappe Bench",
-  "forwardPorts": [
-    8000,
-    9000,
-    6787
-  ],
   "remoteUser": "frappe",
   "dockerComposeFile": "compose.yaml",
   "service": "devcontainer",
@@ -13,17 +8,29 @@
   "postAttachCommand": "sh ${containerWorkspaceFolder}/.devcontainer/postattach.sh",
   "shutdownAction": "stopCompose",
   "mounts": [
-    "source=profile-frappe,target=/home/frappe,type=volume",
     "source=${localEnv:HOME}/.ssh,target=/home/frappe/.ssh,type=bind,consistency=cached"
   ],
   "customizations": {
     "vscode": {
       "extensions": [
+        "ahmadalli.vscode-nginx-conf",
+        "biomejs.biome",
+        "editorconfig.editorconfig",
+        "graphql.vscode-graphql",
+        "graphql.vscode-graphql-execution",
+        "graphql.vscode-graphql-syntax",
+        "mikestead.dotenv",
+        "ms-azuretools.vscode-docker",
         "ms-python.black-formatter",
         "ms-python.debugpy",
         "ms-python.python",
         "ms-vscode.live-server",
-        "biomejs.biome"
+        "ms-vscode.makefile-tools",
+        "prisma.prisma",
+        "psioniq.psi-header",
+        "streetsidesoftware.code-spell-checker",
+        "wmanth.jar-viewer",
+        "yoavbls.pretty-ts-errors"
       ],
       "settings": {
         "extensions.verifySignature": false,
@@ -32,8 +39,7 @@
           "zsh": {
             "path": "/bin/zsh"
           }
-        },
-        "debug.node.autoAttach": "disabled"
+        }
       }
     }
   }

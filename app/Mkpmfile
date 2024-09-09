@@ -27,22 +27,7 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call make,$(PROJECT_ROOT)) \~deps DEPS_ARGS=$(DEPS_ARGS)
 	@$(call done,$@)
 
-ACTIONS += format~deps
-$(ACTION)/format: $(call git_deps,\.((json)|(md)|([jt]sx?))$$)
-	# TODO biome
-	@$(call done,$@)
-
-ACTIONS += spellcheck~format
-$(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
-	@$(call done,$@)
-
-ACTIONS += lint~spellcheck
-$(ACTION)/lint: $(call git_deps,\.([jt]sx?)$$)
-	# TODO biome
-	@$(call done,$@)
-
-ACTIONS += test~lint
+ACTIONS += test~deps
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call jest,$?,$(TEST_ARGS))
 	@$(call done,$@)

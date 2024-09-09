@@ -3,13 +3,7 @@
   "version": "0.1.0",
   "description": "webpack support for react native web",
   "sideEffects": false,
-  "keywords": [
-    "babel",
-    "react",
-    "react-native",
-    "react-native-web",
-    "webpack"
-  ],
+  "keywords": ["babel", "react", "react-native", "react-native-web", "webpack"],
   "homepage": "https://multiplatform.one",
   "bugs": {
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues",
@@ -32,11 +26,7 @@
   "scripts": {
     "build": "tsup"
   },
-  "files": [
-    "bin",
-    "lib",
-    "src"
-  ],
+  "files": ["bin", "lib", "src"],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"

@@ -41,7 +41,6 @@ function GraphiQLPage() {
     { query: String },
     false,
   );
-  const [query, setQuery] = useState(params.query?.toString());
 
   useEffect(() => {
     if (typeof keycloak?.authenticated === "undefined") return;
@@ -58,17 +57,14 @@ function GraphiQLPage() {
     >
       <GraphiQLProvider
         schemaDescription
-        query={query}
         headers={params.headers?.toString()}
         plugins={[
           explorerPlugin({
-            query,
-            onEdit: setQuery,
             showAttribution: true,
-          } as any),
+          }),
         ]}
         fetcher={createGraphiQLFetcher({
-          url: "http://localhost:5001/graphql",
+          url: "http://localhost:4000/graphql",
           async fetch(input: RequestInfo, init?: RequestInit) {
             return fetch(input, {
               ...init,

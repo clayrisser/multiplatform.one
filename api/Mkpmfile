@@ -27,16 +27,6 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call make,$(PROJECT_ROOT)) \~deps DEPS_ARGS=$(DEPS_ARGS)
 	@$(call done,$@)
 
-ACTIONS += spellcheck~deps
-$(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
-	@$(call done,$@)
-
-ACTIONS += check~spellcheck
-$(ACTION)/check: $(call git_deps,\.([jt]sx?)$$)
-	$(BIOME) check --fix --unsafe $?
-	@$(call done,$@)
-
 ACTIONS += build~deps
 BUILD_TARGETS := dist/api/main.mjs
 dist/api/main.mjs:
@@ -62,7 +52,7 @@ prisma/%: ~deps
 	@$(call make,prisma) $*
 
 .PHONY: docker/%
-ifneq (,$(shell which docker >$(NULL)))
+ifneq (/home/frappe,$(HOME))
 docker/%: $(PROJECT_ROOT)/docker/data/logs/app.log
 	@$(call make,$(PROJECT_ROOT)) docker/$*
 $(PROJECT_ROOT)/docker/data/logs/app.log:

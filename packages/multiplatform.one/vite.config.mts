@@ -19,16 +19,16 @@
  * limitations under the License.
  */
 
-import path from 'path';
-import react from '@vitejs/plugin-react';
-import reactNative from 'vitest-react-native';
-import { defineConfig } from 'vitest/config';
+import path from "node:path";
+import react from "@vitejs/plugin-react";
+import reactNative from "vitest-react-native";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   plugins: [reactNative(), react()],
   test: {
-    environment: 'jsdom',
-    setupFiles: [path.resolve(__dirname, 'src/testSetup.ts')],
-    reporters: 'dot',
+    environment: "jsdom",
+    setupFiles: [path.resolve(__dirname, "src/testSetup.ts")],
+    reporters: "dot",
   },
 });

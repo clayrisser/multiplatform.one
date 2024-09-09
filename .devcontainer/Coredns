@@ -1,0 +1,10 @@
+. {
+    log
+    errors
+    forward . 8.8.8.8 8.8.4.4
+}
+
+local {
+  file dns.local
+  log
+}

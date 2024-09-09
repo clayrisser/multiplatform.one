@@ -1,16 +1,22 @@
 {
   "recommendations": [
     "ahmadalli.vscode-nginx-conf",
+    "biomejs.biome",
     "editorconfig.editorconfig",
     "graphql.vscode-graphql",
     "graphql.vscode-graphql-execution",
     "graphql.vscode-graphql-syntax",
     "mikestead.dotenv",
     "ms-azuretools.vscode-docker",
+    "ms-python.black-formatter",
+    "ms-python.debugpy",
+    "ms-python.python",
+    "ms-vscode.live-server",
+    "ms-vscode.makefile-tools",
     "prisma.prisma",
     "psioniq.psi-header",
     "streetsidesoftware.code-spell-checker",
-    "yoavbls.pretty-ts-errors",
-    "wmanth.jar-viewer"
+    "wmanth.jar-viewer",
+    "yoavbls.pretty-ts-errors"
   ]
 }

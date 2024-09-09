@@ -1,3 +1,24 @@
+/**
+ * File: /src/keycloakService.ts
+ * Project: @multiplatform.one/keycloak-typegraphql
+ * File Created: 11-06-2024 10:47:58
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 /*
  * File: /src/keycloakService.ts
  * Project: @multiplatform.one/keycloak-typegraphql
@@ -33,7 +54,7 @@ import type { KeycloakConnect } from "./initialize";
 import {
   KEYCLOAK_CONNECT,
   KEYCLOAK_OPTIONS,
-  type KeycloakAdmin,
+  KeycloakAdmin,
 } from "./initialize";
 import { Token } from "./token";
 import type {
@@ -77,7 +98,7 @@ export class KeycloakService {
     @inject(KEYCLOAK_OPTIONS) options: KeycloakOptions,
     @inject("LOGGER") private readonly logger: Logger,
     @inject(KEYCLOAK_CONNECT) public readonly keycloakConnect: KeycloakConnect,
-    public readonly keycloakAdmin: KeycloakAdmin,
+    @inject(KeycloakAdmin) public readonly keycloakAdmin: KeycloakAdmin,
     @inject("CTX") public readonly ctx?: Ctx,
   ) {
     this.options = {

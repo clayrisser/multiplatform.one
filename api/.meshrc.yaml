@@ -1,0 +1,24 @@
+sources:
+  - name: Api
+    handler:
+      graphql:
+        endpoint: http://localhost:5001/graphql
+        operationHeaders:
+          Authorization: Bearer {context.headers.Authorization}
+  - name: Frappe
+    handler:
+      graphql:
+        endpoint: http://localhost:8000/api/method/graphql
+        operationHeaders:
+          Authorization: Bearer {context.headers.Authorization}
+plugins:
+  - rateLimit:
+      config: []
+  - maxTokens:
+      n: 1000
+  - maxDepth:
+      n: 10
+  - blockFieldSuggestions: {}
+  - operationFieldPermissions:
+      permissions: []
+  - responseCache: {}

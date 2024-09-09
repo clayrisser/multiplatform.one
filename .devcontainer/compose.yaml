@@ -2,10 +2,10 @@ services:
   devcontainer:
     image: registry.gitlab.com/bitspur/frappe/images/devcontainer:latest
     command: sleep infinity
+    network_mode: host
     working_dir: /workspace/development
     volumes:
       - ..:/workspace/development:rw
-    network_mode: host
 
   mailpit:
     image: axllent/mailpit

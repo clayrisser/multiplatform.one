@@ -21,4 +21,4 @@
  * limitations under the License.
  */
 
-import '@multiplatform.one/cli/bin/multiplatformOne';
+import "@multiplatform.one/cli/bin/multiplatformOne";

@@ -24,12 +24,7 @@
   "scripts": {
     "build": "rm -rf dist types 2>/dev/null && tamagui-build"
   },
-  "files": [
-    "NOTICE",
-    "dist",
-    "src",
-    "types"
-  ],
+  "files": ["NOTICE", "dist", "src", "types"],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

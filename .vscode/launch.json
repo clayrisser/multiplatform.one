@@ -60,5 +60,11 @@
       "command": ". ${workspaceFolder}/frappe/frappe-bench/env/bin/activate; honcho start web socketio watch schedule worker",
       "cwd": "${workspaceFolder}/frappe/frappe-bench"
     },
+    {
+      "name": "proxy",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "./mkpm proxy"
+    }
   ]
 }

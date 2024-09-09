@@ -3,10 +3,13 @@
   "private": true,
   "scripts": {
     "build": "turbo run build --filter '!./platforms/*' --filter '!./api'",
+    "check": "biome check --fix --unsafe `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(json)|(yaml)|([jt]sx?)$'`",
     "count": "cloc `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(json)|(yaml)|([jt]sx?)$'`",
     "dev": "turbo run dev",
-    "format": "prettier --write `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(json)|(yaml)|([jt]sx?)$'`",
+    "dns": "sudo coredns -conf .devcontainer/Coredns",
     "generate": "turbo run generate",
+    "proxy": "sudo caddy run --config .devcontainer/Caddyfile",
+    "spellcheck": "cspell `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(txt)$'`",
     "test": "turbo run test"
   },
   "devDependencies": {
@@ -56,8 +59,5 @@
       "multiplatform.one": "1.0.32"
     }
   },
-  "tamaguiModules": [
-    "@multiplatform.one/components",
-    "ui"
-  ]
+  "tamaguiModules": ["@multiplatform.one/components", "ui"]
 }

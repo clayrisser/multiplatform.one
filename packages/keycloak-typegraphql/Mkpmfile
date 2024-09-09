@@ -26,23 +26,13 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call make,$(PROJECT_ROOT)) \~deps DEPS_ARGS=$(DEPS_ARGS)
 	@$(call done,$@)
 
-ACTIONS += spellcheck~deps
-$(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	-@$(call cspell,$?,$(ARGS))
-	@$(call done,$@)
-
-ACTIONS += check~spellcheck
-$(ACTION)/check: $(call git_deps,\.([jt]sx?)$$)
-	$(BIOME) check --fix --unsafe $?
-	@$(call done,$@)
-
-# ACTIONS += test~check
+# ACTIONS += test~deps
 # $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 # 	-@$(MKDIR) -p node_modules/.tmp
 # 	-@$(call jest,$?,$(ARGS))
 # 	@$(call done,$@)
 
-ACTIONS += build~lint
+ACTIONS += build~deps
 BUILD_TARGET := lib/index.js
 lib/index.js:
 	@$(call reset,build)

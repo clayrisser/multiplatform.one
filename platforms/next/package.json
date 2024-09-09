@@ -6,8 +6,8 @@
     "dev": "NODE_OPTIONS='--inspect' next dev"
   },
   "dependencies": {
-    "@graphiql/plugin-explorer": "^3.0.1",
-    "@graphiql/toolkit": "^0.9.1",
+    "@graphiql/plugin-explorer": "^3.2.2",
+    "@graphiql/toolkit": "^0.11.0",
     "@multiplatform.one/components": "4.1.0",
     "@multiplatform.one/keycloak": "workspace:2.0.0",
     "@next/bundle-analyzer": "^14.2.3",
@@ -17,7 +17,7 @@
     "cookie": "^0.6.0",
     "cookies-next": "^4.2.1",
     "critters": "^0.0.22",
-    "graphiql": "^3.2.2",
+    "graphiql": "^3.7.1",
     "graphiql-ws": "^0.1.7",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.16.0",

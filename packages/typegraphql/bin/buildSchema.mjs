@@ -19,6 +19,6 @@
  * limitations under the License.
  */
 
-import 'reflect-metadata';
-import { _buildSchemaBin } from '../lib/buildSchema.mjs';
+import "reflect-metadata";
+import { _buildSchemaBin } from "../lib/buildSchema.mjs";
 _buildSchemaBin();

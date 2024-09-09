@@ -21,4 +21,4 @@
  * limitations under the License.
  */
 
-import '@multiplatform.one/prisma-scripts/bin/generate';
+import "@multiplatform.one/prisma-scripts/bin/generate";

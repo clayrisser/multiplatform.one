@@ -33,16 +33,6 @@ $(ACTION)/deps: package.json \
 	@$(PNPM) install
 	@$(call done,$@)
 
-ACTIONS += spellcheck~deps
-$(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	-@$(call cspell,$?,$(SPELLCHECK_ARGS))
-	@$(call done,$@)
-
-ACTIONS += check~spellcheck
-$(ACTION)/check: $(call git_deps,\.([jt]sx?)$$)
-	$(BIOME) check --fix --unsafe $?
-	@$(call done,$@)
-
 .PHONY: $(patsubst %,%/%,$(PLATFORMS))
 $(patsubst %,%/%,$(PLATFORMS)):
 	@$(call make,platforms/$(@D)) $*
@@ -65,16 +55,21 @@ update:
 
 .PHONY: clean
 clean:
-	@$(call workspace_foreach,clean,$(CLEAN_ARGS))
+	-@$(call workspace_foreach,clean,$(CLEAN_ARGS))
 	-@$(MKCACHE_CLEAN)
 	-@$(WATCHMAN) watch-del-all $(NOFAIL)
-	-@$(GIT) clean -fXd \
+	-@$(GIT) clean -fxd \
 		$(MKPM_GIT_CLEAN_FLAGS) \
 		$(NOFAIL)
 
 .PHONY: purge
+ifneq (/home/frappe,$(HOME))
+purge: docker/down clean
+else
 purge: clean
-	@$(GIT) clean -fXd
+endif
+	-@rm -rf frappe/frappe-bench
+	-@$(GIT) clean -fxd
 
 HELP = help
 help: $(MKCHAIN_HELP)

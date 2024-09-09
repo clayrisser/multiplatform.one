@@ -1,0 +1,29 @@
+http://app.local, http://app.localhost {
+  log
+  handle /api/graphql {
+    uri strip_prefix /api
+    reverse_proxy 127.0.0.1:5001
+  }
+  handle /_next/static/* {
+    header Content-Type "application/javascript"
+    reverse_proxy 127.0.0.1:5000
+  }
+  handle /static/* {
+    header Cache-Control "public, max-age=3600"
+    reverse_proxy 127.0.0.1:5000
+  }
+  handle {
+    reverse_proxy 127.0.0.1:5000
+  }
+  tls internal
+}
+
+http://account.local, http://account.localhost {
+  reverse_proxy / localhost:8080
+  tls internal
+}
+
+http://frappe.local, http://frappe.localhost {
+  reverse_proxy / frappe.local:8000
+  tls internal
+}

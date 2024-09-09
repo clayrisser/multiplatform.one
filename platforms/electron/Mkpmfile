@@ -27,22 +27,12 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call make,$(PROJECT_ROOT)) \~deps DEPS_ARGS=$(DEPS_ARGS)
 	@$(call done,$@)
 
-ACTIONS += spellcheck~deps
-$(ACTION)/spellcheck: $(call git_deps,\.(md)$$)
-	-@$(call cspell,$?,$(ARGS))
-	@$(call done,$@)
-
-ACTIONS += check~spellcheck
-$(ACTION)/check: $(call git_deps,\.([jt]sx?)$$)
-	$(BIOME) check --fix --unsafe $?
-	@$(call done,$@)
-
-ACTIONS += test~check
+ACTIONS += test~deps
 $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	-@$(call jest,$?,$(TEST_ARGS))
 	@$(call done, $@)
 
-ACTIONS += build~test
+ACTIONS += build~deps
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(PNPM) run build $(BUILD_ARGS)
 	@$(call done,$@)
