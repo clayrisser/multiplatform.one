@@ -6,7 +6,7 @@
     "check": "biome check --fix --unsafe `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(json)|(yaml)|([jt]sx?)$'`",
     "count": "cloc `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(json)|(yaml)|([jt]sx?)$'`",
     "dev": "turbo run dev",
-    "dns": "cd .devcontainer && sudo coredns -conf Coredns",
+    "dns": "cd .devcontainer && sh ./dns.sh",
     "generate": "turbo run generate",
     "proxy": "caddy run --config .devcontainer/Caddyfile",
     "spellcheck": "cspell `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(txt)$'`",

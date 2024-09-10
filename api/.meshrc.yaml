@@ -8,7 +8,7 @@ sources:
   - name: Frappe
     handler:
       graphql:
-        endpoint: http://localhost:8000/api/method/graphql
+        endpoint: http://frappe.local:8888/api/method/graphql
         operationHeaders:
           Authorization: Bearer {context.headers.Authorization}
 plugins:

@@ -1,6 +1,5 @@
 #!/bin/sh
 
-export API_BASE_URL="$BASE_URL/api"
 export API_PORT="5002"
 export NEXTAUTH_SECRET="$SECRET"
 export NEXT_BASE_URL="$BASE_URL"

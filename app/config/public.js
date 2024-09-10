@@ -1,7 +1,7 @@
-/*
+/**
  * File: /config/public.js
  * Project: app
- * File Created: 06-05-2024 07:15:14
+ * File Created: 11-06-2024 10:47:58
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -20,7 +20,7 @@
  */
 
 module.exports = {
-  API_BASE_URL: process.env.API_BASE_URL || "",
+  BASE_URL: process.env.BASE_URL || '',
   CROSS_STORAGE_HUB_URL: process.env.CROSS_STORAGE_HUB_URL || "",
   DEBUG: process.env.DEBUG || "",
   KEYCLOAK_BASE_URL: process.env.KEYCLOAK_BASE_URL || "",

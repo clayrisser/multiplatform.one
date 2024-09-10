@@ -27,6 +27,7 @@ import { GraphiQL, GraphiQLInterface, GraphiQLProvider } from "graphiql";
 import { createClient } from "graphql-ws";
 import React, { useEffect, useState } from "react";
 import { useUrlSearchParams } from "use-url-search-params";
+import { config } from "app/config";
 import { v4 as uuid } from "uuid";
 
 function GraphiQLPage() {
@@ -48,6 +49,7 @@ function GraphiQLPage() {
   }, [keycloak?.authenticated]);
 
   if (!ready) return <>{}</>;
+  const uri = `${config.get("BASE_URL", "http://app.localhost:8888")}/api/graphql`;
   return (
     <div
       style={{
@@ -64,7 +66,7 @@ function GraphiQLPage() {
           }),
         ]}
         fetcher={createGraphiQLFetcher({
-          url: "http://localhost:4000/graphql",
+          url: uri,
           async fetch(input: RequestInfo, init?: RequestInit) {
             return fetch(input, {
               ...init,
@@ -78,15 +80,15 @@ function GraphiQLPage() {
             });
           },
           wsClient: createClient({
-            url: "ws://localhost:5001/graphql",
+            url: uri.replace(/^http/, "ws"),
           }),
         })}
       >
         <GraphiQLInterface
-          isHeadersEditorEnabled
           defaultEditorToolsVisibility
-          onEditQuery={(query) => setParams({ query })}
+          isHeadersEditorEnabled
           onEditHeaders={(headers) => setParams({ headers })}
+          onEditQuery={(query) => setParams({ query })}
         >
           <GraphiQL.Logo>
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -107,4 +109,5 @@ function GraphiQLPage() {
   );
 }
 
-export default withAuthenticated(GraphiQLPage);
+// export default withAuthenticated(GraphiQLPage);
+export default GraphiQLPage;

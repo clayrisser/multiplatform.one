@@ -5,6 +5,6 @@
 }
 
 local {
-  file dns.local
+  file .dns.local
   log
 }

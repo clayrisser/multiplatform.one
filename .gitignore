@@ -2,6 +2,7 @@
 .env
 .turbo/
 /.changeset/*.md
+/.devcontainer/.dns.local
 /.dockerignore
 /docker/data
 /null

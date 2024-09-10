@@ -7,6 +7,6 @@ $TTL 3600
                 3600 ; minimum
                 )
 @   IN  NS  localhost.
-@   IN  A   127.0.0.1
-*.local.      IN  A  127.0.0.1
-*.localhost.  IN  A  127.0.0.1
+@   IN  A   IP_ADDRESS
+*.local.      IN  A IP_ADDRESS
+*.localhost.  IN  A IP_ADDRESS

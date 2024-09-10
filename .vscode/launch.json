@@ -65,6 +65,12 @@
       "type": "node-terminal",
       "request": "launch",
       "command": "./mkpm proxy"
+    },
+    {
+      "name": "dns",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "./mkpm dns"
     }
   ]
 }
