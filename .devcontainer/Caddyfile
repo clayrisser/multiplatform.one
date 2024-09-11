@@ -2,7 +2,7 @@
 	admin off
 }
 
-http://app.local:8888, http://app.localhost:8888 {
+http://app.test, http://app.localhost {
 	handle /api/graphql {
 		uri strip_prefix /api
 		reverse_proxy 127.0.0.1:4000
@@ -13,14 +13,14 @@ http://app.local:8888, http://app.localhost:8888 {
 	tls internal
 }
 
-http://account.local:8888, http://account.localhost:8888 {
+http://account.test, http://account.localhost {
 	handle {
 		reverse_proxy 127.0.0.1:8080
 	}
 	tls internal
 }
 
-http://frappe.local:8888, http://frappe.localhost:8888 {
+http://frappe.test, http://frappe.localhost {
 	handle {
 		reverse_proxy 127.0.0.1:8000 {
 			header_up Host frappe.localhost

@@ -36,7 +36,7 @@ export function GlobalUrqlProvider({
     const headers = keycloakDisabled
       ? {}
       : { ...(keycloak ? { Authorization: `Bearer ${keycloak?.token}` } : {}) };
-    const uri = `${config.get("BASE_URL", "http://app.localhost:8888")}/api/graphql`;
+    const uri = `${config.get("BASE_URL", "http://app.localhost")}/api/graphql`;
     return createClient({
       url: uri.replace(/^http/, "ws"),
       exchanges: [devtoolsExchange, fetchExchange],

@@ -1,6 +1,7 @@
 acc
 acl
 acr
+ahmadalli
 aint
 ajith
 alg
@@ -23,6 +24,7 @@ autodocs
 autolink
 axios
 azp
+azuretools
 babelrc
 backchannel
 bbc
@@ -229,6 +231,7 @@ microprofile
 microsoft
 middlewares
 mih
+mikestead
 milli
 minifier
 minify
@@ -310,6 +313,7 @@ pressable
 prettifier
 prettifiers
 prisma
+psioniq
 psql
 publint
 pythonuserbase
@@ -455,6 +459,7 @@ webpack
 webpack5
 whatwg
 wienert
+wmanth
 worksans
 workspace
 wuif
@@ -462,6 +467,7 @@ xmas
 xml
 xxl
 xxs
+yoavbls
 yoda
 zipkin
 zlib

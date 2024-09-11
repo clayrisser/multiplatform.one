@@ -80,7 +80,7 @@ EXPOSE \
     5000 \
     5555
 ENV \
-    BASE_URL=http://app.localhost:8888 \
+    BASE_URL=http://app.localhost \
     CONTAINER=1 \
     DATA_DIR=/var/data \
     DEBUG=0 \

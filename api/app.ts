@@ -1,7 +1,7 @@
-/*
+/**
  * File: /app.ts
  * Project: api
- * File Created: 04-04-2024 15:50:39
+ * File Created: 11-06-2024 10:47:58
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -40,16 +40,6 @@ const seedUsers: UserRepresentation[] = [
   },
 ];
 
-let keycloakBaseUrl = process.env.KEYCLOAK_BASE_URL || ""
-if (keycloakBaseUrl) {
-  const url = new URL(keycloakBaseUrl);
-  if (url.hostname.endsWith('.localhost')) {
-    url.hostname = 'localhost';
-    url.port = process.env.KEYCLOAK_LOCALHOST_PORT || '8080';
-    keycloakBaseUrl = url.toString();
-  }
-}
-
 export const options: AppOptions<PubSubEvents> = {
   debug: process.env.DEBUG === "1",
   port: process.env.API_PORT ? Number.parseInt(process.env.API_PORT, 10) : 5000,
@@ -61,7 +51,7 @@ export const options: AppOptions<PubSubEvents> = {
     KeycloakAddon({
       adminPassword: process.env.KEYCLOAK_ADMIN_PASSWORD || "",
       adminUsername: process.env.KEYCLOAK_ADMIN_USERNAME || "",
-      baseUrl: keycloakBaseUrl,
+      baseUrl: process.env.KEYCLOAK_BASE_URL || "",
       clientId: process.env.KEYCLOAK_CLIENT_ID || "",
       clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || "",
       realm: process.env.KEYCLOAK_REALM || "master",
