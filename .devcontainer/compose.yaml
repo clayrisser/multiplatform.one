@@ -20,8 +20,6 @@ services:
     restart: unless-stopped
     image: registry.gitlab.com/bitspur/frappe/images/dns:latest
     network_mode: host
-    ports:
-      - "53:53/udp"
     cap_add:
       - NET_ADMIN
     env_file:
