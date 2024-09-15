@@ -5,7 +5,7 @@
     "build": "tsup && vite build",
     "dev": "vite build --watch",
     "generate": "prisma generate",
-    "mesh": "mesh build && mesh dev",
+    "mesh": "export UWS_HTTP_MAX_HEADERS_SIZE=16384 && mesh build && mesh dev",
     "seed": "cd prisma && tsup && cd .. && prisma db seed"
   },
   "dependencies": {
@@ -17,6 +17,8 @@
     "@graphql-mesh/plugin-operation-field-permissions": "^0.102.5",
     "@graphql-mesh/plugin-rate-limit": "^0.102.5",
     "@graphql-mesh/plugin-response-cache": "^0.102.5",
+    "@graphql-mesh/transform-filter-schema": "^0.102.5",
+    "@graphql-mesh/transform-prefix": "^0.102.5",
     "@graphql-yoga/subscription": "^5.0.0",
     "@multiplatform.one/keycloak-typegraphql": "workspace:1.1.0",
     "@multiplatform.one/prisma-scripts": "workspace:1.1.0",

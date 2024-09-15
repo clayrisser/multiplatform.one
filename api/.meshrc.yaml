@@ -4,13 +4,26 @@ sources:
       graphql:
         endpoint: http://localhost:5001/graphql
         operationHeaders:
-          Authorization: Bearer {context.headers.Authorization}
+          Authorization: "{context.headers.Authorization}"
+          Cookie: "{context.headers.Cookie}"
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Api_
+      - filterSchema:
+          mode: wrap
+          filters: []
   - name: Frappe
     handler:
       graphql:
         endpoint: http://frappe.localhost/api/method/graphql
         operationHeaders:
-          Authorization: Bearer {context.headers.Authorization}
+          Authorization: "{context.headers.Authorization}"
+          Cookie: "{context.headers.Cookie}"
+    transforms:
+      - filterSchema:
+          mode: wrap
+          filters: []
 plugins:
   - rateLimit:
       config: []
@@ -20,5 +33,8 @@ plugins:
       n: 10
   - blockFieldSuggestions: {}
   - operationFieldPermissions:
-      permissions: []
+      permissions:
+        - if: 'true'
+          allow:
+            - '*'
   - responseCache: {}

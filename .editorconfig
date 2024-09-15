@@ -33,3 +33,7 @@ indent_style = tab
 [*.sh]
 charset = utf-8
 indent_size = 4
+
+[*.py]
+indent_size = 4
+charset = utf-8

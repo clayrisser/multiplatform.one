@@ -109,5 +109,4 @@ function GraphiQLPage() {
   );
 }
 
-// export default withAuthenticated(GraphiQLPage);
-export default GraphiQLPage;
+export default withAuthenticated(GraphiQLPage);

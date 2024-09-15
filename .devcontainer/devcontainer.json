@@ -16,6 +16,7 @@
       "extensions": [
         "ahmadalli.vscode-nginx-conf",
         "biomejs.biome",
+        "eamodio.gitlens",
         "editorconfig.editorconfig",
         "graphql.vscode-graphql",
         "graphql.vscode-graphql-execution",

@@ -3,6 +3,13 @@ services:
     image: registry.gitlab.com/bitspur/frappe/images/devcontainer:latest
     command: sleep infinity
     network_mode: host
+    extra_hosts:
+      account.localhost: 127.0.0.1
+      account.test: 127.0.0.1
+      app.localhost: 127.0.0.1
+      app.test: 127.0.0.1
+      frappe.localhost: 127.0.0.1
+      frappe.test: 127.0.0.1
     working_dir: /workspace/development
     volumes:
       - ..:/workspace/development:rw
