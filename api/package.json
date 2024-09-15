@@ -5,6 +5,7 @@
     "build": "tsup && vite build",
     "dev": "vite build --watch",
     "generate": "prisma generate",
+    "mesh": "mesh build && mesh dev",
     "seed": "cd prisma && tsup && cd .. && prisma db seed"
   },
   "dependencies": {

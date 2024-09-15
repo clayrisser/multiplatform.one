@@ -47,6 +47,10 @@ prelaunch: ~deps prisma/seed docker/dev-d
 +serve:
 	@$(NODE) dist/api/main.mjs
 
+.PHONY: mesh
+mesh:
+	@$(PNPM) run mesh
+
 .PHONY: prisma/%
 prisma/%: ~deps
 	@$(call make,prisma) $*
