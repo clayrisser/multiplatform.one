@@ -29,18 +29,24 @@ import { execa } from "execa";
 import inquirer from "inquirer";
 import type { CookieCutterConfig } from "../types";
 
-process.env.COOKIECUTTER = `sh ${path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../scripts/cookiecutter.sh")}`;
+const availableBackends = ["api", "frappe"];
+const availablePlatforms = [];
+
+process.env.COOKIECUTTER = `sh ${path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../scripts/cookiecutter.sh"
+)}`;
 program.name("multiplatform.one");
 program.version(
   JSON.parse(
     fsSync.readFileSync(
       path.resolve(
         path.dirname(fileURLToPath(import.meta.url)),
-        "../../package.json",
+        "../../package.json"
       ),
-      "utf8",
-    ),
-  )?.version,
+      "utf8"
+    )
+  )?.version
 );
 
 program
@@ -48,16 +54,19 @@ program
   .option(
     "-r, --remote <remote>",
     "the remote to use",
-    "https://gitlab.com/bitspur/multiplatform.one/cookiecutter",
+    "https://gitlab.com/bitspur/multiplatform.one/cookiecutter"
   )
   .option(
     "-c, --checkout <branch>",
     "branch, tag or commit to checkout",
-    "main",
+    "main"
   )
+  .option("-p, --platforms <platforms>", "platforms to keep")
+  .option("-b, --backends <backends>", "backends to keep")
   .argument("[name]", "the name of the project", "")
   .description("init multiplatform.one")
   .action(async (name, options) => {
+    let { backends, platforms } = options;
     if (
       (
         await execa("git", ["rev-parse", "--is-inside-work-tree"], {
@@ -66,7 +75,7 @@ program
       ).exitCode === 0
     ) {
       throw new Error(
-        "multiplatform.one cannot be initialized inside a git repository",
+        "multiplatform.one cannot be initialized inside a git repository"
       );
     }
     if (!name) {
@@ -80,24 +89,48 @@ program
         ])
       ).name;
     }
+    if (!backends) {
+      const backendsResult = await inquirer.prompt([
+        {
+          message: "What backends are you using?",
+          name: "backends",
+          type: "checkbox",
+          choices: availableBackends.map((name) => ({ name })),
+        },
+      ]);
+      console.log("backendsResult", backendsResult);
+      // backends = backendsResult.name.join(" ");
+    }
+    if (!platforms) {
+      const platformsResult = await inquirer.prompt([
+        {
+          message: "What platforms are you using?",
+          name: "platforms",
+          type: "checkbox",
+          choices: availablePlatforms.map((name) => ({ name })),
+        },
+      ]);
+      console.log("platformsResult", platformsResult);
+      // platforms = platformsResult.name.join(" ")
+    }
     const cookieCutterConfig: CookieCutterConfig = {
-      default_context: { name },
+      default_context: { name, platforms, backends },
     };
     const cookieCutterConfigFile = path.join(
       await fs.mkdtemp(path.join(os.tmpdir(), "multiplatform-")),
-      "config.json",
+      "config.json"
     );
     try {
       await fs.writeFile(
         cookieCutterConfigFile,
-        JSON.stringify(cookieCutterConfig, null, 2),
+        JSON.stringify(cookieCutterConfig, null, 2)
       );
       await execa(
         "sh",
         [
           path.resolve(
             path.dirname(fileURLToPath(import.meta.url)),
-            "../../scripts/init.sh",
+            "../../scripts/init.sh"
           ),
           "--no-input",
           "-f",
@@ -109,7 +142,7 @@ program
         ],
         {
           stdio: "inherit",
-        },
+        }
       );
     } finally {
       await fs.rm(cookieCutterConfigFile, { recursive: true, force: true });
@@ -121,15 +154,42 @@ program
   .option(
     "-r, --remote <remote>",
     "the remote to use",
-    "https://gitlab.com/bitspur/multiplatform.one/cookiecutter",
+    "https://gitlab.com/bitspur/multiplatform.one/cookiecutter"
   )
   .option(
     "-c, --checkout <branch>",
     "branch, tag or commit to checkout",
-    "main",
+    "main"
   )
+  .option("-p, --platforms <platforms>", "platforms to keep")
+  .option("-b, --backends <backends>", "backends to keep")
   .description("update multiplatform.one")
   .action(async (options) => {
+    let { backends, platforms } = options;
+    if (!backends) {
+      const backendsResult = await inquirer.prompt([
+        {
+          message: "What backends are you using?",
+          name: "backends",
+          type: "checkbox",
+          choices: availableBackends.map((name) => ({ name })),
+        },
+      ]);
+      console.log("backendsResult", backendsResult);
+      // backends = backendsResult.name.join(" ");
+    }
+    if (!platforms) {
+      const platformsResult = await inquirer.prompt([
+        {
+          message: "What platforms are you using?",
+          name: "platforms",
+          type: "checkbox",
+          choices: availablePlatforms.map((name) => ({ name })),
+        },
+      ]);
+      console.log("platformsResult", platformsResult);
+      // platforms = platformsResult.name.join(" ")
+    }
     if (
       (
         await execa("git", ["rev-parse", "--is-inside-work-tree"], {
@@ -138,7 +198,7 @@ program
       ).exitCode !== 0
     ) {
       throw new Error(
-        "multiplatform.one cannot be updated outside of a git repository",
+        "multiplatform.one cannot be updated outside of a git repository"
       );
     }
     if (
@@ -149,7 +209,7 @@ program
       ).exitCode !== 0
     ) {
       throw new Error(
-        "multiplatform.one cannot be updated with uncommitted changes",
+        "multiplatform.one cannot be updated with uncommitted changes"
       );
     }
     const projectRoot = (
@@ -160,33 +220,32 @@ program
       (await fs.stat(path.resolve(projectRoot, "package.json"))).isFile() &&
       (await fs.stat(path.resolve(projectRoot, "app/package.json"))).isFile() &&
       JSON.parse(
-        await fs.readFile(
-          path.resolve(projectRoot, "app/package.json"),
-          "utf8",
-        ),
+        await fs.readFile(path.resolve(projectRoot, "app/package.json"), "utf8")
       )?.dependencies?.["multiplatform.one"]?.length
     ) {
       const name = JSON.parse(
-        await fs.readFile(path.resolve(projectRoot, "package.json"), "utf8"),
+        await fs.readFile(path.resolve(projectRoot, "package.json"), "utf8")
       )?.name;
-      if (name) cookieCutterConfig = { default_context: { name } };
+      if (name) {
+        cookieCutterConfig = { default_context: { name, backends, platforms } };
+      }
     }
     if (!cookieCutterConfig) throw new Error("not a multiplatform.one project");
     const cookieCutterConfigFile = path.join(
       await fs.mkdtemp(path.join(os.tmpdir(), "multiplatform-")),
-      "config.json",
+      "config.json"
     );
     try {
       await fs.writeFile(
         cookieCutterConfigFile,
-        JSON.stringify(cookieCutterConfig, null, 2),
+        JSON.stringify(cookieCutterConfig, null, 2)
       );
       await execa(
         "sh",
         [
           path.resolve(
             path.dirname(fileURLToPath(import.meta.url)),
-            "../../scripts/update.sh",
+            "../../scripts/update.sh"
           ),
           "--no-input",
           "-f",
@@ -199,7 +258,7 @@ program
         {
           cwd: projectRoot,
           stdio: "inherit",
-        },
+        }
       );
     } finally {
       await fs.rm(cookieCutterConfigFile, { recursive: true, force: true });

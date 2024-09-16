@@ -21,6 +21,8 @@
 
 export interface CookieCutterConfig {
   default_context: {
+    backends: string;
     name: string;
+    platforms: string;
   };
 }
