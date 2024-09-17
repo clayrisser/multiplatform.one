@@ -30,7 +30,14 @@ import inquirer from "inquirer";
 import type { CookieCutterConfig } from "../types";
 
 const availableBackends = ["api", "frappe"];
-const availablePlatforms = [];
+const availablePlatforms = [
+  "electron",
+  "expo",
+  "keycloak",
+  "next",
+  "storybook",
+  "storybook-expo",
+];
 
 process.env.COOKIECUTTER = `sh ${path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -67,6 +74,7 @@ program
   .description("init multiplatform.one")
   .action(async (name, options) => {
     let { backends, platforms } = options;
+
     if (
       (
         await execa("git", ["rev-parse", "--is-inside-work-tree"], {
@@ -90,28 +98,31 @@ program
       ).name;
     }
     if (!backends) {
-      const backendsResult = await inquirer.prompt([
-        {
-          message: "What backends are you using?",
-          name: "backends",
-          type: "checkbox",
-          choices: availableBackends.map((name) => ({ name })),
-        },
-      ]);
-      console.log("backendsResult", backendsResult);
-      // backends = backendsResult.name.join(" ");
+      const backendsResult = (
+        await inquirer.prompt([
+          {
+            message: "What backends are you using?",
+            name: "backends",
+            type: "checkbox",
+            choices: availableBackends.map((name) => ({ name })),
+          },
+        ])
+      ).backends;
+
+      backends = backendsResult.join(",");
     }
     if (!platforms) {
-      const platformsResult = await inquirer.prompt([
-        {
-          message: "What platforms are you using?",
-          name: "platforms",
-          type: "checkbox",
-          choices: availablePlatforms.map((name) => ({ name })),
-        },
-      ]);
-      console.log("platformsResult", platformsResult);
-      // platforms = platformsResult.name.join(" ")
+      const platformsResult = (
+        await inquirer.prompt([
+          {
+            message: "What platforms are you using?",
+            name: "platforms",
+            type: "checkbox",
+            choices: availablePlatforms.map((name) => ({ name })),
+          },
+        ])
+      ).platforms;
+      platforms = platformsResult.join(",");
     }
     const cookieCutterConfig: CookieCutterConfig = {
       default_context: { name, platforms, backends },
@@ -175,8 +186,7 @@ program
           choices: availableBackends.map((name) => ({ name })),
         },
       ]);
-      console.log("backendsResult", backendsResult);
-      // backends = backendsResult.name.join(" ");
+      backends = backendsResult.backends.join(",");
     }
     if (!platforms) {
       const platformsResult = await inquirer.prompt([
@@ -187,8 +197,7 @@ program
           choices: availablePlatforms.map((name) => ({ name })),
         },
       ]);
-      console.log("platformsResult", platformsResult);
-      // platforms = platformsResult.name.join(" ")
+      platforms = platformsResult.platforms.join(",");
     }
     if (
       (
