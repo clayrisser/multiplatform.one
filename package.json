@@ -59,5 +59,8 @@
       "multiplatform.one": "1.0.32"
     }
   },
-  "tamaguiModules": ["@multiplatform.one/components", "ui"]
+  "tamaguiModules": [
+    "@multiplatform.one/components",
+    "ui"
+  ]
 }
