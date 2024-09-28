@@ -20,8 +20,8 @@
  */
 
 import { createInterFont } from "@tamagui/font-inter";
-import { createDefaultFont } from "multiplatform.one";
 import type { GenericFonts } from "@tamagui/web/src/types";
+import { createDefaultFont } from "multiplatform.one";
 
 // export interface Fonts {
 //   body: ReturnType<typeof createInterFont>;

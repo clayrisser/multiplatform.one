@@ -206,6 +206,7 @@ kauth
 keycloak
 keycloakify
 keyinfo
+klass
 kumar
 kvstore
 labelled

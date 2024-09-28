@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "1.21.0",
-    "@tamagui/build": "^1.100.3",
+    "@tamagui/build": "^1.112.3",
     "@types/node": "~20.12.13",
     "typescript": "~5.3.3",
     "vite": "^5.2.13"

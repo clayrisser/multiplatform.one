@@ -23,11 +23,11 @@ import "graphiql/graphiql.css";
 import { explorerPlugin } from "@graphiql/plugin-explorer";
 import { createGraphiQLFetcher } from "@graphiql/toolkit";
 import { useKeycloak, withAuthenticated } from "@multiplatform.one/keycloak";
+import { config } from "app/config";
 import { GraphiQL, GraphiQLInterface, GraphiQLProvider } from "graphiql";
 import { createClient } from "graphql-ws";
 import React, { useEffect, useState } from "react";
 import { useUrlSearchParams } from "use-url-search-params";
-import { config } from "app/config";
 import { v4 as uuid } from "uuid";
 
 function GraphiQLPage() {

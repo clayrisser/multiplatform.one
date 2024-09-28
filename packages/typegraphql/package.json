@@ -47,13 +47,13 @@
     "@types/ws": "^8.5.10",
     "graphql-yoga": "^5.3.1",
     "tsup": "^8.1.0",
-    "type-graphql": "^2.0.0-rc.1",
+    "type-graphql": "2.0.0-rc.1",
     "typescript": "~5.3.3"
   },
   "peerDependencies": {
     "@prisma/client": "~5.12.1",
     "graphql-yoga": "^5.1.1",
-    "type-graphql": "^2.0.0-beta.6"
+    "type-graphql": "2.0.0-rc.1"
   },
   "dependencies": {
     "@envelop/apollo-tracing": "^6.1.0",

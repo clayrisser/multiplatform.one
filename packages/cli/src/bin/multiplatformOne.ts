@@ -41,7 +41,7 @@ const availablePlatforms = [
 
 process.env.COOKIECUTTER = `sh ${path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
-  "../../scripts/cookiecutter.sh"
+  "../../scripts/cookiecutter.sh",
 )}`;
 program.name("multiplatform.one");
 program.version(
@@ -49,11 +49,11 @@ program.version(
     fsSync.readFileSync(
       path.resolve(
         path.dirname(fileURLToPath(import.meta.url)),
-        "../../package.json"
+        "../../package.json",
       ),
-      "utf8"
-    )
-  )?.version
+      "utf8",
+    ),
+  )?.version,
 );
 
 program
@@ -61,12 +61,12 @@ program
   .option(
     "-r, --remote <remote>",
     "the remote to use",
-    "https://gitlab.com/bitspur/multiplatform.one/cookiecutter"
+    "https://gitlab.com/bitspur/multiplatform.one/cookiecutter",
   )
   .option(
     "-c, --checkout <branch>",
     "branch, tag or commit to checkout",
-    "main"
+    "main",
   )
   .option("-p, --platforms <platforms>", "platforms to keep")
   .option("-b, --backends <backends>", "backends to keep")
@@ -83,7 +83,7 @@ program
       ).exitCode === 0
     ) {
       throw new Error(
-        "multiplatform.one cannot be initialized inside a git repository"
+        "multiplatform.one cannot be initialized inside a git repository",
       );
     }
     if (!name) {
@@ -129,19 +129,19 @@ program
     };
     const cookieCutterConfigFile = path.join(
       await fs.mkdtemp(path.join(os.tmpdir(), "multiplatform-")),
-      "config.json"
+      "config.json",
     );
     try {
       await fs.writeFile(
         cookieCutterConfigFile,
-        JSON.stringify(cookieCutterConfig, null, 2)
+        JSON.stringify(cookieCutterConfig, null, 2),
       );
       await execa(
         "sh",
         [
           path.resolve(
             path.dirname(fileURLToPath(import.meta.url)),
-            "../../scripts/init.sh"
+            "../../scripts/init.sh",
           ),
           "--no-input",
           "-f",
@@ -153,7 +153,7 @@ program
         ],
         {
           stdio: "inherit",
-        }
+        },
       );
     } finally {
       await fs.rm(cookieCutterConfigFile, { recursive: true, force: true });
@@ -165,12 +165,12 @@ program
   .option(
     "-r, --remote <remote>",
     "the remote to use",
-    "https://gitlab.com/bitspur/multiplatform.one/cookiecutter"
+    "https://gitlab.com/bitspur/multiplatform.one/cookiecutter",
   )
   .option(
     "-c, --checkout <branch>",
     "branch, tag or commit to checkout",
-    "main"
+    "main",
   )
   .option("-p, --platforms <platforms>", "platforms to keep")
   .option("-b, --backends <backends>", "backends to keep")
@@ -207,7 +207,7 @@ program
       ).exitCode !== 0
     ) {
       throw new Error(
-        "multiplatform.one cannot be updated outside of a git repository"
+        "multiplatform.one cannot be updated outside of a git repository",
       );
     }
     if (
@@ -218,7 +218,7 @@ program
       ).exitCode !== 0
     ) {
       throw new Error(
-        "multiplatform.one cannot be updated with uncommitted changes"
+        "multiplatform.one cannot be updated with uncommitted changes",
       );
     }
     const projectRoot = (
@@ -229,11 +229,14 @@ program
       (await fs.stat(path.resolve(projectRoot, "package.json"))).isFile() &&
       (await fs.stat(path.resolve(projectRoot, "app/package.json"))).isFile() &&
       JSON.parse(
-        await fs.readFile(path.resolve(projectRoot, "app/package.json"), "utf8")
+        await fs.readFile(
+          path.resolve(projectRoot, "app/package.json"),
+          "utf8",
+        ),
       )?.dependencies?.["multiplatform.one"]?.length
     ) {
       const name = JSON.parse(
-        await fs.readFile(path.resolve(projectRoot, "package.json"), "utf8")
+        await fs.readFile(path.resolve(projectRoot, "package.json"), "utf8"),
       )?.name;
       if (name) {
         cookieCutterConfig = { default_context: { name, backends, platforms } };
@@ -242,19 +245,19 @@ program
     if (!cookieCutterConfig) throw new Error("not a multiplatform.one project");
     const cookieCutterConfigFile = path.join(
       await fs.mkdtemp(path.join(os.tmpdir(), "multiplatform-")),
-      "config.json"
+      "config.json",
     );
     try {
       await fs.writeFile(
         cookieCutterConfigFile,
-        JSON.stringify(cookieCutterConfig, null, 2)
+        JSON.stringify(cookieCutterConfig, null, 2),
       );
       await execa(
         "sh",
         [
           path.resolve(
             path.dirname(fileURLToPath(import.meta.url)),
-            "../../scripts/update.sh"
+            "../../scripts/update.sh",
           ),
           "--no-input",
           "-f",
@@ -267,7 +270,7 @@ program
         {
           cwd: projectRoot,
           stdio: "inherit",
-        }
+        },
       );
     } finally {
       await fs.rm(cookieCutterConfigFile, { recursive: true, force: true });
