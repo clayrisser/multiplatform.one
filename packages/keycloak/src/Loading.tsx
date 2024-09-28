@@ -1,7 +1,7 @@
-/*
- * File: /state/foo.ts
- * Project: app
- * File Created: 01-06-2024 13:44:49
+/**
+ * File: /src/Loading.tsx
+ * Project: @multiplatform.one/keycloak
+ * File Created: 01-01-1970 00:00:00
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,10 +19,19 @@
  * limitations under the License.
  */
 
-import { createUseStore } from "@multiplatform.one/use-store";
+import type { ComponentType } from "react";
+import { Text } from "tamagui";
+import { useAuthConfig } from "./hooks";
 
-export class FooStore {
-  bar = "baz";
+export interface LoadingProps {
+  loadingComponent?: ComponentType;
 }
 
-export const useFooStore = createUseStore(FooStore);
+export function Loading({ loadingComponent }: LoadingProps) {
+  const { debug } = useAuthConfig();
+  const LoadingComponent = loadingComponent;
+  if (typeof LoadingComponent === "undefined") {
+    return <Text>{debug ? "loading" : null}</Text>;
+  }
+  return <LoadingComponent />;
+}

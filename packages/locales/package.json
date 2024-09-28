@@ -42,8 +42,7 @@
     "next-i18next": "^15.3.0",
     "react": "18.2.0",
     "react-i18next": "^12.3.1",
-    "react-native": "0.74.2",
-    "zustand": "^4.5.2"
+    "react-native": "0.74.2"
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
@@ -63,8 +62,7 @@
     "react-i18next": "^12.3.1",
     "react-native": "0.74.2",
     "ts-jest": "^29.1.4",
-    "typescript": "~5.3.3",
-    "zustand": "^4.5.2"
+    "typescript": "~5.3.3"
   },
   "dependencies": {
     "cookies-next": "^4.2.1",

@@ -86,9 +86,10 @@ export function Authenticated({
 
 export function withAuthenticated<P extends object>(
   Component: ComponentType<P>,
+  options: AuthenticatedProps = {},
 ) {
   return (props: P) => (
-    <Authenticated>
+    <Authenticated {...options}>
       <Component {...props} />
     </Authenticated>
   );

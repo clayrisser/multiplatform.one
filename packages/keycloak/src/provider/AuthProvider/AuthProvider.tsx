@@ -27,13 +27,15 @@ import { MultiPlatform } from "multiplatform.one";
 import type { SessionProviderProps } from "next-auth/react";
 import { SessionProvider } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { useEffect, useMemo, useState } from "react";
 import type { PropsWithChildren } from "react";
+import { type ComponentType, useEffect, useMemo, useState } from "react";
+import { Text } from "tamagui";
+import { Loading } from "../../Loading";
 import { useAuthConfig } from "../../hooks";
 import type { KeycloakConfig } from "../../keycloak";
 import { Keycloak, KeycloakConfigContext } from "../../keycloak";
 import { KeycloakContext } from "../../keycloak/context";
-import { persist, useAuthState } from "../../state";
+import { persist, useAuthStore } from "../../state";
 import { validOrRefreshableToken } from "../../token";
 import { AfterAuth } from "../AfterAuth";
 
@@ -41,6 +43,7 @@ export interface AuthProviderProps extends PropsWithChildren {
   keycloakConfig: KeycloakConfig;
   keycloakInitOptions?: KeycloakInitOptions;
   sessionProvider?: Omit<SessionProviderProps, "children">;
+  loadingComponent?: ComponentType;
 }
 
 const logger = console;
@@ -53,13 +56,17 @@ export interface Tokens<B = boolean> {
 
 export function AuthProvider({
   children,
-  sessionProvider,
-  keycloakInitOptions,
   keycloakConfig,
+  keycloakInitOptions,
+  loadingComponent,
+  sessionProvider,
 }: AuthProviderProps) {
   const { debug, messageHandlerKeys } = useAuthConfig();
   const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
-  const authState = useAuthState();
+  const authStore = useAuthStore();
+  if (typeof authStore === "undefined") {
+    return <Loading loadingComponent={loadingComponent} />;
+  }
   const [keycloak, setKeycloak] = useState<Keycloak>();
   const initialRefreshToken = useMemo(
     () =>
@@ -67,7 +74,7 @@ export function AuthProvider({
         MultiPlatform.isIframe
           ? ("refreshToken" in query &&
               (query.refreshToken?.toString() || true)) ||
-              (persist && authState.refreshToken) ||
+              (persist && authStore.refreshToken) ||
               undefined
           : undefined,
       ),
@@ -78,7 +85,7 @@ export function AuthProvider({
     token: validOrRefreshableToken(
       MultiPlatform.isIframe
         ? ("token" in query && (query.token?.toString() || true)) ||
-            (persist && authState.token) ||
+            (persist && authStore.token) ||
             undefined
         : undefined,
       initialRefreshToken,
@@ -86,7 +93,7 @@ export function AuthProvider({
     idToken: validOrRefreshableToken(
       MultiPlatform.isIframe
         ? ("idToken" in query && (query.idToken?.toString() || true)) ||
-            (persist && authState.idToken) ||
+            (persist && authStore.idToken) ||
             undefined
         : undefined,
       initialRefreshToken,
@@ -323,7 +330,7 @@ export function AuthProvider({
     return (
       <KeycloakConfigContext.Provider value={keycloakConfig}>
         <KeycloakContext.Provider value={keycloak}>
-          <AfterAuth>{children}</AfterAuth>
+          <AfterAuth loadingComponent={loadingComponent}>{children}</AfterAuth>
         </KeycloakContext.Provider>
       </KeycloakConfigContext.Provider>
     );

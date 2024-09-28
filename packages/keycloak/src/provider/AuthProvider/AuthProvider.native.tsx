@@ -27,24 +27,30 @@ import {
   useAutoDiscovery,
 } from "expo-auth-session";
 import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { Loading } from "../../Loading";
+import { Keycloak, KeycloakConfigContext } from "../../keycloak";
 import type {
   KeycloakLoginOptions,
   KeycloakLogoutOptions,
 } from "../../keycloak";
-import { Keycloak, KeycloakConfigContext } from "../../keycloak";
 import { KeycloakContext } from "../../keycloak/context";
-import { persist, useAuthState } from "../../state";
+import { persist, useAuthStore } from "../../state";
 import { isTokenExpired, validOrRefreshableToken } from "../../token";
 import { AfterAuth } from "../AfterAuth";
 import type { AuthProviderProps, Tokens } from "./AuthProvider";
 
 const REFRESH_THRESHOLD = 5;
 
-export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
+export function AuthProvider({
+  children,
+  keycloakConfig,
+  loadingComponent,
+}: AuthProviderProps) {
   const [keycloak, setKeycloak] = useState<Keycloak>();
-  const authState = useAuthState();
+  const authStore = useAuthStore();
+  if (!authStore) return <Loading loadingComponent={loadingComponent} />;
   const initialRefreshToken = useMemo(
-    () => validOrRefreshableToken((persist && authState.refreshToken) || false),
+    () => validOrRefreshableToken((persist && authStore.refreshToken) || false),
     [],
   );
   const keycloakUrl = `${keycloakConfig?.url}/realms/${keycloakConfig?.realm}`;
@@ -55,11 +61,11 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
   const [tokens, setTokens] = useState<Tokens<false>>({
     refreshToken: initialRefreshToken,
     token: validOrRefreshableToken(
-      (persist && authState.token) || false,
+      (persist && authStore.token) || false,
       initialRefreshToken,
     ),
     idToken: validOrRefreshableToken(
-      (persist && authState.idToken) || false,
+      (persist && authStore.idToken) || false,
       initialRefreshToken,
     ),
   });
@@ -123,9 +129,9 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
   ]);
 
   const resetTokens = useCallback(() => {
-    authState.setIdToken("");
-    authState.setRefreshToken("");
-    authState.setToken("");
+    authStore.idToken = "";
+    authStore.refreshToken = "";
+    authStore.token = "";
     setTokens({
       refreshToken: undefined,
       token: undefined,
@@ -158,9 +164,9 @@ export function AuthProvider({ children, keycloakConfig }: AuthProviderProps) {
         resetTokens();
       }
     } else if (
-      authState.refreshToken &&
-      typeof authState.refreshToken === "string" &&
-      isTokenExpired(authState.refreshToken)
+      authStore.refreshToken &&
+      typeof authStore.refreshToken === "string" &&
+      isTokenExpired(authStore.refreshToken)
     ) {
       resetTokens();
     }

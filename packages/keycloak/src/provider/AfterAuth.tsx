@@ -21,28 +21,34 @@
 
 "use client";
 
-import React, { useEffect } from "react";
-import type { PropsWithChildren } from "react";
+import React, {
+  type ComponentType,
+  type PropsWithChildren,
+  useEffect,
+} from "react";
+import { Loading } from "../Loading";
 import { useAuthConfig } from "../hooks";
 import { useKeycloak } from "../keycloak";
-import { persist, useAuthState } from "../state";
+import { persist, useAuthStore } from "../state";
 
-export interface AfterAuthProps extends PropsWithChildren {}
+export interface AfterAuthProps extends PropsWithChildren {
+  loadingComponent?: ComponentType;
+}
 
 const logger = console;
 
-export function AfterAuth({ children }: AfterAuthProps) {
+export function AfterAuth({ children, loadingComponent }: AfterAuthProps) {
   const authConfig = useAuthConfig();
-  const authState = useAuthState();
+  const authStore = useAuthStore();
   const keycloak = useKeycloak();
+  if (!authStore) return <Loading loadingComponent={loadingComponent} />;
 
   useEffect(() => {
     if (!persist || !keycloak?.authenticated) return;
     if (keycloak.token) {
-      authState.setToken(keycloak.token);
-      if (keycloak.idToken) authState.setIdToken(keycloak.idToken);
-      if (keycloak.refreshToken)
-        authState.setRefreshToken(keycloak.refreshToken);
+      authStore.token = keycloak.token;
+      if (keycloak.idToken) authStore.idToken = keycloak.idToken;
+      if (keycloak.refreshToken) authStore.refreshToken = keycloak.refreshToken;
     }
   }, [
     keycloak?.authenticated,

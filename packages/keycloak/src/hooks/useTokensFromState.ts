@@ -19,10 +19,11 @@
  * limitations under the License.
  */
 
-import { useAuthState } from "../state";
+import { useAuthStore } from "../state";
 import { validOrRefreshableToken } from "../token";
 
-export function useTokensFromState() {
-  const authState = useAuthState();
-  return !!validOrRefreshableToken(authState.token, authState.refreshToken);
+export function useTokensFromStore() {
+  const authStore = useAuthStore();
+  if (typeof authStore === "undefined") return undefined;
+  return !!validOrRefreshableToken(authStore.token, authStore.refreshToken);
 }

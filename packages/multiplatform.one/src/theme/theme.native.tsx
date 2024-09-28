@@ -1,7 +1,7 @@
 /**
  * File: /src/theme/theme.native.tsx
  * Project: multiplatform.one
- * File Created: 26-04-2024 08:06:50
+ * File Created: 01-01-1970 00:00:00
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,36 +19,21 @@
  * limitations under the License.
  */
 
-import type { Actions } from "@multiplatform.one/zustand";
-import { createStateStore } from "@multiplatform.one/zustand";
-import React, { createContext, useContext, useEffect, useMemo } from "react";
-import type { ThemeProviderProps, ThemeState } from "./theme";
-
-const defaultThemeState: ThemeState = { root: "system", sub: "gray" };
-
-const ThemeContext = createContext<ThemeState>(defaultThemeState);
-
-const { useStore: useThemeState } = createStateStore<
-  ThemeState,
-  Actions<ThemeState>
->(
-  "theme",
-  {
-    root: null,
-    sub: null,
-  },
-  undefined,
-  {
-    persist: true,
-  },
-);
+import React, { useContext, useEffect, useMemo } from "react";
+import {
+  ThemeContext,
+  type ThemeProviderProps,
+  type ThemeState,
+  defaultThemeState,
+  useThemeStore,
+} from "./shared";
 
 export function useTheme(): [
   ThemeState,
   (theme: Partial<ThemeState>) => undefined,
 ] {
   const themeContextValue = useContext(ThemeContext);
-  const themeState = useThemeState();
+  const themeStore = useThemeStore();
   return [
     {
       root: themeContextValue.root || "system",
@@ -57,16 +42,16 @@ export function useTheme(): [
     (theme: Partial<ThemeState>) => {
       if (typeof theme.root !== "undefined") {
         if (theme.root === null || theme.root === "system") {
-          themeState.setRoot(null);
+          if (themeStore) themeStore.root = undefined;
         } else {
-          themeState.setRoot(theme.root);
+          if (themeStore) themeStore.root = theme.root;
         }
       }
       if (typeof theme.sub !== "undefined") {
         if (theme.sub === null) {
-          themeState.setSub(null);
+          if (themeStore) themeStore.sub = undefined;
         } else {
-          themeState.setSub(theme.sub);
+          if (themeStore) themeStore.sub = theme.sub;
         }
       }
     },
@@ -82,9 +67,9 @@ export function ThemeProvider({ children, theme }: ThemeProviderProps) {
     [theme?.root, theme?.sub],
   );
   const [, setTheme] = useTheme();
-  const themeState = useThemeState();
-  const root = themeState.root || defaultThemeValue.root;
-  const sub = themeState.sub || defaultThemeValue.sub;
+  const themeStore = useThemeStore();
+  const root = themeStore?.root || defaultThemeValue.root;
+  const sub = themeStore?.sub || defaultThemeValue.sub;
   const value = React.useMemo(() => ({ root, sub }), [root, sub]);
 
   useEffect(() => {

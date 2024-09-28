@@ -19,49 +19,22 @@
  * limitations under the License.
  */
 
-import type { Actions } from "@multiplatform.one/zustand";
-import { createStateStore } from "@multiplatform.one/zustand";
 import type { ColorScheme as TamaguiColorScheme } from "@tamagui/next-theme";
 import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
-import type { ThemeName } from "@tamagui/web";
-import React, { createContext, useContext, useEffect, useMemo } from "react";
-import type { PropsWithChildren } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { useCookies } from "react-cookie";
 import { MultiPlatform } from "../multiplatform";
+import {
+  type ColorScheme,
+  ThemeContext,
+  type ThemeProviderProps,
+  type ThemeState,
+  defaultThemeState,
+  useThemeStore,
+} from "./shared";
 
 export const COOKIE_ROOT_THEME = "multiplatform-one.root-theme";
 export const COOKIE_SUB_THEME = "multiplatform-one.sub-theme";
-
-export type ColorScheme = "dark" | "light" | "system";
-
-export interface ThemeState {
-  root: ColorScheme | null;
-  sub: ThemeName | null;
-}
-
-const defaultThemeState: ThemeState = { root: "system", sub: "gray" };
-
-const ThemeContext = createContext<ThemeState>(defaultThemeState);
-
-export interface ThemeProviderProps extends PropsWithChildren {
-  cookies?: Record<string, string>;
-  theme?: Partial<ThemeState>;
-}
-
-const { useStore: useThemeState } = createStateStore<
-  ThemeState,
-  Actions<ThemeState>
->(
-  "theme",
-  {
-    root: null,
-    sub: null,
-  },
-  undefined,
-  {
-    persist: true,
-  },
-);
 
 export function useTheme(): [
   ThemeState,
@@ -72,7 +45,7 @@ export function useTheme(): [
     COOKIE_SUB_THEME,
   ]);
   const themeContextValue = useContext(ThemeContext);
-  const themeState = useThemeState();
+  const themeStore = useThemeStore();
   return [
     {
       root: themeContextValue.root || "system",
@@ -80,21 +53,21 @@ export function useTheme(): [
     },
     (theme: Partial<ThemeState>) => {
       if (typeof theme.root !== "undefined") {
-        if (theme.root === null || theme.root === "system") {
+        if (!theme.root || theme.root === "system") {
           removeCookie(COOKIE_ROOT_THEME);
-          themeState.setRoot(null);
+          if (themeStore) themeStore.root = undefined;
         } else {
           setCookie(COOKIE_ROOT_THEME, theme.root);
-          themeState.setRoot(theme.root);
+          if (themeStore) themeStore.root = theme.root;
         }
       }
       if (typeof theme.sub !== "undefined") {
-        if (theme.sub === null) {
+        if (!theme.sub) {
           removeCookie(COOKIE_SUB_THEME);
-          themeState.setSub(null);
+          if (themeStore) themeStore.sub = undefined;
         } else {
           setCookie(COOKIE_SUB_THEME, theme.sub);
-          themeState.setSub(theme.sub);
+          if (themeStore) themeStore.sub = theme.sub;
         }
       }
     },
@@ -116,15 +89,15 @@ export function ThemeProvider({
   );
   const [, setRootTheme] = useRootTheme();
   const [, setTheme] = useTheme();
-  const themeState = useThemeState();
+  const themeStore = useThemeStore();
   const root =
-    themeState.root ||
+    themeStore?.root ||
     (MultiPlatform.isNext && MultiPlatform.isServer
       ? (nextCookies?.[COOKIE_ROOT_THEME] as ColorScheme)
       : (localCookies?.[COOKIE_ROOT_THEME] as ColorScheme)) ||
     defaultThemeValue.root;
   const sub =
-    themeState.sub ||
+    themeStore?.sub ||
     (MultiPlatform.isNext && MultiPlatform.isServer
       ? (nextCookies?.[COOKIE_SUB_THEME] as ColorScheme)
       : (localCookies?.[COOKIE_SUB_THEME] as ColorScheme)) ||

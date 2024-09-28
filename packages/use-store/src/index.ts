@@ -28,32 +28,33 @@ import {
 import { useEffect, useMemo, useState } from "react";
 
 export interface CreateUseStoreOptions {
+  blacklist?: string[];
   persist?: boolean | string;
+  whitelist?: string[];
 }
 
+const PERSIST_KEY_PREFIX = "tamagui-store/";
 const logger = console;
 
 export function createUseStore<Props, Store>(
   StoreKlass: (new (props: Props) => Store) | (new () => Store),
-  options?: CreateUseStoreOptions,
+  options?: CreateUseStoreOptions & { persist?: false },
 ): <Res, C extends Selector<Store, Res>, Props extends object>(
   props?: Props,
   options?: UseStoreOptions,
 ) => C extends Selector<any, infer B> ? (B extends object ? B : Store) : Store;
 export function createUseStore<Props, Store>(
   StoreKlass: (new (props: Props) => Store) | (new () => Store),
-  options: { persist: true },
+  options: CreateUseStoreOptions & { persist: string | true },
 ): <Res, C extends Selector<Store, Res>, Props extends object>(
   props?: Props,
   options?: UseStoreOptions,
-) => C extends Selector<any, infer B>
-  ? B extends object
-    ? B
-    : Store
-  : Store | undefined;
+) =>
+  | (C extends Selector<any, infer B> ? (B extends object ? B : Store) : Store)
+  | undefined;
 export function createUseStore<Props, Store>(
   StoreKlass: (new (props: Props) => Store) | (new () => Store),
-  { persist }: CreateUseStoreOptions = {},
+  { persist, whitelist, blacklist }: CreateUseStoreOptions = {},
 ) {
   return <Res, C extends Selector<Store, Res>, Props extends object>(
     props?: Props,
@@ -65,27 +66,46 @@ export function createUseStore<Props, Store>(
           : Store
         : Store)
     | undefined => {
-    const [hydrated, setHydrated] = useState(false);
+    if (!persist) return useStore(StoreKlass as any, props, options);
     const [storage, setStorage] = useState<Record<string, any>>();
-    let store = useStore(StoreKlass as any, props, options);
-    if (!persist) return store;
-    store = useMemo(
+    const store = useStore(StoreKlass as any, props, options);
+
+    const persistKey = useMemo(
+      () =>
+        PERSIST_KEY_PREFIX +
+        (typeof persist === "string" ? persist : StoreKlass.name),
+      [persist, StoreKlass.name],
+    );
+
+    const persistedStore = useMemo(
       () =>
         new Proxy(store, {
-          set: (target, prop, value) => {
+          set(target, prop, value) {
             (target as any)[prop] = value;
+            if (
+              prop === "__hydrated" ||
+              typeof prop !== "string" ||
+              (!(
+                typeof value === "boolean" ||
+                typeof value === "number" ||
+                typeof value === "object" ||
+                typeof value === "string" ||
+                typeof value === "undefined" ||
+                value === null
+              ) &&
+                (whitelist?.includes(prop) || !blacklist?.includes(prop)))
+            ) {
+              return true;
+            }
             (async () => {
               try {
-                const previousValue = await AsyncStorage.getItem(
-                  StoreKlass.name,
-                );
-                const stateToSave = previousValue
-                  ? JSON.parse(previousValue)
-                  : {};
-                stateToSave[prop] = value;
+                const item = await AsyncStorage.getItem(persistKey);
+                const state = (item ? JSON.parse(item) : {}).state || {};
+                state[prop] = value;
+
                 await AsyncStorage.setItem(
-                  StoreKlass.name,
-                  JSON.stringify(stateToSave),
+                  persistKey,
+                  JSON.stringify({ state }),
                 );
               } catch (err) {
                 logger.error(err);
@@ -94,15 +114,15 @@ export function createUseStore<Props, Store>(
             return true;
           },
         }),
-      [store],
+      [store, persistKey],
     );
 
     useEffect(() => {
       (async () => {
-        const value = await AsyncStorage.getItem(StoreKlass.name);
-        if (value) {
+        const item = await AsyncStorage.getItem(persistKey);
+        if (item) {
           try {
-            setStorage(JSON.parse(value));
+            setStorage(JSON.parse(item));
           } catch (err) {
             setStorage({});
             logger.error(err);
@@ -111,17 +131,15 @@ export function createUseStore<Props, Store>(
           setStorage({});
         }
       })();
-    }, []);
+    }, [persistKey]);
 
     useEffect(() => {
-      if (hydrated || !storage) return;
-      Object.keys(storage).forEach((key) => {
-        store[key] = storage[key];
-      });
-      setHydrated(true);
-    }, [store, storage, hydrated]);
+      if (store.__hydrated || !storage) return;
+      Object.assign(store, storage.state || {});
+      store.__hydrated = true;
+    }, [store, storage]);
 
     if (!storage) return undefined;
-    return store;
+    return persistedStore;
   };
 }
