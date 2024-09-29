@@ -1,7 +1,7 @@
-/**
+/*
  * File: /app.ts
  * Project: api
- * File Created: 11-06-2024 10:47:58
+ * File Created: 01-01-1970 00:00:00
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024

@@ -26,13 +26,11 @@
   "exports": {
     ".": {
       "import": "./lib/index.mjs",
-      "require": "./lib/index.js",
-      "types": "./lib/index.d.mts"
+      "require": "./lib/index.js"
     },
     "./background": {
       "import": "./lib/background.mjs",
-      "require": "./lib/background.js",
-      "types": "./lib/background.d.mts"
+      "require": "./lib/background.js"
     },
     "./package.json": "./package.json"
   },
@@ -55,7 +53,7 @@
     "@multiplatform.one/utils": "workspace:0.1.0",
     "@types/node": "~20.12.13",
     "electron": "29.4.2",
-    "tsup": "^8.1.0",
+    "tsup": "^8.3.0",
     "typescript": "~5.3.3"
   },
   "engines": {

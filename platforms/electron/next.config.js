@@ -20,58 +20,63 @@
  */
 
 process.env.IGNORE_TS_CONFIG_PATHS = "true";
-process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = "1";
-process.env.TAMAGUI_TARGET = "web";
 
-const path = require("node:path");
 const privateConfig = require("app/config/private");
 const publicConfig = require("app/config/public");
 const withBundleAnalyzer = require("@next/bundle-analyzer");
 const withImages = require("next-images");
 const { PHASE_DEVELOPMENT_SERVER } = require("next/constants");
+const { withExpo } = require("@expo/next-adapter");
+const { withTamagui } = require("@tamagui/next-plugin");
 const {
   lookupTranspileModules,
   lookupTamaguiModules,
 } = require("@multiplatform.one/utils/transpileModules");
-const { withExpo } = require("@expo/next-adapter");
-const { withTamagui } = require("@tamagui/next-plugin");
-const disableExtraction = process.env.NODE_ENV === "development";
+
+const { env } = process;
+const disableExtraction = env.NODE_ENV === "development";
 
 const plugins = [
   withImages,
+  withBundleAnalyzer({
+    enabled: process.env.ANALYZE === "1",
+    openAnalyzer: process.env.ANALYZE === "1",
+  }),
   withTamagui({
     components: lookupTamaguiModules([__dirname]),
     config: "./tamagui.config.ts",
     disableExtraction,
-    excludeReactNativeWebExports: [
-      "Switch",
-      "ProgressBar",
-      "Picker",
-      "CheckBox",
-      "Touchable",
-    ],
     importsWhitelist: ["constants.js", "colors.js"],
     logTimings: true,
-    useReactNativeWebLite: false,
-    shouldExtract: (filePath) => {
+    outputCSS:
+      process.env.NODE_ENV === "production" ? "./public/tamagui.css" : null,
+    themeBuilder: {
+      input: "../../packages/ui/src/themes/theme.ts",
+      output: "../../packages/ui/src/themes/theme-generated.ts",
+    },
+    shouldExtract: (path) => {
       if (filePath.includes("node_modules")) return false;
       return /^\/app\//.test(
         filePath.substring(path.resolve(__dirname, "../..").length),
       );
     },
+    excludeReactNativeWebExports: [
+      "Animated",
+      "CheckBox",
+      "FlatList",
+      "Modal",
+      "Picker",
+      "ProgressBar",
+      "Switch",
+      "Touchable",
+      "VirtualizedList",
+    ],
   }),
   withExpo,
 ];
 
 module.exports = (phase) => {
-  if (phase === PHASE_DEVELOPMENT_SERVER) {
-    plugins.push(
-      withBundleAnalyzer({
-        enabled: process.env.BUNDLE_ANALYZER === "1",
-        openAnalyzer: true,
-      }),
-    );
-  }
+  /** @type {import('next').NextConfig} */
   let nextConfig = {
     trailingSlash: true,
     output: "export",
@@ -79,10 +84,7 @@ module.exports = (phase) => {
     typescript: {
       ignoreBuildErrors: true,
     },
-    images: {
-      disableStaticImages: true,
-      unoptimized: true,
-    },
+    images: {},
     modularizeImports: {
       "@tamagui/lucide-icons": {
         transform: "@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}",
@@ -93,6 +95,7 @@ module.exports = (phase) => {
     experimental: {
       esmExternals: "loose",
       optimizeCss: phase !== PHASE_DEVELOPMENT_SERVER,
+      reactCompiler: true,
       scrollRestoration: true,
     },
     publicRuntimeConfig: {

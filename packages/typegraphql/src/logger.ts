@@ -23,6 +23,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import path from "node:path";
 import { context, trace } from "@opentelemetry/api";
 import chalk from "chalk";
+import type { Colorette } from "colorette";
 import httpStatus from "http-status";
 import Pino, { destination, multistream } from "pino";
 import type { Logger as PinoLogger } from "pino";
@@ -33,12 +34,12 @@ import type { Ctx } from "./types";
 import { generateRequestId } from "./utils";
 
 export const LOGGER = "LOGGER";
-
 export const LOGGER_OPTIONS = "LOGGER_OPTIONS";
 
 let _logger: PinoLogger | undefined;
 
 export type LogLevel = "trace" | "debug" | "info" | "warn" | "error" | "fatal";
+export type PrettifierExtras<T = object> = { colors: Colorette } & T;
 
 export class Logger {
   pino?: PinoLogger;
@@ -276,7 +277,7 @@ function createPrettyStream(
         data: string | object,
         _key: string,
         _log: object,
-        _extras: PinoPretty.PrettifierExtras<any>,
+        _extras: PrettifierExtras<any>,
       ): string {
         if (!data) return data as string;
         if (typeof data !== "string" || data.split(".").length < 2) {
@@ -298,7 +299,7 @@ function createPrettyStream(
         data: string | object,
         _key: string,
         _log: object,
-        _extras: PinoPretty.PrettifierExtras<any>,
+        _extras: PrettifierExtras<any>,
       ): string {
         if (!data) return data as string;
         const req = typeof data === "string" ? JSON.parse(data) : data;
@@ -310,7 +311,7 @@ function createPrettyStream(
         data: string | object,
         _key: string,
         _log: object,
-        _extras: PinoPretty.PrettifierExtras<any>,
+        _extras: PrettifierExtras<any>,
       ): string {
         if (!data) return data as string;
         const res = typeof data === "string" ? JSON.parse(data) : data;
@@ -322,7 +323,7 @@ function createPrettyStream(
         data: string | object,
         _key: string,
         _log: object,
-        _extras: PinoPretty.PrettifierExtras<any>,
+        _extras: PrettifierExtras<any>,
       ): string {
         if (!data) return data as string;
         if (options.color) {
@@ -334,7 +335,7 @@ function createPrettyStream(
         data: string | object,
         _key: string,
         _log: object,
-        _extras: PinoPretty.PrettifierExtras<any>,
+        _extras: PrettifierExtras<any>,
       ): string {
         if (!data) return data as string;
         return formatStatus(data.toString(), options.color);
@@ -343,7 +344,7 @@ function createPrettyStream(
         data: string | object,
         _key: string,
         _log: object,
-        _extras: PinoPretty.PrettifierExtras<any>,
+        _extras: PrettifierExtras<any>,
       ): string {
         if (!data) return data as string;
         if (options.color) {

@@ -11,36 +11,42 @@
   },
   "license": "Apache-2.0",
   "author": "BitSpur <support@risserlabs.com> (https://risserlabs.com)",
-  "main": "lib/index.js",
-  "module": "lib/index.js",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "react-native": "src/index.ts",
   "source": "src/index.ts",
-  "types": "lib/index.d.ts",
+  "types": "types/index.d.ts",
   "exports": {
     ".": {
-      "require": "./lib/index.js",
-      "types": "./lib/index.d.ts",
-      "import": "./lib/index.js"
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
     },
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "tsup"
+    "build": "rm -rf dist types 2>/dev/null && tamagui-build",
+    "test": "vitest run"
   },
   "files": ["lib", "src"],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
   },
-  "devDependencies": {
-    "@types/node": "~20.12.13",
-    "tsup": "^8.1.0",
-    "typescript": "~5.3.3"
-  },
   "engines": {
     "node": ">=6.0.0"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^2.0.0",
-    "@tamagui/use-store": "^1.112.3"
+    "@tamagui/use-store": "^1.112.4"
+  },
+  "devDependencies": {
+    "@react-native-async-storage/async-storage": "1.21.0",
+    "@tamagui/build": "^1.112.4",
+    "typescript": "~5.3.3",
+    "vite": "^5.4.8"
+  },
+  "peerDependencies": {
+    "@react-native-async-storage/async-storage": "1.21.0"
   }
 }

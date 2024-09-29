@@ -74,6 +74,7 @@ clientregistration
 cloc
 clsx
 codebase
+colorette
 comment
 commonjs
 compat
@@ -170,6 +171,7 @@ graphiql
 graphql
 graphqlsp
 halloween
+healthz
 helvetica
 hermes
 hmr

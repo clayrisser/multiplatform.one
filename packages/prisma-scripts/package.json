@@ -24,12 +24,10 @@
   "types": "lib/index.d.mts",
   "exports": {
     ".": {
-      "import": "./lib/index.mjs",
-      "types": "./lib/index.d.mts"
+      "import": "./lib/index.mjs"
     },
     "./bin/*": {
-      "import": "./lib/bin/*.mjs",
-      "types": "./lib/bin/*.d.mts"
+      "import": "./lib/bin/*.mjs"
     },
     "./package.json": "./package.json"
   },
@@ -46,10 +44,10 @@
     "wait-for-postgres": "bin/waitForPostgres.js"
   },
   "dependencies": {
-    "core-js": "^3.37.1",
+    "core-js": "^3.38.1",
     "dotenv": "^16.4.5",
-    "execa": "^9.2.0",
-    "ora": "^8.0.1"
+    "execa": "^9.4.0",
+    "ora": "^8.1.0"
   },
   "peerDependencies": {
     "prisma": "~5.12.1"
@@ -57,7 +55,7 @@
   "devDependencies": {
     "@multiplatform.one/utils": "workspace:0.1.0",
     "prisma": "~5.12.1",
-    "tsup": "^8.1.0",
+    "tsup": "^8.3.0",
     "typescript": "~5.3.3"
   },
   "engines": {

@@ -67,5 +67,53 @@
       "cwd": "${workspaceFolder}/api",
       "command": "../mkpm api/mesh"
     }
+  ],
+  "compounds": [
+    {
+      "name": "Backend",
+      "configurations": [
+        "api dev",
+        "api mesh",
+        "frappe dev"
+      ]
+    },
+    {
+      "name": "Frontend",
+      "configurations": [
+        "expo dev",
+        "next dev"
+      ]
+    },
+    {
+      "name": "Platform",
+      "configurations": [
+        "api dev",
+        "api mesh",
+        "expo dev",
+        "frappe dev",
+        "next dev"
+      ]
+    },
+    {
+      "name": "Storybook",
+      "configurations": [
+        "keycloak dev",
+        "storybook dev",
+        "storybook-expo dev"
+      ]
+    },
+    {
+      "name": "All",
+      "configurations": [
+        "api dev",
+        "api mesh",
+        "expo dev",
+        "frappe dev",
+        "keycloak dev",
+        "next dev",
+        "storybook dev",
+        "storybook-expo dev"
+      ]
+    }
   ]
 }

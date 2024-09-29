@@ -1,10 +1,10 @@
-/*
+/**
  * File: /src/bin/multiplatformOne.ts
  * Project: @multiplatform.one/cli
- * File Created: 22-06-2024 14:17:12
+ * File Created: 01-01-1970 00:00:00
  * Author: Clay Risser
  * -----
- * BitSpur Copyright 2021 - 2024
+ * BitSpur (c) Copyright 2021 - 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,9 +24,13 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import axios from "axios";
 import { program } from "commander";
+import dotenv from "dotenv";
 import { execa } from "execa";
 import inquirer from "inquirer";
+import ora from "ora";
+import pg from "pg";
 import type { CookieCutterConfig } from "../types";
 
 const availableBackends = ["api", "frappe"];
@@ -277,4 +281,148 @@ program
     }
   });
 
+const waitServices = ["api", "frappe", "postgres", "keycloak"];
+program
+  .command("wait")
+  .description("wait for a service to be ready")
+  .option("-i, --interval <interval>", "interval to wait for", 1000)
+  .option("-t, --timeout <timeout>", "timeout to wait for", 300000)
+  .option("-e, --dotenv <dotenv>", "dotenv file path", ".env")
+  .argument(
+    "<services>",
+    `the services to wait for (${waitServices.join(", ")})`,
+  )
+  .action(async (servicesString, options) => {
+    dotenv.config({ path: options.dotenv });
+    const interval = Number.parseInt(options.interval || 1000);
+    const timeout = Number.parseInt(options.timeout || 180000);
+    const services: string[] = servicesString.split(",");
+    const unreadyServices = [...services];
+    const spinner = ora(
+      `waiting for ${formatServiceList(unreadyServices)}`,
+    ).start();
+    function updateSpinner(readyService: string) {
+      unreadyServices.splice(unreadyServices.indexOf(readyService), 1);
+      spinner.stop();
+      spinner.succeed(`${readyService} is ready`);
+      if (!unreadyServices.length) return;
+      spinner.start(`waiting for ${formatServiceList(unreadyServices)}`);
+    }
+    let timeoutId: NodeJS.Timeout;
+    try {
+      await Promise.race([
+        Promise.all(
+          services.map(async (service) => {
+            switch (service) {
+              case "api": {
+                await waitForApi(interval);
+                updateSpinner("api");
+                return;
+              }
+              case "frappe": {
+                await waitForFrappe(interval);
+                updateSpinner("frappe");
+                return;
+              }
+              case "postgres": {
+                await waitForPostgres(interval);
+                updateSpinner("postgres");
+                return;
+              }
+              case "keycloak": {
+                await waitForKeycloak(interval);
+                updateSpinner("keycloak");
+                return;
+              }
+            }
+            ora(
+              `available services are ${formatServiceList(waitServices)}`,
+            ).fail();
+          }),
+        ),
+        new Promise((_, reject) => {
+          timeoutId = setTimeout(() => reject(new Error("Timeout")), timeout);
+        }),
+      ]);
+    } catch (err) {
+      if (err instanceof Error && err.message === "Timeout") {
+        spinner.fail(
+          `${formatServiceList(unreadyServices)} timed out after ${timeout}ms`,
+        );
+      } else {
+        spinner.fail(err);
+      }
+      process.exit(1);
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  });
+
+function formatServiceList(services: string[]): string {
+  if (services.length === 1) return services[0];
+  if (services.length === 2) return `${services[0]} and ${services[1]}`;
+  return `${services.slice(0, -1).join(", ")} and ${services[services.length - 1]}`;
+}
+
 program.parse(process.argv);
+
+async function waitForApi(interval: number) {
+  try {
+    const res = await axios.get(
+      `http://localhost:${process.env.API_PORT || "5001"}/healthz`,
+    );
+    if ((res?.status || 500) < 300) {
+      return;
+    }
+  } catch (err) {}
+  await new Promise((resolve) => setTimeout(resolve, interval));
+  return waitForApi(interval);
+}
+
+async function waitForFrappe(interval: number) {
+  try {
+    const res = await axios.get(
+      `${process.env.FRAPPE_BASE_URL || "http://frappe.localhost"}/api/method/ping`,
+    );
+    if ((res?.status || 500) < 300) {
+      return;
+    }
+  } catch (err) {}
+  await new Promise((resolve) => setTimeout(resolve, interval));
+  return waitForFrappe(interval);
+}
+
+async function waitForPostgres(interval: number) {
+  const client = new pg.Client({
+    database: process.env.POSTGRES_DATABASE || "postgres",
+    host: process.env.POSTGRES_HOSTNAME || "localhost",
+    password: process.env.POSTGRES_PASSWORD || "postgres",
+    port: Number.parseInt(process.env.POSTGRES_PORT || "5432"),
+    user: process.env.POSTGRES_USERNAME || "postgres",
+  });
+  try {
+    await client.connect();
+    while (true) {
+      try {
+        await client.query("SELECT 1");
+        return;
+      } catch (error) {}
+      await new Promise((resolve) => setTimeout(resolve, interval));
+    }
+  } finally {
+    await client.end();
+  }
+}
+
+async function waitForKeycloak(interval: number) {
+  try {
+    const res = await axios.get(
+      `${process.env.KEYCLOAK_BASE_URL || "http://localhost:8080"}/realms/master/.well-known/openid-configuration`,
+    );
+    if ((res?.status || 500) < 300) {
+      return;
+    }
+  } catch (err) {}
+  await new Promise((resolve) => setTimeout(resolve, interval));
+  return waitForKeycloak(interval);
+}

@@ -102,7 +102,6 @@ export function createUseStore<Props, Store>(
                 const item = await AsyncStorage.getItem(persistKey);
                 const state = (item ? JSON.parse(item) : {}).state || {};
                 state[prop] = value;
-
                 await AsyncStorage.setItem(
                   persistKey,
                   JSON.stringify({ state }),

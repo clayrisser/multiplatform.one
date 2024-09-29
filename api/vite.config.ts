@@ -49,10 +49,7 @@ export default defineConfig({
             [
               "build-schema",
               path.resolve(__dirname, "./dist/api/main.mjs"),
-              path.resolve(
-                __dirname,
-                "../packages/gql/generated/schema.graphql",
-              ),
+              path.resolve(__dirname, "./generated/schemas/api.gql"),
             ],
             {
               stdio: "inherit",

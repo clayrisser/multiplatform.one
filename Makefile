@@ -26,5 +26,6 @@ MKPM := ./mkpm
 default:
 	@$(MKPM) $(ARGS)
 .PHONY: %
-%:
+%: force
 	@$(MKPM) "$@" $(ARGS)
+force: ;

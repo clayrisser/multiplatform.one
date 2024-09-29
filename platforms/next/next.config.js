@@ -20,80 +20,76 @@
  */
 
 process.env.IGNORE_TS_CONFIG_PATHS = "true";
-process.env.TAMAGUI_TARGET = "web";
-process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = "1";
 
-const path = require("node:path");
 const privateConfig = require("app/config/private");
 const publicConfig = require("app/config/public");
 const withBundleAnalyzer = require("@next/bundle-analyzer");
 const withImages = require("next-images");
 const { PHASE_DEVELOPMENT_SERVER } = require("next/constants");
 const { i18n } = require("./next-i18next.config");
-const {
-  lookupTranspileModules,
-  lookupTamaguiModules,
-} = require("@multiplatform.one/utils/transpileModules");
-const {
-  supportedLocales,
-  defaultLocale,
-  defaultNamespace,
-} = require("app/i18n/config");
 const { withExpo } = require("@expo/next-adapter");
 const { withTamagui } = require("@tamagui/next-plugin");
+const {
+  lookupTamaguiModules,
+  lookupTranspileModules,
+} = require("@multiplatform.one/utils/transpileModules");
+const {
+  defaultLocale,
+  defaultNamespace,
+  supportedLocales,
+} = require("app/i18n/config");
 
-const sharedConfig = { ...publicConfig, ...privateConfig };
-const nextStatic = process.env.NEXT_STATIC === "1";
-const boolVals = {
-  true: true,
-  false: false,
-};
+const { env } = process;
+const nextStatic = env.NEXT_STATIC === "1";
 const disableExtraction =
-  boolVals[process.env.DISABLE_EXTRACTION] ??
-  process.env.NODE_ENV === "development";
+  env.DISABLE_EXTRACTION === "1" || env.NODE_ENV === "development";
 const plugins = [
   withImages,
+  withBundleAnalyzer({
+    enabled: process.env.ANALYZE === "1",
+    openAnalyzer: process.env.ANALYZE === "1",
+  }),
   withTamagui({
     components: lookupTamaguiModules([__dirname]),
     config: "./tamagui.config.ts",
     disableExtraction,
-    excludeReactNativeWebExports: [
-      "Switch",
-      "ProgressBar",
-      "Picker",
-      "CheckBox",
-      "Touchable",
-    ],
     importsWhitelist: ["constants.js", "colors.js"],
     logTimings: true,
-    useReactNativeWebLite: false,
-    shouldExtract: (filePath) => {
+    outputCSS:
+      process.env.NODE_ENV === "production" ? "./public/tamagui.css" : null,
+    themeBuilder: {
+      input: "../../packages/ui/src/themes/theme.ts",
+      output: "../../packages/ui/src/themes/theme-generated.ts",
+    },
+    shouldExtract: (path) => {
       if (filePath.includes("node_modules")) return false;
       return /^\/app\//.test(
         filePath.substring(path.resolve(__dirname, "../..").length),
       );
     },
+    excludeReactNativeWebExports: [
+      "Animated",
+      "CheckBox",
+      "FlatList",
+      "Modal",
+      "Picker",
+      "ProgressBar",
+      "Switch",
+      "Touchable",
+      "VirtualizedList",
+    ],
   }),
   withExpo,
 ];
 
 module.exports = (phase) => {
-  if (phase === PHASE_DEVELOPMENT_SERVER) {
-    plugins.push(
-      withBundleAnalyzer({
-        enabled: sharedConfig.BUNDLE_ANALYZER === "1",
-        openAnalyzer: false,
-      }),
-    );
-  }
+  /** @type {import('next').NextConfig} */
   let nextConfig = {
     ...(nextStatic ? {} : { i18n }),
     typescript: {
       ignoreBuildErrors: true,
     },
-    images: {
-      disableStaticImages: true,
-    },
+    images: {},
     modularizeImports: {
       "@tamagui/lucide-icons": {
         transform: "@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}",
@@ -104,17 +100,22 @@ module.exports = (phase) => {
     experimental: {
       esmExternals: "loose",
       optimizeCss: phase !== PHASE_DEVELOPMENT_SERVER,
+      reactCompiler: true,
       scrollRestoration: true,
     },
     publicRuntimeConfig: {
       ...publicConfig,
-      NEXT_STATIC: process.env.NEXT_STATIC,
-      i18n: {
-        languages: supportedLocales,
-        defaultLanguage: defaultLocale,
-        namespaces: [defaultNamespace],
-        defaultNamespace,
-      },
+      NEXT_STATIC: env.NEXT_STATIC,
+      ...(env.NEXT_STATIC === "1"
+        ? {}
+        : {
+            i18n: {
+              defaultLanguage: defaultLocale,
+              defaultNamespace,
+              languages: supportedLocales,
+              namespaces: [defaultNamespace],
+            },
+          }),
     },
     serverRuntimeConfig: {
       ...privateConfig,

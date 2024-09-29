@@ -14,9 +14,10 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@changesets/cli": "^2.27.5",
+    "@changesets/cli": "^2.27.8",
+    "@multiplatform.one/cli": "workspace:2.1.0",
     "app": "workspace:*",
-    "cspell": "^8.8.4",
+    "cspell": "^8.14.4",
     "gql": "workspace:*",
     "npm-check-updates": "^16.14.20",
     "turbo": "^1.13.4",

@@ -2,6 +2,7 @@
 /.tamagui
 /debug.json
 /node_modules
+/next-env.d.ts
 
 # next
 .vercel

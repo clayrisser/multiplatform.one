@@ -10,14 +10,14 @@
   "types": "types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js",
-      "types": "./types/index.d.ts"
+      "require": "./dist/cjs/index.js"
     },
     "./routes": {
+      "types": "./types/routes.d.ts",
       "import": "./dist/esm/routes.js",
-      "require": "./dist/cjs/routes.js",
-      "types": "./dist/esm/routes.d.ts"
+      "require": "./dist/cjs/routes.js"
     },
     "./package.json": "./package.json"
   },
@@ -49,8 +49,8 @@
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
-    "@tamagui/build": "^1.112.3",
-    "@testing-library/jest-dom": "^6.4.6",
+    "@tamagui/build": "^1.112.4",
+    "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^15.0.7",
     "@types/lodash.camelcase": "^4.3.9",
     "@types/lodash.startcase": "^4.4.9",
@@ -58,7 +58,7 @@
     "@types/react-native": "^0.73.0",
     "@vitejs/plugin-react": "^4.3.1",
     "multiplatform.one": "workspace:1.1.0",
-    "next": "^14.2.3",
+    "next": "^14.2.13",
     "react": "18.2.0",
     "react-native": "0.74.2",
     "typescript": "~5.3.3",
@@ -74,6 +74,6 @@
     "expo-crypto": "^13.0.2",
     "jwt-decode": "^4.0.0",
     "keycloak-js": "^24.0.5",
-    "next-auth": "^4.24.7"
+    "next-auth": "^4.24.8"
   }
 }
