@@ -8,7 +8,7 @@ variable "GIT_COMMIT" {
 
 group "default" {
   targets = [
-    // "app",
+    "app",
     "keycloak",
   ]
 }

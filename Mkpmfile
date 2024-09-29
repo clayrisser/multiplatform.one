@@ -55,12 +55,10 @@ update:
 
 .PHONY: clean
 clean:
-	-@$(call workspace_foreach,clean,$(CLEAN_ARGS))
 	-@$(MKCACHE_CLEAN)
 	-@$(WATCHMAN) watch-del-all $(NOFAIL)
 	-@$(GIT) clean -fxd \
-		$(MKPM_GIT_CLEAN_FLAGS) \
-		$(NOFAIL)
+		$(MKPM_GIT_CLEAN_FLAGS)
 
 .PHONY: purge
 ifneq (/home/frappe,$(HOME))
@@ -70,10 +68,6 @@ purge: clean
 endif
 	-@rm -rf frappe/frappe-bench
 	-@$(GIT) clean -fxd
-
-HELP = help
-help: $(MKCHAIN_HELP)
-	@$(call workspace_foreach_help,$(MKCHAIN_HELP),$(ARGS))
 
 .PHONY: storybook/docker/%
 storybook/docker/%:

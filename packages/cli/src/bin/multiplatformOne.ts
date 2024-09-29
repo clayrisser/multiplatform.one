@@ -286,7 +286,7 @@ program
   .command("wait")
   .description("wait for a service to be ready")
   .option("-i, --interval <interval>", "interval to wait for", 1000)
-  .option("-t, --timeout <timeout>", "timeout to wait for", 300000)
+  .option("-t, --timeout <timeout>", "timeout to wait for", 600000)
   .option("-e, --dotenv <dotenv>", "dotenv file path", ".env")
   .argument(
     "<services>",
@@ -294,8 +294,8 @@ program
   )
   .action(async (servicesString, options) => {
     dotenv.config({ path: options.dotenv });
-    const interval = Number.parseInt(options.interval || 1000);
-    const timeout = Number.parseInt(options.timeout || 180000);
+    const interval = Number.parseInt(options.interval);
+    const timeout = Number.parseInt(options.timeout);
     const services: string[] = servicesString.split(",");
     const unreadyServices = [...services];
     const spinner = ora(
