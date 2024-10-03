@@ -20,7 +20,7 @@
     "@graphql-mesh/transform-filter-schema": "^0.102.5",
     "@graphql-mesh/transform-prefix": "^0.102.5",
     "@graphql-yoga/subscription": "^5.0.1",
-    "@multiplatform.one/keycloak-typegraphql": "workspace:1.1.0",
+    "@multiplatform.one/keycloak-typegraphql": "workspace:1.1.1",
     "@multiplatform.one/prisma-scripts": "workspace:1.1.0",
     "@multiplatform.one/typegraphql": "workspace:1.1.0",
     "@prisma/client": "~5.12.1",

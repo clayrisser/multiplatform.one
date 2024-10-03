@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/keycloak-typegraphql",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
   "contributors": [
     {
@@ -22,7 +22,10 @@
   "scripts": {
     "build": "tsup"
   },
-  "files": ["lib", "src"],
+  "files": [
+    "lib",
+    "src"
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -31,7 +34,10 @@
   "bugs": {
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues"
   },
-  "keywords": ["type-graphql", "graphql"],
+  "keywords": [
+    "type-graphql",
+    "graphql"
+  ],
   "engines": {
     "node": ">= 16.0"
   },
@@ -45,7 +51,7 @@
   },
   "dependencies": {
     "@keycloak/keycloak-admin-client": "^24.0.5",
-    "@multiplatform.one/keycloak": "workspace:2.0.0",
+    "@multiplatform.one/keycloak": "workspace:2.0.1",
     "@multiplatform.one/typegraphql": "workspace:1.1.0",
     "axios": "^1.7.7",
     "cookie": "^0.6.0",

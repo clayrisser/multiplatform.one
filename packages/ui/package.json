@@ -1,17 +1,21 @@
 {
   "name": "ui",
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "private": true,
   "main": "src/index.tsx",
   "react-native": "src/index.tsx",
   "source": "src/index.tsx",
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "scripts": {
     "build": "rm -rf dist types 2>/dev/null && tamagui-build"
   },
   "dependencies": {
-    "@multiplatform.one/components": "workspace:4.1.0",
-    "@multiplatform.one/use-store": "workspace:0.0.1",
+    "@multiplatform.one/components": "workspace:4.1.1",
+    "@multiplatform.one/use-store": "workspace:0.0.2",
     "@tamagui/animations-css": "^1.112.4",
     "@tamagui/animations-moti": "^1.112.4",
     "@tamagui/animations-react-native": "^1.112.4",
@@ -20,7 +24,7 @@
     "@tamagui/shorthands": "^1.112.4",
     "@tamagui/themes": "^1.112.4",
     "moti": "^0.29.0",
-    "multiplatform.one": "workspace:1.1.0",
+    "multiplatform.one": "workspace:1.1.1",
     "react-native-reanimated": "3.8.1",
     "solito": "^4.2.2",
     "tamagui": "^1.112.4"
