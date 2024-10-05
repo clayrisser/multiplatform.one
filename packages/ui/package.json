@@ -24,7 +24,7 @@
     "@tamagui/shorthands": "^1.112.4",
     "@tamagui/themes": "^1.112.4",
     "moti": "^0.29.0",
-    "multiplatform.one": "workspace:1.1.2",
+    "multiplatform.one": "workspace:1.1.3",
     "react-native-reanimated": "3.8.1",
     "solito": "^4.2.2",
     "tamagui": "^1.112.4"
