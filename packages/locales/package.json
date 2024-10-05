@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/locales",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "multiplatform.one locales",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -75,7 +75,7 @@
   "dependencies": {
     "cookies-next": "^4.2.1",
     "merge-options": "^3.0.4",
-    "multiplatform.one": "workspace:1.1.1",
+    "multiplatform.one": "workspace:1.1.2",
     "react-cookie": "^7.2.0"
   }
 }
