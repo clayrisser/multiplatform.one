@@ -55,7 +55,7 @@
     "@tamagui/build": "^1.112.22",
     "@types/node": "~20.12.13",
     "typescript": "~5.3.3",
-    "vite": "^5.4.8"
+    "vite": "6.0.0-beta.1"
   },
   "dependencies": {
     "@multiplatform.one/keycloak": "workspace:2.0.3",

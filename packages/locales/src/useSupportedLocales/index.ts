@@ -35,8 +35,7 @@ export function useSupportedLocales(): string[] | undefined {
             : (nextConfig as { default: typeof nextConfig }).default;
         setSupportedLocales([
           ...((typeof getConfig === "function" &&
-            getConfig()?.publicRuntimeConfig?.i18n?.languages) ||
-            (await import("next-i18next")).i18n?.languages || ["en"]),
+            getConfig()?.publicRuntimeConfig?.i18n?.languages) ||  ["en"]),
         ]);
       } else {
         // @ts-ignore

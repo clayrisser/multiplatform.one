@@ -46,14 +46,6 @@ module.exports = {
           ...config.resolve,
           alias: {
             ...(config.resolve?.alias || {}),
-            "next-i18next": require.resolve("empty-module"),
-            "next/config": require.resolve("empty-module"),
-            "next/head": require.resolve("empty-module"),
-            "next/headers": require.resolve("empty-module"),
-            "next/image": require.resolve("empty-module"),
-            "next/link": require.resolve("empty-module"),
-            "next/router": require.resolve("empty-module"),
-            next: require.resolve("empty-module"),
           },
           fallback: {
             ...(config.resolve?.fallback || {}),

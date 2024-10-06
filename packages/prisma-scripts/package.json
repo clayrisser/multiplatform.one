@@ -44,8 +44,8 @@
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
   },
   "bin": {
-    "generate-prisma": "bin/generate.js",
-    "wait-for-postgres": "bin/waitForPostgres.js"
+    "generate-prisma": "bin/generate.mjs",
+    "wait-for-postgres": "bin/waitForPostgres.mjs"
   },
   "dependencies": {
     "core-js": "^3.38.1",

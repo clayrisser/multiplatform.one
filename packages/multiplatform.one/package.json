@@ -14,11 +14,6 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
-    "./next": {
-      "types": "./types/next/index.d.ts",
-      "import": "./dist/esm/next/index.js",
-      "require": "./dist/cjs/next/index.js"
-    },
     "./theme": {
       "types": "./types/theme/index.d.ts",
       "import": "./dist/esm/theme/index.js",

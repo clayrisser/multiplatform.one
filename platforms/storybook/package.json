@@ -45,7 +45,7 @@
     "@types/react": "^18.3.1",
     "lost-pixel": "^3.19.0",
     "playwright": "^1.47.2",
-    "react-native-reanimated": "3.8.1",
+    "react-native-reanimated": "~3.10.1",
     "react-scripts": "5.0.1",
     "storybook": "~7.6.20",
     "typescript": "~5.3.3"

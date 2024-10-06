@@ -29,7 +29,7 @@ WORKDIR /tmp/app
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 # --filter './app' \
 # --filter './packages/*' \
-# --filter './platforms/next'
+# --filter './platforms/one'
 
 FROM build-base as build
 WORKDIR /tmp/app
@@ -57,12 +57,6 @@ RUN mkdir -p /opt/app/api && \
     mv /tmp/app/app/package.json /opt/app/app/package.json && \
     mv /tmp/app/node_modules /opt/app/node_modules && \
     mv /tmp/app/package.json /opt/app/package.json && \
-    mv /tmp/app/platforms/next/.env /opt/app/platforms/next/.env && \
-    mv /tmp/app/platforms/next/.next /opt/app/platforms/next/.next && \
-    mv /tmp/app/platforms/next/next-i18next.config.js /opt/app/platforms/next/next-i18next.config.js && \
-    mv /tmp/app/platforms/next/next.config.js /opt/app/platforms/next/next.config.js && \
-    mv /tmp/app/platforms/next/node_modules /opt/app/platforms/next/node_modules && \
-    mv /tmp/app/platforms/next/package.json /opt/app/platforms/next/package.json && \
     for p in $(ls /tmp/app/packages); do \
     mkdir -p /opt/app/packages/$p && \
     if [ -d /tmp/app/packages/$p/dist ]; then mv /tmp/app/packages/$p/dist /opt/app/packages/$p/dist; fi; \

@@ -16,8 +16,8 @@
     "@multiplatform.one/prisma-scripts#build": {
       "dependsOn": ["api#generate"]
     },
-    "@platform/next#build": {
-      "outputs": ["platforms/next/.next/**", "!platforms/next/.next/cache/**"]
+    "@platform/one#build": {
+      "outputs": []
     }
   }
 }
