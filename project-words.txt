@@ -366,7 +366,6 @@ shar
 shof
 sid
 sitekey
-solito
 spnego
 sponsorships
 sqlite

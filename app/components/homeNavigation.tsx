@@ -18,8 +18,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import { Link } from "one";
 import React from "react";
-import { Link } from "solito/link";
 import { Paragraph, XStack } from "ui";
 
 export const HomeNavigation = () => {

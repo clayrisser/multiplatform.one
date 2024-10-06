@@ -51,7 +51,7 @@ export default {
 // withSvg.argTypes = {
 //   resizeMode: {
 //     control: {
-//       type: Platform.OS === 'web' ? 'select' : 'text',
+//       type: MultiPlatform.isWeb ? 'select' : 'text',
 //       options: ['contain', 'cover', 'stretch'],
 //     },
 //   },

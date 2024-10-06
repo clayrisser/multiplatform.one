@@ -69,44 +69,23 @@
   "compounds": [
     {
       "name": "Backend",
-      "configurations": [
-        "api dev",
-        "api mesh",
-        "frappe dev"
-      ]
+      "configurations": ["api dev", "api mesh", "frappe dev"]
     },
     {
       "name": "Frontend",
-      "configurations": [
-        "expo dev",
-        "next dev"
-      ]
+      "configurations": ["expo dev", "next dev"]
     },
     {
       "name": "Web",
-      "configurations": [
-        "api dev",
-        "api mesh",
-        "frappe dev",
-        "next dev"
-      ]
+      "configurations": ["api dev", "api mesh", "frappe dev", "next dev"]
     },
     {
       "name": "Native",
-      "configurations": [
-        "api dev",
-        "api mesh",
-        "expo dev",
-        "frappe dev"
-      ]
+      "configurations": ["api dev", "api mesh", "expo dev", "frappe dev"]
     },
     {
       "name": "Storybook",
-      "configurations": [
-        "keycloak dev",
-        "storybook dev",
-        "storybook-expo dev"
-      ]
+      "configurations": ["keycloak dev", "storybook dev", "storybook-expo dev"]
     }
   ]
 }

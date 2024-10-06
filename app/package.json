@@ -2,9 +2,7 @@
   "name": "app",
   "main": "index.ts",
   "private": true,
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": ["*.css"],
   "dependencies": {
     "@expo-google-fonts/rock-salt": "^0.2.3",
     "@expo-google-fonts/silkscreen": "^0.2.3",

@@ -22,7 +22,7 @@
 import { LinearGradient } from "@tamagui/linear-gradient";
 import { CheckCircle, Clipboard } from "@tamagui/lucide-icons";
 import React, { useEffect, useRef, useState, useContext } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView } from "tamagui";
 import {
   Button,
   Spacer,

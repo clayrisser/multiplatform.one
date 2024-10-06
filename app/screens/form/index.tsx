@@ -22,7 +22,6 @@
 import { Eye, EyeOff } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
 import { useForm } from "@tanstack/react-form";
-// import { Link } from 'solito/link';
 import { HomeNavigation } from "app/components/homeNavigation";
 import { withDefaultLayout } from "app/layouts/Default";
 import React, { useState } from "react";

@@ -4,7 +4,7 @@ import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { clsx } from "keycloakify/tools/clsx";
 import { useCallback, useRef, useState } from "react";
-import { FlatList, type GestureResponderEvent } from "react-native";
+import type { GestureResponderEvent } from "react-native";
 import { FieldCheckbox, FieldInput, Paragraph, SubmitButton, YStack } from "ui";
 import type { I18n } from "../i18n";
 import type { KcContext } from "../kcContext";

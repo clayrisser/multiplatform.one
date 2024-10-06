@@ -22,7 +22,6 @@
 import { useKeycloak, withAuthenticated } from "@multiplatform.one/keycloak";
 import { ChevronRight } from "@tamagui/lucide-icons";
 import { withDefaultLayout } from "app/layouts/Default";
-import { useLink } from "solito/link";
 import {
   Anchor,
   Avatar,
@@ -44,9 +43,6 @@ import {
 
 function Auth() {
   const keycloak = useKeycloak();
-  const homeProps = useLink({
-    href: "/",
-  });
   console.log("keycloak", keycloak);
   return (
     <YStack fullscreen padding="$4">
@@ -77,11 +73,7 @@ function Auth() {
               }
             >
               <SimpleList>
-                <SimpleListItem
-                  title="Home"
-                  iconAfter={ChevronRight}
-                  {...homeProps}
-                />
+                <SimpleListItem title="Home" iconAfter={ChevronRight} />
                 <SimpleListItem title="Edit Profile" iconAfter={ChevronRight} />
                 <SimpleListItem title="Set Status" iconAfter={ChevronRight} />
                 <Dialog.Close>

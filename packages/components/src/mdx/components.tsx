@@ -21,9 +21,9 @@
 
 import type { MDXComponents } from "@mdx-js/react/lib";
 import { Link as IconLink } from "@tamagui/lucide-icons";
+import { MultiPlatform } from "multiplatform.one";
+import { Link } from "one";
 import React from "react";
-import { Platform } from "react-native";
-import { Link } from "solito/link";
 import type { XStackProps } from "tamagui";
 import {
   H1,
@@ -177,7 +177,7 @@ export const mdxComponents: MDXComponents = {
       </Paragraph>
     </YStack>
   ),
-  ...(Platform.OS === "web"
+  ...(MultiPlatform.isWeb
     ? {}
     : {
         div: (props) => <Text {...sanitizeProps(props)} />,
@@ -221,6 +221,5 @@ const getNonTextChildren = (children) => {
 };
 
 function sanitizeProps<P>(props: any): P {
-  if (Platform.OS !== "web") return props;
   return props;
 }

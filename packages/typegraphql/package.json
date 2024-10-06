@@ -24,11 +24,7 @@
   "scripts": {
     "build": "tsup"
   },
-  "files": [
-    "bin",
-    "lib",
-    "src"
-  ],
+  "files": ["bin", "lib", "src"],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -37,10 +33,7 @@
   "bugs": {
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues"
   },
-  "keywords": [
-    "type-graphql",
-    "graphql"
-  ],
+  "keywords": ["type-graphql", "graphql"],
   "engines": {
     "node": ">= 16.0"
   },
@@ -89,9 +82,5 @@
     "tsyringe": "^4.8.0",
     "ws": "^8.18.0"
   },
-  "transpileModules": [
-    "#ansi-styles",
-    "#supports-color",
-    "chalk"
-  ]
+  "transpileModules": ["#ansi-styles", "#supports-color", "chalk"]
 }

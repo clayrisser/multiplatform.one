@@ -26,11 +26,11 @@ import React from "react";
 import type { PropsWithChildren } from "react";
 import type { TamaguiInternalConfig } from "ui";
 import type { GlobalKeycloakProviderProps } from "./keycloak";
-import { GlobalKeycloakProvider } from "./keycloak";
+// import { GlobalKeycloakProvider } from "./keycloak";
 import type { GlobalTamaguiProviderProps } from "./tamagui";
-import { GlobalTamaguiProvider } from "./tamagui";
+// import { GlobalTamaguiProvider } from "./tamagui";
 import { GlobalTanstackProvider } from "./tanstack";
-import { GlobalUrqlProvider } from "./urql";
+// import { GlobalUrqlProvider } from "./urql";
 
 export type GlobalProviderKeycloak = Omit<
   GlobalKeycloakProviderProps,
@@ -54,22 +54,27 @@ export function GlobalProvider({
   const debug = config.get("DEBUG") === "1";
   const keycloakDisabled = !keycloak || config.get("KEYCLOAK_ENABLED") !== "1";
 
+  // <ThemeProvider cookies={cookies} theme={theme}>
+  // </ThemeProvider>
   return (
-    <GlobalTanstackProvider debug={debug}>
-      <ThemeProvider cookies={cookies} theme={theme}>
-        <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
-          <GlobalKeycloakProvider disabled={keycloakDisabled} {...keycloak}>
-            <GlobalUrqlProvider keycloakDisabled={keycloakDisabled}>
-              {children}
-            </GlobalUrqlProvider>
-          </GlobalKeycloakProvider>
-        </GlobalTamaguiProvider>
-      </ThemeProvider>
-    </GlobalTanstackProvider>
+    <GlobalTanstackProvider debug={debug}>{children}</GlobalTanstackProvider>
   );
+  // return (
+  //   <GlobalTanstackProvider debug={debug}>
+  //     <ThemeProvider cookies={cookies} theme={theme}>
+  //       <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
+  //         <GlobalKeycloakProvider disabled={keycloakDisabled} {...keycloak}>
+  //           <GlobalUrqlProvider keycloakDisabled={keycloakDisabled}>
+  //             {children}
+  //           </GlobalUrqlProvider>
+  //         </GlobalKeycloakProvider>
+  //       </GlobalTamaguiProvider>
+  //     </ThemeProvider>
+  //   </GlobalTanstackProvider>
+  // );
 }
 
-export * from "./urql";
-export * from "./keycloak";
-export * from "./tamagui";
-export * from "./tanstack";
+// export * from "./urql";
+// export * from "./keycloak";
+// export * from "./tamagui";
+// export * from "./tanstack";

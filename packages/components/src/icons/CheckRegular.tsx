@@ -20,8 +20,8 @@
  * limitations under the License.
  */
 
+import { Polyline, Rect, Svg } from "@tamagui/react-native-svg";
 import { memo } from "react";
-import { Polyline, Rect, Svg } from "react-native-svg";
 import { themed } from "./themed";
 
 function Icon({ color = "black", size = 24, ...otherProps }) {

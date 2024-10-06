@@ -19,13 +19,9 @@
  * limitations under the License.
  */
 
-export interface UseSessionOptions {
-}
+export type UseSessionOptions = {};
 
-
-export function useSession(
-  _options?: UseSessionOptions,
-) {
+export function useSession(_options?: UseSessionOptions) {
   return {};
 }
 
@@ -35,5 +31,3 @@ export interface Session {
   idToken?: string;
   refreshToken?: string;
 }
-
-export { useSession };

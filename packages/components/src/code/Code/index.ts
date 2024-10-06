@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import { Platform } from "react-native";
+import { MultiPlatform } from "multiplatform.one";
 import type { GetProps } from "tamagui";
 import { Paragraph, styled } from "tamagui";
 
@@ -28,7 +28,7 @@ export const Code = styled(Paragraph, {
   borderRadius: "$4",
   cursor: "inherit",
   // @ts-ignore
-  fontFamily: Platform.OS === "web" ? "$mono" : undefined,
+  fontFamily: MultiPlatform.isWeb ? "$mono" : undefined,
   lineHeight: 18,
   padding: "$1",
   // @ts-ignore
@@ -52,7 +52,7 @@ export const CodeInline = styled(Paragraph, {
   color: "$colorHover",
   cursor: "inherit",
   // @ts-ignore
-  fontFamily: Platform.OS === "web" ? "$mono" : undefined,
+  fontFamily: MultiPlatform.isWeb ? "$mono" : undefined,
   // @ts-ignore
   fontSize: "85%",
   padding: "$1.5",

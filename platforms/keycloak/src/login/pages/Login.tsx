@@ -3,7 +3,7 @@ import { useForm } from "@tanstack/react-form";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import { clsx } from "keycloakify/tools/clsx";
 import { useCallback, useRef, useState } from "react";
-import { FlatList, type GestureResponderEvent } from "react-native";
+import type { GestureResponderEvent } from "react-native";
 import {
   Anchor,
   FieldCheckbox,

@@ -29,7 +29,6 @@ import { withDefaultLayout } from "app/layouts/Default";
 // import { ThemeTintAlt } from '@multiplatform.one/components';
 import { gql } from "gql";
 import React from "react";
-import { useLink } from "solito/link";
 import {
   Anchor,
   Button,
@@ -59,17 +58,6 @@ const CountSubscription = gql(`
 
 function HomeScreen() {
   const { t } = useTranslation();
-  const linkProps = useLink({
-    href: "/user/alice",
-  });
-  const authProps = useLink({
-    href: "/auth",
-  });
-
-  const formProps = useLink({
-    href: "/form",
-  });
-
   const { data, isLoading } = useGqlQuery<AuthQueryResponse>({
     query: AuthQuery,
     queryKey: ["userAuth"],
@@ -139,7 +127,7 @@ function HomeScreen() {
           elevation="$2"
         >
           <Paragraph>view user information here</Paragraph>
-          <Button {...linkProps}>
+          <Button>
             <Text color="$blue10">{t("screens.home.link")}</Text>
           </Button>
         </XStack>
@@ -155,7 +143,7 @@ function HomeScreen() {
           elevation="$2"
         >
           <Paragraph>keycloak authentication</Paragraph>
-          <Button {...authProps}>
+          <Button>
             <Text color="$blue10">Auth</Text>
           </Button>
         </XStack>
@@ -171,7 +159,7 @@ function HomeScreen() {
           elevation="$2"
         >
           <Paragraph>register here to create an account</Paragraph>
-          <Button {...formProps}>
+          <Button>
             <Text color="$blue10">Register</Text>
           </Button>
         </XStack>

@@ -1,15 +1,11 @@
 {
   "name": "ui",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": ["*.css"],
   "private": true,
   "main": "src/index.tsx",
   "react-native": "src/index.tsx",
   "source": "src/index.tsx",
-  "files": [
-    "src"
-  ],
+  "files": ["src"],
   "scripts": {
     "build": "rm -rf dist types 2>/dev/null && tamagui-build"
   },

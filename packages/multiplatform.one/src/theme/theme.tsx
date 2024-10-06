@@ -19,8 +19,6 @@
  * limitations under the License.
  */
 
-import type { ColorScheme as TamaguiColorScheme } from "@tamagui/next-theme";
-import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
 import React, { useContext, useEffect, useMemo } from "react";
 import { useCookies } from "react-cookie";
 import { MultiPlatform } from "../multiplatform";
@@ -87,7 +85,6 @@ export function ThemeProvider({
     }),
     [theme?.root, theme?.sub],
   );
-  const [, setRootTheme] = useRootTheme();
   const [, setTheme] = useTheme();
   const themeStore = useThemeStore();
   const root =
@@ -108,20 +105,6 @@ export function ThemeProvider({
     setTheme({ root, sub });
   }, [defaultThemeValue.root, defaultThemeValue.sub]);
 
-  if (MultiPlatform.isNext) {
-    return (
-      <ThemeContext.Provider value={value}>
-        <NextThemeProvider
-          onChangeTheme={(root: TamaguiColorScheme) => {
-            setRootTheme(root);
-          }}
-          forcedTheme={root && root !== "system" ? root : undefined}
-        >
-          {children}
-        </NextThemeProvider>
-      </ThemeContext.Provider>
-    );
-  }
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );

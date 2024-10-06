@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import { config } from "ui";
+import { config } from "ui/src/tamagui.config";
 
 export type AppConfig = typeof config;
 
