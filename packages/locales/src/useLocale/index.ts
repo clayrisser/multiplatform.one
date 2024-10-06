@@ -20,24 +20,12 @@
  */
 
 import i18n from "i18next";
-import { MultiPlatform } from "multiplatform.one";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export function useLocale(): [string, (locale: string) => void] {
-  const nextRouter =
-    MultiPlatform.isNext && !MultiPlatform.isStatic ? useRouter() : null;
-  const [locale, setLocale] = useState(
-    nextRouter?.locale || i18n?.language || "en",
-  );
+  const [locale, setLocale] = useState("en");
 
   useEffect(() => {
-    if (!nextRouter?.locale) return;
-    setLocale(nextRouter.locale);
-  }, [nextRouter?.locale]);
-
-  useEffect(() => {
-    if (nextRouter) return;
     function handleLanguageChanged(lng: string) {
       setLocale(lng);
     }
@@ -47,14 +35,8 @@ export function useLocale(): [string, (locale: string) => void] {
     };
   }, []);
 
-  let changeLocale = (locale: string) => {
-    i18n?.changeLanguage(locale);
-  };
-  if (nextRouter) {
-    changeLocale = (locale: string) => {
-      const { pathname, asPath, query } = nextRouter;
-      nextRouter.push({ pathname, query }, asPath, { locale });
-    };
+  function changeLocale(locale: string) {
+    return i18n?.changeLanguage(locale);
   }
 
   return [locale, changeLocale];

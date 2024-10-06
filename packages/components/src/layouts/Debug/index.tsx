@@ -20,8 +20,7 @@
  */
 
 import { useLocale, useSupportedLocales } from "@multiplatform.one/locales";
-// @ts-ignore
-import { config } from "app/config";
+import { config } from "multiplatform.one";
 import type { WithLayout } from "multiplatform.one";
 // import { SelectSimple } from '../../forms/SelectSimple';
 import { createWithLayout } from "multiplatform.one";

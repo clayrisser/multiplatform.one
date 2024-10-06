@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "emitDeclarationOnly": true,
-    "noEmit": false
+    "module": "ESNext",
+    "noEmit": false,
+    "types": ["vite/client"]
   },
   "exclude": ["types", "dist", "vite.config.mts"]
 }

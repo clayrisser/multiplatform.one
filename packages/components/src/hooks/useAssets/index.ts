@@ -1,4 +1,5 @@
-import type { StaticImageData } from "next/image";
+// TODO: remove this
+type StaticImageData = any;
 
 export function useAssets(
   modules: any | any[],

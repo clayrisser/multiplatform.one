@@ -20,7 +20,7 @@
  */
 
 import path from "node:path";
-import { lookupTranspileModules } from "@multiplatform.one/utils/transpileModules";
+import { lookupTranspileModules } from "@multiplatform.one/utils/build";
 import type { StorybookConfig } from "@storybook/react-webpack5";
 import publicConfig from "app/config/public";
 import webpack from "webpack";

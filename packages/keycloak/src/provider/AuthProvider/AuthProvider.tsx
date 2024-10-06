@@ -19,17 +19,13 @@
  * limitations under the License.
  */
 
-"use client";
-
 import KeycloakClient from "keycloak-js";
 import type { KeycloakInitOptions } from "keycloak-js";
 import { MultiPlatform } from "multiplatform.one";
 import type { SessionProviderProps } from "next-auth/react";
 import { SessionProvider } from "next-auth/react";
-import { useRouter } from "next/router";
 import type { PropsWithChildren } from "react";
 import { type ComponentType, useEffect, useMemo, useState } from "react";
-import { Text } from "tamagui";
 import { Loading } from "../../Loading";
 import { useAuthConfig } from "../../hooks";
 import type { KeycloakConfig } from "../../keycloak";
@@ -62,7 +58,7 @@ export function AuthProvider({
   sessionProvider,
 }: AuthProviderProps) {
   const { debug, messageHandlerKeys } = useAuthConfig();
-  const { query } = MultiPlatform.isNext ? useRouter() : { query: {} };
+  const query = {}; // TODO: get the query params
   const authStore = useAuthStore();
   if (typeof authStore === "undefined") {
     return <Loading loadingComponent={loadingComponent} />;

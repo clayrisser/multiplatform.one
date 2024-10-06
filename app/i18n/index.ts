@@ -30,9 +30,6 @@ import locales from "./locales";
 const logger = console;
 const { defaultNamespace, defaultLocale, supportedLocales } = config;
 
-if (MultiPlatform.isNext && !MultiPlatform.isStatic)
-  logger.warn("next should not import 'app/i18n'");
-
 export async function i18nInit() {
   return i18n.use(initReactI18next).init({
     defaultNS: defaultNamespace,

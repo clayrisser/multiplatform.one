@@ -24,7 +24,7 @@ import path from "node:path";
 import {
   lookupTamaguiModules,
   lookupTranspileModules,
-} from "@multiplatform.one/utils/transpileModules";
+} from "@multiplatform.one/utils/build";
 import type { StorybookConfig } from "@storybook/nextjs";
 import publicConfig from "app/config/public";
 

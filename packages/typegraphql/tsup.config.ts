@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import { lookupTranspileModules } from "@multiplatform.one/utils/transpileModules";
+import { lookupTranspileModules } from "@multiplatform.one/utils/build";
 import { defineConfig } from "tsup";
 
 export default defineConfig({

@@ -78,3 +78,13 @@ export function lookupTamaguiModules(
   if (log) logger.debug("tamaguiModules:", tamaguiModules.join(", "));
   return tamaguiModules;
 }
+
+export function resolveConfig(keys: Record<string, any> = {}) {
+  return keys.reduce(
+    (acc: Record<string, any>, key: string) => {
+      if (process.env[key]) acc[key] = process.env[key];
+      return acc;
+    },
+    {} as Record<string, any>,
+  );
+}

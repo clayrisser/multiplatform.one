@@ -19,4 +19,9 @@
  * limitations under the License.
  */
 
+import { Config } from "./config";
+
+const config = new Config();
+
+export { config };
 export * from "./config";

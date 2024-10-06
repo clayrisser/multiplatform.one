@@ -20,8 +20,8 @@
  */
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-// import { MultiPlatform } from "multiplatform.one";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { MultiPlatform } from "multiplatform.one";
 import React, { type PropsWithChildren } from "react";
 
 export const queryClient = new QueryClient();
@@ -34,18 +34,12 @@ export function GlobalTanstackProvider({
   children,
   debug,
 }: GlobalTanstackProviderProps) {
-  // return children
   return (
     <QueryClientProvider client={queryClient}>
+      {/* {debug && !MultiPlatform.isStorybook && (
+        <ReactQueryDevtools initialIsOpen={false} />
+      )} */}
       {children}
     </QueryClientProvider>
-  )
-  // return (
-  //   <QueryClientProvider client={queryClient}>
-  //     {/* {debug && !MultiPlatform.isStorybook && (
-  //       <ReactQueryDevtools initialIsOpen={false} />
-  //     )} */}
-  //     {children}
-  //   </QueryClientProvider>
-  // );
+  );
 }

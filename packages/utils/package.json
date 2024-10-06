@@ -20,9 +20,9 @@
       "import": "./lib/index.js",
       "require": "./lib/index.js"
     },
-    "./transpileModules": {
-      "import": "./lib/transpileModules.js",
-      "require": "./lib/transpileModules.js"
+    "./build": {
+      "import": "./lib/build.js",
+      "require": "./lib/build.js"
     },
     "./package.json": "./package.json"
   },
@@ -41,5 +41,8 @@
   },
   "engines": {
     "node": ">=6.0.0"
+  },
+  "dependencies": {
+    "yaml": "^2.5.1"
   }
 }

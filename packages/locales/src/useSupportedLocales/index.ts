@@ -19,7 +19,6 @@
  * limitations under the License.
  */
 
-import { MultiPlatform } from "multiplatform.one";
 import { useEffect, useState } from "react";
 
 export function useSupportedLocales(): string[] | undefined {
@@ -27,20 +26,7 @@ export function useSupportedLocales(): string[] | undefined {
 
   useEffect(() => {
     (async () => {
-      if (MultiPlatform.isNext && !MultiPlatform.isStatic) {
-        const nextConfig = (await import("next/config"))?.default;
-        const getConfig =
-          typeof nextConfig === "function"
-            ? nextConfig
-            : (nextConfig as { default: typeof nextConfig }).default;
-        setSupportedLocales([
-          ...((typeof getConfig === "function" &&
-            getConfig()?.publicRuntimeConfig?.i18n?.languages) || ["en"]),
-        ]);
-      } else {
-        // @ts-ignore
-        setSupportedLocales((await import("app/i18n")).supportedLocales);
-      }
+      setSupportedLocales((await import("app/i18n")).supportedLocales);
     })();
   }, []);
 

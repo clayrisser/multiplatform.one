@@ -19,8 +19,6 @@
  * limitations under the License.
  */
 
-"use client";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MultiPlatform } from "multiplatform.one";
 import React, {

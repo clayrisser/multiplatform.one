@@ -1,8 +1,9 @@
 import type { Asset } from "expo-asset";
 import { useAssets as expoUseAssets } from "expo-asset";
-import type { StaticImageData } from "next/image";
 
 const logger = console;
+
+type StaticImageData = any;
 
 export function useAssets(
   modules: any | any[],

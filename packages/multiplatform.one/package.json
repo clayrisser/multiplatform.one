@@ -41,8 +41,7 @@
     "@tamagui/web": "^1.29.3",
     "@types/storybook__react-native": "^5.2.1",
     "expo-constants": "~15.4.6",
-    "next": "^14.2.14",
-    "react": "18.2.0",
+    "react": "18.3.1",
     "react-native": "0.74.2"
   },
   "devDependencies": {
@@ -59,17 +58,16 @@
     "@types/storybook__react-native": "^5.2.1",
     "@vitejs/plugin-react": "^4.3.2",
     "expo-constants": "~16.0.2",
-    "next": "^14.2.14",
-    "react": "18.2.0",
+    "react": "18.3.1",
     "react-native": "0.74.2",
     "ts-jest": "^29.2.5",
     "typescript": "~5.3.3",
+    "vite": "6.0.0-beta.1",
     "vitest": "^1.6.0",
     "vitest-react-native": "^0.1.5"
   },
   "dependencies": {
     "@multiplatform.one/use-store": "workspace:0.0.3",
-    "cookies-next": "^4.2.1",
     "react-cookie": "^7.2.0"
   }
 }

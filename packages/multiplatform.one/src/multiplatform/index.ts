@@ -27,13 +27,7 @@ import {
   isWebTouchable,
   isWindowDefined,
 } from "@tamagui/constants";
-import nextConfig from "next/config";
 import { MultiPlatformBase } from "./multiplatformBase";
-
-const getConfig =
-  typeof nextConfig === "function"
-    ? nextConfig
-    : (nextConfig as { default: typeof nextConfig })?.default;
 
 declare global {
   interface Window {
@@ -68,11 +62,6 @@ export class MultiPlatform extends MultiPlatformBase {
       return true;
     }
   })();
-
-  static isStatic =
-    MultiPlatform.isNext &&
-    (typeof getConfig === "function" ? getConfig() : {})?.publicRuntimeConfig
-      ?.NEXT_STATIC === "1";
 
   static isElectron =
     MultiPlatform.isElectronRender ||

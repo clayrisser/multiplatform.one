@@ -19,8 +19,6 @@
  * limitations under the License.
  */
 
-"use client";
-
 import React, {
   type ComponentType,
   type PropsWithChildren,

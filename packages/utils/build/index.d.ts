@@ -1,7 +1,7 @@
 /*
- * File: /config/private.js
- * Project: app
- * File Created: 04-04-2024 15:50:39
+ * File: /transpileModules/index.d.ts
+ * Project: @multiplatform.one/utils
+ * File Created: 16-06-2024 14:28:33
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,8 +19,4 @@
  * limitations under the License.
  */
 
-module.exports = {
-  NEXT_AUTOMATIC_STATIC_OPTIMIZATION:
-    process.env.NEXT_AUTOMATIC_STATIC_OPTIMIZATION,
-  SECRET: process.env.SECRET,
-};
+export * from "../lib/build";

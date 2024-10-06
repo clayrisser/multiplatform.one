@@ -19,8 +19,6 @@
  * limitations under the License.
  */
 
-"use client";
-
 import { createContext } from "react";
 import type { Keycloak } from "./keycloak";
 

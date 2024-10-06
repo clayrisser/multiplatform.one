@@ -1,7 +1,7 @@
-/**
- * File: /config/public.js
- * Project: app
- * File Created: 11-06-2024 10:47:58
+/*
+ * File: /transpileModules/index.js
+ * Project: @multiplatform.one/utils
+ * File Created: 16-06-2024 14:28:33
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,14 +19,4 @@
  * limitations under the License.
  */
 
-module.exports = {
-  BASE_URL: process.env.BASE_URL || "",
-  CROSS_STORAGE_HUB_URL: process.env.CROSS_STORAGE_HUB_URL || "",
-  DEBUG: process.env.DEBUG || "",
-  KEYCLOAK_BASE_URL: process.env.KEYCLOAK_BASE_URL || "",
-  KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID || "",
-  KEYCLOAK_ENABLED: process.env.KEYCLOAK_ENABLED || "",
-  KEYCLOAK_PUBLIC_CLIENT_ID: process.env.KEYCLOAK_PUBLIC_CLIENT_ID || "",
-  KEYCLOAK_REALM: process.env.KEYCLOAK_REALM || "",
-  SENTRY_DSN: process.env.SENTRY_DSN || "",
-};
+export * from "../lib/build.js";
