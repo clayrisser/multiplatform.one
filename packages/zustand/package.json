@@ -24,7 +24,12 @@
   "scripts": {
     "build": "rm -rf dist types 2>/dev/null && tamagui-build "
   },
-  "files": ["NOTICE", "dist", "src", "types"],
+  "files": [
+    "NOTICE",
+    "dist",
+    "src",
+    "types"
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -33,13 +38,17 @@
   "bugs": {
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues"
   },
-  "keywords": ["zustand", "state", "react"],
+  "keywords": [
+    "zustand",
+    "state",
+    "react"
+  ],
   "engines": {
     "node": ">= 16.0"
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "1.21.0",
-    "@tamagui/build": "^1.112.4",
+    "@tamagui/build": "^1.112.22",
     "@types/node": "~20.12.13",
     "typescript": "~5.3.3",
     "vite": "^5.4.8"

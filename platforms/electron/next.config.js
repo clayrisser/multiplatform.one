@@ -20,6 +20,7 @@
  */
 
 process.env.IGNORE_TS_CONFIG_PATHS = "true";
+process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD = "1";
 
 const privateConfig = require("app/config/private");
 const publicConfig = require("app/config/public");
@@ -50,10 +51,10 @@ const plugins = [
     logTimings: true,
     outputCSS:
       process.env.NODE_ENV === "production" ? "./public/tamagui.css" : null,
-    themeBuilder: {
-      input: "../../packages/ui/src/themes/theme.ts",
-      output: "../../packages/ui/src/themes/theme-generated.ts",
-    },
+    // themeBuilder: {
+    //   input: "../../packages/ui/src/themes/theme.ts",
+    //   output: "../../packages/ui/src/themes/theme-generated.ts",
+    // },
     shouldExtract: (path) => {
       if (filePath.includes("node_modules")) return false;
       return /^\/app\//.test(
@@ -95,7 +96,7 @@ module.exports = (phase) => {
     experimental: {
       esmExternals: "loose",
       optimizeCss: phase !== PHASE_DEVELOPMENT_SERVER,
-      reactCompiler: true,
+      // reactCompiler: true, // enable on next 15
       scrollRestoration: true,
     },
     publicRuntimeConfig: {

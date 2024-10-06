@@ -37,13 +37,17 @@
   "scripts": {
     "build": "tsup"
   },
-  "files": ["background", "lib", "src"],
+  "files": [
+    "background",
+    "lib",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.56.2",
+    "@tanstack/react-query": "^5.59.0",
     "uuid": "^9.0.1"
   },
   "peerDependencies": {

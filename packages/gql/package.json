@@ -4,9 +4,9 @@
   "private": true,
   "sideEffects": false,
   "devDependencies": {
-    "@0no-co/graphqlsp": "^1.12.15"
+    "@0no-co/graphqlsp": "^1.12.16"
   },
   "dependencies": {
-    "gql.tada": "^1.8.9"
+    "gql.tada": "^1.8.10"
   }
 }

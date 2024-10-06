@@ -83,32 +83,27 @@
       ]
     },
     {
-      "name": "Platform",
+      "name": "Web",
+      "configurations": [
+        "api dev",
+        "api mesh",
+        "frappe dev",
+        "next dev"
+      ]
+    },
+    {
+      "name": "Native",
       "configurations": [
         "api dev",
         "api mesh",
         "expo dev",
-        "frappe dev",
-        "next dev"
+        "frappe dev"
       ]
     },
     {
       "name": "Storybook",
       "configurations": [
         "keycloak dev",
-        "storybook dev",
-        "storybook-expo dev"
-      ]
-    },
-    {
-      "name": "All",
-      "configurations": [
-        "api dev",
-        "api mesh",
-        "expo dev",
-        "frappe dev",
-        "keycloak dev",
-        "next dev",
         "storybook dev",
         "storybook-expo dev"
       ]

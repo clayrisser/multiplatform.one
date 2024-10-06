@@ -20,9 +20,9 @@
       "require": "./dist/cjs/next/index.js"
     },
     "./theme": {
+      "types": "./types/theme/index.d.ts",
       "import": "./dist/esm/theme/index.js",
-      "require": "./dist/cjs/theme/index.js",
-      "types": "./types/theme/index.d.ts"
+      "require": "./dist/cjs/theme/index.js"
     },
     "./package.json": "./package.json"
   },
@@ -56,7 +56,7 @@
     "@tamagui/web": "^1.29.3",
     "@types/storybook__react-native": "^5.2.1",
     "expo-constants": "~15.4.6",
-    "next": "^13.4.3",
+    "next": "^14.2.14",
     "react": "18.2.0",
     "react-native": "0.74.2"
   },
@@ -64,17 +64,17 @@
     "@react-native-async-storage/async-storage": "1.23.1",
     "@storybook/react": "~7.6.19",
     "@storybook/react-native": "^7.6.20",
-    "@tamagui/build": "^1.112.4",
-    "@tamagui/constants": "^1.112.4",
-    "@tamagui/web": "^1.112.4",
+    "@tamagui/build": "^1.112.22",
+    "@tamagui/constants": "^1.112.22",
+    "@tamagui/web": "^1.112.22",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^15.0.7",
     "@types/react": "^18.3.1",
     "@types/react-native": "^0.73.0",
     "@types/storybook__react-native": "^5.2.1",
-    "@vitejs/plugin-react": "^4.3.1",
+    "@vitejs/plugin-react": "^4.3.2",
     "expo-constants": "~16.0.2",
-    "next": "^14.2.13",
+    "next": "^14.2.14",
     "react": "18.2.0",
     "react-native": "0.74.2",
     "ts-jest": "^29.2.5",

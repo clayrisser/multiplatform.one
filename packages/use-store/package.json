@@ -45,11 +45,11 @@
     "node": ">=6.0.0"
   },
   "dependencies": {
-    "@tamagui/use-store": "^1.112.4"
+    "@tamagui/use-store": "^1.112.22"
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "1.21.0",
-    "@tamagui/build": "^1.112.4",
+    "@tamagui/build": "^1.112.22",
     "typescript": "~5.3.3",
     "vite": "^5.4.8"
   },

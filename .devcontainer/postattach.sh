@@ -1,5 +1,6 @@
 #!/bin/sh
 
+corepack enable
 pnpm config set store-dir /home/frappe/.pnpm-store
 sudo chown frappe:frappe /home/frappe/.pnpm-store
 git config --global --add safe.directory "$(pwd)"
