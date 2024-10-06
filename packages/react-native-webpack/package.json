@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/react-native-webpack",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "webpack support for react native web",
   "sideEffects": false,
   "keywords": [
@@ -48,7 +48,7 @@
     "webpack": "^5.95.0"
   },
   "devDependencies": {
-    "@multiplatform.one/utils": "workspace:0.1.0",
+    "@multiplatform.one/utils": "workspace:0.1.1",
     "tsup": "^8.3.0",
     "typescript": "~5.3.3"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/typegraphql",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
   "contributors": [
     {
@@ -24,7 +24,11 @@
   "scripts": {
     "build": "tsup"
   },
-  "files": ["bin", "lib", "src"],
+  "files": [
+    "bin",
+    "lib",
+    "src"
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -33,12 +37,15 @@
   "bugs": {
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues"
   },
-  "keywords": ["type-graphql", "graphql"],
+  "keywords": [
+    "type-graphql",
+    "graphql"
+  ],
   "engines": {
     "node": ">= 16.0"
   },
   "devDependencies": {
-    "@multiplatform.one/utils": "workspace:0.1.0",
+    "@multiplatform.one/utils": "workspace:0.1.1",
     "@prisma/client": "~5.12.1",
     "@types/body-parser": "^1.19.5",
     "@types/lodash.startcase": "^4.4.9",
@@ -82,5 +89,9 @@
     "tsyringe": "^4.8.0",
     "ws": "^8.18.0"
   },
-  "transpileModules": ["#ansi-styles", "#supports-color", "chalk"]
+  "transpileModules": [
+    "#ansi-styles",
+    "#supports-color",
+    "chalk"
+  ]
 }

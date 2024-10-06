@@ -1,9 +1,13 @@
 {
   "name": "@multiplatform.one/utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "utilities for multiplatform.one",
   "sideEffects": false,
-  "keywords": ["react", "react-native", "electron"],
+  "keywords": [
+    "react",
+    "react-native",
+    "electron"
+  ],
   "homepage": "https://multiplatform.one",
   "bugs": {
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues",
@@ -29,7 +33,12 @@
   "scripts": {
     "build": "tsup"
   },
-  "files": ["bin", "lib", "src", "transpileModules"],
+  "files": [
+    "bin",
+    "lib",
+    "src",
+    "transpileModules"
+  ],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
