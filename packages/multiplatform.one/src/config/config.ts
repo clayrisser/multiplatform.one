@@ -56,7 +56,7 @@ export class Config implements IConfig {
     let viteConfig: Record<string, string | undefined> = {};
     try {
       viteConfig = JSON.parse(import.meta.env.VITE_MP_CONFIG || "{}");
-    } catch (err) { }
+    } catch (err) {}
     this._config = {
       ...this._reduceConfig(typeof viteConfig === "object" ? viteConfig : {}),
       ...this._reduceConfig(config),

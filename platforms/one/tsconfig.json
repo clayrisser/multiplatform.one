@@ -9,7 +9,7 @@
     "strict": true,
     "rootDir": ".",
     "noEmit": true,
-    "module": "Preserve",
+    "module": "ESNext",
     "moduleResolution": "Bundler",
     "preserveSymlinks": true,
     "skipLibCheck": true,
@@ -25,5 +25,6 @@
     "**/dist",
     "**/types",
     "**/__tests__"
-  ]
+  ],
+  "include": ["../../app/i18n/i18n.d.ts"]
 }

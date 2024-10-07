@@ -10,7 +10,6 @@
     "@fontsource/silkscreen": "^5.1.0",
     "@multiplatform.one/components": "workspace:4.1.3",
     "@multiplatform.one/keycloak": "workspace:2.0.3",
-    "@multiplatform.one/locales": "workspace:1.1.3",
     "@multiplatform.one/react-query-urql": "workspace:1.1.3",
     "@multiplatform.one/use-store": "workspace:0.0.3",
     "@tamagui/font-fira-mono": "^1.112.22",

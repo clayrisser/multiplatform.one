@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-import { useTranslation } from "@multiplatform.one/locales";
 import { ChevronLeft } from "@tamagui/lucide-icons";
 import { withDefaultLayout } from "app/layouts/Default";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Paragraph, YStack } from "ui";
 
 function UserScreen() {

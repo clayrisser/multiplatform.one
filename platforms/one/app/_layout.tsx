@@ -1,11 +1,27 @@
 import "./_layout.css";
 import "@tamagui/core/reset.css";
+import resources from "virtual:i18next-loader";
 import { SchemeProvider, useColorScheme } from "@vxrn/color-scheme";
+import { supportedLngs } from "app/i18n";
 import { GlobalProvider } from "app/providers";
+import i18n from "i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
 import { LoadProgressBar } from "one";
 import { Slot } from "one";
-import { TamaguiProvider, Text, isWeb } from "tamagui";
+import { initReactI18next } from "react-i18next";
+import { isWeb } from "tamagui";
 import tamaguiConfig from "../tamagui.config";
+
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources,
+    supportedLngs,
+    interpolation: {
+      escapeValue: false,
+    },
+  });
 
 export default function Layout() {
   return (

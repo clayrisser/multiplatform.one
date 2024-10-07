@@ -19,7 +19,6 @@
  * limitations under the License.
  */
 
-import { useTranslation } from "@multiplatform.one/locales";
 import {
   useGqlQuery,
   useGqlSubscription,
@@ -29,6 +28,7 @@ import { withDefaultLayout } from "app/layouts/Default";
 // import { ThemeTintAlt } from '@multiplatform.one/components';
 import { gql } from "gql";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Anchor,
   Button,

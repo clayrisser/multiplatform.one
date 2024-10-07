@@ -36,9 +36,9 @@ export function GlobalTanstackProvider({
 }: GlobalTanstackProviderProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      {/* {debug && !MultiPlatform.isStorybook && (
+      {debug && !MultiPlatform.isStorybook && (
         <ReactQueryDevtools initialIsOpen={false} />
-      )} */}
+      )}
       {children}
     </QueryClientProvider>
   );

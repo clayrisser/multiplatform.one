@@ -19,7 +19,6 @@
  * limitations under the License.
  */
 
-import { useLocale, useSupportedLocales } from "@multiplatform.one/locales";
 import { config } from "multiplatform.one";
 import type { WithLayout } from "multiplatform.one";
 // import { SelectSimple } from '../../forms/SelectSimple';
@@ -27,6 +26,7 @@ import { createWithLayout } from "multiplatform.one";
 import { useTheme } from "multiplatform.one/theme";
 import React from "react";
 import type { ComponentType, ReactNode } from "react";
+import { useLocale, useSupportedLocales } from "react-i18next";
 import type { ThemeName } from "tamagui";
 import { Adapt, Circle, Popover, Select, XStack, YStack } from "tamagui";
 import { useTint } from "../../tints";
