@@ -1,5 +1,4 @@
 import { ChevronRight } from "@tamagui/lucide-icons";
-import React from "react";
 import { Accordion, H5, Text, XStack, YStack } from "tamagui";
 import { AccordionItem, SimpleAccordion } from "./index";
 

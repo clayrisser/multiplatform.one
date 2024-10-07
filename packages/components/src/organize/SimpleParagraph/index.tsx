@@ -1,6 +1,27 @@
-import type React from "react";
-import { Paragraph, ScrollView, Text, XStack, YStack } from "tamagui";
+/**
+ * File: /src/organize/SimpleParagraph/index.tsx
+ * Project: @multiplatform.one/components
+ * File Created: 11-09-2024 14:21:33
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import type { ReactNode } from "react";
 import type { ParagraphProps, YStackProps } from "tamagui";
+import { Paragraph, ScrollView, Text, XStack, YStack } from "tamagui";
 import { CodeBlock } from "../../code";
 
 export interface SimpleParagraphProps
@@ -21,7 +42,7 @@ export const SimpleParagraph = ({
     const segments = data?.match(regex);
     const parsedSegments: {
       type: string;
-      content?: React.ReactNode;
+      content?: ReactNode;
       language?: string;
       code?: string;
       isBold?: boolean;
@@ -38,7 +59,7 @@ export const SimpleParagraph = ({
       } else {
         // Splitting the text segment by new lines and treating each new line as a separate text segment
         segment.split("\n").forEach((line) => {
-          const content: React.ReactNode[] = [];
+          const content: ReactNode[] = [];
           let lastIndex = 0;
           line.replace(boldTextRegex, (match, p1, offset) => {
             if (offset > lastIndex) {

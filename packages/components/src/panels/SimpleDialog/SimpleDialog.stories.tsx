@@ -21,7 +21,7 @@
 
 import { action } from "@storybook/addon-actions";
 import type { Meta } from "@storybook/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Dialog, Input, YStack } from "tamagui";
 import { Text } from "tamagui";
 import { SimpleDialog } from "./index";

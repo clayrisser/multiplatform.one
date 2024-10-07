@@ -20,16 +20,6 @@
  */
 
 import {
-  useGqlQuery,
-  useGqlSubscription,
-} from "@multiplatform.one/react-query-urql";
-import { withDefaultLayout } from "app/layouts/Default";
-// import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
-// import { ThemeTintAlt } from '@multiplatform.one/components';
-import { gql } from "gql";
-import React from "react";
-import { useTranslation } from "react-i18next";
-import {
   Anchor,
   Button,
   H1,
@@ -41,33 +31,8 @@ import {
   YStack,
 } from "ui";
 
-const AuthQuery = gql(`
-  query AuthQuery {
-    username
-  }
-`);
-interface AuthQueryResponse {
-  username: string;
-}
-
-const CountSubscription = gql(`
-  subscription countSubscription{
-    count
-  }
-`);
-
 function HomeScreen() {
   const { t } = useTranslation();
-  const { data, isLoading } = useGqlQuery<AuthQueryResponse>({
-    query: AuthQuery,
-    queryKey: ["userAuth"],
-    variables: {},
-  });
-
-  const countResponse = useGqlSubscription({
-    query: CountSubscription,
-    queryKey: ["count"],
-  });
 
   return (
     <YStack fullscreen jc="center" flexWrap="wrap" ai="center" gap="$3">

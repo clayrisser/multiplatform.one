@@ -27,7 +27,7 @@ import type {
   KeycloakLogoutOptions as KeycloakJsLogoutOptions,
 } from "keycloak-js";
 import { MultiPlatform } from "multiplatform.one";
-import { signIn, signOut } from "next-auth/react";
+// import { signIn, signOut } from "next-auth/react";
 import { useContext } from "react";
 import { useAuthConfig } from "../hooks";
 import type { Session } from "../session/session";
@@ -36,6 +36,12 @@ import type { AccessTokenParsed, TokenParsed } from "../token";
 import type { KeycloakMock } from "../types";
 import { type KeycloakConfig, KeycloakConfigContext } from "./config";
 import { KeycloakContext } from "./context";
+
+// TODO: implement
+function signIn() {}
+
+// TODO: implement
+function signOut() {}
 
 export type KeycloakLoginOptions = KeycloakJsLoginOptions &
   AuthRequestPromptOptions & { redirect?: boolean };
@@ -170,10 +176,10 @@ export class Keycloak {
     if (this.keycloakClient) {
       await this.keycloakClient.login(options);
     } else if (MultiPlatform.isNext && !MultiPlatform.isServer) {
-      await signIn("keycloak", {
-        callbackUrl: options.redirectUri,
-        redirect: options.redirect,
-      });
+      // await signIn("keycloak", {
+      //   callbackUrl: options.redirectUri,
+      //   redirect: options.redirect,
+      // });
     } else {
       await this._login?.(options);
     }
@@ -187,9 +193,9 @@ export class Keycloak {
       await this.keycloakClient.logout(options);
     } else if (MultiPlatform.isNext && !MultiPlatform.isServer) {
       await fetch("/api/auth/logout", { method: "GET" });
-      await signOut({
-        callbackUrl: options.redirectUri,
-      });
+      // await signOut({
+      //   callbackUrl: options.redirectUri,
+      // });
     } else {
       await this._logout?.(options);
     }
@@ -209,7 +215,7 @@ export function useKeycloak() {
   const { disabled } = useAuthConfig();
   if (disabled) return null;
   if (keycloak) return keycloak;
-  const { session, status } = useSession();
+  // const { session, status } = useSession();
   if (MultiPlatform.isStorybook) {
     return new Keycloak(keycloakConfig, {
       email: "storybook@example.com",
@@ -219,7 +225,7 @@ export function useKeycloak() {
   if (status === "unauthenticated") {
     return new Keycloak(keycloakConfig);
   }
-  if (status === "authenticated" && session?.accessToken) {
-    return new Keycloak(keycloakConfig, session as Session);
-  }
+  // if (status === "authenticated" && session?.accessToken) {
+  //   return new Keycloak(keycloakConfig, session as Session);
+  // }
 }

@@ -21,10 +21,10 @@
 
 import { action } from "@storybook/addon-actions";
 import type { Meta } from "@storybook/react";
-import React from "react";
+import { useState } from "react";
 import { Button, YStack } from "tamagui";
-import { SimpleSheet } from "./index";
 import type { SimpleSheetProps } from "./index";
+import { SimpleSheet } from "./index";
 
 const meta: Meta = {
   title: "panels/SimpleSheet",
@@ -47,7 +47,7 @@ const mainArgs: SimpleSheetProps = {
 };
 
 function Sheet() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <YStack padding="$4" fullscreen>

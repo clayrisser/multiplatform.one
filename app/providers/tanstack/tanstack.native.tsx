@@ -20,7 +20,6 @@
  */
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React from "react";
 import type { GlobalTanstackProviderProps } from "./tanstack";
 
 export const queryClient = new QueryClient();

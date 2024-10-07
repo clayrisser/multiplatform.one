@@ -21,7 +21,6 @@
 
 import { action } from "@storybook/addon-actions";
 import { useForm } from "@tanstack/react-form";
-import React from "react";
 import { Button } from "tamagui";
 import { YStack } from "tamagui";
 import { FieldInput } from "./FieldInput";

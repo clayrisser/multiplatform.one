@@ -19,7 +19,6 @@
  * limitations under the License.
  */
 
-import React from "react";
 import { ThemeableStack, XStack, styled, withStaticProperties } from "tamagui";
 import { TableCell } from "../TableCell";
 import { TableCol } from "../TableCol";

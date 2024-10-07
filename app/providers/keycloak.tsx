@@ -21,7 +21,6 @@
 
 import type { KeycloakProviderProps } from "@multiplatform.one/keycloak";
 import { KeycloakProvider } from "@multiplatform.one/keycloak";
-import React from "react";
 
 export interface GlobalKeycloakProviderProps extends KeycloakProviderProps {}
 

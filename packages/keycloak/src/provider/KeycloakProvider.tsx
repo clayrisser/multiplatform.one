@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import type { PropsWithChildren } from "react";
 import type { AuthConfig } from "../authConfig";
 import { AuthConfigContext } from "../authConfig";

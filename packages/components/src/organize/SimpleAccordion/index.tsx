@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import type React from "react";
+import type { ReactNode } from "react";
 import type {
   AccordionContentProps,
   AccordionItemProps,
@@ -28,16 +28,16 @@ import type {
 import { Accordion } from "tamagui";
 
 interface SimpleAccordionProps {
-  children: React.ReactNode;
+  children: ReactNode;
   overflow?: "visible" | "hidden" | "scroll";
   type?: "single" | "multiple";
 }
 
 type SimpleAccordionItemProps = AccordionItemProps & {
-  trigger: (open: boolean) => React.ReactNode;
+  trigger: (open: boolean) => ReactNode;
   triggerStyle?: AccordionTriggerProps;
   contentStyle?: AccordionContentProps;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export function SimpleAccordion({ children, ...props }: SimpleAccordionProps) {

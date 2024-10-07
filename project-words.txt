@@ -175,6 +175,7 @@ healthz
 helvetica
 hermes
 hmr
+hono
 hoverable
 href
 hsl
@@ -215,6 +216,7 @@ labelled
 labelledby
 lalit
 lang
+languagedetector
 lavanya
 liaoliaots
 lifecycler
@@ -455,6 +457,7 @@ vite
 vizag
 vscode
 vw
+vxrn
 wcag
 webfont
 webkit

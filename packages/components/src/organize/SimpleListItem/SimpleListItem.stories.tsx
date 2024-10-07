@@ -20,7 +20,7 @@
  */
 
 import { ChevronRight, Star } from "@tamagui/lucide-icons";
-import React from "react";
+import { useEffect, useState } from "react";
 import { Label, Separator, Switch, XStack, YStack } from "tamagui";
 import {
   SimpleList,
@@ -37,10 +37,10 @@ export default {
 };
 
 function Main(args: SimpleListProps & SimpleListItemProps) {
-  const [orientation, setOrientation] = React.useState(
+  const [orientation, setOrientation] = useState(
     args.orientation === "horizontal",
   );
-  React.useEffect(() => {
+  useEffect(() => {
     if (args.orientation === "horizontal") {
       setOrientation(true);
     } else {

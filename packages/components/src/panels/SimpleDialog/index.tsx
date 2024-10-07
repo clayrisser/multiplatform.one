@@ -20,7 +20,7 @@
  */
 
 import { X } from "@tamagui/lucide-icons";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import type {
   DialogContentProps,
@@ -66,7 +66,7 @@ export function SimpleDialog({
   transitionWidth,
   ...props
 }: SimpleDialogProps) {
-  const [open, setOpen] = React.useState(props.open);
+  const [open, setOpen] = useState(props.open);
 
   useEffect(() => {
     if (typeof props.open === "undefined" || props.open === open) return;

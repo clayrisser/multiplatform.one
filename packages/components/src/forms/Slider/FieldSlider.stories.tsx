@@ -1,5 +1,5 @@
 /**
- * File: /src/forms/FieldSlider/FieldSlider.stories.tsx
+ * File: /src/forms/Slider/FieldSlider.stories.tsx
  * Project: @multiplatform.one/components
  * File Created: 20-06-2024 06:03:52
  * Author: Clay Risser
@@ -42,10 +42,10 @@
 
 import { action } from "@storybook/addon-actions";
 import { useForm } from "@tanstack/react-form";
-import React from "react";
+import { useState } from "react";
 import { Button, Text, YStack } from "tamagui";
-import { FieldSlider } from "./FieldSlider";
 import type { FieldSliderProps } from "./FieldSlider";
+import { FieldSlider } from "./FieldSlider";
 
 export default {
   title: "forms/FieldSlider",
@@ -67,7 +67,7 @@ const mainArgs: FieldSliderProps = {
 main.args = mainArgs;
 
 export const form = () => {
-  const [sliderValue, setSliderValue] = React.useState<number[]>([0]);
+  const [sliderValue, setSliderValue] = useState<number[]>([0]);
 
   const form = useForm({
     defaultValues: {

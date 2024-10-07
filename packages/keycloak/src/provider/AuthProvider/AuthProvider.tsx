@@ -22,8 +22,6 @@
 import KeycloakClient from "keycloak-js";
 import type { KeycloakInitOptions } from "keycloak-js";
 import { MultiPlatform } from "multiplatform.one";
-import type { SessionProviderProps } from "next-auth/react";
-import { SessionProvider } from "next-auth/react";
 import type { PropsWithChildren } from "react";
 import { type ComponentType, useEffect, useMemo, useState } from "react";
 import { Loading } from "../../Loading";
@@ -35,10 +33,14 @@ import { persist, useAuthStore } from "../../state";
 import { validOrRefreshableToken } from "../../token";
 import { AfterAuth } from "../AfterAuth";
 
+// TODO: implement
+export function SessionProvider({ children }: PropsWithChildren) {
+  return children;
+}
+
 export interface AuthProviderProps extends PropsWithChildren {
   keycloakConfig: KeycloakConfig;
   keycloakInitOptions?: KeycloakInitOptions;
-  sessionProvider?: Omit<SessionProviderProps, "children">;
   loadingComponent?: ComponentType;
 }
 
@@ -55,7 +57,6 @@ export function AuthProvider({
   keycloakConfig,
   keycloakInitOptions,
   loadingComponent,
-  sessionProvider,
 }: AuthProviderProps) {
   const { debug, messageHandlerKeys } = useAuthConfig();
   const query = {}; // TODO: get the query params
@@ -332,8 +333,8 @@ export function AuthProvider({
     );
   }
 
-  if (MultiPlatform.isNext && !MultiPlatform.isElectron) {
-    return <SessionProvider {...sessionProvider}>{render()}</SessionProvider>;
+  if (MultiPlatform.isWeb && !MultiPlatform.isElectron) {
+    return <SessionProvider>{render()}</SessionProvider>;
   }
   return render();
 }

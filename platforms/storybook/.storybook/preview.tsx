@@ -30,7 +30,7 @@ import { importFonts } from "app/fonts";
 import { defaultLocale, i18n, i18nInit, supportedLocales } from "app/i18n";
 import { GlobalProvider } from "app/providers";
 import { useTheme } from "multiplatform.one/theme";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import type { PropsWithChildren } from "react";
 import { useDarkMode } from "storybook-dark-mode";
 import type { ThemeName } from "ui";

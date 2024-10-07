@@ -20,7 +20,6 @@
  */
 
 import { Link } from "one";
-import React from "react";
 import { Paragraph, XStack } from "ui";
 
 export const HomeNavigation = () => {

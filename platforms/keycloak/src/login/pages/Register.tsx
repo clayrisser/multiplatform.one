@@ -1,7 +1,27 @@
+/**
+ * File: /src/login/pages/Register.tsx
+ * Project: @platform/keycloak
+ * File Created: 11-09-2024 14:21:33
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import { Eye, EyeOff } from "@tamagui/lucide-icons";
 import { useForm } from "@tanstack/react-form";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
-import React from "react";
 import { useCallback, useRef, useState } from "react";
 import type { GestureResponderEvent } from "react-native";
 import { Anchor, FieldInput, Paragraph, SubmitButton, Text, YStack } from "ui";
@@ -33,7 +53,7 @@ export default function Register({
     recaptchaSiteKey,
   } = kcContext;
   const { msg } = i18n;
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const formRef = useRef<HTMLFormElement | null>(null);
   const [error, setError] = useState<RegisterForm>({});
 

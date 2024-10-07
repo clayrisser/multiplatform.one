@@ -24,7 +24,7 @@ import { useToastController } from "@tamagui/toast";
 import { useForm } from "@tanstack/react-form";
 import { HomeNavigation } from "app/components/homeNavigation";
 import { withDefaultLayout } from "app/layouts/Default";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Card,
   FieldCheckbox,

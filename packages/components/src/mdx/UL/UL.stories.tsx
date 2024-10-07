@@ -19,7 +19,6 @@
  * limitations under the License.
  */
 
-import React from "react";
 import { Text } from "tamagui";
 import { UL } from "./index";
 

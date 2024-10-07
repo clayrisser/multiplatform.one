@@ -23,7 +23,7 @@ import { useKeycloak } from "@multiplatform.one/keycloak";
 import { createClient as createWSClient } from "graphql-ws";
 import { config } from "multiplatform.one";
 import { MultiPlatform } from "multiplatform.one";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import type { PropsWithChildren } from "react";
 import {
   Client,

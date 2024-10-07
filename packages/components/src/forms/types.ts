@@ -23,12 +23,32 @@ import type {
   DeepKeys,
   DeepValue,
   FieldApi,
+  FieldApiOptions,
   Validator,
 } from "@tanstack/form-core";
-import type {
-  NodeType,
-  UseFieldOptions,
-} from "@tanstack/react-form/dist/esm/types";
+import type { FunctionComponent } from "rehackt";
+
+export type UseFieldOptions<
+  TParentData,
+  TName extends DeepKeys<TParentData>,
+  TFieldValidator extends
+    | Validator<DeepValue<TParentData, TName>, unknown>
+    | undefined = undefined,
+  TFormValidator extends
+    | Validator<TParentData, unknown>
+    | undefined = undefined,
+  TData extends DeepValue<TParentData, TName> = DeepValue<TParentData, TName>,
+> = FieldApiOptions<
+  TParentData,
+  TName,
+  TFieldValidator,
+  TFormValidator,
+  TData
+> & {
+  mode?: "value" | "array";
+};
+
+export type NodeType = ReturnType<FunctionComponent>;
 
 export type FieldComponentProps<
   TParentData,

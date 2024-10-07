@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import type { MDXProps } from "../../mdx/MDX";
 import { MDX } from "../../mdx/MDX";
 import type { MDXCodeBlockContextValue } from "../../mdx/MDXCodeBlock/MDXCodeBlockContext";

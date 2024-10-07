@@ -22,7 +22,6 @@
 import "react-native-gesture-handler";
 import "react-native-reanimated";
 import { ExpoRoot } from "expo-router";
-import React from "react";
 import { LogBox } from "react-native";
 
 LogBox.ignoreLogs([]);

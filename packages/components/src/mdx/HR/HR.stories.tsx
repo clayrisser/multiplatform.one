@@ -1,4 +1,3 @@
-import React from "react";
 import { HR } from "./index";
 
 export default {

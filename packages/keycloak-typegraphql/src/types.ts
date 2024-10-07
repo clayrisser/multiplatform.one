@@ -128,9 +128,9 @@ export interface KeycloakOptions {
   baseUrl: string;
   clientId: string;
   clientSecret: string;
+  cookieName?: string;
   debug?: boolean;
   ensureFreshness?: boolean;
-  nextAuthCookieName?: string;
   privatePort?: number;
   realm: string;
   register?: RegisterOptions | boolean;

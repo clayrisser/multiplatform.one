@@ -21,7 +21,7 @@
 
 import type { DeepKeys, DeepValue, Validator } from "@tanstack/form-core";
 import { Field, useForm } from "@tanstack/react-form";
-import React, { useId } from "react";
+import { useId } from "react";
 import type { TextAreaProps } from "tamagui";
 import { TextArea, useProps } from "tamagui";
 import type { FormFieldProps } from "../FormField";

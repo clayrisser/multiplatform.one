@@ -1,13 +1,10 @@
-import type { IconProps } from "@tamagui/helpers-icon";
-import { ChevronLeft, ChevronRight } from "@tamagui/lucide-icons";
-import React, { useEffect, useState, useRef } from "react";
 /**
  * File: /src/organize/SimpleCarousel/index.tsx
  * Project: @multiplatform.one/components
- * File Created: 17-10-2023 14:46:38
- * Author: Lalit rajak
+ * File Created: 11-09-2024 14:21:33
+ * File: /src/organize/SimpleCarousel/index.tsx
  * -----
- * BitSpur (c) Copyright 2021 - 2023
+ * BitSpur (c) Copyright 2021 - 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +18,15 @@ import React, { useEffect, useState, useRef } from "react";
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import type { IconProps } from "@tamagui/helpers-icon";
+import { ChevronLeft, ChevronRight } from "@tamagui/lucide-icons";
+import { Children, type ReactNode, useEffect, useRef, useState } from "react";
 import type { YStackProps } from "tamagui";
 import { Stack, Text, XStack, YStack } from "tamagui";
 
 export type CarouselProps = YStackProps & {
-  children: React.ReactNode;
+  children: ReactNode;
   speed?: number;
   showCenterIndicator?: boolean;
   showSideArrows?: boolean;
@@ -43,7 +44,7 @@ export function SimpleCarousel({
   ...props
 }: CarouselProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const childrenCount = React.Children.count(children);
+  const childrenCount = Children.count(children);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -143,7 +144,7 @@ export function SimpleCarousel({
         {...props}
         ref={carouselRef}
       >
-        {React.Children.map(children, (child, index) => (
+        {Children.map(children, (child, index) => (
           <YStack key={index} flex-flexGrow={0} flexShrink={0} flexBasis="100%">
             {child}
           </YStack>

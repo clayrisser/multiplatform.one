@@ -22,7 +22,6 @@
 import { TintFamiliesProvider } from "@multiplatform.one/components";
 import { ToastProvider } from "@tamagui/toast";
 import { useTheme } from "multiplatform.one/theme";
-import React from "react";
 import type { TamaguiProviderProps, ThemeName } from "ui";
 import { TamaguiProvider, Theme, tintFamilies } from "ui";
 import config from "../tamagui.config";

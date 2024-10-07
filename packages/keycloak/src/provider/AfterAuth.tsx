@@ -19,11 +19,7 @@
  * limitations under the License.
  */
 
-import React, {
-  type ComponentType,
-  type PropsWithChildren,
-  useEffect,
-} from "react";
+import { type ComponentType, type PropsWithChildren, useEffect } from "react";
 import { Loading } from "../Loading";
 import { useAuthConfig } from "../hooks";
 import { useKeycloak } from "../keycloak";

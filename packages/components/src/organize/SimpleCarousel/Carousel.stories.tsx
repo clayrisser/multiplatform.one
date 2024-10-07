@@ -1,5 +1,3 @@
-import React from "react";
-import { SimpleImage } from "../../images/SimpleImage";
 /**
  * File: /src/organize/SimpleCarousel/Carousel.stories.tsx
  * Project: @multiplatform.one/components
@@ -20,6 +18,8 @@ import { SimpleImage } from "../../images/SimpleImage";
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import { SimpleImage } from "../../images/SimpleImage";
 import { type CarouselProps, SimpleCarousel } from "./index";
 
 export default {

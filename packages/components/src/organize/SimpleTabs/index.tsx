@@ -19,7 +19,6 @@
  * limitations under the License.
  */
 
-import React from "react";
 import type { TabsContentProps, TabsListProps, TabsProps } from "tamagui";
 import { Separator } from "tamagui";
 import { Tabs } from "tamagui";

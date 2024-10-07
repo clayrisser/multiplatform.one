@@ -7,9 +7,7 @@
     "check": "biome check --fix --unsafe `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(json)|(yaml)|([jt]sx?)$'`",
     "count": "cloc `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(json)|(yaml)|([jt]sx?)$'`",
     "dev": "turbo run dev",
-    "dns": "cd .devcontainer && sh ./dns.sh",
     "generate": "turbo run generate",
-    "proxy": "caddy run --config .devcontainer/Caddyfile",
     "spellcheck": "cspell `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(txt)$'`",
     "test": "turbo run test"
   },
@@ -22,7 +20,7 @@
     "gql": "workspace:*",
     "npm-check-updates": "^16.14.20",
     "turbo": "^1.13.4",
-    "typescript": "~5.3.3",
+    "typescript": "^5.6.2",
     "ui": "workspace:*"
   },
   "pnpm": {
@@ -57,7 +55,7 @@
       "react-dom": "18.3.1",
       "react-native": "0.74.2",
       "type-graphql": "2.0.0-rc.1",
-      "typescript": "~5.3.3",
+      "typescript": "^5.6.2",
       "vite": "6.0.0-beta.1"
     }
   },

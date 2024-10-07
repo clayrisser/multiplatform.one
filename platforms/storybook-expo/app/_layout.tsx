@@ -25,7 +25,6 @@ import { GlobalProvider } from "app/providers";
 import { useFonts } from "expo-font";
 import { SplashScreen } from "expo-router";
 import { config } from "multiplatform.one";
-import React from "react";
 import { useCallback } from "react";
 import { View } from "react-native";
 import { Layout } from "../layout";

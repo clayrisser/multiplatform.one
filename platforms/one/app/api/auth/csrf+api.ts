@@ -1,7 +1,7 @@
 /*
- * File: /vite.config.mts
- * Project: @multiplatform.one/components
- * File Created: 02-06-2024 08:01:48
+ * File: /app/api/auth/csrf+api.ts
+ * Project: @platform/one
+ * File Created: 07-10-2024 16:03:30
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,16 +19,4 @@
  * limitations under the License.
  */
 
-import path from "node:path";
-import react from "@vitejs/plugin-react";
-import reactNative from "vitest-react-native";
-import { defineConfig } from "vitest/config";
-
-export default defineConfig({
-  plugins: [reactNative(), react()],
-  test: {
-    environment: "jsdom",
-    setupFiles: [path.resolve(__dirname, "src/testSetup.ts")],
-    reporters: "dot",
-  },
-});
+export { authHandler as GET } from "@multiplatform.one/keycloak/one";

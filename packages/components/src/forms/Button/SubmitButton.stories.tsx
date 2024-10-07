@@ -21,7 +21,6 @@
 
 import type { Meta } from "@storybook/react";
 import { useForm } from "@tanstack/react-form";
-import React from "react";
 import { SubmitButton, type SubmitButtonProps } from "./SubmitButton";
 
 const meta: Meta = {

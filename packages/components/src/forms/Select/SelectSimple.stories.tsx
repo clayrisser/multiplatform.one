@@ -1,5 +1,4 @@
 import { action } from "@storybook/addon-actions";
-import React from "react";
 import { Select } from "tamagui";
 import { SelectSimple } from "./SelectSimple";
 

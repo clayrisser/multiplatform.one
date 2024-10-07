@@ -20,9 +20,8 @@
  */
 
 import { useMDXComponents } from "@mdx-js/react";
-import type { MDXComponents } from "@mdx-js/react/lib";
 import type { DebugProp } from "@tamagui/web";
-import React from "react";
+import type { MDXComponents } from "mdx/types";
 import { mdxComponents } from "../components";
 import { useCompileAndEvaluateMdx } from "../hooks";
 

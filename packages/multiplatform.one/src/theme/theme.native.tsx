@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import React, { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import {
   ThemeContext,
   type ThemeProviderProps,
@@ -70,7 +70,7 @@ export function ThemeProvider({ children, theme }: ThemeProviderProps) {
   const themeStore = useThemeStore();
   const root = themeStore?.root || defaultThemeValue.root;
   const sub = themeStore?.sub || defaultThemeValue.sub;
-  const value = React.useMemo(() => ({ root, sub }), [root, sub]);
+  const value = useMemo(() => ({ root, sub }), [root, sub]);
 
   useEffect(() => {
     setTheme({ root, sub });

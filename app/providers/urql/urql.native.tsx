@@ -22,7 +22,7 @@
 import { useKeycloak } from "@multiplatform.one/keycloak";
 import { devtoolsExchange } from "@urql/devtools";
 import { config } from "multiplatform.one";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Provider as UrqlProvider } from "urql";
 import { createClient, fetchExchange, subscriptionExchange } from "urql";
 import type { GlobalUrqlProviderProps } from "./urql";

@@ -1,4 +1,3 @@
-import React from "react";
 /**
  * File: /screens/form/form.stories.tsx
  * Project: app
@@ -19,8 +18,11 @@ import React from "react";
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import FormScreen from "./index";
+
 export default {
   title: "screens/Form",
 };
+
 export const main = () => <FormScreen />;

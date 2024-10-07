@@ -1,28 +1,7 @@
-/**
- * File: /src/keycloakService.ts
- * Project: @multiplatform.one/keycloak-typegraphql
- * File Created: 11-06-2024 10:47:58
- * Author: Clay Risser
- * -----
- * BitSpur (c) Copyright 2021 - 2024
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 /*
  * File: /src/keycloakService.ts
  * Project: @multiplatform.one/keycloak-typegraphql
- * File Created: 04-04-2024 15:50:39
+ * File Created: 28-09-2024 00:43:12
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -41,14 +20,14 @@
  */
 
 import type UserRepresentation from "@keycloak/keycloak-admin-client/lib/defs/userRepresentation";
-import type { Session } from "@multiplatform.one/keycloak";
+// import type { Session } from "@multiplatform.one/keycloak";
 import type { Ctx } from "@multiplatform.one/typegraphql";
 import { type Logger, getReqHeader } from "@multiplatform.one/typegraphql";
 import axios from "axios";
 import type { AxiosError } from "axios";
 import cookie from "cookie";
 import type { Grant } from "keycloak-connect";
-import { decode } from "next-auth/jwt";
+// import { decode } from "next-auth/jwt";
 import { Lifecycle, inject, injectable, scoped } from "tsyringe";
 import type { KeycloakConnect } from "./initialize";
 import {
@@ -91,7 +70,7 @@ export class KeycloakService {
 
   private _scopes: string[] | undefined;
 
-  private _nextAuthSession: Session | undefined;
+  // private _nextAuthSession: Session | undefined;
 
   constructor(
     @inject("REQ") public readonly req: KeycloakRequest,
@@ -103,7 +82,7 @@ export class KeycloakService {
   ) {
     this.options = {
       ensureFreshness: true,
-      nextAuthCookieName: "next-auth.session-token",
+      cookieName: "next-auth.session-token",
       ...options,
     };
   }
@@ -545,10 +524,10 @@ export class KeycloakService {
   }
 
   private async getNextAuthSession() {
-    if (this._nextAuthSession) return this._nextAuthSession;
+    // if (this._nextAuthSession) return this._nextAuthSession;
     const chunks: Record<string, string> = {};
     const cookies = cookie.parse(getReqHeader(this.req, "cookie") || "");
-    const cookieName = this.options.nextAuthCookieName!;
+    const { cookieName } = this.options;
     Object.keys(cookies).forEach((name) => {
       if (name.startsWith(cookieName)) chunks[name] = cookies[name];
     });
@@ -560,11 +539,12 @@ export class KeycloakService {
     if (!sortedKeys.length) return undefined;
     const token = sortedKeys.map((key) => chunks[key]).join("");
     try {
-      this._nextAuthSession = (await decode({
-        token,
-        secret: this.options.secret || "",
-      })) as unknown as Session | undefined;
-      return this._nextAuthSession;
+      // this._nextAuthSession = (await decode({
+      //   token,
+      //   secret: this.options.secret || "",
+      // })) as unknown as Session | undefined;
+      // return this._nextAuthSession;
+      return undefined;
     } catch (err) {
       this.logger.error(err);
       return undefined;
@@ -666,7 +646,7 @@ export class KeycloakService {
     this._bearerToken = undefined;
     this._grant = undefined;
     this._idToken = undefined;
-    this._nextAuthSession = undefined;
+    // this._nextAuthSession = undefined;
     this._refreshToken = undefined;
     this._roles = undefined;
     this._scopes = undefined;

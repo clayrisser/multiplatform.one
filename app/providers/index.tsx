@@ -22,7 +22,6 @@
 import { config } from "multiplatform.one";
 import type { ThemeProviderProps } from "multiplatform.one/theme";
 import { ThemeProvider } from "multiplatform.one/theme";
-import React from "react";
 import type { PropsWithChildren } from "react";
 import type { TamaguiInternalConfig } from "ui";
 import type { GlobalKeycloakProviderProps } from "./keycloak";

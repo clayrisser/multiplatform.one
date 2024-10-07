@@ -21,11 +21,7 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MultiPlatform } from "multiplatform.one";
-import React, {
-  type ComponentType,
-  type PropsWithChildren,
-  useEffect,
-} from "react";
+import { type ComponentType, type PropsWithChildren, useEffect } from "react";
 import { Text } from "tamagui";
 import { useAuthConfig, useTokensFromQuery } from "./hooks";
 import { useKeycloak } from "./keycloak";

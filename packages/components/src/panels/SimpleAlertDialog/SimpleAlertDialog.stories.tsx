@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-import React from "react";
+import { useState } from "react";
 import { AlertDialog, Button, XStack, YStack } from "tamagui";
-import { SimpleAlertDialog } from "./index";
 import type { AlterDialogSimpleProps } from "./index";
+import { SimpleAlertDialog } from "./index";
 
 export default {
   title: "panels/SimpleAlertDialog",
@@ -73,7 +73,7 @@ export const Custom = (args) => (
 );
 
 const Open = (args) => {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
   return (
     <YStack>
       <SimpleAlertDialog

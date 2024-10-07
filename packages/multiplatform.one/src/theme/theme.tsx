@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import React, { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { useCookies } from "react-cookie";
 import { MultiPlatform } from "../multiplatform";
 import {
@@ -99,7 +99,7 @@ export function ThemeProvider({
       ? (nextCookies?.[COOKIE_SUB_THEME] as ColorScheme)
       : (localCookies?.[COOKIE_SUB_THEME] as ColorScheme)) ||
     defaultThemeValue.sub;
-  const value = React.useMemo(() => ({ root, sub }), [root, sub]);
+  const value = useMemo(() => ({ root, sub }), [root, sub]);
 
   useEffect(() => {
     setTheme({ root, sub });

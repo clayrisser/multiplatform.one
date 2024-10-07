@@ -1,7 +1,7 @@
 /*
- * File: /routes/index.js
- * Project: @multiplatform.one/keycloak
- * File Created: 04-04-2024 15:50:39
+ * File: /app/api/auth/session+api.ts
+ * Project: @platform/one
+ * File Created: 07-10-2024 14:30:41
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,4 +19,4 @@
  * limitations under the License.
  */
 
-module.exports = require("../dist/cjs/routes.js");
+export { authHandler as GET } from "@multiplatform.one/keycloak/one";

@@ -1,8 +1,15 @@
 {
-  "extends": "../../tsconfig.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../../tsconfig.base.json",
+  "exclude": [
+    "vitest.config.ts",
+    "**/test",
+    "**/dist",
+    "**/types",
+    "**/__tests__"
+  ],
   "compilerOptions": {
-    "emitDeclarationOnly": true,
-    "noEmit": false
+    "composite": true
   },
-  "exclude": ["types", "dist"]
+  "references": []
 }

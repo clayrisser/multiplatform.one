@@ -21,8 +21,8 @@
  * limitations under the License.
  */
 
-import type React from "react";
 import type { Dispatch, SetStateAction } from "react";
+import type { ReactNode } from "react";
 import { createContext, useContext, useMemo, useState } from "react";
 import type { ThemeName, ThemeProps } from "tamagui";
 import { Theme } from "tamagui";
@@ -79,7 +79,7 @@ const TintFamiliesContext = createContext<TintFamiliesContextValue>(
 );
 
 export interface TintFamiliesProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
   defaultFamily?: TintFamily;
   defaultIndex?: number;
   families?: TintFamilies;

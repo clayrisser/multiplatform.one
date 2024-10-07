@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import { useEffect, useState } from "react";
 import {
   H5,
   Separator,
@@ -44,12 +44,12 @@ export default {
 };
 
 export const Main = (args: SimpleTabsProps) => {
-  const [orientation, setOrientation] = React.useState(
+  const [orientation, setOrientation] = useState(
     args.orientation === "horizontal",
   );
-  const [isHorizontal, setIsHorizontal] = React.useState(true);
+  const [isHorizontal, setIsHorizontal] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (args.orientation === "horizontal") {
       setOrientation(true);
     } else {

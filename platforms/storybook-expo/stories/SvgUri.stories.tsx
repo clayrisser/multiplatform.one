@@ -21,7 +21,6 @@
 
 import { useAssets } from "@multiplatform.one/components/src/hooks";
 import { SvgUri } from "@multiplatform.one/components/src/images/SvgUri";
-import React from "react";
 
 export default {
   title: "images/SvgUri",

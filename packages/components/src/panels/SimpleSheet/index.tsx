@@ -20,7 +20,6 @@
  */
 
 import { Sheet } from "@tamagui/sheet";
-import React from "react";
 import type { DialogOverlayProps, SheetProps, YStackProps } from "tamagui";
 
 export type SimpleSheetProps = SheetProps & {

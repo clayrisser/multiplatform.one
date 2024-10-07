@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { Button, H2, YStack } from "tamagui";
 
 const logger = console;

@@ -22,7 +22,7 @@
 import addons, { makeDecorator } from "@storybook/addons";
 import type { ColorScheme } from "multiplatform.one/theme";
 import { useTheme } from "multiplatform.one/theme";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { ThemeName } from "ui";
 
 const UPDATE_BACKGROUND = "storybook-addon-background:update";

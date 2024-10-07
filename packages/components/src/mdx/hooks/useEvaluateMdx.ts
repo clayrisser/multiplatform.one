@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import type { MDXComponents } from "@mdx-js/react/lib";
+import type { MDXComponents } from "mdx/types";
 import type { ComponentType } from "react";
 import { useEffect, useState } from "react";
 import * as jsxRuntime from "react/jsx-runtime";

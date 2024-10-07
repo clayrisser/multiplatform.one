@@ -25,7 +25,6 @@ import { config } from "multiplatform.one";
 import { createWithLayout, useLanguage } from "multiplatform.one";
 import { useTheme } from "multiplatform.one/theme";
 // import { SelectSimple } from '../../forms/SelectSimple';
-import React from "react";
 import type { ComponentType, ReactNode } from "react";
 import type { ThemeName } from "tamagui";
 import { Adapt, Circle, Popover, Select, XStack, YStack } from "tamagui";
@@ -92,8 +91,9 @@ export function DebugLayout<DebugViewProps>({
     });
   }
 
+  // TODO: fix this
   function renderLocaleItems() {
-    return (i18n?.supportedLocales || []).map((name: string, i: number) => {
+    return (i18n?.languages || []).map((name: string, i: number) => {
       return (
         <Select.Item key={i + name} index={i} value={name}>
           <Select.ItemText>{name}</Select.ItemText>
@@ -194,7 +194,8 @@ export function createWithDebugLayout<DebugViewProps>(
   extraLayouts?: WithLayout<any>[],
   debugLayoutProps: CreateWithDebugLayout<DebugViewProps> = {},
 ) {
-  return createWithLayout(DebugLayout, extraLayouts, debugLayoutProps);
+  // TODO: Fix this type
+  return createWithLayout(DebugLayout, extraLayouts, debugLayoutProps as any);
 }
 
 export const withDebugLayout = createWithDebugLayout();

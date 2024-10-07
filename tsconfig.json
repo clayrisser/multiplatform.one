@@ -3,11 +3,11 @@
   "extends": "./tsconfig.base",
   "compilerOptions": {
     "tsBuildInfoFile": ".tsbuildinfo",
-    "strict": false,
+    "strict": true,
     "paths": {
-      "app/*": ["./app/*"],
-      "gql/*": ["./packages/gql/*"],
-      "ui/*": ["./packages/ui/*"]
+      "app/*": ["app/*"],
+      "gql/*": ["packages/gql/*"],
+      "ui/*": ["packages/ui/*"]
     }
   }
 }

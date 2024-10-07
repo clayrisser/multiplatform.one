@@ -21,7 +21,6 @@
 
 import { ToastViewport, useToastController } from "@tamagui/toast";
 import { createWithLayout } from "multiplatform.one";
-import React from "react";
 import type { ReactNode } from "react";
 import { YStack } from "ui";
 import { withDebugLayout } from "./Debug";

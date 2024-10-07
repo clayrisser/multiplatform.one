@@ -19,7 +19,6 @@
  * limitations under the License.
  */
 
-import React from "react";
 import { Table } from "./index";
 
 export default {

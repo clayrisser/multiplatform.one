@@ -22,7 +22,6 @@
 import type { Validator } from "@tanstack/form-core";
 import type { FormApi } from "@tanstack/react-form";
 import { useForm } from "@tanstack/react-form";
-import React from "react";
 import type { ButtonProps } from "./Button";
 import { Button } from "./Button";
 

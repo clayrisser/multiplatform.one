@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import React, { useState, useMemo, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ButtonProps, YStackProps } from "tamagui";
 import { XStack, YStack } from "tamagui";
 import type { OptionButtonProps } from "./OptionButton";

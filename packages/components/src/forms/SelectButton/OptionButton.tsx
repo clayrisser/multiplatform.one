@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import React, { useContext, useState, useEffect, useCallback } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import type { ComponentProps } from "react";
 import type { GestureResponderEvent } from "react-native";
 import { styled } from "tamagui";

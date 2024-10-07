@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import type React from "react";
+import type { ReactNode } from "react";
 import type {
   PopoverArrowProps,
   PopoverContentProps,
@@ -30,7 +30,7 @@ import type {
 import { Theme, Tooltip } from "tamagui";
 
 export type SimpleToolTipProps = TooltipProps & {
-  trigger: React.ReactNode;
+  trigger: ReactNode;
   themeStyle?: ThemeProps;
   contentStyle?: PopoverContentProps;
   triggerStyle?: PopoverTriggerProps;

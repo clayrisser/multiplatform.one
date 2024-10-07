@@ -19,10 +19,12 @@
  * limitations under the License.
  */
 
-import React from "react";
 import { YStack } from "tamagui";
 import { useAssets } from "../../hooks";
-import { type Props, SimpleImage } from "./index";
+import { SimpleImage } from "./index";
+
+// TODO: Fix this type
+export type Props = any;
 
 export default {
   title: "images/SimpleImage",

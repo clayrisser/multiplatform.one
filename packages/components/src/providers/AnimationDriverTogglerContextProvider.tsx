@@ -21,7 +21,6 @@
 
 import { createAnimations as createAnimationsCss } from "@tamagui/animations-css";
 import type { AnimationDriver } from "@tamagui/web";
-import React from "react";
 import type { PropsWithChildren } from "react";
 import { createContext, useMemo, useState } from "react";
 import type { TamaguiInternalConfig } from "tamagui";

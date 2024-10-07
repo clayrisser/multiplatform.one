@@ -1,10 +1,15 @@
 {
-  "extends": "../../tsconfig.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../../tsconfig.base.json",
+  "exclude": [
+    "vitest.config.ts",
+    "**/test",
+    "**/dist",
+    "**/types",
+    "**/__tests__"
+  ],
   "compilerOptions": {
-    "emitDeclarationOnly": true,
-    "module": "ESNext",
-    "noEmit": false,
-    "types": ["vite/client"]
+    "composite": true
   },
-  "exclude": ["types", "dist", "vite.config.mts"]
+  "references": []
 }

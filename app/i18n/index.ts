@@ -1,1 +1,2 @@
-export const supportedLngs = ["en", "te"] as const;
+export const languages = ["en", "te"] as const;
+export const namespaces = ["common"] as const;

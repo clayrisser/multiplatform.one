@@ -1,4 +1,3 @@
-import React from "react";
 import { SimpleParagraph } from ".";
 
 export default {

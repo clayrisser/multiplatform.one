@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import React, { useMemo } from "react";
+import { createContext, useContext, useMemo } from "react";
 import type { ListItemProps, YStackProps } from "tamagui";
 import { ListItem, XGroup, YGroup } from "tamagui";
 
@@ -29,7 +29,7 @@ export type SimpleListProps = YStackProps & {
 };
 export type SimpleListItemProps = ListItemProps & {};
 
-const ListContext = React.createContext<SimpleListProps | null>(null);
+const ListContext = createContext<SimpleListProps | null>(null);
 
 export function SimpleList({
   children,
@@ -57,7 +57,7 @@ export function SimpleList({
 }
 
 export function SimpleListItem({ ...props }: SimpleListItemProps) {
-  const context = React.useContext(ListContext);
+  const context = useContext(ListContext);
   if (!context) {
     throw new Error("SimpleListItem must be used within a SimpleList");
   }

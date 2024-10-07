@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-import type { MDXComponents } from "@mdx-js/react/lib";
 import { Link as IconLink } from "@tamagui/lucide-icons";
+import type { MDXComponents } from "mdx/types";
 import { MultiPlatform } from "multiplatform.one";
 import { Link } from "one";
-import React from "react";
+import { Children } from "react";
 import type { XStackProps } from "tamagui";
 import {
   H1,
@@ -130,7 +130,7 @@ export const mdxComponents: MDXComponents = {
   ul: ({ children }) => (
     // @ts-ignore
     <UL marginVertical="$4">
-      {React.Children.toArray(children).map((x) =>
+      {Children.toArray(children).map((x) =>
         typeof x === "string" ? null : x,
       )}
     </UL>
@@ -151,7 +151,8 @@ export const mdxComponents: MDXComponents = {
     </YStack>
   ),
   pre: ({ children }) => <>{children}</>,
-  code,
+  // TODO: Fix this type
+  code: code as any,
   blockquote: ({ children, ...props }) => (
     <YStack
       borderColor="$borderColor"
@@ -213,7 +214,7 @@ const LinkHeading = ({
 );
 
 const getNonTextChildren = (children) => {
-  return React.Children.map(children, (x) => {
+  return Children.map(children, (x) => {
     if (typeof x === "string") return null;
     if (x.type === code) return null;
     return x;

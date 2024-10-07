@@ -1,5 +1,4 @@
 import type { ComponentMeta } from "@storybook/react";
-import React from "react";
 import { createPageStory } from "../createPageStory";
 
 const pageId = "login-update-profile.ftl";

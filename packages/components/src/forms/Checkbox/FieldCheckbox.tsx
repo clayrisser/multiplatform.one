@@ -21,7 +21,7 @@
 
 import type { DeepKeys, DeepValue, Validator } from "@tanstack/form-core";
 import { Field, useForm } from "@tanstack/react-form";
-import React, { useId } from "react";
+import { useId } from "react";
 import type { CheckedState, FontSizeTokens } from "tamagui";
 import { Label, Paragraph, XStack, YStack, useProps } from "tamagui";
 import { CheckRegular, MinusRegular } from "../../icons";

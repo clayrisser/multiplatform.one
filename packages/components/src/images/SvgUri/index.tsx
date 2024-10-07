@@ -19,7 +19,6 @@
  * limitations under the License.
  */
 
-import React from "react";
 import type { UriProps } from "react-native-svg";
 import type { StackProps } from "tamagui";
 

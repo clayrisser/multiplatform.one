@@ -1,6 +1,5 @@
 import { isText } from "multiplatform.one";
 import type { ComponentType, ReactNode } from "react";
-import React from "react";
 import { Text } from "tamagui";
 
 export function useAutoText(

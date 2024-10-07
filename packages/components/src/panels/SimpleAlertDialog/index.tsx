@@ -19,7 +19,6 @@
  * limitations under the License.
  */
 
-import React from "react";
 import type { ReactNode } from "react";
 import { AlertDialog, Button, XStack, YStack } from "tamagui";
 import type {

@@ -10,7 +10,8 @@
   "javascript": {
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
-    }
+    },
+    "jsxRuntime": "transparent"
   },
   "linter": {
     "enabled": true,

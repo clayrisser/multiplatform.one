@@ -20,7 +20,7 @@
  */
 
 import type { Meta } from "@storybook/react";
-import React from "react";
+import { useEffect, useState } from "react";
 import { Button, Label, Switch, Text, XStack, YStack } from "tamagui";
 import { type SimpleToolTipProps, SimpleTooltip } from "./index";
 
@@ -31,9 +31,9 @@ const meta: Meta = {
 };
 
 function Tooltip(args: SimpleToolTipProps) {
-  const [arrow, setArrow] = React.useState(args.arrow);
+  const [arrow, setArrow] = useState(args.arrow);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setArrow(args.arrow);
   }, [args.arrow]);
   return (

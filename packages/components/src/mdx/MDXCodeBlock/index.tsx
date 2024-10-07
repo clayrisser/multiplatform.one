@@ -21,7 +21,7 @@
 
 import { LinearGradient } from "@tamagui/linear-gradient";
 import { CheckCircle, Clipboard } from "@tamagui/lucide-icons";
-import React, { useEffect, useRef, useState, useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ScrollView } from "tamagui";
 import {
   Button,
