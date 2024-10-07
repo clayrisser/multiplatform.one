@@ -31,7 +31,8 @@ import { MultiPlatformBase } from "./multiplatformBase";
 
 declare global {
   interface Window {
-    ipc: any;
+    __NEXT_DATA__: unknown;
+    ipc: unknown;
   }
 }
 

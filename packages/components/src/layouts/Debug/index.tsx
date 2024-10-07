@@ -19,14 +19,14 @@
  * limitations under the License.
  */
 
-import { config } from "multiplatform.one";
+import i18n from "i18next";
 import type { WithLayout } from "multiplatform.one";
-// import { SelectSimple } from '../../forms/SelectSimple';
-import { createWithLayout } from "multiplatform.one";
+import { config } from "multiplatform.one";
+import { createWithLayout, useLanguage } from "multiplatform.one";
 import { useTheme } from "multiplatform.one/theme";
+// import { SelectSimple } from '../../forms/SelectSimple';
 import React from "react";
 import type { ComponentType, ReactNode } from "react";
-import { useLocale, useSupportedLocales } from "react-i18next";
 import type { ThemeName } from "tamagui";
 import { Adapt, Circle, Popover, Select, XStack, YStack } from "tamagui";
 import { useTint } from "../../tints";
@@ -62,8 +62,7 @@ export function DebugLayout<DebugViewProps>({
   const { familiesNames, setFamily, name } = useTint();
   const DebugView = debugView;
   const [theme, setTheme] = useTheme();
-  const [locale, setLocale] = useLocale();
-  const supportedLocales = useSupportedLocales();
+  const [language, setLanguage] = useLanguage();
 
   function handleSubThemeChange(subTheme: ThemeName) {
     setTheme({ sub: subTheme });
@@ -94,7 +93,7 @@ export function DebugLayout<DebugViewProps>({
   }
 
   function renderLocaleItems() {
-    return (supportedLocales || []).map((name: string, i: number) => {
+    return (i18n?.supportedLocales || []).map((name: string, i: number) => {
       return (
         <Select.Item key={i + name} index={i} value={name}>
           <Select.ItemText>{name}</Select.ItemText>
@@ -159,8 +158,8 @@ export function DebugLayout<DebugViewProps>({
                 width={96}
                 placeholder={locale}
                 backgroundColor="$color10"
-                value={locale}
-                onValueChange={setLocale}
+                value={language}
+                onValueChange={setLanguage}
               >
                 {renderLocaleItems()}
               </SelectSimple>

@@ -30,6 +30,6 @@ export default {
       config: "./config/tamagui.config.ts",
       outputCSS: "./code/styles/tamagui.css",
     }),
-    i18nextLoader({ paths: ["../../app/locales"] }),
+    i18nextLoader({ paths: ["../../app/i18n"] }),
   ],
 } satisfies UserConfig;

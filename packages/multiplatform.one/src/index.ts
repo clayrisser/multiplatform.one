@@ -26,3 +26,4 @@ export { MultiPlatform };
 export * from "./config";
 export * from "./font";
 export * from "./helpers";
+export * from "./hooks";
