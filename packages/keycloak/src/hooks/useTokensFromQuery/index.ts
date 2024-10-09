@@ -23,7 +23,12 @@ import { MultiPlatform } from "multiplatform.one";
 
 export function useTokensFromQuery() {
   if (!MultiPlatform.isIframe) return false;
-  // TODO: get the query params
-  const query = {};
-  return "idToken" in query || "token" in query || "refreshToken" in query;
+  const query = new URLSearchParams(
+    typeof window === "undefined" ? "" : window?.location?.search || "",
+  );
+  return (
+    typeof query.get("idToken") ||
+    typeof query.get("token") ||
+    typeof query.get("refreshToken")
+  );
 }

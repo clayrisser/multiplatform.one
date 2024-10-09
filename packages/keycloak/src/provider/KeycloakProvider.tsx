@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import { useMemo } from "react";
 import type { PropsWithChildren } from "react";
+import { useMemo } from "react";
 import type { AuthConfig } from "../authConfig";
 import { AuthConfigContext } from "../authConfig";
 import type { Session } from "../session";
@@ -55,7 +55,6 @@ export function KeycloakProvider({
         <>{children}</>
       ) : (
         <AuthProvider
-          sessionProvider={{ session }}
           keycloakConfig={{
             clientId: clientId || "app",
             publicClientId,

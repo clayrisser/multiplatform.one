@@ -35,18 +35,28 @@ dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 process.env.VITE_MP_CONFIG = JSON.stringify(resolveConfig(publicConfigKeys));
 
 export default {
+  ssr: {
+    noExternal: true,
+  },
   plugins: [
     one({
       web: {
         deploy: "node",
-        defaultRenderMode: "spa",
+        defaultRenderMode: "ssr",
       },
       app: {
         key: "One",
       },
       deps: {
         "@tanstack/react-query": true,
+        "@tanstack/react-store": true,
+        "js-sha256": true,
+        "merge-options": true,
         "react-i18next": true,
+        "use-sync-external-store": true,
+        rehackt: true,
+        "@tamagui/font-inter": true,
+        "react-native-svg": true,
       },
     }),
     tamaguiPlugin({

@@ -19,6 +19,7 @@
  * limitations under the License.
  */
 
+import "../code/styles/tamagui.css";
 import "./_layout.css";
 import "@tamagui/core/reset.css";
 import resources from "virtual:i18next-loader";
@@ -26,32 +27,25 @@ import { SchemeProvider, useColorScheme } from "@vxrn/color-scheme";
 import { languages, namespaces } from "app/i18n";
 import { GlobalProvider } from "app/providers";
 import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
 import { config } from "multiplatform.one";
-import { LoadProgressBar } from "one";
-import { Slot, useLoader } from "one";
+import { LoadProgressBar, Slot } from "one";
 import type { ReactNode } from "react";
 import { initReactI18next } from "react-i18next";
 import { isWeb } from "tamagui";
 import tamaguiConfig from "../tamagui.config";
 
-i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    defaultNS: namespaces.length > 0 ? namespaces[0] : undefined,
-    ns: namespaces,
-    resources,
-    supportedLngs: languages,
-    interpolation: {
-      escapeValue: false,
-    },
-  });
-
-export async function cookieLoader() {}
+i18n.use(initReactI18next).init({
+  defaultNS: namespaces.length > 0 ? namespaces[0] : undefined,
+  ns: namespaces,
+  resources,
+  supportedLngs: languages,
+  interpolation: {
+    escapeValue: false,
+  },
+});
+i18n.changeLanguage("en");
 
 export default function Layout() {
-  const cookie = useLoader(cookieLoader);
   return (
     <>
       {isWeb && (
@@ -92,7 +86,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         messageHandlerKeys: [],
         publicClientId: config.get("KEYCLOAK_PUBLIC_CLIENT_ID"),
         realm: config.get("KEYCLOAK_REALM")!,
-        session,
+        // session,
       }}
     >
       {children}

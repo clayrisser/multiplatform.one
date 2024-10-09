@@ -33,8 +33,8 @@ import { persist, useAuthStore } from "../../state";
 import { validOrRefreshableToken } from "../../token";
 import { AfterAuth } from "../AfterAuth";
 
-// TODO: implement
 export function SessionProvider({ children }: PropsWithChildren) {
+  // TODO: implement
   return children;
 }
 
@@ -59,18 +59,23 @@ export function AuthProvider({
   loadingComponent,
 }: AuthProviderProps) {
   const { debug, messageHandlerKeys } = useAuthConfig();
-  const query = {}; // TODO: get the query params
+  const query = new URLSearchParams(
+    typeof window === "undefined" ? "" : window?.location?.search || "",
+  );
   const authStore = useAuthStore();
   if (typeof authStore === "undefined") {
     return <Loading loadingComponent={loadingComponent} />;
   }
   const [keycloak, setKeycloak] = useState<Keycloak>();
+  const idTokenQuery = query.get("idToken");
+  const refreshTokenQuery = query.get("refreshToken");
+  const tokenQuery = query.get("token");
   const initialRefreshToken = useMemo(
     () =>
       validOrRefreshableToken(
         MultiPlatform.isIframe
-          ? ("refreshToken" in query &&
-              (query.refreshToken?.toString() || true)) ||
+          ? (typeof refreshTokenQuery === "string" &&
+              (refreshTokenQuery || true)) ||
               (persist && authStore.refreshToken) ||
               undefined
           : undefined,
@@ -81,7 +86,7 @@ export function AuthProvider({
     refreshToken: initialRefreshToken,
     token: validOrRefreshableToken(
       MultiPlatform.isIframe
-        ? ("token" in query && (query.token?.toString() || true)) ||
+        ? (typeof tokenQuery === "string" && (tokenQuery || true)) ||
             (persist && authStore.token) ||
             undefined
         : undefined,
@@ -89,7 +94,7 @@ export function AuthProvider({
     ),
     idToken: validOrRefreshableToken(
       MultiPlatform.isIframe
-        ? ("idToken" in query && (query.idToken?.toString() || true)) ||
+        ? (typeof idTokenQuery === "string" && (idTokenQuery || true)) ||
             (persist && authStore.idToken) ||
             undefined
         : undefined,

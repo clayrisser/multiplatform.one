@@ -19,6 +19,8 @@
  * limitations under the License.
  */
 
+import { withDefaultLayout } from "app/layouts/Default";
+import { useTranslation } from "react-i18next";
 import {
   Anchor,
   Button,
@@ -33,7 +35,6 @@ import {
 
 function HomeScreen() {
   const { t } = useTranslation();
-
   return (
     <YStack fullscreen jc="center" flexWrap="wrap" ai="center" gap="$3">
       {/* {countResponse.isFetching ? <Spinner /> : <Text>{countResponse?.data?.count}</Text>} */}

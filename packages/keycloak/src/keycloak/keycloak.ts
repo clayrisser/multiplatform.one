@@ -216,6 +216,8 @@ export function useKeycloak() {
   if (disabled) return null;
   if (keycloak) return keycloak;
   // const { session, status } = useSession();
+  // TODO: fix this
+  const status = "unauthenticated";
   if (MultiPlatform.isStorybook) {
     return new Keycloak(keycloakConfig, {
       email: "storybook@example.com",
