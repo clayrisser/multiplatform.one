@@ -1,7 +1,7 @@
-/**
+/*
  * File: /src/one.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 01-01-1970 00:00:00
+ * File Created: 07-10-2024 16:17:04
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -158,7 +158,11 @@ export async function authHandler(
   if (!config.secret || config.secret.length === 0) {
     throw new HTTPException(500, { message: "Missing AUTH_SECRET" });
   }
-  return Auth(await reqWithEnvUrl(req), config);
+  const res = await Auth(await reqWithEnvUrl(req), config);
+  return new Response(res.body, {
+    status: res.status,
+    headers: res.headers,
+  });
 }
 
 export async function verifyAuth(
@@ -180,11 +184,7 @@ export async function getAuthUser(
   req: Request,
   config: AuthConfig,
 ): Promise<AuthUser | undefined> {
-  const authReq = await reqWithEnvUrl(
-    req,
-    (config.providers?.[0].options as KeycloakOptions)?.baseUrl,
-  );
-  const origin = new URL(authReq.url).origin;
+  const { origin } = new URL((await reqWithEnvUrl(req)).url);
   const request = new Request(`${origin}${config.basePath}/session`, {
     headers: { cookie: req.headers.get("cookie") ?? "" },
   });
