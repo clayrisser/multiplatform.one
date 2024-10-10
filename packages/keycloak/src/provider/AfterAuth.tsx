@@ -35,10 +35,9 @@ export function AfterAuth({ children, loadingComponent }: AfterAuthProps) {
   const authConfig = useAuthConfig();
   const authStore = useAuthStore();
   const keycloak = useKeycloak();
-  if (!authStore) return <Loading loadingComponent={loadingComponent} />;
 
   useEffect(() => {
-    if (!persist || !keycloak?.authenticated) return;
+    if (!authStore || !persist || !keycloak?.authenticated) return;
     if (keycloak.token) {
       authStore.token = keycloak.token;
       if (keycloak.idToken) authStore.idToken = keycloak.idToken;
@@ -71,5 +70,6 @@ export function AfterAuth({ children, loadingComponent }: AfterAuthProps) {
       logger.debug("authenticated", keycloak.authenticated);
   }, [keycloak?.authenticated]);
 
+  if (!authStore) return <Loading loadingComponent={loadingComponent} />;
   return <>{children}</>;
 }

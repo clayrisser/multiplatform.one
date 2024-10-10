@@ -19,6 +19,7 @@
  * limitations under the License.
  */
 
+import { withAuthenticated } from "@multiplatform.one/keycloak";
 import { withDefaultLayout } from "app/layouts/Default";
 import { useTranslation } from "react-i18next";
 import {
@@ -134,4 +135,4 @@ function HomeScreen() {
   );
 }
 
-export default withDefaultLayout(HomeScreen);
+export default withAuthenticated(withDefaultLayout(HomeScreen));

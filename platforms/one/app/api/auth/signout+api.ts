@@ -19,7 +19,8 @@
  * limitations under the License.
  */
 
-export {
-  authHandler as GET,
-  authHandler as POST,
-} from "@multiplatform.one/keycloak/one";
+import { authHandler } from "@multiplatform.one/keycloak/one";
+import { authConfig } from "../../../authConfig";
+
+export const GET = (req: Request) => authHandler(req, authConfig);
+export const POST = (req: Request) => authHandler(req, authConfig);

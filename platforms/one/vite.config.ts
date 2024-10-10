@@ -1,7 +1,7 @@
-/*
+/**
  * File: /vite.config.ts
  * Project: @platform/one
- * File Created: 06-10-2024 04:29:12
+ * File Created: 01-01-1970 00:00:00
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -42,21 +42,26 @@ export default {
     one({
       web: {
         deploy: "node",
-        defaultRenderMode: "ssr",
+        defaultRenderMode: "spa",
       },
       app: {
         key: "One",
       },
       deps: {
+        "@tamagui/font-inter": true,
+        "@tamagui/lucide-icons": true,
+        "@tanstack/react-form": true,
         "@tanstack/react-query": true,
         "@tanstack/react-store": true,
         "js-sha256": true,
         "merge-options": true,
+        "next-auth/react": true,
         "react-i18next": true,
-        "use-sync-external-store": true,
-        rehackt: true,
-        "@tamagui/font-inter": true,
         "react-native-svg": true,
+        "use-sync-external-store": true,
+        cookie: true,
+        dotenv: true,
+        rehackt: true,
       },
     }),
     tamaguiPlugin({

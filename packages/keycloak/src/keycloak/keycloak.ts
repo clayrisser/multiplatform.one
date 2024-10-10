@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/keycloak/keycloak.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 04-04-2024 15:50:39
+ * File Created: 01-01-1970 00:00:00
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -27,7 +27,15 @@ import type {
   KeycloakLogoutOptions as KeycloakJsLogoutOptions,
 } from "keycloak-js";
 import { MultiPlatform } from "multiplatform.one";
-// import { signIn, signOut } from "next-auth/react";
+import {
+  type SignInAuthorizationParams,
+  type SignInOptions,
+  type SignInResponse,
+  getCsrfToken,
+  getProviders,
+  getSession,
+  signOut,
+} from "next-auth/react";
 import { useContext } from "react";
 import { useAuthConfig } from "../hooks";
 import type { Session } from "../session/session";
@@ -36,12 +44,6 @@ import type { AccessTokenParsed, TokenParsed } from "../token";
 import type { KeycloakMock } from "../types";
 import { type KeycloakConfig, KeycloakConfigContext } from "./config";
 import { KeycloakContext } from "./context";
-
-// TODO: implement
-function signIn() {}
-
-// TODO: implement
-function signOut() {}
 
 export type KeycloakLoginOptions = KeycloakJsLoginOptions &
   AuthRequestPromptOptions & { redirect?: boolean };
@@ -175,11 +177,13 @@ export class Keycloak {
     this.token = undefined;
     if (this.keycloakClient) {
       await this.keycloakClient.login(options);
-    } else if (MultiPlatform.isNext && !MultiPlatform.isServer) {
-      // await signIn("keycloak", {
-      //   callbackUrl: options.redirectUri,
-      //   redirect: options.redirect,
-      // });
+    } else if (MultiPlatform.isBrowser && !MultiPlatform.isServer) {
+      await cookieSignIn({
+        callbackUrl: options.redirectUri,
+        ...(typeof options.redirect !== "undefined"
+          ? { redirect: options.redirect }
+          : {}),
+      });
     } else {
       await this._login?.(options);
     }
@@ -191,11 +195,11 @@ export class Keycloak {
     this.token = undefined;
     if (this.keycloakClient) {
       await this.keycloakClient.logout(options);
-    } else if (MultiPlatform.isNext && !MultiPlatform.isServer) {
+    } else if (MultiPlatform.isBrowser && !MultiPlatform.isServer) {
       await fetch("/api/auth/logout", { method: "GET" });
-      // await signOut({
-      //   callbackUrl: options.redirectUri,
-      // });
+      await signOut({
+        callbackUrl: options.redirectUri,
+      });
     } else {
       await this._logout?.(options);
     }
@@ -215,9 +219,7 @@ export function useKeycloak() {
   const { disabled } = useAuthConfig();
   if (disabled) return null;
   if (keycloak) return keycloak;
-  // const { session, status } = useSession();
-  // TODO: fix this
-  const status = "unauthenticated";
+  const { session, status } = useSession();
   if (MultiPlatform.isStorybook) {
     return new Keycloak(keycloakConfig, {
       email: "storybook@example.com",
@@ -227,7 +229,62 @@ export function useKeycloak() {
   if (status === "unauthenticated") {
     return new Keycloak(keycloakConfig);
   }
-  // if (status === "authenticated" && session?.accessToken) {
-  //   return new Keycloak(keycloakConfig, session as Session);
-  // }
+  if (status === "authenticated" && session?.accessToken) {
+    return new Keycloak(keycloakConfig, session as Session);
+  }
+}
+
+export async function cookieSignIn(
+  options?: SignInOptions,
+  authorizationParams?: SignInAuthorizationParams,
+): Promise<SignInResponse | undefined> {
+  const provider = "keycloak";
+  const baseUrl = `${new URL(window.location.href).origin}/api/auth`;
+  const { callbackUrl = window.location.href, redirect = true } = options ?? {};
+  const providers = await getProviders();
+  if (!providers) {
+    window.location.href = `${baseUrl}/error`;
+    return;
+  }
+  if (!provider || !(provider in providers)) {
+    window.location.href = `${baseUrl}/signin?${new URLSearchParams({
+      callbackUrl,
+    })}`;
+    return;
+  }
+  const isCredentials = providers[provider].type === "credentials";
+  const isEmail = providers[provider].type === "email";
+  const isSupportingReturn = isCredentials || isEmail;
+  const signInUrl = `${baseUrl}/${
+    isCredentials ? "callback" : "signin"
+  }/${provider}`;
+  const _signInUrl = `${signInUrl}${authorizationParams ? `?${new URLSearchParams(authorizationParams)}` : ""}`;
+  const res = await fetch(_signInUrl, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "X-Auth-Return-Redirect": "1",
+    },
+    body: new URLSearchParams({
+      ...(options as any),
+      csrfToken: await getCsrfToken(),
+      callbackUrl,
+      json: true,
+    }),
+  });
+  const data = await res.json();
+  if (redirect || !isSupportingReturn) {
+    const url = data.url ?? callbackUrl;
+    window.location.href = url;
+    if (url.includes("#")) window.location.reload();
+    return;
+  }
+  const error = new URL(data.url).searchParams.get("error");
+  if (res.ok) await getSession({ event: "storage" });
+  return {
+    error,
+    status: res.status,
+    ok: res.ok,
+    url: error ? null : data.url,
+  };
 }

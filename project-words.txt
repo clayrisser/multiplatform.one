@@ -341,6 +341,7 @@ reflectable
 refractor
 refreshable
 regenerator
+rehackt
 rehype
 renderer
 repeaterjs
@@ -368,6 +369,7 @@ shac
 shar
 shof
 sid
+signin
 sitekey
 spnego
 sponsorships

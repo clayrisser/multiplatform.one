@@ -31,9 +31,15 @@ import { MultiPlatformBase } from "./multiplatformBase";
 
 declare global {
   interface Window {
-    __NEXT_DATA__: unknown;
-    ipc: unknown;
+    __NEXT_DATA__?: unknown;
+    ipc?: unknown;
   }
+  const chrome: {
+    runtime?: { id?: string };
+  };
+  const browser: {
+    runtime?: { id?: string };
+  };
 }
 
 export class MultiPlatform extends MultiPlatformBase {
@@ -54,20 +60,29 @@ export class MultiPlatform extends MultiPlatformBase {
     process?.env?.NODE_ENV === "test" ||
     process?.env?.JEST_WORKER_ID !== undefined;
   static isWebTouchable = isWebTouchable;
-
+  static isChromeExtension =
+    typeof chrome !== "undefined" && !!chrome?.runtime?.id;
+  static isFirefoxExtension =
+    typeof browser !== "undefined" && !!browser?.runtime?.id;
+  static isWebExtension =
+    MultiPlatform.isChromeExtension || MultiPlatform.isFirefoxExtension;
   static isIframe = (() => {
-    if (typeof window === "undefined") return false;
+    if (!isWindowDefined) return false;
     try {
       return window.self !== window.top;
     } catch (e) {
       return true;
     }
   })();
-
   static isElectron =
     MultiPlatform.isElectronRender ||
     MultiPlatform.isElectronMain ||
     (isWindowDefined &&
       window.ipc &&
       window?.navigator?.userAgent?.toLowerCase()?.indexOf("electron") >= 0);
+  static isBrowser =
+    MultiPlatform.isWeb &&
+    isWindowDefined &&
+    !MultiPlatform.isElectron &&
+    !MultiPlatform.isWebExtension;
 }

@@ -41,9 +41,13 @@ export class MultiPlatformBase {
   static isNative = false;
   static isNext = false;
   static isServer = false;
-  static isStorybook =
-    isWindowDefined && typeof window.__STORYBOOK_ADDONS_PREVIEW === "object";
   static isTouchable = isTouchable;
   static isWeb = false;
   static isWebTouchable = false;
+  static isBrowser = false;
+  static isWebExtension = false;
+  static isChromeExtension = false;
+  static isFirefoxExtension = false;
+  static isStorybook =
+    isWindowDefined && typeof window.__STORYBOOK_ADDONS_PREVIEW === "object";
 }

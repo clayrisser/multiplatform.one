@@ -89,13 +89,13 @@ export function ThemeProvider({
   const themeStore = useThemeStore();
   const root =
     themeStore?.root ||
-    (MultiPlatform.isNext && MultiPlatform.isServer
+    (MultiPlatform.isBrowser && MultiPlatform.isServer
       ? (nextCookies?.[COOKIE_ROOT_THEME] as ColorScheme)
       : (localCookies?.[COOKIE_ROOT_THEME] as ColorScheme)) ||
     defaultThemeValue.root;
   const sub =
     themeStore?.sub ||
-    (MultiPlatform.isNext && MultiPlatform.isServer
+    (MultiPlatform.isBrowser && MultiPlatform.isServer
       ? (nextCookies?.[COOKIE_SUB_THEME] as ColorScheme)
       : (localCookies?.[COOKIE_SUB_THEME] as ColorScheme)) ||
     defaultThemeValue.sub;

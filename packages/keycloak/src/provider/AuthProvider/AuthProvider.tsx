@@ -8,6 +8,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
+ *
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
@@ -22,6 +23,8 @@
 import KeycloakClient from "keycloak-js";
 import type { KeycloakInitOptions } from "keycloak-js";
 import { MultiPlatform } from "multiplatform.one";
+import type { SessionProviderProps } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 import type { PropsWithChildren } from "react";
 import { type ComponentType, useEffect, useMemo, useState } from "react";
 import { Loading } from "../../Loading";
@@ -33,14 +36,10 @@ import { persist, useAuthStore } from "../../state";
 import { validOrRefreshableToken } from "../../token";
 import { AfterAuth } from "../AfterAuth";
 
-export function SessionProvider({ children }: PropsWithChildren) {
-  // TODO: implement
-  return children;
-}
-
 export interface AuthProviderProps extends PropsWithChildren {
   keycloakConfig: KeycloakConfig;
   keycloakInitOptions?: KeycloakInitOptions;
+  sessionProvider?: Omit<SessionProviderProps, "children">;
   loadingComponent?: ComponentType;
 }
 
@@ -57,21 +56,20 @@ export function AuthProvider({
   keycloakConfig,
   keycloakInitOptions,
   loadingComponent,
+  sessionProvider,
 }: AuthProviderProps) {
   const { debug, messageHandlerKeys } = useAuthConfig();
   const query = new URLSearchParams(
     typeof window === "undefined" ? "" : window?.location?.search || "",
   );
   const authStore = useAuthStore();
-  if (typeof authStore === "undefined") {
-    return <Loading loadingComponent={loadingComponent} />;
-  }
   const [keycloak, setKeycloak] = useState<Keycloak>();
   const idTokenQuery = query.get("idToken");
   const refreshTokenQuery = query.get("refreshToken");
   const tokenQuery = query.get("token");
   const initialRefreshToken = useMemo(
     () =>
+      typeof authStore !== "undefined" &&
       validOrRefreshableToken(
         MultiPlatform.isIframe
           ? (typeof refreshTokenQuery === "string" &&
@@ -84,22 +82,26 @@ export function AuthProvider({
   );
   const [tokens, setTokens] = useState<Tokens>({
     refreshToken: initialRefreshToken,
-    token: validOrRefreshableToken(
-      MultiPlatform.isIframe
-        ? (typeof tokenQuery === "string" && (tokenQuery || true)) ||
-            (persist && authStore.token) ||
-            undefined
-        : undefined,
-      initialRefreshToken,
-    ),
-    idToken: validOrRefreshableToken(
-      MultiPlatform.isIframe
-        ? (typeof idTokenQuery === "string" && (idTokenQuery || true)) ||
-            (persist && authStore.idToken) ||
-            undefined
-        : undefined,
-      initialRefreshToken,
-    ),
+    token:
+      typeof authStore !== "undefined" &&
+      validOrRefreshableToken(
+        MultiPlatform.isIframe
+          ? (typeof tokenQuery === "string" && (tokenQuery || true)) ||
+              (persist && authStore.token) ||
+              undefined
+          : undefined,
+        initialRefreshToken,
+      ),
+    idToken:
+      typeof authStore !== "undefined" &&
+      validOrRefreshableToken(
+        MultiPlatform.isIframe
+          ? (typeof idTokenQuery === "string" && (idTokenQuery || true)) ||
+              (persist && authStore.idToken) ||
+              undefined
+          : undefined,
+        initialRefreshToken,
+      ),
   });
 
   useEffect(() => {
@@ -232,9 +234,8 @@ export function AuthProvider({
 
   const keycloakClient = useMemo(
     () =>
-      (!MultiPlatform.isNext ||
-        MultiPlatform.isElectron ||
-        MultiPlatform.isIframe) &&
+      !MultiPlatform.isServer &&
+      (!MultiPlatform.isBrowser || MultiPlatform.isIframe) &&
       keycloakConfig
         ? new KeycloakClient({
             url: keycloakConfig.url,
@@ -253,11 +254,11 @@ export function AuthProvider({
 
   const initOptions = useMemo(() => {
     if (
-      MultiPlatform.isNext &&
-      !MultiPlatform.isElectron &&
-      !MultiPlatform.isIframe
-    )
+      MultiPlatform.isServer ||
+      (MultiPlatform.isBrowser && !MultiPlatform.isIframe)
+    ) {
       return;
+    }
     const initOptions: KeycloakInitOptions = {
       ...defaultKeycloakInitOptions,
       ...keycloakInitOptions,
@@ -300,12 +301,14 @@ export function AuthProvider({
 
   useEffect(() => {
     function onError() {
-      if (keycloakClient && initOptions)
+      if (keycloakClient && initOptions) {
         setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
+      }
     }
     function onUpdate() {
-      if (keycloakClient && initOptions)
+      if (keycloakClient && initOptions) {
         setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
+      }
     }
     if (keycloakClient && initOptions) {
       (async () => {
@@ -328,6 +331,10 @@ export function AuthProvider({
     }
   }, []);
 
+  if (typeof authStore === "undefined") {
+    return <Loading loadingComponent={loadingComponent} />;
+  }
+
   function render() {
     return (
       <KeycloakConfigContext.Provider value={keycloakConfig}>
@@ -338,8 +345,8 @@ export function AuthProvider({
     );
   }
 
-  if (MultiPlatform.isWeb && !MultiPlatform.isElectron) {
-    return <SessionProvider>{render()}</SessionProvider>;
+  if (MultiPlatform.isBrowser && !MultiPlatform.isElectron) {
+    return <SessionProvider {...sessionProvider}>{render()}</SessionProvider>;
   }
   return render();
 }

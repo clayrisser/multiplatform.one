@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/one.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 07-10-2024 16:17:04
+ * File Created: 01-01-1970 00:00:00
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -39,42 +39,22 @@ const defaults = {
   },
 };
 
-export interface AuthToken extends JWT {
-  accessToken?: string;
-  decoded: AccessTokenParsed;
-  err?: Error;
-  expiresAt: number;
-  idToken?: string;
-  refreshToken: string;
-  roles: string[];
-}
+process.env.NEXTAUTH_URL = "http://localhost:8081/api/auth";
 
-export interface KeycloakOptions extends OAuthUserConfig<any> {
-  adminPassword?: string;
-  adminUsername?: string;
-  baseUrl?: string;
-  realm?: string;
-}
-
-export interface AuthHandlerOptions {
-  baseUrl: string;
-  keycloak: KeycloakOptions;
-  auth?: Partial<AuthConfig>;
-  scopes?: string[];
-}
-
-export function createAuthOptions(options: AuthHandlerOptions) {
+export function createAuthConfig(config: AuthHandlerConfig) {
   if (_authConfig) return _authConfig;
   const authorization =
-    options.keycloak.authorization &&
-    typeof options.keycloak.authorization === "object"
-      ? options.keycloak.authorization
+    config.keycloak.authorization &&
+    typeof config.keycloak.authorization === "object"
+      ? config.keycloak.authorization
       : {};
   _authConfig = {
-    ...options.auth,
+    ...config.auth,
+    basePath: "/api/auth",
+    trustHost: true,
     providers: [
       KeycloakProvider({
-        issuer: `${options.keycloak?.baseUrl || defaults.keycloak.baseUrl}/realms/${options.keycloak?.realm || defaults.keycloak.realm}`,
+        issuer: `${config.keycloak?.baseUrl || defaults.keycloak.baseUrl}/realms/${config.keycloak?.realm || defaults.keycloak.realm}`,
         authorization: {
           ...authorization,
           params: {
@@ -84,20 +64,20 @@ export function createAuthOptions(options: AuthHandlerOptions) {
                 "openid",
                 "profile",
                 ...(authorization.params?.scope?.split(" ") || []),
-                ...(options.scopes || []),
+                ...(config.scopes || []),
               ]),
             ].join(" "),
           },
         },
-        ...options.keycloak,
+        ...config.keycloak,
       }),
-      ...(options.auth?.providers || []),
+      ...(config.auth?.providers || []),
     ],
     callbacks: {
-      ...options.auth?.callbacks,
+      ...config.auth?.callbacks,
       async jwt(params) {
-        if (typeof options.auth?.callbacks?.jwt === "function") {
-          return options.auth?.callbacks.jwt(params);
+        if (typeof config.auth?.callbacks?.jwt === "function") {
+          return config.auth?.callbacks.jwt(params);
         }
         const { token, account } = params;
         if (account) {
@@ -116,14 +96,14 @@ export function createAuthOptions(options: AuthHandlerOptions) {
           return token;
         }
         try {
-          return refreshAccessToken(options, token as AuthToken);
+          return refreshAccessToken(config, token as AuthToken);
         } catch (err) {
           return { ...token, err };
         }
       },
       async session(params) {
-        if (typeof options.auth?.callbacks?.session === "function") {
-          return options.auth.callbacks.session(params);
+        if (typeof config.auth?.callbacks?.session === "function") {
+          return config.auth.callbacks.session(params);
         }
         const { session: nextSession, token: nextToken } = params;
         const session = nextSession as Session;
@@ -139,7 +119,7 @@ export function createAuthOptions(options: AuthHandlerOptions) {
 }
 
 async function refreshAccessToken(
-  options: AuthHandlerOptions,
+  options: AuthHandlerConfig,
   nextToken: AuthToken,
 ) {
   const res = await fetch(
@@ -171,26 +151,19 @@ async function refreshAccessToken(
   };
 }
 
-export interface Config {
-  auth: AuthConfig;
-  url: string;
-}
-
 export async function authHandler(
   req: Request,
-  config: Config,
+  config: AuthConfig,
 ): Promise<Response> {
-  if (!config.auth.secret || config.auth.secret.length === 0) {
+  if (!config.secret || config.secret.length === 0) {
     throw new HTTPException(500, { message: "Missing AUTH_SECRET" });
   }
-  const authReq = await reqWithEnvUrl(req, config.url);
-  const res = await Auth(authReq, config.auth);
-  return new Response(res.body, res);
+  return Auth(await reqWithEnvUrl(req), config);
 }
 
 export async function verifyAuth(
   req: Request,
-  config: Config,
+  config: AuthConfig,
 ): Promise<AuthUser> {
   const authUser = await getAuthUser(req, config);
   const isAuth = !!authUser?.token || !!authUser?.user;
@@ -205,22 +178,25 @@ export async function verifyAuth(
 
 export async function getAuthUser(
   req: Request,
-  config: Config,
+  config: AuthConfig,
 ): Promise<AuthUser | undefined> {
-  const authReq = await reqWithEnvUrl(req, config.url);
+  const authReq = await reqWithEnvUrl(
+    req,
+    (config.providers?.[0].options as KeycloakOptions)?.baseUrl,
+  );
   const origin = new URL(authReq.url).origin;
-  const request = new Request(`${origin}${config.auth.basePath}/session`, {
+  const request = new Request(`${origin}${config.basePath}/session`, {
     headers: { cookie: req.headers.get("cookie") ?? "" },
   });
   let authUser: AuthUser = {} as AuthUser;
   const res = (await Auth(request, {
-    ...config.auth,
+    ...config,
     callbacks: {
-      ...config.auth.callbacks,
+      ...config.callbacks,
       async session(...args) {
         authUser = args[0];
         const session =
-          (await config.auth.callbacks?.session?.(...args)) ?? args[0].session;
+          (await config.callbacks?.session?.(...args)) ?? args[0].session;
         const user = args[0].user ?? args[0].token;
         return { user, ...session } satisfies AuthSession;
       },
@@ -234,4 +210,28 @@ export interface AuthUser {
   session: AuthSession;
   token?: JWT;
   user?: AdapterUser;
+}
+
+export interface AuthToken extends JWT {
+  accessToken?: string;
+  decoded: AccessTokenParsed;
+  err?: Error;
+  expiresAt: number;
+  idToken?: string;
+  refreshToken: string;
+  roles: string[];
+}
+
+export interface KeycloakOptions extends OAuthUserConfig<any> {
+  adminPassword?: string;
+  adminUsername?: string;
+  baseUrl?: string;
+  realm?: string;
+}
+
+export interface AuthHandlerConfig {
+  baseUrl: string;
+  keycloak: KeycloakOptions;
+  auth?: Partial<AuthConfig>;
+  scopes?: string[];
 }

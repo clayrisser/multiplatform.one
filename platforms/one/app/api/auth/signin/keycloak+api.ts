@@ -1,7 +1,7 @@
-/*
+/**
  * File: /app/api/auth/signin/keycloak+api.ts
  * Project: @platform/one
- * File Created: 07-10-2024 14:30:41
+ * File Created: 01-01-1970 00:00:00
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,4 +19,8 @@
  * limitations under the License.
  */
 
-export { authHandler as POST } from "@multiplatform.one/keycloak/one";
+import { authHandler } from "@multiplatform.one/keycloak/one";
+import { authConfig } from "../../../../authConfig";
+
+export const GET = (req: Request) => authHandler(req, authConfig);
+export const POST = (req: Request) => authHandler(req, authConfig);

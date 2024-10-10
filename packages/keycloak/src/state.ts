@@ -23,7 +23,8 @@ import { createUseStore } from "@multiplatform.one/use-store";
 import { MultiPlatform } from "multiplatform.one";
 
 export const persist =
-  MultiPlatform.isIframe || (!MultiPlatform.isNext && !MultiPlatform.isServer);
+  MultiPlatform.isIframe ||
+  (!MultiPlatform.isBrowser && !MultiPlatform.isServer);
 
 class AuthStore {
   idToken = "";

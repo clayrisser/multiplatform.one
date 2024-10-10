@@ -31,7 +31,6 @@ export interface KeycloakProviderProps extends PropsWithChildren, AuthConfig {
   clientId?: string;
   publicClientId?: string;
   realm?: string;
-  session?: Session;
 }
 
 export function KeycloakProvider({
@@ -43,7 +42,6 @@ export function KeycloakProvider({
   disabled,
   publicClientId,
   realm,
-  session,
 }: KeycloakProviderProps) {
   const authConfig = useMemo(
     () => ({ debug, disabled, loginRedirectUri }),
