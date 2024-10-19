@@ -25,6 +25,7 @@ import type {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
+// @ts-ignore
 import httpStatus from "http-status";
 import type { LogLevel } from "./logger";
 import type { Logger } from "./logger";

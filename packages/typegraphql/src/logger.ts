@@ -24,6 +24,7 @@ import path from "node:path";
 import { context, trace } from "@opentelemetry/api";
 import chalk from "chalk";
 import type { Colorette } from "colorette";
+// @ts-ignore
 import httpStatus from "http-status";
 import Pino, { destination, multistream } from "pino";
 import type { Logger as PinoLogger } from "pino";

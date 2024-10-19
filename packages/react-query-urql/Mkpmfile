@@ -33,8 +33,8 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 # 	@$(call done,$@)
 
 ACTIONS += build~deps
-BUILD_TARGET := dist/cjs/index.js
-dist/cjs/index.js:
+BUILD_TARGET := dist/cjs/index.cjs
+dist/cjs/index.cjs:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(PNPM) run build

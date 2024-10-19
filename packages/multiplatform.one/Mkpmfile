@@ -32,8 +32,8 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 	@$(call done,$@)
 
 ACTIONS += build~deps
-BUILD_TARGETS := dist/cjs/index.js
-dist/cjs/index.js:
+BUILD_TARGETS := dist/cjs/index.cjs
+dist/cjs/index.cjs:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(PNPM) run build

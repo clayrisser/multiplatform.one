@@ -46,7 +46,7 @@
   "dependencies": {
     "core-js": "^3.38.1",
     "dotenv": "^16.4.5",
-    "execa": "^9.4.0",
+    "execa": "^9.4.1",
     "ora": "^8.1.0"
   },
   "peerDependencies": {
