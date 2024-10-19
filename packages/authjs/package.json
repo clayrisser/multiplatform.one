@@ -1,7 +1,7 @@
 {
-  "name": "@multiplatform.one/keycloak",
-  "version": "2.0.8",
-  "description": "keycloak client for multiplatform.one ecosystem",
+  "name": "@multiplatform.one/authjs",
+  "version": "0.0.6",
+  "description": "authjs for onestack",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
@@ -14,11 +14,6 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs"
     },
-    "./one": {
-      "types": "./types/one.d.ts",
-      "import": "./dist/esm/one.mjs",
-      "require": "./dist/cjs/one.cjs"
-    },
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -27,10 +22,9 @@
   "author": "BitSpur",
   "sideEffects": false,
   "keywords": [
-    "auth",
-    "keycloak",
-    "multiplatform",
-    "multiplatform.one",
+    "authjs",
+    "next-auth",
+    "onestack",
     "react"
   ],
   "homepage": "https://multiplatform.one",
@@ -46,21 +40,16 @@
     "url": "https://gitlab.com/risserlabs/multiplatform.one/keycloak"
   },
   "peerDependencies": {
-    "@react-native-async-storage/async-storage": "1.21.0",
-    "multiplatform.one": "workspace:1.1.8",
+    "hono": "^4.6.3",
     "react": "18.3.1"
   },
   "devDependencies": {
-    "@react-native-async-storage/async-storage": "1.23.1",
     "@tamagui/build": "^1.115.5",
     "@testing-library/jest-dom": "^6.6.2",
     "@testing-library/react": "^15.0.7",
-    "@types/lodash.camelcase": "^4.3.9",
-    "@types/lodash.startcase": "^4.4.9",
     "@types/react": "^18.3.1",
-    "@types/react-native": "^0.73.0",
     "@vitejs/plugin-react": "^4.3.2",
-    "multiplatform.one": "workspace:1.1.8",
+    "hono": "^4.6.5",
     "react": "18.3.1",
     "typescript": "^5.6.2",
     "vitest": "^1.6.0",
@@ -71,12 +60,6 @@
   },
   "dependencies": {
     "@auth/core": "^0.36.0",
-    "@multiplatform.one/authjs": "workspace:0.0.6",
-    "@multiplatform.one/use-store": "workspace:0.0.8",
-    "expo-auth-session": "^5.5.2",
-    "expo-crypto": "^13.0.2",
-    "jwt-decode": "^4.0.0",
-    "keycloak-js": "^24.0.5",
-    "next-auth": "^4.24.8"
+    "@hono/auth-js": "^1.0.11"
   }
 }

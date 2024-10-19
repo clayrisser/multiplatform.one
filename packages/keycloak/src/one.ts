@@ -19,14 +19,11 @@
  * limitations under the License.
  */
 
-import { Auth, type AuthConfig } from "@auth/core";
+import type { AuthConfig } from "@auth/core";
 import type { AdapterUser } from "@auth/core/adapters";
 import type { JWT } from "@auth/core/jwt";
 import type { OAuthUserConfig } from "@auth/core/providers";
 import KeycloakProvider from "@auth/core/providers/keycloak";
-import type { Session as AuthSession } from "@auth/core/types";
-import { reqWithEnvUrl } from "@hono/auth-js";
-import { HTTPException } from "hono/http-exception";
 import { jwtDecode } from "jwt-decode";
 import type { Session } from "./session";
 import type { AccessTokenParsed } from "./token";
@@ -149,67 +146,6 @@ async function refreshAccessToken(
     idToken: refreshToken.id_token,
     refreshToken: refreshToken.refresh_token,
   };
-}
-
-export async function authHandler(
-  req: Request,
-  config: AuthConfig,
-): Promise<Response> {
-  if (!config.secret || config.secret.length === 0) {
-    throw new HTTPException(500, { message: "Missing AUTH_SECRET" });
-  }
-  const res = await Auth(await reqWithEnvUrl(req), config);
-  return new Response(res.body, {
-    status: res.status,
-    headers: res.headers,
-  });
-}
-
-export async function verifyAuth(
-  req: Request,
-  config: AuthConfig,
-): Promise<AuthUser> {
-  const authUser = await getAuthUser(req, config);
-  const isAuth = !!authUser?.token || !!authUser?.user;
-  if (!isAuth) {
-    const res = new Response("Unauthorized", {
-      status: 401,
-    });
-    throw new HTTPException(401, { res });
-  }
-  return authUser;
-}
-
-export async function getAuthUser(
-  req: Request,
-  config: AuthConfig,
-): Promise<AuthUser | undefined> {
-  const { origin } = new URL((await reqWithEnvUrl(req)).url);
-  const request = new Request(`${origin}${config.basePath}/session`, {
-    headers: { cookie: req.headers.get("cookie") ?? "" },
-  });
-  let authUser: AuthUser = {} as AuthUser;
-  const res = (await Auth(request, {
-    ...config,
-    callbacks: {
-      ...config.callbacks,
-      async session(...args) {
-        authUser = args[0];
-        const session =
-          (await config.callbacks?.session?.(...args)) ?? args[0].session;
-        const user = args[0].user ?? args[0].token;
-        return { user, ...session } satisfies AuthSession;
-      },
-    },
-  })) as Response;
-  const session = (await res.json()) as AuthSession | null;
-  return session?.user ? authUser : undefined;
-}
-
-export interface AuthUser {
-  session: AuthSession;
-  token?: JWT;
-  user?: AdapterUser;
 }
 
 export interface AuthToken extends JWT {

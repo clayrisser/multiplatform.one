@@ -1,7 +1,7 @@
-/*
- * File: /app/api/auth/_log+api.ts
+/**
+ * File: /app/api/auth/signin/[provider]+api.ts
  * Project: @platform/one
- * File Created: 08-10-2024 22:43:55
+ * File Created: 01-01-1970 00:00:00
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,4 +19,8 @@
  * limitations under the License.
  */
 
-export const POST = () => new Response();
+import { authHandler } from "@multiplatform.one/authjs";
+import { authConfig } from "../../../../authConfig";
+
+export const GET = (req: Request) => authHandler(req, authConfig);
+export const POST = (req: Request) => authHandler(req, authConfig);

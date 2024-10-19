@@ -1,7 +1,7 @@
-/*
- * File: /app/api/auth/providers+api.ts
+/**
+ * File: /app/api/auth/callback/keycloak+api.ts
  * Project: @platform/one
- * File Created: 07-10-2024 16:03:30
+ * File Created: 01-01-1970 00:00:00
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import { authHandler } from "@multiplatform.one/keycloak/one";
-import { authConfig } from "../../../authConfig";
+import { authHandler } from "@multiplatform.one/authjs";
+import { authConfig } from "../../../../authConfig";
 
 export const GET = (req: Request) => authHandler(req, authConfig);

@@ -1,5 +1,5 @@
 /**
- * File: /app/api/auth/session+api.ts
+ * File: /app/api/auth/[route]+api.ts
  * Project: @platform/one
  * File Created: 01-01-1970 00:00:00
  * Author: Clay Risser
@@ -19,7 +19,8 @@
  * limitations under the License.
  */
 
-import { authHandler } from "@multiplatform.one/keycloak/one";
+import { authHandler } from "@multiplatform.one/authjs";
 import { authConfig } from "../../../authConfig";
 
 export const GET = (req: Request) => authHandler(req, authConfig);
+export const POST = (req: Request) => authHandler(req, authConfig);

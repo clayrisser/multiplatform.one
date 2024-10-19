@@ -14,23 +14,11 @@
       "command": "./mkpm storybook-expo/dev"
     },
     {
-      "name": "next dev",
+      "name": "one dev",
       "type": "node-terminal",
       "request": "launch",
-      "command": "../../mkpm next/+dev",
-      "cwd": "${workspaceFolder}/platforms/next",
-      "serverReadyAction": {
-        "webRoot": "${workspaceFolder}/platforms/next",
-        "pattern": "- Local:.+(https?://.+)",
-        "uriFormat": "%s",
-        "action": "debugWithChrome"
-      }
-    },
-    {
-      "name": "expo dev",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "./mkpm expo/dev"
+      "command": "../../mkpm one/+dev",
+      "cwd": "${workspaceFolder}/platforms/one"
     },
     {
       "name": "electron dev",
@@ -73,15 +61,15 @@
     },
     {
       "name": "Frontend",
-      "configurations": ["expo dev", "next dev"]
+      "configurations": ["one dev"]
     },
     {
       "name": "Web",
-      "configurations": ["api dev", "api mesh", "frappe dev", "next dev"]
+      "configurations": ["api dev", "api mesh", "frappe dev", "one dev"]
     },
     {
       "name": "Native",
-      "configurations": ["api dev", "api mesh", "expo dev", "frappe dev"]
+      "configurations": ["api dev", "api mesh", "frappe dev", "one dev"]
     },
     {
       "name": "Storybook",

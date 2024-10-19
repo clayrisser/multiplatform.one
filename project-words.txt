@@ -19,6 +19,7 @@ aud
 audi
 authenticator
 autheticator
+authjs
 authnstatement
 autodocs
 autolink
@@ -279,6 +280,7 @@ nyptek
 oauth2
 oidc
 ondevice
+onestack
 onetimeuse
 openapi
 opencensus

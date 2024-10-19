@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/cli",
-  "version": "2.1.0",
+  "version": "2.1.5",
   "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
   "contributors": [
     {
@@ -29,7 +29,12 @@
   "scripts": {
     "build": "tsup"
   },
-  "files": ["bin", "lib", "scripts", "src"],
+  "files": [
+    "bin",
+    "lib",
+    "scripts",
+    "src"
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -38,12 +43,15 @@
   "bugs": {
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues"
   },
-  "keywords": ["type-graphql", "graphql"],
+  "keywords": [
+    "type-graphql",
+    "graphql"
+  ],
   "engines": {
     "node": ">= 16.0"
   },
   "devDependencies": {
-    "@multiplatform.one/utils": "workspace:0.1.1",
+    "@multiplatform.one/utils": "workspace:0.1.6",
     "@types/inquirer": "^9.0.7",
     "@types/node": "~20.12.13",
     "tsup": "^8.3.0",
@@ -58,5 +66,9 @@
     "ora": "^8.1.0",
     "pg": "^8.13.0"
   },
-  "transpileModules": ["#ansi-styles", "#supports-color", "chalk"]
+  "transpileModules": [
+    "#ansi-styles",
+    "#supports-color",
+    "chalk"
+  ]
 }

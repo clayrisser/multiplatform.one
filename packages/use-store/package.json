@@ -1,9 +1,13 @@
 {
   "name": "@multiplatform.one/use-store",
-  "version": "0.0.3",
+  "version": "0.0.8",
   "description": "multiplatform.one use-store hook with support for async storage",
   "sideEffects": false,
-  "keywords": ["react", "react-native", "electron"],
+  "keywords": [
+    "react",
+    "react-native",
+    "electron"
+  ],
   "homepage": "https://multiplatform.one",
   "bugs": {
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues",
@@ -29,7 +33,10 @@
     "build": "rm -rf dist types 2>/dev/null && tamagui-build",
     "test": "vitest run"
   },
-  "files": ["lib", "src"],
+  "files": [
+    "lib",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
