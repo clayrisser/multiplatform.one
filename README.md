@@ -2,15 +2,10 @@
 
 > multiplatform.one example
 
-## NYPTEK Stack
-
-multiplatform.one implements the NYPTEK stack
-
-- NextJS - web frontend
+- OneStack - web and mobile frontend
 - Yoga - graphql server
 - Prisma - database layer
 - TypeGraphQL - graphql schema
-- Expo - native frontend
 - Keycloak - authentication
 
 ## Notes
