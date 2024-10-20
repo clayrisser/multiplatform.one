@@ -17,8 +17,7 @@
       "name": "one dev",
       "type": "node-terminal",
       "request": "launch",
-      "command": "../../mkpm one/+dev",
-      "cwd": "${workspaceFolder}/platforms/one"
+      "command": "./mkpm one/dev"
     },
     {
       "name": "electron dev",
@@ -31,6 +30,12 @@
       "type": "node-terminal",
       "request": "launch",
       "command": "./mkpm keycloak/dev"
+    },
+    {
+      "name": "vocs dev",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "./mkpm vocs/dev"
     },
     {
       "name": "frappe dev",

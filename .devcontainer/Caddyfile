@@ -20,6 +20,13 @@ http://account.test, http://account.localhost {
 	tls internal
 }
 
+http://docs.test, http://docs.localhost {
+	handle {
+		reverse_proxy 127.0.0.1:8080
+	}
+	tls internal
+}
+
 http://frappe.test, http://frappe.localhost {
 	handle {
 		reverse_proxy 127.0.0.1:8000 {

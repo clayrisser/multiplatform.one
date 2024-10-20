@@ -1,9 +1,7 @@
 {
   "name": "@multiplatform.one/components",
   "version": "4.1.8",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": ["*.css"],
   "description": "multiplatform.one ui components",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,12 +25,7 @@
     "build": "rm -rf dist types 2>/dev/null && tamagui-build",
     "test": "vitest run"
   },
-  "files": [
-    "css",
-    "dist",
-    "src",
-    "types"
-  ],
+  "files": ["css", "dist", "src", "types"],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one.git"
