@@ -3,7 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "vocs dev",
+    "dev": "vocs dev --port ${VOCS_PORT:-5010}",
     "build": "vocs build",
     "preview": "vocs preview"
   },

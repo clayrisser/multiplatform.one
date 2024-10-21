@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/index.ts
- * Project: @multiplatform.one/electron
- * File Created: 17-06-2024 08:29:13
+ * Project: @multiplatform.one/react-query-electron-ipc
+ * File Created: 21-10-2024 15:17:24
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024

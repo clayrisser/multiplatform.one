@@ -285,8 +285,8 @@ const waitServices = ["api", "frappe", "postgres", "keycloak"];
 program
   .command("wait")
   .description("wait for a service to be ready")
-  .option("-i, --interval <interval>", "interval to wait for", 1000)
-  .option("-t, --timeout <timeout>", "timeout to wait for", 600000)
+  .option("-i, --interval <interval>", "interval to wait for", "1000")
+  .option("-t, --timeout <timeout>", "timeout to wait for", "600000")
   .option("-e, --dotenv <dotenv>", "dotenv file path", ".env")
   .argument(
     "<services>",

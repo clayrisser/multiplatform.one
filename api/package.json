@@ -5,7 +5,7 @@
     "build": "tsup && vite build",
     "dev": "vite build --watch",
     "generate": "prisma generate",
-    "mesh": "pnpm multiplatform.one wait -e ../.env api,frappe && export UWS_HTTP_MAX_HEADERS_SIZE=16384 && mesh build && mesh dev",
+    "mesh": "pnpm multiplatform.one wait -e ../.env api,frappe && export UWS_HTTP_MAX_HEADERS_SIZE=16384 && mesh build && mesh dev --port ${MESH_PORT:-5002}",
     "seed": "cd prisma && tsup && cd .. && prisma db seed"
   },
   "dependencies": {
@@ -37,6 +37,7 @@
     "typegraphql-prisma": "^0.27.2"
   },
   "devDependencies": {
+    "@multiplatform.one/cli": "workspace:2.1.5",
     "tsup": "^8.3.0",
     "vite": "6.0.0-beta.1",
     "vite-plugin-node": "^3.1.0"

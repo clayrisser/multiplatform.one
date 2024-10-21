@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/request.ts
- * Project: @multiplatform.one/prisma-scripts
- * File Created: 04-04-2024 15:50:39
+ * Project: @multiplatform.one/react-query-electron-ipc
+ * File Created: 21-10-2024 15:17:24
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,7 +19,6 @@
  * limitations under the License.
  */
 
-import type { EventEmitter } from "node:stream";
 import { v4 as uuid } from "uuid";
 import type { IpcRequest, IpcResponse } from "./types";
 import { IpcEvent, IpcMethod } from "./types";
