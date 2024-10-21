@@ -8,11 +8,7 @@ http://app.test, http://app.localhost {
 		reverse_proxy 127.0.0.1:{env.API_PORT}
 	}
 	handle {
-		reverse_proxy 127.0.0.1:{env.ONE_PORT} {
-			header_up Foo bar
-			header_up X-Forwarded-Host app.localhost
-			header_up Referer http://app.localhost
-		}
+		reverse_proxy 127.0.0.1:{env.ONE_PORT}
 	}
 	tls internal
 }

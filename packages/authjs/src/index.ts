@@ -33,11 +33,11 @@ export async function authHandler(
   if (!config.secret || config.secret.length === 0) {
     throw new HTTPException(500, { message: "Missing AUTH_SECRET" });
   }
-  const res = await Auth(await reqWithEnvUrl(req), config);
-  console.log("REQ", req.url);
-  req.headers.forEach((value, key) => {
-    console.log(key, value);
-  });
+  if (req.url.endsWith("/_log")) return new Response();
+  const res = await Auth(
+    await reqWithEnvUrl(req, getAuthUrl(req, config)),
+    config,
+  );
   return new Response(res.body, res);
 }
 
@@ -60,7 +60,9 @@ export async function getAuthUser(
   req: Request,
   config: AuthConfig,
 ): Promise<AuthUser | undefined> {
-  const { origin } = new URL((await reqWithEnvUrl(req)).url);
+  const { origin } = new URL(
+    (await reqWithEnvUrl(req, getAuthUrl(req, config))).url,
+  );
   const request = new Request(`${origin}${config.basePath}/session`, {
     headers: { cookie: req.headers.get("cookie") ?? "" },
   });
@@ -86,4 +88,23 @@ export interface AuthUser {
   session: AuthSession;
   token?: JWT;
   user?: AdapterUser;
+}
+
+export function getAuthUrl(req: Request, config: AuthConfig) {
+  const url = new URL(req.url);
+  const baseUrl = new URL(config.basePath || "", url.origin);
+  return new URL(
+    baseUrl.pathname,
+    (() => {
+      const xForwardedHost = req.headers.get("x-forwarded-host");
+      if (!xForwardedHost) return;
+      return new URL(
+        `${req.headers.get("x-forwarded-proto") || "http"}://${xForwardedHost
+          .split(",")[0]
+          .trim()}`,
+      ).origin;
+    })() ||
+      req.headers.get("origin") ||
+      url.origin,
+  ).href;
 }
