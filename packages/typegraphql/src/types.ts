@@ -128,6 +128,7 @@ export interface StartOptions {
 export type StartResult = Omit<TypeGraphQLApp, "start"> & {
   metricsPort: number;
   port: number;
+  requestHandler: (req: Request) => Response | Promise<Response>;
   schema: GraphQLSchema;
   yoga: YogaServerInstance<Record<string, any>, Record<string, any>>;
   yogaServerOptions: YogaServerOptions<

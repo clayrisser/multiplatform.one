@@ -30,12 +30,12 @@ import { usePrometheus } from "@envelop/prometheus";
 import { PrismaClient } from "@prisma/client";
 import type { OnResponseEventPayload } from "@whatwg-node/server";
 import { useServer } from "graphql-ws/lib/use/ws";
+import { createYoga, useLogger } from "graphql-yoga";
 import type {
   LogLevel,
   YogaInitialContext,
   YogaServerOptions,
 } from "graphql-yoga";
-import { createYoga, useLogger } from "graphql-yoga";
 import nodeCleanup from "node-cleanup";
 import promClient, { Registry as PromClientRegistry } from "prom-client";
 import { container as Container, Lifecycle } from "tsyringe";
@@ -305,6 +305,13 @@ export function createApp(options: AppOptions): TypeGraphQLApp {
           },
           schema,
         });
+        const requestHandler = (req: Request) => {
+          return yoga.fetch(req.url, {
+            body: req.body,
+            headers: req.headers,
+            method: req.method,
+          });
+        };
         httpServer.listener = async (
           req: IncomingMessage,
           res: ServerResponse,
@@ -341,8 +348,7 @@ export function createApp(options: AppOptions): TypeGraphQLApp {
           {
             execute: (args: any) => args.rootValue.execute(args),
             subscribe: (args: any) => args.rootValue.subscribe(args),
-            onConnect: (ctx) => {
-              // @ts-ignore
+            onConnect: (ctx: any) => {
               ctx.headers = ctx.connectionParams?.headers;
             },
             onSubscribe: async (ctx, message) => {
@@ -449,10 +455,12 @@ export function createApp(options: AppOptions): TypeGraphQLApp {
             });
           });
         }
-        if (startOptions.listen.server)
+        if (startOptions.listen.server) {
           logger.info(`server listening on http://${hostname}:${port}`);
-        if (startOptions.listen.metrics)
+        }
+        if (startOptions.listen.metrics) {
           logger.info(`metrics listening on http://${hostname}:${metricsPort}`);
+        }
         const result: StartResult = {
           buildSchemaOptions,
           debug,
@@ -463,6 +471,7 @@ export function createApp(options: AppOptions): TypeGraphQLApp {
           metricsServer,
           otelSDK,
           port,
+          requestHandler,
           schema,
           server,
           wsServer,

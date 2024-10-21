@@ -34,6 +34,10 @@ export async function authHandler(
     throw new HTTPException(500, { message: "Missing AUTH_SECRET" });
   }
   const res = await Auth(await reqWithEnvUrl(req), config);
+  console.log("REQ", req.url);
+  req.headers.forEach((value, key) => {
+    console.log(key, value);
+  });
   return new Response(res.body, res);
 }
 

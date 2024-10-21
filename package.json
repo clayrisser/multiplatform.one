@@ -48,6 +48,7 @@
       "@urql/core": "2.3.6",
       "estree-util-build-jsx": "2.2.0",
       "estree-walker": "2.0.2",
+      "hono": "^4.6.5",
       "jackspeak": "2.1.1",
       "prisma": "~5.12.1",
       "react": "18.3.1",

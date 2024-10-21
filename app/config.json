@@ -2,7 +2,6 @@
   "private": ["SECRET"],
   "public": [
     "BASE_URL",
-    "CROSS_STORAGE_HUB_URL",
     "DEBUG",
     "KEYCLOAK_BASE_URL",
     "KEYCLOAK_CLIENT_ID",

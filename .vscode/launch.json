@@ -48,8 +48,7 @@
       "name": "api dev",
       "type": "node-terminal",
       "request": "launch",
-      "cwd": "${workspaceFolder}/api",
-      "command": "../mkpm api/+dev"
+      "command": "./mkpm api/dev"
     },
     {
       "name": "api mesh",
