@@ -12,6 +12,8 @@
     "hoistingLimits": "workspaces"
   },
   "dependencies": {
+    "@graphiql/plugin-explorer": "^3.2.2",
+    "@graphiql/toolkit": "^0.11.0",
     "@multiplatform.one/authjs": "workspace:0.0.6",
     "@multiplatform.one/components": "workspace:4.1.8",
     "@multiplatform.one/keycloak": "workspace:2.0.8",
@@ -22,6 +24,10 @@
     "csrf": "^3.1.0",
     "expo": "~51.0.38",
     "expo-modules-core": "^1.12.26",
+    "graphiql": "^3.7.1",
+    "graphiql-ws": "^0.1.7",
+    "graphql": "^16.8.1",
+    "graphql-ws": "^5.16.0",
     "hono": "^4.6.5",
     "multiplatform.one": "workspace:1.1.8",
     "one": "^1.1.317",
@@ -34,7 +40,8 @@
     "react-native-screens": "3.31.1",
     "react-native-svg": "15.2.0",
     "react-native-web": "^0.19.13",
-    "tamagui": "^1.115.5"
+    "tamagui": "^1.115.5",
+    "use-url-search-params": "^2.5.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

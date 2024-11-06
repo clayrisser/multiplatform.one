@@ -1,7 +1,7 @@
-/*
+/**
  * File: /main.ts
  * Project: api
- * File Created: 04-04-2024 15:50:39
+ * File Created: 05-11-2024 04:15:00
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -20,12 +20,15 @@
  */
 
 import "reflect-metadata";
-import { fileURLToPath } from "node:url";
 import { createApp } from "@multiplatform.one/typegraphql";
+import { fileURLToPath } from "node:url";
 import { options } from "./app";
+
+const { API_PORT } = process.env;
 
 const app = createApp({
   ...options,
+  port: API_PORT ? Number.parseInt(API_PORT) : 5001,
   logger: {
     ...options.logger,
     logFileName:

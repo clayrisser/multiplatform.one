@@ -274,6 +274,7 @@ nosniff
 noto
 nowrap
 nullable
+nullthrows
 num
 numberify
 nyptek
