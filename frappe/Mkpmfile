@@ -1,4 +1,4 @@
-# File: /frappe/Mkpmfile
+# File: /Mkpmfile
 # Project: root
 # File Created: 02-08-2024 23:13:27
 # Author: Clay Risser
@@ -21,63 +21,11 @@ include $(MKPM)/mkpm
 include $(MKPM)/chain
 include $(MKPM)/dotenv
 
-FRAPPE_BRANCH ?= version-15-hotfix
-FRAPPE_DATABASE_ENGINE ?= postgres
-FRAPPE_DATABASE_HOST ?= 127.0.0.1
-FRAPPE_DATABASE_PASSWORD ?= postgres
-REDIS_CACHE_URI ?= redis://localhost:6379
-REDIS_QUEUE_URI ?= redis://localhost:6380
-SITE_NAME ?= $(shell echo $(FRAPPE_BASE_URL) | sed 's|^https\?://||' | sed 's|:[0-9]\+$$||')
-
-APP_NAME := $(shell cat setup.py pyproject.toml 2>/dev/null | grep name | sed "s|['\",]||g" | sed 's|^[^=]*= *||g')
-
-.PHONY: install
-install: frappe-bench/Procfile
-	if [ "$(APP_NAME)" != "" ]; then \
-		if [ ! -L "frappe-bench/apps/$(APP_NAME)" ]; then \
-			ln -s "$$(pwd)" "$$(pwd)/frappe-bench/apps/$(APP_NAME)"; \
-		fi && \
-		frappe-bench/env/bin/python -m pip install --upgrade -e "frappe-bench/apps/$(APP_NAME)" && \
-		(echo "$(APP_NAME)" && cat "frappe-bench/sites/apps.txt") | sort | uniq > "frappe-bench/sites/_apps.txt" && \
-		mv "frappe-bench/sites/_apps.txt" "frappe-bench/sites/apps.txt" && \
-		(cd "frappe-bench" && bench build --app "$(APP_NAME)") && \
-		(cd "frappe-bench" && bench --site $(SITE_NAME) install-app "$(APP_NAME)"); \
-	fi
-frappe-bench/Procfile:
-	@frappe-installer \
-		--apps-json apps.json \
-		--db-host $(FRAPPE_DATABASE_HOST) \
-		--db-root-password $(FRAPPE_DATABASE_PASSWORD) \
-		--db-type $(FRAPPE_DATABASE_ENGINE) \
-		--frappe-branch $(FRAPPE_BRANCH) \
-		--redis-cache-uri $(REDIS_CACHE_URI) \
-		--redis-queue-uri $(REDIS_QUEUE_URI) \
-		--site-name $(SITE_NAME)
-	@cd frappe-bench && \
-		bench --site $(SITE_NAME) set-config -g developer_mode 1 && \
-		bench --site $(SITE_NAME) clear-cache
-
-.PHONY: uninstall
-uninstall:
-	@rm -rf frappe-bench
-ifeq (postgres,$(FRAPPE_DATABASE_ENGINE))
-	@echo "SELECT 'DROP DATABASE ' || quote_ident(datname) || ';' FROM pg_database WHERE datname LIKE '%\_%' ESCAPE '\' AND datistemplate = false;" | \
-		PGPASSWORD=$(FRAPPE_DATABASE_PASSWORD) psql -hpostgres -Upostgres -t -A
-else
-	@echo "SELECT CONCAT('DROP DATABASE \`', SCHEMA_NAME, '\`;') FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME LIKE '\\_%';" | \
-		mysql -hmariadb -uroot -p$(FRAPPE_DATABASE_PASSWORD) -N | mysql -hmariadb -uroot -p$(FRAPPE_DATABASE_PASSWORD)
-endif
-
-.PHONY: reinstall
-reinstall: uninstall install
-
 .PHONY: generate
 generate:
 	@cd frappe-bench && \
 		bench --site $(SITE_NAME) graphql generate_sdl
 
-.PHONY: dev
-dev:
-	@cd frappe/frappe-bench; \
-		. frappe/frappe-bench/env/bin/activate; \
-		honcho start web socketio watch schedule worker
+.PHONY: %
+%:
+	@sh $@.sh

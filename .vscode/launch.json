@@ -41,8 +41,7 @@
       "name": "frappe dev",
       "type": "node-terminal",
       "request": "launch",
-      "command": ". ${workspaceFolder}/frappe/frappe-bench/env/bin/activate; honcho start web socketio watch schedule worker",
-      "cwd": "${workspaceFolder}/frappe/frappe-bench"
+      "command": "sh frappe/dev.sh"
     },
     {
       "name": "api dev",
