@@ -18,7 +18,6 @@
 # limitations under the License.
 
 include $(MKPM)/mkpm
-include $(MKPM)/chain
 include $(MKPM)/dotenv
 
 .PHONY: generate
@@ -26,6 +25,11 @@ generate:
 	@cd frappe-bench && \
 		bench --site $(SITE_NAME) graphql generate_sdl
 
-.PHONY: %
-%:
-	@sh $@.sh
+.PHONY: bootstrap dev
+bootstrap dev:
+	@frappe-$@
+
+.PHONY: reset
+reset:
+	@rm -rf frappe-bench
+	@$(call make) bootstrap

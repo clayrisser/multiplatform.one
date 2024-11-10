@@ -1,6 +1,6 @@
 {
-  "name": "Frappe Bench",
-  "remoteUser": "frappe",
+  "name": "multiplatform.one",
+  "remoteUser": "one",
   "dockerComposeFile": "compose.yaml",
   "service": "devcontainer",
   "workspaceFolder": "/workspace/development",
@@ -9,10 +9,15 @@
   "postAttachCommand": "sh ${containerWorkspaceFolder}/.devcontainer/postattach.sh",
   "shutdownAction": "stopCompose",
   "mounts": [
-    "source=${localEnv:HOME}/.ssh,target=/home/frappe/.ssh,type=bind,consistency=cached",
-    "source=${localEnv:HOME}/.pnpm-store,target=/home/frappe/.pnpm-store,consistency=cached",
-    "source=${localEnv:HOME}/.local/state/frappe,target=/home/frappe/.local/state/frappe,type=bind,consistency=cached"
+    "source=${localEnv:HOME}/.ssh,target=/home/one/.ssh,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.pnpm-store,target=/home/one/.pnpm-store,consistency=cached",
+    "source=${localEnv:HOME}/.local/state/frappe,target=/home/one/.local/state/frappe,type=bind,consistency=cached"
   ],
+  "remoteEnv": {
+    "APP_DIR": "/workspace/development/frappe",
+    "DOTENV_FILE": "/workspace/development/.env",
+    "WORK_DIR": "/workspace/development/frappe"
+  },
   "customizations": {
     "vscode": {
       "extensions": [

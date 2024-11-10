@@ -41,7 +41,7 @@
       "name": "frappe dev",
       "type": "node-terminal",
       "request": "launch",
-      "command": "sh frappe/dev.sh"
+      "command": "./mkpm frappe/dev"
     },
     {
       "name": "api dev",

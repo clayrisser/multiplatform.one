@@ -56,7 +56,7 @@ prisma/%: ~deps
 	@$(call make,prisma) $*
 
 .PHONY: docker/%
-ifneq (/home/frappe,$(HOME))
+ifneq (/home/one,$(HOME))
 docker/%: $(PROJECT_ROOT)/docker/data/logs/app.log
 	@$(call make,$(PROJECT_ROOT)) docker/$*
 $(PROJECT_ROOT)/docker/data/logs/app.log:

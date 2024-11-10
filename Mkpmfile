@@ -61,7 +61,7 @@ clean:
 		$(MKPM_GIT_CLEAN_FLAGS)
 
 .PHONY: purge
-ifneq (/home/frappe,$(HOME))
+ifneq (/home/one,$(HOME))
 purge: docker/down clean
 else
 purge: clean

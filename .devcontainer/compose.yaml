@@ -1,6 +1,6 @@
 services:
   devcontainer:
-    image: registry.gitlab.com/bitspur/frappe/images/devcontainer:latest
+    image: registry.gitlab.com/bitspur/multiplatform.one/multiplatform.one/devcontainer:latest
     command: sleep infinity
     network_mode: host
     extra_hosts:
