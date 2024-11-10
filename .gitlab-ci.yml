@@ -13,7 +13,9 @@ build:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - echo "$SSH_KEY" > docker/id_rsa
   script:
-    - ./mkpm docker/bake
+    - cp .env.default .env
+    - sed -e '/^[[:space:]]*$/d' -e '/[#@]/d' -e 's/\(^[^=]*\)=\(.*\)/\1="\2"/' .env > docker/env.hcl
+    - cd docker && docker buildx bake -f docker-bake.hcl -f env.hcl --provenance false
   when: manual
 # include:
 #   - template: Auto-DevOps.gitlab-ci.yml
