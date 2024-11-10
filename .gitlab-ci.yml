@@ -13,22 +13,7 @@ build:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - echo "$SSH_KEY" > docker/id_rsa
   script:
-    - cp .env.default .env
-    - |
-      awk -F= '
-        BEGIN { inMultiline=0; quoteType="" }
-        /^[[:space:]]*#/ || /^[[:space:]]*$$/ { print; next }
-        inMultiline && $$0 ~ quoteType "$$" { print; inMultiline=0; next }
-        inMultiline { print; next }
-        ($$2 ~ /^"[^"]*$$/) || ($$2 ~ /^'\''[^'\'']*$$/) {
-          print "export " $$0;
-          inMultiline=1;
-          quoteType = substr($$2, 1, 1);
-          next
-        }
-        { print "export " $$0 }' .env > docker/env.sh
-    - source docker/env.sh
-    - cd docker && docker buildx bake --provenance false
+    - ./mkpm docker/bake
   when: manual
 # include:
 #   - template: Auto-DevOps.gitlab-ci.yml
