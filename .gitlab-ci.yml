@@ -28,7 +28,7 @@ build:
         }
         { print "export " $$0 }' .env > docker/env.sh
     - source docker/env.sh
-    - cd docker && docker buildx bake -f docker-bake.hcl -f env.hcl --provenance false
+    - cd docker && docker buildx bake --provenance false
   when: manual
 # include:
 #   - template: Auto-DevOps.gitlab-ci.yml
