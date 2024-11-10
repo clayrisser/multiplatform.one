@@ -14,7 +14,20 @@ build:
     - echo "$SSH_KEY" > docker/id_rsa
   script:
     - cp .env.default .env
-    - sed -e '/^[[:space:]]*$/d' -e '/[#@]/d' -e 's/\(^[^=]*\)=\(.*\)/\1=\2/' .env > docker/env.hcl
+    - |
+      awk -F= '
+        BEGIN { inMultiline=0; quoteType="" }
+        /^[[:space:]]*#/ || /^[[:space:]]*$$/ { print; next }
+        inMultiline && $$0 ~ quoteType "$$" { print; inMultiline=0; next }
+        inMultiline { print; next }
+        ($$2 ~ /^"[^"]*$$/) || ($$2 ~ /^'\''[^'\'']*$$/) {
+          print "export " $$0;
+          inMultiline=1;
+          quoteType = substr($$2, 1, 1);
+          next
+        }
+        { print "export " $$0 }' .env > docker/env.sh
+    - source docker/env.sh
     - cd docker && docker buildx bake -f docker-bake.hcl -f env.hcl --provenance false
   when: manual
 # include:
