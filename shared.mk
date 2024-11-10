@@ -31,7 +31,7 @@ NODE ?= node
 PNPM ?= pnpm
 SWC ?= $(PNPM) swc
 TSC ?= $(PNPM) tsc
-TSUP := $(PROJECT_ROOT)/node_modules/.bin/tsup
+TSUP := $(PNPM) tsup
 TURBO ?= $(PNPM) turbo
 WATCHMAN ?= watchman
 
