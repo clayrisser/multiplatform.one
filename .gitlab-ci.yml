@@ -14,7 +14,7 @@ build:
     - echo "$SSH_KEY" > docker/id_rsa
   script:
     - cp .env.default .env
-    - sed -e '/^[[:space:]]*$/d' -e '/[#@]/d' -e 's/\(^[^=]*\)=\(.*\)/\1="\2"/' .env > docker/env.hcl
+    - sed -e '/^[[:space:]]*$/d' -e '/[#@]/d' -e 's/\(^[^=]*\)=\(.*\)/\1=\2/' .env > docker/env.hcl
     - cd docker && docker buildx bake -f docker-bake.hcl -f env.hcl --provenance false
   when: manual
 # include:
