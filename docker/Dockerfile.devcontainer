@@ -3,6 +3,10 @@ ARG USER=one
 USER root
 RUN set -x && \
     . ${NVM_DIR}/nvm.sh && \
+    npm install -g \
+    @biomejs/biome \
+    pnpm \
+    turbo && \
     usermod -d /home/${USER} -l ${USER} frappe && \
     groupmod -n ${USER} frappe && \
     mv /home/frappe /home/${USER} && \
@@ -15,11 +19,7 @@ RUN set -x && \
     done && \
     rm -rf /home/${USER}/.oh-my-zsh/custom/themes/spaceship.zsh-theme && \
     ln -s /home/${USER}/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme \
-    /home/${USER}/.oh-my-zsh/custom/themes/spaceship.zsh-theme && \
-    npm install -g \
-    @biomejs/biome \
-    pnpm \
-    turbo
+    /home/${USER}/.oh-my-zsh/custom/themes/spaceship.zsh-theme
 WORKDIR /home/${USER}
 USER ${USER}
 ENV NVM_DIR=/home/${USER}/.nvm \
