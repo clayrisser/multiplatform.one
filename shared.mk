@@ -38,4 +38,5 @@ WATCHMAN ?= watchman
 export POSTGRES_URL ?= \
 	postgresql://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOSTNAME):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=prefer
 
-export GIT_COMMIT ?= $(shell $(GIT) describe --tags --always --dirty | $(SED) 's|^.*@||g')
+$(info GIT $(GIT))
+export GIT_COMMIT ?= $(shell git describe --tags --always --dirty | $(SED) 's|^.*@||g')
