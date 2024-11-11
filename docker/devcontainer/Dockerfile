@@ -1,7 +1,8 @@
 FROM registry.gitlab.com/bitspur/frappe/factory/devcontainer:latest
 ARG USER=one
 USER root
-RUN . ${NVM_DIR}/nvm.sh && \
+RUN set -x && \
+    . ${NVM_DIR}/nvm.sh && \
     npm install -g \
     @biomejs/biome \
     pnpm \
@@ -24,7 +25,7 @@ USER ${USER}
 ENV NVM_DIR=/home/${USER}/.nvm \
     PATH=/home/${USER}/.local/bin:/home/${USER}/.pyenv/shims:/home/${USER}/.pyenv/bin:/home/${USER}/.local/bin:/home/${USER}/.nvm/versions/node/v${NODE_VERSION}/bin/:$PATH \
     PYENV_ROOT=/home/${USER}/.pyenv
-RUN && \
+RUN set -x && \
     cd /home/${USER} && \
     rm -rf "/home/${USER}/.pyenv" "/home/${USER}/.cache" && \
     git clone --depth 1 https://github.com/pyenv/pyenv.git .pyenv && \
