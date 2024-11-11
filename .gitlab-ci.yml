@@ -2,16 +2,18 @@ stages:
   - build
 
 variables:
-  SSH_KEY: ""
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2375/
 
 build:
   image: registry.gitlab.com/bitspur/rock8s/images/docker:latest
   stage: build
   services:
-    - docker:dind
+    - name: docker:dind
+      command: ["--experimental"]
   before_script:
+    - docker buildx create --use
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-    - echo "$SSH_KEY" > docker/id_rsa
   script:
     - ./mkpm docker/bake
   when: manual
