@@ -29,7 +29,7 @@ services:
 
   dns:
     restart: unless-stopped
-    image: registry.gitlab.com/bitspur/frappe/images/dns:latest
+    image: registry.gitlab.com/bitspur/multiplatform.one/multiplatform.one/dns:latest
     ports:
       - 53:53/udp
     cap_add:

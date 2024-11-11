@@ -9,8 +9,9 @@ variable "GIT_COMMIT" {
 group "default" {
   targets = [
 #   "app",
-#   "keycloak",
-    "devcontainer"
+    "keycloak",
+    "devcontainer",
+    "dns
   ]
 }
 
@@ -20,7 +21,7 @@ target "app" {
   output     = ["type=registry"]
   platforms  = [
     "linux/amd64",
-#   "linux/arm64",
+    "linux/arm64",
   ]
   tags = [
     "${REGISTRY}/app:${GIT_COMMIT}",
@@ -34,7 +35,7 @@ target "keycloak" {
   output     = ["type=registry"]
   platforms  = [
     "linux/amd64",
-#   "linux/arm64",
+    "linux/arm64",
   ]
   tags = [
     "${REGISTRY}/keycloak:${GIT_COMMIT}",
@@ -44,11 +45,25 @@ target "keycloak" {
 
 target "devcontainer" {
   context    = ".."
-  dockerfile = "docker/Dockerfile.devcontainer"
+  dockerfile = "docker/devcontainer/Dockerfile"
   output     = ["type=registry"]
   platforms  = [
     "linux/amd64",
-#   "linux/arm64",
+    "linux/arm64",
+  ]
+  tags = [
+    "${REGISTRY}/devcontainer:${GIT_COMMIT}",
+    "${REGISTRY}/devcontainer:latest",
+  ]
+}
+
+target "dns" {
+  context    = ".."
+  dockerfile = "docker/dns/Dockerfile"
+  output     = ["type=registry"]
+  platforms  = [
+    "linux/amd64",
+    "linux/arm64",
   ]
   tags = [
     "${REGISTRY}/devcontainer:${GIT_COMMIT}",

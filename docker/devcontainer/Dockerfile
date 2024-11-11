@@ -1,4 +1,4 @@
-FROM registry.gitlab.com/bitspur/frappe/images/devcontainer:latest
+FROM registry.gitlab.com/bitspur/frappe/factory/devcontainer:latest
 ARG USER=one
 USER root
 RUN set -x && \
