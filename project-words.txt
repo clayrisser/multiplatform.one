@@ -59,11 +59,13 @@ bts
 btw
 bufferutil
 buildpack
+buildx
 builtins
 bxsh
 caddyfile
 camelcase
 cancelable
+certdir
 checkbox
 chromeandroid
 ciba
@@ -109,6 +111,7 @@ devlop
 devtool
 devtools
 dharmendra
+dind
 disableable
 discarder
 docgen
