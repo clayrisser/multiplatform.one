@@ -33,7 +33,7 @@ target "keycloak" {
   dockerfile = "platforms/keycloak/docker/Dockerfile"
   platforms  = [
     "linux/amd64",
-    "linux/arm64",
+#    "linux/arm64",
   ]
   tags = [
     "${REGISTRY}/keycloak:${GIT_COMMIT}",
