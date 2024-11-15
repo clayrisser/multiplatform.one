@@ -30,7 +30,6 @@ target "app" {
     "${REGISTRY}/app:${GIT_COMMIT}",
     "${REGISTRY}/app:${TAG}",
   ]
-  cache-from = ["${REGISTRY}/app:${TAG}"]
 }
 
 target "keycloak" {
@@ -44,7 +43,6 @@ target "keycloak" {
     "${REGISTRY}/keycloak:${GIT_COMMIT}",
     "${REGISTRY}/keycloak:${TAG}",
   ]
-  cache-from = ["${REGISTRY}/keycloak:${TAG}"]
 }
 
 target "devcontainer" {
@@ -58,7 +56,6 @@ target "devcontainer" {
     "${REGISTRY}/devcontainer:${GIT_COMMIT}",
     "${REGISTRY}/devcontainer:${TAG}",
   ]
-  cache-from = ["${REGISTRY}/devcontainer:${TAG}"]
 }
 
 target "dns" {
@@ -72,5 +69,4 @@ target "dns" {
     "${REGISTRY}/dns:${GIT_COMMIT}",
     "${REGISTRY}/dns:${TAG}",
   ]
-  cache-from = ["${REGISTRY}/dns:${TAG}"]
 }
