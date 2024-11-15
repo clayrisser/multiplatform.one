@@ -2,16 +2,20 @@ variable "REGISTRY" {
   default = "docker.io/library"
 }
 
+variable "TAG" {
+  default = "latest"
+}
+
 variable "GIT_COMMIT" {
   default = "local"
 }
 
 group "default" {
   targets = [
-#   "app",
-    "keycloak",
+    # "app",
     "devcontainer",
-    "dns"
+    "dns",
+    "keycloak",
   ]
 }
 
@@ -24,8 +28,9 @@ target "app" {
   ]
   tags = [
     "${REGISTRY}/app:${GIT_COMMIT}",
-    "${REGISTRY}/app:latest",
+    "${REGISTRY}/app:${TAG}",
   ]
+  cache-from = ["${REGISTRY}/app:${TAG}"]
 }
 
 target "keycloak" {
@@ -33,12 +38,13 @@ target "keycloak" {
   dockerfile = "platforms/keycloak/docker/Dockerfile"
   platforms  = [
     "linux/amd64",
-#    "linux/arm64",
+    # "linux/arm64",
   ]
   tags = [
     "${REGISTRY}/keycloak:${GIT_COMMIT}",
-    "${REGISTRY}/keycloak:latest",
+    "${REGISTRY}/keycloak:${TAG}",
   ]
+  cache-from = ["${REGISTRY}/keycloak:${TAG}"]
 }
 
 target "devcontainer" {
@@ -46,12 +52,13 @@ target "devcontainer" {
   dockerfile = "docker/devcontainer/Dockerfile"
   platforms  = [
     "linux/amd64",
-#    "linux/arm64",
+    # "linux/arm64",
   ]
   tags = [
     "${REGISTRY}/devcontainer:${GIT_COMMIT}",
-    "${REGISTRY}/devcontainer:latest",
+    "${REGISTRY}/devcontainer:${TAG}",
   ]
+  cache-from = ["${REGISTRY}/devcontainer:${TAG}"]
 }
 
 target "dns" {
@@ -63,6 +70,7 @@ target "dns" {
   ]
   tags = [
     "${REGISTRY}/dns:${GIT_COMMIT}",
-    "${REGISTRY}/dns:latest",
+    "${REGISTRY}/dns:${TAG}",
   ]
+  cache-from = ["${REGISTRY}/dns:${TAG}"]
 }

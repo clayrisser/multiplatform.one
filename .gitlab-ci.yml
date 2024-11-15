@@ -1,26 +1,3 @@
-stages:
-  - build
-
-variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2376
-  DOCKER_TLS_CERTDIR: /certs
-  DOCKER_CERT_PATH: $DOCKER_TLS_CERTDIR/client
-  DOCKER_TLS_VERIFY: 1
-
-build:
-  image: registry.gitlab.com/bitspur/rock8s/images/docker:25.0.5
-  stage: build
-  services:
-    - name: docker:25.0.5-dind
-      command: ["--experimental"]
-  before_script:
-    - docker context create builder-context
-    - docker buildx create builder-context --use
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-  script:
-    - ./mkpm docker/bake
-  when: manual
 # include:
 #   - template: Auto-DevOps.gitlab-ci.yml
 
@@ -72,6 +49,31 @@ build:
 #     --set integrations.keycloak.clientSecret=${KEYCLOAK_CLIENT_SECRET}
 #     --set integrations.keycloak.clientSecretEnabled=${KEYCLOAK_CLIENT_SECRET_ENABLED}
 #     --set integrations.keycloak.name=${KEYCLOAK_INTEGRATION}
+
+stages:
+  - build
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: /certs
+  DOCKER_CERT_PATH: $DOCKER_TLS_CERTDIR/client
+  DOCKER_TLS_VERIFY: 1
+
+docker-build:
+  image: registry.gitlab.com/bitspur/rock8s/images/docker:25.0.5
+  stage: build
+  services:
+    - name: docker:25.0.5-dind
+      command: ["--experimental"]
+  before_script:
+    - docker context create builder-context
+    - docker buildx create builder-context --use
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+    - (echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin docker.io) || true
+  script:
+    - ./mkpm docker/bake
+  when: manual
 
 # pages:
 #   stage: deploy

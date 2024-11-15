@@ -115,6 +115,7 @@ dind
 disableable
 discarder
 docgen
+dockerhub
 docsearch
 dotenv
 downsample
