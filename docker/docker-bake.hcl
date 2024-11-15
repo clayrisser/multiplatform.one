@@ -18,7 +18,6 @@ group "default" {
 target "app" {
   context    = ".."
   dockerfile = "docker/Dockerfile"
-  output     = ["type=registry"]
   platforms  = [
     "linux/amd64",
     "linux/arm64",
@@ -32,7 +31,6 @@ target "app" {
 target "keycloak" {
   context    = ".."
   dockerfile = "platforms/keycloak/docker/Dockerfile"
-  output     = ["type=registry"]
   platforms  = [
     "linux/amd64",
     "linux/arm64",
@@ -46,10 +44,9 @@ target "keycloak" {
 target "devcontainer" {
   context    = ".."
   dockerfile = "docker/devcontainer/Dockerfile"
-  output     = ["type=registry"]
   platforms  = [
     "linux/amd64",
-    "linux/arm64",
+#    "linux/arm64",
   ]
   tags = [
     "${REGISTRY}/devcontainer:${GIT_COMMIT}",
@@ -60,7 +57,6 @@ target "devcontainer" {
 target "dns" {
   context    = ".."
   dockerfile = "docker/dns/Dockerfile"
-  output     = ["type=registry"]
   platforms  = [
     "linux/amd64",
     "linux/arm64",
