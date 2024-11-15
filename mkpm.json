@@ -2,7 +2,7 @@
   "packages": {
     "default": {
       "chain": "0.2.4",
-      "docker": "0.3.14",
+      "docker": "0.3.15",
       "dotenv": "0.2.3"
     }
   },
