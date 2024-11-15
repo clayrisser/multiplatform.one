@@ -62,7 +62,7 @@ target "dns" {
     "linux/arm64",
   ]
   tags = [
-    "${REGISTRY}/devcontainer:${GIT_COMMIT}",
-    "${REGISTRY}/devcontainer:latest",
+    "${REGISTRY}/dns:${GIT_COMMIT}",
+    "${REGISTRY}/dns:latest",
   ]
 }
