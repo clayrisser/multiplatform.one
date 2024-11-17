@@ -51,26 +51,30 @@
 #     --set integrations.keycloak.name=${KEYCLOAK_INTEGRATION}
 
 variables:
-  # BUILDKIT_INLINE_CACHE: 1
-  # COMPOSE_DOCKER_CLI_BUILD: 1
-  # DOCKER_BUILDKIT: 1
+  BUILDKIT_INLINE_CACHE: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+  DOCKER_BUILDKIT: 1
   DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2375
-  # DOCKER_TLS_CERTDIR: /certs
-  # DOCKER_CERT_PATH: $DOCKER_TLS_CERTDIR/client
-  # DOCKER_TLS_CERTDIR: ""
-  # DOCKER_TLS_VERIFY: 0
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: /certs
+  DOCKER_CERT_PATH: $DOCKER_TLS_CERTDIR/client
+  DOCKER_TLS_VERIFY: 1
 
 stages:
   - build
 
 docker-build:
-  image: registry.gitlab.com/bitspur/rock8s/images/docker:25.0.5
+  image: docker:cli
   stage: build
   services:
     - name: docker:dind
       command: ["--experimental"]
   before_script:
+    - |
+      if [ ! -f "$DOCKER_CERT_PATH/ca.pem" ]; then
+        export DOCKER_HOST=tcp://docker:2375
+        export DOCKER_TLS_VERIFY=0
+      fi
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
     - (echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin docker.io) || true
   script:
