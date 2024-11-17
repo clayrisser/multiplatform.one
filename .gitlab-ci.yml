@@ -74,7 +74,7 @@ docker-build:
       if [ ! -d "$DOCKER_CERT_PATH" ]; then
         export DOCKER_TLS_VERIFY=0
         export DOCKER_HOST=tcp://docker:2375
-      done
+      fi
     - docker context create builder-context
     - docker buildx create builder-context --use
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
