@@ -71,6 +71,10 @@ docker-build:
       command: ["--experimental"]
   before_script:
     - |
+      if [ ! -f "$DOCKER_CERT_PATH/ca.pem" ]; then
+        export DOCKER_TLS_VERIFY=0
+        export DOCKER_HOST=tcp://docker:2375
+      fi
     - docker context create builder-context --docker host=$DOCKER_HOST
     - docker buildx create builder-context --use
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
