@@ -69,7 +69,7 @@ docker-build:
   stage: build
   services:
     - name: docker:25.0.5-dind
-      command: ["--experimental"]
+      command: ["--experimental", "--tls=false"]
   before_script:
     - echo DOCKER_CERT_PATH $DOCKER_CERT_PATH
     - echo DOCKER_TLS_VERIFY $DOCKER_TLS_VERIFY
