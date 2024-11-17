@@ -59,6 +59,7 @@ bts
 btw
 bufferutil
 buildkit
+buildkitd
 buildpack
 buildx
 builtins

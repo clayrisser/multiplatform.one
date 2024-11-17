@@ -82,7 +82,7 @@ docker-build:
     - echo DOCKER_TLS_VERIFY $DOCKER_TLS_VERIFY
     - echo DOCKER_TLS_CERTDIR $DOCKER_TLS_CERTDIR
     - docker context create builder-context --docker host=$DOCKER_HOST
-    - docker buildx create builder-context --use
+    - docker buildx create builder-context --use --buildkitd-flags '--allow-insecure-entitlement security.insecure'
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
     - (echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin docker.io) || true
   script:
