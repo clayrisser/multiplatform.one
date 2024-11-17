@@ -76,7 +76,12 @@ docker-build:
         export DOCKER_HOST=tcp://docker:2375
       fi
     - docker context create builder-context --docker host=$DOCKER_HOST
-    - docker buildx create builder-context --use
+    - |
+      if [ ! -f "$DOCKER_CERT_PATH/ca.pem" ]; then
+        docker buildx create builder-context --use --config /etc/docker/buildkitd.toml
+      else
+        docker buildx create builder-context --use
+      fi
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
     - (echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin docker.io) || true
   script:
