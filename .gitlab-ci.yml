@@ -71,9 +71,11 @@ docker-build:
       command: ["--experimental"]
   before_script:
     - |
-      if [ ! -d "$DOCKER_CERT_PATH" ]; then
+      if [ ! -d "$DOCKER_CERT_PATH/ca.pem" ]; then
         export DOCKER_TLS_VERIFY=0
         export DOCKER_HOST=tcp://docker:2375
+        export DOCKER_CERT_PATH=
+        export DOCKER_TLS_CERTDIR=
       fi
     - docker context create builder-context
     - docker buildx create builder-context --use
