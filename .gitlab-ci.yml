@@ -74,6 +74,8 @@ docker-build:
       if [ ! -f "$DOCKER_CERT_PATH/ca.pem" ]; then
         export DOCKER_TLS_VERIFY=0
         export DOCKER_HOST=tcp://docker:2375
+        export DOCKER_CERT_PATH=
+        export DOCKER_TLS_CERTDIR=
       fi
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
     - (echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin docker.io) || true
