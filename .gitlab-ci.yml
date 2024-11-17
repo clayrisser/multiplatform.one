@@ -50,6 +50,16 @@
 #     --set integrations.keycloak.clientSecretEnabled=${KEYCLOAK_CLIENT_SECRET_ENABLED}
 #     --set integrations.keycloak.name=${KEYCLOAK_INTEGRATION}
 
+variables:
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_DRIVER: overlay2
+  DOCKER_BUILDKIT: 1
+  BUILDKIT_INLINE_CACHE: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+  DOCKER_TLS_CERTDIR: /certs
+  DOCKER_CERT_PATH: $DOCKER_TLS_CERTDIR/client
+  DOCKER_TLS_VERIFY: 1
+
 stages:
   - build
 
@@ -60,6 +70,11 @@ docker-build:
     - name: docker:25.0.5-dind
       command: ["--experimental"]
   before_script:
+    - |
+      if [ ! -d "$DOCKER_CERT_PATH" ]; then
+        export DOCKER_TLS_VERIFY=0
+        export DOCKER_HOST=tcp://docker:2375
+      done
     - docker context create builder-context
     - docker buildx create builder-context --use
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
