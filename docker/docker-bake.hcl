@@ -15,7 +15,7 @@ group "default" {
     # "app",
     "devcontainer",
     "dns",
-    "keycloak",
+    # "keycloak",
   ]
 }
 
