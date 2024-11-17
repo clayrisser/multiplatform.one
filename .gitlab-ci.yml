@@ -51,14 +51,15 @@
 #     --set integrations.keycloak.name=${KEYCLOAK_INTEGRATION}
 
 variables:
-  BUILDKIT_INLINE_CACHE: 1
-  COMPOSE_DOCKER_CLI_BUILD: 1
-  DOCKER_BUILDKIT: 1
+  # BUILDKIT_INLINE_CACHE: 1
+  # COMPOSE_DOCKER_CLI_BUILD: 1
+  # DOCKER_BUILDKIT: 1
   DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2376
-  DOCKER_TLS_CERTDIR: /certs
-  DOCKER_CERT_PATH: $DOCKER_TLS_CERTDIR/client
-  DOCKER_TLS_VERIFY: 1
+  DOCKER_HOST: tcp://docker:2375
+  # DOCKER_TLS_CERTDIR: /certs
+  # DOCKER_CERT_PATH: $DOCKER_TLS_CERTDIR/client
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_TLS_VERIFY: 0
 
 stages:
   - build
@@ -70,13 +71,6 @@ docker-build:
     - name: docker:25.0.5-dind
       command: ["--experimental"]
   before_script:
-    - |
-      if [ ! -f "$DOCKER_CERT_PATH/ca.pem" ]; then
-        export DOCKER_TLS_VERIFY=0
-        export DOCKER_HOST=tcp://docker:2375
-        export DOCKER_CERT_PATH=
-        export DOCKER_TLS_CERTDIR=
-      fi
     - echo DOCKER_CERT_PATH $DOCKER_CERT_PATH
     - echo DOCKER_TLS_VERIFY $DOCKER_TLS_VERIFY
     - echo DOCKER_HOST $DOCKER_HOST
