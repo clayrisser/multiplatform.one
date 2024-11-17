@@ -64,7 +64,8 @@ stages:
   - build
 
 docker-build:
-  image: docker:cli
+  # image: docker:cli
+  image: registry.gitlab.com/bitspur/rock8s/images/docker:25.0.5
   stage: build
   services:
     - name: docker:dind
