@@ -64,11 +64,10 @@ stages:
   - build
 
 docker-build:
-  # image: docker:cli
-  image: registry.gitlab.com/bitspur/rock8s/images/docker:25.0.5
+  image: registry.gitlab.com/bitspur/rock8s/images/docker:27.3.1
   stage: build
   services:
-    - name: docker:dind
+    - name: docker:27.3.1-dind
       command: ["--experimental"]
   before_script:
     - |
