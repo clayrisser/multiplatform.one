@@ -68,7 +68,7 @@ docker-build:
       command: ["--experimental"]
   before_script:
     - |
-      if ! docker buildx inspect builder > /dev/null 2>&1; then
+      if ! docker buildx inspect builder >/dev/null 2>&1; then
         docker buildx create --name builder --platform linux/amd64,linux/arm64 --use
       fi
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
