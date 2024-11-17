@@ -51,14 +51,14 @@
 #     --set integrations.keycloak.name=${KEYCLOAK_INTEGRATION}
 
 variables:
-  # BUILDKIT_INLINE_CACHE: 1
-  # COMPOSE_DOCKER_CLI_BUILD: 1
-  # DOCKER_BUILDKIT: 1
+  BUILDKIT_INLINE_CACHE: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+  DOCKER_BUILDKIT: 1
   DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2376
+  DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: /certs
   DOCKER_CERT_PATH: $DOCKER_TLS_CERTDIR/client
-  # DOCKER_TLS_VERIFY: 1
+  DOCKER_TLS_VERIFY: 0
 
 stages:
   - build
@@ -71,9 +71,6 @@ docker-build:
       command: ["--experimental"]
   before_script:
     - |
-      if [ ! -f "$DOCKER_CERT_PATH/ca.pem" ]; then
-        export DOCKER_HOST=tcp://docker:2375
-      fi
     - docker context create builder
     - docker buildx create builder --use
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
