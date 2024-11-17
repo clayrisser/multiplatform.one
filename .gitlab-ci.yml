@@ -53,14 +53,6 @@
 stages:
   - build
 
-variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2376
-  DOCKER_TLS_CERTDIR: /certs
-  DOCKER_CERT_PATH: $DOCKER_TLS_CERTDIR/client
-  DOCKER_TLS_VERIFY: 1
-  BAKE_ARGS: --pull --push --provenance=false --progress=plain --no-cache
-
 docker-build:
   image: registry.gitlab.com/bitspur/rock8s/images/docker:25.0.5
   stage: build
