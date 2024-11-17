@@ -55,11 +55,12 @@ variables:
   # COMPOSE_DOCKER_CLI_BUILD: 1
   # DOCKER_BUILDKIT: 1
   DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2375
+  # DOCKER_HOST: tcp://docker:2375
+  DOCKER_HOST: unix:///runner/services/docker/docker.sock
   # DOCKER_TLS_CERTDIR: /certs
   # DOCKER_CERT_PATH: $DOCKER_TLS_CERTDIR/client
-  DOCKER_TLS_CERTDIR: ""
-  DOCKER_TLS_VERIFY: 0
+  # DOCKER_TLS_CERTDIR: ""
+  # DOCKER_TLS_VERIFY: 0
 
 stages:
   - build
@@ -71,15 +72,10 @@ docker-build:
     - name: docker:25.0.5-dind
       command: ["--experimental"]
   before_script:
-    - echo DOCKER_CERT_PATH $DOCKER_CERT_PATH
-    - echo DOCKER_TLS_VERIFY $DOCKER_TLS_VERIFY
+    # - echo DOCKER_CERT_PATH $DOCKER_CERT_PATH
+    # - echo DOCKER_TLS_VERIFY $DOCKER_TLS_VERIFY
     - echo DOCKER_HOST $DOCKER_HOST
-    - echo DOCKER_TLS_CERTDIR $DOCKER_TLS_CERTDIR
-    - echo ------
-    - cat $HOME/.docker/config.json
-    - |
-      mkdir -p $HOME/.docker
-      echo '{"hosts": {"tcp://docker:2375": {}}}' > $HOME/.docker/config.json
+    # - echo DOCKER_TLS_CERTDIR $DOCKER_TLS_CERTDIR
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
     - (echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin docker.io) || true
   script:
