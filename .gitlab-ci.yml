@@ -70,7 +70,8 @@ docker-build:
     - name: docker:27.3.1-dind
       command: ["--experimental"]
   before_script:
-    - |
+    - docker context create builder --docker
+    - docker buildx create builder --use
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
     - (echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin docker.io) || true
   script:
