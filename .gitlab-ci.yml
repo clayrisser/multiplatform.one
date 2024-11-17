@@ -65,10 +65,10 @@ stages:
   - build
 
 docker-build:
-  image: registry.gitlab.com/bitspur/rock8s/images/docker:25.0.5
+  image: docker:cli
   stage: build
   services:
-    - name: docker:25.0.5-dind
+    - name: docker:dind
       command: ["--experimental"]
   before_script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
