@@ -76,8 +76,8 @@ docker-build:
     # - echo DOCKER_TLS_VERIFY $DOCKER_TLS_VERIFY
     - echo DOCKER_HOST $DOCKER_HOST
     # - echo DOCKER_TLS_CERTDIR $DOCKER_TLS_CERTDIR
-    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
-    - (echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin docker.io) || true
+    - echo "$CI_REGISTRY_PASSWORD" | docker --host "$DOCKER_HOST" login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+    - (echo "$DOCKERHUB_TOKEN" | docker --host "$DOCKER_HOST" login -u "$DOCKERHUB_USERNAME" --password-stdin docker.io) || true
   script:
     - ./mkpm docker/bake
   when: manual
