@@ -53,9 +53,17 @@
 variables:
   BUILDKIT_INLINE_CACHE: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
+  DOCKERHUB_TOKEN: ""
+  DOCKERHUB_USERNAME: bitspur
   DOCKER_BUILDKIT: 1
   DOCKER_DRIVER: overlay2
   DOCKER_HOST: tcp://docker:2375
+  BAKE_ARGS: |
+    --provenance=false \
+    --pull \
+    --push \
+    --set="*.cache-from=type=local,src=/cache/buildx" \
+    --set="*.cache-to=type=local,dest=/cache/buildx,mode=max"
 
 stages:
   - build
@@ -69,13 +77,16 @@ docker-build:
   before_script:
     - |
       if ! docker buildx inspect builder >/dev/null 2>&1; then
-        docker buildx create --name builder --platform linux/amd64,linux/arm64 --use
+        docker buildx create \
+          --name builder \
+          --platform linux/amd64,linux/arm64 \
+          --use
       fi
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
     - (echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin docker.io) || true
   script:
     - ./mkpm docker/bake
-  when: manual
+  interruptible: true
 # pages:
 #   stage: deploy
 #   image: registry.gitlab.com/risserlabs/community/images/loki:0.0.1
