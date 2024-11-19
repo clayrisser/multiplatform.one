@@ -1,37 +1,9 @@
 FROM registry.gitlab.com/bitspur/frappe/factory/devcontainer:latest
-ARG USER=one
 USER root
 RUN set -x && \
     . ${NVM_DIR}/nvm.sh && \
     npm install -g \
     @biomejs/biome \
     pnpm \
-    turbo && \
-    usermod -d /home/${USER} -l ${USER} frappe && \
-    groupmod -n ${USER} frappe && \
-    mv /home/frappe /home/${USER} && \
-    chown -R ${USER}:${USER} /home/${USER} && \
-    sed -i "s|/home/frappe|/home/${USER}|g" /home/${USER}/.bashrc && \
-    sed -i "s|/home/frappe|/home/${USER}|g" /home/${USER}/.profile && \
-    sed -i "s|/home/frappe|/home/${USER}|g" /home/${USER}/.zshrc && \
-    for f in $(ls /home/${USER}/.local/bin); do \
-    sed -i "s|/home/frappe|/home/${USER}|g" /home/${USER}/.local/bin/$f; \
-    done && \
-    rm -rf /home/${USER}/.oh-my-zsh/custom/themes/spaceship.zsh-theme && \
-    ln -s /home/${USER}/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme \
-    /home/${USER}/.oh-my-zsh/custom/themes/spaceship.zsh-theme
-WORKDIR /home/${USER}
-USER ${USER}
-ENV NVM_DIR=/home/${USER}/.nvm \
-    PATH=/home/${USER}/.local/bin:/home/${USER}/.pyenv/shims:/home/${USER}/.pyenv/bin:/home/${USER}/.local/bin:/home/${USER}/.nvm/versions/node/v${NODE_VERSION}/bin/:$PATH \
-    PYENV_ROOT=/home/${USER}/.pyenv
-RUN set -x && \
-    cd /home/${USER} && \
-    rm -rf "/home/${USER}/.pyenv" "/home/${USER}/.cache" && \
-    git clone --depth 1 https://github.com/pyenv/pyenv.git .pyenv && \
-    pyenv install -f $PYTHON_VERSION_V14 && \
-    pyenv install -f $PYTHON_VERSION && \
-    PYENV_VERSION=$PYTHON_VERSION_V14 pip install --no-cache-dir virtualenv && \
-    PYENV_VERSION=$PYTHON_VERSION pip install --no-cache-dir virtualenv && \
-    pyenv global $PYTHON_VERSION $PYTHON_VERSION_v14 && \
-    pip install --no-cache-dir --user -e .bench
+    turbo
+USER frappe
