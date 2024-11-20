@@ -61,7 +61,7 @@ clean:
 		$(MKPM_GIT_CLEAN_FLAGS)
 
 .PHONY: purge
-ifneq (/home/one,$(HOME))
+ifneq (/home/frappe,$(HOME))
 purge: docker/down clean
 else
 purge: clean
@@ -100,6 +100,13 @@ version:
 .PHONY: publish
 publish: version build
 	@$(CHANGESET) publish
+
+.PHONY: doctor
+doctor:
+	@$(GIT) clean -fxd
+	@$(RM) -f $(HOME)/.local/state/frappe
+	@$(RM) -f frappe/frappe-bench
+	@docker pull $(DOCKER_REGISTRY)/devcontainer:latest
 
 SCRIPTS := $(shell $(CAT) package.json | $(JQ) -r '(.scripts | keys)[]')
 .PHONY: $(SCRIPTS)

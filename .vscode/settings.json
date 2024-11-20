@@ -89,5 +89,12 @@
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "makefile.configureOnOpen": false
+  "makefile.configureOnOpen": false,
+  "remote.autoForwardPorts": false,
+  "remote.forwardOnOpen": false,
+  "remote.restoreForwardedPorts": false,
+  "debug.console.closeOnEnd": true,
+  "debug.internalConsoleOptions": "neverOpen",
+  "debug.openDebug": "neverOpen",
+  "debug.terminal.clearBeforeReusing": true
 }

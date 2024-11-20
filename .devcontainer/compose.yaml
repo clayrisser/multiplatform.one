@@ -15,6 +15,7 @@ services:
     working_dir: /workspace/development
     volumes:
       - ..:/workspace/development:rw
+      - /var/run/docker.sock:/var/run/docker.sock
 
   caddy:
     image: caddy:latest
