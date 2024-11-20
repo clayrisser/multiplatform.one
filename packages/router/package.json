@@ -1,12 +1,11 @@
 {
-  "name": "@multiplatform.one/use-store",
+  "name": "@multiplatform.one/router",
   "version": "0.0.8",
-  "description": "multiplatform.one use-store hook with support for async storage",
+  "description": "multiplatform.one router with support for react-router-dom and react-navigation",
   "sideEffects": false,
   "keywords": [
     "react",
-    "react-native",
-    "electron"
+    "react-native"
   ],
   "homepage": "https://multiplatform.one",
   "bugs": {
@@ -43,18 +42,20 @@
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
   },
   "engines": {
-    "node": ">=6.0.0"
-  },
-  "dependencies": {
-    "@tamagui/use-store": "^1.115.5"
+    "node": ">=16.0.0"
   },
   "devDependencies": {
-    "@react-native-async-storage/async-storage": "1.21.0",
+    "@react-navigation/native": "^6.1.17",
     "@tamagui/build": "^1.115.5",
+    "one": "^1.1.317",
+    "react-native": "0.74.2",
+    "react-router-dom": "^6.28.0",
     "typescript": "^5.6.2",
+    "vitest": "^1.4.0",
     "vite": "6.0.0-beta.1"
   },
   "peerDependencies": {
-    "@react-native-async-storage/async-storage": "1.21.0"
+    "one": "^1.1.317",
+    "react-router-dom": "^6.28.0"
   }
 }

@@ -1,7 +1,7 @@
-/*
+/**
  * File: /vite.config.ts
  * Project: @platform/one
- * File Created: 05-11-2024 04:15:00
+ * File Created: 19-11-2024 20:27:46
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,6 +19,7 @@
  * limitations under the License.
  */
 
+import createExternal from "vite-plugin-external";
 import dotenv from "dotenv";
 import i18nextLoader from "vite-plugin-i18next-loader";
 import path from "node:path";
@@ -76,6 +77,11 @@ export default {
     i18nextLoader({
       paths: ["../../app/i18n"],
       namespaceResolution: "basename",
+    }),
+    createExternal({
+      externals: {
+        "react-router-dom": {},
+      },
     }),
   ],
 } satisfies UserConfig;
