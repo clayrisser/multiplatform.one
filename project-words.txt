@@ -276,6 +276,7 @@ nextauth
 nextjs
 nextron
 nixpkgs
+nofail
 noreferrer
 nosniff
 noto

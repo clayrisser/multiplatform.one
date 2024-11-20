@@ -103,9 +103,9 @@ publish: version build
 
 .PHONY: doctor
 doctor:
-	@$(GIT) clean -fxd
-	@$(RM) -f $(HOME)/.local/state/frappe
-	@$(RM) -f frappe/frappe-bench
+	@$(GIT) clean -fxd -e .mkpm
+	@$(RM) -rf $(HOME)/.local/state/frappe $(NOFAIL)
+	@$(RM) -rf frappe/frappe-bench $(NOFAIL)
 	@docker pull $(DOCKER_REGISTRY)/devcontainer:latest
 
 SCRIPTS := $(shell $(CAT) package.json | $(JQ) -r '(.scripts | keys)[]')
