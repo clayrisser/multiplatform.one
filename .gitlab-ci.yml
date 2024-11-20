@@ -87,6 +87,8 @@ docker-build:
   script:
     - ./mkpm docker/bake
   interruptible: true
+  only:
+    - main
 # pages:
 #   stage: deploy
 #   image: registry.gitlab.com/risserlabs/community/images/loki:0.0.1
