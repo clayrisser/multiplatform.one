@@ -108,6 +108,17 @@ doctor:
 	@$(RM) -rf frappe/frappe-bench $(NOFAIL)
 	@docker pull $(DOCKER_REGISTRY)/devcontainer:latest
 
+.PHONY: cspell-prune
+cspell-prune:
+	-@mv cspell.json _cspell.json $(NOFAIL)
+	@M="$$(pnpm cspell --words-only --unique --no-progress --no-summary \
+		`(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | \
+		grep -v project-words.txt` 2>&1 | awk '{if ($$0 ~ /^[\x00-\x7F]*$$/) print $$0}' | tr '[:upper:]' '[:lower:]' | sort)" && \
+		D="$$(cat project-words.txt)" && \
+		(echo "$$M" && echo "$$D") | sort | uniq -d | tee _project-words.txt
+	@mv _cspell.json cspell.json
+	@mv _project-words.txt project-words.txt
+
 SCRIPTS := $(shell $(CAT) package.json | $(JQ) -r '(.scripts | keys)[]')
 .PHONY: $(SCRIPTS)
 $(SCRIPTS): ~deps
