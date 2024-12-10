@@ -3,56 +3,28 @@
   "pipeline": {
     "build": {
       "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "*.json",
-        "*.ts",
-        "*.tsx",
-        "src/**"
-      ],
-      "outputs": [
-        "dist/**",
-        "lib/**",
-        "types/**"
-      ]
+      "dependsOn": ["^build"],
+      "inputs": ["*.json", "*.ts", "*.tsx", "src/**"],
+      "outputs": ["dist/**", "lib/**", "types/**"]
     },
     "test": {
       "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "coverage/**"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
     },
     "@platform/*#build": {
       "cache": false,
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     },
     "api#generate": {
       "cache": true,
-      "inputs": [
-        "prisma/**"
-      ],
-      "outputs": [
-        "generated/**"
-      ]
+      "inputs": ["prisma/**"],
+      "outputs": ["generated/**"]
     },
     "api#build": {
       "cache": false,
-      "dependsOn": [
-        "^build",
-        "api#generate"
-      ]
+      "dependsOn": ["^build", "api#generate"]
     }
   },
-  "globalDependencies": [
-    "package.json",
-    "tsconfig.base.json",
-    "tsconfig.json"
-  ]
+  "globalDependencies": ["package.json", "tsconfig.base.json", "tsconfig.json"]
 }

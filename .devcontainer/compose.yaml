@@ -12,6 +12,8 @@ services:
       docs.test: 127.0.0.1
       frappe.localhost: 127.0.0.1
       frappe.test: 127.0.0.1
+      storybook.localhost: 127.0.0.1
+      storybook.test: 127.0.0.1
     working_dir: /workspace/development
     volumes:
       - ..:/workspace/development:rw

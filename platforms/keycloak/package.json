@@ -34,7 +34,7 @@
     "react-native-web": "~0.19.13",
     "storybook-addon-paddings": "^5.0.1",
     "storybook-color-picker": "^4.0.0",
-    "storybook-dark-mode": "^4.0.2",
+    "storybook-dark-mode": "~3.0.3",
     "stream-browserify": "^3.0.0"
   },
   "devDependencies": {
@@ -67,9 +67,16 @@
     "storybook": "~7.6.20",
     "typescript": "^5.6.2"
   },
-  "transpileModules": ["app", "ui"],
+  "transpileModules": [
+    "app",
+    "ui"
+  ],
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",

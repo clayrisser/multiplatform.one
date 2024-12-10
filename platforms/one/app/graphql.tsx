@@ -20,13 +20,13 @@
  */
 
 import "graphiql/graphiql.min.css";
-import { GraphiQL, GraphiQLInterface, GraphiQLProvider } from "graphiql";
-import { config } from "multiplatform.one";
-import { createClient } from "graphql-ws";
-import { createGraphiQLFetcher } from "@graphiql/toolkit";
 import { explorerPlugin } from "@graphiql/plugin-explorer";
-import { useEffect, useState } from "react";
+import { createGraphiQLFetcher } from "@graphiql/toolkit";
 import { useKeycloak, withAuthenticated } from "@multiplatform.one/keycloak";
+import { GraphiQL, GraphiQLInterface, GraphiQLProvider } from "graphiql";
+import { createClient } from "graphql-ws";
+import { config } from "multiplatform.one";
+import { useEffect, useState } from "react";
 import { useUrlSearchParams } from "use-url-search-params";
 import { v4 as uuid } from "uuid";
 

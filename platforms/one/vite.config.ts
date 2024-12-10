@@ -19,18 +19,18 @@
  * limitations under the License.
  */
 
-import createExternal from "vite-plugin-external";
-import dotenv from "dotenv";
-import i18nextLoader from "vite-plugin-i18next-loader";
 import path from "node:path";
-import type { UserConfig } from "vite";
-import { one } from "one/vite";
-import { public as publicConfigKeys } from "../../app/config.json";
-import { tamaguiPlugin } from "@tamagui/vite-plugin";
 import {
   lookupTamaguiModules,
   resolveConfig,
 } from "@multiplatform.one/utils/build";
+import { tamaguiPlugin } from "@tamagui/vite-plugin";
+import dotenv from "dotenv";
+import { one } from "one/vite";
+import type { UserConfig } from "vite";
+import createExternal from "vite-plugin-external";
+import i18nextLoader from "vite-plugin-i18next-loader";
+import { public as publicConfigKeys } from "../../app/config.json";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 process.env.VITE_MP_CONFIG = JSON.stringify(resolveConfig(publicConfigKeys));

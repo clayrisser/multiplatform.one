@@ -9,7 +9,7 @@ sources:
     transforms:
       - prefix:
           mode: wrap
-          value: Api_
+          value: Api
       - filterSchema:
           mode: wrap
           filters: []

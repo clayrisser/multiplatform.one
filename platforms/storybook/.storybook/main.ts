@@ -1,7 +1,7 @@
-/*
+/**
  * File: /.storybook/main.ts
  * Project: @platform/storybook
- * File Created: 12-06-2024 08:26:15
+ * File Created: 19-11-2024 20:27:50
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -24,9 +24,12 @@ import path from "node:path";
 import {
   lookupTamaguiModules,
   lookupTranspileModules,
+  resolveConfig,
 } from "@multiplatform.one/utils/build";
 import type { StorybookConfig } from "@storybook/nextjs";
-import publicConfig from "app/config/public";
+import { public as publicConfigKeys } from "../../../app/config.json";
+
+const publicConfig = resolveConfig(publicConfigKeys);
 
 const stories = [
   "..",
