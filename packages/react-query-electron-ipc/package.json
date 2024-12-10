@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/react-query-electron-ipc",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "tanstack react query for electron ipc",
   "sideEffects": false,
   "keywords": [
@@ -37,7 +37,11 @@
   "scripts": {
     "build": "tsup"
   },
-  "files": ["background", "lib", "src"],
+  "files": [
+    "background",
+    "lib",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
@@ -50,7 +54,7 @@
     "electron": "29.4.2"
   },
   "devDependencies": {
-    "@multiplatform.one/utils": "workspace:0.1.6",
+    "@multiplatform.one/utils": "workspace:0.1.7",
     "@types/node": "~20.12.13",
     "electron": "29.4.2",
     "tsup": "^8.3.0",

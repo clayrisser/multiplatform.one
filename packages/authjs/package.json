@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/authjs",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "authjs for onestack",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -21,10 +21,20 @@
   },
   "author": "BitSpur",
   "sideEffects": false,
-  "keywords": ["authjs", "next-auth", "onestack", "react"],
+  "keywords": [
+    "authjs",
+    "next-auth",
+    "onestack",
+    "react"
+  ],
   "homepage": "https://multiplatform.one",
   "license": "Apache-2.0",
-  "files": ["dist", "routes", "src", "types"],
+  "files": [
+    "dist",
+    "routes",
+    "src",
+    "types"
+  ],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/risserlabs/multiplatform.one/keycloak"

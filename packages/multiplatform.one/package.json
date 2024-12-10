@@ -1,6 +1,6 @@
 {
   "name": "multiplatform.one",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "multiplatform.one ecosystem",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -26,10 +26,20 @@
   },
   "author": "BitSpur",
   "sideEffects": true,
-  "keywords": ["multiplatform", "multiplatform.one", "react"],
+  "keywords": [
+    "multiplatform",
+    "multiplatform.one",
+    "react"
+  ],
   "homepage": "https://gitlab.com/risserlabs/community/auto-contrast",
   "license": "Apache-2.0",
-  "files": ["dist", "next", "src", "theme", "types"],
+  "files": [
+    "dist",
+    "next",
+    "src",
+    "theme",
+    "types"
+  ],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/risserlabs/community/auto-contrast"
@@ -67,7 +77,7 @@
     "vitest-react-native": "^0.1.5"
   },
   "dependencies": {
-    "@multiplatform.one/use-store": "workspace:0.0.8",
+    "@multiplatform.one/use-store": "workspace:0.0.9",
     "react-cookie": "^7.2.1"
   }
 }

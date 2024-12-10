@@ -1,9 +1,12 @@
 {
   "name": "@multiplatform.one/router",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "multiplatform.one router with support for react-router-dom and react-navigation",
   "sideEffects": false,
-  "keywords": ["react", "react-native"],
+  "keywords": [
+    "react",
+    "react-native"
+  ],
   "homepage": "https://multiplatform.one",
   "bugs": {
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues",
@@ -29,7 +32,11 @@
     "build": "rm -rf dist types 2>/dev/null && tamagui-build",
     "test": "vitest run"
   },
-  "files": ["dist", "src", "types"],
+  "files": [
+    "dist",
+    "src",
+    "types"
+  ],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
