@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/router",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "multiplatform.one router with support for react-router-dom and react-navigation",
   "sideEffects": false,
   "keywords": [

@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/use-store",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "multiplatform.one use-store hook with support for async storage",
   "sideEffects": false,
   "keywords": [
