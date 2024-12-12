@@ -37,4 +37,14 @@ dev: | ~deps +dev
 +dev:
 	@$(PNPM) run dev
 
+.PHONY: ios +ios
+ios: | ~deps +ios
++ios:
+	@$(PNPM) run ios
+
+.PHONY: dev-android +dev-android
+dev-android: | ~deps +dev-android
++dev-android:
+	@$(PNPM) run android
+
 -include $(call chain)

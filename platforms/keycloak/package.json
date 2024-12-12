@@ -55,7 +55,7 @@
     "@storybook/react": "~7.6.19",
     "@storybook/react-webpack5": "~7.6.19",
     "@storybook/testing-library": "^0.2.2",
-    "@tamagui/babel-plugin": "^1.115.5",
+    "@tamagui/babel-plugin": "^1.120.1",
     "@types/babel__preset-env": "^7.9.7",
     "@types/node": "~20.12.13",
     "@types/react": "^18.3.1",

@@ -4,11 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "one build",
-    "dev": "one dev --port ${ONE_PORT:-5000}",
-    "dev:expo": "EXPO_NO_TELEMETRY=true expo start --tunnel"
-  },
-  "installConfig": {
-    "hoistingLimits": "workspaces"
+    "dev": "one dev --port ${ONE_PORT:-5000}"
   },
   "dependencies": {
     "@graphiql/plugin-explorer": "^3.2.2",
@@ -21,8 +17,6 @@
     "@vxrn/color-scheme": "1.1.295",
     "better-sqlite3": "^11.4.0",
     "csrf": "^3.1.0",
-    "expo": "~51.0.28",
-    "expo-modules-core": "~1.12.26",
     "graphiql": "^3.7.1",
     "graphiql-ws": "^0.1.7",
     "graphql": "^16.8.1",
