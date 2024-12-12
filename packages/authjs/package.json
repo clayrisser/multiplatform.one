@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/authjs",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "authjs for onestack",
   "main": "dist/cjs",
   "module": "dist/esm",

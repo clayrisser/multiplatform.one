@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/react-query-electron-ipc",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "description": "tanstack react query for electron ipc",
   "sideEffects": false,
   "keywords": [
@@ -50,7 +50,7 @@
     "electron": "29.4.2"
   },
   "devDependencies": {
-    "@multiplatform.one/utils": "workspace:0.1.6",
+    "@multiplatform.one/utils": "workspace:0.1.8",
     "@types/node": "~20.12.13",
     "electron": "29.4.2",
     "tsup": "^8.3.0",

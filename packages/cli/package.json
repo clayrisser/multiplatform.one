@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/cli",
-  "version": "2.1.5",
+  "version": "2.1.7",
   "author": "BitSpur <support@bitspur.com> (https://bitspur.com)",
   "contributors": [
     {
@@ -43,7 +43,7 @@
     "node": ">= 16.0"
   },
   "devDependencies": {
-    "@multiplatform.one/utils": "workspace:0.1.6",
+    "@multiplatform.one/utils": "workspace:0.1.8",
     "@types/inquirer": "^9.0.7",
     "@types/node": "~20.12.13",
     "tsup": "^8.3.0",

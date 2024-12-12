@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/utils",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "description": "utilities for multiplatform.one",
   "sideEffects": false,
   "keywords": ["react", "react-native", "electron"],

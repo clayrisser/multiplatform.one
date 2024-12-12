@@ -10,8 +10,8 @@
     "build": "rm -rf dist types 2>/dev/null && tamagui-build"
   },
   "dependencies": {
-    "@multiplatform.one/components": "workspace:4.1.8",
-    "@multiplatform.one/use-store": "workspace:0.0.8",
+    "@multiplatform.one/components": "workspace:4.1.10",
+    "@multiplatform.one/use-store": "workspace:0.0.10",
     "@tamagui/animations-css": "^1.115.5",
     "@tamagui/animations-moti": "^1.115.5",
     "@tamagui/animations-react-native": "^1.115.5",
@@ -20,7 +20,7 @@
     "@tamagui/shorthands": "^1.115.5",
     "@tamagui/themes": "^1.115.5",
     "moti": "^0.29.0",
-    "multiplatform.one": "workspace:1.1.8",
+    "multiplatform.one": "workspace:1.1.10",
     "react-native-reanimated": "~3.10.1",
     "tamagui": "^1.115.5"
   },
