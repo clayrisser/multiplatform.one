@@ -3,7 +3,7 @@
   "sideEffects": ["*.css"],
   "private": true,
   "main": "src/index.tsx",
-  "react-native": "src/index.tsx",
+  "react-native": "0.74.5",
   "source": "src/index.tsx",
   "files": ["src"],
   "scripts": {

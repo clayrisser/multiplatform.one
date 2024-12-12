@@ -3,7 +3,7 @@
   "pipeline": {
     "build": {
       "cache": true,
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "api#generate"],
       "inputs": ["*.json", "*.ts", "*.tsx", "src/**"],
       "outputs": ["dist/**", "lib/**", "types/**"]
     },

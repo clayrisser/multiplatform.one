@@ -20,10 +20,10 @@
     "addon-screen-reader": "^1.8.6",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
-    "expo": "^51.0.38",
+    "expo": "~51.0.28",
     "multiplatform.one": "workspace:1.1.8",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "18.2.0",
+    "react-dom": "^18.0.0",
     "react-native-web": "~0.19.13",
     "storybook-addon-paddings": "^5.0.1",
     "storybook-color-picker": "^4.0.0",
@@ -50,11 +50,7 @@
     "typescript": "^5.6.2"
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
