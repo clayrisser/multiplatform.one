@@ -5,7 +5,9 @@
   },
   "formatter": {
     "indentStyle": "space",
-    "indentWidth": 2
+    "indentWidth": 2,
+    "formatWithErrors": true,
+    "include": ["**/*.{js,jsx,ts,tsx,json,yaml,yml}"]
   },
   "javascript": {
     "parser": {
