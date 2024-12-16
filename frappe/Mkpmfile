@@ -29,6 +29,10 @@ generate:
 bootstrap dev:
 	@frappe-$@
 
+.PHONY: update
+update:
+	@frappe-bootstrap --update
+
 .PHONY: reset
 reset:
 	@rm -rf frappe-bench
