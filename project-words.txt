@@ -4,6 +4,7 @@ authjs
 autodocs
 axllent
 backchannel
+biomejs
 bitspur
 browserslist
 caddyfile
@@ -16,6 +17,7 @@ debugpy
 devlop
 disableable
 dotenv
+dpkg
 eamodio
 etchteam
 fira
@@ -34,6 +36,7 @@ katari
 kauth
 keycloak
 keycloakify
+keyrings
 klass
 kumar
 lalit
@@ -57,7 +60,9 @@ multistream
 multivalued
 nameformat
 nextauth
+ngrok
 nofail
+noninteractive
 nosniff
 nullthrows
 numberify
