@@ -1,4 +1,4 @@
-FROM registry.gitlab.com/bitspur/frappe/factory/devcontainer:15.41.2
+FROM registry.gitlab.com/bitspur/frappe/factory/devcontainer:15.45.5
 USER root
 RUN set -x && \
     . ${NVM_DIR}/nvm.sh && \
