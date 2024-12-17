@@ -29,12 +29,12 @@ glusp
 graphi
 graphiql
 graphqlsp
+headlessui
 healthz
 hoverable
 insee
 katari
 kauth
-keycloak
 keycloakify
 keyrings
 klass

@@ -15,7 +15,7 @@
     "browserify-fs": "^1.0.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
-    "core-js": "^3.38.1",
+    "core-js": "^3.39.0",
     "expo": "~51.0.28",
     "expo-constants": "~16.0.2",
     "expo-font": "~12.0.10",
@@ -26,7 +26,7 @@
     "multiplatform.one": "workspace:1.1.10",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
-    "react": "18.2.0",
+    "react": "~18.2.0",
     "react-dom": "^18.0.0",
     "react-native": "0.74.5",
     "react-native-gesture-handler": "~2.16.2",
@@ -38,7 +38,7 @@
     "url-polyfill": "^1.1.12"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.8",
+    "@babel/core": "^7.26.0",
     "@expo/metro-config": "^0.18.11",
     "@multiplatform.one/utils": "workspace:0.1.8",
     "@tamagui/babel-plugin": "^1.120.1",

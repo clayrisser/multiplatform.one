@@ -39,6 +39,14 @@ export default {
   ssr: {
     noExternal: true,
   },
+  resolve: {
+    alias: {
+      "@headlessui/react": path.resolve(
+        __dirname,
+        "../../node_modules/@headlessui/react/dist/headlessui.esm.js",
+      ),
+    },
+  },
   plugins: [
     one({
       web: {
@@ -61,6 +69,7 @@ export default {
         "next-auth/react": true,
         "react-i18next": true,
         "react-native-svg": true,
+        "react-native-screens": true,
         "use-sync-external-store": true,
         nullthrows: true,
         cookie: true,
