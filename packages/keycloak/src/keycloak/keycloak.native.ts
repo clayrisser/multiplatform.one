@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/keycloak/keycloak.native.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 04-04-2024 15:50:39
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -22,7 +22,7 @@
 import { jwtDecode } from "jwt-decode";
 import type KeycloakClient from "keycloak-js";
 import type { KeycloakConfig } from "keycloak-js";
-import { MultiPlatform } from "multiplatform.one";
+import { isStorybook } from "multiplatform.one";
 import { useContext } from "react";
 import type { KeycloakLoginOptions, KeycloakLogoutOptions } from "../keycloak";
 import { KeycloakConfigContext } from "../keycloak/config";
@@ -181,7 +181,7 @@ export function useKeycloak() {
   const keycloak = useContext(KeycloakContext);
   const keycloakConfig = useContext(KeycloakConfigContext);
   if (keycloak) return keycloak;
-  if (MultiPlatform.isStorybook) {
+  if (isStorybook) {
     return new Keycloak(keycloakConfig, {
       email: "storybook@example.com",
       username: "storybook",

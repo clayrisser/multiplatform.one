@@ -1,7 +1,7 @@
-/*
- * File: /src/storybook/index.ts
+/**
+ * File: /src/platform/index.ios.ts
  * Project: multiplatform.one
- * File Created: 04-04-2024 15:50:39
+ * File Created: 17-12-2024 05:42:21
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,4 +19,11 @@
  * limitations under the License.
  */
 
-export * from "./storybook";
+import { type Platform, platformBase } from "./platformBase";
+
+export const platform: Platform = {
+  ...platformBase,
+  isExpo: true,
+  isIos: true,
+  isNative: true,
+};

@@ -21,7 +21,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { MultiPlatform } from "multiplatform.one";
+import { isStorybook } from "multiplatform.one";
 import type { PropsWithChildren } from "react";
 
 export const queryClient = new QueryClient();
@@ -36,9 +36,7 @@ export function GlobalTanstackProvider({
 }: GlobalTanstackProviderProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      {debug && !MultiPlatform.isStorybook && (
-        <ReactQueryDevtools initialIsOpen={false} />
-      )}
+      {debug && !isStorybook && <ReactQueryDevtools initialIsOpen={false} />}
       {children}
     </QueryClientProvider>
   );

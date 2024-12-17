@@ -1,7 +1,7 @@
 /**
  * File: /src/keycloak/keycloak.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 01-01-1970 00:00:00
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -26,7 +26,7 @@ import type {
   KeycloakLoginOptions as KeycloakJsLoginOptions,
   KeycloakLogoutOptions as KeycloakJsLogoutOptions,
 } from "keycloak-js";
-import { MultiPlatform } from "multiplatform.one";
+import { isBrowser, isServer, isStorybook } from "multiplatform.one";
 import {
   type SignInAuthorizationParams,
   type SignInOptions,
@@ -177,7 +177,7 @@ export class Keycloak {
     this.token = undefined;
     if (this.keycloakClient) {
       await this.keycloakClient.login(options);
-    } else if (MultiPlatform.isBrowser && !MultiPlatform.isServer) {
+    } else if (isBrowser && !isServer) {
       await cookieSignIn({
         callbackUrl: options.redirectUri,
         ...(typeof options.redirect !== "undefined"
@@ -195,7 +195,7 @@ export class Keycloak {
     this.token = undefined;
     if (this.keycloakClient) {
       await this.keycloakClient.logout(options);
-    } else if (MultiPlatform.isBrowser && !MultiPlatform.isServer) {
+    } else if (isBrowser && !isServer) {
       await fetch("/api/auth/logout", { method: "GET" });
       await signOut({
         callbackUrl: options.redirectUri,
@@ -220,7 +220,7 @@ export function useKeycloak() {
   if (disabled) return null;
   if (keycloak) return keycloak;
   const { session, status } = useSession();
-  if (MultiPlatform.isStorybook) {
+  if (isStorybook) {
     return new Keycloak(keycloakConfig, {
       email: "storybook@example.com",
       username: "storybook",

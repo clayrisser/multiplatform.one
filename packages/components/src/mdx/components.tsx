@@ -1,7 +1,7 @@
 /**
  * File: /src/mdx/components.tsx
  * Project: @multiplatform.one/components
- * File Created: 10-10-2023 06:39:34
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -21,7 +21,7 @@
 
 import { Link as IconLink } from "@tamagui/lucide-icons";
 import type { MDXComponents } from "mdx/types";
-import { MultiPlatform } from "multiplatform.one";
+import { isWeb } from "multiplatform.one";
 import { Link } from "one";
 import { Children } from "react";
 import type { XStackProps } from "tamagui";
@@ -178,7 +178,7 @@ export const mdxComponents: MDXComponents = {
       </Paragraph>
     </YStack>
   ),
-  ...(MultiPlatform.isWeb
+  ...(isWeb
     ? {}
     : {
         div: (props) => <Text {...sanitizeProps(props)} />,

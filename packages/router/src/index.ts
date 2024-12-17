@@ -121,7 +121,8 @@ export function useParams<T extends string | undefined = string>(): Record<
     if (typeof useOneParams === "undefined") {
       throw new Error(ROUTER_ERROR);
     }
-    return useOneParams();
+    // TODO: fix this
+    return useOneParams() as any;
   }
   return useReactParams() as Record<string, T>;
 }

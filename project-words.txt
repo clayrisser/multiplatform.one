@@ -9,6 +9,7 @@ bitspur
 browserslist
 caddyfile
 ciba
+multiplatform
 clientregistration
 cloc
 cookiecutter

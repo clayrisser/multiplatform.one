@@ -11,12 +11,12 @@
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.cjs"
     },
     "./one": {
       "types": "./types/one.d.ts",
-      "import": "./dist/esm/one.mjs",
+      "import": "./dist/esm/one.js",
       "require": "./dist/cjs/one.cjs"
     },
     "./package.json": "./package.json"

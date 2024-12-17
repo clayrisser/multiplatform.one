@@ -39,14 +39,6 @@ export default {
   ssr: {
     noExternal: true,
   },
-  resolve: {
-    alias: {
-      "@headlessui/react": path.resolve(
-        __dirname,
-        "../../node_modules/@headlessui/react/dist/headlessui.esm.js",
-      ),
-    },
-  },
   plugins: [
     one({
       web: {
@@ -55,6 +47,9 @@ export default {
       },
       app: {
         key: "One",
+      },
+      ssr: {
+        disableAutoDepsPreBundling: true,
       },
       deps: {
         "@graphiql/react": true,

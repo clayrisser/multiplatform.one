@@ -1,7 +1,7 @@
-/*
- * File: /src/multiplatform/index.android.ts
+/**
+ * File: /src/platform/index.android.ts
  * Project: multiplatform.one
- * File Created: 04-04-2024 15:50:39
+ * File Created: 17-12-2024 05:42:21
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,10 +19,11 @@
  * limitations under the License.
  */
 
-import { MultiPlatformBase } from "./multiplatformBase";
+import { type Platform, platformBase } from "./platformBase";
 
-export class MultiPlatform extends MultiPlatformBase {
-  static isNative = true;
-  static isExpo = true;
-  static isAndroid = true;
-}
+export const platform: Platform = {
+  ...platformBase,
+  isAndroid: true,
+  isExpo: true,
+  isNative: true,
+};

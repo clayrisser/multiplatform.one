@@ -1,10 +1,10 @@
 /**
  * File: /src/Authenticated.tsx
  * Project: @multiplatform.one/keycloak
- * File Created: 22-06-2023 10:07:56
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
- * BitSpur (c) Copyright 2021 - 2023
+ * BitSpur (c) Copyright 2021 - 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  */
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { MultiPlatform } from "multiplatform.one";
+import { isIframe, isServer } from "multiplatform.one";
 import { type ComponentType, type PropsWithChildren, useEffect } from "react";
 import { Text } from "tamagui";
 import { useAuthConfig, useTokensFromQuery } from "./hooks";
@@ -47,8 +47,8 @@ export function Authenticated({
   useEffect(() => {
     if (
       !keycloak ||
-      MultiPlatform.isIframe ||
-      MultiPlatform.isServer ||
+      isIframe ||
+      isServer ||
       keycloak.authenticated ||
       tokensFromQuery
     ) {

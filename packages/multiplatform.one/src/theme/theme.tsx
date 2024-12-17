@@ -21,7 +21,7 @@
 
 import { useContext, useEffect, useMemo } from "react";
 import { useCookies } from "react-cookie";
-import { MultiPlatform } from "../multiplatform";
+import { platform } from "../platform/index";
 import {
   type ColorScheme,
   ThemeContext,
@@ -89,13 +89,13 @@ export function ThemeProvider({
   const themeStore = useThemeStore();
   const root =
     themeStore?.root ||
-    (MultiPlatform.isBrowser && MultiPlatform.isServer
+    (platform.isBrowser && platform.isServer
       ? (nextCookies?.[COOKIE_ROOT_THEME] as ColorScheme)
       : (localCookies?.[COOKIE_ROOT_THEME] as ColorScheme)) ||
     defaultThemeValue.root;
   const sub =
     themeStore?.sub ||
-    (MultiPlatform.isBrowser && MultiPlatform.isServer
+    (platform.isBrowser && platform.isServer
       ? (nextCookies?.[COOKIE_SUB_THEME] as ColorScheme)
       : (localCookies?.[COOKIE_SUB_THEME] as ColorScheme)) ||
     defaultThemeValue.sub;

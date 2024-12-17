@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/session/session.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 04-04-2024 15:50:39
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import { MultiPlatform } from "multiplatform.one";
+import { isBrowser, isElectron } from "multiplatform.one";
 import type { Session as NextSession } from "next-auth";
 import type {
   SessionContextValue as NextSessionContextValue,
@@ -37,7 +37,7 @@ let useSession = <R extends boolean>(
   return {};
 };
 
-if (MultiPlatform.isBrowser && !MultiPlatform.isElectron) {
+if (isBrowser && !isElectron) {
   useSession = <R extends boolean>(
     options?: UseSessionOptions<R>,
   ): SessionContextValue<R> => {

@@ -1,7 +1,7 @@
-/*
- * File: /src/multiplatform/multiplatformBase.ts
+/**
+ * File: /src/platform/platformBase.ts
  * Project: multiplatform.one
- * File Created: 01-06-2024 13:44:49
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -27,27 +27,32 @@ declare global {
   }
 }
 
-export class MultiPlatformBase {
-  static isAndroid = false;
-  static isChrome = false;
-  static isClient = false;
-  static isElectron = false;
-  static isElectronMain = false;
-  static isElectronRender = false;
-  static isExpo = false;
-  static isFirefox = false;
-  static isIframe = false;
-  static isIos = false;
-  static isNative = false;
-  static isNext = false;
-  static isServer = false;
-  static isTouchable = isTouchable;
-  static isWeb = false;
-  static isWebTouchable = false;
-  static isBrowser = false;
-  static isWebExtension = false;
-  static isChromeExtension = false;
-  static isFirefoxExtension = false;
-  static isStorybook =
-    isWindowDefined && typeof window.__STORYBOOK_ADDONS_PREVIEW === "object";
-}
+export const platformBase = {
+  isAndroid: false,
+  isBrowser: false,
+  isChrome: false,
+  isChromeExtension: false,
+  isClient: false,
+  isElectron: false,
+  isElectronMain: false,
+  isElectronRender: false,
+  isExpo: false,
+  isFirefox: false,
+  isFirefoxExtension: false,
+  isIframe: false,
+  isIos: false,
+  isNative: false,
+  isNext: false,
+  isServer: false,
+  isTouchable: isTouchable,
+  isWeb: false,
+  isWebExtension: false,
+  isWebTouchable: false,
+  isWindowDefined,
+  isStorybook:
+    isWindowDefined && typeof window.__STORYBOOK_ADDONS_PREVIEW === "object",
+} as const;
+
+export type Platform = {
+  [K in keyof typeof platformBase]: boolean;
+};
