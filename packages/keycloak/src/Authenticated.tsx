@@ -24,7 +24,7 @@ import { isIframe, isServer } from "multiplatform.one";
 import { type ComponentType, type PropsWithChildren, useEffect } from "react";
 import { Text } from "tamagui";
 import { useAuthConfig, useTokensFromQuery } from "./hooks";
-import { useKeycloak } from "./keycloak";
+import { useKeycloak } from "./keycloak/index";
 
 global.AsyncStorage = AsyncStorage;
 

@@ -21,8 +21,6 @@
 
 import { platform } from "./platform/index";
 
-console.log("platform", platform);
-
 export const {
   isAndroid,
   isBrowser,

@@ -28,5 +28,9 @@ export function GlobalKeycloakProvider({
   children,
   ...props
 }: KeycloakProviderProps) {
-  return <KeycloakProvider {...props}>{children}</KeycloakProvider>;
+  return (
+    <KeycloakProvider {...props} debug>
+      {children}
+    </KeycloakProvider>
+  );
 }

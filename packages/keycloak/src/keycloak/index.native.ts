@@ -1,5 +1,5 @@
 /**
- * File: /src/keycloak/keycloak.native.ts
+ * File: /src/keycloak/index.native.ts
  * Project: @multiplatform.one/keycloak
  * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
@@ -24,11 +24,11 @@ import type KeycloakClient from "keycloak-js";
 import type { KeycloakConfig } from "keycloak-js";
 import { isStorybook } from "multiplatform.one";
 import { useContext } from "react";
-import type { KeycloakLoginOptions, KeycloakLogoutOptions } from "../keycloak";
-import { KeycloakConfigContext } from "../keycloak/config";
 import type { AccessTokenParsed, TokenParsed } from "../token";
 import type { KeycloakMock } from "../types";
+import { KeycloakConfigContext } from "./config";
 import { KeycloakContext } from "./context";
+import type { KeycloakLoginOptions, KeycloakLogoutOptions } from "./index";
 
 export class Keycloak {
   token?: string;
@@ -188,3 +188,5 @@ export function useKeycloak() {
     });
   }
 }
+
+export * from "./config";

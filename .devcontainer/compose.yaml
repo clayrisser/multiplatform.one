@@ -33,8 +33,7 @@ services:
   dns:
     restart: unless-stopped
     image: registry.gitlab.com/bitspur/multiplatform.one/multiplatform.one/dns:latest
-    ports:
-      - 53:53/udp
+    network_mode: host
     cap_add:
       - NET_ADMIN
     env_file:

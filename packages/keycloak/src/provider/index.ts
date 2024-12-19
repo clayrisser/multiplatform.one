@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/provider/index.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 04-04-2024 15:50:39
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -20,5 +20,5 @@
  */
 
 export * from "./AfterAuth";
-export * from "./AuthProvider";
+export * from "./AuthProvider/index";
 export * from "./KeycloakProvider";

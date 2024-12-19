@@ -43,7 +43,6 @@ import {
 
 function Auth() {
   const keycloak = useKeycloak();
-  console.log("keycloak", keycloak);
   return (
     <YStack fullscreen padding="$4">
       <Theme>

@@ -1,5 +1,5 @@
 /**
- * File: /src/provider/AuthProvider/AuthProvider.tsx
+ * File: /src/provider/AuthProvider/index.tsx
  * Project: @multiplatform.one/keycloak
  * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
@@ -28,9 +28,9 @@ import type { PropsWithChildren } from "react";
 import { type ComponentType, useEffect, useMemo, useState } from "react";
 import { Loading } from "../../Loading";
 import { useAuthConfig } from "../../hooks";
-import type { KeycloakConfig } from "../../keycloak";
-import { Keycloak, KeycloakConfigContext } from "../../keycloak";
 import { KeycloakContext } from "../../keycloak/context";
+import type { KeycloakConfig } from "../../keycloak/index";
+import { Keycloak, KeycloakConfigContext } from "../../keycloak/index";
 import { persist, useAuthStore } from "../../state";
 import { validOrRefreshableToken } from "../../token";
 import { AfterAuth } from "../AfterAuth";

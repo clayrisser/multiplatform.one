@@ -1,3 +1,24 @@
+/**
+ * File: /src/login/pages/LoginUpdateProfile.tsx
+ * Project: @platform/keycloak
+ * File Created: 19-11-2024 20:27:46
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import { useForm } from "@tanstack/react-form";
 import { useGetClassName } from "keycloakify/login/lib/useGetClassName";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
@@ -35,8 +56,8 @@ export default function LoginUpdateProfile(
   console.log("kc context--->", kcContext);
 
   const mainFields = ["firstName", "lastName", "email", "username"];
-  // @ts-ignore
   const extraFields = Object.keys(
+    // @ts-ignore
     kcContext?.profile?.attributesByName || {},
   ).filter((field) => !mainFields.includes(field));
   const [error, setError] = useState<FormError>({});
@@ -49,7 +70,7 @@ export default function LoginUpdateProfile(
       ...Object.fromEntries(extraFields.map((field) => [field, ""])),
     },
     onSubmit: ({ value }) => {
-      console.log("form submited");
+      console.log("form submitted");
       let flag = false;
       setError({});
 

@@ -41,7 +41,7 @@
     "@types/lodash.difference": "^4.5.9",
     "@types/lodash.get": "^4.4.9",
     "tsup": "^8.3.5",
-    "typescript": "^5.6.2"
+    "typescript": "^5.7.2"
   },
   "dependencies": {
     "@keycloak/keycloak-admin-client": "^24.0.5",

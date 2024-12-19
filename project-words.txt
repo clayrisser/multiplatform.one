@@ -9,7 +9,6 @@ bitspur
 browserslist
 caddyfile
 ciba
-multiplatform
 clientregistration
 cloc
 cookiecutter
@@ -17,6 +16,7 @@ craco
 debugpy
 devlop
 disableable
+dnsmasq
 dotenv
 dpkg
 eamodio

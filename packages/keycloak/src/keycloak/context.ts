@@ -20,6 +20,6 @@
  */
 
 import { createContext } from "react";
-import type { Keycloak } from "./keycloak";
+import type { Keycloak } from ".";
 
 export const KeycloakContext = createContext<Keycloak | undefined>(undefined);

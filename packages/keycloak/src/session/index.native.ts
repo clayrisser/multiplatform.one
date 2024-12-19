@@ -1,5 +1,5 @@
 /*
- * File: /src/session/session.native.ts
+ * File: /src/session/index.native.ts
  * Project: @multiplatform.one/keycloak
  * File Created: 04-04-2024 15:50:39
  * Author: Clay Risser
@@ -20,7 +20,7 @@
  */
 
 import type { UseSessionOptions } from "next-auth/react";
-import type { SessionContextValue } from "./session";
+import type { SessionContextValue } from "./index";
 
 export async function getSession() {
   return null;

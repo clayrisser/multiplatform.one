@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/index.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 01-06-2024 13:44:49
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -22,7 +22,7 @@
 export * from "./Authenticated";
 export * from "./authConfig";
 export * from "./hooks";
-export * from "./keycloak";
+export * from "./keycloak/index";
 export * from "./provider";
-export * from "./session";
+export * from "./session/index";
 export * from "./types";
