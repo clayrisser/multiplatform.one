@@ -30,17 +30,6 @@ services:
       - caddy-data:/data
       - caddy-config:/config
 
-<<<<<<< HEAD
-  # dns:
-  #   restart: unless-stopped
-  #   image: registry.gitlab.com/bitspur/multiplatform.one/multiplatform.one/dns:latest
-  #   ports:
-  #     - 53:53/udp
-  #   cap_add:
-  #     - NET_ADMIN
-  #   env_file:
-  #     - ../.env
-=======
   dns:
     restart: unless-stopped
     image: registry.gitlab.com/bitspur/multiplatform.one/multiplatform.one/dns:latest
@@ -49,7 +38,6 @@ services:
       - NET_ADMIN
     env_file:
       - ../.env
->>>>>>> b48a5f111bd2242e5c0a2735a958f09bdf360a7a
 
   mailpit:
     image: axllent/mailpit

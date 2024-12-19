@@ -43,6 +43,6 @@
     "vite-plugin-node": "^3.1.0"
   },
   "prisma": {
-    "seed": "node dist/scripts/seed.js"
+    "seed": "node dist/scripts/seed.mjs"
   }
 }
