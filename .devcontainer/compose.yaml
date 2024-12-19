@@ -12,9 +12,12 @@ services:
       docs.test: 127.0.0.1
       frappe.localhost: 127.0.0.1
       frappe.test: 127.0.0.1
+      storybook.localhost: 127.0.0.1
+      storybook.test: 127.0.0.1
     working_dir: /workspace/development
     volumes:
       - ..:/workspace/development:rw
+      - /var/run/docker.sock:/var/run/docker.sock
 
   caddy:
     image: caddy:latest
@@ -27,6 +30,7 @@ services:
       - caddy-data:/data
       - caddy-config:/config
 
+<<<<<<< HEAD
   # dns:
   #   restart: unless-stopped
   #   image: registry.gitlab.com/bitspur/multiplatform.one/multiplatform.one/dns:latest
@@ -36,6 +40,16 @@ services:
   #     - NET_ADMIN
   #   env_file:
   #     - ../.env
+=======
+  dns:
+    restart: unless-stopped
+    image: registry.gitlab.com/bitspur/multiplatform.one/multiplatform.one/dns:latest
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    env_file:
+      - ../.env
+>>>>>>> b48a5f111bd2242e5c0a2735a958f09bdf360a7a
 
   mailpit:
     image: axllent/mailpit

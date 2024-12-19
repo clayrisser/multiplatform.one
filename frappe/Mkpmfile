@@ -23,11 +23,15 @@ include $(MKPM)/dotenv
 .PHONY: generate
 generate:
 	@cd frappe-bench && \
-		bench --site $(SITE_NAME) graphql generate_sdl
+		bench --site frappe.localhost graphql generate_sdl
 
 .PHONY: bootstrap dev
 bootstrap dev:
 	@frappe-$@
+
+.PHONY: update
+update:
+	@frappe-bootstrap --update
 
 .PHONY: reset
 reset:

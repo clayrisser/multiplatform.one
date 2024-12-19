@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/code/Code/index.ts
  * Project: @multiplatform.one/components
- * File Created: 04-04-2024 15:50:39
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import { MultiPlatform } from "multiplatform.one";
+import { isWeb } from "multiplatform.one";
 import type { GetProps } from "tamagui";
 import { Paragraph, styled } from "tamagui";
 
@@ -28,7 +28,7 @@ export const Code = styled(Paragraph, {
   borderRadius: "$4",
   cursor: "inherit",
   // @ts-ignore
-  fontFamily: MultiPlatform.isWeb ? "$mono" : undefined,
+  fontFamily: isWeb ? "$mono" : undefined,
   lineHeight: 18,
   padding: "$1",
   // @ts-ignore
@@ -52,7 +52,7 @@ export const CodeInline = styled(Paragraph, {
   color: "$colorHover",
   cursor: "inherit",
   // @ts-ignore
-  fontFamily: MultiPlatform.isWeb ? "$mono" : undefined,
+  fontFamily: isWeb ? "$mono" : undefined,
   // @ts-ignore
   fontSize: "85%",
   padding: "$1.5",

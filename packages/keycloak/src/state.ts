@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/state.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 04-04-2024 15:50:39
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -20,11 +20,9 @@
  */
 
 import { createUseStore } from "@multiplatform.one/use-store";
-import { MultiPlatform } from "multiplatform.one";
+import { isBrowser, isIframe, isServer } from "multiplatform.one";
 
-export const persist =
-  MultiPlatform.isIframe ||
-  (!MultiPlatform.isBrowser && !MultiPlatform.isServer);
+export const persist = isIframe || (!isBrowser && !isServer);
 
 class AuthStore {
   idToken = "";

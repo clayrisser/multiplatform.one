@@ -1,7 +1,7 @@
-/*
+/**
  * File: /vite.config.ts
  * Project: @platform/one
- * File Created: 05-11-2024 04:15:00
+ * File Created: 19-11-2024 20:27:46
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,17 +19,18 @@
  * limitations under the License.
  */
 
-import dotenv from "dotenv";
-import i18nextLoader from "vite-plugin-i18next-loader";
 import path from "node:path";
-import type { UserConfig } from "vite";
-import { one } from "one/vite";
-import { public as publicConfigKeys } from "../../app/config.json";
-import { tamaguiPlugin } from "@tamagui/vite-plugin";
 import {
   lookupTamaguiModules,
   resolveConfig,
 } from "@multiplatform.one/utils/build";
+import { tamaguiPlugin } from "@tamagui/vite-plugin";
+import dotenv from "dotenv";
+import { one } from "one/vite";
+import type { UserConfig } from "vite";
+import createExternal from "vite-plugin-external";
+import i18nextLoader from "vite-plugin-i18next-loader";
+import { public as publicConfigKeys } from "../../app/config.json";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 process.env.VITE_MP_CONFIG = JSON.stringify(resolveConfig(publicConfigKeys));
@@ -47,6 +48,9 @@ export default {
       app: {
         key: "One",
       },
+      ssr: {
+        disableAutoDepsPreBundling: true,
+      },
       deps: {
         "@graphiql/react": true,
         "@tamagui/font-inter": true,
@@ -56,14 +60,16 @@ export default {
         "@tanstack/react-store": true,
         "graphiql-explorer": true,
         "js-sha256": true,
+        "jwt-decode": true,
         "merge-options": true,
         "next-auth/react": true,
         "react-i18next": true,
+        "react-native-screens": true,
         "react-native-svg": true,
         "use-sync-external-store": true,
-        nullthrows: true,
         cookie: true,
         dotenv: true,
+        nullthrows: true,
         rehackt: true,
       },
     }),
@@ -76,6 +82,11 @@ export default {
     i18nextLoader({
       paths: ["../../app/i18n"],
       namespaceResolution: "basename",
+    }),
+    createExternal({
+      externals: {
+        "react-router-dom": {},
+      },
     }),
   ],
 } satisfies UserConfig;

@@ -35,4 +35,9 @@ export default defineConfig({
       link: "/example",
     },
   ],
+  vite: {
+    server: {
+      host: "0.0.0.0",
+    },
+  },
 });

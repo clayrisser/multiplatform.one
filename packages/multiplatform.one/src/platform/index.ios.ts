@@ -1,7 +1,7 @@
-/*
- * File: /src/provider/AuthProvider/index.ts
- * Project: @multiplatform.one/keycloak
- * File Created: 04-04-2024 15:50:39
+/**
+ * File: /src/platform/index.ios.ts
+ * Project: multiplatform.one
+ * File Created: 17-12-2024 05:42:21
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,4 +19,11 @@
  * limitations under the License.
  */
 
-export * from "./AuthProvider";
+import { type Platform, platformBase } from "./platformBase";
+
+export const platform: Platform = {
+  ...platformBase,
+  isExpo: true,
+  isIos: true,
+  isNative: true,
+};

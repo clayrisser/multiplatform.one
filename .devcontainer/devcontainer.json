@@ -1,17 +1,16 @@
 {
   "name": "multiplatform.one",
-  "remoteUser": "one",
+  "remoteUser": "frappe",
   "dockerComposeFile": "compose.yaml",
   "service": "devcontainer",
   "workspaceFolder": "/workspace/development",
-  "features": {},
   "initializeCommand": "([ ! -f .env ] || [ .env.default -nt .env ] && cp .env.default .env || true) && mkdir -p $HOME/.local/state/frappe $HOME/.pnpm-store",
   "postAttachCommand": "sh ${containerWorkspaceFolder}/.devcontainer/postattach.sh",
   "shutdownAction": "stopCompose",
   "mounts": [
-    "source=${localEnv:HOME}/.ssh,target=/home/one/.ssh,type=bind,consistency=cached",
-    "source=${localEnv:HOME}/.pnpm-store,target=/home/one/.pnpm-store,consistency=cached",
-    "source=${localEnv:HOME}/.local/state/frappe,target=/home/one/.local/state/frappe,type=bind,consistency=cached"
+    "source=${localEnv:HOME}/.local/state/frappe,target=/home/frappe/.local/state/frappe,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.pnpm-store,target=/home/frappe/.pnpm-store,consistency=cached",
+    "source=${localEnv:HOME}/.ssh,target=/home/frappe/.ssh,type=bind,consistency=cached"
   ],
   "remoteEnv": {
     "APP_DIR": "/workspace/development/frappe",

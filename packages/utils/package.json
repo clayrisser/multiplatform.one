@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/utils",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "description": "utilities for multiplatform.one",
   "sideEffects": false,
   "keywords": ["react", "react-native", "electron"],
@@ -36,13 +36,13 @@
   },
   "devDependencies": {
     "@types/node": "~20.12.13",
-    "tsup": "^8.3.0",
-    "typescript": "^5.6.2"
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
   },
   "engines": {
     "node": ">=6.0.0"
   },
   "dependencies": {
-    "yaml": "^2.6.0"
+    "yaml": "^2.6.1"
   }
 }

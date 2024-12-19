@@ -143,9 +143,6 @@ function FormScreen() {
       if (value.java) value.languages.push("Java");
       if (value.python) value.languages.push("Python");
       if (value.javaScript) value.languages.push("JavaScript");
-
-      console.log("form submitted with values:", value);
-
       form.reset();
       setProgressValue(0);
       setProgressColor("red");

@@ -2,11 +2,11 @@
 .env
 .turbo/
 /.changeset/*.md
-/.devcontainer/.dnsmasq.conf
 /.dockerignore
-/docker/data
 /null
 debug.json
+package-lock.json
+yarn.lock
 
 # mkpm
 .mkpm/mkpm

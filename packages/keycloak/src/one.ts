@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/one.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 07-10-2024 16:17:04
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -20,12 +20,11 @@
  */
 
 import type { AuthConfig } from "@auth/core";
-import type { AdapterUser } from "@auth/core/adapters";
 import type { JWT } from "@auth/core/jwt";
 import type { OAuthUserConfig } from "@auth/core/providers";
 import KeycloakProvider from "@auth/core/providers/keycloak";
 import { jwtDecode } from "jwt-decode";
-import type { Session } from "./session";
+import type { Session } from "./session/index";
 import type { AccessTokenParsed } from "./token";
 
 let _authConfig: AuthConfig | undefined;

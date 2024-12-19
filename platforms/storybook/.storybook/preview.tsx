@@ -19,6 +19,7 @@
  * limitations under the License.
  */
 
+import React from "react";
 import "@multiplatform.one/components/css/code-highlight.css";
 import "@tamagui/core/reset.css";
 import "raf/polyfill";
@@ -27,7 +28,7 @@ import { withThemeFromJSXProvider } from "@storybook/addon-styling";
 import type { Preview } from "@storybook/react";
 import { themes as storybookThemes } from "@storybook/theming";
 import { importFonts } from "app/fonts";
-import { defaultLocale, i18n, i18nInit, supportedLocales } from "app/i18n";
+// import { defaultLocale, i18n, i18nInit, supportedLocales } from "app/i18n";
 import { GlobalProvider } from "app/providers";
 import { useTheme } from "multiplatform.one/theme";
 import { useEffect } from "react";
@@ -37,7 +38,7 @@ import type { ThemeName } from "ui";
 import { YStack, mdxComponents } from "ui";
 import tamaguiConfig from "../tamagui.config";
 
-i18nInit();
+// i18nInit();
 importFonts();
 
 const preview: Preview = {
@@ -88,28 +89,28 @@ const preview: Preview = {
       Provider,
     }),
     (Story, { globals }) => {
-      useEffect(() => {
-        i18n.changeLanguage(globals.locale);
-      }, [globals.locale]);
+      // useEffect(() => {
+      //   i18n.changeLanguage(globals.locale);
+      // }, [globals.locale]);
       return <Story />;
     },
   ],
 
   globalTypes: {
-    locale: {
-      name: "locale",
-      title: "Locale",
-      description: "i18n locale",
-      defaultValue: defaultLocale,
-      toolbar: {
-        icon: "globe",
-        dynamicTitle: true,
-        items: supportedLocales.map((locale) => ({
-          value: locale,
-          title: locale,
-        })),
-      },
-    },
+    // locale: {
+    //   name: "locale",
+    //   title: "Locale",
+    //   description: "i18n locale",
+    //   defaultValue: defaultLocale,
+    //   toolbar: {
+    //     icon: "globe",
+    //     dynamicTitle: true,
+    //     items: supportedLocales.map((locale) => ({
+    //       value: locale,
+    //       title: locale,
+    //     })),
+    //   },
+    // },
   },
 };
 

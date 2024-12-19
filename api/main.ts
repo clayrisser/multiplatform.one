@@ -20,8 +20,8 @@
  */
 
 import "reflect-metadata";
-import { createApp } from "@multiplatform.one/typegraphql";
 import { fileURLToPath } from "node:url";
+import { createApp } from "@multiplatform.one/typegraphql";
 import { options } from "./app";
 
 const { API_PORT } = process.env;

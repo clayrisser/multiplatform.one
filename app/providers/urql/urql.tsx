@@ -1,7 +1,7 @@
 /**
  * File: /providers/urql/urql.tsx
  * Project: app
- * File Created: 21-06-2024 13:23:51
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -22,7 +22,7 @@
 import { useKeycloak } from "@multiplatform.one/keycloak";
 import { createClient as createWSClient } from "graphql-ws";
 import { config } from "multiplatform.one";
-import { MultiPlatform } from "multiplatform.one";
+import { isServer } from "multiplatform.one";
 import { useMemo } from "react";
 import type { PropsWithChildren } from "react";
 import {
@@ -50,7 +50,7 @@ export function GlobalUrqlProvider({ children }: GlobalUrqlProviderProps) {
     });
     return new Client({
       url: uri,
-      exchanges: !MultiPlatform.isServer
+      exchanges: !isServer
         ? [
             cacheExchange,
             fetchExchange,

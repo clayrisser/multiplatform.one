@@ -1,7 +1,7 @@
 /*
  * File: /src/keycloakService.ts
  * Project: @multiplatform.one/keycloak-typegraphql
- * File Created: 28-09-2024 00:43:12
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024

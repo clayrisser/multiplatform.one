@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/index.ts
  * Project: multiplatform.one
- * File Created: 04-04-2024 15:50:39
+ * File Created: 17-12-2024 05:42:21
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,11 +19,34 @@
  * limitations under the License.
  */
 
-import { MultiPlatform } from "./multiplatform";
+import { platform } from "./platform/index";
 
-export { MultiPlatform };
+export const {
+  isAndroid,
+  isBrowser,
+  isChrome,
+  isChromeExtension,
+  isClient,
+  isElectron,
+  isElectronMain,
+  isElectronRender,
+  isExpo,
+  isFirefox,
+  isFirefoxExtension,
+  isIframe,
+  isIos,
+  isNative,
+  isNext,
+  isServer,
+  isStorybook,
+  isTouchable,
+  isWeb,
+  isWebExtension,
+  isWebTouchable,
+} = platform;
 
 export * from "./config";
 export * from "./font";
 export * from "./helpers";
 export * from "./hooks";
+export * from "./platform/index";

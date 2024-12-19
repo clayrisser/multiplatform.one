@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/hooks/useTokensFromQuery/index.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 04-04-2024 15:50:39
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,10 +19,10 @@
  * limitations under the License.
  */
 
-import { MultiPlatform } from "multiplatform.one";
+import { isIframe } from "multiplatform.one";
 
 export function useTokensFromQuery() {
-  if (!MultiPlatform.isIframe) return false;
+  if (!isIframe) return false;
   const query = new URLSearchParams(
     typeof window === "undefined" ? "" : window?.location?.search || "",
   );

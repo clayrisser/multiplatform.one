@@ -19,10 +19,6 @@
  * limitations under the License.
  */
 
-import "../code/styles/tamagui.css";
-import "./_layout.css";
-import "@tamagui/core/reset.css";
-import resources from "virtual:i18next-loader";
 import { SchemeProvider, useColorScheme } from "@vxrn/color-scheme";
 import { languages, namespaces } from "app/i18n";
 import { GlobalProvider } from "app/providers";
@@ -31,34 +27,23 @@ import { config } from "multiplatform.one";
 import { LoadProgressBar, Slot } from "one";
 import type { ReactNode } from "react";
 import { initReactI18next } from "react-i18next";
-import { isWeb } from "tamagui";
 import tamaguiConfig from "../tamagui.config";
 
 i18n.use(initReactI18next).init({
+  compatibilityJSON: "v3",
   defaultNS: namespaces.length > 0 ? namespaces[0] : undefined,
   ns: namespaces,
-  resources,
+  resources: {},
   supportedLngs: languages,
   interpolation: {
     escapeValue: false,
   },
 });
-i18n.changeLanguage("en");
+// i18n.changeLanguage("en");
 
 export default function Layout() {
   return (
     <>
-      {isWeb && (
-        <>
-          <meta charSet="utf-8" />
-          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=5"
-          />
-          <link rel="icon" href="/favicon.svg" />
-        </>
-      )}
       <LoadProgressBar />
       <SchemeProvider>
         <RootProvider>
@@ -73,9 +58,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
   const [scheme] = useColorScheme();
   return (
     <GlobalProvider
-      // cookies={cookies}
       disableInjectCSS
-      disableRootThemeClass
       tamaguiConfig={tamaguiConfig}
       theme={{
         root: scheme,
@@ -86,7 +69,6 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
         messageHandlerKeys: [],
         publicClientId: config.get("KEYCLOAK_PUBLIC_CLIENT_ID"),
         realm: config.get("KEYCLOAK_REALM")!,
-        // session,
       }}
     >
       {children}

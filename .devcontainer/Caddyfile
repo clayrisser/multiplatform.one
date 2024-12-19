@@ -4,8 +4,6 @@
 
 http://app.test, http://app.localhost {
 	handle /api/graphql {
-		# uri strip_prefix /api
-		# reverse_proxy 127.0.0.1:{env.API_PORT}
 		reverse_proxy 127.0.0.1:{env.MESH_PORT}
 	}
 	handle {
@@ -33,6 +31,13 @@ http://frappe.test, http://frappe.localhost {
 		reverse_proxy 127.0.0.1:8000 {
 			header_up Host frappe.localhost
 		}
+	}
+	tls internal
+}
+
+http://storybook.test, http://storybook.localhost {
+	handle {
+		reverse_proxy 127.0.0.1:{env.STORYBOOK_PORT}
 	}
 	tls internal
 }

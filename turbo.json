@@ -1,23 +1,30 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
-    "generate": {},
-    "test": {},
     "build": {
+      "cache": true,
+      "dependsOn": ["^build", "api#generate"],
+      "inputs": ["*.json", "*.ts", "*.tsx", "src/**"],
+      "outputs": ["dist/**", "lib/**", "types/**"]
+    },
+    "test": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "@platform/*#build": {
+      "cache": false,
       "dependsOn": ["^build"]
     },
-    "dev": {
+    "api#generate": {
+      "cache": true,
+      "inputs": ["prisma/**"],
+      "outputs": ["generated/**"]
+    },
+    "api#build": {
       "cache": false,
-      "persistent": true
-    },
-    "@multiplatform.one/typegraphql#build": {
-      "dependsOn": ["api#generate"]
-    },
-    "@multiplatform.one/prisma-scripts#build": {
-      "dependsOn": ["api#generate"]
-    },
-    "@platform/one#build": {
-      "outputs": []
+      "dependsOn": ["^build", "api#generate"]
     }
-  }
+  },
+  "globalDependencies": ["package.json", "tsconfig.base.json", "tsconfig.json"]
 }

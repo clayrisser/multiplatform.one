@@ -3,6 +3,7 @@
 *.swp
 .DS_Store
 /frappe-bench
+/yarn.lock
 __pycache__
 node_modules
 tags

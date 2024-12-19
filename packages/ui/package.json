@@ -3,32 +3,32 @@
   "sideEffects": ["*.css"],
   "private": true,
   "main": "src/index.tsx",
-  "react-native": "src/index.tsx",
+  "react-native": "0.74.5",
   "source": "src/index.tsx",
   "files": ["src"],
   "scripts": {
     "build": "rm -rf dist types 2>/dev/null && tamagui-build"
   },
   "dependencies": {
-    "@multiplatform.one/components": "workspace:4.1.8",
-    "@multiplatform.one/use-store": "workspace:0.0.8",
-    "@tamagui/animations-css": "^1.115.5",
-    "@tamagui/animations-moti": "^1.115.5",
-    "@tamagui/animations-react-native": "^1.115.5",
-    "@tamagui/animations-reanimated": "^1.115.5",
-    "@tamagui/react-native-media-driver": "^1.115.5",
-    "@tamagui/shorthands": "^1.115.5",
-    "@tamagui/themes": "^1.115.5",
+    "@multiplatform.one/components": "workspace:4.1.10",
+    "@multiplatform.one/use-store": "workspace:0.0.10",
+    "@tamagui/animations-css": "^1.120.1",
+    "@tamagui/animations-moti": "^1.120.1",
+    "@tamagui/animations-react-native": "^1.120.1",
+    "@tamagui/animations-reanimated": "^1.120.1",
+    "@tamagui/react-native-media-driver": "^1.120.1",
+    "@tamagui/shorthands": "^1.120.1",
+    "@tamagui/themes": "^1.120.1",
     "moti": "^0.29.0",
-    "multiplatform.one": "workspace:1.1.8",
+    "multiplatform.one": "workspace:1.1.10",
     "react-native-reanimated": "~3.10.1",
-    "tamagui": "^1.115.5"
+    "tamagui": "^1.120.1"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.115.5",
-    "@testing-library/jest-dom": "^6.6.2",
+    "@tamagui/build": "^1.120.1",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^15.0.7",
-    "@vitejs/plugin-react": "^4.3.2",
+    "@vitejs/plugin-react": "^4.3.4",
     "vitest": "^1.6.0",
     "vitest-react-native": "^0.1.5"
   }

@@ -8,18 +8,18 @@
     "count": "cloc `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(json)|(yaml)|([jt]sx?)$'`",
     "dev": "turbo run dev",
     "generate": "turbo run generate",
-    "spellcheck": "cspell `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(txt)$'`",
+    "spellcheck": "cspell --unique `(git ls-files && (git lfs ls-files | cut -d' ' -f3))`",
     "test": "turbo run test"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@changesets/cli": "^2.27.9",
+    "@changesets/cli": "^2.27.11",
     "app": "workspace:*",
-    "cspell": "^8.15.4",
+    "cspell": "^8.17.1",
     "gql": "workspace:*",
     "npm-check-updates": "^16.14.20",
     "turbo": "^1.13.4",
-    "typescript": "^5.6.2",
+    "typescript": "^5.7.2",
     "ui": "workspace:*"
   },
   "pnpm": {
@@ -48,15 +48,16 @@
       "@urql/core": "2.3.6",
       "estree-util-build-jsx": "2.2.0",
       "estree-walker": "2.0.2",
+      "expo": "~51.0.28",
       "hono": "^4.6.5",
       "jackspeak": "2.1.1",
       "prisma": "~5.12.1",
-      "react": "18.3.1",
-      "react-dom": "18.3.1",
-      "react-native": "0.74.2",
+      "react": "~18.2.0",
+      "react-dom": "^18.0.0",
+      "react-native": "0.74.5",
       "type-graphql": "2.0.0-rc.1",
       "typescript": "^5.6.2",
-      "vite": "6.0.0-beta.1"
+      "vite": "^6.0.3"
     }
   },
   "tamaguiModules": ["@multiplatform.one/components", "ui"],

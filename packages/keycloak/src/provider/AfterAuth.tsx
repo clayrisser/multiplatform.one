@@ -22,7 +22,7 @@
 import { type ComponentType, type PropsWithChildren, useEffect } from "react";
 import { Loading } from "../Loading";
 import { useAuthConfig } from "../hooks";
-import { useKeycloak } from "../keycloak";
+import { useKeycloak } from "../keycloak/index";
 import { persist, useAuthStore } from "../state";
 
 export interface AfterAuthProps extends PropsWithChildren {

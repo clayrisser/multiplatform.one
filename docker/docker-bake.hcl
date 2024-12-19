@@ -2,71 +2,71 @@ variable "REGISTRY" {
   default = "docker.io/library"
 }
 
+variable "TAG" {
+  default = "latest"
+}
+
 variable "GIT_COMMIT" {
   default = "local"
 }
 
 group "default" {
   targets = [
-#   "app",
-    "keycloak",
+    # "app",
     "devcontainer",
-    "dns"
+    "dns",
+    # "keycloak",
   ]
 }
 
 target "app" {
   context    = ".."
   dockerfile = "docker/Dockerfile"
-  output     = ["type=registry"]
   platforms  = [
     "linux/amd64",
     "linux/arm64",
   ]
   tags = [
     "${REGISTRY}/app:${GIT_COMMIT}",
-    "${REGISTRY}/app:latest",
+    "${REGISTRY}/app:${TAG}",
   ]
 }
 
 target "keycloak" {
   context    = ".."
   dockerfile = "platforms/keycloak/docker/Dockerfile"
-  output     = ["type=registry"]
   platforms  = [
     "linux/amd64",
-    "linux/arm64",
+    # "linux/arm64",
   ]
   tags = [
     "${REGISTRY}/keycloak:${GIT_COMMIT}",
-    "${REGISTRY}/keycloak:latest",
+    "${REGISTRY}/keycloak:${TAG}",
   ]
 }
 
 target "devcontainer" {
   context    = ".."
   dockerfile = "docker/devcontainer/Dockerfile"
-  output     = ["type=registry"]
   platforms  = [
     "linux/amd64",
-    "linux/arm64",
+    # "linux/arm64",
   ]
   tags = [
     "${REGISTRY}/devcontainer:${GIT_COMMIT}",
-    "${REGISTRY}/devcontainer:latest",
+    "${REGISTRY}/devcontainer:${TAG}",
   ]
 }
 
 target "dns" {
   context    = ".."
   dockerfile = "docker/dns/Dockerfile"
-  output     = ["type=registry"]
   platforms  = [
     "linux/amd64",
     "linux/arm64",
   ]
   tags = [
-    "${REGISTRY}/devcontainer:${GIT_COMMIT}",
-    "${REGISTRY}/devcontainer:latest",
+    "${REGISTRY}/dns:${GIT_COMMIT}",
+    "${REGISTRY}/dns:${TAG}",
   ]
 }

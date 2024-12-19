@@ -1,7 +1,7 @@
 /**
- * File: /src/keycloak/keycloak.ts
+ * File: /src/keycloak/index.native.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 01-01-1970 00:00:00
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,35 +19,16 @@
  * limitations under the License.
  */
 
-import type { AuthRequestPromptOptions } from "expo-auth-session";
 import { jwtDecode } from "jwt-decode";
 import type KeycloakClient from "keycloak-js";
-import type {
-  KeycloakLoginOptions as KeycloakJsLoginOptions,
-  KeycloakLogoutOptions as KeycloakJsLogoutOptions,
-} from "keycloak-js";
-import { MultiPlatform } from "multiplatform.one";
-import {
-  type SignInAuthorizationParams,
-  type SignInOptions,
-  type SignInResponse,
-  getCsrfToken,
-  getProviders,
-  getSession,
-  signOut,
-} from "next-auth/react";
+import type { KeycloakConfig } from "keycloak-js";
+import { isStorybook } from "multiplatform.one";
 import { useContext } from "react";
-import { useAuthConfig } from "../hooks";
-import type { Session } from "../session/session";
-import { useSession } from "../session/session";
 import type { AccessTokenParsed, TokenParsed } from "../token";
 import type { KeycloakMock } from "../types";
-import { type KeycloakConfig, KeycloakConfigContext } from "./config";
+import { KeycloakConfigContext } from "./config";
 import { KeycloakContext } from "./context";
-
-export type KeycloakLoginOptions = KeycloakJsLoginOptions &
-  AuthRequestPromptOptions & { redirect?: boolean };
-export type KeycloakLogoutOptions = KeycloakJsLogoutOptions;
+import type { KeycloakLoginOptions, KeycloakLogoutOptions } from "./index";
 
 export class Keycloak {
   token?: string;
@@ -64,7 +45,7 @@ export class Keycloak {
 
   constructor(
     public readonly config: KeycloakConfig,
-    input?: string | KeycloakClient | KeycloakMock | Session,
+    input?: string | KeycloakClient | KeycloakMock,
     idToken?: string,
     refreshToken?: string,
     login?: (_options: KeycloakLoginOptions) => Promise<undefined>,
@@ -77,11 +58,6 @@ export class Keycloak {
     } else if (typeof input === "object") {
       if (typeof (input as KeycloakClient).init === "function") {
         this.keycloakClient = input as KeycloakClient;
-      } else if ((input as Session).accessToken) {
-        const session = input as Session;
-        this.token = session.accessToken;
-        this.idToken = session.idToken;
-        this.refreshToken = session.refreshToken;
       } else {
         this.mock = input as KeycloakMock;
       }
@@ -177,13 +153,6 @@ export class Keycloak {
     this.token = undefined;
     if (this.keycloakClient) {
       await this.keycloakClient.login(options);
-    } else if (MultiPlatform.isBrowser && !MultiPlatform.isServer) {
-      await cookieSignIn({
-        callbackUrl: options.redirectUri,
-        ...(typeof options.redirect !== "undefined"
-          ? { redirect: options.redirect }
-          : {}),
-      });
     } else {
       await this._login?.(options);
     }
@@ -195,11 +164,6 @@ export class Keycloak {
     this.token = undefined;
     if (this.keycloakClient) {
       await this.keycloakClient.logout(options);
-    } else if (MultiPlatform.isBrowser && !MultiPlatform.isServer) {
-      await fetch("/api/auth/logout", { method: "GET" });
-      await signOut({
-        callbackUrl: options.redirectUri,
-      });
     } else {
       await this._logout?.(options);
     }
@@ -216,75 +180,13 @@ export class Keycloak {
 export function useKeycloak() {
   const keycloak = useContext(KeycloakContext);
   const keycloakConfig = useContext(KeycloakConfigContext);
-  const { disabled } = useAuthConfig();
-  if (disabled) return null;
   if (keycloak) return keycloak;
-  const { session, status } = useSession();
-  if (MultiPlatform.isStorybook) {
+  if (isStorybook) {
     return new Keycloak(keycloakConfig, {
       email: "storybook@example.com",
       username: "storybook",
     });
   }
-  if (status === "unauthenticated") {
-    return new Keycloak(keycloakConfig);
-  }
-  if (status === "authenticated" && session?.accessToken) {
-    return new Keycloak(keycloakConfig, session as Session);
-  }
 }
 
-export async function cookieSignIn(
-  options?: SignInOptions,
-  authorizationParams?: SignInAuthorizationParams,
-): Promise<SignInResponse | undefined> {
-  const provider = "keycloak";
-  const baseUrl = `${new URL(window.location.href).origin}/api/auth`;
-  const { callbackUrl = window.location.href, redirect = true } = options ?? {};
-  const providers = await getProviders();
-  if (!providers) {
-    window.location.href = `${baseUrl}/error`;
-    return;
-  }
-  if (!provider || !(provider in providers)) {
-    window.location.href = `${baseUrl}/signin?${new URLSearchParams({
-      callbackUrl,
-    })}`;
-    return;
-  }
-  const isCredentials = providers[provider].type === "credentials";
-  const isEmail = providers[provider].type === "email";
-  const isSupportingReturn = isCredentials || isEmail;
-  const signInUrl = `${baseUrl}/${
-    isCredentials ? "callback" : "signin"
-  }/${provider}`;
-  const _signInUrl = `${signInUrl}${authorizationParams ? `?${new URLSearchParams(authorizationParams)}` : ""}`;
-  const res = await fetch(_signInUrl, {
-    method: "post",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "X-Auth-Return-Redirect": "1",
-    },
-    body: new URLSearchParams({
-      ...(options as any),
-      csrfToken: await getCsrfToken(),
-      callbackUrl,
-      json: true,
-    }),
-  });
-  const data = await res.json();
-  if (redirect || !isSupportingReturn) {
-    const url = data.url ?? callbackUrl;
-    window.location.href = url;
-    if (url.includes("#")) window.location.reload();
-    return;
-  }
-  const error = new URL(data.url).searchParams.get("error");
-  if (res.ok) await getSession({ event: "storage" });
-  return {
-    error,
-    status: res.status,
-    ok: res.ok,
-    url: error ? null : data.url,
-  };
-}
+export * from "./config";

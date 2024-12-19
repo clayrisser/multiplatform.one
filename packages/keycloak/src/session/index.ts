@@ -1,7 +1,7 @@
 /*
  * File: /src/session/index.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 04-04-2024 15:50:39
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,4 +19,42 @@
  * limitations under the License.
  */
 
-export * from "./session";
+import { isBrowser, isElectron } from "multiplatform.one";
+import type { Session as NextSession } from "next-auth";
+import { useSession as useNextSession } from "next-auth/react";
+import type {
+  SessionContextValue as NextSessionContextValue,
+  UseSessionOptions,
+} from "next-auth/react";
+
+export type SessionContextValue<R extends boolean> = Partial<
+  Omit<NextSessionContextValue<R> & { session: Session }, "data">
+>;
+
+let useSession = <R extends boolean>(
+  _options?: UseSessionOptions<R>,
+): SessionContextValue<R> => {
+  return {};
+};
+
+if (isBrowser && !isElectron) {
+  useSession = <R extends boolean>(
+    options?: UseSessionOptions<R>,
+  ): SessionContextValue<R> => {
+    const nextSession = useNextSession(options);
+    return {
+      update: nextSession.update,
+      status: nextSession.status,
+      session: nextSession.data as Session,
+    } as SessionContextValue<R>;
+  };
+}
+
+export interface Session extends NextSession {
+  accessToken?: string;
+  err?: Error;
+  idToken?: string;
+  refreshToken?: string;
+}
+
+export { useSession };

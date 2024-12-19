@@ -1,7 +1,7 @@
-/**
+/*
  * File: /src/bin/multiplatformOne.ts
  * Project: @multiplatform.one/cli
- * File Created: 01-01-1970 00:00:00
+ * File Created: 19-11-2024 14:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -35,12 +35,13 @@ import type { CookieCutterConfig } from "../types";
 
 const availableBackends = ["api", "frappe"];
 const availablePlatforms = [
-  "electron",
+  // "electron",
   "expo",
   "keycloak",
-  "next",
+  "one",
   "storybook",
   "storybook-expo",
+  "vocs",
 ];
 
 process.env.COOKIECUTTER = `sh ${path.resolve(
@@ -72,13 +73,12 @@ program
     "branch, tag or commit to checkout",
     "main",
   )
-  .option("-p, --platforms <platforms>", "platforms to keep")
-  .option("-b, --backends <backends>", "backends to keep")
+  .option("-p, --platforms <platforms>", "platforms to use")
+  .option("-b, --backends <backends>", "backends to use")
   .argument("[name]", "the name of the project", "")
   .description("init multiplatform.one")
   .action(async (name, options) => {
     let { backends, platforms } = options;
-
     if (
       (
         await execa("git", ["rev-parse", "--is-inside-work-tree"], {
@@ -112,7 +112,6 @@ program
           },
         ])
       ).backends;
-
       backends = backendsResult.join(",");
     }
     if (!platforms) {

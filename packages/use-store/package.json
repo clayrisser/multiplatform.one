@@ -1,6 +1,6 @@
 {
   "name": "@multiplatform.one/use-store",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "description": "multiplatform.one use-store hook with support for async storage",
   "sideEffects": false,
   "keywords": ["react", "react-native", "electron"],
@@ -14,13 +14,13 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "react-native": "src/index.ts",
+  "react-native": "0.74.5",
   "source": "src/index.ts",
   "types": "types/index.d.ts",
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.cjs"
     },
     "./package.json": "./package.json"
@@ -29,7 +29,7 @@
     "build": "rm -rf dist types 2>/dev/null && tamagui-build",
     "test": "vitest run"
   },
-  "files": ["lib", "src"],
+  "files": ["dist", "src", "types"],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
@@ -38,13 +38,13 @@
     "node": ">=6.0.0"
   },
   "dependencies": {
-    "@tamagui/use-store": "^1.115.5"
+    "@tamagui/use-store": "^1.120.1"
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "1.21.0",
-    "@tamagui/build": "^1.115.5",
-    "typescript": "^5.6.2",
-    "vite": "6.0.0-beta.1"
+    "@tamagui/build": "^1.120.1",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3"
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "1.21.0"

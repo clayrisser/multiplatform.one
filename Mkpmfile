@@ -23,6 +23,7 @@ include $(MKPM)/dotenv
 
 PACKAGES := $(shell $(LS) packages)
 PLATFORMS := $(shell $(LS) platforms)
+DOCKER ?= docker
 
 ACTIONS += deps
 $(ACTION)/deps: package.json \
@@ -61,7 +62,7 @@ clean:
 		$(MKPM_GIT_CLEAN_FLAGS)
 
 .PHONY: purge
-ifneq (/home/one,$(HOME))
+ifneq (/home/frappe,$(HOME))
 purge: docker/down clean
 else
 purge: clean
@@ -100,6 +101,38 @@ version:
 .PHONY: publish
 publish: version build
 	@$(CHANGESET) publish
+
+.PHONY: doctor
+doctor:
+	@$(GIT) clean -fxd -e .mkpm
+	@$(RM) -rf $(HOME)/.local/state/frappe $(NOFAIL)
+	@$(RM) -rf frappe/frappe-bench $(NOFAIL)
+	@$(DOCKER) pull $(DOCKER_REGISTRY)/devcontainer:latest
+
+.PHONY: spellcheck-prune
+spellcheck-prune:
+	-@$(MV) cspell.json _cspell.json $(NOFAIL)
+	@M="$$($(PNPM) cspell --words-only --unique --no-progress --no-summary \
+		`($(GIT) ls-files && ($(GIT) lfs ls-files | $(CUT) -d' ' -f3)) | $(SORT) | $(UNIQ) -u | \
+		$(GREP) -v project-words.txt` 2>&1 | $(AWK) '{if ($$0 ~ /^[\x00-\x7F]*$$/) print $$0}' | $(TR) '[:upper:]' '[:lower:]' | $(SORT))" && \
+		D="$$($(CAT) project-words.txt)" && \
+		(echo "$$M" && echo "$$D") | $(SORT) | $(UNIQ) -d | $(TEE) _project-words.txt
+	@$(MV) _cspell.json cspell.json
+	@$(MV) _project-words.txt project-words.txt
+
+.PHONY: down
+down:
+	@$(DOCKER) rm -f $$($(DOCKER) ps --filter "name=devcontainer" -a -q) $(NOFAIL)
+	@for v in $$($(DOCKER) volume ls --filter "name=devcontainer" -q); do \
+		$(DOCKER) rm -f $$($(DOCKER) ps -a -q --filter volume=$$v) $(NOFAIL); \
+		$(DOCKER) volume rm -f $$v || true; \
+	done
+	@$(DOCKER) rm -f $$($(DOCKER) ps -a -q --filter network=$$($(DOCKER) network ls --filter "name=devcontainer" -q)) $(NOFAIL)
+	@$(DOCKER) network ls --filter "name=devcontainer" -q | $(XARGS) -r $(DOCKER) network rm || $(TRUE)
+
+.PHONY: stop
+stop:
+	@$(DOCKER) stop $$($(DOCKER) ps --filter "name=devcontainer" -q)
 
 SCRIPTS := $(shell $(CAT) package.json | $(JQ) -r '(.scripts | keys)[]')
 .PHONY: $(SCRIPTS)

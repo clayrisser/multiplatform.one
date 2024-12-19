@@ -1,22 +1,22 @@
 {
   "name": "@multiplatform.one/keycloak",
-  "version": "2.0.8",
+  "version": "2.0.10",
   "description": "keycloak client for multiplatform.one ecosystem",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "react-native": "src/index.ts",
+  "react-native": "0.74.5",
   "source": "src/index.ts",
   "types": "types/index.d.ts",
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.cjs"
     },
     "./one": {
       "types": "./types/one.d.ts",
-      "import": "./dist/esm/one.mjs",
+      "import": "./dist/esm/one.js",
       "require": "./dist/cjs/one.cjs"
     },
     "./package.json": "./package.json"
@@ -42,22 +42,22 @@
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "1.21.0",
-    "multiplatform.one": "workspace:1.1.8",
-    "react": "18.3.1"
+    "multiplatform.one": "workspace:1.1.10",
+    "react": "~18.2.0"
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
-    "@tamagui/build": "^1.115.5",
-    "@testing-library/jest-dom": "^6.6.2",
+    "@tamagui/build": "^1.120.1",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^15.0.7",
     "@types/lodash.camelcase": "^4.3.9",
     "@types/lodash.startcase": "^4.4.9",
     "@types/react": "^18.3.1",
     "@types/react-native": "^0.73.0",
-    "@vitejs/plugin-react": "^4.3.2",
-    "multiplatform.one": "workspace:1.1.8",
-    "react": "18.3.1",
-    "typescript": "^5.6.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "multiplatform.one": "workspace:1.1.10",
+    "react": "~18.2.0",
+    "typescript": "^5.7.2",
     "vitest": "^1.6.0",
     "vitest-react-native": "^0.1.5"
   },
@@ -66,12 +66,12 @@
   },
   "dependencies": {
     "@auth/core": "^0.36.0",
-    "@multiplatform.one/authjs": "workspace:0.0.6",
-    "@multiplatform.one/use-store": "workspace:0.0.8",
+    "@multiplatform.one/authjs": "workspace:0.0.8",
+    "@multiplatform.one/use-store": "workspace:0.0.10",
     "expo-auth-session": "^5.5.2",
     "expo-crypto": "^13.0.2",
     "jwt-decode": "^4.0.0",
     "keycloak-js": "^24.0.5",
-    "next-auth": "^4.24.8"
+    "next-auth": "^4.24.11"
   }
 }

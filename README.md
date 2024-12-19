@@ -7,6 +7,7 @@
 - Prisma - database layer
 - TypeGraphQL - graphql schema
 - Keycloak - authentication
+- Frappe - low code framework
 
 ## Notes
 
