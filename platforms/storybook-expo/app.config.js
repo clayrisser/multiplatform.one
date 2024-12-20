@@ -1,7 +1,7 @@
-/*
+/**
  * File: /app.config.js
  * Project: @platform/storybook-expo
- * File Created: 01-06-2024 16:36:47
+ * File Created: 19-11-2024 20:27:46
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,7 +19,13 @@
  * limitations under the License.
  */
 
-const publicConfig = require("app/config/public");
+const dotenv = require("dotenv");
+const { public: publicConfigKeys } = require("../../app/config.json");
+const path = require("node:path");
+const { resolveConfig } = require("@multiplatform.one/utils/build");
+
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+const publicConfig = resolveConfig(publicConfigKeys);
 
 module.exports = {
   expo: {

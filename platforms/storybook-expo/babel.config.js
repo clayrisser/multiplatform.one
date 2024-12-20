@@ -1,7 +1,7 @@
-/*
+/**
  * File: /babel.config.js
  * Project: @platform/storybook-expo
- * File Created: 01-06-2024 16:36:47
+ * File Created: 19-11-2024 20:27:46
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,9 +19,7 @@
  * limitations under the License.
  */
 
-const {
-  lookupTamaguiModules,
-} = require("@multiplatform.one/utils/transpileModules");
+const { lookupTamaguiModules } = require("@multiplatform.one/utils/build");
 
 process.env.TAMAGUI_TARGET = "native";
 

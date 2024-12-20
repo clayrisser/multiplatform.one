@@ -1,7 +1,7 @@
-/*
+/**
  * File: /craco.config.js
  * Project: @platform/keycloak
- * File Created: 14-06-2024 13:00:30
+ * File Created: 19-11-2024 20:27:46
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -25,7 +25,7 @@ const webpack = require("webpack");
 const {
   lookupTranspileModules,
   lookupTamaguiModules,
-} = require("@multiplatform.one/utils/transpileModules");
+} = require("@multiplatform.one/utils/build");
 
 module.exports = {
   plugins: [

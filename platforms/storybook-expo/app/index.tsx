@@ -20,7 +20,7 @@
  */
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { view } from "platforms/storybook-expo/.storybook/storybook.requires.js";
+import { view } from "../.storybook/storybook.requires.js";
 
 const StorybookUI = view.getStorybookUI({
   storage: {

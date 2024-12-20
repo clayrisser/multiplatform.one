@@ -1,7 +1,7 @@
-/*
- * File: /src/transpileModules.ts
+/**
+ * File: /src/build.ts
  * Project: @multiplatform.one/utils
- * File Created: 16-06-2024 11:47:19
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
