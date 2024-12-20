@@ -24,8 +24,8 @@ import type { KeycloakInitOptions } from "keycloak-js";
 import { isBrowser, isElectron, isIframe, isServer } from "multiplatform.one";
 import type { SessionProviderProps } from "next-auth/react";
 import { SessionProvider } from "next-auth/react";
-import type { PropsWithChildren } from "react";
-import { type ComponentType, useEffect, useMemo, useState } from "react";
+import type { ComponentType, PropsWithChildren } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Loading } from "../../Loading";
 import { useAuthConfig } from "../../hooks";
 import { KeycloakContext } from "../../keycloak/context";
@@ -36,10 +36,11 @@ import { validOrRefreshableToken } from "../../token";
 import { AfterAuth } from "../AfterAuth";
 
 export interface AuthProviderProps extends PropsWithChildren {
+  disabled?: boolean;
   keycloakConfig: KeycloakConfig;
   keycloakInitOptions?: KeycloakInitOptions;
-  sessionProvider?: Omit<SessionProviderProps, "children">;
   loadingComponent?: ComponentType;
+  sessionProvider?: Omit<SessionProviderProps, "children">;
 }
 
 const logger = console;
@@ -52,6 +53,7 @@ export interface Tokens<B = boolean> {
 
 export function AuthProvider({
   children,
+  disabled,
   keycloakConfig,
   keycloakInitOptions,
   loadingComponent,
@@ -105,11 +107,13 @@ export function AuthProvider({
 
   useEffect(() => {
     if (
-      tokens.token !== true &&
-      tokens.refreshToken !== true &&
-      tokens.idToken !== true
-    )
+      disabled ||
+      (tokens.token !== true &&
+        tokens.refreshToken !== true &&
+        tokens.idToken !== true)
+    ) {
       return;
+    }
     if (debug) logger.debug("post message", JSON.stringify({ type: "LOADED" }));
     (messageHandlerKeys || []).forEach((key: string) => {
       window?.webkit?.messageHandlers?.[key]?.postMessage(
@@ -118,10 +122,10 @@ export function AuthProvider({
     });
     window?.ReactNativeWebView?.postMessage(JSON.stringify({ type: "LOADED" }));
     window?.parent?.postMessage(JSON.stringify({ type: "LOADED" }));
-  }, []);
+  }, [disabled]);
 
   useEffect(() => {
-    if (tokens.refreshToken !== true) return;
+    if (disabled || tokens.refreshToken !== true) return;
     const messageCallback = (e: MessageEvent<any>) => {
       let data = e?.data || null;
       if (typeof data === "string") {
@@ -154,10 +158,10 @@ export function AuthProvider({
     return () => {
       window.removeEventListener("message", messageCallback);
     };
-  }, []);
+  }, [disabled]);
 
   useEffect(() => {
-    if (tokens.token !== true) return;
+    if (disabled || tokens.token !== true) return;
     const messageCallback = (e: MessageEvent<any>) => {
       let data = e?.data || null;
       if (typeof data === "string") {
@@ -190,10 +194,10 @@ export function AuthProvider({
     return () => {
       window.removeEventListener("message", messageCallback);
     };
-  }, []);
+  }, [disabled]);
 
   useEffect(() => {
-    if (tokens.idToken !== true) return;
+    if (disabled || tokens.idToken !== true) return;
     const messageCallback = (e: MessageEvent<any>) => {
       let data = e?.data || null;
       if (typeof data === "string") {
@@ -229,7 +233,7 @@ export function AuthProvider({
     return () => {
       window.removeEventListener("message", messageCallback);
     };
-  }, []);
+  }, [disabled]);
 
   const keycloakClient = useMemo(
     () =>
@@ -250,7 +254,7 @@ export function AuthProvider({
   );
 
   const initOptions = useMemo(() => {
-    if (isServer || (isBrowser && !isIframe)) {
+    if (disabled || isServer || (isBrowser && !isIframe)) {
       return;
     }
     const initOptions: KeycloakInitOptions = {
@@ -286,6 +290,7 @@ export function AuthProvider({
     }
     return initOptions;
   }, [
+    disabled,
     keycloakInitOptions,
     keycloakConfig.scopes,
     tokens.token,
@@ -294,6 +299,7 @@ export function AuthProvider({
   ]);
 
   useEffect(() => {
+    if (disabled) return;
     function onError() {
       if (keycloakClient && initOptions) {
         setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
@@ -323,13 +329,10 @@ export function AuthProvider({
         setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
       })();
     }
-  }, []);
+  }, [disabled]);
 
-  if (typeof authStore === "undefined") {
-    return <Loading loadingComponent={loadingComponent} />;
-  }
-
-  function render() {
+  const render = useCallback(() => {
+    if (disabled) return <>{children}</>;
     return (
       <KeycloakConfigContext.Provider value={keycloakConfig}>
         <KeycloakContext.Provider value={keycloak}>
@@ -337,8 +340,11 @@ export function AuthProvider({
         </KeycloakContext.Provider>
       </KeycloakConfigContext.Provider>
     );
-  }
+  }, [disabled, keycloakConfig, keycloak, loadingComponent, children]);
 
+  if (!disabled && typeof authStore === "undefined") {
+    return <Loading loadingComponent={loadingComponent} />;
+  }
   if (isBrowser && !isElectron) {
     return <SessionProvider {...sessionProvider}>{render()}</SessionProvider>;
   }

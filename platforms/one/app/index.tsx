@@ -19,4 +19,4 @@
  * limitations under the License.
  */
 
-export { default } from "app/screens/home";
+export { Screen as default } from "app/screens/home";

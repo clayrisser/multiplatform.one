@@ -1,3 +1,24 @@
+/**
+ * File: /src/helpers.tsx
+ * Project: multiplatform.one
+ * File Created: 19-11-2024 20:26:31
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import type { ComponentType } from "react";
 
 const isPerformanceNow = typeof performance !== "undefined" && performance.now;
@@ -30,32 +51,32 @@ export function isText(children: unknown) {
   return typeof children === "string";
 }
 
-export function createWithLayout<LayoutProps, Props>(
+export function createWithLayout<LayoutProps>(
   Layout: ComponentType<LayoutProps>,
-  extraLayouts: WithLayout<any>[] = [],
+  extraLayouts: WithLayout[] = [],
   layoutProps?: Omit<LayoutProps, "children">,
-): WithLayout<Props> {
-  return (Component: ComponentType<Props>) => {
+): WithLayout {
+  return ((Component: ComponentType<unknown>) => {
     return flattenLayouts(
-      (props: Props) => (
+      (props: unknown) => (
         <Layout {...(layoutProps as LayoutProps)}>
           <Component {...(props as any)} />
         </Layout>
       ),
       extraLayouts,
     );
-  };
+  }) as WithLayout;
 }
 
 function flattenLayouts<Props>(
   layout: ComponentType<Props>,
-  [...layouts]: WithLayout<any>[],
+  [...layouts]: WithLayout[],
 ): ComponentType<Props> {
   const currentLayout = layouts.pop();
   if (!currentLayout) return layout;
   return flattenLayouts(currentLayout(layout), layouts);
 }
 
-export type WithLayout<Props> = (
+export type WithLayout = <Props>(
   Component: ComponentType<Props>,
 ) => ComponentType<Props>;

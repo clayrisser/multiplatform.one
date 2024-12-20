@@ -20,119 +20,16 @@
  */
 
 import { withAuthenticated } from "@multiplatform.one/keycloak";
-import { withDefaultLayout } from "app/layouts/Default";
 import { useTranslation } from "react-i18next";
-import {
-  Anchor,
-  Button,
-  H1,
-  Paragraph,
-  Separator,
-  Text,
-  Theme,
-  XStack,
-  YStack,
-} from "ui";
+import { Text, YStack } from "ui";
 
 function HomeScreen() {
   const { t } = useTranslation();
   return (
-    <YStack fullscreen jc="center" flexWrap="wrap" ai="center" gap="$3">
-      {/* {countResponse.isFetching ? <Spinner /> : <Text>{countResponse?.data?.count}</Text>} */}
-      {/* {isLoading ? <Spinner /> : <Text>username: {data?.username}</Text>} */}
-      <YStack gap="$4" maxWidth={800}>
-        <Theme name="dark">
-          <H1
-            ta="center"
-            $sm={{ fontSize: "$5", letterSpacing: 5 }}
-            theme="blue_active"
-            color="$backgroundFocus"
-            textTransform="uppercase"
-          >
-            {t("screens.home.welcome")}
-          </H1>
-        </Theme>
-        <Theme>
-          <Paragraph
-            fontFamily="$silkscreen"
-            ta="center"
-            $sm={{ fontSize: "$1" }}
-          >
-            {t("screens.home.message")}
-          </Paragraph>
-          <Separator />
-        </Theme>
-        <Theme name="dark">
-          <Paragraph ta="center" theme="blue_active">
-            <Anchor
-              fontFamily="$rockSalt"
-              href="https://multiplatform.one"
-              target="_blank"
-              color="$backgroundFocus"
-            >
-              multiplatform.one
-            </Anchor>
-          </Paragraph>
-        </Theme>
-      </YStack>
-      <YStack
-        gap="$3"
-        marginTop="$2"
-        padding="$4"
-        flexWrap="wrap"
-        jc="space-between"
-      >
-        <XStack
-          padding="$3"
-          gap="$3"
-          jc="space-between"
-          ai="center"
-          borderWidth={1}
-          borderColor="$borderColor"
-          borderRadius="$2"
-          backgroundColor="$cardBackgroundColor"
-          elevation="$2"
-        >
-          <Paragraph>view user information here</Paragraph>
-          <Button>
-            <Text color="$blue10">{t("screens.home.link")}</Text>
-          </Button>
-        </XStack>
-        <XStack
-          padding="$3"
-          gap="$3"
-          jc="space-between"
-          ai="center"
-          borderWidth={1}
-          borderColor="$borderColor"
-          borderRadius="$2"
-          backgroundColor="$cardBackgroundColor"
-          elevation="$2"
-        >
-          <Paragraph>keycloak authentication</Paragraph>
-          <Button>
-            <Text color="$blue10">Auth</Text>
-          </Button>
-        </XStack>
-        <XStack
-          padding="$3"
-          gap="$3"
-          jc="space-between"
-          ai="center"
-          borderWidth={1}
-          borderColor="$borderColor"
-          borderRadius="$2"
-          backgroundColor="$cardBackgroundColor"
-          elevation="$2"
-        >
-          <Paragraph>register here to create an account</Paragraph>
-          <Button>
-            <Text color="$blue10">Register</Text>
-          </Button>
-        </XStack>
-      </YStack>
+    <YStack flex={1} ai="center" jc="center">
+      <Text>{t("screens.home.welcome")}</Text>
     </YStack>
   );
 }
 
-export default withAuthenticated(withDefaultLayout(HomeScreen));
+export const Screen = withAuthenticated(HomeScreen);

@@ -191,11 +191,14 @@ export function DebugLayout<DebugViewProps>({
 }
 
 export function createWithDebugLayout<DebugViewProps>(
-  extraLayouts?: WithLayout<any>[],
+  extraLayouts?: WithLayout[],
   debugLayoutProps: CreateWithDebugLayout<DebugViewProps> = {},
 ) {
-  // TODO: Fix this type
-  return createWithLayout(DebugLayout, extraLayouts, debugLayoutProps as any);
+  return createWithLayout<DebugLayoutProps<DebugViewProps>>(
+    DebugLayout,
+    extraLayouts,
+    debugLayoutProps,
+  );
 }
 
 export const withDebugLayout = createWithDebugLayout();

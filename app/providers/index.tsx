@@ -56,7 +56,11 @@ export function GlobalProvider({
     <GlobalTanstackProvider debug={debug}>
       <ThemeProvider cookies={cookies} theme={theme}>
         <GlobalTamaguiProvider config={tamaguiConfig} {...props}>
-          <GlobalKeycloakProvider disabled={keycloakDisabled} {...keycloak}>
+          <GlobalKeycloakProvider
+            disabled={keycloakDisabled}
+            debug={debug}
+            {...keycloak}
+          >
             <GlobalUrqlProvider keycloakDisabled={keycloakDisabled}>
               {children}
             </GlobalUrqlProvider>

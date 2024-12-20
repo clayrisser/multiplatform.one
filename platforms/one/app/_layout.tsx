@@ -21,7 +21,10 @@
 
 import { SchemeProvider, useColorScheme } from "@vxrn/color-scheme";
 import { languages, namespaces } from "app/i18n";
+import en from "app/i18n/en/common.json";
+import te from "app/i18n/te/common.json";
 import { GlobalProvider } from "app/providers";
+import { Layout as RootLayout } from "app/screens/_layout";
 import i18n from "i18next";
 import { config } from "multiplatform.one";
 import { LoadProgressBar, Slot } from "one";
@@ -33,13 +36,20 @@ i18n.use(initReactI18next).init({
   compatibilityJSON: "v3",
   defaultNS: namespaces.length > 0 ? namespaces[0] : undefined,
   ns: namespaces,
-  resources: {},
+  resources: {
+    en: {
+      common: en,
+    },
+    te: {
+      common: te,
+    },
+  },
   supportedLngs: languages,
   interpolation: {
     escapeValue: false,
   },
 });
-// i18n.changeLanguage("en");
+i18n.changeLanguage("en");
 
 export default function Layout() {
   return (
@@ -47,7 +57,9 @@ export default function Layout() {
       <LoadProgressBar />
       <SchemeProvider>
         <RootProvider>
-          <Slot />
+          <RootLayout>
+            <Slot />
+          </RootLayout>
         </RootProvider>
       </SchemeProvider>
     </>

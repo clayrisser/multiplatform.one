@@ -48,20 +48,17 @@ export function KeycloakProvider({
   );
   return (
     <AuthConfigContext.Provider value={authConfig}>
-      {disabled ? (
-        <>{children}</>
-      ) : (
-        <AuthProvider
-          keycloakConfig={{
-            clientId: clientId || "app",
-            publicClientId,
-            realm: realm || "main",
-            url: baseUrl,
-          }}
-        >
-          {children}
-        </AuthProvider>
-      )}
+      <AuthProvider
+        disabled={disabled}
+        keycloakConfig={{
+          clientId: clientId || "app",
+          publicClientId,
+          realm: realm || "main",
+          url: baseUrl,
+        }}
+      >
+        {children}
+      </AuthProvider>
     </AuthConfigContext.Provider>
   );
 }

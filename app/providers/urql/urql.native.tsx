@@ -31,21 +31,19 @@ export function GlobalUrqlProvider({
   children,
   keycloakDisabled,
 }: GlobalUrqlProviderProps) {
-  return children;
-  // const keycloak = useKeycloak();
-  // const client = useMemo(() => {
-  //   const headers = keycloakDisabled
-  //     ? {}
-  //     : { ...(keycloak ? { Authorization: `Bearer ${keycloak?.token}` } : {}) };
-  //   const uri = `${config.get("BASE_URL", "http://app.localhost")}/api/graphql`;
-  //   return createClient({
-  //     url: uri.replace(/^http/, "ws"),
-  //     exchanges: [devtoolsExchange, fetchExchange],
-  //     fetchOptions: {
-  //       headers: headers,
-  //     },
-  //   });
-  // }, [keycloak?.authenticated, keycloakDisabled]);
-
-  // return <UrqlProvider value={client}>{children}</UrqlProvider>;
+  const keycloak = useKeycloak();
+  const client = useMemo(() => {
+    const headers = keycloakDisabled
+      ? {}
+      : { ...(keycloak ? { Authorization: `Bearer ${keycloak?.token}` } : {}) };
+    const uri = `${config.get("BASE_URL", "http://app.localhost")}/api/graphql`;
+    return createClient({
+      url: uri.replace(/^http/, "ws"),
+      exchanges: [devtoolsExchange, fetchExchange],
+      fetchOptions: {
+        headers: headers,
+      },
+    });
+  }, [keycloak?.authenticated, keycloakDisabled]);
+  return <UrqlProvider value={client}>{children}</UrqlProvider>;
 }

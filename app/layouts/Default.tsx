@@ -33,17 +33,19 @@ export interface DefaultLayoutProps {
 export function DefaultLayout({ children }: DefaultLayoutProps) {
   const toastController = useToastController();
   return (
-    <YStack fullscreen>
-      <Toast />
-      <ToastViewport
-        flexDirection="column-reverse"
-        top={0}
-        right={0}
-        cursor="pointer"
-        onPress={() => toastController.hide()}
-      />
-      {children}
-    </YStack>
+    <>
+      <YStack fullscreen bg="$background">
+        {children}
+        <Toast />
+        <ToastViewport
+          flexDirection="column-reverse"
+          top={0}
+          right={0}
+          cursor="pointer"
+          onPress={() => toastController.hide()}
+        />
+      </YStack>
+    </>
   );
 }
 

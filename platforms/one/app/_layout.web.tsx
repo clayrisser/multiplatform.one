@@ -26,6 +26,7 @@ import resources from "virtual:i18next-loader";
 import { SchemeProvider, useColorScheme } from "@vxrn/color-scheme";
 import { languages, namespaces } from "app/i18n";
 import { GlobalProvider } from "app/providers";
+import { Layout as RootLayout } from "app/screens/_layout";
 import i18n from "i18next";
 import { config } from "multiplatform.one";
 import { LoadProgressBar, Slot } from "one";
@@ -58,7 +59,9 @@ export default function Layout() {
       <LoadProgressBar />
       <SchemeProvider>
         <RootProvider>
-          <Slot />
+          <RootLayout>
+            <Slot />
+          </RootLayout>
         </RootProvider>
       </SchemeProvider>
     </>

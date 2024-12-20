@@ -51,24 +51,34 @@ export function AfterAuth({ children, loadingComponent }: AfterAuthProps) {
   ]);
 
   useEffect(() => {
-    if (authConfig.debug && keycloak?.token)
+    if (authConfig.debug && keycloak?.token) {
       logger.debug("token", keycloak.token);
+    }
   }, [keycloak?.token]);
 
   useEffect(() => {
-    if (authConfig.debug && keycloak?.idToken)
+    if (authConfig.debug && keycloak?.idToken) {
       logger.debug("idToken", keycloak.idToken);
+    }
   }, [keycloak?.idToken]);
 
   useEffect(() => {
-    if (authConfig.debug && keycloak?.refreshToken)
+    if (authConfig.debug && keycloak?.refreshToken) {
       logger.debug("refreshToken", keycloak.refreshToken);
+    }
   }, [keycloak?.refreshToken]);
 
   useEffect(() => {
-    if (authConfig.debug && keycloak?.authenticated)
+    if (authConfig.debug && keycloak?.authenticated) {
       logger.debug("authenticated", keycloak.authenticated);
+    }
   }, [keycloak?.authenticated]);
+
+  useEffect(() => {
+    if (authConfig.debug && keycloak === null) {
+      logger.debug("keycloak disabled");
+    }
+  }, [keycloak]);
 
   if (!authStore) return <Loading loadingComponent={loadingComponent} />;
   return <>{children}</>;

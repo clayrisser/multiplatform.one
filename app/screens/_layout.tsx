@@ -1,7 +1,7 @@
 /**
- * File: /screens/user/index.tsx
+ * File: /screens/_layout.tsx
  * Project: app
- * File Created: 23-04-2024 05:52:22
+ * File Created: 20-12-2024 04:26:01
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,22 +19,21 @@
  * limitations under the License.
  */
 
-import { ChevronLeft } from "@tamagui/lucide-icons";
 import { withDefaultLayout } from "app/layouts/Default";
+import type { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Paragraph, YStack } from "ui";
+import { Text, YStack } from "ui";
 
-function UserScreen() {
+export function RootLayout({ children }: PropsWithChildren) {
   const { t } = useTranslation();
-
   return (
-    <YStack f={1} jc="center" ai="center" gap="$4">
-      <Paragraph ta="center" fow="800">
-        {"User ID:"}
-      </Paragraph>
-      <Button icon={ChevronLeft}>{t("screens.user.goHome")}</Button>
+    <YStack flex={1}>
+      <YStack bg="$color3" p="$4">
+        <Text>{t("common.ok")}</Text>
+      </YStack>
+      {children}
     </YStack>
   );
 }
 
-export default withDefaultLayout(UserScreen);
+export const Layout = withDefaultLayout(RootLayout);

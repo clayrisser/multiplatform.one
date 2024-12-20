@@ -43,6 +43,7 @@ const REFRESH_THRESHOLD = 5;
 
 export function AuthProvider({
   children,
+  disabled,
   keycloakConfig,
   loadingComponent,
 }: AuthProviderProps) {
@@ -84,7 +85,7 @@ export function AuthProvider({
   );
 
   useEffect(() => {
-    if (tokens || !authStore) return;
+    if (disabled || tokens || !authStore) return;
     setTokens({
       refreshToken: initialRefreshToken,
       token: validOrRefreshableToken(
@@ -96,10 +97,16 @@ export function AuthProvider({
         initialRefreshToken,
       ),
     });
-  }, [initialRefreshToken, tokens, authStore]);
+  }, [disabled, initialRefreshToken, tokens, authStore]);
 
   useEffect(() => {
-    if (!discovery || !response?.type || !request?.codeVerifier || !clientId) {
+    if (
+      disabled ||
+      !discovery ||
+      !response?.type ||
+      !request?.codeVerifier ||
+      !clientId
+    ) {
       return;
     }
     (async () => {
@@ -130,6 +137,7 @@ export function AuthProvider({
       }
     })();
   }, [
+    disabled,
     !discovery,
     request?.codeVerifier,
     response?.type === "success" ? response?.params?.code : undefined,
@@ -139,7 +147,7 @@ export function AuthProvider({
   ]);
 
   const resetTokens = useCallback(() => {
-    if (!authStore) return;
+    if (disabled || !authStore) return;
     authStore.idToken = "";
     authStore.refreshToken = "";
     authStore.token = "";
@@ -148,10 +156,10 @@ export function AuthProvider({
       token: undefined,
       idToken: undefined,
     });
-  }, [authStore]);
+  }, [disabled, authStore]);
 
   const refreshTokens = useCallback(async () => {
-    if (!discovery || !tokens || !authStore) return;
+    if (disabled || !discovery || !tokens || !authStore) return;
     if (typeof tokens.refreshToken === "string") {
       if (!isTokenExpired(tokens.refreshToken)) {
         const tokenResponse = await refreshAsync(
@@ -181,15 +189,15 @@ export function AuthProvider({
     ) {
       resetTokens();
     }
-  }, [!discovery, tokens?.refreshToken, clientId, scopes]);
+  }, [disabled, !discovery, tokens?.refreshToken, clientId, scopes]);
 
   useEffect(() => {
-    if (!discovery) return;
+    if (disabled || !discovery) return;
     refreshTokens();
-  }, [!discovery]);
+  }, [disabled, !discovery]);
 
   useEffect(() => {
-    if (!request || !tokens) return;
+    if (disabled || !request || !tokens) return;
     let refreshHandle: NodeJS.Timeout;
     (async () => {
       if (tokens.token && isTokenExpired(tokens.token)) {
@@ -237,6 +245,7 @@ export function AuthProvider({
       if (refreshHandle) clearTimeout(refreshHandle);
     };
   }, [
+    disabled,
     !request,
     tokens?.token,
     tokens?.idToken,
@@ -244,6 +253,7 @@ export function AuthProvider({
     refreshTokens,
   ]);
 
+  if (disabled) return <>{children}</>;
   if (!authStore || !tokens) <Loading loadingComponent={loadingComponent} />;
   return (
     <KeycloakConfigContext.Provider value={keycloakConfig}>
