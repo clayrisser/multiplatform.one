@@ -21,8 +21,7 @@
 
 import { importFonts } from "app/fonts";
 import { languages, namespaces } from "app/i18n";
-import en from "app/i18n/en/common.json";
-import te from "app/i18n/te/common.json";
+import { resources } from "app/i18n/resources";
 import { GlobalProvider } from "app/providers";
 import { useFonts } from "expo-font";
 import { SplashScreen } from "expo-router";
@@ -34,23 +33,19 @@ import { View } from "react-native";
 import { Layout } from "../layout";
 import tamaguiConfig from "../tamagui.config";
 
-i18n.use(initReactI18next).init({
-  compatibilityJSON: "v3",
-  defaultNS: namespaces.length > 0 ? namespaces[0] : undefined,
-  ns: namespaces,
-  resources: {
-    en: {
-      common: en,
+i18n
+  .use(initReactI18next)
+  .init({
+    compatibilityJSON: "v3",
+    defaultNS: namespaces.length > 0 ? namespaces[0] : undefined,
+    ns: namespaces,
+    resources,
+    supportedLngs: languages,
+    interpolation: {
+      escapeValue: false,
     },
-    te: {
-      common: te,
-    },
-  },
-  supportedLngs: languages,
-  interpolation: {
-    escapeValue: false,
-  },
-});
+  })
+  .catch(console.error);
 i18n.changeLanguage(config.get("I18N_DEFAULT_LANGUAGE", "en"));
 
 const fonts = importFonts();

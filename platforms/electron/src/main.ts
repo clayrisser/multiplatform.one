@@ -1,3 +1,24 @@
+/**
+ * File: /src/main.ts
+ * Project: @platform/electron
+ * File Created: 21-12-2024 02:26:39
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 /*
  * File: /src/main.ts
  * Project: @platform/electron
@@ -28,7 +49,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { BrowserWindow, app } from "electron";
+import { BrowserWindow, app, session } from "electron";
 import started from "electron-squirrel-startup";
 
 // Force single instance
@@ -110,6 +131,23 @@ const createWindow = async () => {
   });
 
   try {
+    // Set up content security policy
+    session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+      callback({
+        responseHeaders: {
+          ...details.responseHeaders,
+          "Content-Security-Policy": [
+            "default-src 'self'",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+            "style-src 'self' 'unsafe-inline'",
+            "img-src 'self' data: https:",
+            "font-src 'self' data:",
+            "connect-src 'self' ws: wss: http: https:",
+          ].join("; "),
+        },
+      });
+    });
+
     // Create the browser window.
     mainWindow = new BrowserWindow({
       width: 800,
@@ -117,9 +155,10 @@ const createWindow = async () => {
       show: false,
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
-        nodeIntegration: true,
-        contextIsolation: false,
-        webSecurity: false, // Disable web security in dev mode
+        nodeIntegration: process.env.NODE_ENV === "development",
+        contextIsolation: process.env.NODE_ENV !== "development",
+        webSecurity: process.env.NODE_ENV === "production",
+        allowRunningInsecureContent: process.env.NODE_ENV === "development",
       },
     });
 
@@ -159,7 +198,9 @@ const createWindow = async () => {
       await mainWindow.loadFile(filePath);
     }
 
-    mainWindow.webContents.openDevTools();
+    if (process.env.NODE_ENV === "development") {
+      mainWindow.webContents.openDevTools();
+    }
 
     mainWindow.webContents.on(
       "did-fail-load",
@@ -197,6 +238,24 @@ app.on("ready", async () => {
   debugLog("Electron version:", process.versions.electron);
   debugLog("Chrome version:", process.versions.chrome);
   debugLog("Node version:", process.versions.node);
+
+  // Set default security options
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        "Content-Security-Policy": [
+          "default-src 'self'",
+          "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+          "style-src 'self' 'unsafe-inline'",
+          "img-src 'self' data: https:",
+          "font-src 'self' data:",
+          "connect-src 'self' ws: wss: http: https:",
+        ].join("; "),
+      },
+    });
+  });
+
   await createWindow();
 });
 
@@ -225,6 +284,5 @@ app.on("activate", async () => {
     await createWindow();
   }
 });
-
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.

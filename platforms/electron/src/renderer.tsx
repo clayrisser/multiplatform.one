@@ -1,24 +1,39 @@
 /**
  * File: /src/renderer.tsx
  * Project: @platform/electron
+ * File Created: 21-12-2024 02:26:39
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 import React from "react";
-import "./index.css";
+import "../tamagui.css";
 import "@tamagui/core/reset.css";
+import { SchemeProvider, useColorScheme } from "@vxrn/color-scheme";
 import { languages, namespaces } from "app/i18n";
 import { resources } from "app/i18n/resources";
 import { GlobalProvider } from "app/providers";
+import { Layout as RootLayout } from "app/screens/_layout";
 import i18n from "i18next";
 import { config } from "multiplatform.one";
-import { useTheme } from "multiplatform.one/theme";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import tamaguiConfig from "../tamagui.config";
-import { App } from "./App";
 
-// Initialize i18n
 i18n
   .use(initReactI18next)
   .init({
@@ -32,40 +47,35 @@ i18n
     },
   })
   .catch(console.error);
+i18n.changeLanguage(config.get("I18N_DEFAULT_LANGUAGE", "en"));
 
-i18n
-  .changeLanguage(config.get("I18N_DEFAULT_LANGUAGE", "en"))
-  .catch(console.error);
-
-const container = document.getElementById("root");
-if (!container) {
-  throw new Error("Failed to find the root element");
-}
-
-const root = createRoot(container);
-
-function Root() {
-  const [theme] = useTheme();
+function App() {
+  const [scheme] = useColorScheme();
   return (
-    <HashRouter>
-      <GlobalProvider
-        disableInjectCSS
-        tamaguiConfig={tamaguiConfig}
-        theme={{
-          root: theme?.root || "light",
-        }}
-        keycloak={{
-          baseUrl: config.get("KEYCLOAK_BASE_URL"),
-          clientId: config.get("KEYCLOAK_CLIENT_ID"),
-          messageHandlerKeys: [],
-          publicClientId: config.get("KEYCLOAK_PUBLIC_CLIENT_ID"),
-          realm: config.get("KEYCLOAK_REALM")!,
-        }}
-      >
-        <App />
-      </GlobalProvider>
-    </HashRouter>
+    <GlobalProvider
+      disableInjectCSS
+      tamaguiConfig={tamaguiConfig}
+      theme={{
+        root: scheme,
+      }}
+      keycloak={{
+        baseUrl: config.get("KEYCLOAK_BASE_URL"),
+        clientId: config.get("KEYCLOAK_CLIENT_ID"),
+        messageHandlerKeys: [],
+        publicClientId: config.get("KEYCLOAK_PUBLIC_CLIENT_ID"),
+        realm: config.get("KEYCLOAK_REALM")!,
+      }}
+    >
+      <BrowserRouter>
+        <RootLayout />
+      </BrowserRouter>
+    </GlobalProvider>
   );
 }
 
-root.render(<Root />);
+const root = createRoot(document.getElementById("root")!);
+root.render(
+  <SchemeProvider>
+    <App />
+  </SchemeProvider>,
+);

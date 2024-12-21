@@ -5,6 +5,7 @@
 
 import { Layout } from "app/screens/_layout";
 import { Screen as HomeScreen } from "app/screens/home";
+import { config } from "multiplatform.one";
 import { Route, Routes } from "react-router-dom";
 
 export function App() {

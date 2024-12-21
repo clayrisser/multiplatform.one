@@ -1,5 +1,7 @@
 # app
 /.tamagui
+/tamagui.css
+/core
 
 # forge
 *.lcov

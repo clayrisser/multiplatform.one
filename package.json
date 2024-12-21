@@ -4,8 +4,8 @@
   "license": "Apache-2.0",
   "scripts": {
     "build": "turbo run build --filter '!./platforms/*' --filter '!./api'",
-    "check": "biome check --fix --unsafe `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(json)|(yaml)|([jt]sx?)$'`",
-    "count": "cloc `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(md)|(json)|(yaml)|([jt]sx?)$'`",
+    "check": "biome check --fix --unsafe `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(html)|(s?css)|(md)|(json)|(yaml)|([jt]sx?)$'`",
+    "count": "cloc `(git ls-files && (git lfs ls-files | cut -d' ' -f3)) | sort | uniq -u | grep -E '(html)|(s?css)|(md)|(json)|(yaml)|([jt]sx?)$'`",
     "dev": "turbo run dev",
     "generate": "turbo run generate",
     "spellcheck": "cspell --unique `(git ls-files && (git lfs ls-files | cut -d' ' -f3))`",

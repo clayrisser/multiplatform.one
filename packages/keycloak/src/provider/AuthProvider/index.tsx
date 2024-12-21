@@ -325,7 +325,7 @@ export function AuthProvider({
             setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
           }
         };
-        const authenticated = await keycloakClient.init(initOptions);
+        await keycloakClient.init(initOptions);
         setKeycloak(new Keycloak(keycloakConfig, keycloakClient));
       })();
     }

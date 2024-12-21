@@ -1,5 +1,7 @@
 # app
 /routes.d.ts
+/.tamagui
+/tamagui.css
 
 # one
 *.tmp.js

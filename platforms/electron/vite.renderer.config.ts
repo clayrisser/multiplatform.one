@@ -26,22 +26,21 @@ import {
   lookupTamaguiModules,
   resolveConfig,
 } from "@multiplatform.one/utils/build";
+import react from "@vitejs/plugin-react";
 import dotenv from "dotenv";
 import { defineConfig } from "vite";
 import { public as publicConfigKeys } from "../../app/config.json";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 process.env.VITE_MP_CONFIG = JSON.stringify(resolveConfig(publicConfigKeys));
 
-export default defineConfig(async () => {
-  const [{ tamaguiPlugin }, { default: i18nextLoader }] = await Promise.all([
+export default defineConfig((async () => {
+  const [{ tamaguiPlugin }] = await Promise.all([
     import("@tamagui/vite-plugin"),
-    import("vite-plugin-i18next-loader"),
   ]);
 
   return {
+    base: process.env.NODE_ENV === "development" ? "/" : "./",
     build: {
       minify: false,
       sourcemap: true,
@@ -51,6 +50,19 @@ export default defineConfig(async () => {
           format: "esm",
         },
       },
+    },
+    define: {
+      __DEV__: process.env.NODE_ENV !== "production",
+      global: "globalThis",
+      process: JSON.stringify({
+        env: {
+          NODE_ENV: process.env.NODE_ENV,
+          NODE_DEBUG: false,
+        },
+        platform: process.platform,
+        version: process.version,
+      }),
+      "Buffer.isBuffer": "((obj) => obj?.constructor?.name === 'Buffer')",
     },
     esbuild: {
       jsx: "automatic",
@@ -65,27 +77,54 @@ export default defineConfig(async () => {
         "@tamagui/core",
         "@tamagui/web",
         "tamagui",
+        "react-native-web",
+        "@multiplatform.one/components",
+        "@multiplatform.one/theme",
+        "buffer",
       ],
-      exclude: ["react-native"],
+      esbuildOptions: {
+        resolveExtensions: [
+          ".web.js",
+          ".web.ts",
+          ".web.tsx",
+          ".js",
+          ".ts",
+          ".tsx",
+        ],
+        mainFields: ["module", "main"],
+      },
     },
     plugins: [
+      react({
+        jsxRuntime: "automatic",
+      }),
       tamaguiPlugin({
         components: lookupTamaguiModules([__dirname]),
         config: "../../app/tamagui.config.ts",
         optimize: true,
-      }),
-      i18nextLoader({
-        paths: ["../../app/i18n"],
-        namespaceResolution: "basename",
+        outputCSS: "./tamagui.css",
       }),
     ],
     resolve: {
       alias: {
-        "react-native": "@tamagui/core",
+        "react-native": "react-native-web",
         "~": path.resolve(__dirname),
         app: path.resolve(__dirname, "../../app"),
         ui: path.resolve(__dirname, "../../packages/ui"),
+        buffer: "buffer",
+        stream: "stream-browserify",
+        util: "util",
       },
+      extensions: [
+        ".web.js",
+        ".web.ts",
+        ".web.tsx",
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx",
+      ],
+      mainFields: ["browser", "module", "main"],
     },
     server: {
       host: "0.0.0.0",
@@ -96,6 +135,19 @@ export default defineConfig(async () => {
         port: 5173,
         protocol: "ws",
       },
+      headers: {
+        "Content-Security-Policy": [
+          "default-src 'self'",
+          "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+          "style-src 'self' 'unsafe-inline'",
+          "img-src 'self' data: https:",
+          "font-src 'self' data:",
+          "connect-src 'self' ws: wss: http: https:",
+        ].join("; "),
+      },
+      watch: {
+        usePolling: true,
+      },
     },
   };
-});
+}) as any);

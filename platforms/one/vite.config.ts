@@ -77,7 +77,7 @@ export default {
       components: lookupTamaguiModules([__dirname]),
       config: "./config/tamagui.config.ts",
       optimize: true,
-      outputCSS: "./code/styles/tamagui.css",
+      outputCSS: "./tamagui.css",
     }),
     i18nextLoader({
       paths: ["../../app/i18n"],

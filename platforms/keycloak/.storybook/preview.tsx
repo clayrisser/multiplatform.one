@@ -40,16 +40,19 @@ import { useDarkMode } from "storybook-dark-mode";
 import type { ThemeName } from "ui";
 import { mdxComponents } from "ui";
 
-i18n.use(initReactI18next).init({
-  compatibilityJSON: "v3",
-  defaultNS: namespaces.length > 0 ? namespaces[0] : undefined,
-  ns: namespaces,
-  resources,
-  supportedLngs: languages,
-  interpolation: {
-    escapeValue: false,
-  },
-});
+i18n
+  .use(initReactI18next)
+  .init({
+    compatibilityJSON: "v3",
+    defaultNS: namespaces.length > 0 ? namespaces[0] : undefined,
+    ns: namespaces,
+    resources,
+    supportedLngs: languages,
+    interpolation: {
+      escapeValue: false,
+    },
+  })
+  .catch(console.error);
 i18n.changeLanguage(config.get("I18N_DEFAULT_LANGUAGE", "en"));
 importFonts();
 
