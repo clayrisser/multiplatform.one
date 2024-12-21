@@ -1,15 +1,32 @@
 {
   "name": "@platform/electron",
-  "productName": "app",
+  "productName": "multiplatform.one",
   "version": "0.0.1",
-  "description": "My Electron application description",
+  "description": "multiplatform.one Electron application",
   "main": ".vite/build/main.js",
+  "private": true,
   "scripts": {
     "dev": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
+  },
+  "dependencies": {
+    "@multiplatform.one/components": "workspace:*",
+    "@multiplatform.one/keycloak": "workspace:*",
+    "@tamagui/core": "^1.120.1",
+    "@tamagui/web": "^1.120.1",
+    "app": "workspace:*",
+    "electron-squirrel-startup": "^1.0.0",
+    "i18next": "^23.7.16",
+    "multiplatform.one": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^14.0.0",
+    "react-router-dom": "^6.28.0",
+    "tamagui": "^1.120.1",
+    "ui": "workspace:*"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.6.0",
@@ -20,9 +37,16 @@
     "@electron-forge/plugin-fuses": "^7.2.0",
     "@electron-forge/plugin-vite": "^7.6.0",
     "@electron/fuses": "^1.7.0",
+    "@multiplatform.one/utils": "workspace:*",
+    "@tamagui/vite-plugin": "^1.120.1",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "dotenv": "^16.4.5",
     "electron": "29.4.2",
-    "electron-squirrel-startup": "^1.0.1",
     "typescript": "^5.6.2",
-    "vite": "^6.0.3"
+    "vite": "^6.0.3",
+    "vite-plugin-external": "^4.3.0",
+    "vite-plugin-i18next-loader": "^2.0.12"
   }
 }

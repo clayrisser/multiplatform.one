@@ -19,22 +19,83 @@
  * limitations under the License.
  */
 
+import path from "node:path";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import {
+  lookupTamaguiModules,
+  resolveConfig,
+} from "@multiplatform.one/utils/build";
+import dotenv from "dotenv";
 import { defineConfig } from "vite";
+import { public as publicConfigKeys } from "../../app/config.json";
 
-// https://vitejs.dev/config
-export default defineConfig({
-  build: {
-    minify: false,
-    sourcemap: true,
-  },
-  server: {
-    host: "0.0.0.0",
-    port: 5173,
-    strictPort: true,
-    hmr: {
-      host: "localhost",
-      port: 5173,
-      protocol: "ws",
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+process.env.VITE_MP_CONFIG = JSON.stringify(resolveConfig(publicConfigKeys));
+
+export default defineConfig(async () => {
+  const [{ tamaguiPlugin }, { default: i18nextLoader }] = await Promise.all([
+    import("@tamagui/vite-plugin"),
+    import("vite-plugin-i18next-loader"),
+  ]);
+
+  return {
+    build: {
+      minify: false,
+      sourcemap: true,
+      rollupOptions: {
+        external: ["electron"],
+        output: {
+          format: "esm",
+        },
+      },
     },
-  },
+    esbuild: {
+      jsx: "automatic",
+    },
+    optimizeDeps: {
+      include: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "i18next",
+        "react-i18next",
+        "@tamagui/core",
+        "@tamagui/web",
+        "tamagui",
+      ],
+      exclude: ["react-native"],
+    },
+    plugins: [
+      tamaguiPlugin({
+        components: lookupTamaguiModules([__dirname]),
+        config: "../../app/tamagui.config.ts",
+        optimize: true,
+      }),
+      i18nextLoader({
+        paths: ["../../app/i18n"],
+        namespaceResolution: "basename",
+      }),
+    ],
+    resolve: {
+      alias: {
+        "react-native": "@tamagui/core",
+        "~": path.resolve(__dirname),
+        app: path.resolve(__dirname, "../../app"),
+        ui: path.resolve(__dirname, "../../packages/ui"),
+      },
+    },
+    server: {
+      host: "0.0.0.0",
+      port: 5173,
+      strictPort: true,
+      hmr: {
+        host: "localhost",
+        port: 5173,
+        protocol: "ws",
+      },
+    },
+  };
 });

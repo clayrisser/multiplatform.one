@@ -1,3 +1,24 @@
+/*
+ * File: /src/main.ts
+ * Project: @platform/electron
+ * File Created: 21-12-2024 02:26:39
+ * Author: Clay Risser
+ * -----
+ * BitSpur (c) Copyright 2021 - 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 /**
  * File: /src/main.ts
  * Project: @platform/electron
@@ -5,9 +26,8 @@
  * Author: Clay Risser
  */
 
-import path from "node:path";
-import util from "node:util";
 import fs from "node:fs";
+import path from "node:path";
 import { BrowserWindow, app } from "electron";
 import started from "electron-squirrel-startup";
 
@@ -46,6 +66,29 @@ if (started) {
   app.quit();
 }
 
+const waitForDevServer = async (
+  url: string,
+  maxAttempts = 30,
+): Promise<boolean> => {
+  debugLog(`Waiting for dev server at ${url}`);
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        debugLog("Dev server is ready");
+        return true;
+      }
+    } catch (error) {
+      debugLog(
+        `Attempt ${attempt + 1}/${maxAttempts}: Dev server not ready yet`,
+      );
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+  }
+  debugLog("Dev server failed to start");
+  return false;
+};
+
 const createWindow = async () => {
   if (mainWindow) {
     if (mainWindow.isMinimized()) mainWindow.restore();
@@ -54,7 +97,7 @@ const createWindow = async () => {
   }
 
   debugLog("Creating window...");
-  debugLog("Current directory:", __dirname);
+  debugLog("Current directory:", process.cwd());
   debugLog("Display variable:", process.env.DISPLAY);
   debugLog("Dev server URL:", MAIN_WINDOW_VITE_DEV_SERVER_URL);
   debugLog("Process info:", {
@@ -91,25 +134,22 @@ const createWindow = async () => {
     // and load the index.html of the app.
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
       debugLog("Dev mode - Loading URL:", MAIN_WINDOW_VITE_DEV_SERVER_URL);
-      // Use loadFile first to ensure the window is created
-      const tempFile = path.join(__dirname, "loading.html");
-      await mainWindow.loadFile(tempFile).catch(() => {
-        debugLog("Failed to load temporary file, continuing...");
-      });
 
-      // Then attempt to load the dev server URL
-      await mainWindow
-        .loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
-        .catch(async (err) => {
-          debugLog("Failed to load dev server, error:", err);
-          // If dev server fails, try loading the file directly
-          const filePath = path.join(
-            __dirname,
-            `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`,
-          );
-          debugLog("Falling back to file:", filePath);
-          await mainWindow?.loadFile(filePath);
-        });
+      // Wait for dev server to be ready
+      const isDevServerReady = await waitForDevServer(
+        MAIN_WINDOW_VITE_DEV_SERVER_URL,
+      );
+      if (!isDevServerReady) {
+        debugLog("Dev server failed to start, falling back to file loading");
+        const filePath = path.join(
+          __dirname,
+          `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`,
+        );
+        debugLog("Loading file:", filePath);
+        await mainWindow.loadFile(filePath);
+      } else {
+        await mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
+      }
     } else {
       const filePath = path.join(
         __dirname,
@@ -157,13 +197,6 @@ app.on("ready", async () => {
   debugLog("Electron version:", process.versions.electron);
   debugLog("Chrome version:", process.versions.chrome);
   debugLog("Node version:", process.versions.node);
-
-  // Small delay to ensure dev server has started
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    debugLog("Waiting for dev server...");
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-  }
-
   await createWindow();
 });
 

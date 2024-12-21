@@ -1,4 +1,4 @@
-/**
+/*
  * File: /vite.preload.config.ts
  * Project: @platform/electron
  * File Created: 21-12-2024 02:26:39
@@ -26,5 +26,8 @@ export default defineConfig({
   build: {
     minify: false,
     sourcemap: true,
+    rollupOptions: {
+      external: ["electron"],
+    },
   },
 });
