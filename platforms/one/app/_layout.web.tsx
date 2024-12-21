@@ -44,7 +44,7 @@ i18n.use(initReactI18next).init({
     escapeValue: false,
   },
 });
-i18n.changeLanguage("en");
+i18n.changeLanguage(config.get("I18N_DEFAULT_LANGUAGE", "en"));
 
 export default function Layout() {
   return (

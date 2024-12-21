@@ -3,6 +3,7 @@
   "public": [
     "BASE_URL",
     "DEBUG",
+    "I18N_DEFAULT_LANGUAGE",
     "KEYCLOAK_BASE_URL",
     "KEYCLOAK_CLIENT_ID",
     "KEYCLOAK_ENABLED",

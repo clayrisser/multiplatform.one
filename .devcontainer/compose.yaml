@@ -3,6 +3,15 @@ services:
     image: registry.gitlab.com/bitspur/multiplatform.one/multiplatform.one/devcontainer:latest
     command: sleep infinity
     network_mode: host
+    privileged: true
+    security_opt:
+      - seccomp=unconfined
+    cap_add:
+      - SYS_ADMIN
+      - SYS_CHROOT
+    environment:
+      - DISPLAY
+      - XAUTHORITY=/tmp/.docker.xauth
     extra_hosts:
       account.localhost: 127.0.0.1
       account.test: 127.0.0.1
@@ -18,6 +27,9 @@ services:
     volumes:
       - ..:/workspace/development:rw
       - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /run/dbus/system_bus_socket:/run/dbus/system_bus_socket
+      - ${XAUTHORITY:-~/.Xauthority}:/tmp/.docker.xauth:rw
 
   caddy:
     image: caddy:latest

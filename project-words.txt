@@ -1,4 +1,5 @@
 ahmadalli
+amdgpu
 autheticator
 authjs
 autodocs
@@ -42,6 +43,20 @@ klass
 kumar
 lalit
 lavanya
+libasound
+libatk
+libcups
+libdrm
+libegl
+libgbm
+libgl
+libglapi
+libgles
+libglvnd
+libglx
+libx
+libxcb
+libxshmfence
 linejoin
 lngs
 mailpit
@@ -79,6 +94,7 @@ postattach
 pressable
 psioniq
 psql
+radeon
 rajak
 reauthentication
 recaptcha

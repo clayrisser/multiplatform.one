@@ -1,30 +1,7 @@
 /**
  * File: /.storybook/preview.tsx
- * Project: keycloak
- * File Created: 12-06-2024 09:07:27
- * Author: Clay Risser
- * File: /.storybook/preview.tsx
- * BitSpur (c) Copyright 2021 - 2024
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-export const parameters = {};
-
-/**
- * File: /.storybook/preview.tsx
- * Project: @platform/storybook
- * File Created: 31-05-2024 08:21:11
+ * Project: @platform/keycloak
+ * File Created: 19-11-2024 20:27:46
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -50,15 +27,30 @@ import { withThemeFromJSXProvider } from "@storybook/addon-styling";
 import type { Preview } from "@storybook/react";
 import { themes as storybookThemes } from "@storybook/theming";
 import { importFonts } from "app/fonts";
-import { defaultLocale, i18n, i18nInit, supportedLocales } from "app/i18n";
+import { languages, namespaces } from "app/i18n";
+import { resources } from "app/i18n/resources";
+import i18n from "i18next";
+import { config } from "multiplatform.one";
 import { useTheme } from "multiplatform.one/theme";
-import { useEffect } from "react";
+import React from "react";
 import type { PropsWithChildren } from "react";
+import { useEffect } from "react";
+import { initReactI18next } from "react-i18next";
 import { useDarkMode } from "storybook-dark-mode";
 import type { ThemeName } from "ui";
 import { mdxComponents } from "ui";
 
-i18nInit();
+i18n.use(initReactI18next).init({
+  compatibilityJSON: "v3",
+  defaultNS: namespaces.length > 0 ? namespaces[0] : undefined,
+  ns: namespaces,
+  resources,
+  supportedLngs: languages,
+  interpolation: {
+    escapeValue: false,
+  },
+});
+i18n.changeLanguage(config.get("I18N_DEFAULT_LANGUAGE", "en"));
 importFonts();
 
 const preview: Preview = {
@@ -127,11 +119,11 @@ const preview: Preview = {
       name: "locale",
       title: "Locale",
       description: "i18n locale",
-      defaultValue: defaultLocale,
+      defaultValue: config.get("I18N_DEFAULT_LANGUAGE", "en"),
       toolbar: {
         icon: "globe",
         dynamicTitle: true,
-        items: supportedLocales.map((locale) => ({
+        items: languages.map((locale) => ({
           value: locale,
           title: locale,
         })),

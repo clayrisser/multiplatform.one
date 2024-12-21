@@ -19,7 +19,6 @@
  * limitations under the License.
  */
 
-import React from "react";
 import "@multiplatform.one/components/css/code-highlight.css";
 import "@tamagui/core/reset.css";
 import "raf/polyfill";
@@ -28,17 +27,32 @@ import { withThemeFromJSXProvider } from "@storybook/addon-styling";
 import type { Preview } from "@storybook/react";
 import { themes as storybookThemes } from "@storybook/theming";
 import { importFonts } from "app/fonts";
-// import { defaultLocale, i18n, i18nInit, supportedLocales } from "app/i18n";
+import { languages, namespaces } from "app/i18n";
+import { resources } from "app/i18n/resources";
 import { GlobalProvider } from "app/providers";
+import i18n from "i18next";
+import { config } from "multiplatform.one";
 import { useTheme } from "multiplatform.one/theme";
-import { useEffect } from "react";
+import React from "react";
 import type { PropsWithChildren } from "react";
+import { useEffect } from "react";
+import { initReactI18next } from "react-i18next";
 import { useDarkMode } from "storybook-dark-mode";
 import type { ThemeName } from "ui";
 import { YStack, mdxComponents } from "ui";
 import tamaguiConfig from "../tamagui.config";
 
-// i18nInit();
+i18n.use(initReactI18next).init({
+  compatibilityJSON: "v3",
+  defaultNS: namespaces.length > 0 ? namespaces[0] : undefined,
+  ns: namespaces,
+  resources,
+  supportedLngs: languages,
+  interpolation: {
+    escapeValue: false,
+  },
+});
+i18n.changeLanguage(config.get("I18N_DEFAULT_LANGUAGE", "en"));
 importFonts();
 
 const preview: Preview = {
@@ -89,28 +103,28 @@ const preview: Preview = {
       Provider,
     }),
     (Story, { globals }) => {
-      // useEffect(() => {
-      //   i18n.changeLanguage(globals.locale);
-      // }, [globals.locale]);
+      useEffect(() => {
+        i18n.changeLanguage(globals.locale);
+      }, [globals.locale]);
       return <Story />;
     },
   ],
 
   globalTypes: {
-    // locale: {
-    //   name: "locale",
-    //   title: "Locale",
-    //   description: "i18n locale",
-    //   defaultValue: defaultLocale,
-    //   toolbar: {
-    //     icon: "globe",
-    //     dynamicTitle: true,
-    //     items: supportedLocales.map((locale) => ({
-    //       value: locale,
-    //       title: locale,
-    //     })),
-    //   },
-    // },
+    locale: {
+      name: "locale",
+      title: "Locale",
+      description: "i18n locale",
+      defaultValue: config.get("I18N_DEFAULT_LANGUAGE", "en"),
+      toolbar: {
+        icon: "globe",
+        dynamicTitle: true,
+        items: languages.map((locale) => ({
+          value: locale,
+          title: locale,
+        })),
+      },
+    },
   },
 };
 

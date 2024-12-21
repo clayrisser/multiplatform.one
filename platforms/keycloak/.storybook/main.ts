@@ -20,10 +20,15 @@
  */
 
 import path from "node:path";
-import { lookupTranspileModules } from "@multiplatform.one/utils/build";
+import {
+  lookupTranspileModules,
+  resolveConfig,
+} from "@multiplatform.one/utils/build";
 import type { StorybookConfig } from "@storybook/react-webpack5";
-import publicConfig from "app/config/public";
 import webpack from "webpack";
+import { public as publicConfigKeys } from "../../../app/config.json";
+
+const publicConfig = resolveConfig(publicConfigKeys);
 
 const config: StorybookConfig = {
   stories: [

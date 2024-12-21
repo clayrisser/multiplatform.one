@@ -17,6 +17,7 @@
     "DOTENV_FILE": "/workspace/development/.env",
     "WORK_DIR": "/workspace/development/frappe"
   },
+  "runArgs": ["--cap-add=SYS_ADMIN", "--security-opt", "seccomp=unconfined"],
   "customizations": {
     "vscode": {
       "extensions": [
