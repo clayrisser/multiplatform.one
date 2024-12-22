@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import React, { StrictMode } from "react";
 import "../tamagui.css";
 import "@tamagui/core/reset.css";
 import { SchemeProvider, useColorScheme } from "@vxrn/color-scheme";
@@ -28,7 +28,7 @@ import { resources } from "app/i18n/resources";
 import { GlobalProvider } from "app/providers";
 import { Layout as RootLayout } from "app/screens/_layout";
 import i18n from "i18next";
-import { config } from "multiplatform.one";
+import { config, isElectron } from "multiplatform.one";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { BrowserRouter } from "react-router-dom";
@@ -48,6 +48,14 @@ i18n
   })
   .catch(console.error);
 i18n.changeLanguage(config.get("I18N_DEFAULT_LANGUAGE", "en"));
+
+console.log("Electron detection:", {
+  isElectron,
+  versions: (window as any).versions,
+  process: (window as any).process,
+  userAgent: window.navigator.userAgent,
+  ipc: (window as any).ipc,
+});
 
 function App() {
   const [scheme] = useColorScheme();
@@ -75,7 +83,9 @@ function App() {
 
 const root = createRoot(document.getElementById("root")!);
 root.render(
-  <SchemeProvider>
-    <App />
-  </SchemeProvider>,
+  <StrictMode>
+    <SchemeProvider>
+      <App />
+    </SchemeProvider>
+  </StrictMode>,
 );

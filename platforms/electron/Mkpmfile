@@ -22,6 +22,8 @@ DEFAULT_ENV ?= $(PROJECT_ROOT)/.env
 include $(MKPM)/dotenv
 include $(MKPM)/chain
 
+DBUS_LAUNCH ?= dbus-launch
+
 ACTIONS += deps
 $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call make,$(PROJECT_ROOT)) \~deps DEPS_ARGS=$(DEPS_ARGS)
@@ -35,6 +37,11 @@ $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
 .PHONY: dev +dev
 dev: | ~deps +dev
 +dev:
+ifeq (1,$(shell ([ "$(HOME)" != "/home/frappe" ] || [ ! -d "/workspace/development" ]) && \
+		echo "1" || echo "0"))
 	@$(PNPM) run dev
+else
+	@$(DBUS_LAUNCH) -- $(PNPM) run dev
+endif
 
 -include $(call chain)

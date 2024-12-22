@@ -19,6 +19,11 @@
       "import": "./dist/esm/one.js",
       "require": "./dist/cjs/one.cjs"
     },
+    "./emptyNextAuthReact": {
+      "types": "./types/emptyNextAuthReact.d.ts",
+      "import": "./dist/esm/emptyNextAuthReact.js",
+      "require": "./dist/cjs/emptyNextAuthReact.cjs"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {

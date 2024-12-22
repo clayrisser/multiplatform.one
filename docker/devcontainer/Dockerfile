@@ -18,6 +18,8 @@ RUN set -x && \
     tee /etc/apt/sources.list.d/docker.list >/dev/null && \
     apt-get update && \
     apt-get install -y \
+    dbus \
+    dbus-x11 \
     docker-ce-cli \
     docker-compose-plugin \
     libasound2 \
