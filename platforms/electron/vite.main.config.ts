@@ -27,11 +27,35 @@ export default defineConfig({
     minify: false,
     sourcemap: true,
     rollupOptions: {
-      external: ["electron"],
+      external: ["electron", "path"],
+      output: {
+        format: "cjs",
+        inlineDynamicImports: true,
+      },
     },
   },
   resolve: {
     // Some libs that can run in both Web and Node.js, such as `axios`
-    mainFields: ["module", "jsnext:main", "jsnext"],
+    mainFields: ["electron", "module", "jsnext:main", "jsnext"],
+    conditions: ["electron", "node"],
+    extensions: [
+      ".electron.tsx",
+      ".electron.jsx",
+      ".electron.ts",
+      ".electron.js",
+      ".web.js",
+      ".web.ts",
+      ".web.tsx",
+      ".js",
+      ".jsx",
+      ".ts",
+      ".tsx",
+    ],
+  },
+  optimizeDeps: {
+    exclude: ["electron"],
+    esbuildOptions: {
+      target: "node18",
+    },
   },
 });

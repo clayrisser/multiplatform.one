@@ -65,12 +65,6 @@ export default defineConfig((async () => {
     build: {
       minify: false,
       sourcemap: true,
-      rollupOptions: {
-        external: ["electron"],
-        output: {
-          format: "esm",
-        },
-      },
     },
     define: {
       __DEV__: process.env.NODE_ENV !== "production",
@@ -105,12 +99,18 @@ export default defineConfig((async () => {
         "buffer",
         "next-auth/react",
       ],
+      exclude: [],
       esbuildOptions: {
         resolveExtensions: [
+          ".electron.tsx",
+          ".electron.jsx",
+          ".electron.ts",
+          ".electron.js",
           ".web.js",
           ".web.ts",
           ".web.tsx",
           ".js",
+          ".jsx",
           ".ts",
           ".tsx",
         ],
@@ -121,6 +121,23 @@ export default defineConfig((async () => {
       react({
         jsxRuntime: "automatic",
       }),
+      {
+        name: "virtual-electron",
+        resolveId(id) {
+          if (id === "electron") {
+            return "\0virtual:electron";
+          }
+        },
+        load(id) {
+          if (id === "\0virtual:electron") {
+            return `
+              const electron = window.electron || {};
+              export const ipcRenderer = electron.ipcRenderer;
+              export default electron;
+            `;
+          }
+        },
+      },
       {
         name: "virtual-next-auth",
         resolveId(id) {
@@ -156,8 +173,13 @@ export default defineConfig((async () => {
         app: path.resolve(__dirname, "../../app"),
         ui: path.resolve(__dirname, "../../packages/ui"),
         stream: "stream-browserify",
+        tslib: require.resolve("tslib"),
       },
       extensions: [
+        ".electron.tsx",
+        ".electron.jsx",
+        ".electron.ts",
+        ".electron.js",
         ".web.js",
         ".web.ts",
         ".web.tsx",
@@ -167,6 +189,7 @@ export default defineConfig((async () => {
         ".tsx",
       ],
       mainFields: ["browser", "module", "main"],
+      conditions: ["electron", "node"],
     },
     server: {
       host: "0.0.0.0",
@@ -185,7 +208,7 @@ export default defineConfig((async () => {
           "img-src * 'self' data: blob:",
           "font-src * 'self' data:",
           "connect-src * 'self' ws: wss:",
-          "frame-src * 'self'",
+          "frame-src *",
         ].join("; "),
       },
       watch: {

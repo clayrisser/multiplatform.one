@@ -32,10 +32,12 @@ glusp
 graphi
 graphiql
 graphqlsp
+gsettings
 headlessui
 healthz
 hoverable
 insee
+jsnext
 katari
 kauth
 keycloakify
@@ -118,6 +120,7 @@ tamagui
 toolshown
 totp
 truststore
+tslog
 tsup
 tsyringe
 typegraphql

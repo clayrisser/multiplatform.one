@@ -13,15 +13,17 @@
     "lint": "eslint --ext .ts,.tsx ."
   },
   "dependencies": {
-    "@multiplatform.one/components": "workspace:*",
-    "@multiplatform.one/keycloak": "workspace:*",
+    "@multiplatform.one/components": "workspace:4.1.10",
+    "@multiplatform.one/keycloak": "workspace:2.0.10",
+    "@sentry/electron": "^5.9.0",
+    "@sentry/types": "^8.47.0",
     "@tamagui/core": "^1.120.1",
     "@tamagui/web": "^1.120.1",
     "app": "workspace:*",
     "buffer": "^6.0.3",
     "electron-squirrel-startup": "^1.0.0",
     "i18next": "^23.7.16",
-    "multiplatform.one": "workspace:*",
+    "multiplatform.one": "workspace:1.1.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^14.0.0",
@@ -29,6 +31,7 @@
     "react-router-dom": "^6.28.0",
     "stream-browserify": "^3.0.0",
     "tamagui": "^1.120.1",
+    "tslog": "^4.9.3",
     "ui": "workspace:*"
   },
   "devDependencies": {
@@ -40,7 +43,7 @@
     "@electron-forge/plugin-fuses": "^7.2.0",
     "@electron-forge/plugin-vite": "^7.6.0",
     "@electron/fuses": "^1.7.0",
-    "@multiplatform.one/utils": "workspace:*",
+    "@multiplatform.one/utils": "workspace:0.1.8",
     "@tamagui/vite-plugin": "^1.120.1",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",

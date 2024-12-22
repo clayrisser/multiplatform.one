@@ -1,7 +1,7 @@
 /*
  * File: /src/preload.ts
  * Project: @platform/electron
- * File Created: 21-12-2024 02:26:39
+ * File Created: 22-12-2024 05:40:42
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -21,10 +21,36 @@
 
 import { contextBridge, ipcRenderer } from "electron";
 
+// Expose electron process info to renderer
+contextBridge.exposeInMainWorld("electronProcess", {
+  env: { ...process.env },
+  platform: process.platform,
+  versions: { ...process.versions },
+  type: "renderer",
+  isElectron: true,
+});
+
+// Expose path utilities
+contextBridge.exposeInMainWorld("paths", {
+  getAppPath: () => ipcRenderer.invoke("getAppPath"),
+  getPath: (name: string) => ipcRenderer.invoke("getPath", name),
+  join: (...args: string[]) => ipcRenderer.invoke("joinPath", ...args),
+  resolve: (...args: string[]) => ipcRenderer.invoke("resolvePath", ...args),
+  dirname: (path: string) => ipcRenderer.invoke("dirname", path),
+});
+
 // Expose IPC for communication
-contextBridge.exposeInMainWorld("ipc", {
-  send: (...args: any[]) => ipcRenderer.send(...args),
-  on: (channel: string, func: Function) => {
-    ipcRenderer.on(channel, (event, ...args) => func(...args));
+contextBridge.exposeInMainWorld("electron", {
+  ipcRenderer: {
+    send: (...args: unknown[]) =>
+      ipcRenderer.send(...(args as [string, ...unknown[]])),
+    on: (channel: string, func: (...args: unknown[]) => void) => {
+      ipcRenderer.on(channel, (_event, ...args) => func(...args));
+    },
+    invoke: (channel: string, ...args: unknown[]) =>
+      ipcRenderer.invoke(channel, ...args),
+    removeAllListeners: (channel: string) => {
+      ipcRenderer.removeAllListeners(channel);
+    },
   },
 });

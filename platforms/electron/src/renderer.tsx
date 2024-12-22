@@ -59,6 +59,17 @@ console.log("Electron detection:", {
 
 function App() {
   const [scheme] = useColorScheme();
+  const keycloakEnabled = config.get("KEYCLOAK_ENABLED") === "1";
+  const keycloakConfig = keycloakEnabled
+    ? {
+        baseUrl: config.get("KEYCLOAK_BASE_URL"),
+        clientId: config.get("KEYCLOAK_CLIENT_ID"),
+        messageHandlerKeys: [],
+        publicClientId: config.get("KEYCLOAK_PUBLIC_CLIENT_ID"),
+        realm: config.get("KEYCLOAK_REALM")!,
+      }
+    : undefined;
+
   return (
     <GlobalProvider
       disableInjectCSS
@@ -66,13 +77,7 @@ function App() {
       theme={{
         root: scheme,
       }}
-      keycloak={{
-        baseUrl: config.get("KEYCLOAK_BASE_URL"),
-        clientId: config.get("KEYCLOAK_CLIENT_ID"),
-        messageHandlerKeys: [],
-        publicClientId: config.get("KEYCLOAK_PUBLIC_CLIENT_ID"),
-        realm: config.get("KEYCLOAK_REALM")!,
-      }}
+      keycloak={keycloakConfig}
     >
       <BrowserRouter>
         <RootLayout />
@@ -83,9 +88,7 @@ function App() {
 
 const root = createRoot(document.getElementById("root")!);
 root.render(
-  <StrictMode>
-    <SchemeProvider>
-      <App />
-    </SchemeProvider>
-  </StrictMode>,
+  <SchemeProvider>
+    <App />
+  </SchemeProvider>,
 );
