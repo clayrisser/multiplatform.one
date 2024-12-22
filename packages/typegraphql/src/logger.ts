@@ -44,11 +44,11 @@ import { writeFileSync } from "node:fs";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import path from "node:path";
 import {
-  type Logger as BaseLogger,
   type LoggerOptions as BaseLoggerOptions,
+  type ILogObj,
+  type TsLogger,
   logger as baseLogger,
 } from "multiplatform.one";
-import type { ILogObj } from "tslog";
 import { getOpenTelemetryContext } from "./logger/context";
 import type { Ctx } from "./types";
 import { generateRequestId } from "./utils";
@@ -56,7 +56,7 @@ import { generateRequestId } from "./utils";
 export const LOGGER = "LOGGER";
 export const LOGGER_OPTIONS = "LOGGER_OPTIONS";
 
-let _logger: BaseLogger | undefined;
+let _logger: TsLogger | undefined;
 
 export type LogLevel = "trace" | "debug" | "info" | "warn" | "error" | "fatal";
 
@@ -69,7 +69,7 @@ export interface LoggerOptions extends Omit<BaseLoggerOptions, "level"> {
 }
 
 export class Logger {
-  private logger?: BaseLogger;
+  private logger?: TsLogger;
   private readonly loggerContext: Record<string, any>;
 
   constructor(
@@ -188,7 +188,7 @@ export class Logger {
   }
 }
 
-function createLogger(options: LoggerOptions): BaseLogger {
+function createLogger(options: LoggerOptions): TsLogger {
   if (_logger) return _logger;
   _logger = baseLogger.getSubLogger({
     name: "typegraphql",
@@ -233,7 +233,7 @@ export function createHttpLogger(options: HttpLoggerOptions = {}) {
     genReqId: generateRequestId,
     customProps:
       options.customProps ||
-      ((req: IncomingMessage, _res: ServerResponse<IncomingMessage>) => ({
+      ((req: IncomingMessage) => ({
         httpVersion: req.httpVersion,
         method: req.method,
         remoteAddress: req.socket.remoteAddress,

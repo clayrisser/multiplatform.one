@@ -1,7 +1,7 @@
-/**
+/*
  * File: /src/logger/types.ts
  * Project: multiplatform.one
- * File Created: 22-12-2024 06:00:45
+ * File Created: 22-12-2024 06:02:42
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,54 +19,39 @@
  * limitations under the License.
  */
 
-import type { ILogObj, ISettingsParam } from "tslog";
+import type { ILogObj, ILogObjMeta, ISettingsParam, Logger } from "tslog";
+import type { PlatformName } from "../platform";
 
-export type LogLevel = "trace" | "debug" | "info" | "warn" | "error" | "fatal";
+export type LogLevel =
+  | "silly"
+  | "trace"
+  | "debug"
+  | "info"
+  | "warn"
+  | "error"
+  | "fatal";
 
-export interface LogMessage {
+export enum LogSource {
+  Main = "main",
+  Renderer = "renderer",
+  Default = "default",
+}
+
+export interface LogPayload {
+  args?: unknown[];
   level: LogLevel;
-  args: unknown[];
+  message: unknown;
+  platform: PlatformName;
   timestamp: string;
-  source?: string;
 }
 
-export interface Logger {
-  trace(message: string | Record<string, any>, ...args: string[]): void;
-  debug(message: string | Record<string, any>, ...args: string[]): void;
-  info(message: string | Record<string, any>, ...args: string[]): void;
-  warn(
-    message: Record<string, any>,
-    error?: string | Error | unknown,
-    ...args: string[]
-  ): void;
-  warn(
-    message: string | Error | unknown,
-    error?: string,
-    ...args: string[]
-  ): void;
-  error(
-    message: Record<string, any>,
-    error?: string | Error | unknown,
-    ...args: string[]
-  ): void;
-  error(
-    message: string | Error | unknown,
-    error?: string,
-    ...args: string[]
-  ): void;
-  fatal(
-    message: Record<string, any>,
-    error?: string | Error | unknown,
-    ...args: string[]
-  ): void;
-  fatal(
-    message: string | Error | unknown,
-    error?: string,
-    ...args: string[]
-  ): void;
-  log(message: string | Record<string, any>, ...args: string[]): void;
-  child(options: LoggerOptions): Logger;
-  getSubLogger(options: LoggerOptions): Logger;
+export interface LoggerMetadata {
+  platform?: PlatformName;
 }
 
-export type LoggerOptions = ISettingsParam<ILogObj>;
+export interface LoggerOptions extends ISettingsParam<ILogObj> {
+  metadata?: LoggerMetadata;
+}
+
+export type { ILogObj, ILogObjMeta };
+export type TsLogger = Logger<ILogObj>;

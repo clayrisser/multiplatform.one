@@ -19,203 +19,38 @@
  * limitations under the License.
  */
 
-import type { Logger as TsLogger } from "tslog";
-import type { ILogObj, ISettingsParam } from "tslog";
+import { platform } from "../platform";
 import { BaseLogger } from "./base";
-import type { Logger, LoggerOptions } from "./types";
+import { IPCTransport } from "./transport/ipc";
+import type { LogTransport } from "./transport/types";
+import type { LoggerOptions } from "./types";
 
-const LOG_CHANNEL = "electron-log";
-const isMain = typeof process !== "undefined" && process?.type === "browser";
-const isRenderer = typeof window !== "undefined";
-
-interface LogMessage {
-  logLevel?: string;
-  argumentsArray?: unknown[];
-}
-
-type LogArg = string | Record<string, unknown>;
-
-class RendererLogger extends BaseLogger {
-  private ipcRenderer: any;
-
-  constructor() {
+export class Logger extends BaseLogger {
+  constructor(config: LoggerOptions | string = {}) {
+    const metadata = {
+      platform: platform.preciseName,
+    };
     super({
-      type: "pretty",
-      prettyLogTemplate:
-        "{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}} {{logLevelName}} [{{name}}]",
-      prettyLogTimeZone: "local",
-      name: "electron-renderer",
+      name: metadata.platform,
+      ...(typeof config === "string" ? { name: config } : config),
+      metadata,
     });
-    this.ipcRenderer = (window as any).electron?.ipcRenderer;
   }
 
-  private log(level: string, ...args: unknown[]) {
-    // Use the parent's tsLogger for browser console
-    super[level as keyof BaseLogger]?.(...args);
-
-    if (this.ipcRenderer) {
-      this.ipcRenderer.send(LOG_CHANNEL, {
-        logLevel: level,
-        argumentsArray: args,
-      });
-    }
+  protected createTransport(): LogTransport | undefined {
+    if (platform.isElectronRenderer) return new IPCTransport();
   }
 
-  trace(...args: unknown[]) {
-    this.log("trace", ...args);
-  }
-  debug(...args: unknown[]) {
-    this.log("debug", ...args);
-  }
-  info(...args: unknown[]) {
-    this.log("info", ...args);
-  }
-  warn(...args: unknown[]) {
-    this.log("warn", ...args);
-  }
-  error(...args: unknown[]) {
-    this.log("error", ...args);
-  }
-  fatal(...args: unknown[]) {
-    this.log("fatal", ...args);
-  }
-}
-
-export class ElectronLogger extends BaseLogger {
-  private ipcInitialized = false;
-  private rendererLogger: RendererLogger | null = null;
-
-  constructor(options: LoggerOptions = {}) {
-    super({
-      ...options,
-      type: options.type || "pretty",
-      prettyLogTemplate:
-        "{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}} {{logLevelName}} [{{name}}] ",
-      prettyLogTimeZone: "local",
-      prettyLogStyles: true,
+  protected createChildLogger(childLogger: Logger): Logger {
+    const child = new Logger({
+      name: childLogger.settings.name,
+      metadata: this.metadata,
     });
-    this.initializeIpc();
-  }
-
-  private initializeIpc() {
-    if (this.ipcInitialized) return;
-    this.ipcInitialized = true;
-
-    if (isMain) {
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const { ipcMain } = require("electron");
-        ipcMain?.on(LOG_CHANNEL, (_, logObject: LogMessage) => {
-          const level = (logObject.logLevel?.toString() ||
-            "info") as keyof Logger;
-          const args = logObject.argumentsArray || [];
-          if (args[0]) {
-            const message = args[0] as LogArg;
-            const logMessage =
-              typeof message === "object" && message !== null
-                ? { ...message, source: "renderer" }
-                : String(message);
-            const restArgs = args.slice(1).map(String);
-            this[level](logMessage, ...(restArgs as [string, ...string[]]));
-          }
-        });
-      } catch (error) {
-        console.warn("Failed to set up IPC listener:", error);
-      }
-    } else if (isRenderer) {
-      this.rendererLogger = new RendererLogger();
-    }
-  }
-
-  protected createChildLogger(childLogger: TsLogger<ILogObj>): Logger {
-    const child = new ElectronLogger();
-    child.tsLogger = childLogger;
     return child;
   }
-
-  public trace(message: LogArg, ...args: string[]) {
-    if (isRenderer && this.rendererLogger) {
-      this.rendererLogger.trace(message, ...args);
-    } else if (isMain) {
-      const logMessage =
-        typeof message === "object" && message !== null
-          ? { ...message, source: "main" }
-          : String(message);
-      super.trace(logMessage, ...args);
-    }
-  }
-
-  public debug(message: LogArg, ...args: string[]) {
-    if (isRenderer && this.rendererLogger) {
-      this.rendererLogger.debug(message, ...args);
-    } else if (isMain) {
-      const logMessage =
-        typeof message === "object" && message !== null
-          ? { ...message, source: "main" }
-          : String(message);
-      super.debug(logMessage, ...args);
-    }
-  }
-
-  public info(message: LogArg, ...args: string[]) {
-    if (isRenderer && this.rendererLogger) {
-      this.rendererLogger.info(message, ...args);
-    } else if (isMain) {
-      const logMessage =
-        typeof message === "object" && message !== null
-          ? { ...message, source: "main" }
-          : String(message);
-      super.info(logMessage, ...args);
-    }
-  }
-
-  public warn(message: LogArg, ...args: string[]) {
-    if (isRenderer && this.rendererLogger) {
-      this.rendererLogger.warn(message, ...args);
-    } else if (isMain) {
-      const logMessage =
-        typeof message === "object" && message !== null
-          ? { ...message, source: "main" }
-          : String(message);
-      super.warn(logMessage, ...args);
-    }
-  }
-
-  public error(message: LogArg, ...args: string[]) {
-    if (isRenderer && this.rendererLogger) {
-      this.rendererLogger.error(message, ...args);
-    } else if (isMain) {
-      const logMessage =
-        typeof message === "object" && message !== null
-          ? { ...message, source: "main" }
-          : String(message);
-      super.error(logMessage, ...args);
-    }
-  }
-
-  public fatal(message: LogArg, ...args: string[]) {
-    if (isRenderer && this.rendererLogger) {
-      this.rendererLogger.fatal(message, ...args);
-    } else if (isMain) {
-      const logMessage =
-        typeof message === "object" && message !== null
-          ? { ...message, source: "main" }
-          : String(message);
-      super.fatal(logMessage, ...args);
-    }
-  }
 }
 
-// Create and export a single logger instance
-export const logger = new ElectronLogger({
-  name: "electron",
-  type: "pretty",
-  minLevel: 0,
-  prettyLogTemplate:
-    "{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}} {{logLevelName}} [{{name}}] ",
-  prettyLogTimeZone: "local",
-  prettyLogStyles: true,
-});
+export const logger = new Logger();
 
 export * from "./types";
 export * from "./base";

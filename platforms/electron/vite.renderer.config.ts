@@ -69,7 +69,6 @@ export default defineConfig((async () => {
     define: {
       __DEV__: process.env.NODE_ENV !== "production",
       global: "globalThis",
-      IS_ELECTRON: true,
       process: JSON.stringify({
         env: {
           NODE_ENV: process.env.NODE_ENV,

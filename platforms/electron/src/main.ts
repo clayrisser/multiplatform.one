@@ -21,26 +21,11 @@
 
 import { dirname, join, resolve } from "node:path";
 import { BrowserWindow, app, ipcMain, session } from "electron";
-import { logger } from "multiplatform.one";
-
-const LOG_CHANNEL = "electron-log";
+import { type LogPayload, Logger, logger } from "multiplatform.one";
+import { platform } from "multiplatform.one";
 
 // Disable GPU acceleration in development container
 app.disableHardwareAcceleration();
-
-// Initialize logger for main process
-logger.info("Starting Electron app...");
-
-// Test log from main process
-logger.info("Test log from main process", JSON.stringify({ context: "main" }));
-
-// Test all log levels from main process
-logger.trace("Test trace log from main process", { context: "main" });
-logger.debug("Test debug log from main process", { context: "main" });
-logger.info("Test info log from main process", { context: "main" });
-logger.warn("Test warn log from main process", { context: "main" });
-logger.error("Test error log from main process", { context: "main" });
-logger.fatal("Test fatal log from main process", { context: "main" });
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -49,31 +34,26 @@ if (require("electron-squirrel-startup")) {
 
 // Set up IPC handlers for path operations
 ipcMain.handle("getAppPath", () => app.getAppPath());
-ipcMain.handle("getPath", (_, name: string) => app.getPath(name));
-ipcMain.handle("joinPath", (_, ...args: string[]) => join(...args));
-ipcMain.handle("resolvePath", (_, ...args: string[]) => resolve(...args));
+ipcMain.handle("getPath", (_, name: Parameters<typeof app.getPath>[0]) =>
+  app.getPath(name),
+);
+ipcMain.handle("joinPath", (_, ...pathSegments: string[]) => {
+  return join(...(pathSegments as [string, ...string[]]));
+});
+ipcMain.handle("resolvePath", (_, ...pathSegments: string[]) => {
+  return resolve(...(pathSegments as [string, ...string[]]));
+});
 ipcMain.handle("dirname", (_, path: string) => dirname(path));
 
-// Set up IPC handler for logging
 ipcMain.on(
-  LOG_CHANNEL,
-  (_, logObject: { logLevel: string; argumentsArray: unknown[] }) => {
-    const { logLevel, argumentsArray } = logObject;
-    const level = (logLevel || "info") as keyof typeof logger;
-    const [message, ...args] = argumentsArray;
-
-    if (typeof message === "object" && message !== null) {
-      logger[level]({ ...message, source: "renderer" }, ...args);
-    } else {
-      logger[level](String(message), ...args.map(String));
-    }
+  "multiplatform.one/logger",
+  (_, { level, message, platform, args = [] }: LogPayload) => {
+    const rendererLogger = new Logger(platform);
+    (rendererLogger[level] as (...args: unknown[]) => void)(message, ...args);
   },
 );
 
-const createWindow = () => {
-  logger.debug("Creating main window...");
-
-  // Set up security policies
+function createWindow() {
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {
@@ -90,8 +70,6 @@ const createWindow = () => {
       },
     });
   });
-
-  // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -103,47 +81,41 @@ const createWindow = () => {
       webSecurity: true,
     },
   });
-
-  // and load the index.html of the app.
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
-    logger.debug(`Loading dev server URL: ${MAIN_WINDOW_VITE_DEV_SERVER_URL}`);
-  } else {
-    const filePath = join(
-      __dirname,
-      `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`,
-    );
-    mainWindow.loadFile(filePath);
-    logger.debug(`Loading file: ${filePath}`);
+  try {
+    if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+      mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
+      logger.debug(
+        `Loading dev server URL: ${MAIN_WINDOW_VITE_DEV_SERVER_URL}`,
+      );
+    } else {
+      const filePath = join(
+        __dirname,
+        `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`,
+      );
+      mainWindow.loadFile(filePath);
+      logger.debug(`Loading file: ${filePath}`);
+    }
+  } catch (err) {
+    logger.error("Failed to load window", err);
   }
-
-  // Open the DevTools in development mode.
   if (process.env.NODE_ENV === "development") {
     mainWindow.webContents.openDevTools();
     logger.debug("DevTools opened in development mode");
   }
-};
+}
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
 app.on("ready", () => {
-  logger.info("App is ready, creating window...");
   createWindow();
 });
 
-// Quit when all windows are closed, except on macOS.
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
-    logger.info("All windows closed, quitting app...");
     app.quit();
   }
 });
 
 app.on("activate", () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    logger.info("App activated, creating new window...");
     createWindow();
   }
 });

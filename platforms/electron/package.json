@@ -31,7 +31,6 @@
     "react-router-dom": "^6.28.0",
     "stream-browserify": "^3.0.0",
     "tamagui": "^1.120.1",
-    "tslog": "^4.9.3",
     "ui": "workspace:*"
   },
   "devDependencies": {

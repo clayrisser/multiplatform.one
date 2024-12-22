@@ -50,7 +50,7 @@ export const {
   isClient,
   isElectron,
   isElectronMain,
-  isElectronRender,
+  isElectronRenderer,
   isExpo,
   isFirefox,
   isFirefoxExtension,

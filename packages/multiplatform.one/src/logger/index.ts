@@ -19,21 +19,32 @@
  * limitations under the License.
  */
 
-import type { ILogObj } from "tslog";
-import type { Logger as TsLogger } from "tslog";
+import { platform } from "../platform";
 import { BaseLogger } from "./base";
-import type { Logger, LoggerOptions } from "./types";
+import type { LoggerOptions } from "./types";
 
-export class DefaultLogger extends BaseLogger {
-  protected createChildLogger(childLogger: TsLogger<ILogObj>): Logger {
-    const child = new DefaultLogger();
-    child.tsLogger = childLogger;
+export class Logger extends BaseLogger {
+  constructor(config: LoggerOptions | string = {}) {
+    const metadata = {
+      platform: platform.preciseName,
+    };
+    super({
+      name: metadata.platform,
+      ...(typeof config === "string" ? { name: config } : config),
+      metadata,
+    });
+  }
+
+  protected createChildLogger(childLogger: Logger): Logger {
+    const child = new Logger({
+      metadata: this.metadata,
+      name: childLogger.settings.name,
+    });
     return child;
   }
 }
 
-// Create and export a default logger instance
-export const logger = new DefaultLogger({
+export const logger = new Logger({
   name: "default",
   type: "pretty",
   minLevel: process.env.NODE_ENV === "development" ? 0 : 3,

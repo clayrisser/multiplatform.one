@@ -19,163 +19,163 @@
  * limitations under the License.
  */
 
+import type { ILogObj, ILogObjMeta, ISettingsParam } from "tslog";
 import { Logger as TsLogger } from "tslog";
-import type { ILogObj, ISettingsParam } from "tslog";
-import type { LogLevel, LogMessage, Logger, LoggerOptions } from "./types";
+import { platform } from "../platform";
+import type { LogTransport } from "./transport/types";
+import type { LogLevel, LoggerMetadata, LoggerOptions } from "./types";
 
-export abstract class BaseLogger implements Logger {
-  protected tsLogger: TsLogger<ILogObj>;
+type LogResult = (ILogObj & ILogObjMeta) | undefined;
 
-  constructor(options: LoggerOptions = {}) {
-    const defaultSettings: ISettingsParam<ILogObj> = {
-      type: "pretty",
-      name: options.name || "default",
+const logger = console;
+
+export const defaultLoggerConfig: Omit<LoggerOptions, "metadata"> = {
+  type: "pretty",
+  prettyLogTemplate:
+    "{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}} {{logLevelName}} [{{name}}] ",
+  prettyLogTimeZone: "local",
+  prettyLogStyles: {},
+  minLevel: 0,
+  hideLogPositionForProduction: true,
+} as const;
+
+export abstract class BaseLogger extends TsLogger<ILogObj> {
+  private static readonly logLevels = [
+    "silly",
+    "trace",
+    "debug",
+    "info",
+    "warn",
+    "error",
+    "fatal",
+  ] as const satisfies readonly LogLevel[];
+
+  protected transport?: LogTransport;
+  protected metadata: LoggerMetadata;
+
+  constructor(config: LoggerOptions | string = {}) {
+    const { metadata, ...tslogConfig } =
+      typeof config === "string" ? { name: config } : config;
+    super({
+      ...defaultLoggerConfig,
       prettyLogTemplate:
-        "{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}} {{logLevelName}} [{{name}}] ",
-      prettyLogTimeZone: "local",
-      prettyLogStyles: true,
-      minLevel: 0,
-    };
-
-    this.tsLogger = new TsLogger({
-      ...defaultSettings,
-      ...options,
+        platform.isWindowDefined || platform.isElectronRenderer
+          ? "[{{name}}] "
+          : "{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}} {{logLevelName}} [{{name}}] ",
+      hideLogPositionForProduction: true,
+      stylePrettyLogs: !(
+        platform.isWindowDefined || platform.isElectronRenderer
+      ),
+      ...tslogConfig,
     });
+    this.metadata = metadata || {};
+    this.transport = this.createTransport?.();
   }
 
-  protected createLogMessage(level: LogLevel, args: unknown[]): LogMessage {
-    return {
-      level,
-      args,
-      timestamp: new Date().toISOString(),
-      source: this.tsLogger.settings.name,
-    };
+  protected createTransport?(): LogTransport | undefined;
+  protected abstract createChildLogger(
+    childLogger: TsLogger<ILogObj>,
+  ): TsLogger<ILogObj>;
+
+  public getSubLogger(
+    settings: ISettingsParam<ILogObj> = {},
+  ): TsLogger<ILogObj> {
+    return this.createChildLogger(super.getSubLogger(settings));
   }
 
-  protected getError(
-    message: string | Record<string, any> | Error | unknown,
-    error?: string | Error | unknown,
-    ...args: string[]
-  ): Error & Record<string, any> {
-    let err: Error & Record<string, any> =
-      typeof message !== "object"
-        ? new Error([message, ...(error ? [error] : []), ...args].join(" "))
-        : (message as Error);
-    if (typeof err === "object" && !(err instanceof Error) && error) {
-      if (typeof error !== "object")
-        error = new Error([error, ...args].join(" "));
-      Object.entries(err as Record<string, any>).forEach(([key, value]) => {
-        (error as Record<string, any>)[key] = value;
-      });
-      err = error as Error & Record<string, any>;
+  protected logMessage(level: LogLevel, ...args: unknown[]): LogResult {
+    let result: LogResult;
+    if (platform.isWindowDefined || platform.isElectronRenderer) {
+      switch (this.getConsoleMethod(level)) {
+        case "trace":
+          logger.trace(...args);
+          break;
+        case "debug":
+          logger.debug(...args);
+          break;
+        case "info":
+          logger.info(...args);
+          break;
+        case "warn":
+          logger.warn(...args);
+          break;
+        case "error":
+          logger.error(...args);
+          break;
+        default:
+          logger.log(...args);
+      }
+    } else {
+      result = super[level](...args);
     }
-    err.time = new Date();
-    return err;
+    if (this.transport) {
+      this.transport.send({
+        level,
+        message: args[0],
+        args: args.slice(1),
+        platform: platform.preciseName,
+        timestamp: new Date().toISOString(),
+      });
+    }
+    return result;
   }
 
-  public trace(message: string | Record<string, any>, ...args: string[]) {
-    this.tsLogger.trace(
-      {
-        ...(typeof message === "object" ? message : {}),
-        time: new Date(),
-      },
-      ...(typeof message !== "object" ? [[message, ...args].join(" ")] : []),
-    );
+  private getConsoleMethod(level: LogLevel): keyof Console {
+    switch (level) {
+      case "silly":
+      case "trace":
+        return "trace";
+      case "debug":
+        return "debug";
+      case "info":
+        return "info";
+      case "warn":
+        return "warn";
+      case "error":
+      case "fatal":
+        return "error";
+      default:
+        return "log";
+    }
   }
 
-  public debug(message: string | Record<string, any>, ...args: string[]) {
-    this.tsLogger.debug(
-      {
-        ...(typeof message === "object" ? message : {}),
-        time: new Date(),
-      },
-      ...(typeof message !== "object" ? [[message, ...args].join(" ")] : []),
-    );
+  private isLogLevel(value: string): value is LogLevel {
+    return BaseLogger.logLevels.includes(value as LogLevel);
   }
 
-  public info(message: string | Record<string, any>, ...args: string[]) {
-    this.tsLogger.info(
-      {
-        ...(typeof message === "object" ? message : {}),
-        time: new Date(),
-      },
-      ...(typeof message !== "object" ? [[message, ...args].join(" ")] : []),
-    );
+  public silly(...args: unknown[]): LogResult {
+    return this.logMessage("silly", ...args);
   }
 
-  public warn(
-    message: Record<string, any>,
-    error?: string | Error | unknown,
-    ...args: string[]
-  ): void;
-  public warn(
-    message: string | Error | unknown,
-    error?: string,
-    ...args: string[]
-  ): void;
-  public warn(
-    message: string | Record<string, any> | Error | unknown,
-    error?: string | Error | unknown,
-    ...args: string[]
-  ) {
-    const err = this.getError(message, error, ...args);
-    this.tsLogger.warn(err);
+  public trace(...args: unknown[]): LogResult {
+    return this.logMessage("trace", ...args);
   }
 
-  public error(
-    message: Record<string, any>,
-    error?: string | Error | unknown,
-    ...args: string[]
-  ): void;
-  public error(
-    message: string | Error | unknown,
-    error?: string,
-    ...args: string[]
-  ): void;
-  public error(
-    message: string | Record<string, any> | Error | unknown,
-    error?: string | Error | unknown,
-    ...args: string[]
-  ) {
-    const err = this.getError(message, error, ...args);
-    this.tsLogger.error(err);
+  public debug(...args: unknown[]): LogResult {
+    return this.logMessage("debug", ...args);
   }
 
-  public fatal(
-    message: Record<string, any>,
-    error?: string | Error | unknown,
-    ...args: string[]
-  ): void;
-  public fatal(
-    message: string | Error | unknown,
-    error?: string,
-    ...args: string[]
-  ): void;
-  public fatal(
-    message: string | Record<string, any> | Error | unknown,
-    error?: string | Error | unknown,
-    ...args: string[]
-  ) {
-    const err = this.getError(message, error, ...args);
-    this.tsLogger.fatal(err);
+  public info(...args: unknown[]): LogResult {
+    return this.logMessage("info", ...args);
   }
 
-  public log(message: string | Record<string, any>, ...args: string[]) {
-    this.info(message, ...args);
+  public warn(...args: unknown[]): LogResult {
+    return this.logMessage("warn", ...args);
   }
 
-  public child(options: LoggerOptions): Logger {
-    const childLogger = this.tsLogger.getSubLogger({
-      ...options,
-      type: options.type || this.tsLogger.settings.type,
-      minLevel: options.minLevel ?? this.tsLogger.settings.minLevel,
-    });
-    return this.createChildLogger(childLogger);
+  public error(...args: unknown[]): LogResult {
+    return this.logMessage("error", ...args);
   }
 
-  public getSubLogger(options: LoggerOptions): Logger {
-    return this.child(options);
+  public fatal(...args: unknown[]): LogResult {
+    return this.logMessage("fatal", ...args);
   }
 
-  protected abstract createChildLogger(childLogger: TsLogger<ILogObj>): Logger;
+  public log(...args: unknown[]): LogResult {
+    const [first, ...rest] = args;
+    const level =
+      typeof first === "string" && this.isLogLevel(first) ? first : "info";
+    const logArgs = level === first && args.length > 1 ? rest : args;
+    return this.logMessage(level, ...logArgs);
+  }
 }

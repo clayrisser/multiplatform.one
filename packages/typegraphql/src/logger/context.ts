@@ -20,14 +20,14 @@
  */
 
 import { context, trace } from "@opentelemetry/api";
-import type { Logger } from "multiplatform.one";
+import type { TsLogger } from "multiplatform.one";
 
 export function createContextLogger(
-  logger: Logger,
+  logger: TsLogger,
   context: Record<string, any>,
-): Logger {
+): TsLogger {
   const telemetryContext = getOpenTelemetryContext();
-  return logger.child({
+  return logger.getSubLogger({
     ...context,
     ...telemetryContext,
   });

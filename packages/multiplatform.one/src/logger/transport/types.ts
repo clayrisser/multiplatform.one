@@ -1,7 +1,7 @@
 /*
- * File: /src/platform/index.android.ts
+ * File: /src/logger/transport/types.ts
  * Project: multiplatform.one
- * File Created: 19-11-2024 20:26:31
+ * File Created: 22-12-2024 08:46:30
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,18 +19,9 @@
  * limitations under the License.
  */
 
-import {
-  type Platform,
-  getBroadName,
-  getPreciseName,
-  platformBase,
-} from "./platformBase";
+import type { LogPayload } from "../types";
 
-export const platform: Platform = {
-  ...platformBase,
-  isAndroid: true,
-  isExpo: true,
-  isNative: true,
-};
-platform.preciseName = getPreciseName(platform);
-platform.broadName = getBroadName(platform);
+export interface LogTransport {
+  send(payload: LogPayload): void | Promise<void>;
+  destroy?(): void;
+}
