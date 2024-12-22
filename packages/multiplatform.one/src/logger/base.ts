@@ -31,9 +31,10 @@ export abstract class BaseLogger implements Logger {
       type: "pretty",
       name: options.name || "default",
       prettyLogTemplate:
-        "{{yyyy}}.{{mm}}.{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}} {{logLevelName}} [{{name}}]",
+        "{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}} {{logLevelName}} [{{name}}] ",
       prettyLogTimeZone: "local",
-      minLevel: process.env.NODE_ENV === "development" ? 0 : 3,
+      prettyLogStyles: true,
+      minLevel: 0,
     };
 
     this.tsLogger = new TsLogger({

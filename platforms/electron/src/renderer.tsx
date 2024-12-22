@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import React, { StrictMode } from "react";
+import React, { StrictMode, useEffect } from "react";
 import "../tamagui.css";
 import "@tamagui/core/reset.css";
 import { SchemeProvider, useColorScheme } from "@vxrn/color-scheme";
@@ -28,7 +28,7 @@ import { resources } from "app/i18n/resources";
 import { GlobalProvider } from "app/providers";
 import { Layout as RootLayout } from "app/screens/_layout";
 import i18n from "i18next";
-import { config, isElectron } from "multiplatform.one";
+import { config, isElectron, logger } from "multiplatform.one";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { BrowserRouter } from "react-router-dom";
@@ -60,6 +60,25 @@ console.log("Electron detection:", {
 function App() {
   const [scheme] = useColorScheme();
   const keycloakEnabled = config.get("KEYCLOAK_ENABLED") === "1";
+
+  useEffect(() => {
+    // Test all log levels from renderer process
+    logger.trace("Test trace log from renderer process", {
+      context: "renderer",
+    });
+    logger.debug("Test debug log from renderer process", {
+      context: "renderer",
+    });
+    logger.info("Test info log from renderer process", { context: "renderer" });
+    logger.warn("Test warn log from renderer process", { context: "renderer" });
+    logger.error("Test error log from renderer process", {
+      context: "renderer",
+    });
+    logger.fatal("Test fatal log from renderer process", {
+      context: "renderer",
+    });
+  }, []); // Empty dependency array means this runs once on mount
+
   const keycloakConfig = keycloakEnabled
     ? {
         baseUrl: config.get("KEYCLOAK_BASE_URL"),

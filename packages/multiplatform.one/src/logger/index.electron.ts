@@ -28,8 +28,6 @@ const LOG_CHANNEL = "electron-log";
 const isMain = typeof process !== "undefined" && process?.type === "browser";
 const isRenderer = typeof window !== "undefined";
 
-console.log("LOADING ELECTRON LOGGER");
-
 interface LogMessage {
   logLevel?: string;
   argumentsArray?: unknown[];
@@ -37,14 +35,24 @@ interface LogMessage {
 
 type LogArg = string | Record<string, unknown>;
 
-class RendererLogger {
+class RendererLogger extends BaseLogger {
   private ipcRenderer: any;
 
   constructor() {
+    super({
+      type: "pretty",
+      prettyLogTemplate:
+        "{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}} {{logLevelName}} [{{name}}]",
+      prettyLogTimeZone: "local",
+      name: "electron-renderer",
+    });
     this.ipcRenderer = (window as any).electron?.ipcRenderer;
   }
 
   private log(level: string, ...args: unknown[]) {
+    // Use the parent's tsLogger for browser console
+    super[level as keyof BaseLogger]?.(...args);
+
     if (this.ipcRenderer) {
       this.ipcRenderer.send(LOG_CHANNEL, {
         logLevel: level,
@@ -82,8 +90,9 @@ export class ElectronLogger extends BaseLogger {
       ...options,
       type: options.type || "pretty",
       prettyLogTemplate:
-        "{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}} {{logLevelName}} [{{name}}]",
+        "{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}} {{logLevelName}} [{{name}}] ",
       prettyLogTimeZone: "local",
+      prettyLogStyles: true,
     });
     this.initializeIpc();
   }
@@ -201,7 +210,11 @@ export class ElectronLogger extends BaseLogger {
 export const logger = new ElectronLogger({
   name: "electron",
   type: "pretty",
-  minLevel: process.env.NODE_ENV === "development" ? 0 : 3,
+  minLevel: 0,
+  prettyLogTemplate:
+    "{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}} {{logLevelName}} [{{name}}] ",
+  prettyLogTimeZone: "local",
+  prettyLogStyles: true,
 });
 
 export * from "./types";

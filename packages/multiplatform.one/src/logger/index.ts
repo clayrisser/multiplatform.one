@@ -24,8 +24,6 @@ import type { Logger as TsLogger } from "tslog";
 import { BaseLogger } from "./base";
 import type { Logger, LoggerOptions } from "./types";
 
-console.log("LOADING DEFAULT LOGGER");
-
 export class DefaultLogger extends BaseLogger {
   protected createChildLogger(childLogger: TsLogger<ILogObj>): Logger {
     const child = new DefaultLogger();

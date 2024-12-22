@@ -31,6 +31,17 @@ app.disableHardwareAcceleration();
 // Initialize logger for main process
 logger.info("Starting Electron app...");
 
+// Test log from main process
+logger.info("Test log from main process", JSON.stringify({ context: "main" }));
+
+// Test all log levels from main process
+logger.trace("Test trace log from main process", { context: "main" });
+logger.debug("Test debug log from main process", { context: "main" });
+logger.info("Test info log from main process", { context: "main" });
+logger.warn("Test warn log from main process", { context: "main" });
+logger.error("Test error log from main process", { context: "main" });
+logger.fatal("Test fatal log from main process", { context: "main" });
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
   app.quit();
