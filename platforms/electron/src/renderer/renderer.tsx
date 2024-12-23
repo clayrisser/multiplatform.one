@@ -22,7 +22,7 @@
 import { isElectron } from "multiplatform.one";
 import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "../App";
+import App from "../Router";
 import "../index.css";
 
 console.log("Electron detection:", {

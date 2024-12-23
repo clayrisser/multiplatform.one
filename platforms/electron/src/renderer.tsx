@@ -19,21 +19,18 @@
  * limitations under the License.
  */
 
-import { useEffect } from "react";
 import "../tamagui.css";
 import "@tamagui/core/reset.css";
-import { SchemeProvider, useColorScheme } from "@vxrn/color-scheme";
 import { languages, namespaces } from "app/i18n";
 import { resources } from "app/i18n/resources";
 import { GlobalProvider } from "app/providers";
-import { Layout as RootLayout } from "app/screens/_layout";
 import i18n from "i18next";
-import { config, isElectron, logger } from "multiplatform.one";
-import { platform } from "multiplatform.one";
+import { config } from "multiplatform.one";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { BrowserRouter } from "react-router-dom";
 import tamaguiConfig from "../tamagui.config";
+import { Router } from "./Router";
 
 i18n
   .use(initReactI18next)
@@ -50,46 +47,27 @@ i18n
   .catch(console.error);
 i18n.changeLanguage(config.get("I18N_DEFAULT_LANGUAGE", "en"));
 
-console.log("Electron detection:", {
-  isElectron,
-  versions: (window as any).versions,
-  process: (window as any).process,
-  userAgent: window.navigator.userAgent,
-  ipc: (window as any).ipc,
-});
-
 function App() {
-  const [scheme] = useColorScheme();
-  const keycloakEnabled = config.get("KEYCLOAK_ENABLED") === "1";
-  const keycloakConfig = keycloakEnabled
-    ? {
-        baseUrl: config.get("KEYCLOAK_BASE_URL"),
-        clientId: config.get("KEYCLOAK_CLIENT_ID"),
-        messageHandlerKeys: [],
-        publicClientId: config.get("KEYCLOAK_PUBLIC_CLIENT_ID"),
-        realm: config.get("KEYCLOAK_REALM")!,
-      }
-    : undefined;
-
   return (
     <GlobalProvider
       disableInjectCSS
       tamaguiConfig={tamaguiConfig}
-      theme={{
-        root: scheme,
+      // theme={{
+      //   root: scheme,
+      // }}
+      keycloak={{
+        baseUrl: config.get("KEYCLOAK_BASE_URL"),
+        clientId: config.get("KEYCLOAK_CLIENT_ID"),
+        publicClientId: config.get("KEYCLOAK_PUBLIC_CLIENT_ID"),
+        realm: config.get("KEYCLOAK_REALM")!,
       }}
-      keycloak={keycloakConfig}
     >
       <BrowserRouter>
-        <RootLayout />
+        <Router />
       </BrowserRouter>
     </GlobalProvider>
   );
 }
 
 const root = createRoot(document.getElementById("root")!);
-root.render(
-  <SchemeProvider>
-    <App />
-  </SchemeProvider>,
-);
+root.render(<App />);

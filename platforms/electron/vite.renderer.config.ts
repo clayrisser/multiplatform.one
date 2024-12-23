@@ -96,7 +96,6 @@ export default defineConfig((async () => {
         "react-native-web",
         "@multiplatform.one/components",
         "buffer",
-        "next-auth/react",
       ],
       exclude: [],
       esbuildOptions: {
@@ -133,27 +132,6 @@ export default defineConfig((async () => {
               const electron = window.electron || {};
               export const ipcRenderer = electron.ipcRenderer;
               export default electron;
-            `;
-          }
-        },
-      },
-      {
-        name: "virtual-next-auth",
-        resolveId(id) {
-          if (id === "next-auth/react") {
-            return "\0virtual:next-auth/react";
-          }
-        },
-        load(id) {
-          if (id === "\0virtual:next-auth/react") {
-            return `
-              export function SessionProvider({ children }) { return children; }
-              export function useSession() { return { data: null, status: "unauthenticated" }; }
-              export function signIn() { return Promise.resolve(); }
-              export function signOut() { return Promise.resolve(); }
-              export function getCsrfToken() { return Promise.resolve(null); }
-              export function getProviders() { return Promise.resolve(null); }
-              export function getSession() { return Promise.resolve(null); }
             `;
           }
         },
