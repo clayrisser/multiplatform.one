@@ -11,7 +11,6 @@
     "@multiplatform.one/components": "workspace:4.1.10",
     "@multiplatform.one/keycloak": "workspace:2.0.10",
     "@multiplatform.one/react-query-urql": "workspace:1.1.10",
-    "@multiplatform.one/use-store": "workspace:0.0.10",
     "@tamagui/font-fira-mono": "^1.120.1",
     "@tamagui/font-glusp": "^1.120.1",
     "@tamagui/font-inter": "^1.120.1",

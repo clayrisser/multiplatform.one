@@ -29,6 +29,7 @@ import { config } from "multiplatform.one";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { BrowserRouter } from "react-router-dom";
+import { Text } from "ui";
 import tamaguiConfig from "../tamagui.config";
 import { Router } from "./Router";
 

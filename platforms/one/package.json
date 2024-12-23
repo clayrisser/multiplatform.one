@@ -2,6 +2,8 @@
   "name": "@platform/one",
   "private": true,
   "type": "module",
+  "version": "0.0.1",
+  "description": "multiplatform.one one platform",
   "scripts": {
     "build": "one build",
     "dev": "one dev --port ${ONE_PORT:-5000}",
@@ -47,6 +49,5 @@
     "vite": "^6.0.3",
     "vite-plugin-external": "^4.3.1",
     "vite-plugin-i18next-loader": "^2.0.14"
-  },
-  "version": "1.0.0"
+  }
 }

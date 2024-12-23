@@ -2,6 +2,8 @@
   "name": "@platform/storybook-expo",
   "main": "./index.js",
   "private": true,
+  "version": "0.0.1",
+  "description": "multiplatform.one storybook-expo platform",
   "dependencies": {
     "@babel/runtime": "^7.25.7",
     "@multiplatform.one/components": "workspace:4.1.10",

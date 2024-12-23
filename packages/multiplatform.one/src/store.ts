@@ -1,7 +1,7 @@
-/*
- * File: /src/index.ts
- * Project: @multiplatform.one/use-store
- * File Created: 01-01-1970 00:00:00
+/**
+ * File: /src/store.ts
+ * Project: multiplatform.one
+ * File Created: 23-12-2024 20:01:26
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -26,6 +26,7 @@ import {
   useStore,
 } from "@tamagui/use-store";
 import { useEffect, useMemo, useState } from "react";
+import { logger } from "./logger/index";
 
 export interface CreateUseStoreOptions {
   blacklist?: string[];
@@ -33,8 +34,7 @@ export interface CreateUseStoreOptions {
   whitelist?: string[];
 }
 
-const PERSIST_KEY_PREFIX = "tamagui-store/";
-const logger = console;
+const persistKeyPrefix = "tamagui-store/";
 
 export function createUseStore<Props, Store>(
   StoreKlass: (new (props: Props) => Store) | (new () => Store),
@@ -72,7 +72,7 @@ export function createUseStore<Props, Store>(
 
     const persistKey = useMemo(
       () =>
-        PERSIST_KEY_PREFIX +
+        persistKeyPrefix +
         (typeof persist === "string" ? persist : StoreKlass.name),
       [persist, StoreKlass.name],
     );

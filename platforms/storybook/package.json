@@ -1,6 +1,8 @@
 {
   "name": "@platform/storybook",
   "private": true,
+  "version": "0.0.1",
+  "description": "multiplatform.one storybook platform",
   "scripts": {
     "dev": "TAMAGUI_TARGET=web storybook dev -p ${STORYBOOK_PORT:-5011}",
     "build": "TAMAGUI_TARGET=web storybook build"

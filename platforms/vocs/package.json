@@ -1,5 +1,7 @@
 {
-  "name": "docs",
+  "name": "@platform/vocs",
+  "version": "0.0.1",
+  "description": "multiplatform.one vocs platform",
   "type": "module",
   "private": true,
   "scripts": {

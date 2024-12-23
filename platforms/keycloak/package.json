@@ -1,6 +1,8 @@
 {
   "name": "@platform/keycloak",
   "private": true,
+  "version": "0.0.1",
+  "description": "multiplatform.one keycloak platform",
   "scripts": {
     "build": "craco build && rm -rf build/keycloak-resources && keycloakify",
     "dev": "copy-keycloak-resources-to-public && TAMAGUI_TARGET=web storybook dev -p 6006"

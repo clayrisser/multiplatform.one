@@ -37,7 +37,7 @@ import { KeycloakContext } from "../../keycloak/context";
 import { persist, useAuthStore } from "../../state";
 import { isTokenExpired, validOrRefreshableToken } from "../../token";
 import { AfterAuth } from "../AfterAuth";
-import type { AuthProviderProps, Tokens } from "./index";
+import type { AuthProviderProps, MessageSchema, Tokens } from "./shared";
 
 const REFRESH_THRESHOLD = 5;
 

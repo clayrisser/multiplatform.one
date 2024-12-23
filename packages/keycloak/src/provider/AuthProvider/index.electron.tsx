@@ -1,7 +1,7 @@
 /**
- * File: /src/provider/AuthProvider/index.tsx
+ * File: /src/provider/AuthProvider/index.electron.tsx
  * Project: @multiplatform.one/keycloak
- * File Created: 19-11-2024 20:26:31
+ * File Created: 23-12-2024 19:24:17
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,18 +19,11 @@
  * limitations under the License.
  */
 
-console.log("index");
+console.log("electron");
 
 import KeycloakClient from "keycloak-js";
 import type { KeycloakInitOptions } from "keycloak-js";
-import {
-  isBrowser,
-  isElectron,
-  isIframe,
-  isServer,
-  logger,
-} from "multiplatform.one";
-import { SessionProvider } from "next-auth/react";
+import { isIframe, logger } from "multiplatform.one";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Loading } from "../../Loading";
 import { useAuthConfig } from "../../hooks";
@@ -48,7 +41,6 @@ export function AuthProvider({
   keycloakConfig,
   keycloakInitOptions,
   loadingComponent,
-  sessionProvider,
 }: AuthProviderProps) {
   const { debug, messageHandlerKeys } = useAuthConfig();
   const query = new URLSearchParams(
@@ -228,7 +220,7 @@ export function AuthProvider({
 
   const keycloakClient = useMemo(
     () =>
-      !isServer && (!isBrowser || isIframe) && keycloakConfig
+      keycloakConfig
         ? new KeycloakClient({
             url: keycloakConfig.url,
             realm: keycloakConfig.realm,
@@ -245,9 +237,7 @@ export function AuthProvider({
   );
 
   const initOptions = useMemo(() => {
-    if (disabled || isServer || (isBrowser && !isIframe)) {
-      return;
-    }
+    if (disabled) return;
     const initOptions: KeycloakInitOptions = {
       ...defaultKeycloakInitOptions,
       ...keycloakInitOptions,
@@ -337,9 +327,6 @@ export function AuthProvider({
 
   if (!disabled && typeof authStore === "undefined") {
     return <Loading loadingComponent={loadingComponent} />;
-  }
-  if (isBrowser && !isElectron) {
-    return <SessionProvider {...sessionProvider}>{render()}</SessionProvider>;
   }
   return render();
 }

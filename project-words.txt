@@ -46,6 +46,7 @@ klass
 kumar
 lalit
 lavanya
+laynezh
 libasound
 libatk
 libcups
@@ -117,6 +118,7 @@ storyshots
 storysource
 tada
 tamagui
+tomjs
 toolshown
 totp
 truststore
@@ -131,6 +133,8 @@ usermodel
 vocs
 vxrn
 webauthn
+webext
+webextension
 whatwg
 wienert
 wmanth

@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@multiplatform.one/components": "workspace:4.1.10",
-    "@multiplatform.one/use-store": "workspace:0.0.10",
     "@tamagui/animations-css": "^1.120.1",
     "@tamagui/animations-moti": "^1.120.1",
     "@tamagui/animations-react-native": "^1.120.1",
