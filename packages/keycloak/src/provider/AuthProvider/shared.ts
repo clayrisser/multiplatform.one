@@ -50,3 +50,16 @@ export interface Tokens<B = boolean> {
   refreshToken?: string | B;
   token?: string | B;
 }
+
+export enum AuthStrategy {
+  AuthJS = "authjs",
+  ExpoAuth = "expo-auth",
+  KeycloakClientImplicit = "keycloak-client-implicit",
+  KeycloakClientStandard = "keycloak-client-standard",
+}
+
+export enum AuthSource {
+  Query = "query",
+  Session = "session",
+  Store = "store",
+}

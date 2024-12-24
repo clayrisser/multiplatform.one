@@ -60,16 +60,17 @@ const isIframe = (() => {
 
 export const platform: Platform = {
   ...platformBase,
+  isBrowser: false,
   isChrome,
   isClient,
+  isElectron: true,
   isElectronMain: typeof process !== "undefined" && process.type === "browser",
+  isIframe,
+  isServer,
+  isWeb,
+  isWebTouchable,
   isElectronRenderer:
     typeof process !== "undefined" && process.type === "renderer",
-  isElectron: true,
-  isWeb,
-  isServer,
-  isWebTouchable,
-  isIframe,
 };
 platform.preciseName = getPreciseName(platform);
 platform.broadName = getBroadName(platform);

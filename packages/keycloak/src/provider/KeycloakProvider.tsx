@@ -23,7 +23,7 @@ import type { PropsWithChildren } from "react";
 import { useMemo } from "react";
 import type { AuthConfig } from "../authConfig";
 import { AuthConfigContext } from "../authConfig";
-import { AuthProvider } from "./AuthProvider/index";
+import { AuthProvider } from "./AuthProvider";
 
 export interface KeycloakProviderProps extends PropsWithChildren, AuthConfig {
   baseUrl?: string;

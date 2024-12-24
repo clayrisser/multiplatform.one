@@ -25,7 +25,6 @@ import { Screen as HomeScreen } from "app/screens/home";
 import { Route, Routes } from "react-router-dom";
 
 export function Router() {
-  const keycloak = useKeycloak();
   return (
     <Layout>
       <Routes>

@@ -22,7 +22,6 @@
 import { dirname, join, resolve } from "node:path";
 import { BrowserWindow, app, ipcMain, session } from "electron";
 import { type LogPayload, Logger, logger } from "multiplatform.one";
-import { platform } from "multiplatform.one";
 
 // Disable GPU acceleration in development container
 app.disableHardwareAcceleration();
@@ -79,6 +78,7 @@ function createWindow() {
       contextIsolation: true,
       sandbox: true,
       webSecurity: true,
+      partition: "persist:main",
     },
   });
   try {

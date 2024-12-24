@@ -79,12 +79,14 @@ export function lookupTamaguiModules(
   return tamaguiModules;
 }
 
-export function resolveConfig(keys: Record<string, any> = {}) {
+export function resolveConfig(
+  keys: string[] = [],
+): Record<string, string | undefined> {
   return keys.reduce(
-    (acc: Record<string, any>, key: string) => {
+    (acc: Record<string, string | undefined>, key: string) => {
       if (process.env[key]) acc[key] = process.env[key];
       return acc;
     },
-    {} as Record<string, any>,
+    {} as Record<string, string | undefined>,
   );
 }
