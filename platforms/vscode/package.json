@@ -1,0 +1,31 @@
+{
+  "name": "@platform/vscode",
+  "private": true,
+  "version": "0.0.1",
+  "description": "multiplatform.one vscode platform",
+  "engines": {
+    "node": ">=18",
+    "vscode": "^1.75.0"
+  },
+  "main": "dist/extension/index.js",
+  "activationEvents": [],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vscode/webview-ui-toolkit": "^1.4.0",
+    "react": "~18.2.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@tomjs/tsconfig": "^1.7.1",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.5",
+    "@types/vscode": "^1.93.0",
+    "@types/vscode-webview": "^1.57.5",
+    "@vitejs/plugin-react": "^4.3.3",
+    "@vitejs/plugin-react-swc": "^3.7.0"
+  }
+}

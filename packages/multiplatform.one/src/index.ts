@@ -64,11 +64,13 @@ export const {
   isWeb,
   isWebExtension,
   isWebTouchable,
+  isWindowDefined,
 } = platform;
 
 export * from "./config";
 export * from "./font";
 export * from "./helpers";
 export * from "./hooks";
-export * from "./platform/index";
 export * from "./logger/index";
+export * from "./platform/index";
+export * from "./store";

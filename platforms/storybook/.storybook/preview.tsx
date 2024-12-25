@@ -31,7 +31,7 @@ import { languages, namespaces } from "app/i18n";
 import { resources } from "app/i18n/resources";
 import { GlobalProvider } from "app/providers";
 import i18n from "i18next";
-import { config } from "multiplatform.one";
+import { config, logger } from "multiplatform.one";
 import { useTheme } from "multiplatform.one/theme";
 import React from "react";
 import type { PropsWithChildren } from "react";
@@ -54,7 +54,7 @@ i18n
       escapeValue: false,
     },
   })
-  .catch(console.error);
+  .catch(logger.error);
 i18n.changeLanguage(config.get("I18N_DEFAULT_LANGUAGE", "en"));
 importFonts();
 

@@ -1,7 +1,7 @@
-/*
+/**
  * File: /state/foo.ts
  * Project: app
- * File Created: 01-06-2024 13:44:49
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import { createUseStore } from "@multiplatform.one/use-store";
+import { createUseStore } from "multiplatform.one";
 
 export class FooStore {
   bar = "baz";

@@ -37,7 +37,7 @@ import { KeycloakContext } from "../../keycloak/context";
 import { persist, useAuthStore } from "../../state";
 import { isTokenExpired, validOrRefreshableToken } from "../../token";
 import { AfterAuth } from "../AfterAuth";
-import type { AuthProviderProps, Tokens } from "./index";
+import type { AuthProviderProps, MessageSchema, Tokens } from "./shared";
 
 const REFRESH_THRESHOLD = 5;
 
@@ -52,18 +52,45 @@ export function AuthProvider({
   const initialRefreshToken = useMemo(
     () =>
       validOrRefreshableToken(
-        authStore === undefined
-          ? undefined
-          : (persist && authStore.refreshToken) || false,
+        persist && authStore !== undefined && authStore?.refreshToken,
       ),
-    [authStore],
+    [persist, authStore],
   );
   const keycloakUrl = `${keycloakConfig?.url}/realms/${keycloakConfig?.realm}`;
   const clientId =
     keycloakConfig.publicClientId || keycloakConfig?.clientId || "";
   const discovery = useAutoDiscovery(keycloakUrl);
   const redirectUri = makeRedirectUri();
-  const [tokens, setTokens] = useState<Tokens<false>>();
+  const [tokens, setTokens] = useState<Tokens<false>>(() => {
+    if (response?.type === "success" && response.params) {
+      const refreshToken = validOrRefreshableToken(
+        response.params.refresh_token,
+      );
+      return {
+        refreshToken,
+        token: validOrRefreshableToken(
+          response.params.access_token,
+          refreshToken,
+        ),
+        idToken: validOrRefreshableToken(
+          response.params.id_token,
+          refreshToken,
+        ),
+      };
+    }
+
+    return {
+      refreshToken: initialRefreshToken,
+      token: validOrRefreshableToken(
+        persist && authStore !== undefined ? authStore.token : undefined,
+        initialRefreshToken,
+      ),
+      idToken: validOrRefreshableToken(
+        persist && authStore !== undefined ? authStore.idToken : undefined,
+        initialRefreshToken,
+      ),
+    };
+  });
   const scopes = useMemo(
     () => [
       ...new Set([
@@ -85,19 +112,17 @@ export function AuthProvider({
   );
 
   useEffect(() => {
-    if (disabled || tokens || !authStore) return;
+    if (authStore === undefined) return;
+    if (!persist) return;
+    if (tokens.token || tokens.refreshToken || tokens.idToken) return;
+    if (response?.type === "success") return;
+
     setTokens({
       refreshToken: initialRefreshToken,
-      token: validOrRefreshableToken(
-        (persist && authStore.token) || false,
-        initialRefreshToken,
-      ),
-      idToken: validOrRefreshableToken(
-        (persist && authStore.idToken) || false,
-        initialRefreshToken,
-      ),
+      token: validOrRefreshableToken(authStore.token, initialRefreshToken),
+      idToken: validOrRefreshableToken(authStore.idToken, initialRefreshToken),
     });
-  }, [disabled, initialRefreshToken, tokens, authStore]);
+  }, [authStore, persist, response, initialRefreshToken]);
 
   useEffect(() => {
     if (
@@ -147,7 +172,7 @@ export function AuthProvider({
   ]);
 
   const resetTokens = useCallback(() => {
-    if (disabled || !authStore) return;
+    if (disabled || authStore === undefined) return;
     authStore.idToken = "";
     authStore.refreshToken = "";
     authStore.token = "";
@@ -159,7 +184,7 @@ export function AuthProvider({
   }, [disabled, authStore]);
 
   const refreshTokens = useCallback(async () => {
-    if (disabled || !discovery || !tokens || !authStore) return;
+    if (disabled || !discovery || !tokens || authStore === undefined) return;
     if (typeof tokens.refreshToken === "string") {
       if (!isTokenExpired(tokens.refreshToken)) {
         const tokenResponse = await refreshAsync(
@@ -171,10 +196,19 @@ export function AuthProvider({
           discovery,
         );
         if (tokenResponse) {
+          const refreshToken = validOrRefreshableToken(
+            tokenResponse.refreshToken,
+          );
           setTokens({
-            idToken: tokenResponse.idToken,
-            refreshToken: tokenResponse.refreshToken,
-            token: tokenResponse.accessToken,
+            refreshToken,
+            token: validOrRefreshableToken(
+              tokenResponse.accessToken,
+              refreshToken,
+            ),
+            idToken: validOrRefreshableToken(
+              tokenResponse.idToken,
+              refreshToken,
+            ),
           });
         } else {
           resetTokens();
@@ -189,12 +223,13 @@ export function AuthProvider({
     ) {
       resetTokens();
     }
-  }, [disabled, !discovery, tokens?.refreshToken, clientId, scopes]);
+  }, [disabled, !discovery, tokens?.refreshToken, clientId, scopes, authStore]);
 
   useEffect(() => {
     if (disabled || !discovery) return;
+    if (authStore === undefined && !response?.type) return;
     refreshTokens();
-  }, [disabled, !discovery]);
+  }, [disabled, !discovery, authStore, response]);
 
   useEffect(() => {
     if (disabled || !request || !tokens) return;

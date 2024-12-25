@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import { createUseStore } from "@multiplatform.one/use-store";
+import { createUseStore } from "multiplatform.one";
 import { isBrowser, isIframe, isServer } from "multiplatform.one";
 
 export const persist = isIframe || (!isBrowser && !isServer);

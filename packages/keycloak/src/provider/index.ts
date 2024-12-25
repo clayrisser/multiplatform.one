@@ -20,5 +20,5 @@
  */
 
 export * from "./AfterAuth";
-export * from "./AuthProvider/index";
+export * from "./AuthProvider";
 export * from "./KeycloakProvider";

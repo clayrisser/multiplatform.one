@@ -35,8 +35,6 @@ const defaults = {
   },
 };
 
-process.env.NEXTAUTH_URL = "http://localhost:8081/api/auth";
-
 export function createAuthConfig(config: AuthHandlerConfig) {
   if (_authConfig) return _authConfig;
   const authorization =

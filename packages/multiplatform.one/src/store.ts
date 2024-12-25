@@ -1,7 +1,7 @@
-/*
- * File: /src/index.ts
- * Project: @multiplatform.one/use-store
- * File Created: 01-01-1970 00:00:00
+/**
+ * File: /src/store.ts
+ * Project: multiplatform.one
+ * File Created: 23-12-2024 20:01:26
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -26,6 +26,7 @@ import {
   useStore,
 } from "@tamagui/use-store";
 import { useEffect, useMemo, useState } from "react";
+import { logger } from "./logger/index";
 
 export interface CreateUseStoreOptions {
   blacklist?: string[];
@@ -33,8 +34,9 @@ export interface CreateUseStoreOptions {
   whitelist?: string[];
 }
 
-const PERSIST_KEY_PREFIX = "tamagui-store/";
-const logger = console;
+const pendingUpdates = new Map<string, Record<string, any>>();
+const persistKeyPrefix = "tamagui-store/";
+const updatePromises = new Map<string, Promise<void>>();
 
 export function createUseStore<Props, Store>(
   StoreKlass: (new (props: Props) => Store) | (new () => Store),
@@ -68,77 +70,81 @@ export function createUseStore<Props, Store>(
     | undefined => {
     if (!persist) return useStore(StoreKlass as any, props, options);
     const [storage, setStorage] = useState<Record<string, any>>();
-    const store = useStore(StoreKlass as any, props, options);
-
+    const store = useMemo(() => {
+      if (!storage?.state) return undefined;
+      const instance = new (StoreKlass as any)(props);
+      Object.assign(instance, storage.state);
+      instance.__hydrated = true;
+      return instance;
+    }, [storage, props]);
     const persistKey = useMemo(
       () =>
-        PERSIST_KEY_PREFIX +
+        persistKeyPrefix +
         (typeof persist === "string" ? persist : StoreKlass.name),
       [persist, StoreKlass.name],
     );
-
-    const persistedStore = useMemo(
-      () =>
-        new Proxy(store, {
-          set(target, prop, value) {
-            (target as any)[prop] = value;
-            if (
-              prop === "__hydrated" ||
-              typeof prop !== "string" ||
-              (!(
-                typeof value === "boolean" ||
-                typeof value === "number" ||
-                typeof value === "object" ||
-                typeof value === "string" ||
-                typeof value === "undefined" ||
-                value === null
-              ) &&
-                (whitelist?.includes(prop) || !blacklist?.includes(prop)))
-            ) {
-              return true;
-            }
-            (async () => {
+    const persistedStore = useMemo(() => {
+      if (!store) return undefined;
+      const proxy = new Proxy(store, {
+        set(target, prop, value) {
+          (target as any)[prop] = value;
+          if (
+            prop === "__hydrated" ||
+            typeof prop !== "string" ||
+            (!(
+              typeof value === "boolean" ||
+              typeof value === "number" ||
+              typeof value === "object" ||
+              typeof value === "string" ||
+              typeof value === "undefined" ||
+              value === null
+            ) &&
+              (whitelist?.includes(prop) || !blacklist?.includes(prop)))
+          ) {
+            return true;
+          }
+          const updates = pendingUpdates.get(persistKey) || {};
+          updates[prop] = value;
+          pendingUpdates.set(persistKey, updates);
+          queueMicrotask(() => {
+            const updates = pendingUpdates.get(persistKey);
+            if (!updates) return;
+            pendingUpdates.delete(persistKey);
+            const current = updatePromises.get(persistKey) || Promise.resolve();
+            const next = current.then(async () => {
               try {
                 const item = await AsyncStorage.getItem(persistKey);
-                const state = (item ? JSON.parse(item) : {}).state || {};
-                state[prop] = value;
+                const state = item ? JSON.parse(item).state || {} : {};
                 await AsyncStorage.setItem(
                   persistKey,
-                  JSON.stringify({ state }),
+                  JSON.stringify({ state: { ...state, ...updates } }),
                 );
               } catch (err) {
                 logger.error(err);
               }
-            })();
-            return true;
-          },
-        }),
-      [store, persistKey],
-    );
+            });
+            updatePromises.set(persistKey, next);
+          });
+          return true;
+        },
+      });
+      return proxy;
+    }, [store, persistKey]);
 
     useEffect(() => {
       (async () => {
         const item = await AsyncStorage.getItem(persistKey);
-        if (item) {
-          try {
-            setStorage(JSON.parse(item));
-          } catch (err) {
-            setStorage({});
-            logger.error(err);
-          }
+        const state = item ? JSON.parse(item).state || {} : {};
+        if (Object.keys(state).length > 0) {
+          setStorage({ state });
         } else {
-          setStorage({});
+          const instance = new (StoreKlass as any)(props);
+          setStorage({ state: instance });
         }
-      })();
-    }, [persistKey]);
+      })().catch(logger.error);
+    }, [persistKey, props]);
 
-    useEffect(() => {
-      if (store.__hydrated || !storage) return;
-      Object.assign(store, storage.state || {});
-      store.__hydrated = true;
-    }, [store, storage]);
-
-    if (!storage) return undefined;
+    if (!storage || !store) return undefined;
     return persistedStore;
   };
 }
