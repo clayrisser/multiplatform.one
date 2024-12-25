@@ -50,7 +50,7 @@ target "devcontainer" {
   dockerfile = "docker/devcontainer/Dockerfile"
   platforms  = [
     "linux/amd64",
-    # "linux/arm64",
+    "linux/arm64",
   ]
   tags = [
     "${REGISTRY}/devcontainer:${GIT_COMMIT}",

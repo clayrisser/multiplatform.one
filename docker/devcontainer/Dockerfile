@@ -18,6 +18,7 @@ RUN set -x && \
     tee /etc/apt/sources.list.d/docker.list >/dev/null && \
     apt-get update && \
     apt-get install -y \
+    $([ "$(dpkg --print-architecture)" = "amd64" ] && echo "libdrm-intel1") \
     dbus \
     dbus-x11 \
     docker-ce-cli \
@@ -27,7 +28,6 @@ RUN set -x && \
     libatk1.0-0 \
     libcups2 \
     libdrm-amdgpu1 \
-    libdrm-intel1 \
     libdrm-nouveau2 \
     libdrm-radeon1 \
     libdrm2 \
