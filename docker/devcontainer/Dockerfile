@@ -27,7 +27,7 @@ RUN set -x && \
     libatk1.0-0 \
     libcups2 \
     libdrm-amdgpu1 \
-    libdrm-intel1 \
+    $([[ "$(dpkg --print-architecture)" == "amd64" ]] && echo "libdrm-intel1") \
     libdrm-nouveau2 \
     libdrm-radeon1 \
     libdrm2 \
