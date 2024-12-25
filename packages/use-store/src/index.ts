@@ -1,7 +1,7 @@
-/**
- * File: /src/store.ts
- * Project: multiplatform.one
- * File Created: 23-12-2024 20:01:26
+/*
+ * File: /src/index.ts
+ * Project: @multiplatform.one/use-store
+ * File Created: 01-01-1970 00:00:00
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -26,7 +26,8 @@ import {
   useStore,
 } from "@tamagui/use-store";
 import { useEffect, useMemo, useState } from "react";
-import { logger } from "./logger/index";
+
+const logger = console;
 
 export interface CreateUseStoreOptions {
   blacklist?: string[];

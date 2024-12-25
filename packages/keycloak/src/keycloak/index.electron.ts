@@ -19,28 +19,9 @@
  * limitations under the License.
  */
 
-import type { KeycloakConfig } from "keycloak-js";
-import type KeycloakClient from "keycloak-js";
-import type { Session } from "../session";
-import type { KeycloakMock } from "../types";
-import {
-  BaseKeycloak,
-  type KeycloakLoginOptions,
-  type KeycloakLogoutOptions,
-} from "./base";
+import { BaseKeycloak } from "./base";
 
-export class Keycloak extends BaseKeycloak {
-  constructor(
-    public readonly config: KeycloakConfig,
-    input?: string | KeycloakClient | KeycloakMock | Session,
-    idToken?: string,
-    refreshToken?: string,
-    login?: (_options: KeycloakLoginOptions) => Promise<undefined>,
-    logout?: (_options: KeycloakLogoutOptions) => Promise<undefined>,
-  ) {
-    super(config, input, idToken, refreshToken, login, logout);
-  }
-}
+export class Keycloak extends BaseKeycloak {}
 
 export * from "./base";
 export * from "./config";

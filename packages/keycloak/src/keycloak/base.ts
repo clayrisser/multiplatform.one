@@ -1,7 +1,7 @@
-/**
+/*
  * File: /src/keycloak/base.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 23-12-2024 18:46:04
+ * File Created: 25-12-2024 04:55:48
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -63,16 +63,6 @@ export class BaseKeycloak {
     refreshToken?: string,
     login?: (_options: KeycloakLoginOptions) => Promise<undefined>,
     logout?: (_options: KeycloakLogoutOptions) => Promise<undefined>,
-    handleInputObject = (input: KeycloakClient | KeycloakMock | Session) => {
-      if (typeof (input as KeycloakClient).init === "function") {
-        this._keycloakClient = input as KeycloakClient;
-      } else {
-        this._mock = input as KeycloakMock;
-        this.email = this._mock.email;
-        this.username = this._mock.username;
-        this.authenticated = true;
-      }
-    },
   ) {
     this.clientId = this.config.clientId;
     this.realm = this.config.realm;
@@ -80,21 +70,33 @@ export class BaseKeycloak {
       this.token = input;
       this.idToken = idToken;
       this.refreshToken = refreshToken;
-      if (this.token && !this.tokenParsed) {
-        this.tokenParsed = jwtDecode(this.token);
-      }
-      if (this.idToken && !this.idTokenParsed) {
-        this.idTokenParsed = jwtDecode(this.idToken);
-      }
-      if (this.refreshToken && !this.refreshTokenParsed) {
-        this.refreshTokenParsed = jwtDecode(this.refreshToken) as TokenParsed;
-      }
+      this._parseTokens();
     } else if (typeof input === "object") {
-      handleInputObject?.(input);
+      this._handleInputObject(input);
     }
     this._login = login;
     this._logout = logout;
     this._sync();
+  }
+
+  protected _handleInputObject(input: KeycloakClient | KeycloakMock | Session) {
+    if (typeof (input as KeycloakClient).init === "function") {
+      this._keycloakClient = input as KeycloakClient;
+    } else {
+      this._mock = input as KeycloakMock;
+    }
+  }
+
+  protected _parseTokens() {
+    if (this.token && !this.tokenParsed) {
+      this.tokenParsed = jwtDecode(this.token);
+    }
+    if (this.idToken && !this.idTokenParsed) {
+      this.idTokenParsed = jwtDecode(this.idToken);
+    }
+    if (this.refreshToken && !this.refreshTokenParsed) {
+      this.refreshTokenParsed = jwtDecode(this.refreshToken) as TokenParsed;
+    }
   }
 
   protected _clear() {

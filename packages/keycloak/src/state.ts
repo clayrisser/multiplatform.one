@@ -1,4 +1,4 @@
-/**
+/*
  * File: /src/state.ts
  * Project: @multiplatform.one/keycloak
  * File Created: 19-11-2024 20:26:31
@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import { createUseStore } from "multiplatform.one";
+import { createUseStore } from "@multiplatform.one/use-store";
 import { isBrowser, isIframe, isServer } from "multiplatform.one";
 
 export const persist = isIframe || (!isBrowser && !isServer);

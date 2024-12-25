@@ -104,7 +104,8 @@ export function AuthProvider({
     if (!persist) return AuthStrategy.KeycloakClientStandard;
     if (typeof authStore === "undefined") return;
     if (authStore.token) {
-      return AuthStrategy.KeycloakClientImplicit;
+      if (typeof tokens.token === "undefined") return;
+      if (tokens.token) return AuthStrategy.KeycloakClientImplicit;
     }
     return AuthStrategy.KeycloakClientStandard;
   }, [authSource, authStore?.token, tokens.token]);

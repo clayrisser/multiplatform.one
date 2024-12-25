@@ -1,7 +1,7 @@
-/**
+/*
  * File: /src/keycloak/index.ts
  * Project: @multiplatform.one/keycloak
- * File Created: 19-11-2024 20:26:31
+ * File Created: 25-12-2024 04:55:48
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -40,41 +40,22 @@ import {
   type KeycloakLoginOptions,
   type KeycloakLogoutOptions,
 } from "./base";
-import { type KeycloakConfig, KeycloakConfigContext } from "./config";
+import { KeycloakConfigContext } from "./config";
 import { KeycloakContext } from "./context";
 
 export class Keycloak extends BaseKeycloak {
-  constructor(
-    config: KeycloakConfig,
-    input?: string | KeycloakClient | KeycloakMock | Session,
-    idToken?: string,
-    refreshToken?: string,
-    login?: (_options: KeycloakLoginOptions) => Promise<undefined>,
-    logout?: (_options: KeycloakLogoutOptions) => Promise<undefined>,
-  ) {
-    super(
-      config,
-      input,
-      idToken,
-      refreshToken,
-      login,
-      logout,
-      (input: KeycloakClient | KeycloakMock | Session) => {
-        if (typeof (input as KeycloakClient).init === "function") {
-          this._keycloakClient = input as KeycloakClient;
-        } else if ((input as Session).accessToken) {
-          const session = input as Session;
-          this.token = session.accessToken;
-          this.idToken = session.idToken;
-          this.refreshToken = session.refreshToken;
-        } else {
-          this._mock = input as KeycloakMock;
-          this.email = this._mock.email;
-          this.username = this._mock.username;
-          this.authenticated = true;
-        }
-      },
-    );
+  protected _handleInputObject(input: KeycloakClient | KeycloakMock | Session) {
+    if (typeof (input as KeycloakClient).init === "function") {
+      this._keycloakClient = input as KeycloakClient;
+    } else if ((input as Session).accessToken) {
+      const session = input as Session;
+      this.token = session.accessToken;
+      this.idToken = session.idToken;
+      this.refreshToken = session.refreshToken;
+      this._parseTokens();
+    } else {
+      this._mock = input as KeycloakMock;
+    }
   }
 
   async login(options: KeycloakLoginOptions = {}) {
