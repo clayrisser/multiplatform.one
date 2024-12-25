@@ -20,14 +20,6 @@
  */
 
 import {
-  isChrome,
-  isClient,
-  isServer,
-  isWeb,
-  isWebTouchable,
-  isWindowDefined,
-} from "@tamagui/constants";
-import {
   type Platform,
   getBroadName,
   getPreciseName,
@@ -43,7 +35,7 @@ declare global {
 }
 
 const isIframe = (() => {
-  if (!isWindowDefined) return false;
+  if (!platformBase.isWindowDefined) return false;
   try {
     return window.self !== window.top;
   } catch (e) {
@@ -51,33 +43,28 @@ const isIframe = (() => {
   }
 })();
 
+const isWebExtension = !!(
+  (typeof chrome !== "undefined" && !!chrome?.runtime?.id) ||
+  (typeof browser !== "undefined" && !!browser?.runtime?.id)
+);
+
 export const platform: Platform = {
   ...platformBase,
-  isChrome,
-  isClient,
-  isFirefox:
-    isWindowDefined &&
-    !!(window?.navigator?.userAgent?.toLowerCase().indexOf("firefox") > -1),
-  isWeb,
-  isNext:
-    isWeb && (!isWindowDefined || typeof window.__NEXT_DATA__ === "object"),
-  isServer,
-  isWebTouchable,
   isChromeExtension: typeof chrome !== "undefined" && !!chrome?.runtime?.id,
   isFirefoxExtension: typeof browser !== "undefined" && !!browser?.runtime?.id,
-  isWebExtension: !!(
-    (typeof chrome !== "undefined" && !!chrome?.runtime?.id) ||
-    (typeof browser !== "undefined" && !!browser?.runtime?.id)
-  ),
   isIframe,
+  isWebExtension,
   isBrowser: !!(
-    isWeb &&
-    isWindowDefined &&
-    !(
-      (typeof chrome !== "undefined" && !!chrome?.runtime?.id) ||
-      (typeof browser !== "undefined" && !!browser?.runtime?.id)
-    )
+    platformBase.isWeb &&
+    platformBase.isWindowDefined &&
+    !isWebExtension
   ),
+  isNext:
+    platformBase.isWeb &&
+    (!platformBase.isWindowDefined || typeof window.__NEXT_DATA__ === "object"),
+  isFirefox:
+    platformBase.isWindowDefined &&
+    !!(window?.navigator?.userAgent?.toLowerCase().indexOf("firefox") > -1),
 };
 platform.preciseName = getPreciseName(platform);
 platform.broadName = getBroadName(platform);

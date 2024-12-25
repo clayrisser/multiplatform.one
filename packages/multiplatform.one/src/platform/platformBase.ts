@@ -19,7 +19,15 @@
  * limitations under the License.
  */
 
-import { isTouchable, isWindowDefined } from "@tamagui/constants";
+import {
+  isChrome,
+  isClient,
+  isServer,
+  isTouchable,
+  isWeb,
+  isWebTouchable,
+  isWindowDefined,
+} from "@tamagui/constants";
 
 declare global {
   interface Window {
@@ -39,8 +47,6 @@ const platformOrder = [
   "WebExtension",
   "Next",
   "Expo",
-  "WebTouchable",
-  "Touchable",
   "Chrome",
   "Firefox",
   "Web",
@@ -63,8 +69,6 @@ export type PlatformName =
   | "webExtension"
   | "next"
   | "expo"
-  | "webTouchable"
-  | "touchable"
   | "chrome"
   | "firefox"
   | "web"
@@ -78,9 +82,9 @@ export type PlatformName =
 export const platformBase = {
   isAndroid: false,
   isBrowser: false,
-  isChrome: false,
+  isChrome,
   isChromeExtension: false,
-  isClient: false,
+  isClient,
   isElectron: false,
   isElectronMain: false,
   isElectronRenderer: false,
@@ -91,11 +95,11 @@ export const platformBase = {
   isIos: false,
   isNative: false,
   isNext: false,
-  isServer: false,
-  isTouchable: isTouchable,
-  isWeb: false,
+  isServer,
+  isTouchable,
+  isWeb,
   isWebExtension: false,
-  isWebTouchable: false,
+  isWebTouchable,
   isWindowDefined,
   isStorybook:
     isWindowDefined && typeof window.__STORYBOOK_ADDONS_PREVIEW === "object",

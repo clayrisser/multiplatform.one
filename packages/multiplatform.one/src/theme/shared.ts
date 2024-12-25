@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/theme/shared.ts
  * Project: multiplatform.one
- * File Created: 01-01-1970 00:00:00
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
-import { createUseStore } from "@multiplatform.one/use-store";
 import type { ThemeName } from "@tamagui/web";
+import { createUseStore } from "multiplatform.one";
 import { type PropsWithChildren, createContext } from "react";
 
 export type ColorScheme = "dark" | "light" | "system";

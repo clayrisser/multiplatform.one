@@ -19,6 +19,7 @@
  * limitations under the License.
  */
 
+import { logger } from "multiplatform.one";
 import { type ComponentType, type PropsWithChildren, useEffect } from "react";
 import { Loading } from "../Loading";
 import { useAuthConfig } from "../hooks";
@@ -28,8 +29,6 @@ import { persist, useAuthStore } from "../state";
 export interface AfterAuthProps extends PropsWithChildren {
   loadingComponent?: ComponentType;
 }
-
-const logger = console;
 
 export function AfterAuth({ children, loadingComponent }: AfterAuthProps) {
   const authConfig = useAuthConfig();
@@ -44,6 +43,8 @@ export function AfterAuth({ children, loadingComponent }: AfterAuthProps) {
       if (keycloak.refreshToken) authStore.refreshToken = keycloak.refreshToken;
     }
   }, [
+    authStore,
+    persist,
     keycloak?.authenticated,
     keycloak?.token,
     keycloak?.idToken,
@@ -54,31 +55,31 @@ export function AfterAuth({ children, loadingComponent }: AfterAuthProps) {
     if (authConfig.debug && keycloak?.token) {
       logger.debug("token", keycloak.token);
     }
-  }, [keycloak?.token]);
+  }, [authConfig.debug, keycloak?.token]);
 
   useEffect(() => {
     if (authConfig.debug && keycloak?.idToken) {
       logger.debug("idToken", keycloak.idToken);
     }
-  }, [keycloak?.idToken]);
+  }, [authConfig.debug, keycloak?.idToken]);
 
   useEffect(() => {
     if (authConfig.debug && keycloak?.refreshToken) {
       logger.debug("refreshToken", keycloak.refreshToken);
     }
-  }, [keycloak?.refreshToken]);
+  }, [authConfig.debug, keycloak?.refreshToken]);
 
   useEffect(() => {
     if (authConfig.debug && keycloak?.authenticated) {
       logger.debug("authenticated", keycloak.authenticated);
     }
-  }, [keycloak?.authenticated]);
+  }, [authConfig.debug, keycloak?.authenticated]);
 
   useEffect(() => {
     if (authConfig.debug && keycloak === null) {
       logger.debug("keycloak disabled");
     }
-  }, [keycloak]);
+  }, [authConfig.debug, keycloak]);
 
   if (!authStore) return <Loading loadingComponent={loadingComponent} />;
   return <>{children}</>;

@@ -25,7 +25,7 @@ import { resources } from "app/i18n/resources";
 import { GlobalProvider } from "app/providers";
 import { Layout as RootLayout } from "app/screens/_layout";
 import i18n from "i18next";
-import { config } from "multiplatform.one";
+import { config, logger } from "multiplatform.one";
 import { LoadProgressBar, Slot } from "one";
 import type { ReactNode } from "react";
 import { initReactI18next } from "react-i18next";
@@ -43,7 +43,7 @@ i18n
       escapeValue: false,
     },
   })
-  .catch(console.error);
+  .catch(logger.error);
 i18n.changeLanguage(config.get("I18N_DEFAULT_LANGUAGE", "en"));
 
 export default function Layout() {

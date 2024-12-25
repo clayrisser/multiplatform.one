@@ -26,7 +26,7 @@ import { GlobalProvider } from "app/providers";
 import { useFonts } from "expo-font";
 import { SplashScreen } from "expo-router";
 import i18n from "i18next";
-import { config } from "multiplatform.one";
+import { config, logger } from "multiplatform.one";
 import { useCallback } from "react";
 import { initReactI18next } from "react-i18next";
 import { View } from "react-native";
@@ -45,11 +45,10 @@ i18n
       escapeValue: false,
     },
   })
-  .catch(console.error);
+  .catch(logger.error);
 i18n.changeLanguage(config.get("I18N_DEFAULT_LANGUAGE", "en"));
 
 const fonts = importFonts();
-const logger = console;
 SplashScreen.preventAutoHideAsync().catch(logger.error);
 
 export default function HomeLayout() {

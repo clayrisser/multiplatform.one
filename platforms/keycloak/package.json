@@ -1,6 +1,8 @@
 {
   "name": "@platform/keycloak",
   "private": true,
+  "version": "0.0.1",
+  "description": "multiplatform.one keycloak platform",
   "scripts": {
     "build": "craco build && rm -rf build/keycloak-resources && keycloakify",
     "dev": "copy-keycloak-resources-to-public && TAMAGUI_TARGET=web storybook dev -p 6006"
@@ -56,7 +58,7 @@
     "@storybook/react": "~7.6.19",
     "@storybook/react-webpack5": "~7.6.19",
     "@storybook/testing-library": "^0.2.2",
-    "@tamagui/babel-plugin": "^1.120.1",
+    "@tamagui/babel-plugin": "^1.120.2",
     "@types/babel__preset-env": "^7.9.7",
     "@types/node": "~20.12.13",
     "@types/react": "^18.3.1",
@@ -66,7 +68,7 @@
     "react-native-reanimated": "~3.10.1",
     "react-scripts": "5.0.1",
     "storybook": "~7.6.20",
-    "typescript": "^5.7.2"
+    "typescript": "^5.6.2"
   },
   "transpileModules": ["app", "ui"],
   "browserslist": {

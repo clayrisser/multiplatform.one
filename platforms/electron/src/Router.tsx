@@ -1,7 +1,7 @@
 /**
- * File: /src/renderer/renderer.tsx
+ * File: /src/Router.tsx
  * Project: @platform/electron
- * File Created: 21-12-2024 04:59:22
+ * File Created: 21-12-2024 04:05:57
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,23 +19,17 @@
  * limitations under the License.
  */
 
-import { isElectron } from "multiplatform.one";
-import React, { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import App from "../App";
-import "../index.css";
+import { useKeycloak } from "@multiplatform.one/keycloak";
+import { Layout } from "app/screens/_layout";
+import { Screen as HomeScreen } from "app/screens/home";
+import { Route, Routes } from "react-router-dom";
 
-console.log("Electron detection:", {
-  isElectron,
-  versions: (window as any).versions,
-  process: (window as any).process,
-  userAgent: window.navigator.userAgent,
-  ipc: (window as any).ipc,
-});
-
-const root = createRoot(document.getElementById("root") as HTMLElement);
-root.render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+export function Router() {
+  return (
+    <Layout>
+      <Routes>
+        <Route path="/" element={<HomeScreen />} />
+      </Routes>
+    </Layout>
+  );
+}
