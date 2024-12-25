@@ -3,7 +3,6 @@
 export API_PORT="5002"
 export NEXTAUTH_SECRET="$SECRET"
 export NEXT_BASE_URL="$BASE_URL"
-export NEXTAUTH_URL="$NEXT_BASE_URL"
 export NEXT_PORT="5001"
 
 alias prisma=/opt/app/node_modules/.bin/prisma

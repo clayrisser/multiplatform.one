@@ -47,14 +47,14 @@
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "1.21.0",
-    "@tamagui/build": "^1.120.1",
+    "@tamagui/build": "^1.120.2",
     "@types/node": "~20.12.13",
-    "typescript": "^5.7.2",
+    "typescript": "^5.6.2",
     "vite": "^6.0.3"
   },
   "dependencies": {
     "@multiplatform.one/keycloak": "workspace:2.0.10",
-    "@tanstack/react-query": "^5.62.8",
+    "@tanstack/react-query": "^5.62.10",
     "@urql/core": "2.3.6",
     "graphql": "^16.10.0",
     "urql": "^4.2.1"

@@ -132,17 +132,16 @@ export function createUseStore<Props, Store>(
     }, [store, persistKey]);
 
     useEffect(() => {
-      AsyncStorage.getItem(persistKey)
-        .then((item) => {
-          const state = item ? JSON.parse(item).state || {} : {};
-          if (Object.keys(state).length > 0) {
-            setStorage({ state });
-          } else {
-            const instance = new (StoreKlass as any)(props);
-            setStorage({ state: instance });
-          }
-        })
-        .catch(logger.error);
+      (async () => {
+        const item = await AsyncStorage.getItem(persistKey);
+        const state = item ? JSON.parse(item).state || {} : {};
+        if (Object.keys(state).length > 0) {
+          setStorage({ state });
+        } else {
+          const instance = new (StoreKlass as any)(props);
+          setStorage({ state: instance });
+        }
+      })().catch(logger.error);
     }, [persistKey, props]);
 
     if (!storage || !store) return undefined;

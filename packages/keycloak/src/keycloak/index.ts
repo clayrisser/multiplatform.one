@@ -45,7 +45,7 @@ import { KeycloakContext } from "./context";
 
 export class Keycloak extends BaseKeycloak {
   constructor(
-    public readonly config: KeycloakConfig,
+    config: KeycloakConfig,
     input?: string | KeycloakClient | KeycloakMock | Session,
     idToken?: string,
     refreshToken?: string,

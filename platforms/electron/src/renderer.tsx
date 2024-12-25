@@ -25,11 +25,10 @@ import { languages, namespaces } from "app/i18n";
 import { resources } from "app/i18n/resources";
 import { GlobalProvider } from "app/providers";
 import i18n from "i18next";
-import { config } from "multiplatform.one";
+import { config, logger } from "multiplatform.one";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { BrowserRouter } from "react-router-dom";
-import { Text } from "ui";
 import tamaguiConfig from "../tamagui.config";
 import { Router } from "./Router";
 
@@ -45,7 +44,7 @@ i18n
       escapeValue: false,
     },
   })
-  .catch(console.error);
+  .catch(logger.error);
 i18n.changeLanguage(config.get("I18N_DEFAULT_LANGUAGE", "en"));
 
 function App() {
