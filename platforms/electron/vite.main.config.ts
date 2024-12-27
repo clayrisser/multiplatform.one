@@ -21,7 +21,6 @@
 
 import { defineConfig } from "vite";
 
-// https://vitejs.dev/config
 export default defineConfig({
   build: {
     minify: false,
@@ -35,7 +34,6 @@ export default defineConfig({
     },
   },
   resolve: {
-    // Some libs that can run in both Web and Node.js, such as `axios`
     mainFields: ["electron", "module", "jsnext:main", "jsnext"],
     conditions: ["electron", "node"],
     extensions: [

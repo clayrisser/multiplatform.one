@@ -80,3 +80,5 @@ function flattenLayouts<Props>(
 export type WithLayout = <Props>(
   Component: ComponentType<Props>,
 ) => ComponentType<Props>;
+
+export const isDev = process.env.NODE_ENV === "development" || __DEV__;

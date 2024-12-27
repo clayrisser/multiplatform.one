@@ -19,7 +19,6 @@
  * limitations under the License.
  */
 
-import { useKeycloak } from "@multiplatform.one/keycloak";
 import { Layout } from "app/screens/_layout";
 import { Screen as HomeScreen } from "app/screens/home";
 import { Route, Routes } from "react-router-dom";

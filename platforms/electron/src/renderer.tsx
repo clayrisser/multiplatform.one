@@ -25,6 +25,7 @@ import { languages, namespaces } from "app/i18n";
 import { resources } from "app/i18n/resources";
 import { GlobalProvider } from "app/providers";
 import i18n from "i18next";
+import { isDev } from "multiplatform.one";
 import { config, logger } from "multiplatform.one";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
@@ -50,7 +51,7 @@ i18n.changeLanguage(config.get("I18N_DEFAULT_LANGUAGE", "en"));
 function App() {
   return (
     <GlobalProvider
-      disableInjectCSS
+      disableInjectCSS={!isDev}
       tamaguiConfig={tamaguiConfig}
       // theme={{
       //   root: scheme,
