@@ -486,6 +486,7 @@ export function createApp(options: AppOptions): TypeGraphQLApp {
             addon.afterStart?.(app, options, startOptions, result),
           ),
         );
+        startOptions?.afterStart?.(app, options, startOptions, result);
         return result;
       } catch (err) {
         logger.error(err);

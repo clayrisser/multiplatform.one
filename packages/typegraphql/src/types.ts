@@ -123,6 +123,12 @@ export interface StartOptions {
     metrics?: boolean | number;
     server?: boolean | number;
   };
+  afterStart?: (
+    app: Omit<TypeGraphQLApp, "start">,
+    appOptions: AppOptions,
+    startOptions: StartOptions,
+    result: StartResult,
+  ) => Promise<void>;
 }
 
 export type StartResult = Omit<TypeGraphQLApp, "start"> & {

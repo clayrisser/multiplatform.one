@@ -2,3 +2,4 @@
 /dist
 /generated
 /prisma/dist
+/core

@@ -1,7 +1,7 @@
-/**
+/*
  * File: /main.ts
  * Project: api
- * File Created: 05-11-2024 04:15:00
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -23,6 +23,7 @@ import "reflect-metadata";
 import { fileURLToPath } from "node:url";
 import { createApp } from "@multiplatform.one/typegraphql";
 import { options } from "./app";
+import { PING_PONG_EVENTS, pubSub } from "./pubSub";
 
 const { API_PORT } = process.env;
 

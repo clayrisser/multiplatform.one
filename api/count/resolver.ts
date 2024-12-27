@@ -20,7 +20,7 @@
  */
 
 import { Authorized } from "@multiplatform.one/keycloak-typegraphql";
-import { Injectable, Inject } from "@multiplatform.one/typegraphql";
+import { Inject, Injectable } from "@multiplatform.one/typegraphql";
 import { Mutation, Query, Resolver, Root, Subscription } from "type-graphql";
 import { PING_PONG_EVENTS, pubSub } from "../pubSub";
 import { CountService } from "./service";
