@@ -20,27 +20,20 @@
  */
 
 import * as Sentry from "@sentry/electron/main";
-import type { Event } from "@sentry/types";
 
 export function initializeSentry(processType: "main" | "renderer") {
   const SentryModule =
     processType === "main"
       ? require("@sentry/electron/main")
       : require("@sentry/electron/renderer");
-
   SentryModule.init({
     dsn: process.env.SENTRY_DSN,
     environment: process.env.NODE_ENV || "development",
     release: process.env.npm_package_version,
     debug: process.env.NODE_ENV === "development",
-    beforeSend(event: Event) {
-      // You can modify the event here or prevent it from being sent
-      return event;
-    },
   });
 }
 
-// Add context information to Sentry
 export function addSentryContext(
   key: string,
   value: Record<string, any> | string | number | boolean,
@@ -53,5 +46,4 @@ export function addSentryContext(
   }
 }
 
-// Export Sentry for direct access if needed
 export { Sentry };

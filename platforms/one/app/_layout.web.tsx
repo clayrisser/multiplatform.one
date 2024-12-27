@@ -19,7 +19,6 @@
  * limitations under the License.
  */
 
-// import "../tamagui.css";
 import "./_layout.css";
 import "@tamagui/core/reset.css";
 import resources from "virtual:i18next-loader";
@@ -28,7 +27,7 @@ import { languages, namespaces } from "app/i18n";
 import { GlobalProvider } from "app/providers";
 import { Layout as RootLayout } from "app/screens/_layout";
 import i18n from "i18next";
-import { config, logger } from "multiplatform.one";
+import { config, isDev, logger } from "multiplatform.one";
 import { LoadProgressBar, Slot } from "one";
 import type { ReactNode } from "react";
 import { initReactI18next } from "react-i18next";
@@ -59,7 +58,7 @@ export default function Layout() {
         content="width=device-width, initial-scale=1, maximum-scale=5"
       />
       <link rel="icon" href="/favicon.svg" />
-      <link rel="stylesheet" href="/tamagui.css" />
+      {!isDev && <link rel="stylesheet" href="/tamagui.css" />}
       <LoadProgressBar />
       <SchemeProvider>
         <RootProvider>
@@ -76,7 +75,7 @@ const RootProvider = ({ children }: { children: ReactNode }) => {
   const [scheme] = useColorScheme();
   return (
     <GlobalProvider
-      disableInjectCSS
+      // disableInjectCSS={!isDev}
       tamaguiConfig={tamaguiConfig}
       theme={{
         root: scheme,

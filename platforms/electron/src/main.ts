@@ -23,15 +23,8 @@ import { dirname, join, resolve } from "node:path";
 import { BrowserWindow, app, ipcMain, session } from "electron";
 import { type LogPayload, Logger, logger } from "multiplatform.one";
 
-// Disable GPU acceleration in development container
 app.disableHardwareAcceleration();
-
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require("electron-squirrel-startup")) {
-  app.quit();
-}
-
-// Set up IPC handlers for path operations
+if (require("electron-squirrel-startup")) app.quit();
 ipcMain.handle("getAppPath", () => app.getAppPath());
 ipcMain.handle("getPath", (_, name: Parameters<typeof app.getPath>[0]) =>
   app.getPath(name),
@@ -84,23 +77,18 @@ function createWindow() {
   try {
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
       mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
-      logger.debug(
-        `Loading dev server URL: ${MAIN_WINDOW_VITE_DEV_SERVER_URL}`,
-      );
     } else {
       const filePath = join(
         __dirname,
         `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`,
       );
       mainWindow.loadFile(filePath);
-      logger.debug(`Loading file: ${filePath}`);
     }
   } catch (err) {
-    logger.error("Failed to load window", err);
+    logger.error(err);
   }
   if (process.env.NODE_ENV === "development") {
     mainWindow.webContents.openDevTools();
-    logger.debug("DevTools opened in development mode");
   }
 }
 

@@ -4,32 +4,44 @@ services:
     command: sleep infinity
     network_mode: host
     privileged: true
+    working_dir: /workspace/development
+    extra_hosts:
+      account.localhost: 127.0.0.1
+      account.test: 127.0.0.1
+      app.localhost: 127.0.0.1
+      app.test: 127.0.0.1
+      docs.localhost: 127.0.0.1
+      docs.test: 127.0.0.1
+      frappe.localhost: 127.0.0.1
+      frappe.test: 127.0.0.1
+      storybook.localhost: 127.0.0.1
+      storybook.test: 127.0.0.1
     security_opt:
       - seccomp=unconfined
     cap_add:
       - SYS_ADMIN
       - SYS_CHROOT
     environment:
-      - DISPLAY
-      - XAUTHORITY=/tmp/.docker.xauth
-      - LIBGL_ALWAYS_SOFTWARE=1
-      - MESA_GL_VERSION_OVERRIDE=4.5
-      - MESA_GLSL_VERSION_OVERRIDE=450
       - DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
-      - GTK_THEME=Adwaita:dark
-      - GTK_APPLICATION_PREFER_DARK_THEME=1
+      - DISPLAY
       - GNOME_SHELL_THEME=dark
+      - GTK_APPLICATION_PREFER_DARK_THEME=1
+      - GTK_THEME=Adwaita:dark
+      - LIBGL_ALWAYS_SOFTWARE=1
+      - MESA_GLSL_VERSION_OVERRIDE=450
+      - MESA_GL_VERSION_OVERRIDE=4.5
+      - XAUTHORITY=/tmp/.docker.xauth
     devices:
       - /dev/dri:/dev/dri
     tmpfs:
       - /dev/shm:rw,nosuid,nodev,exec,size=2g
       - /tmp:rw,nosuid,nodev,exec,size=2g,mode=1777
     volumes:
-      - ..:/workspace/development:rw
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - /run/dbus/system_bus_socket:/run/dbus/system_bus_socket
       - ${XAUTHORITY:-~/.Xauthority}:/tmp/.docker.xauth:rw
+      - ..:/workspace/development:rw
+      - /run/dbus/system_bus_socket:/run/dbus/system_bus_socket
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /var/run/docker.sock:/var/run/docker.sock
 
   caddy:
     image: caddy:latest

@@ -1,5 +1,6 @@
 ahmadalli
 amdgpu
+asar
 autheticator
 authjs
 autodocs

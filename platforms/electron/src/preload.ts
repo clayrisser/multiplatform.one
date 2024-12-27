@@ -21,7 +21,6 @@
 
 import { contextBridge, ipcRenderer } from "electron";
 
-// Expose electron process info to renderer
 contextBridge.exposeInMainWorld("electronProcess", {
   env: { ...process.env },
   platform: process.platform,
@@ -30,7 +29,6 @@ contextBridge.exposeInMainWorld("electronProcess", {
   isElectron: true,
 });
 
-// Expose path utilities
 contextBridge.exposeInMainWorld("paths", {
   getAppPath: () => ipcRenderer.invoke("getAppPath"),
   getPath: (name: string) => ipcRenderer.invoke("getPath", name),
@@ -39,7 +37,6 @@ contextBridge.exposeInMainWorld("paths", {
   dirname: (path: string) => ipcRenderer.invoke("dirname", path),
 });
 
-// Expose IPC for communication
 contextBridge.exposeInMainWorld("electron", {
   ipcRenderer: {
     send: (...args: unknown[]) =>

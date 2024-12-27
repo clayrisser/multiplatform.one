@@ -1,4 +1,4 @@
-/**
+/*
  * File: /src/theme/shared.ts
  * Project: multiplatform.one
  * File Created: 19-11-2024 20:26:31
@@ -19,8 +19,8 @@
  * limitations under the License.
  */
 
+import { createUseStore } from "@multiplatform.one/use-store";
 import type { ThemeName } from "@tamagui/web";
-import { createUseStore } from "multiplatform.one";
 import { type PropsWithChildren, createContext } from "react";
 
 export type ColorScheme = "dark" | "light" | "system";
