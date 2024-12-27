@@ -20,16 +20,18 @@
  */
 
 import { Authorized } from "@multiplatform.one/keycloak-typegraphql";
-import { Injectable } from "@multiplatform.one/typegraphql";
+import { Injectable, Inject } from "@multiplatform.one/typegraphql";
 import { Mutation, Query, Resolver, Root, Subscription } from "type-graphql";
 import { PING_PONG_EVENTS, pubSub } from "../pubSub";
-import type { CountService } from "./service";
+import { CountService } from "./service";
 
 @Authorized()
 @Injectable()
 @Resolver((_of) => String)
 export class CountResolver {
-  constructor(private readonly countService: CountService) {}
+  constructor(
+    @Inject(CountService) private readonly countService: CountService,
+  ) {}
 
   @Subscription(() => Number, {
     async *subscribe() {

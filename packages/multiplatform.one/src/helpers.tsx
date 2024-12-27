@@ -81,4 +81,6 @@ export type WithLayout = <Props>(
   Component: ComponentType<Props>,
 ) => ComponentType<Props>;
 
-export const isDev = process.env.NODE_ENV === "development" || __DEV__;
+export const isDev =
+  process.env.NODE_ENV === "development" ||
+  (typeof __DEV__ !== "undefined" && __DEV__);
