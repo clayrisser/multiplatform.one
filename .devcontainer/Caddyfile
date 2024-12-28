@@ -4,7 +4,11 @@
 
 http://app.test, http://app.localhost {
 	handle /api/graphql {
-		reverse_proxy 127.0.0.1:{env.MESH_PORT}
+		reverse_proxy 127.0.0.1:{env.MESH_PORT} {
+			transport http {
+				websocket
+			}
+		}
 	}
 	handle {
 		reverse_proxy 127.0.0.1:{env.ONE_PORT}
@@ -27,6 +31,14 @@ http://docs.test, http://docs.localhost {
 }
 
 http://frappe.test, http://frappe.localhost {
+	handle /socket.io/* {
+		reverse_proxy 127.0.0.1:9000 {
+			header_up Host frappe.localhost
+			transport http {
+				websocket
+			}
+		}
+	}
 	handle {
 		reverse_proxy 127.0.0.1:8000 {
 			header_up Host frappe.localhost

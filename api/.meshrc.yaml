@@ -3,6 +3,8 @@ sources:
     handler:
       graphql:
         endpoint: http://localhost:5001/graphql
+        subscriptionsEndpoint: ws://localhost:5001/graphql
+        subscriptionsProtocol: WS
         operationHeaders:
           Authorization: "{context.headers.Authorization}"
           Cookie: "{context.headers.Cookie}"
@@ -17,13 +19,22 @@ sources:
     handler:
       graphql:
         endpoint: http://frappe.localhost/api/method/graphql
+        subscriptionsEndpoint: ws://frappe.localhost/api/method/graphql
+        subscriptionsProtocol: WS
         operationHeaders:
           Authorization: "{context.headers.Authorization}"
           Cookie: "{context.headers.Cookie}"
     transforms:
+      - prefix:
+          mode: wrap
+          value: Frappe
       - filterSchema:
           mode: wrap
-          filters: []
+          filters:
+            - "Subscription.doc_events"
+serve:
+  browser: false
+additionalEnvelopPlugins: './plugins/envelopPlugins'
 plugins:
   - rateLimit:
       config: []
@@ -32,9 +43,4 @@ plugins:
   - maxDepth:
       n: 10
   - blockFieldSuggestions: {}
-  - operationFieldPermissions:
-      permissions:
-        - if: 'true'
-          allow:
-            - '*'
   - responseCache: {}

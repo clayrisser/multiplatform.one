@@ -25,7 +25,7 @@ import { Mutation, Query, Resolver, Root, Subscription } from "type-graphql";
 import { PING_PONG_EVENTS, pubSub } from "../pubSub";
 import { CountService } from "./service";
 
-@Authorized()
+// @Authorized()
 @Injectable()
 @Resolver((_of) => String)
 export class CountResolver {

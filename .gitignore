@@ -3,6 +3,7 @@
 .turbo/
 /.changeset/*.md
 /.dockerignore
+/core
 /null
 debug.json
 package-lock.json
