@@ -1,7 +1,7 @@
-/*
- * File: /plugins/envelopPlugins.js
- * Project: api
- * File Created: 28-12-2024 04:20:57
+/**
+ * File: /src/index.ts
+ * Project: @multiplatform.one/envelop-multiplatform-plugin
+ * File Created: 28-12-2024 07:34:16
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,39 +19,28 @@
  * limitations under the License.
  */
 
-const { useEngine } = require("@envelop/core");
-const { createClient } = require("graphql-ws");
-const ws = require("ws");
+import { useEngine } from "@envelop/core";
+import { createClient } from "graphql-ws";
+import WebSocket from "ws";
+import type { MultiplatformPluginOptions } from "./types";
 
-const apiClient = createClient({
-  url: "ws://localhost:5001/graphql",
-  webSocketImpl: ws,
-  connectionParams: {
-    headers: {},
-  },
-});
-
-const frappeClient = createClient({
-  url: "ws://frappe.localhost/api/method/graphql",
-  webSocketImpl: ws,
-  connectionParams: {
-    headers: {},
-  },
-});
-
-function createSubscriptionIterator(client, query, variables) {
-  let unsubscribe;
-  const queue = [];
-  let waiting;
+function createSubscriptionIterator(
+  client: any,
+  query: string,
+  variables: any,
+) {
+  let unsubscribe: (() => void) | null;
+  const queue: any[] = [];
+  let waiting: ((result: any) => void) | null = null;
   let done = false;
 
-  const subscription = client.subscribe(
+  client.subscribe(
     {
       query,
       variables,
     },
     {
-      next: (data) => {
+      next: (data: any) => {
         if (waiting) {
           const resolve = waiting;
           waiting = null;
@@ -60,7 +49,7 @@ function createSubscriptionIterator(client, query, variables) {
           queue.push(data);
         }
       },
-      error: (error) => {
+      error: (error: Error) => {
         console.error("Subscription error:", error);
         done = true;
         if (waiting) {
@@ -102,8 +91,26 @@ function createSubscriptionIterator(client, query, variables) {
   };
 }
 
-const plugins = [
-  useEngine({
+export default function multiplatformPlugin(
+  options: MultiplatformPluginOptions = {},
+) {
+  const apiClient = createClient({
+    url: options.apiUrl || "ws://localhost:5001/graphql",
+    webSocketImpl: WebSocket,
+    connectionParams: {
+      headers: {},
+    },
+  });
+
+  const frappeClient = createClient({
+    url: options.frappeUrl || "ws://frappe.localhost/api/method/graphql",
+    webSocketImpl: WebSocket,
+    connectionParams: {
+      headers: {},
+    },
+  });
+
+  return useEngine({
     execute: ({
       schema,
       document,
@@ -142,7 +149,7 @@ const plugins = [
         },
       };
     },
-  }),
-];
+  });
+}
 
-module.exports = plugins;
+export * from "./types";

@@ -1,0 +1,56 @@
+{
+  "name": "@multiplatform.one/envelop-multiplatform-plugin",
+  "version": "0.0.1",
+  "description": "Envelop plugin for multiplatform",
+  "sideEffects": false,
+  "keywords": ["graphql", "envelop", "plugin"],
+  "homepage": "https://multiplatform.one",
+  "bugs": {
+    "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues",
+    "email": "support@risserlabs.com"
+  },
+  "license": "Apache-2.0",
+  "author": "BitSpur <support@risserlabs.com> (https://risserlabs.com)",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "source": "src/index.ts",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf lib",
+    "watch": "tsup --watch"
+  },
+  "files": ["lib", "src"],
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
+  },
+  "dependencies": {
+    "@envelop/core": "^5.0.2",
+    "@multiplatform.one/typegraphql": "workspace:1.1.8",
+    "graphql": "^16.8.1",
+    "graphql-ws": "^5.14.3",
+    "graphql-yoga": "^5.10.8",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "@types/node": "~20.12.13",
+    "@types/ws": "^8.5.10",
+    "rimraf": "^5.0.5",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -9,7 +9,6 @@
     "seed": "cd prisma && tsup && cd .. && prisma db seed"
   },
   "dependencies": {
-    "@envelop/core": "^5.0.2",
     "@escape.tech/graphql-armor-block-field-suggestions": "^2.2.0",
     "@escape.tech/graphql-armor-max-depth": "^2.4.0",
     "@escape.tech/graphql-armor-max-tokens": "^2.5.0",
@@ -21,6 +20,7 @@
     "@graphql-mesh/transform-filter-schema": "^0.102.13",
     "@graphql-mesh/transform-prefix": "^0.102.13",
     "@multiplatform.one/keycloak-typegraphql": "workspace:1.1.10",
+    "@multiplatform.one/envelop-multiplatform-plugin": "workspace:0.0.1",
     "@multiplatform.one/prisma-scripts": "workspace:1.1.8",
     "@multiplatform.one/typegraphql": "workspace:1.1.8",
     "@prisma/client": "~5.12.1",
