@@ -83,7 +83,7 @@ export async function waitForKeycloak(interval: number) {
   return waitForKeycloak(interval);
 }
 
-export function formatServiceList(services: string[]): string {
+export function formatServiceList(services: readonly string[]): string {
   if (services.length === 1) return services[0];
   if (services.length === 2) return `${services[0]} and ${services[1]}`;
   return `${services.slice(0, -1).join(", ")} and ${services[services.length - 1]}`;

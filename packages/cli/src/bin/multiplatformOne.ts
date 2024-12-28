@@ -19,27 +19,6 @@
  * limitations under the License.
  */
 
-/*
- * File: /src/bin/multiplatformOne.ts
- * Project: @multiplatform.one/cli
- * File Created: 19-11-2024 14:26:31
- * Author: Clay Risser
- * -----
- * BitSpur (c) Copyright 2021 - 2024
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
@@ -47,6 +26,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   formatServiceList,
+  projectRoot,
   waitForApi,
   waitForFrappe,
   waitForKeycloak,
@@ -61,14 +41,17 @@ import ora from "ora";
 import type { CookieCutterConfig } from "../types";
 
 const availableBackends = ["api", "frappe"];
+const defaultDotenvPath = path.resolve(projectRoot, ".env");
 const availablePlatforms = [
-  // "electron",
+  "electron",
   "expo",
   "keycloak",
   "one",
   "storybook",
   "storybook-expo",
   "vocs",
+  "vscode",
+  "webext",
 ];
 
 process.env.COOKIECUTTER = `sh ${path.resolve(
@@ -318,7 +301,7 @@ program
     `the services to wait for (${waitServices.join(", ")})`,
   )
   .action(async (servicesString, options) => {
-    dotenv.config({ path: options.dotenv });
+    dotenv.config({ path: options.dotenv || defaultDotenvPath });
     const interval = Number.parseInt(options.interval);
     const timeout = Number.parseInt(options.timeout);
     const services: string[] = servicesString.split(",");
@@ -380,6 +363,56 @@ program
       process.exit(1);
     } finally {
       clearTimeout(timeoutId);
+    }
+  });
+
+program
+  .command("mesh")
+  .description("start the mesh server")
+  .option("-p, --port <port>", "port to run mesh on", "5002")
+  .option("-e, --dotenv <dotenv>", "dotenv file path", ".env")
+  .option("-f, --frappe", "use frappe", false)
+  .option("-a, --api", "use api", false)
+  .action(async (options) => {
+    dotenv.config({ path: options.dotenv || defaultDotenvPath });
+    process.env.UWS_HTTP_MAX_HEADERS_SIZE = "16384";
+    if (options.frappe || options.api) {
+      process.env.MESH_API = options.api ? "1" : "0";
+      process.env.MESH_FRAPPE = options.frappe ? "1" : "0";
+    }
+    const spinner = ora("waiting for api and frappe").start();
+    try {
+      await Promise.all([
+        ...(process.env.MESH_API === "1"
+          ? [
+              waitForApi(1000).then(() => {
+                spinner.succeed("api is ready");
+              }),
+            ]
+          : []),
+        ...(process.env.MESH_FRAPPE === "1"
+          ? [
+              waitForFrappe(1000).then(() => {
+                spinner.succeed("frappe is ready");
+              }),
+            ]
+          : []),
+      ]);
+      await execa("mesh", ["build"], { stdio: "inherit" });
+      await execa(
+        "mesh",
+        [
+          "dev",
+          "--port",
+          Number(options.port || process.env.MESH_PORT || 5002).toString(),
+        ],
+        {
+          stdio: "inherit",
+        },
+      );
+    } catch (err) {
+      spinner.fail(err);
+      process.exit(1);
     }
   });
 

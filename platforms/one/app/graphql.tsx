@@ -49,7 +49,8 @@ function GraphiQLPage() {
   }, [keycloak?.authenticated]);
 
   if (!ready) return <>{}</>;
-  const uri = `${config.get("BASE_URL", "http://app.localhost")}/api/graphql`;
+  // const uri = `${config.get("BASE_URL", "http://app.localhost")}/api/graphql`;
+  const uri = "http://localhost:5002/graphql";
   return (
     <div
       style={{

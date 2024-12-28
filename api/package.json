@@ -5,7 +5,7 @@
     "build": "tsup && vite build",
     "dev": "vite build --watch",
     "generate": "prisma generate",
-    "mesh": "pnpm multiplatform.one wait -e ../.env api,frappe && export UWS_HTTP_MAX_HEADERS_SIZE=16384 && mesh build && mesh dev --port ${MESH_PORT:-5002}",
+    "mesh": "multiplatform.one mesh",
     "seed": "cd prisma && tsup && cd .. && prisma db seed"
   },
   "dependencies": {

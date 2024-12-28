@@ -1,7 +1,7 @@
 /**
- * File: /src/index.ts
+ * File: /src/helpers.ts
  * Project: @multiplatform.one/utils
- * File Created: 19-11-2024 20:26:31
+ * File Created: 28-12-2024 11:46:56
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,6 +19,4 @@
  * limitations under the License.
  */
 
-export * from "./build";
-export * from "./helpers";
-export * from "./wait";
+export const projectRoot = require.resolve("react/package.json").slice(0, -32);

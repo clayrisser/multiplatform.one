@@ -21,62 +21,71 @@
 
 module.exports = {
   sources: [
-    {
-      name: "Api",
-      handler: {
-        graphql: {
-          endpoint: "http://localhost:5001/graphql",
-          subscriptionsEndpoint: "ws://localhost:5001/graphql",
-          subscriptionsProtocol: "WS",
-          operationHeaders: {
-            Authorization: "{context.headers.Authorization}",
-            Cookie: "{context.headers.Cookie}",
+    ...(process.env.MESH_API === "1"
+      ? [
+          {
+            name: "Api",
+            handler: {
+              graphql: {
+                endpoint: "http://localhost:5001/graphql",
+                subscriptionsEndpoint: "ws://localhost:5001/graphql",
+                subscriptionsProtocol: "WS",
+                operationHeaders: {
+                  Authorization: "{context.headers.Authorization}",
+                  Cookie: "{context.headers.Cookie}",
+                },
+              },
+            },
+            transforms: [
+              {
+                prefix: {
+                  mode: "wrap",
+                  value: "Api",
+                },
+              },
+              {
+                filterSchema: {
+                  mode: "wrap",
+                  filters: [],
+                },
+              },
+            ],
           },
-        },
-      },
-      transforms: [
-        {
-          prefix: {
-            mode: "wrap",
-            value: "Api",
+        ]
+      : []),
+    ...(process.env.MESH_FRAPPE === "1"
+      ? [
+          {
+            name: "Frappe",
+            handler: {
+              graphql: {
+                endpoint: "http://frappe.localhost/api/method/graphql",
+                subscriptionsEndpoint:
+                  "ws://frappe.localhost/api/method/graphql",
+                subscriptionsProtocol: "WS",
+                operationHeaders: {
+                  Authorization: "{context.headers.Authorization}",
+                  Cookie: "{context.headers.Cookie}",
+                },
+              },
+            },
+            transforms: [
+              {
+                prefix: {
+                  mode: "wrap",
+                  value: "Frappe",
+                },
+              },
+              {
+                filterSchema: {
+                  mode: "wrap",
+                  filters: ["Subscription.doc_events"],
+                },
+              },
+            ],
           },
-        },
-        {
-          filterSchema: {
-            mode: "wrap",
-            filters: [],
-          },
-        },
-      ],
-    },
-    {
-      name: "Frappe",
-      handler: {
-        graphql: {
-          endpoint: "http://frappe.localhost/api/method/graphql",
-          subscriptionsEndpoint: "ws://frappe.localhost/api/method/graphql",
-          subscriptionsProtocol: "WS",
-          operationHeaders: {
-            Authorization: "{context.headers.Authorization}",
-            Cookie: "{context.headers.Cookie}",
-          },
-        },
-      },
-      transforms: [
-        {
-          prefix: {
-            mode: "wrap",
-            value: "Frappe",
-          },
-        },
-        {
-          filterSchema: {
-            mode: "wrap",
-            filters: ["Subscription.doc_events"],
-          },
-        },
-      ],
-    },
+        ]
+      : []),
   ],
   additionalEnvelopPlugins: "./envelopPlugins.js",
   serve: {

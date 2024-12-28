@@ -20,9 +20,9 @@
  */
 
 import path from "node:path";
+import { projectRoot } from "./helpers";
 
 const logger = console;
-const projectRoot = require.resolve("react/package.json").slice(0, -32);
 
 export interface LookupTranspileModulesOptions {
   log?: boolean;

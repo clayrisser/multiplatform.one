@@ -20,58 +20,60 @@
  */
 
 import { useEngine } from "@envelop/core";
+import { execute as graphqlExecute } from "graphql";
 import { createClient } from "graphql-ws";
+import type { Client } from "graphql-ws";
 import WebSocket from "ws";
 import type { MultiplatformPluginOptions } from "./types";
 
-function createSubscriptionIterator(
-  client: any,
-  query: string,
-  variables: any,
-) {
-  let unsubscribe: (() => void) | null;
-  const queue: any[] = [];
-  let waiting: ((result: any) => void) | null = null;
-  let done = false;
+const logger = console;
 
+function createSubscriptionIterator(
+  client: Client,
+  query: string,
+  variables: Record<string, unknown>,
+) {
+  let unsubscribe: (() => void) | undefined;
+  const queue: unknown[] = [];
+  let waiting: ((result: IteratorResult<unknown>) => void) | undefined;
+  let done = false;
   client.subscribe(
     {
       query,
       variables,
     },
     {
-      next: (data: any) => {
+      next(data: unknown) {
         if (waiting) {
           const resolve = waiting;
-          waiting = null;
+          waiting = undefined;
           resolve({ value: data, done: false });
         } else {
           queue.push(data);
         }
       },
-      error: (error: Error) => {
-        console.error("Subscription error:", error);
+      error(err: Error) {
+        logger.error(err);
         done = true;
         if (waiting) {
           const resolve = waiting;
-          waiting = null;
-          resolve({ done: true });
+          waiting = undefined;
+          resolve({ value: undefined, done: true });
         }
       },
-      complete: () => {
+      complete() {
         done = true;
         if (waiting) {
           const resolve = waiting;
-          waiting = null;
-          resolve({ done: true });
+          waiting = undefined;
+          resolve({ value: undefined, done: true });
         }
       },
     },
   );
-
   return {
-    async next() {
-      if (done) return { done: true };
+    async next(): Promise<IteratorResult<unknown>> {
+      if (done) return { value: undefined, done: true };
       if (queue.length > 0) {
         const value = queue.shift();
         return { value, done: false };
@@ -80,71 +82,75 @@ function createSubscriptionIterator(
         waiting = resolve;
       });
     },
-    async return() {
+    async return(): Promise<IteratorResult<unknown>> {
       done = true;
       if (unsubscribe) {
         unsubscribe();
-        unsubscribe = null;
+        unsubscribe = undefined;
       }
-      return { done: true };
+      return { value: undefined, done: true };
     },
   };
+}
+
+function defaultExecute({ contextValue, document, schema, variableValues }) {
+  return graphqlExecute({
+    schema,
+    document,
+    contextValue,
+    variableValues,
+  });
 }
 
 export default function multiplatformPlugin(
   options: MultiplatformPluginOptions = {},
 ) {
-  const apiClient = createClient({
-    url: options.apiUrl || "ws://localhost:5001/graphql",
-    webSocketImpl: WebSocket,
-    connectionParams: {
-      headers: {},
-    },
-  });
-
-  const frappeClient = createClient({
-    url: options.frappeUrl || "ws://frappe.localhost/api/method/graphql",
-    webSocketImpl: WebSocket,
-    connectionParams: {
-      headers: {},
-    },
-  });
-
+  const apiClient = options.apiUrl
+    ? createClient({
+        url: options.apiUrl,
+        webSocketImpl: WebSocket,
+        connectionParams: {
+          headers: {},
+        },
+      })
+    : undefined;
+  const frappeClient = options.frappeUrl
+    ? createClient({
+        url: options.frappeUrl,
+        webSocketImpl: WebSocket,
+        connectionParams: {
+          headers: {},
+        },
+      })
+    : undefined;
   return useEngine({
     execute: ({
-      schema,
-      document,
       contextValue,
-      variableValues,
+      document,
       rootValue,
+      schema,
+      variableValues,
     }) => {
-      console.log("🎯 Execute:", {
-        operation: document?.definitions[0]?.operation,
-        query: document?.loc?.source?.body,
-      });
-      return rootValue.execute({
-        schema,
-        document,
+      const executor = rootValue?.execute || defaultExecute;
+      return executor({
         contextValue,
+        document,
+        schema,
         variableValues,
       });
     },
-    subscribe: ({ document, variableValues }) => {
+    subscribe({ document, variableValues }) {
       const query = document?.loc?.source?.body;
       if (!query) throw new Error("No query provided");
-
-      // Check if this is a doc_events subscription
       const isDocEvents = query.includes("doc_events");
-      console.log("🎯 Subscribe:", {
-        operation: document?.definitions[0]?.operation,
-        query,
-        isDocEvents,
-      });
-
+      const client = isDocEvents ? frappeClient : apiClient;
+      if (!client) {
+        throw new Error(
+          `missing url for ${isDocEvents ? "frappe" : "api"} client`,
+        );
+      }
       return {
         [Symbol.asyncIterator]() {
-          // Route to appropriate client based on the subscription type
-          const client = isDocEvents ? frappeClient : apiClient;
           return createSubscriptionIterator(client, query, variableValues);
         },
       };
