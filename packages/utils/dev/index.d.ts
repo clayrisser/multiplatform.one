@@ -1,7 +1,7 @@
-/*
- * File: /transpileModules/index.js
+/**
+ * File: /dev/index.d.ts
  * Project: @multiplatform.one/utils
- * File Created: 16-06-2024 14:28:33
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,4 +19,4 @@
  * limitations under the License.
  */
 
-export * from "../lib/build.js";
+export * from "../lib/dev";

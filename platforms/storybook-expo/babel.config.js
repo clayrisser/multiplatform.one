@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-const { lookupTamaguiModules } = require("@multiplatform.one/utils/build");
+const { lookupTamaguiModules } = require("@multiplatform.one/utils/dev");
 
 process.env.TAMAGUI_TARGET = "native";
 

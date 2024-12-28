@@ -25,7 +25,7 @@ const webpack = require("webpack");
 const {
   lookupTranspileModules,
   lookupTamaguiModules,
-} = require("@multiplatform.one/utils/build");
+} = require("@multiplatform.one/utils/dev");
 
 module.exports = {
   plugins: [

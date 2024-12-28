@@ -18,11 +18,18 @@
   "exports": {
     ".": {
       "import": "./lib/index.js",
-      "require": "./lib/index.js"
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts"
     },
-    "./build": {
-      "import": "./lib/build.js",
-      "require": "./lib/build.js"
+    "./dev": {
+      "types": "./lib/dev.d.ts",
+      "import": "./lib/dev.js",
+      "require": "./lib/dev.js"
+    },
+    "./meshConfig": {
+      "types": "./lib/meshConfig.d.ts",
+      "import": "./lib/meshConfig.js",
+      "require": "./lib/meshConfig.js"
     },
     "./package.json": "./package.json"
   },

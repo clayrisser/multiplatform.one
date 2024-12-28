@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-const { resolveConfig } = require("@multiplatform.one/utils/build");
+const { resolveConfig } = require("@multiplatform.one/utils/dev");
 const { public: publicConfigKeys } = require("../../app/config.json");
 const publicConfig = resolveConfig(publicConfigKeys);
 

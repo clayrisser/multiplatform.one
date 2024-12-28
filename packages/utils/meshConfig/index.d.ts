@@ -1,7 +1,7 @@
-/*
- * File: /tsup.config.ts
- * Project: @multiplatform.one/typegraphql
- * File Created: 04-04-2024 15:50:39
+/**
+ * File: /meshConfig/index.d.ts
+ * Project: @multiplatform.one/utils
+ * File Created: 28-12-2024 12:59:14
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,20 +19,4 @@
  * limitations under the License.
  */
 
-import { lookupTranspileModules } from "@multiplatform.one/utils/dev";
-import { defineConfig } from "tsup";
-
-export default defineConfig({
-  bundle: true,
-  clean: true,
-  dts: true,
-  entry: ["src/**/*.ts?(x)"],
-  entryPoints: ["src/index.ts"],
-  format: ["esm"],
-  minify: false,
-  outDir: "lib",
-  skipNodeModulesBundle: true,
-  noExternal: lookupTranspileModules([__dirname]),
-  splitting: true,
-  target: "es2022",
-});
+export * from "../lib/meshConfig";

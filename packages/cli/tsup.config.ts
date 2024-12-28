@@ -1,7 +1,7 @@
-/*
+/**
  * File: /tsup.config.ts
- * Project: @multiplatform.one/typegraphql
- * File Created: 04-04-2024 15:50:39
+ * Project: @multiplatform.one/cli
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-import { lookupTranspileModules } from "@multiplatform.one/utils/build";
+import { lookupTranspileModules } from "@multiplatform.one/utils/dev";
 import { defineConfig } from "tsup";
 
 export default defineConfig({

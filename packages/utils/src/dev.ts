@@ -1,5 +1,5 @@
 /**
- * File: /src/build.ts
+ * File: /src/dev.ts
  * Project: @multiplatform.one/utils
  * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
@@ -20,7 +20,6 @@
  */
 
 import path from "node:path";
-import { projectRoot } from "./helpers";
 
 const logger = console;
 
@@ -90,3 +89,7 @@ export function resolveConfig(
     {} as Record<string, string | undefined>,
   );
 }
+
+export const projectRoot = require.resolve("react/package.json").slice(0, -32);
+
+export * from "./wait";

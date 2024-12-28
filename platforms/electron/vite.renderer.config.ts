@@ -23,7 +23,7 @@ import path from "node:path";
 import {
   lookupTamaguiModules,
   resolveConfig,
-} from "@multiplatform.one/utils/build";
+} from "@multiplatform.one/utils/dev";
 import react from "@vitejs/plugin-react";
 import dotenv from "dotenv";
 import { defineConfig } from "vite";

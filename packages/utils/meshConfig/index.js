@@ -1,7 +1,7 @@
-/*
- * File: /transpileModules/index.d.ts
+/**
+ * File: /meshConfig/index.js
  * Project: @multiplatform.one/utils
- * File Created: 16-06-2024 14:28:33
+ * File Created: 28-12-2024 12:59:14
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,4 +19,4 @@
  * limitations under the License.
  */
 
-export * from "../lib/build";
+export * from "../lib/meshConfig.js";

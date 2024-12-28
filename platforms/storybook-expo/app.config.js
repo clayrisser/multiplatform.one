@@ -22,7 +22,7 @@
 const dotenv = require("dotenv");
 const { public: publicConfigKeys } = require("../../app/config.json");
 const path = require("node:path");
-const { resolveConfig } = require("@multiplatform.one/utils/build");
+const { resolveConfig } = require("@multiplatform.one/utils/dev");
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 const publicConfig = resolveConfig(publicConfigKeys);

@@ -23,7 +23,7 @@ import path from "node:path";
 import {
   lookupTamaguiModules,
   resolveConfig,
-} from "@multiplatform.one/utils/build";
+} from "@multiplatform.one/utils/dev";
 import { tamaguiPlugin } from "@tamagui/vite-plugin";
 import dotenv from "dotenv";
 import { one } from "one/vite";

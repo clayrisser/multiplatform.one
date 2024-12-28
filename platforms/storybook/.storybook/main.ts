@@ -25,7 +25,7 @@ import {
   lookupTamaguiModules,
   lookupTranspileModules,
   resolveConfig,
-} from "@multiplatform.one/utils/build";
+} from "@multiplatform.one/utils/dev";
 import type { StorybookConfig } from "@storybook/nextjs";
 import { public as publicConfigKeys } from "../../../app/config.json";
 

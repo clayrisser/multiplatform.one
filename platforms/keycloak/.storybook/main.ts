@@ -23,7 +23,7 @@ import path from "node:path";
 import {
   lookupTranspileModules,
   resolveConfig,
-} from "@multiplatform.one/utils/build";
+} from "@multiplatform.one/utils/dev";
 import type { StorybookConfig } from "@storybook/react-webpack5";
 import webpack from "webpack";
 import { public as publicConfigKeys } from "../../../app/config.json";
