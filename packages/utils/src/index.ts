@@ -1,7 +1,7 @@
-/*
+/**
  * File: /src/index.ts
- * Project: @multiplatform.one/prisma-scripts
- * File Created: 04-04-2024 15:50:39
+ * Project: @multiplatform.one/utils
+ * File Created: 19-11-2024 20:26:31
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,4 +19,5 @@
  * limitations under the License.
  */
 
-export type {};
+export * from "./build";
+export * from "./wait";

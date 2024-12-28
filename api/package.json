@@ -23,6 +23,7 @@
     "@multiplatform.one/envelop-multiplatform-plugin": "workspace:0.0.1",
     "@multiplatform.one/prisma-scripts": "workspace:1.1.8",
     "@multiplatform.one/typegraphql": "workspace:1.1.8",
+    "@multiplatform.one/utils": "workspace:0.1.8",
     "@prisma/client": "~5.12.1",
     "@whatwg-node/server": "^0.9.65",
     "class-validator": "^0.14.1",
