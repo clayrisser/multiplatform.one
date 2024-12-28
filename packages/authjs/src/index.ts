@@ -34,10 +34,7 @@ export async function authHandler(
     throw new HTTPException(500, { message: "Missing AUTH_SECRET" });
   }
   if (req.url.endsWith("/_log")) return new Response();
-  const res = await Auth(
-    await reqWithEnvUrl(req, getAuthUrl(req, config)),
-    config,
-  );
+  const res = await Auth(reqWithEnvUrl(req, getAuthUrl(req, config)), config);
   return new Response(res.body, res);
 }
 
@@ -60,9 +57,7 @@ export async function getAuthUser(
   req: Request,
   config: AuthConfig,
 ): Promise<AuthUser | undefined> {
-  const { origin } = new URL(
-    (await reqWithEnvUrl(req, getAuthUrl(req, config))).url,
-  );
+  const { origin } = new URL(reqWithEnvUrl(req, getAuthUrl(req, config)).url);
   const request = new Request(`${origin}${config.basePath}/session`, {
     headers: { cookie: req.headers.get("cookie") ?? "" },
   });

@@ -305,64 +305,10 @@ program
     const interval = Number.parseInt(options.interval);
     const timeout = Number.parseInt(options.timeout);
     const services: string[] = servicesString.split(",");
-    const unreadyServices = [...services];
-    const spinner = ora(
-      `waiting for ${formatServiceList(unreadyServices)}`,
-    ).start();
-    function updateSpinner(readyService: string) {
-      unreadyServices.splice(unreadyServices.indexOf(readyService), 1);
-      spinner.stop();
-      spinner.succeed(`${readyService} is ready`);
-      if (!unreadyServices.length) return;
-      spinner.start(`waiting for ${formatServiceList(unreadyServices)}`);
-    }
-    let timeoutId: NodeJS.Timeout;
     try {
-      await Promise.race([
-        Promise.all(
-          services.map(async (service) => {
-            switch (service) {
-              case "api": {
-                await waitForApi(interval);
-                updateSpinner("api");
-                return;
-              }
-              case "frappe": {
-                await waitForFrappe(interval);
-                updateSpinner("frappe");
-                return;
-              }
-              case "postgres": {
-                await waitForPostgres(interval);
-                updateSpinner("postgres");
-                return;
-              }
-              case "keycloak": {
-                await waitForKeycloak(interval);
-                updateSpinner("keycloak");
-                return;
-              }
-            }
-            ora(
-              `available services are ${formatServiceList(waitServices)}`,
-            ).fail();
-          }),
-        ),
-        new Promise((_, reject) => {
-          timeoutId = setTimeout(() => reject(new Error("Timeout")), timeout);
-        }),
-      ]);
+      await waitWithSpinner(services, { interval, timeout });
     } catch (err) {
-      if (err instanceof Error && err.message === "Timeout") {
-        spinner.fail(
-          `${formatServiceList(unreadyServices)} timed out after ${timeout}ms`,
-        );
-      } else {
-        spinner.fail(err);
-      }
       process.exit(1);
-    } finally {
-      clearTimeout(timeoutId);
     }
   });
 
@@ -373,6 +319,8 @@ program
   .option("-e, --dotenv <dotenv>", "dotenv file path", ".env")
   .option("-f, --frappe", "use frappe", false)
   .option("-a, --api", "use api", false)
+  .option("-i, --interval <interval>", "interval to wait for", "1000")
+  .option("-t, --timeout <timeout>", "timeout to wait for", "600000")
   .action(async (options) => {
     dotenv.config({ path: options.dotenv || defaultDotenvPath });
     process.env.UWS_HTTP_MAX_HEADERS_SIZE = "16384";
@@ -380,40 +328,95 @@ program
       process.env.MESH_API = options.api ? "1" : "0";
       process.env.MESH_FRAPPE = options.frappe ? "1" : "0";
     }
-    const spinner = ora("waiting for api and frappe").start();
-    try {
-      await Promise.all([
-        ...(process.env.MESH_API === "1"
-          ? [
-              waitForApi(1000).then(() => {
-                spinner.succeed("api is ready");
-              }),
-            ]
-          : []),
-        ...(process.env.MESH_FRAPPE === "1"
-          ? [
-              waitForFrappe(1000).then(() => {
-                spinner.succeed("frappe is ready");
-              }),
-            ]
-          : []),
-      ]);
-      await execa("mesh", ["build"], { stdio: "inherit" });
-      await execa(
-        "mesh",
-        [
-          "dev",
-          "--port",
-          Number(options.port || process.env.MESH_PORT || 5002).toString(),
-        ],
-        {
-          stdio: "inherit",
-        },
-      );
-    } catch (err) {
-      spinner.fail(err);
-      process.exit(1);
+    if (
+      !(await fs
+        .stat(path.resolve(projectRoot, "app/main.ts"))
+        .catch(() => false))
+    ) {
+      process.env.MESH_APP = "0";
     }
+    if (
+      !(await fs
+        .stat(path.resolve(projectRoot, "frappe/package.json"))
+        .catch(() => false))
+    ) {
+      process.env.MESH_FRAPPE = "0";
+    }
+    const services = [
+      ...(process.env.MESH_API === "1" ? ["api"] : []),
+      ...(process.env.MESH_FRAPPE === "1" ? ["frappe"] : []),
+    ];
+    if (services.length > 0) {
+      const interval = Number.parseInt(options.interval);
+      const timeout = Number.parseInt(options.timeout);
+      try {
+        await waitWithSpinner(services, { interval, timeout });
+      } catch (err) {
+        process.exit(1);
+      }
+    }
+    await execa(
+      "mesh",
+      [
+        "dev",
+        "--port",
+        Number(options.port || process.env.MESH_PORT || 5002).toString(),
+      ],
+      {
+        stdio: "inherit",
+      },
+    );
   });
 
 program.parse(process.argv);
+
+async function waitWithSpinner(
+  services: string[],
+  options: { interval?: number; timeout?: number } = {},
+) {
+  const { interval = 1000, timeout = 600000 } = options;
+  const waitFunctions = {
+    api: waitForApi,
+    frappe: waitForFrappe,
+    postgres: waitForPostgres,
+    keycloak: waitForKeycloak,
+  };
+  const unreadyServices = [...services];
+  const spinner = ora(
+    `waiting for ${formatServiceList(unreadyServices)}`,
+  ).start();
+  function updateSpinner(readyService: string) {
+    unreadyServices.splice(unreadyServices.indexOf(readyService), 1);
+    spinner.succeed(`${readyService} is ready`);
+    if (unreadyServices.length) {
+      spinner.start(`waiting for ${formatServiceList(unreadyServices)}`);
+    }
+  }
+  let timeoutId: NodeJS.Timeout;
+  try {
+    await Promise.race([
+      Promise.all(
+        services.map(async (service) => {
+          const waitFn = waitFunctions[service];
+          if (!waitFn) throw new Error(`Unknown service: ${service}`);
+          await waitFn(interval);
+          updateSpinner(service);
+        }),
+      ),
+      new Promise((_, reject) => {
+        timeoutId = setTimeout(() => reject(new Error("Timeout")), timeout);
+      }),
+    ]);
+  } catch (err) {
+    if (err instanceof Error && err.message === "Timeout") {
+      spinner.fail(
+        `${formatServiceList(unreadyServices)} timed out after ${timeout}ms`,
+      );
+    } else {
+      spinner.fail(err);
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
