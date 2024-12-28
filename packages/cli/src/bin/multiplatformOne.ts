@@ -32,7 +32,7 @@ import {
   waitForKeycloak,
   waitForPostgres,
   waitServices,
-} from "@multiplatform.one/utils";
+} from "@multiplatform.one/utils/dev";
 import { program } from "commander";
 import dotenv from "dotenv";
 import { execa } from "execa";
