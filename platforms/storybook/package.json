@@ -41,7 +41,7 @@
     "@storybook/addon-styling": "^1.3.7",
     "@storybook/addon-webpack5-compiler-babel": "^3.0.3",
     "@storybook/nextjs": "~7.6.19",
-    "@tamagui/babel-plugin": "^1.120.2",
+    "@tamagui/babel-plugin": "^1.121.3",
     "@types/babel__preset-env": "^7.9.7",
     "@types/node": "~20.12.13",
     "@types/react": "^18.3.1",

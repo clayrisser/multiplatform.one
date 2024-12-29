@@ -92,6 +92,7 @@ numberify
 ondevice
 onestack
 originjs
+paramtypes
 passwordless
 patternfly
 pficon
@@ -110,6 +111,7 @@ reflectable
 refreshable
 rehackt
 repeaterjs
+returntype
 risser
 sameorigin
 sbmodern
@@ -130,6 +132,7 @@ tsup
 tsyringe
 typegraphql
 unimodules
+unplugin
 unspaced
 urql
 usermodel

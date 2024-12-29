@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
-    "@tamagui/build": "^1.120.2",
+    "@tamagui/build": "^1.121.3",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^15.0.7",
     "@types/lodash.camelcase": "^4.3.9",

@@ -1,12 +1,16 @@
 {
   "name": "api",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "tsup && vite build",
     "dev": "vite build --watch",
     "generate": "prisma generate",
     "mesh": "multiplatform.one mesh",
-    "seed": "cd prisma && tsup && cd .. && prisma db seed"
+    "seed": "cd prisma && tsup && cd .. && prisma db seed",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@escape.tech/graphql-armor-block-field-suggestions": "^2.2.0",
@@ -19,8 +23,8 @@
     "@graphql-mesh/plugin-response-cache": "^0.102.13",
     "@graphql-mesh/transform-filter-schema": "^0.102.13",
     "@graphql-mesh/transform-prefix": "^0.102.13",
-    "@multiplatform.one/keycloak-typegraphql": "workspace:1.1.10",
     "@multiplatform.one/envelop-multiplatform-plugin": "workspace:0.0.1",
+    "@multiplatform.one/keycloak-typegraphql": "workspace:1.1.10",
     "@multiplatform.one/prisma-scripts": "workspace:1.1.8",
     "@multiplatform.one/typegraphql": "workspace:1.1.8",
     "@multiplatform.one/utils": "workspace:0.1.8",
@@ -41,9 +45,15 @@
   },
   "devDependencies": {
     "@multiplatform.one/cli": "workspace:2.1.7",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@swc/core": "^1.10.3",
+    "@swc/helpers": "^0.5.15",
+    "@vitest/coverage-v8": "^1.2.1",
     "tsup": "^8.3.5",
-    "vite": "^6.0.3",
-    "vite-plugin-node": "^3.1.0"
+    "unplugin-swc": "^1.5.1",
+    "vite": "^6.0.6",
+    "vite-plugin-node": "^3.1.0",
+    "vitest": "^1.6.0"
   },
   "prisma": {
     "seed": "node dist/scripts/seed.mjs"

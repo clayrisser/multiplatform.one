@@ -43,7 +43,7 @@
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.62.10",
+    "@tanstack/react-query": "^5.62.11",
     "uuid": "^9.0.1"
   },
   "peerDependencies": {

@@ -33,6 +33,14 @@ export default defineConfig({
   },
   build: {
     outDir: "dist/api",
+    lib: {
+      entry: "./main.ts",
+      formats: ["es"],
+      fileName: () => "main.mjs",
+    },
+    rollupOptions: {
+      external: [/node_modules/],
+    },
   },
   plugins: [
     ...VitePluginNode({
@@ -48,7 +56,7 @@ export default defineConfig({
             "pnpm",
             [
               "build-schema",
-              path.resolve(__dirname, "./dist/api/main.mjs"),
+              path.resolve(__dirname, "./dist/api/main.js"),
               path.resolve(__dirname, "./generated/schemas/api.gql"),
             ],
             {
@@ -61,7 +69,7 @@ export default defineConfig({
         });
         if (!new Set(process.argv).has("--watch")) return;
         previousProcess?.kill();
-        previousProcess = childProcess.spawn("node", ["dist/api/main.mjs"], {
+        previousProcess = childProcess.spawn("node", ["dist/api/main.js"], {
           stdio: "inherit",
           shell: true,
         });

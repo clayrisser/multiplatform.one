@@ -28,11 +28,16 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call done,$@)
 
 ACTIONS += build~deps
-BUILD_TARGETS := dist/api/main.mjs
-dist/api/main.mjs:
+BUILD_TARGETS := dist/api/main.js
+dist/api/main.js:
 	@$(call reset,build)
 $(ACTION)/build: $(call git_deps,\.([jt]sx?)$$)
 	@$(TURBO) build
+	@$(call done,$@)
+
+ACTIONS += test~build
+$(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
+	@$(PNPM) run test
 	@$(call done,$@)
 
 .PHONY: dev +dev prelaunch
@@ -45,7 +50,7 @@ prelaunch: ~deps prisma/seed docker/dev-d
 serve: prelaunch +serve
 prelaunch: ~deps prisma/seed docker/dev-d
 +serve:
-	@$(NODE) dist/api/main.mjs
+	@$(NODE) dist/api/main.js
 
 .PHONY: mesh
 mesh: ~deps
