@@ -19,11 +19,11 @@
  * limitations under the License.
  */
 
-import { createUseStore } from "../src";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { act, cleanup, fireEvent, render } from "@testing-library/react";
 import { StrictMode } from "react";
 import { afterEach, describe, expect, it } from "vitest";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createUseStore } from "../src";
 
 const sleep = (x = 100) => new Promise((res) => setTimeout(res, x));
 function last<T>(arr: T[]) {
@@ -183,7 +183,6 @@ describe("basic tests", () => {
     function TestComponent() {
       const store = usePersistedStore();
       if (!store) return null;
-      console.log("Rendering with store:", { count: store.count });
       return (
         <button
           type="button"
@@ -212,7 +211,6 @@ describe("basic tests", () => {
     expect(getByTestId1("increment")).toHaveTextContent("1");
     await sleep(100);
     const stored = await AsyncStorage.getItem("tamagui-store/counter-test");
-    console.log("Stored state:", stored);
     expect(JSON.parse(stored!).state.count).toBe(1);
     cleanup();
     await sleep(100);
@@ -227,6 +225,191 @@ describe("basic tests", () => {
       await sleep(100);
     });
     expect(getByTestId2("increment")).toHaveTextContent("1");
+  });
+
+  it("respects whitelist in persistence", async () => {
+    class WhitelistStore {
+      public1 = "keep";
+      public2 = "drop";
+      increment() {
+        this.public1 = "changed";
+        this.public2 = "changed";
+      }
+    }
+    const usePersistedStore = createUseStore(WhitelistStore, {
+      persist: "whitelist-test",
+      whitelist: ["public1"],
+    });
+    function TestComponent() {
+      const store = usePersistedStore();
+      if (!store) return null;
+      return (
+        <button
+          type="button"
+          onClick={() => store.increment()}
+          data-testid="increment"
+        >
+          {store.public1}|{store.public2}
+        </button>
+      );
+    }
+    let getByTestId1: any;
+    await act(async () => {
+      const result = render(
+        <StrictMode>
+          <TestComponent />
+        </StrictMode>,
+      );
+      getByTestId1 = result.getByTestId;
+      await sleep(100);
+    });
+    expect(getByTestId1("increment")).toHaveTextContent("keep|drop");
+    await act(async () => {
+      fireEvent.click(getByTestId1("increment"));
+      await sleep(100);
+    });
+    expect(getByTestId1("increment")).toHaveTextContent("changed|changed");
+    await sleep(100);
+    const stored = await AsyncStorage.getItem("tamagui-store/whitelist-test");
+    const state = JSON.parse(stored!).state;
+    expect(state.public1).toBe("changed");
+    expect(state.public2).toBeUndefined();
+    cleanup();
+    await sleep(100);
+    let getByTestId2: any;
+    await act(async () => {
+      const result = render(
+        <StrictMode>
+          <TestComponent />
+        </StrictMode>,
+      );
+      getByTestId2 = result.getByTestId;
+      await sleep(100);
+    });
+    expect(getByTestId2("increment")).toHaveTextContent("changed|drop");
+  });
+
+  it("respects blacklist in persistence", async () => {
+    class BlacklistStore {
+      public1 = "keep";
+      public2 = "drop";
+      increment() {
+        this.public1 = "changed";
+        this.public2 = "changed";
+      }
+    }
+    const usePersistedStore = createUseStore(BlacklistStore, {
+      persist: "blacklist-test",
+      blacklist: ["public2"],
+    });
+    function TestComponent() {
+      const store = usePersistedStore();
+      if (!store) return null;
+      return (
+        <button
+          type="button"
+          onClick={() => store.increment()}
+          data-testid="increment"
+        >
+          {store.public1}|{store.public2}
+        </button>
+      );
+    }
+    let getByTestId1: any;
+    await act(async () => {
+      const result = render(
+        <StrictMode>
+          <TestComponent />
+        </StrictMode>,
+      );
+      getByTestId1 = result.getByTestId;
+      await sleep(100);
+    });
+    expect(getByTestId1("increment")).toHaveTextContent("keep|drop");
+    await act(async () => {
+      fireEvent.click(getByTestId1("increment"));
+      await sleep(100);
+    });
+    expect(getByTestId1("increment")).toHaveTextContent("changed|changed");
+    await sleep(100);
+    const stored = await AsyncStorage.getItem("tamagui-store/blacklist-test");
+    const state = JSON.parse(stored!).state;
+    expect(state.public1).toBe("changed");
+    expect(state.public2).toBeUndefined();
+    cleanup();
+    await sleep(100);
+    let getByTestId2: any;
+    await act(async () => {
+      const result = render(
+        <StrictMode>
+          <TestComponent />
+        </StrictMode>,
+      );
+      getByTestId2 = result.getByTestId;
+      await sleep(100);
+    });
+    expect(getByTestId2("increment")).toHaveTextContent("changed|drop");
+  });
+
+  it("does not persist underscore properties", async () => {
+    class UnderscoreStore {
+      public = "keep";
+      _private = "drop";
+      increment() {
+        this.public = "changed";
+        this._private = "changed";
+      }
+    }
+    const usePersistedStore = createUseStore(UnderscoreStore, {
+      persist: "underscore-test",
+    });
+    function TestComponent() {
+      const store = usePersistedStore();
+      if (!store) return null;
+      return (
+        <button
+          type="button"
+          onClick={() => store.increment()}
+          data-testid="increment"
+        >
+          {store.public}|{store._private}
+        </button>
+      );
+    }
+    let getByTestId1: any;
+    await act(async () => {
+      const result = render(
+        <StrictMode>
+          <TestComponent />
+        </StrictMode>,
+      );
+      getByTestId1 = result.getByTestId;
+      await sleep(100);
+    });
+    expect(getByTestId1("increment")).toHaveTextContent("keep|drop");
+    await act(async () => {
+      fireEvent.click(getByTestId1("increment"));
+      await sleep(100);
+    });
+    expect(getByTestId1("increment")).toHaveTextContent("changed|changed");
+    await sleep(100);
+    const stored = await AsyncStorage.getItem("tamagui-store/underscore-test");
+    const state = JSON.parse(stored!).state;
+    expect(state.public).toBe("changed");
+    expect(state._private).toBeUndefined();
+    cleanup();
+    await sleep(100);
+    let getByTestId2: any;
+    await act(async () => {
+      const result = render(
+        <StrictMode>
+          <TestComponent />
+        </StrictMode>,
+      );
+      getByTestId2 = result.getByTestId;
+      await sleep(100);
+    });
+    expect(getByTestId2("increment")).toHaveTextContent("changed|drop");
   });
 });
 

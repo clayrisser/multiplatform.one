@@ -81,12 +81,10 @@ export function createUseStore<Props, Store>(
       return class extends (StoreKlass as any) {
         constructor(props: Props) {
           super(props);
-          if (storageState) {
-            Object.entries(storageState).forEach(([key, value]) => {
-              if (key in this) {
-                this[key] = value;
-              }
-            });
+          for (const [key, value] of Object.entries(storageState!)) {
+            if (key in this && !key.startsWith("_")) {
+              this[key] = value;
+            }
           }
         }
       };
@@ -96,18 +94,17 @@ export function createUseStore<Props, Store>(
 
     useEffect(() => {
       if (!store) return;
-      const state = Object.entries(store as any).reduce(
-        (acc, [key, value]) => {
-          if (
-            typeof value !== "function" &&
-            (whitelist?.includes(key) || !blacklist?.includes(key))
-          ) {
-            acc[key] = value;
-          }
-          return acc;
-        },
-        {} as Record<string, any>,
-      );
+      const state = {};
+      for (const key in store) {
+        const value = store[key];
+        if (
+          typeof value !== "function" &&
+          !key.startsWith("_") &&
+          (whitelist?.includes(key) || !blacklist?.includes(key))
+        ) {
+          state[key] = value;
+        }
+      }
       AsyncStorage.setItem(persistKey, JSON.stringify({ state })).catch(
         logger.error,
       );
@@ -121,18 +118,7 @@ export function createUseStore<Props, Store>(
             const state = JSON.parse(item).state || {};
             setStorageState(state);
           } else {
-            const instance = new (StoreKlass as any)(props);
-            const state = Object.entries(instance).reduce(
-              (acc, [key, value]) => {
-                if (typeof value !== "function") {
-                  acc[key] = value;
-                }
-                return acc;
-              },
-              {} as Record<string, any>,
-            );
-            await AsyncStorage.setItem(persistKey, JSON.stringify({ state }));
-            setStorageState(state);
+            setStorageState({});
           }
         } catch (err) {
           logger.error(err);
