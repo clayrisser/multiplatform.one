@@ -40,15 +40,21 @@
   "devDependencies": {
     "@react-navigation/native": "^6.1.18",
     "@tamagui/build": "^1.121.3",
+    "@testing-library/react": "^14.1.2",
+    "@vitejs/plugin-react": "^4.2.1",
+    "jsdom": "^23.0.1",
     "one": "^1.1.374",
+    "react": "~18.2.0",
+    "react-dom": "^18.0.0",
     "react-native": "0.74.5",
     "react-router-dom": "^6.28.1",
     "typescript": "^5.6.2",
-    "vite": "^6.0.6",
+    "vite": "^6.0.3",
     "vitest": "^1.4.0"
   },
   "peerDependencies": {
     "one": "^1.1.345",
+    "react": "~18.2.0",
     "react-router-dom": "^6.28.0"
   }
 }

@@ -66,7 +66,7 @@
     "@prisma/instrumentation": "~5.12.1",
     "axios": "^1.7.9",
     "body-parser": "^1.20.3",
-    "graphql": "^16.10.0",
+    "graphql": "^16.8.1",
     "graphql-ws": "^5.16.0",
     "http-status": "^1.8.1",
     "lodash.startcase": "^4.4.0",

@@ -2,14 +2,15 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "../../tsconfig.base.json",
   "exclude": [
-    "vitest.config.ts",
+    "vitest.config.mts",
     "**/test",
     "**/dist",
     "**/types",
     "**/__tests__"
   ],
   "compilerOptions": {
-    "composite": true
+    "composite": true,
+    "noEmit": true
   },
   "references": []
 }

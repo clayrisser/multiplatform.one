@@ -22,9 +22,9 @@
     "csrf": "^3.1.0",
     "graphiql": "^3.8.3",
     "graphiql-ws": "^0.1.7",
-    "graphql": "^16.10.0",
+    "graphql": "^16.8.1",
     "graphql-ws": "^5.16.0",
-    "hono": "^4.6.15",
+    "hono": "^4.6.5",
     "multiplatform.one": "workspace:1.1.10",
     "one": "^1.1.374",
     "postgres": "^3.4.5",
@@ -46,7 +46,7 @@
     "@tamagui/vite-plugin": "^1.121.3",
     "dotenv": "^16.4.7",
     "tsx": "^4.19.2",
-    "vite": "^6.0.6",
+    "vite": "^6.0.3",
     "vite-plugin-external": "^4.3.1",
     "vite-plugin-i18next-loader": "^2.0.14"
   }
