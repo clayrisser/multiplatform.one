@@ -23,6 +23,7 @@ import { createUseStore } from "../src";
 import { act, cleanup, fireEvent, render } from "@testing-library/react";
 import { StrictMode } from "react";
 import { afterEach, describe, expect, it } from "vitest";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const sleep = (x = 100) => new Promise((res) => setTimeout(res, x));
 function last<T>(arr: T[]) {
@@ -54,7 +55,10 @@ async function testSimpleStore(id: number) {
 }
 
 describe("basic tests", () => {
-  afterEach(cleanup);
+  afterEach(async () => {
+    cleanup();
+    await AsyncStorage.clear();
+  });
 
   it("creates a simple store and action works", async () => {
     await testSimpleStore(0);
@@ -164,6 +168,65 @@ describe("basic tests", () => {
       fireEvent.click(getCurrentByTitle("changeAlt"));
     });
     expect(renderCount).toEqual(2);
+  });
+
+  it("persists state changes", async () => {
+    class CounterStore {
+      count = 0;
+      increment() {
+        this.count += 1;
+      }
+    }
+    const usePersistedStore = createUseStore(CounterStore, {
+      persist: "counter-test",
+    });
+    function TestComponent() {
+      const store = usePersistedStore();
+      if (!store) return null;
+      console.log("Rendering with store:", { count: store.count });
+      return (
+        <button
+          type="button"
+          onClick={() => store.increment()}
+          data-testid="increment"
+        >
+          {store.count}
+        </button>
+      );
+    }
+    let getByTestId1: any;
+    await act(async () => {
+      const result = render(
+        <StrictMode>
+          <TestComponent />
+        </StrictMode>,
+      );
+      getByTestId1 = result.getByTestId;
+      await sleep(100);
+    });
+    expect(getByTestId1("increment")).toHaveTextContent("0");
+    await act(async () => {
+      fireEvent.click(getByTestId1("increment"));
+      await sleep(100);
+    });
+    expect(getByTestId1("increment")).toHaveTextContent("1");
+    await sleep(100);
+    const stored = await AsyncStorage.getItem("tamagui-store/counter-test");
+    console.log("Stored state:", stored);
+    expect(JSON.parse(stored!).state.count).toBe(1);
+    cleanup();
+    await sleep(100);
+    let getByTestId2: any;
+    await act(async () => {
+      const result = render(
+        <StrictMode>
+          <TestComponent />
+        </StrictMode>,
+      );
+      getByTestId2 = result.getByTestId;
+      await sleep(100);
+    });
+    expect(getByTestId2("increment")).toHaveTextContent("1");
   });
 });
 

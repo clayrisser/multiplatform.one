@@ -5,13 +5,13 @@
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,6 +33,10 @@ export interface CreateUseStoreOptions {
   blacklist?: string[];
   persist?: boolean | string;
   whitelist?: string[];
+}
+
+interface HydratedStore {
+  __hydrated?: boolean;
 }
 
 const pendingUpdates = new Map<string, Record<string, any>>();
@@ -70,24 +74,44 @@ export function createUseStore<Props, Store>(
         : Store)
     | undefined => {
     if (!persist) return useStore(StoreKlass as any, props, options);
-    const [storage, setStorage] = useState<Record<string, any>>();
-    const store = useMemo(() => {
-      if (!storage?.state) return undefined;
-      const instance = new (StoreKlass as any)(props);
-      Object.assign(instance, storage.state);
-      instance.__hydrated = true;
-      return instance;
-    }, [storage, props]);
+    const [storageState, setStorageState] = useState<Record<string, any>>();
     const persistKey = useMemo(
       () =>
         persistKeyPrefix +
         (typeof persist === "string" ? persist : StoreKlass.name),
       [persist, StoreKlass.name],
     );
+    const HydratedStore = useMemo(() => {
+      console.log("Creating HydratedStore with state:", storageState);
+      if (!storageState) return StoreKlass;
+      return class extends StoreKlass implements HydratedStore {
+        __hydrated?: boolean;
+        #state: Record<string, any>;
+
+        constructor(props: Props) {
+          super(props);
+          this.__hydrated = true;
+          console.log("Hydrating store with state:", storageState);
+          this.#state = { ...storageState };
+          Object.keys(storageState as object).forEach((key) => {
+            Object.defineProperty(this, key, {
+              get: () => this.#state[key],
+              set: (value) => {
+                this.#state[key] = value;
+              },
+              enumerable: true,
+              configurable: true,
+            });
+          });
+        }
+      };
+    }, [storageState, StoreKlass]);
+    const store = useStore(HydratedStore as any, props, options);
     const persistedStore = useMemo(() => {
       if (!store) return undefined;
-      const proxy = new Proxy(store, {
+      return new Proxy(store, {
         set(target, prop, value) {
+          console.log("Setting store prop:", { prop, value });
           (target as any)[prop] = value;
           if (
             prop === "__hydrated" ||
@@ -116,6 +140,7 @@ export function createUseStore<Props, Store>(
               try {
                 const item = await AsyncStorage.getItem(persistKey);
                 const state = item ? JSON.parse(item).state || {} : {};
+                console.log("Persisting state:", { ...state, ...updates });
                 await AsyncStorage.setItem(
                   persistKey,
                   JSON.stringify({ state: { ...state, ...updates } }),
@@ -129,23 +154,23 @@ export function createUseStore<Props, Store>(
           return true;
         },
       });
-      return proxy;
     }, [store, persistKey]);
 
     useEffect(() => {
       (async () => {
         const item = await AsyncStorage.getItem(persistKey);
-        const state = item ? JSON.parse(item).state || {} : {};
-        if (Object.keys(state).length > 0) {
-          setStorage({ state });
+        console.log("Loading from storage:", { persistKey, item });
+        if (item) {
+          const state = JSON.parse(item).state || {};
+          console.log("Setting storage state:", state);
+          setStorageState(state);
         } else {
-          const instance = new (StoreKlass as any)(props);
-          setStorage({ state: instance });
+          setStorageState({});
         }
       })().catch(logger.error);
     }, [persistKey, props]);
 
-    if (!storage || !store) return undefined;
-    return persistedStore;
+    if (!storageState || !store) return undefined;
+    return persistedStore as any;
   };
 }
