@@ -77,31 +77,50 @@ export function createUseStore<
         : Store)
     | undefined => {
     if (!persist) return useStore(StoreKlass as any, props, options);
-    const [storageState, setStorageState] = useState<Record<string, any>>();
+    const [hydratedStorageState, setHydratedStorageState] =
+      useState<Record<string, any>>();
     const persistKey = useMemo(
       () =>
         persistKeyPrefix +
         (typeof persist === "string" ? persist : StoreKlass.name),
       [persist, StoreKlass.name],
     );
-
     const HydratedStore = useMemo(() => {
-      if (!storageState) return StoreKlass;
-      const store = new StoreKlass(props as P);
-      if (storageState?.state) {
-        for (const [key, value] of Object.entries(storageState.state)) {
-          if (key in store) {
-            store[key] = value;
+      if (!hydratedStorageState) return undefined;
+      function createHydratedInstance(props: P) {
+        const store = new StoreKlass(props);
+        if (hydratedStorageState?.state) {
+          for (const [key, value] of Object.entries(
+            hydratedStorageState.state,
+          )) {
+            if (
+              key in store &&
+              !key.startsWith("_") &&
+              key !== "props" &&
+              (whitelist ? whitelist.includes(key) : !blacklist?.includes(key))
+            ) {
+              store[key] = value;
+            }
           }
         }
+        return store;
       }
-      return store.constructor as any;
-    }, [storageState, StoreKlass, props]);
-
-    const store = useStore(HydratedStore, props, options);
+      createHydratedInstance.prototype = StoreKlass.prototype;
+      return createHydratedInstance as any;
+    }, [hydratedStorageState, StoreKlass, props, whitelist, blacklist]);
+    const store = useStore(
+      HydratedStore,
+      {
+        ...props,
+        id: `persist:${persistKey}:${StoreKlass.name}${
+          (props as any)?.id ? `:${(props as any).id}` : ""
+        }`,
+      },
+      options,
+    );
 
     useEffect(() => {
-      if (!store) return;
+      if (!store || !hydratedStorageState) return;
       const state: Partial<Store> = {};
       for (const key in store) {
         const value = store[key];
@@ -117,7 +136,7 @@ export function createUseStore<
       AsyncStorage.setItem(persistKey, JSON.stringify({ state })).catch(
         logger.error,
       );
-    }, [store, persistKey, whitelist, blacklist]);
+    }, [store, persistKey, whitelist, blacklist, hydratedStorageState]);
 
     useEffect(() => {
       (async () => {
@@ -138,20 +157,18 @@ export function createUseStore<
                   filteredState[key] = value;
                 }
               }
-              setStorageState({ state: filteredState });
-            } else {
-              setStorageState({});
+              setHydratedStorageState({ state: filteredState });
+              return;
             }
-          } else {
-            setStorageState({});
           }
+          setHydratedStorageState({});
         } catch (err) {
           logger.error(err);
         }
       })();
     }, [persistKey, whitelist, blacklist]);
 
-    if (!storageState || !store) return undefined;
+    if (!hydratedStorageState || !store) return undefined;
     return store as any;
   };
 }

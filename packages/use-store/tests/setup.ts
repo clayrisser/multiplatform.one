@@ -20,6 +20,7 @@
  */
 
 import "@testing-library/jest-dom";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { configure } from "@testing-library/react";
 import { cleanup } from "@testing-library/react";
 
@@ -29,4 +30,5 @@ configure({
 
 afterEach(() => {
   cleanup();
+  AsyncStorage.clear();
 });

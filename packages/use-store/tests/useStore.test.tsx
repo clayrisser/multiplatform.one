@@ -277,20 +277,43 @@ describe("basic tests", () => {
     await sleep(100);
     const stored = await AsyncStorage.getItem("tamagui-store/whitelist-test");
     expect(JSON.parse(stored!).state.public1).toBe("changed");
-    // expect(JSON.parse(stored!).state.public2).toBeUndefined();
-    // cleanup();
-    // await sleep(100);
-    // let getByTestId2: any;
-    // await act(async () => {
-    //   const result = render(
-    //     <StrictMode>
-    //       <TestComponent storeId={2} />
-    //     </StrictMode>,
-    //   );
-    //   getByTestId2 = result.getByTestId;
-    //   await sleep(100);
-    // });
-    // expect(getByTestId2("increment")).toHaveTextContent("changed|drop");
+    expect(JSON.parse(stored!).state.public2).toBeUndefined();
+    cleanup();
+    await sleep(100);
+    let getByTestId2: any;
+    await act(async () => {
+      const result = render(
+        <StrictMode>
+          <TestComponent storeId={2} />
+        </StrictMode>,
+      );
+      getByTestId2 = result.getByTestId;
+      await sleep(100);
+    });
+    expect(getByTestId2("increment")).toHaveTextContent("changed|drop");
+    await act(async () => {
+      fireEvent.click(getByTestId2("increment"));
+      await sleep(100);
+    });
+    expect(getByTestId2("increment")).toHaveTextContent("changed|changed");
+    await sleep(100);
+    const stored2 = await AsyncStorage.getItem("tamagui-store/whitelist-test");
+    expect(JSON.parse(stored2!).state.public1).toBe("changed");
+    expect(JSON.parse(stored2!).state.public2).toBeUndefined();
+    await AsyncStorage.clear();
+    cleanup();
+    await sleep(100);
+    let getByTestId3: any;
+    await act(async () => {
+      const result = render(
+        <StrictMode>
+          <TestComponent storeId={3} />
+        </StrictMode>,
+      );
+      getByTestId3 = result.getByTestId;
+      await sleep(100);
+    });
+    expect(getByTestId3("increment")).toHaveTextContent("keep|drop");
   });
 
   it("respects blacklist in persistence", async () => {
@@ -319,39 +342,38 @@ describe("basic tests", () => {
         </button>
       );
     }
-    let getByTestId1: any;
+    let result: ReturnType<typeof render>;
     await act(async () => {
-      const result = render(
+      result = render(
         <StrictMode>
           <TestComponent storeId={1} />
         </StrictMode>,
       );
-      getByTestId1 = result.getByTestId;
       await sleep(100);
     });
+    const { getByTestId: getByTestId1 } = result!;
     expect(getByTestId1("increment")).toHaveTextContent("keep|drop");
     await act(async () => {
       fireEvent.click(getByTestId1("increment"));
       await sleep(100);
     });
     expect(getByTestId1("increment")).toHaveTextContent("changed|changed");
-    await sleep(100);
     const stored = await AsyncStorage.getItem("tamagui-store/blacklist-test");
     expect(JSON.parse(stored!).state.public1).toBeUndefined();
     expect(JSON.parse(stored!).state.public2).toBe("changed");
     cleanup();
     await sleep(100);
-    // let getByTestId2: any;
-    // await act(async () => {
-    //   const result = render(
-    //     <StrictMode>
-    //       <TestComponent storeId={2} />
-    //     </StrictMode>,
-    //   );
-    //   getByTestId2 = result.getByTestId;
-    //   await sleep(100);
-    // });
-    // expect(getByTestId2("increment")).toHaveTextContent("keep|changed");
+    let result2: ReturnType<typeof render>;
+    await act(async () => {
+      result2 = render(
+        <StrictMode>
+          <TestComponent storeId={2} />
+        </StrictMode>,
+      );
+      await sleep(200);
+    });
+    const { getByTestId: getByTestId2 } = result2!;
+    expect(getByTestId2("increment")).toHaveTextContent("keep|changed");
   });
 
   it("does not persist underscore properties", async () => {
@@ -401,17 +423,17 @@ describe("basic tests", () => {
     expect(JSON.parse(stored!).state._private).toBeUndefined();
     cleanup();
     await sleep(100);
-    // let getByTestId2: any;
-    // await act(async () => {
-    //   const result = render(
-    //     <StrictMode>
-    //       <TestComponent storeId={2} />
-    //     </StrictMode>,
-    //   );
-    //   getByTestId2 = result.getByTestId;
-    //   await sleep(100);
-    // });
-    // expect(getByTestId2("increment")).toHaveTextContent("changed|drop");
+    let getByTestId2: any;
+    await act(async () => {
+      const result = render(
+        <StrictMode>
+          <TestComponent storeId={2} />
+        </StrictMode>,
+      );
+      getByTestId2 = result.getByTestId;
+      await sleep(100);
+    });
+    expect(getByTestId2("increment")).toHaveTextContent("changed|drop");
   });
 });
 
