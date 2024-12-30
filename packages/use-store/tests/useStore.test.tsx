@@ -173,7 +173,7 @@ describe("basic tests", () => {
   it("persists state changes", async () => {
     class CounterStore {
       count = 0;
-      increment() {
+      change() {
         this.count += 1;
       }
     }
@@ -186,7 +186,7 @@ describe("basic tests", () => {
       return (
         <button
           type="button"
-          onClick={() => store.increment()}
+          onClick={() => store.change()}
           data-testid="increment"
         >
           {store.count}
@@ -236,7 +236,7 @@ describe("basic tests", () => {
     class WhitelistStore {
       public1 = "keep";
       public2 = "drop";
-      increment() {
+      change() {
         this.public1 = "changed";
         this.public2 = "changed";
       }
@@ -251,7 +251,7 @@ describe("basic tests", () => {
       return (
         <button
           type="button"
-          onClick={() => store.increment()}
+          onClick={() => store.change()}
           data-testid="increment"
         >
           {store.public1}|{store.public2}
@@ -320,7 +320,7 @@ describe("basic tests", () => {
     class BlacklistStore {
       public1 = "keep";
       public2 = "drop";
-      increment() {
+      change() {
         this.public1 = "changed";
         this.public2 = "changed";
       }
@@ -335,7 +335,7 @@ describe("basic tests", () => {
       return (
         <button
           type="button"
-          onClick={() => store.increment()}
+          onClick={() => store.change()}
           data-testid="increment"
         >
           {store.public1}|{store.public2}
@@ -380,7 +380,7 @@ describe("basic tests", () => {
     class UnderscoreStore {
       public = "keep";
       _private = "drop";
-      increment() {
+      change() {
         this.public = "changed";
         this._private = "changed";
       }
@@ -394,7 +394,7 @@ describe("basic tests", () => {
       return (
         <button
           type="button"
-          onClick={() => store.increment()}
+          onClick={() => store.change()}
           data-testid="increment"
         >
           {store.public}|{store._private}
