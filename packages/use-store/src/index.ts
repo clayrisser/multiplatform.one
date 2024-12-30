@@ -96,7 +96,7 @@ export function createUseStore<
         }
       }
       return store.constructor as any;
-    }, [storageState, StoreKlass, persistKey, props]);
+    }, [storageState, StoreKlass, props]);
 
     const store = useStore(HydratedStore, props, options);
 
@@ -116,14 +116,14 @@ export function createUseStore<
       AsyncStorage.setItem(persistKey, JSON.stringify({ state })).catch(
         logger.error,
       );
-    }, [store, persistKey]);
+    }, [store, persistKey, whitelist, blacklist]);
 
     useEffect(() => {
       (async () => {
         try {
           const item = await AsyncStorage.getItem(persistKey);
           if (item) {
-            setStorageState(JSON.parse(item).state || {});
+            setStorageState(JSON.parse(item));
           } else {
             setStorageState({});
           }
@@ -131,7 +131,7 @@ export function createUseStore<
           logger.error(err);
         }
       })();
-    }, [persistKey, props]);
+    }, [persistKey, setStorageState]);
 
     if (!storageState || !store) return undefined;
     return store as any;
