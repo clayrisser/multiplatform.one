@@ -19,26 +19,30 @@
  * limitations under the License.
  */
 
-import path from "node:path";
 import { tamaguiPlugin } from "@tamagui/vite-plugin";
 import react from "@vitejs/plugin-react";
-import swc from "unplugin-swc";
 import { defineConfig } from "vite";
+import reactNative from "vitest-react-native";
 
 export default defineConfig({
   plugins: [
+    reactNative(),
     react({
       jsxRuntime: "automatic",
     }),
-    swc.vite({
-      jsc: {
-        parser: {
-          syntax: "typescript",
-          tsx: true,
-        },
-        target: "es2022",
+    {
+      name: "replace-react-native",
+      transform(code, id) {
+        if (id.includes("node_modules")) return;
+        return {
+          code: code.replace(
+            /from ['"]react-native['"]/g,
+            'from "react-native-web"',
+          ),
+          map: null,
+        };
       },
-    }),
+    },
     tamaguiPlugin({
       components: ["tamagui"],
       config: "../../app/tamagui.config.ts",
@@ -48,34 +52,14 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
+    setupFiles: ["./test/setup.tsx"],
     server: {
       deps: {
-        inline: [
-          "react-native",
-          "react-native-web",
-          "tamagui",
-          "@tamagui/core",
-          "@tamagui/config",
-          "@tamagui/web",
-          "@tamagui/button",
-          "@tamagui/font-inter",
-          "@tamagui/logo",
-          "@tamagui/react-native-media-driver",
-          "@tamagui/react-native-svg",
-          "@tamagui/shorthands",
-          "@tamagui/themes",
-        ],
+        inline: ["react-native-web"],
       },
     },
   },
   resolve: {
-    alias: {
-      "react-native": "react-native-web",
-      "~": path.resolve(__dirname),
-      app: path.resolve(__dirname, "../../app"),
-      ui: path.resolve(__dirname, "../../packages/ui"),
-      stream: "stream-browserify",
-    },
     extensions: [
       ".web.js",
       ".web.ts",
@@ -89,7 +73,6 @@ export default defineConfig({
   },
   define: {
     __DEV__: true,
-    "process.env.NODE_ENV": '"test"',
     global: "globalThis",
     process: JSON.stringify({
       env: {
@@ -101,34 +84,5 @@ export default defineConfig({
       type: "renderer",
     }),
     "Buffer.isBuffer": "((obj) => obj?.constructor?.name === 'Buffer')",
-  },
-  optimizeDeps: {
-    include: [
-      "react",
-      "react-dom",
-      "react-router-dom",
-      "i18next",
-      "react-i18next",
-      "@tamagui/core",
-      "@tamagui/web",
-      "tamagui",
-      "react-native-web",
-      "@multiplatform.one/components",
-      "buffer",
-    ],
-    esbuildOptions: {
-      target: "es2020",
-      supported: { bigint: true },
-      resolveExtensions: [
-        ".web.js",
-        ".web.ts",
-        ".web.tsx",
-        ".js",
-        ".jsx",
-        ".ts",
-        ".tsx",
-      ],
-      mainFields: ["module", "main"],
-    },
   },
 });

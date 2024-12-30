@@ -19,9 +19,8 @@
  * limitations under the License.
  */
 
-import React from "react";
 import type { ReactNode } from "react";
-import { Text, TouchableOpacity } from "react-native-web";
+import { Text, TouchableOpacity } from "react-native";
 
 interface TestButtonProps {
   children: ReactNode;

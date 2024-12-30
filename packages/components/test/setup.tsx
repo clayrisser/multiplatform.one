@@ -19,6 +19,7 @@
  * limitations under the License.
  */
 
+import "matchmedia-polyfill";
 import "@testing-library/jest-dom";
 import { config } from "@tamagui/config";
 import {
@@ -29,6 +30,21 @@ import {
 import type { ReactElement } from "react";
 import { TamaguiProvider, createTamagui } from "tamagui";
 import { afterEach } from "vitest";
+
+class ESBuildAndJSDOMCompatibleTextEncoder extends TextEncoder {
+  encode(input: string) {
+    if (typeof input !== "string")
+      throw new TypeError("`input` must be a string");
+    const decodedURI = decodeURIComponent(encodeURIComponent(input));
+    const arr = new Uint8Array(decodedURI.length);
+    const chars = decodedURI.split("");
+    for (let i = 0; i < chars.length; i++) {
+      arr[i] = decodedURI[i].charCodeAt(0);
+    }
+    return arr;
+  }
+}
+globalThis.TextEncoder = ESBuildAndJSDOMCompatibleTextEncoder;
 
 const tamaguiConfig = createTamagui(config);
 
