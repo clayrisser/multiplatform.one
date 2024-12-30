@@ -19,13 +19,17 @@
  * limitations under the License.
  */
 
+import path from "node:path";
+import { tamaguiPlugin } from "@tamagui/vite-plugin";
 import react from "@vitejs/plugin-react";
 import swc from "unplugin-swc";
 import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      jsxRuntime: "automatic",
+    }),
     swc.vite({
       jsc: {
         parser: {
@@ -35,24 +39,96 @@ export default defineConfig({
         target: "es2022",
       },
     }),
+    tamaguiPlugin({
+      components: ["tamagui"],
+      config: "../../app/tamagui.config.ts",
+      optimize: false,
+    }),
   ],
   test: {
     environment: "jsdom",
     globals: true,
     server: {
       deps: {
-        inline: ["react-native", "react-native-web"],
+        inline: [
+          "react-native",
+          "react-native-web",
+          "tamagui",
+          "@tamagui/core",
+          "@tamagui/config",
+          "@tamagui/web",
+          "@tamagui/button",
+          "@tamagui/font-inter",
+          "@tamagui/logo",
+          "@tamagui/react-native-media-driver",
+          "@tamagui/react-native-svg",
+          "@tamagui/shorthands",
+          "@tamagui/themes",
+        ],
       },
     },
   },
   resolve: {
     alias: {
       "react-native": "react-native-web",
+      "~": path.resolve(__dirname),
+      app: path.resolve(__dirname, "../../app"),
+      ui: path.resolve(__dirname, "../../packages/ui"),
+      stream: "stream-browserify",
     },
+    extensions: [
+      ".web.js",
+      ".web.ts",
+      ".web.tsx",
+      ".js",
+      ".jsx",
+      ".ts",
+      ".tsx",
+    ],
     mainFields: ["browser", "module", "main"],
   },
   define: {
     __DEV__: true,
     "process.env.NODE_ENV": '"test"',
+    global: "globalThis",
+    process: JSON.stringify({
+      env: {
+        NODE_ENV: "test",
+        NODE_DEBUG: false,
+      },
+      platform: process.platform,
+      version: process.version,
+      type: "renderer",
+    }),
+    "Buffer.isBuffer": "((obj) => obj?.constructor?.name === 'Buffer')",
+  },
+  optimizeDeps: {
+    include: [
+      "react",
+      "react-dom",
+      "react-router-dom",
+      "i18next",
+      "react-i18next",
+      "@tamagui/core",
+      "@tamagui/web",
+      "tamagui",
+      "react-native-web",
+      "@multiplatform.one/components",
+      "buffer",
+    ],
+    esbuildOptions: {
+      target: "es2020",
+      supported: { bigint: true },
+      resolveExtensions: [
+        ".web.js",
+        ".web.ts",
+        ".web.tsx",
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx",
+      ],
+      mainFields: ["module", "main"],
+    },
   },
 });

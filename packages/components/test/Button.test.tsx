@@ -21,18 +21,18 @@
 
 import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
-import { Button } from "react-native";
 import { describe, expect, it, vi } from "vitest";
+import { TestButton } from "./TestButton";
 
 describe("Button", () => {
   it("renders with text", () => {
-    render(<Button title="Click me" />);
+    render(<TestButton>Click me</TestButton>);
     expect(screen.getByText("Click me")).toBeDefined();
   });
 
   it("handles press", () => {
     const onPress = vi.fn();
-    render(<Button onPress={onPress} title="Press me" />);
+    render(<TestButton onPress={onPress}>Press me</TestButton>);
     fireEvent.click(screen.getByText("Press me"));
     expect(onPress).toHaveBeenCalled();
   });
