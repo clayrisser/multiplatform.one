@@ -1,7 +1,7 @@
 /**
  * File: /test/Button.test.tsx
  * Project: @multiplatform.one/components
- * File Created: 30-12-2024 07:41:32
+ * File Created: 30-12-2024 11:08:57
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,21 +19,21 @@
  * limitations under the License.
  */
 
+import { fireEvent, render, screen } from "@testing-library/react";
+import React from "react";
+import { Button } from "react-native";
 import { describe, expect, it, vi } from "vitest";
-import { Button } from "../src";
-import { fireEvent, render, screen } from "./setup";
 
 describe("Button", () => {
-  it("should render button with text", () => {
-    render(<Button>Click me</Button>);
+  it("renders with text", () => {
+    render(<Button title="Click me" />);
     expect(screen.getByText("Click me")).toBeDefined();
   });
 
-  it("should handle onPress event", () => {
+  it("handles press", () => {
     const onPress = vi.fn();
-    render(<Button onPress={onPress}>Press me</Button>);
-    const button = screen.getByText("Press me");
-    fireEvent.click(button);
+    render(<Button onPress={onPress} title="Press me" />);
+    fireEvent.click(screen.getByText("Press me"));
     expect(onPress).toHaveBeenCalled();
   });
 });

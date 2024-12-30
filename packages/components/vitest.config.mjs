@@ -20,18 +20,28 @@
  */
 
 import react from "@vitejs/plugin-react";
+import swc from "unplugin-swc";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    swc.vite({
+      jsc: {
+        parser: {
+          syntax: "typescript",
+          tsx: true,
+        },
+        target: "es2022",
+      },
+    }),
+  ],
   test: {
     environment: "jsdom",
     globals: true,
-    setupFiles: ["./test/setup.tsx"],
     server: {
       deps: {
         inline: ["react-native", "react-native-web"],
-        interopDefault: true,
       },
     },
   },
@@ -39,5 +49,10 @@ export default defineConfig({
     alias: {
       "react-native": "react-native-web",
     },
+    mainFields: ["browser", "module", "main"],
+  },
+  define: {
+    __DEV__: true,
+    "process.env.NODE_ENV": '"test"',
   },
 });

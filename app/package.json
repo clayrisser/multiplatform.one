@@ -2,12 +2,14 @@
   "name": "app",
   "main": "index.ts",
   "private": true,
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "dependencies": {
     "@expo-google-fonts/rock-salt": "^0.2.3",
     "@expo-google-fonts/silkscreen": "^0.2.3",
-    "@fontsource/rock-salt": "^5.1.0",
-    "@fontsource/silkscreen": "^5.1.0",
+    "@fontsource/rock-salt": "^5.1.1",
+    "@fontsource/silkscreen": "^5.1.1",
     "@multiplatform.one/components": "workspace:4.1.10",
     "@multiplatform.one/keycloak": "workspace:2.0.10",
     "@multiplatform.one/react-query-urql": "workspace:1.1.10",

@@ -1,7 +1,7 @@
 /**
  * File: /test/setup.tsx
  * Project: @multiplatform.one/components
- * File Created: 30-12-2024 07:38:54
+ * File Created: 30-12-2024 11:08:47
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -21,29 +21,18 @@
 
 import "@testing-library/jest-dom";
 import { config } from "@tamagui/config";
-import { cleanup, render as rtlRender } from "@testing-library/react";
+import {
+  type RenderResult,
+  cleanup,
+  render as rtlRender,
+} from "@testing-library/react";
 import type { ReactElement } from "react";
 import { TamaguiProvider, createTamagui } from "tamagui";
-import { afterAll, afterEach, beforeAll, vi } from "vitest";
-
-// Mock window.matchMedia
-Object.defineProperty(window, "matchMedia", {
-  writable: true,
-  value: vi.fn().mockImplementation((query) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
-});
+import { afterEach } from "vitest";
 
 const tamaguiConfig = createTamagui(config);
 
-function customRender(ui: ReactElement) {
+function render(ui: ReactElement): RenderResult {
   return rtlRender(
     <TamaguiProvider config={tamaguiConfig} defaultTheme="light">
       {ui}
@@ -51,17 +40,9 @@ function customRender(ui: ReactElement) {
   );
 }
 
-export * from "@testing-library/react";
-export { customRender as render };
-
-beforeAll(() => {
-  // Add any setup that needs to run before all tests
-});
-
 afterEach(() => {
   cleanup();
 });
 
-afterAll(() => {
-  // Add any cleanup that needs to run after all tests
-});
+export * from "@testing-library/react";
+export { render };
