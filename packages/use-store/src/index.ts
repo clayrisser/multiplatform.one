@@ -29,6 +29,9 @@ import { useEffect, useMemo, useState } from "react";
 
 const logger = console;
 
+const pendingUpdates = new Map<string, Record<string, any>>();
+const updatePromises = new Map<string, Promise<void>>();
+
 export interface CreateUseStoreOptions {
   blacklist?: string[];
   persist?: boolean | string;
@@ -133,9 +136,28 @@ export function createUseStore<
           state[key] = value;
         }
       }
-      AsyncStorage.setItem(persistKey, JSON.stringify({ state })).catch(
-        logger.error,
-      );
+      const updates = pendingUpdates.get(persistKey) || {};
+      Object.assign(updates, state);
+      pendingUpdates.set(persistKey, updates);
+      queueMicrotask(() => {
+        const updates = pendingUpdates.get(persistKey);
+        if (!updates) return;
+        pendingUpdates.delete(persistKey);
+        const current = updatePromises.get(persistKey) || Promise.resolve();
+        const next = current.then(async () => {
+          try {
+            const item = await AsyncStorage.getItem(persistKey);
+            const existingState = item ? JSON.parse(item).state || {} : {};
+            await AsyncStorage.setItem(
+              persistKey,
+              JSON.stringify({ state: { ...existingState, ...updates } }),
+            );
+          } catch (err) {
+            logger.error(err);
+          }
+        });
+        updatePromises.set(persistKey, next);
+      });
     }, [store, persistKey, whitelist, blacklist, hydratedStorageState]);
 
     useEffect(() => {
