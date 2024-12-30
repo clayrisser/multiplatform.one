@@ -90,7 +90,7 @@ export function createUseStore<
       const store = new StoreKlass(props as P);
       if (storageState?.state) {
         for (const [key, value] of Object.entries(storageState.state)) {
-          if (key in store && !key.startsWith("_")) {
+          if (key in store) {
             store[key] = value;
           }
         }
@@ -106,9 +106,10 @@ export function createUseStore<
       for (const key in store) {
         const value = store[key];
         if (
-          typeof value !== "function" &&
           !key.startsWith("_") &&
-          (whitelist?.includes(key) || !blacklist?.includes(key))
+          (whitelist ? whitelist.includes(key) : !blacklist?.includes(key)) &&
+          key !== "props" &&
+          typeof value !== "function"
         ) {
           state[key] = value;
         }
@@ -123,7 +124,24 @@ export function createUseStore<
         try {
           const item = await AsyncStorage.getItem(persistKey);
           if (item) {
-            setStorageState(JSON.parse(item));
+            const parsed = JSON.parse(item);
+            if (parsed.state) {
+              const filteredState = {};
+              for (const [key, value] of Object.entries(parsed.state)) {
+                if (
+                  !key.startsWith("_") &&
+                  key !== "props" &&
+                  (whitelist
+                    ? whitelist.includes(key)
+                    : !blacklist?.includes(key))
+                ) {
+                  filteredState[key] = value;
+                }
+              }
+              setStorageState({ state: filteredState });
+            } else {
+              setStorageState({});
+            }
           } else {
             setStorageState({});
           }
@@ -131,7 +149,7 @@ export function createUseStore<
           logger.error(err);
         }
       })();
-    }, [persistKey, setStorageState]);
+    }, [persistKey, whitelist, blacklist]);
 
     if (!storageState || !store) return undefined;
     return store as any;
