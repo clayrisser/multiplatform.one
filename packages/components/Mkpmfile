@@ -29,8 +29,8 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call done,$@)
 
 ACTIONS += test~deps
-$(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
-	-@$(call jest,$?,$(ARGS))
+$(ACTION)/test:
+	@$(PNPM) test
 	@$(call done,$@)
 
 ACTIONS += build~test

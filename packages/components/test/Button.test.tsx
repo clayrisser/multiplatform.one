@@ -19,7 +19,6 @@
  * limitations under the License.
  */
 
-import React from "react";
 import { describe, expect, it, vi } from "vitest";
 import { Button } from "../src";
 import { fireEvent, render, screen } from "./setup";

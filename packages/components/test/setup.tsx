@@ -22,11 +22,9 @@
 import "@testing-library/jest-dom";
 import { config } from "@tamagui/config";
 import { cleanup, render as rtlRender } from "@testing-library/react";
-import React from "react";
 import type { ReactElement } from "react";
-import { TamaguiProvider } from "tamagui";
-import { afterAll, afterEach, beforeAll } from "vitest";
-import { vi } from "vitest";
+import { TamaguiProvider, createTamagui } from "tamagui";
+import { afterAll, afterEach, beforeAll, vi } from "vitest";
 
 // Mock window.matchMedia
 Object.defineProperty(window, "matchMedia", {
@@ -43,13 +41,15 @@ Object.defineProperty(window, "matchMedia", {
   })),
 });
 
-const customRender = (ui: ReactElement) => {
+const tamaguiConfig = createTamagui(config);
+
+function customRender(ui: ReactElement) {
   return rtlRender(
-    <TamaguiProvider config={config} defaultTheme="light">
+    <TamaguiProvider config={tamaguiConfig} defaultTheme="light">
       {ui}
     </TamaguiProvider>,
   );
-};
+}
 
 export * from "@testing-library/react";
 export { customRender as render };
