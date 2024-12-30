@@ -37,27 +37,36 @@ export interface CreateUseStoreOptions {
 
 const persistKeyPrefix = "tamagui-store/";
 
-export function createUseStore<Props, Store>(
-  StoreKlass: (new (props: Props) => Store) | (new () => Store),
+export function createUseStore<
+  P extends object | undefined,
+  Store extends object,
+>(
+  StoreKlass: (new (props: P) => Store) | (new () => Store),
   options?: CreateUseStoreOptions & { persist?: false },
-): <Res, C extends Selector<Store, Res>, Props extends object>(
+): <Res, C extends Selector<Store, Res>, Props extends NonNullable<P>>(
   props?: Props,
   options?: UseStoreOptions,
 ) => C extends Selector<any, infer B> ? (B extends object ? B : Store) : Store;
-export function createUseStore<Props, Store>(
-  StoreKlass: (new (props: Props) => Store) | (new () => Store),
+export function createUseStore<
+  P extends object | undefined,
+  Store extends object,
+>(
+  StoreKlass: (new (props: P) => Store) | (new () => Store),
   options: CreateUseStoreOptions & { persist: string | true },
-): <Res, C extends Selector<Store, Res>, Props extends object>(
+): <Res, C extends Selector<Store, Res>, Props extends NonNullable<P>>(
   props?: Props,
   options?: UseStoreOptions,
 ) =>
   | (C extends Selector<any, infer B> ? (B extends object ? B : Store) : Store)
   | undefined;
-export function createUseStore<Props, Store>(
-  StoreKlass: (new (props: Props) => Store) | (new () => Store),
+export function createUseStore<
+  P extends object | undefined,
+  Store extends object,
+>(
+  StoreKlass: (new (props: P) => Store) | (new () => Store),
   { persist, whitelist, blacklist }: CreateUseStoreOptions = {},
 ) {
-  return <Res, C extends Selector<Store, Res>, Props extends object>(
+  return <Res, C extends Selector<Store, Res>, Props extends NonNullable<P>>(
     props?: Props,
     options?: UseStoreOptions,
   ):
@@ -78,23 +87,22 @@ export function createUseStore<Props, Store>(
 
     const HydratedStore = useMemo(() => {
       if (!storageState) return StoreKlass;
-      return class extends (StoreKlass as any) {
-        constructor(props: Props) {
-          super(props);
-          for (const [key, value] of Object.entries(storageState!)) {
-            if (key in this && !key.startsWith("_")) {
-              this[key] = value;
-            }
+      const store = new StoreKlass(props as P);
+      if (storageState?.state) {
+        for (const [key, value] of Object.entries(storageState.state)) {
+          if (key in store && !key.startsWith("_")) {
+            store[key] = value;
           }
         }
-      };
-    }, [storageState, StoreKlass]);
+      }
+      return store.constructor as any;
+    }, [storageState, StoreKlass, persistKey, props]);
 
-    const store = useStore(HydratedStore as any, props, options);
+    const store = useStore(HydratedStore, props, options);
 
     useEffect(() => {
       if (!store) return;
-      const state = {};
+      const state: Partial<Store> = {};
       for (const key in store) {
         const value = store[key];
         if (
@@ -115,8 +123,7 @@ export function createUseStore<Props, Store>(
         try {
           const item = await AsyncStorage.getItem(persistKey);
           if (item) {
-            const state = JSON.parse(item).state || {};
-            setStorageState(state);
+            setStorageState(JSON.parse(item).state || {});
           } else {
             setStorageState({});
           }
