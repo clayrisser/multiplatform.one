@@ -1,7 +1,7 @@
 /*
- * File: /vitest.config.mjs
- * Project: @multiplatform.one/router
- * File Created: 29-12-2024 08:33:16
+ * File: /vitest.config.ts
+ * Project: @multiplatform.one/components
+ * File Created: 30-12-2024 07:41:40
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -20,18 +20,32 @@
  */
 
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   plugins: [react()],
-  test: {
-    environment: "jsdom",
-    globals: true,
-    setupFiles: ["./tests/setup.ts"],
-  },
   resolve: {
     alias: {
       "react-native": "react-native-web",
+    },
+  },
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: ["./test/setup.tsx"],
+    coverage: {
+      reporter: ["text", "json", "html"],
+      include: ["src/**/*.{ts,tsx}"],
+    },
+    server: {
+      deps: {
+        inline: [
+          "react-native",
+          "react-native-web",
+          "@tamagui/core",
+          "tamagui",
+        ],
+      },
     },
   },
 });

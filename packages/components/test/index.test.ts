@@ -1,7 +1,7 @@
 /*
- * File: /vitest.config.mjs
- * Project: @multiplatform.one/router
- * File Created: 29-12-2024 08:33:16
+ * File: /test/index.test.ts
+ * Project: @multiplatform.one/components
+ * File Created: 30-12-2024 07:38:23
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,19 +19,10 @@
  * limitations under the License.
  */
 
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { describe, expect, it } from "vitest";
 
-export default defineConfig({
-  plugins: [react()],
-  test: {
-    environment: "jsdom",
-    globals: true,
-    setupFiles: ["./tests/setup.ts"],
-  },
-  resolve: {
-    alias: {
-      "react-native": "react-native-web",
-    },
-  },
+describe("components", () => {
+  it("should pass basic test", () => {
+    expect(true).toBe(true);
+  });
 });

@@ -1,7 +1,7 @@
-/*
- * File: /vitest.config.mjs
- * Project: @multiplatform.one/router
- * File Created: 29-12-2024 08:33:16
+/**
+ * File: /test/Card.test.tsx
+ * Project: @multiplatform.one/components
+ * File Created: 30-12-2024 07:41:38
  * Author: Clay Risser
  * -----
  * BitSpur (c) Copyright 2021 - 2024
@@ -19,19 +19,17 @@
  * limitations under the License.
  */
 
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+import { Card } from "../src";
 
-export default defineConfig({
-  plugins: [react()],
-  test: {
-    environment: "jsdom",
-    globals: true,
-    setupFiles: ["./tests/setup.ts"],
-  },
-  resolve: {
-    alias: {
-      "react-native": "react-native-web",
-    },
-  },
+describe("Card", () => {
+  it("should render card with content", () => {
+    render(
+      <Card>
+        <div>Card Content</div>
+      </Card>,
+    );
+    expect(screen.getByText("Card Content")).toBeDefined();
+  });
 });

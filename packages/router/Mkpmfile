@@ -26,13 +26,12 @@ $(ACTION)/deps: $(PROJECT_ROOT)/package.json package.json
 	@$(call make,$(PROJECT_ROOT)) \~deps DEPS_ARGS=$(DEPS_ARGS)
 	@$(call done,$@)
 
-# ACTIONS += test~deps
-# $(ACTION)/test: $(call git_deps,\.([jt]sx?)$$)
-# 	-@$(MKDIR) -p node_modules/.tmp
-# 	-@$(call jest,$?,$(ARGS))
-# 	@$(call done,$@)
+ACTIONS += test~deps
+$(ACTION)/test:
+	@$(PNPM) test
+	@$(call done,$@)
 
-ACTIONS += build~deps
+ACTIONS += build~test
 BUILD_TARGETS := lib/index.js
 lib/index.js:
 	@$(call reset,build)

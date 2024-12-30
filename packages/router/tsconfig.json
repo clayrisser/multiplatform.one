@@ -9,7 +9,8 @@
     "**/__tests__"
   ],
   "compilerOptions": {
-    "composite": true
+    "composite": true,
+    "noEmit": true
   },
   "references": []
 }

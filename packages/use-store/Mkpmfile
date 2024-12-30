@@ -31,7 +31,7 @@ $(ACTION)/test:
 	@$(PNPM) test
 	@$(call done,$@)
 
-ACTIONS += build~deps
+ACTIONS += build~test
 BUILD_TARGETS := lib/index.js
 lib/index.js:
 	@$(call reset,build)
