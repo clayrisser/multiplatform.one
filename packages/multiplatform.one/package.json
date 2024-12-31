@@ -26,10 +26,20 @@
   },
   "author": "BitSpur",
   "sideEffects": true,
-  "keywords": ["multiplatform", "multiplatform.one", "react"],
+  "keywords": [
+    "multiplatform",
+    "multiplatform.one",
+    "react"
+  ],
   "homepage": "https://gitlab.com/risserlabs/community/auto-contrast",
   "license": "Apache-2.0",
-  "files": ["dist", "next", "src", "theme", "types"],
+  "files": [
+    "dist",
+    "next",
+    "src",
+    "theme",
+    "types"
+  ],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/risserlabs/community/auto-contrast"
@@ -38,20 +48,20 @@
     "@tamagui/constants": "^1.29.3",
     "@tamagui/web": "^1.29.3",
     "expo-constants": "~15.4.6",
-    "react": "~18.2.0",
+    "react": "~18.3.1",
     "react-native": "0.74.5"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.121.3",
-    "@tamagui/constants": "^1.121.3",
-    "@tamagui/web": "^1.121.3",
+    "@tamagui/build": "^1.121.4",
+    "@tamagui/constants": "^1.121.4",
+    "@tamagui/web": "^1.121.4",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^15.0.7",
     "@types/react": "^18.3.1",
     "@types/react-native": "^0.73.0",
     "@vitejs/plugin-react": "^4.3.4",
     "expo-constants": "~16.0.2",
-    "react": "~18.2.0",
+    "react": "~18.3.1",
     "react-native": "0.74.5",
     "ts-jest": "^29.2.5",
     "typescript": "^5.6.2",

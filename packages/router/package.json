@@ -3,7 +3,10 @@
   "version": "0.0.10",
   "description": "multiplatform.one router with support for react-router-dom and react-navigation",
   "sideEffects": false,
-  "keywords": ["react", "react-native"],
+  "keywords": [
+    "react",
+    "react-native"
+  ],
   "homepage": "https://multiplatform.one",
   "bugs": {
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues",
@@ -29,7 +32,11 @@
     "build": "rm -rf dist types 2>/dev/null && tamagui-build",
     "test": "vitest run"
   },
-  "files": ["dist", "src", "types"],
+  "files": [
+    "dist",
+    "src",
+    "types"
+  ],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
@@ -39,12 +46,12 @@
   },
   "devDependencies": {
     "@react-navigation/native": "^6.1.18",
-    "@tamagui/build": "^1.121.3",
+    "@tamagui/build": "^1.121.4",
     "@testing-library/react": "^14.1.2",
     "@vitejs/plugin-react": "^4.2.1",
     "jsdom": "^23.0.1",
-    "one": "^1.1.375",
-    "react": "~18.2.0",
+    "one": "^1.1.377",
+    "react": "~18.3.1",
     "react-dom": "^18.0.0",
     "react-native": "0.74.5",
     "react-router-dom": "^6.28.1",
@@ -54,7 +61,7 @@
   },
   "peerDependencies": {
     "one": "^1.1.345",
-    "react": "~18.2.0",
+    "react": "~18.3.1",
     "react-router-dom": "^6.28.0"
   }
 }

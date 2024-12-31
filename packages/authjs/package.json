@@ -21,26 +21,36 @@
   },
   "author": "BitSpur",
   "sideEffects": false,
-  "keywords": ["authjs", "next-auth", "onestack", "react"],
+  "keywords": [
+    "authjs",
+    "next-auth",
+    "onestack",
+    "react"
+  ],
   "homepage": "https://multiplatform.one",
   "license": "Apache-2.0",
-  "files": ["dist", "routes", "src", "types"],
+  "files": [
+    "dist",
+    "routes",
+    "src",
+    "types"
+  ],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/risserlabs/multiplatform.one/keycloak"
   },
   "peerDependencies": {
     "hono": "^4.6.5",
-    "react": "~18.2.0"
+    "react": "~18.3.1"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.121.3",
+    "@tamagui/build": "^1.121.4",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^15.0.7",
     "@types/react": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
     "hono": "^4.6.5",
-    "react": "~18.2.0",
+    "react": "~18.3.1",
     "typescript": "^5.6.2",
     "vitest": "^1.6.0",
     "vitest-react-native": "^0.1.5"

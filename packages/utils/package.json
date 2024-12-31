@@ -3,7 +3,11 @@
   "version": "0.1.8",
   "description": "utilities for multiplatform.one",
   "sideEffects": false,
-  "keywords": ["react", "react-native", "electron"],
+  "keywords": [
+    "react",
+    "react-native",
+    "electron"
+  ],
   "homepage": "https://multiplatform.one",
   "bugs": {
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one/issues",
@@ -36,7 +40,11 @@
   "scripts": {
     "build": "tsup"
   },
-  "files": ["bin", "lib", "src"],
+  "files": [
+    "bin",
+    "lib",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/bitspur/multiplatform.one/multiplatform.one"
@@ -53,6 +61,6 @@
   "dependencies": {
     "axios": "^1.7.9",
     "pg": "^8.13.1",
-    "yaml": "^2.6.1"
+    "yaml": "^2.7.0"
   }
 }
