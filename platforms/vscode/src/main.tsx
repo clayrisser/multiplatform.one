@@ -58,6 +58,7 @@ function App() {
         clientId: config.get("KEYCLOAK_CLIENT_ID"),
         publicClientId: config.get("KEYCLOAK_PUBLIC_CLIENT_ID"),
         realm: config.get("KEYCLOAK_REALM")!,
+        iframeSso: true,
       }}
     >
       <BrowserRouter>

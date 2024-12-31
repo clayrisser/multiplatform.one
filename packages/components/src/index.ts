@@ -34,3 +34,7 @@ export * from "./panels";
 export * from "./table";
 export * from "./tints";
 export * from "tamagui";
+
+// TODO: use another name so it doesn't conflict with tamagui
+export { Form, useFormContext } from "./forms";
+export type { FormProps } from "./forms";

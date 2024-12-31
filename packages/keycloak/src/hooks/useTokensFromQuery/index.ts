@@ -1,4 +1,4 @@
-/**
+/*
  * File: /src/hooks/useTokensFromQuery/index.ts
  * Project: @multiplatform.one/keycloak
  * File Created: 19-11-2024 20:26:31
@@ -20,15 +20,17 @@
  */
 
 import { isIframe } from "multiplatform.one";
+import { useAuthConfig } from "../useAuthConfig";
 
 export function useTokensFromQuery() {
-  if (!isIframe) return false;
+  const { iframeSso } = useAuthConfig();
+  if (iframeSso || !isIframe) return false;
   const query = new URLSearchParams(
     typeof window === "undefined" ? "" : window?.location?.search || "",
   );
   return (
-    typeof query.get("idToken") ||
-    typeof query.get("token") ||
-    typeof query.get("refreshToken")
+    typeof query.get("idToken") === "string" ||
+    typeof query.get("token") === "string" ||
+    typeof query.get("refreshToken") === "string"
   );
 }

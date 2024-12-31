@@ -20,9 +20,9 @@
  */
 
 import { createUseStore } from "@multiplatform.one/use-store";
-import { isBrowser, isIframe, isServer } from "multiplatform.one";
+import { isBrowser, isElectron, isIframe, isServer } from "multiplatform.one";
 
-export const persist = isIframe || (!isBrowser && !isServer);
+export const persist = isIframe || isElectron || (!isBrowser && !isServer);
 
 class AuthStore {
   idToken = "";

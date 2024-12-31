@@ -9,7 +9,9 @@
     "**/__tests__"
   ],
   "compilerOptions": {
-    "composite": true
+    "composite": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "types"
   },
   "references": []
 }

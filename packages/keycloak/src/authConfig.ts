@@ -28,6 +28,7 @@ export const AuthConfigContext = createContext<AuthConfig>(defaultAuthConfig);
 export interface AuthConfig {
   debug?: boolean;
   disabled?: boolean;
+  iframeSso?: boolean;
   loginRedirectUri?: string;
   messageHandlerKeys?: string[];
 }

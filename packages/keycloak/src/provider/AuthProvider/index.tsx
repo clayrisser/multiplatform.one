@@ -42,7 +42,7 @@ export function AuthProvider({
   loadingComponent,
   sessionProvider,
 }: AuthProviderProps) {
-  const { debug, messageHandlerKeys } = useAuthConfig();
+  const { debug, messageHandlerKeys, iframeSso } = useAuthConfig();
   const query = new URLSearchParams(
     isWindowDefined ? window?.location?.search || "" : "",
   );
@@ -58,25 +58,21 @@ export function AuthProvider({
   const initialRefreshTokenQuery = useMemo(
     () =>
       validOrRefreshableToken(
-        isIframe
-          ? typeof refreshTokenQuery === "string"
-            ? refreshTokenQuery || true
-            : undefined
+        (!iframeSso && isIframe) || typeof refreshTokenQuery === "string"
+          ? refreshTokenQuery || true
           : undefined,
       ),
-    [refreshTokenQuery],
+    [refreshTokenQuery, iframeSso],
   );
   const initialIdTokenQuery = useMemo(
     () =>
       validOrRefreshableToken(
-        isIframe
-          ? typeof idTokenQuery === "string"
-            ? idTokenQuery || true
-            : undefined
+        (!iframeSso && isIframe) || typeof idTokenQuery === "string"
+          ? idTokenQuery || true
           : undefined,
         initialRefreshTokenQuery,
       ),
-    [idTokenQuery, initialRefreshTokenQuery],
+    [idTokenQuery, initialRefreshTokenQuery, iframeSso],
   );
   const initialTokenQuery = useMemo(
     () =>
@@ -88,7 +84,7 @@ export function AuthProvider({
           : undefined,
         initialRefreshTokenQuery,
       ),
-    [tokenQuery, initialRefreshTokenQuery],
+    [tokenQuery, initialRefreshTokenQuery, iframeSso],
   );
   const [tokens, setTokens] = useState<Tokens>({
     refreshToken: initialRefreshTokenQuery,
@@ -96,12 +92,12 @@ export function AuthProvider({
     idToken: initialIdTokenQuery,
   });
   const authSource = useMemo(() => {
-    if (isIframe) {
+    if (!iframeSso && isIframe) {
       if (initialTokenQuery) return AuthSource.Query;
       return AuthSource.Store;
     }
     return AuthSource.Session;
-  }, [initialTokenQuery]);
+  }, [initialTokenQuery, iframeSso]);
   const authStrategy = useMemo(() => {
     if (authSource === AuthSource.Session) return AuthStrategy.AuthJS;
     if (authSource === AuthSource.Query) {
@@ -346,7 +342,7 @@ export function AuthProvider({
         initOptions.refreshToken = tokens.refreshToken;
       }
     }
-    if (isIframe || (tokens.token && !tokens.refreshToken)) {
+    if ((!iframeSso && isIframe) || (tokens.token && !tokens.refreshToken)) {
       initOptions.checkLoginIframe = false;
       initOptions.flow = "implicit";
       initOptions.onLoad = undefined;
@@ -360,6 +356,7 @@ export function AuthProvider({
     tokens.token,
     tokens.idToken,
     tokens.refreshToken,
+    iframeSso,
   ]);
 
   useEffect(() => {

@@ -47,13 +47,14 @@ export function Authenticated({
   useEffect(() => {
     if (
       !keycloak ||
-      isIframe ||
+      (!authConfig.iframeSso && isIframe) ||
       isServer ||
       keycloak.authenticated ||
       tokensFromQuery
     ) {
       return;
     }
+    console.log("LOGGING IN");
     keycloak?.login({
       redirectUri: authConfig.loginRedirectUri,
     });

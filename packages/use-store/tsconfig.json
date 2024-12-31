@@ -1,16 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "../../tsconfig.base.json",
-  "exclude": [
-    "vitest.config.mts",
-    "**/test",
-    "**/dist",
-    "**/types",
-    "**/__tests__"
-  ],
+  "exclude": ["vitest.config.mts", "**/dist", "**/types", "**/tests"],
   "compilerOptions": {
     "composite": true,
-    "noEmit": true
+    "emitDeclarationOnly": true,
+    "declarationDir": "types"
   },
   "references": []
 }
