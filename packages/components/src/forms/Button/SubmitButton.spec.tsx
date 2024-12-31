@@ -20,8 +20,10 @@
  */
 
 import type { FormApi } from "@tanstack/react-form";
-import { fireEvent, render } from "@testing-library/react";
+import { useForm } from "@tanstack/react-form";
+import { act, fireEvent, render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { Form } from "../Form";
 import { SubmitButton } from "./SubmitButton";
 
 describe("SubmitButton", () => {
@@ -75,5 +77,45 @@ describe("SubmitButton", () => {
     fireEvent.click(getByText("Submit"));
     expect(onPress).toHaveBeenCalled();
     expect(mockForm.handleSubmit).toHaveBeenCalled();
+  });
+
+  it("should work with Form component", async () => {
+    const onSubmit = vi.fn();
+    const { getByText } = render(
+      <Form
+        defaultValues={{ test: "value" }}
+        onSubmit={async ({ value }) => {
+          onSubmit(value);
+        }}
+      >
+        <SubmitButton>Submit</SubmitButton>
+      </Form>,
+    );
+    await act(async () => {
+      fireEvent.click(getByText("Submit"));
+    });
+    expect(onSubmit).toHaveBeenCalledWith({ test: "value" });
+  });
+
+  it("should work with useForm hook", async () => {
+    const onSubmit = vi.fn();
+    const TestComponent = () => {
+      const form = useForm({
+        defaultValues: { test: "value" },
+        onSubmit: async ({ value }) => {
+          onSubmit(value);
+        },
+      });
+      return (
+        <Form form={form}>
+          <SubmitButton>Submit</SubmitButton>
+        </Form>
+      );
+    };
+    const { getByText } = render(<TestComponent />);
+    await act(async () => {
+      fireEvent.click(getByText("Submit"));
+    });
+    expect(onSubmit).toHaveBeenCalledWith({ test: "value" });
   });
 });

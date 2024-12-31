@@ -21,8 +21,10 @@
 
 import type { DeepKeys, DeepValue, Validator } from "@tanstack/form-core";
 import { Field, useForm } from "@tanstack/react-form";
+import type { FormApi } from "@tanstack/react-form";
 import { useId } from "react";
 import { useProps } from "tamagui";
+import { useFormContext } from "../Form";
 import type { FormFieldProps } from "../FormField";
 import { FormField } from "../FormField";
 import type { FieldComponentProps } from "../types";
@@ -96,7 +98,9 @@ export function FieldInput<
     value,
     ...fieldProps
   } = useProps(props);
-  form = form || useForm();
+  const formContext = useFormContext();
+  form =
+    form || (formContext as FormApi<TParentData, TFormValidator>) || useForm();
   const id = fieldProps.id || useId();
   if (!form || !name) {
     return (
