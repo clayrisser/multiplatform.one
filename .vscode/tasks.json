@@ -17,8 +17,8 @@
         },
         "background": {
           "activeOnStart": true,
-          "beginsPattern": "^.*extension build start*$",
-          "endsPattern": "^.*extension (build|rebuild) success.*$"
+          "beginsPattern": ".*",
+          "endsPattern": ".*Local: *http://localhost*"
         }
       },
       "isBackground": true,
@@ -28,16 +28,10 @@
       "group": {
         "kind": "build",
         "isDefault": true
-      }
-    },
-    {
-      "type": "npm",
-      "script": "build",
-      "group": {
-        "kind": "build",
-        "isDefault": true
       },
-      "problemMatcher": []
+      "options": {
+        "cwd": "${workspaceFolder}/platforms/vscode"
+      }
     }
   ]
 }

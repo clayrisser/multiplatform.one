@@ -2,22 +2,15 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Extension",
+      "name": "vscode dev",
       "type": "extensionHost",
       "request": "launch",
       "args": [
         "--disable-extensions",
         "--extensionDevelopmentPath=${workspaceFolder}/platforms/vscode"
       ],
-      "outFiles": ["${workspaceFolder}/platforms/vscode/dist/extension/*.js"]
-    },
-    {
-      "name": "Preview Extension",
-      "type": "extensionHost",
-      "request": "launch",
-      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
-      "outFiles": ["${workspaceFolder}/dist/extension/*.js"],
-      "preLaunchTask": "npm: build"
+      "outFiles": ["${workspaceFolder}/platforms/vscode/dist/extension/*.js"],
+      "preLaunchTask": "npm: dev"
     },
     {
       "name": "storybook dev",
@@ -71,7 +64,7 @@
       "name": "api mesh",
       "type": "node-terminal",
       "request": "launch",
-      "cwd": "${workspaceFolder}/api",
+      "cwd": "${workspaceFolder}/platforms/vscode/api",
       "command": "../mkpm api/mesh"
     }
   ],

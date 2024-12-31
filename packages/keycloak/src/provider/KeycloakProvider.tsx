@@ -39,12 +39,13 @@ export function KeycloakProvider({
   loginRedirectUri,
   debug,
   disabled,
+  iframeSso,
   publicClientId,
   realm,
 }: KeycloakProviderProps) {
   const authConfig = useMemo(
-    () => ({ debug, disabled, loginRedirectUri }),
-    [debug, disabled, loginRedirectUri],
+    () => ({ debug, disabled, iframeSso, loginRedirectUri }),
+    [debug, disabled, iframeSso, loginRedirectUri],
   );
   return (
     <AuthConfigContext.Provider value={authConfig}>
