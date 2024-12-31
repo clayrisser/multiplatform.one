@@ -20,11 +20,12 @@
  */
 
 import type { DeepKeys, DeepValue, Validator } from "@tanstack/form-core";
-import { Field, useForm } from "@tanstack/react-form";
+import { Field, type FormApi, useForm } from "@tanstack/react-form";
 import { useId } from "react";
 import type { CheckedState, FontSizeTokens } from "tamagui";
 import { Label, Paragraph, XStack, YStack, useProps } from "tamagui";
 import { CheckRegular, MinusRegular } from "../../icons";
+import { useFormContext } from "../Form";
 import type { FormFieldProps } from "../FormField";
 import type { FieldComponentProps } from "../types";
 import type { CheckboxProps } from "./Checkbox";
@@ -106,7 +107,9 @@ export function FieldCheckbox<
     validators,
     ...fieldProps
   } = useProps(props);
-  form = form || useForm();
+  const formContext = useFormContext();
+  form =
+    form || (formContext as FormApi<TParentData, TFormValidator>) || useForm();
   const id = fieldProps.id || useId();
   helperText = error && typeof error === "string" ? error : helperText;
   if (!form || !name) {

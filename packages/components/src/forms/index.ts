@@ -31,3 +31,4 @@ export * from "./SelectButton";
 export * from "./Slider";
 export * from "./Switch";
 export * from "./TextArea";
+export * from "./Form";

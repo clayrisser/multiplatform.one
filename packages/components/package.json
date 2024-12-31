@@ -72,7 +72,6 @@
     "moti": "^0.29.0",
     "react-native-reanimated": "~3.10.1",
     "react-native-web": "~0.19.13",
-    "unplugin-swc": "^1.5.1",
     "vitest": "^1.6.0",
     "vitest-react-native": "^0.1.5"
   }

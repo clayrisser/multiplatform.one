@@ -22,6 +22,7 @@
 import type { Validator } from "@tanstack/form-core";
 import type { FormApi } from "@tanstack/react-form";
 import { useForm } from "@tanstack/react-form";
+import { useFormContext } from "../Form";
 import type { ButtonProps } from "./Button";
 import { Button } from "./Button";
 
@@ -31,7 +32,7 @@ export type SubmitButtonProps<
     | Validator<TParentData, unknown>
     | undefined = undefined,
 > = ButtonProps & {
-  form: FormApi<TParentData, TFormValidator>;
+  form?: FormApi<TParentData, TFormValidator>;
 };
 
 export function SubmitButton<
@@ -44,7 +45,9 @@ export function SubmitButton<
   onPress,
   ...buttonProps
 }: SubmitButtonProps<TParentData, TFormValidator>) {
-  form = form || useForm();
+  const formContext = useFormContext();
+  form =
+    form || (formContext as FormApi<TParentData, TFormValidator>) || useForm();
   return (
     <Button
       onPress={(e) => {
