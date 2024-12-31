@@ -1,3 +1,5 @@
 /.env
+/.tamagui
 /dist
 /node_modules
+/tamagui.css

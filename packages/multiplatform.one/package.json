@@ -26,20 +26,10 @@
   },
   "author": "BitSpur",
   "sideEffects": true,
-  "keywords": [
-    "multiplatform",
-    "multiplatform.one",
-    "react"
-  ],
+  "keywords": ["multiplatform", "multiplatform.one", "react"],
   "homepage": "https://gitlab.com/risserlabs/community/auto-contrast",
   "license": "Apache-2.0",
-  "files": [
-    "dist",
-    "next",
-    "src",
-    "theme",
-    "types"
-  ],
+  "files": ["dist", "next", "src", "theme", "types"],
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/risserlabs/community/auto-contrast"
