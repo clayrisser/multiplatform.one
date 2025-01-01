@@ -116,6 +116,7 @@ returntype
 risser
 sameorigin
 sbmodern
+sidepanel
 spnego
 sslmode
 stackoverflow

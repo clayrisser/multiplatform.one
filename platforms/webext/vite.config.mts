@@ -1,47 +1,108 @@
-import { resolve } from "node:path";
-import { watchPublicPlugin, watchRebuildPlugin } from "@extension/hmr";
-import { isDev, isProduction, watchOption } from "@extension/vite-config";
-import libAssetsPlugin from "@laynezh/vite-plugin-lib-assets";
-import { type PluginOption, defineConfig } from "vite";
-import makeManifestPlugin from "./utils/plugins/make-manifest-plugin";
+/// <reference types="vitest" />
 
-const rootDir = resolve(__dirname);
-const srcDir = resolve(rootDir, "src");
+import { dirname, relative } from "node:path";
+import Vue from "@vitejs/plugin-vue";
+import UnoCSS from "unocss/vite";
+import AutoImport from "unplugin-auto-import/vite";
+import IconsResolver from "unplugin-icons/resolver";
+import Icons from "unplugin-icons/vite";
+import Components from "unplugin-vue-components/vite";
+import type { UserConfig } from "vite";
+import { defineConfig } from "vite";
+import packageJson from "./package.json";
+import { isDev, port, r } from "./scripts/utils";
 
-const outDir = resolve(rootDir, "..", "dist");
-export default defineConfig({
+export const sharedConfig: UserConfig = {
+  root: r("src"),
   resolve: {
     alias: {
-      "@root": rootDir,
-      "@src": srcDir,
-      "@assets": resolve(srcDir, "assets"),
+      "~/": `${r("src")}/`,
     },
+  },
+  define: {
+    __DEV__: isDev,
+    __NAME__: JSON.stringify(packageJson.name),
   },
   plugins: [
-    libAssetsPlugin({
-      outputPath: outDir,
-    }) as PluginOption,
-    watchPublicPlugin(),
-    makeManifestPlugin({ outDir }),
-    isDev && watchRebuildPlugin({ reload: true, id: "chrome-extension-hmr" }),
-  ],
-  publicDir: resolve(rootDir, "public"),
-  build: {
-    lib: {
-      formats: ["iife"],
-      entry: resolve(__dirname, "src/background/index.ts"),
-      name: "BackgroundScript",
-      fileName: "background",
+    Vue(),
+
+    AutoImport({
+      imports: [
+        "vue",
+        {
+          "webextension-polyfill": [["=", "browser"]],
+        },
+      ],
+      dts: r("src/auto-imports.d.ts"),
+    }),
+
+    // https://github.com/antfu/unplugin-vue-components
+    Components({
+      dirs: [r("src/components")],
+      // generate `components.d.ts` for ts support with Volar
+      dts: r("src/components.d.ts"),
+      resolvers: [
+        // auto import icons
+        IconsResolver({
+          prefix: "",
+        }),
+      ],
+    }),
+
+    // https://github.com/antfu/unplugin-icons
+    Icons(),
+
+    // https://github.com/unocss/unocss
+    UnoCSS(),
+
+    // rewrite assets to use relative path
+    {
+      name: "assets-rewrite",
+      enforce: "post",
+      apply: "build",
+      transformIndexHtml(html, { path }) {
+        return html.replace(
+          /"\/assets\//g,
+          `"${relative(dirname(path), "/assets")}/`,
+        );
+      },
     },
-    outDir,
+  ],
+  optimizeDeps: {
+    include: ["vue", "@vueuse/core", "webextension-polyfill"],
+    exclude: ["vue-demi"],
+  },
+};
+
+export default defineConfig(({ command }) => ({
+  ...sharedConfig,
+  base: command === "serve" ? `http://localhost:${port}/` : "/dist/",
+  server: {
+    port,
+    hmr: {
+      host: "localhost",
+    },
+    origin: `http://localhost:${port}`,
+  },
+  build: {
+    watch: isDev ? {} : undefined,
+    outDir: r("extension/dist"),
     emptyOutDir: false,
-    sourcemap: isDev,
-    minify: isProduction,
-    reportCompressedSize: isProduction,
-    watch: watchOption,
+    sourcemap: isDev ? "inline" : false,
+    // https://developer.chrome.com/docs/webstore/program_policies/#:~:text=Code%20Readability%20Requirements
+    terserOptions: {
+      mangle: false,
+    },
     rollupOptions: {
-      external: ["chrome"],
+      input: {
+        options: r("src/options/index.html"),
+        popup: r("src/popup/index.html"),
+        sidepanel: r("src/sidepanel/index.html"),
+      },
     },
   },
-  envDir: "../",
-});
+  test: {
+    globals: true,
+    environment: "jsdom",
+  },
+}));
